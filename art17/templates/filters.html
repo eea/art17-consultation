@@ -1,25 +1,22 @@
 <form id="filterform" name="filterform" method="get">
 
   <fieldset>
-    <legend>Group…</legend>
-    {% set groups_url = url_for('summary.species-summary-groups') %}
-    <select id="group" name="group" data-href="{{ groups_url }}"></select>
+    <legend>{{ summary_filter_form.group.label }}</legend>
+    {{ summary_filter_form.group }}
   </fieldset>
 
   <fieldset>
-    <legend>Name…</legend>
+    <legend>{{ summary_filter_form.species.label }}</legend>
     {% set species_url = url_for('summary.species-summary-species') %}
-    <select id="species" name="species" data-href="{{ species_url }}">
-      <option></option>
-    </select>
+    {{ summary_filter_form.species(**{'data-href': species_url}) }}
   </fieldset>
 
   <fieldset>
-    <legend>Bio-region…</legend>
+    <legend>{{ summary_filter_form.region.label }}</legend>
     {% set regions_url = url_for('summary.species-summary-regions') %}
-    <select id="region" name="region" data-href="{{ regions_url }}">
-      <option></option>
-    </select>
+    {{ summary_filter_form.region(**{'data-href': regions_url}) }}
   </fieldset>
+
+  <button type="submit">Filter</button>
 
 </form>

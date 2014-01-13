@@ -5,6 +5,7 @@ from flask import (
     render_template,
     jsonify,
 )
+
 from art17.models import (
     EtcDicBiogeoreg,
     EtcDataSpeciesRegion,
@@ -12,7 +13,9 @@ from art17.models import (
     db,
     t_restricted_species,
 )
+
 from art17.common import get_default_period, admin_perm, expert_perm
+from art17.forms import SummaryFilterForm
 
 
 summary = Blueprint('summary', __name__)
@@ -45,17 +48,61 @@ def record_errors(record):
     raise ValueError("Invalid record type" + str(type(record)))
 
 
+def get_groups():
+    group_field = EtcDataSpeciesRegion.group
+    groups = (EtcDataSpeciesRegion.query.filter(group_field != None)
+              .with_entities(group_field, group_field)
+              .distinct()
+              .order_by(group_field))
+    return [('', '-')] + groups.all()
+
+
+def get_species(group):
+    blank_option = [('', '-')]
+    if group is None:
+        return blank_option
+    group_field = EtcDataSpeciesRegion.group
+    assesment_field = EtcDataSpeciesRegion.assesment_speciesname
+    species = (EtcDataSpeciesRegion.query.filter(assesment_field != None)
+               .filter(group_field == group)
+               .with_entities(assesment_field, assesment_field)
+               .distinct()
+               .order_by(assesment_field))
+    return blank_option + species.all()
+
+
+def get_regions(species):
+    blank_option = [('', 'All bioregions')]
+    assesment_field = EtcDataSpeciesRegion.assesment_speciesname
+    region_field = EtcDataSpeciesRegion.region
+    regions = (EtcDataSpeciesRegion.query.filter(region_field != None)
+               .filter(assesment_field == species)
+               .with_entities(region_field, region_field)
+               .distinct()
+               .order_by(region_field))
+    return blank_option + regions.all()
+
+
 class Summary(views.View):
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
         subject = request.args.get('subject')
+        group = request.args.get('group')
+        species = request.args.get('species')
         region = request.args.get('region')
         self.setup_objects_and_data(period, subject, region)
+
+        summary_filter_form = SummaryFilterForm(request.args)
+        summary_filter_form.group.choices = get_groups()
+        summary_filter_form.species.choices = get_species(group)
+        summary_filter_form.region.choices = get_regions(species)
+
         context = {
             'objects': self.objects,
             'restricted_countries': self.restricted_countries,
             'regions': EtcDicBiogeoreg.query.all(),
+            'summary_filter_form': summary_filter_form,
         }
         return render_template('summary.html', **context)
 
@@ -112,54 +159,17 @@ class SpeciesProgress(Progress, SpeciesMixin):
     pass
 
 
-class Groups(views.MethodView):
-
-    def get(self):
-        group_field = EtcDataSpeciesRegion.group
-        groups = (
-            EtcDataSpeciesRegion.query
-            .filter(group_field != None)
-            .with_entities(group_field, group_field)
-            .distinct()
-            .order_by(group_field)
-        )
-        data = [('', '-')] + groups.all()
-        return jsonify(data)
-
-
 class Species(views.MethodView):
 
     def get(self):
-        group = request.args['group']
-        group_field = EtcDataSpeciesRegion.group
-        assesment_field = EtcDataSpeciesRegion.assesment_speciesname
-        species = (
-            EtcDataSpeciesRegion.query
-            .filter(assesment_field != None)
-            .filter(group_field == group)
-            .with_entities(assesment_field, assesment_field)
-            .distinct()
-            .order_by(assesment_field)
-        )
-        data = [('', '-')] + species.all()
+        data = get_species(request.args['group'])
         return jsonify(data)
 
 
 class Regions(views.MethodView):
 
     def get(self):
-        species = request.args['species']
-        assesment_field = EtcDataSpeciesRegion.assesment_speciesname
-        region_field = EtcDataSpeciesRegion.region
-        regions = (
-            EtcDataSpeciesRegion.query
-            .filter(region_field != None)
-            .filter(assesment_field == species)
-            .with_entities(region_field, region_field)
-            .distinct()
-            .order_by(region_field)
-        )
-        data = [('', 'All bioregions')] + regions.all()
+        data = get_regions(request.args['species'])
         return jsonify(data)
 
 
@@ -168,8 +178,6 @@ summary.add_url_rule('/species/summary/',
 summary.add_url_rule('/species/progress/',
                      view_func=SpeciesProgress.as_view('species-progress'))
 
-summary.add_url_rule('/species/summary/groups',
-                     view_func=Groups.as_view('species-summary-groups'))
 summary.add_url_rule('/species/summary/species',
                      view_func=Species.as_view('species-summary-species'))
 summary.add_url_rule('/species/summary/regions',
