@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2">Species</th>
+          <th>Regions</th>
+        </tr>
+        <tr>
+          {% for region in regions %}
+          <th>
+            {{ region.reg_code }}
+          </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for subject in subjects %}
+        <tr>
+          <th>
+            {{ subject }}
+          </th>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

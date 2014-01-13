@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+  <h1>Auth debug</h1>
+
+  <p>
+    Current identity:
+    <code style="white-space: pre-wrap">{{ g.identity }}</code>
+  </p>
+
+  <form method="post">
+    <div>
+      <label for="user_id">User ID</label><br>
+      <input id="user_id" name="user_id" value="{{ user_id or '' }}">
+    </div>
+
+    <div>
+      <label for="roles">Roles</label><br>
+      <textarea rows="10" id="roles" name="roles">{{ roles_txt }}</textarea>
+    </div>
+
+    <div>
+      <button type="submit">Save</button>
+    </div>
+  </form>
+{% endblock content %}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    {% assets "js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"
+          type="text/css" rel="stylesheet" />
+    <title></title>
+  </head>
+
+  <body>
+    <a href="{{ url_for('summary.homepage') }}">Home</a>
+    {% if art17_auth_debug %}
+      <a href="{{ url_for('auth.debug') }}">Auth debug</a>
+    {% endif %}
+
+    {% if config['AUTH_ZOPE'] %}
+      Auth zope: <a href="/loggedin">login</a>, <a href="/loggedout">logout</a>
+    {% endif %}
+
+    {% if g.identity.id is none %}
+      anonymous
+    {% else %}
+      {{ g.identity.id }}
+    {% endif %}
+
+    <div class="container">
+      <div class="row">
+      {% block content %}{% endblock content %}
+      </div>
+    </div>
+
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+  </body>
+
+</html>

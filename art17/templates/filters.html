@@ -1,0 +1,25 @@
+<form id="filterform" name="filterform" method="get">
+
+  <fieldset>
+    <legend>Group…</legend>
+    {% set groups_url = url_for('summary.species-summary-groups') %}
+    <select id="group" name="group" data-href="{{ groups_url }}"></select>
+  </fieldset>
+
+  <fieldset>
+    <legend>Name…</legend>
+    {% set species_url = url_for('summary.species-summary-species') %}
+    <select id="species" name="species" data-href="{{ species_url }}">
+      <option></option>
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <legend>Bio-region…</legend>
+    {% set regions_url = url_for('summary.species-summary-regions') %}
+    <select id="region" name="region" data-href="{{ regions_url }}">
+      <option></option>
+    </select>
+  </fieldset>
+
+</form>

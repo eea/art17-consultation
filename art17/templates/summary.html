@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% include 'filters.html' %}
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <td colspan="6">
+            ETC/BD treated member states' data
+          </td>
+        </tr>
+        <tr>
+          <td rowspan="2">MS</td>
+          <td rowspan="2">Bio</td>
+          <td colspan="4">Range</td>
+        </tr>
+        <tr>
+          <td>Surface</td>
+          <td>%XR</td>
+          <td>Trend</td>
+          <td>Ref.</td>
+        </tr>
+      </thead>
+      <tbody>
+      {% for row in objects %}
+        {% set visible = can_view(row, restricted_countries) %}
+        {% set qa_errors = record_errors(row) %}
+        <tr {% if not row.is_assesm %}style="font-style:italic"{% endif %}>
+          <td>{{ row.eu_country_code }}</td>
+          <td>{{ row.region }}</td>
+
+          {% if not visible %}
+          <td colspan="4">
+            {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
+          </td>
+          {% else %}
+          <td>{{ row.range_surface_area|float }}</td>
+          <td>{{ row.percentage_range_surface_area|float }}</td>
+          <td>{{ row.range_trend }}</td>
+          <td>{{ row.complementary_favourable_range_q }}{{ row.complementary_favourable_range|float }}</td>
+
+          <td>TODO: {{ qa_errors }}</td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

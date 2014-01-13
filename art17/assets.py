@@ -1,0 +1,12 @@
+from flask.ext.assets import Environment, Bundle
+
+
+BUNDLE_JS = (
+    'js/lib/jquery.chained.remote.min.js',
+    'js/main.js',
+)
+
+
+js = Bundle(*BUNDLE_JS, filters='jsmin', output='gen/static.js')
+assets_env = Environment()
+assets_env.register('js', js)
