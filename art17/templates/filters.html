@@ -20,3 +20,15 @@
   <button type="submit">Filter</button>
 
 </form>
+
+<div class="current_selection">
+  {% if current_selection %}
+  <p>
+    <strong>Current selection</strong>:
+    {{ current_selection|join(', ') }}.
+  </p>
+  {% else %}
+    <p>Please select a group and a species.</p>
+  {% endif %}
+
+</div>
