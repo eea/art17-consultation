@@ -41,8 +41,8 @@
             {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
           </td>
           {% else %}
-          <td>{{ row.range_surface_area|float }}</td>
-          <td>{{ row.percentage_range_surface_area|float }}</td>
+          <td class="text-right">{{ row.range_surface_area|int }}</td>
+          <td class="{{ row.conclusion_range }} text-center">{{ row.percentage_range_surface_area|float }}</td>
           <td>{{ row.range_trend }}</td>
           <td>{{ row.complementary_favourable_range_q }}{{ row.complementary_favourable_range|float }}</td>
 
