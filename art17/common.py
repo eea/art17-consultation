@@ -62,3 +62,16 @@ def population_size_unit(row):
         size_unit_value = 'N/A'
 
     return '%s %s' % (str2num(size_unit_value), size_unit)
+
+
+def population_ref(row):
+
+    population_q = row.complementary_favourable_population_q or ''
+    population = row.complementary_favourable_population
+    filled = row.filled_complementary_favourable_population or ''
+
+    if not (population_q or population):
+        return 'N/A'
+
+    content = '%s(%s)' if filled else '%s%s'
+    return content % (population_q, str2num(population, ''))

@@ -4,9 +4,8 @@
   {{ population_size_unit(row) }}
 </td>
 
-{% set classes=CONCLUSION_CLASSES[row.conclusion_population] + ' center' %}
-{% set title=COUNTRY_ASSESSMENTS[row.conclusion_population] %}
-
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') + ' center' %}
+{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') %}
 <td {{ parse_errors(['conclusion_population',
                      'percentage_population_mean_size'],
                       row, qa_errors,
@@ -15,12 +14,18 @@
   {{ row.percentage_population_mean_size|str2num }}
 </td>
 
-
 {# TODO special qa_error case #}
 <td {{ parse_errors(fields='population_yearly_magnitude', row=row,
                     qa_errors=qa_errors, classes='text-center') }}>
   {{ row.population_trend or 'N/A' }}</td>
-<td></td>
+
+<td {{ parse_errors(['complementary_favourable_population_q',
+                     'complementary_favourable_population',
+                     'filled_complementary_favourable_population'],
+                      row, qa_errors,
+                      classes='number section-border') }}>
+  {{ population_ref(row) }}
+</td>
 
 {#   <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} text-center"
       title="{{ COUNTRY_ASSESSMENTS[row.conclusion_range] }}">

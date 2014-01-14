@@ -20,6 +20,7 @@ from art17.common import (
     admin_perm,
     expert_perm,
     population_size_unit,
+    population_ref,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
 )
@@ -47,6 +48,7 @@ def inject_fuctions():
         'record_errors': record_errors,
         'parse_qa_errors': parse_qa_errors,
         'population_size_unit': population_size_unit,
+        'population_ref': population_ref,
     }
 
 
@@ -77,8 +79,13 @@ def format_error(error, record, field):
                  'complementary_favourable_range',
                  'complementary_favourable_range_q',
                  'range_yearly_magnitude',
-                 'conclusion_range', 'percentage_range_surface_area'):
+                 'conclusion_range',
+                 'percentage_range_surface_area',
+                 'complementary_favourable_population_q',
+                 'complementary_favourable_population',
+                 'filled_complementary_favourable_population'):
         return '%s: %s' % (error['text'], error['suspect_value'])
+
     return error['text']
 
 
