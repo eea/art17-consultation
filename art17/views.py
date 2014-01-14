@@ -10,6 +10,7 @@ from art17.models import (
     EtcDicBiogeoreg,
     EtcDataSpeciesRegion,
     EtcQaErrorsSpeciesManualChecked,
+    Dataset,
     db,
     t_restricted_species,
 )
@@ -164,7 +165,8 @@ class Summary(views.View):
         summary_filter_form.species.choices = get_species(period, group)
         summary_filter_form.region.choices = get_regions(period, species)
 
-        current_selection = self.get_current_selection(group, species, region)
+        current_selection = self.get_current_selection(period, group, species,
+                                                       region)
         annexes = self.get_annexes(species)
         context = {
             'objects': self.objects,
@@ -178,10 +180,12 @@ class Summary(views.View):
 
         return render_template('summary.html', **context)
 
-    def get_current_selection(self, group, species, region):
+    def get_current_selection(self, period, group, species, region):
         if not group and not species:
             return []
-        current_selection = [group, species]
+        period_query = Dataset.query.get(period)
+        period_name = period_query.name if period_query else ''
+        current_selection = [period_name, group, species]
         if region:
             region_name = EtcDicBiogeoreg.get_region_name(region)
             if region_name:
