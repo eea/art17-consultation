@@ -70,5 +70,8 @@ def upgrade():
 
 def downgrade():
     for tbl in period_tables:
-        op.drop_column(tbl, 'ext_dataset_id')
+        try:
+            op.drop_column(tbl, 'ext_dataset_id')
+        except:
+            pass
     op.drop_table('datasets')
