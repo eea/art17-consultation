@@ -50,10 +50,12 @@ def record_errors(record):
 
 def get_groups():
     group_field = EtcDataSpeciesRegion.group
-    groups = (EtcDataSpeciesRegion.query.filter(group_field != None)
-              .with_entities(group_field, group_field)
-              .distinct()
-              .order_by(group_field))
+    groups = (
+        EtcDataSpeciesRegion.query.filter(group_field != None)
+        .with_entities(group_field, group_field)
+        .distinct()
+       .order_by(group_field)
+    )
     return [('', '-')] + groups.all()
 
 
@@ -63,24 +65,34 @@ def get_species(group):
         return blank_option
     group_field = EtcDataSpeciesRegion.group
     assesment_field = EtcDataSpeciesRegion.assesment_speciesname
-    species = (EtcDataSpeciesRegion.query.filter(assesment_field != None)
-               .filter(group_field == group)
-               .with_entities(assesment_field, assesment_field)
-               .distinct()
-               .order_by(assesment_field))
+    species = (
+        EtcDataSpeciesRegion.query
+        .filter(assesment_field != None)
+        .filter(group_field == group)
+        .with_entities(assesment_field, assesment_field)
+        .distinct()
+        .order_by(assesment_field)
+    )
     return blank_option + species.all()
 
 
 def get_regions(species):
     blank_option = [('', 'All bioregions')]
+
     assesment_field = EtcDataSpeciesRegion.assesment_speciesname
-    region_field = EtcDataSpeciesRegion.region
-    regions = (EtcDataSpeciesRegion.query.filter(region_field != None)
-               .filter(assesment_field == species)
-               .with_entities(region_field, region_field)
-               .distinct()
-               .order_by(region_field))
-    return blank_option + regions.all()
+    reg_field = EtcDataSpeciesRegion.region
+    reg_code_field = EtcDicBiogeoreg.reg_code
+    reg_name_field = EtcDicBiogeoreg.reg_name
+
+    regions_query = (
+        EtcDicBiogeoreg.query
+        .join(EtcDataSpeciesRegion, reg_code_field == reg_field)
+        .filter(assesment_field == species)
+        .with_entities(reg_field, reg_name_field)
+        .distinct()
+        .order_by(reg_field)
+    )
+    return blank_option + regions_query.all()
 
 
 class Summary(views.View):
