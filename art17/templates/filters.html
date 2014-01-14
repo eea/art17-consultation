@@ -1,6 +1,11 @@
 <form id="filterform" name="filterform" method="get">
 
   <fieldset>
+    <legend>{{ summary_filter_form.period.label }}</legend>
+    {{ summary_filter_form.period }}
+  </fieldset>
+
+  <fieldset>
     <legend>{{ summary_filter_form.group.label }}</legend>
     {{ summary_filter_form.group }}
   </fieldset>
