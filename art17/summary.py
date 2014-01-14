@@ -16,10 +16,7 @@ from art17.models import (
     t_restricted_species,
 )
 
-from art17.mixins import (
-    SpeciesMixin,
-    HabitatMixin,
-)
+from art17.mixins import SpeciesMixin, HabitatMixin
 
 from art17.common import (
     get_default_period,
