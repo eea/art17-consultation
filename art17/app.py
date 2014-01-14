@@ -4,6 +4,7 @@ from flask.ext.script import Manager
 from models import db, db_manager
 from art17.views import summary
 from art17.auth import auth
+from art17.dataset_manager import dataset_manager
 from assets import assets_env
 
 
@@ -26,4 +27,5 @@ def create_app():
 def create_manager(app):
     manager = Manager(app)
     manager.add_command('db', db_manager)
+    manager.add_command('dataset', dataset_manager)
     return manager
