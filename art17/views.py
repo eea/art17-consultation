@@ -148,7 +148,7 @@ class Summary(views.View):
             return []
         annexes = list(annexes_results)
         try:
-            priority = int(annexes[-1])
+            priority = int(annexes.pop())
         except ValueError:
             priority = 0
         if annexes[0] and priority:
