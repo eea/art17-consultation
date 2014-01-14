@@ -61,12 +61,13 @@ def record_errors(record):
 
 
 def parse_qa_errors(fields, qa_errors):
-    title = ''
-    classes = ''
+    title = []
+    classes = []
     for field in fields:
         if field in qa_errors:
-            title += qa_errors[field]['text']
-    return title, classes
+            title.append(qa_errors[field]['text'])
+            classes.append('qa_error')
+    return ' '.join(title), ' '.join(classes)
 
 
 def get_groups(period):
