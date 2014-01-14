@@ -8,4 +8,14 @@
     {{ row.percentage_range_surface_area|float }}
   </td>
   <td>{{ row.range_trend }}</td>
-  <td>{{ row.complementary_favourable_range_q }}{{ row.complementary_favourable_range|float }}</td>
+  <td {{ parse_errors(['complementary_favourable_range_q',
+                       'complementary_favourable_range'],
+                       row, qa_errors, '', 'text-right') }}>
+      {% set range_q = row.complementary_favourable_range_q or '' %}
+      {% set range = row.complementary_favourable_range %}
+      {% if range_q or range %}
+        {{ range_q }}{{range|int}}
+      {% else %}
+        N/A
+      {% endif %}
+  </td>
