@@ -1,0 +1,4 @@
+{% macro parse_errors(fields, qa_errors, title='', classes='') %}
+    {% set qtitle, qclasses = parse_qa_errors(fields, qa_errors) %}
+    title="{{ title }} {{ qtitle }}" class="{{ classes }} {{ qclasses }}"
+{% endmacro %}

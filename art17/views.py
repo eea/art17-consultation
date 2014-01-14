@@ -35,7 +35,10 @@ def can_view(record, countries):
 
 @summary.app_context_processor
 def inject_fuctions():
-    return {'record_errors': record_errors}
+    return {
+        'record_errors': record_errors,
+        'parse_qa_errors': parse_qa_errors,
+    }
 
 
 @summary.app_context_processor
@@ -55,6 +58,15 @@ def record_errors(record):
         )
         return {e.field: {'text': e.text} for e in qs}
     raise ValueError("Invalid record type" + str(type(record)))
+
+
+def parse_qa_errors(fields, qa_errors):
+    title = ''
+    classes = ''
+    for field in fields:
+        if field in qa_errors:
+            title += qa_errors[field]['text']
+    return title, classes
 
 
 def get_groups(period):

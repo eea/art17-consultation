@@ -1,4 +1,8 @@
-  <td class="text-right">{{ row.range_surface_area|int }}</td>
+{% from '_macros.html' import parse_errors with context %}
+
+  <td {{ parse_errors(['range_surface_area'], qa_errors, '', 'text-right') }}>
+    {{ row.range_surface_area|int }}
+  </td>
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} text-center"
       title="{{ COUNTRY_ASSESSMENTS[row.conclusion_range] }}">
     {{ row.percentage_range_surface_area|float }}
