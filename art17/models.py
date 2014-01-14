@@ -4,7 +4,6 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer,\
     LargeBinary, SmallInteger, String, Table, Text
 from sqlalchemy.dialects.mysql.base import MEDIUMBLOB
 from sqlalchemy.orm import relationship
-from sqlalchemy.orm.exc import NoResultFound
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
 
@@ -50,14 +49,16 @@ class DicCountryCode(Base):
     codeEU = Column(String(2), server_default=u"''")
     name = Column(String(40))
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class EtcDataHabitattypeAutomaticAssessment(Base):
     __tablename__ = 'etc_data_habitattype_automatic_assessment'
 
     assessment_method = Column(String(3), primary_key=True, nullable=False)
-    order = Column(Integer)
     habitatcode = Column(String(4), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
+    order = Column(Integer)
     range_surface_area = Column(String(100))
     percentage_range_surface_area = Column(String(100))
     range_trend = Column(String(100))
@@ -83,6 +84,8 @@ class EtcDataHabitattypeAutomaticAssessment(Base):
     distribution_grid_area = Column(String(100))
     percentage_distribution_grid_area = Column(String(100))
     assessment_needed = Column(Integer)
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class EtcDataHabitattypeRegion(Base):
@@ -143,6 +146,8 @@ class EtcDataHcoveragePressure(Base):
     pressure = Column(String(3), primary_key=True, nullable=False,
                       server_default=u"''")
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class EtcDataHcoverageThreat(Base):
     __tablename__ = 'etc_data_hcoverage_threats'
@@ -153,6 +158,8 @@ class EtcDataHcoverageThreat(Base):
                          server_default=u"'0'")
     threat = Column(String(3), primary_key=True, nullable=False,
                     server_default=u"''")
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class EtcDataSpeciesAutomaticAssessment(Base):
@@ -192,6 +199,8 @@ class EtcDataSpeciesAutomaticAssessment(Base):
     distribution_grid_area = Column(String(100))
     percentage_distribution_grid_area = Column(String(100))
     assessment_needed = Column(Integer)
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class EtcDataSpeciesRegion(Base):
@@ -289,6 +298,8 @@ class EtcDataSpopulationPressure(Base):
     pressure = Column(String(3), primary_key=True, nullable=False,
                       server_default=u"''")
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class EtcDataSpopulationThreat(Base):
     __tablename__ = 'etc_data_spopulation_threats'
@@ -301,6 +312,8 @@ class EtcDataSpopulationThreat(Base):
     threat = Column(String(3), primary_key=True, nullable=False,
                     server_default=u"''")
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class EtcDicBiogeoreg(Base):
     __tablename__ = 'etc_dic_biogeoreg'
@@ -310,16 +323,16 @@ class EtcDicBiogeoreg(Base):
     ordine = Column(Integer)
     order = Column(Integer)
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
     @classmethod
     def get_region_name(cls, reg_code):
-        try:
-            return (
-                cls.query.with_entities(cls.reg_name)
-                .filter(cls.reg_code == reg_code)
-                .one()
-            )
-        except NoResultFound:
-            return None
+        return (
+            cls.query.with_entities(cls.reg_name)
+            .filter(cls.reg_code == reg_code)
+            .first()
+        )
+
 
 
 class EtcDicConclusion(Base):
@@ -329,6 +342,8 @@ class EtcDicConclusion(Base):
     conclusion = Column(String(3), primary_key=True)
     details = Column(String(90))
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class EtcDicDecision(Base):
     __tablename__ = 'etc_dic_decision'
@@ -336,6 +351,8 @@ class EtcDicDecision(Base):
     order = Column(Integer)
     decision = Column(String(4), primary_key=True)
     details = Column(String(70))
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class EtcDicHdHabitat(Base):
@@ -349,6 +366,8 @@ class EtcDicHdHabitat(Base):
     annex_I_comments = Column(String(30))
     marine = Column(Integer)
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class EtcDicMethod(Base):
     __tablename__ = 'etc_dic_method'
@@ -356,6 +375,8 @@ class EtcDicMethod(Base):
     order = Column(Integer)
     method = Column(String(3), primary_key=True)
     details = Column(String(125))
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class EtcDicPopulationUnit(Base):
@@ -365,6 +386,8 @@ class EtcDicPopulationUnit(Base):
     population_units = Column(String(6), primary_key=True)
     details = Column(String(40))
     code = Column(String(16))
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class EtcDicSpeciesType(Base):
@@ -376,6 +399,8 @@ class EtcDicSpeciesType(Base):
     Note = Column(String(255))
     abbrev = Column(String(5))
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class EtcDicTrend(Base):
     __tablename__ = 'etc_dic_trend'
@@ -383,6 +408,8 @@ class EtcDicTrend(Base):
     id = Column(Integer, primary_key=True)
     trend = Column(String(3))
     details = Column(String(125))
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class EtcQaErrorsHabitattypeManualChecked(Base):
@@ -399,6 +426,8 @@ class EtcQaErrorsHabitattypeManualChecked(Base):
     field = Column('FlagField', String(40))
     text = Column('FlagText', String(65))
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class EtcQaErrorsSpeciesManualChecked(Base):
     __tablename__ = 'etc_qa_errors_species_manual_checked'
@@ -414,6 +443,8 @@ class EtcQaErrorsSpeciesManualChecked(Base):
     field = Column('FlagField', String(40))
     text = Column('FlagText', String(65))
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class HabitatComment(Base):
     __tablename__ = 'habitat_comments'
@@ -428,6 +459,8 @@ class HabitatComment(Base):
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 t_habitat_comments_read = Table(
     'habitat_comments_read', metadata,
@@ -439,15 +472,18 @@ t_habitat_comments_read = Table(
 t_habitat_group = Table(
     'habitat_group', metadata,
     Column('habitatcode', String(4)),
-    Column('group', String(21))
+    Column('group', String(21)),
+    Column('ext_dataset_id', ForeignKey('datasets.id')),
 )
 
 
 class Habitats2euni(Base):
     __tablename__ = 'habitats2eunis'
 
-    CODE_2000 = Column(String(4), primary_key=True)
-    ID_HABITAT = Column(Integer)
+    code_2000 = Column('CODE_2000', String(4), primary_key=True)
+    id_habitat = Column('ID_HABITAT', Integer)
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class HabitattypesManualAssessment(Base):
@@ -483,6 +519,8 @@ class HabitattypesManualAssessment(Base):
     user_decision = Column(String(25))
     last_update_decision = Column(String(16))
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class LuHdHabitat(Base):
     __tablename__ = 'lu_hd_habitats'
@@ -493,6 +531,8 @@ class LuHdHabitat(Base):
     name = Column(String(155), nullable=False)
     annex_I_comments = Column(String(30))
     marine = Column(Integer)
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class PhotoHabitat(Base):
@@ -510,6 +550,8 @@ class PhotoHabitat(Base):
     thumbnail = Column(MEDIUMBLOB)
     user = Column(String(50), nullable=False, server_default=u"''")
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 class PhotoSpecy(Base):
     __tablename__ = 'photo_species'
@@ -526,6 +568,8 @@ class PhotoSpecy(Base):
     picture_data = Column(LargeBinary)
     thumbnail = Column(LargeBinary)
     user = Column(String(50), nullable=False, server_default=u"''")
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class RegisteredUser(Base):
@@ -546,7 +590,8 @@ t_restricted_habitats = Table(
     'restricted_habitats', metadata,
     Column('habitatcode', String(4)),
     Column('eu_country_code', String(2), nullable=False, server_default=u"''"),
-    Column('show_data', SmallInteger)
+    Column('show_data', SmallInteger),
+    Column('ext_dataset_id', ForeignKey('datasets.id')),
 )
 
 
@@ -555,14 +600,16 @@ t_restricted_species = Table(
     Column('assesment_speciesname', String(60), nullable=False,
            server_default=u"''"),
     Column('eu_country_code', String(2), nullable=False, server_default=u"''"),
-    Column('show_data', SmallInteger)
+    Column('show_data', SmallInteger),
+    Column('ext_dataset_id', ForeignKey('datasets.id')),
 )
 
 
 t_species_group = Table(
     'species_group', metadata,
     Column('assesment_speciesname', String(60)),
-    Column('group', String(21))
+    Column('group', String(21)),
+    Column('ext_dataset_id', ForeignKey('datasets.id')),
 )
 
 
@@ -604,11 +651,14 @@ class SpeciesManualAssessment(Base):
     user_decision = Column(String(25))
     last_update_decision = Column(String(16))
 
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
+
 
 t_species_name = Table(
     'species_name', metadata,
     Column('priority', String(1)),
-    Column('assesment_speciesname', String(60))
+    Column('assesment_speciesname', String(60)),
+    Column('ext_dataset_id', ForeignKey('datasets.id')),
 )
 
 
@@ -619,6 +669,8 @@ class Wiki(Base):
     region = Column(String(4), nullable=False)
     assesment_speciesname = Column(String(60))
     habitatcode = Column(String(4))
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class WikiChange(Base):
@@ -663,6 +715,8 @@ class WikiTrail(Base):
     region = Column(String(4), nullable=False)
     assesment_speciesname = Column(String(60))
     habitatcode = Column(String(4))
+
+    dataset_id = Column('ext_dataset_id', ForeignKey('datasets.id'))
 
 
 class WikiTrailChange(Base):

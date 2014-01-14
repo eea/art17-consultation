@@ -1,6 +1,11 @@
 <form id="filterform" name="filterform" method="get">
 
   <fieldset>
+    <legend>{{ summary_filter_form.period.label }}</legend>
+    {{ summary_filter_form.period }}
+  </fieldset>
+
+  <fieldset>
     <legend>{{ summary_filter_form.group.label }}</legend>
     {{ summary_filter_form.group }}
   </fieldset>
@@ -26,6 +31,10 @@
   <p>
     <b>Current selection</b>:
     {{ current_selection|join(', ') }}.
+    {% if annexes %}
+      <b>Annexes</b> {{ annexes|join(', ') }}.
+    {% endif %}
+    <a href="">Show all {{ group }}</a>
   </p>
   {% else %}
     <p><b>Please select a group and a species.</b></p>

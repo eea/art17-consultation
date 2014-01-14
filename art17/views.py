@@ -111,12 +111,15 @@ class Summary(views.View):
         summary_filter_form.region.choices = get_regions(species)
 
         current_selection = self.get_current_selection(group, species, region)
+        annexes = self.get_annexes(species)
         context = {
             'objects': self.objects,
             'restricted_countries': self.restricted_countries,
             'regions': EtcDicBiogeoreg.query.all(),
             'summary_filter_form': summary_filter_form,
             'current_selection': current_selection,
+            'annexes': annexes,
+            'group': group,
         }
 
         return render_template('summary.html', **context)
@@ -132,6 +135,25 @@ class Summary(views.View):
         else:
             current_selection.append('All bioregions')
         return current_selection
+
+    def get_annexes(self, species):
+        annexes_results = (
+            EtcDataSpeciesRegion.query
+            .with_entities('annex_II', 'annex_IV', 'annex_V', 'priority')
+            .filter(EtcDataSpeciesRegion.assesment_speciesname == species)
+            .distinct()
+            .first()
+        )
+        if not annexes_results:
+            return []
+        annexes = list(annexes_results)
+        try:
+            priority = int(annexes.pop())
+        except ValueError:
+            priority = 0
+        if annexes[0] and priority:
+            annexes[0] += '*'
+        return filter(bool, annexes)
 
 
 class Progress(views.View):
