@@ -144,14 +144,17 @@ class Summary(views.View):
             .distinct()
             .first()
         )
-        annexes = list(annexes_results) if annexes_results else []
+        if not annexes_results:
+            return []
+        annexes = list(annexes_results)
         try:
-            priority = int(annexes.pop())
-        except (ValueError, TypeError, IndexError):
+            priority = int(annexes[-1])
+        except ValueError:
             priority = 0
-        def add_priority_to_annex(val):
-            return '%s*' % val if val == 'II' and priority else val
-        return map(add_priority_to_annex, filter(bool, annexes))
+        if annexes[0] and priority:
+            annexes[0] += '*'
+        return filter(bool, annexes)
+
 
 class Progress(views.View):
 
