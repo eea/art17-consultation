@@ -255,13 +255,13 @@ class SpeciesMixin(object):
     @classmethod
     def get_regions(cls, period, species):
         blank_option = [('', 'All bioregions')]
-    
+
         assesment_field = EtcDataSpeciesRegion.assesment_speciesname
         reg_field = EtcDataSpeciesRegion.region
         reg_code_field = EtcDicBiogeoreg.reg_code
         reg_name_field = EtcDicBiogeoreg.reg_name
         dataset_id_field = EtcDataSpeciesRegion.dataset_id
-    
+
         regions = (
             EtcDicBiogeoreg.query
             .join(EtcDataSpeciesRegion, reg_code_field == reg_field)
@@ -409,20 +409,20 @@ def _regions():
 
 
 @summary.route('/habitat/summary/groups', endpoint='habitat-summary-groups')
-def _groups():
+def _groups_habitat():
     data = HabitatMixin.get_groups(request.args['period'])
     return jsonify(data)
 
 
 @summary.route('/habitat/summary/habitat', endpoint='habitat-summary-species')
-def _species():
+def _species_habitat():
     period, group = request.args['period'], request.args['group']
     data = HabitatMixin.get_subjects(period, group)
     return jsonify(data)
 
 
 @summary.route('/habitat/summary/regions', endpoint='habitat-summary-regions')
-def _regions():
+def _regions_habitat():
     period, subject = request.args['period'], request.args['subject']
     data = HabitatMixin.get_regions(period, subject)
     return jsonify(data)
