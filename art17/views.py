@@ -48,51 +48,60 @@ def record_errors(record):
     raise ValueError("Invalid record type" + str(type(record)))
 
 
-def get_groups():
+def get_groups(period):
     group_field = EtcDataSpeciesRegion.group
+    dataset_id_field = EtcDataSpeciesRegion.dataset_id
     groups = (
-        EtcDataSpeciesRegion.query.filter(group_field != None)
+        EtcDataSpeciesRegion.query
+        .filter(group_field != None, dataset_id_field == period)
         .with_entities(group_field, group_field)
         .distinct()
-       .order_by(group_field)
+        .order_by(group_field)
+        .all()
     )
-    return [('', '-')] + groups.all()
+    return [('', '-')] + groups
 
 
-def get_species(group):
+def get_species(period, group):
     blank_option = [('', '-')]
     if group is None:
         return blank_option
     group_field = EtcDataSpeciesRegion.group
+    dataset_id_field = EtcDataSpeciesRegion.dataset_id
     assesment_field = EtcDataSpeciesRegion.assesment_speciesname
     species = (
         EtcDataSpeciesRegion.query
         .filter(assesment_field != None)
         .filter(group_field == group)
+        .filter(dataset_id_field == period)
         .with_entities(assesment_field, assesment_field)
         .distinct()
         .order_by(assesment_field)
+        .all()
     )
-    return blank_option + species.all()
+    return blank_option + species
 
 
-def get_regions(species):
+def get_regions(period, species):
     blank_option = [('', 'All bioregions')]
 
     assesment_field = EtcDataSpeciesRegion.assesment_speciesname
     reg_field = EtcDataSpeciesRegion.region
     reg_code_field = EtcDicBiogeoreg.reg_code
     reg_name_field = EtcDicBiogeoreg.reg_name
+    dataset_id_field = EtcDataSpeciesRegion.dataset_id
 
-    regions_query = (
+    regions = (
         EtcDicBiogeoreg.query
         .join(EtcDataSpeciesRegion, reg_code_field == reg_field)
         .filter(assesment_field == species)
+        .filter(dataset_id_field == period)
         .with_entities(reg_field, reg_name_field)
         .distinct()
         .order_by(reg_field)
+        .all()
     )
-    return blank_option + regions_query.all()
+    return blank_option + regions
 
 
 class Summary(views.View):
@@ -106,9 +115,9 @@ class Summary(views.View):
         self.setup_objects_and_data(period, subject, region)
 
         summary_filter_form = SummaryFilterForm(request.args)
-        summary_filter_form.group.choices = get_groups()
-        summary_filter_form.species.choices = get_species(group)
-        summary_filter_form.region.choices = get_regions(species)
+        summary_filter_form.group.choices = get_groups(period)
+        summary_filter_form.species.choices = get_species(period, group)
+        summary_filter_form.region.choices = get_regions(period, species)
 
         current_selection = self.get_current_selection(group, species, region)
         annexes = self.get_annexes(species)
@@ -209,17 +218,26 @@ class SpeciesProgress(Progress, SpeciesMixin):
     pass
 
 
+class Group(views.MethodView):
+
+    def get(self):
+        data = get_groups(request.args['period'])
+        return jsonify(data)
+
+
 class Species(views.MethodView):
 
     def get(self):
-        data = get_species(request.args['group'])
+        period, group = request.args['period'], request.args['group']
+        data = get_species(period, group)
         return jsonify(data)
 
 
 class Regions(views.MethodView):
 
     def get(self):
-        data = get_regions(request.args['species'])
+        period, species = request.args['period'], request.args['species']
+        data = get_regions(period, species)
         return jsonify(data)
 
 
@@ -228,6 +246,8 @@ summary.add_url_rule('/species/summary/',
 summary.add_url_rule('/species/progress/',
                      view_func=SpeciesProgress.as_view('species-progress'))
 
+summary.add_url_rule('/species/summary/groups',
+                     view_func=Group.as_view('species-summary-groups'))
 summary.add_url_rule('/species/summary/species',
                      view_func=Species.as_view('species-summary-species'))
 summary.add_url_rule('/species/summary/regions',

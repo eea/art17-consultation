@@ -7,7 +7,8 @@
 
   <fieldset>
     <legend>{{ summary_filter_form.group.label }}</legend>
-    {{ summary_filter_form.group }}
+    {% set group_url = url_for('summary.species-summary-groups') %}
+    {{ summary_filter_form.group(**{'data-href': group_url}) }}
   </fieldset>
 
   <fieldset>
