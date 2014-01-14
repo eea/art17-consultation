@@ -40,8 +40,6 @@ tables = [
     ('lu_hd_habitats', ['habcode']),
     ('photo_habitats', ['id']),
     ('photo_species', ['id']),
-    ('restricted_habitats', []),
-    ('restricted_species', []),
     ('species_manual_assessment',
             ['MS', 'region', 'assesment_speciesname', 'user']),
     ('wiki', ['id']),
@@ -50,15 +48,12 @@ tables = [
 
 
 def update_pk(table_name, old_pk, new_pk):
-    operations = []
-    if old_pk:
-        operations.append("DROP PRIMARY KEY")
-    if new_pk:
-        operations.append("ADD PRIMARY KEY (%s)"
-                          % (', '.join('`%s`' % c for c in new_pk)))
-
-    query = "ALTER TABLE `%s` " % table_name + ', '.join(operations)
-    op.execute(query)
+    new_pk_stmt = (', '.join('`%s`' % c for c in new_pk))
+    op.execute(
+        "ALTER TABLE `%s` " % table_name +
+        "DROP PRIMARY KEY, " +
+        "ADD PRIMARY KEY (%s)" % new_pk_stmt
+    )
 
 
 def upgrade():
