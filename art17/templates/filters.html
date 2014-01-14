@@ -26,6 +26,9 @@
   <p>
     <b>Current selection</b>:
     {{ current_selection|join(', ') }}.
+    {% if annexes %}
+      <b>Annexes</b> {{ annexes|join(', ') }}.
+    {% endif %}
   </p>
   {% else %}
     <p><b>Please select a group and a species.</b></p>

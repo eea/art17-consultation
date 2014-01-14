@@ -4,7 +4,6 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer,\
     LargeBinary, SmallInteger, String, Table, Text
 from sqlalchemy.dialects.mysql.base import MEDIUMBLOB
 from sqlalchemy.orm import relationship
-from sqlalchemy.orm.exc import NoResultFound
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
 
@@ -312,14 +311,12 @@ class EtcDicBiogeoreg(Base):
 
     @classmethod
     def get_region_name(cls, reg_code):
-        try:
-            return (
-                cls.query.with_entities(cls.reg_name)
-                .filter(cls.reg_code == reg_code)
-                .one()
-            )
-        except NoResultFound:
-            return None
+        return (
+            cls.query.with_entities(cls.reg_name)
+            .filter(cls.reg_code == reg_code)
+            .first()
+        )
+
 
 
 class EtcDicConclusion(Base):
