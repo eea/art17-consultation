@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+  <p>Assessments on the <strong>conservation status of the habitat types and species</strong> of Community interest have been carried out in EU27 for the period {{ period_name }}, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view. <br>
+  Choose a period, group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.</p>
+
+  <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc).
+  Select from "Period..." value "2001-2006" in order to see the previous reported data.</p>
+
+  {% include 'filters.html' %}
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th colspan="6">
+            ETC/BD treated member states' data
+          </th>
+        </tr>
+        <tr>
+          <th rowspan="2">MS</th>
+          <th rowspan="2">Bio</th>
+          <th colspan="4">Range</th>
+          <th colspan="4">Population</th>
+        </tr>
+        <tr>
+          <th>Surface</th>
+          <th>%XR</th>
+          <th>Trend</th>
+          <th>Ref.</th>
+
+          <th>Surface</th>
+          <th>%XP</th>
+          <th>Trend</th>
+          <th>Ref.</th>
+        </tr>
+
+      </thead>
+      <tbody>
+      {% for row in objects %}
+        {% set visible = can_view(row, restricted_countries) %}
+        {% set qa_errors = record_errors(row) %}
+        <tr {% if not row.is_assesm %}style="font-style:italic"{% endif %}>
+          <td>{{ row.eu_country_code }}</td>
+          <td>{{ row.region }}</td>
+
+          {% if not visible %}
+          <td colspan="4">
+            {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
+          </td>
+          {% else %}
+
+          {#- Range columns -#}
+          {% include 'summary/range.html' with context %}
+
+          {#- Population columns -#}
+          {% include 'summary/population.html' with context %}
+
+          {#- Habitat columns -#}
+
+          {#- Prospects -#}
+
+          {#- Grided maps columns -#}
+
+          {#- Quality columns -#}
+
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

@@ -85,7 +85,6 @@ def format_error(error, record, field):
                  'complementary_favourable_population',
                  'filled_complementary_favourable_population'):
         return '%s: %s' % (error['text'], error['suspect_value'])
-
     return error['text']
 
 
