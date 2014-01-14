@@ -98,14 +98,7 @@ class Summary(views.View):
         summary_filter_form.species.choices = get_species(group)
         summary_filter_form.region.choices = get_regions(species)
 
-        current_selection = []
-        if group and species:
-            current_selection = [group, species]
-            if region:
-                region_name = EtcDicBiogeoreg.get_region_name(region)
-                if region_name:
-                    current_selection.append(region_name[0])
-
+        current_selection = self.get_current_selection(group, species, region)
         context = {
             'objects': self.objects,
             'restricted_countries': self.restricted_countries,
@@ -113,7 +106,20 @@ class Summary(views.View):
             'summary_filter_form': summary_filter_form,
             'current_selection': current_selection,
         }
+
         return render_template('summary.html', **context)
+
+    def get_current_selection(self, group, species, region):
+        if not group and not species:
+            return []
+        current_selection = [group, species]
+        if region:
+            region_name = EtcDicBiogeoreg.get_region_name(region)
+            if region_name:
+                current_selection.append(region_name[0])
+        else:
+            current_selection.append('All bioregions')
+        return current_selection
 
 
 class Progress(views.View):
