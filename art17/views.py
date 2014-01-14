@@ -14,7 +14,8 @@ from art17.models import (
     t_restricted_species,
 )
 
-from art17.common import get_default_period, admin_perm, expert_perm
+from art17.common import get_default_period, admin_perm, expert_perm, \
+    CONCLUSION_CLASSES, COUNTRY_ASSESSMENTS
 from art17.forms import SummaryFilterForm
 
 
@@ -37,6 +38,14 @@ def inject_fuctions():
     return {'record_errors': record_errors}
 
 
+@summary.app_context_processor
+def inject_static():
+    return {
+        'CONCLUSION_CLASSES': CONCLUSION_CLASSES,
+        'COUNTRY_ASSESSMENTS': COUNTRY_ASSESSMENTS,
+    }
+
+
 def record_errors(record):
     if isinstance(record, EtcDataSpeciesRegion):
         qs = EtcQaErrorsSpeciesManualChecked.query.filter_by(
@@ -56,8 +65,7 @@ def get_groups(period):
         .filter(group_field != None, dataset_id_field == period)
         .with_entities(group_field, group_field)
         .distinct()
-        .order_by(group_field)
-        .all()
+       .order_by(group_field)
     )
     return [('', '-')] + groups
 
