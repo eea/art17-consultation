@@ -87,7 +87,7 @@ class Summary(views.View):
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
-        subject = request.args.get('subject')
+        subject = request.args.get(self.subject_name)
         group = request.args.get('group')
         species = request.args.get('species')
         region = request.args.get('region')
@@ -138,6 +138,7 @@ class Progress(views.View):
 class SpeciesMixin(object):
 
     model_cls = EtcDataSpeciesRegion
+    subject_name = 'species'
 
     def objects_by_group(self, period, group):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
