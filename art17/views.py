@@ -165,8 +165,11 @@ class Summary(views.View):
         summary_filter_form.species.choices = get_species(period, group)
         summary_filter_form.region.choices = get_regions(period, species)
 
-        current_selection = self.get_current_selection(period, group, species,
-                                                       region)
+        period_query = Dataset.query.get(period)
+        period_name = period_query.name if period_query else ''
+
+        current_selection = self.get_current_selection(
+            period_name, group, species, region)
         annexes = self.get_annexes(species)
         context = {
             'objects': self.objects,
@@ -176,15 +179,14 @@ class Summary(views.View):
             'current_selection': current_selection,
             'annexes': annexes,
             'group': group,
+            'period_name': period_name,
         }
 
         return render_template('summary.html', **context)
 
-    def get_current_selection(self, period, group, species, region):
+    def get_current_selection(self, period_name, group, species, region):
         if not group and not species:
             return []
-        period_query = Dataset.query.get(period)
-        period_name = period_query.name if period_query else ''
         current_selection = [period_name, group, species]
         if region:
             region_name = EtcDicBiogeoreg.get_region_name(region)

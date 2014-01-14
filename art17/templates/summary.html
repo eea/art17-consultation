@@ -2,10 +2,11 @@
 
 {% block content %}
 
-  <p>Assessments on the <strong>conservation status of the habitat types and species</strong> of Community interest have been carried out in EU27 for the period 2007-2012, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view. <br>
-  Choose a group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.</p>
+  <p>Assessments on the <strong>conservation status of the habitat types and species</strong> of Community interest have been carried out in EU27 for the period {{ period_name }}, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view. <br>
+  Choose a period, group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.</p>
 
-  <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc)</p>
+  <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc).
+  Select from "Period..." value "2001-2006" in order to see the previous reported data.</p>
 
   {% include 'filters.html' %}
 
