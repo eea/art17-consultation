@@ -66,6 +66,7 @@ def get_groups(period):
         .with_entities(group_field, group_field)
         .distinct()
        .order_by(group_field)
+       .all()
     )
     return [('', '-')] + groups
 
