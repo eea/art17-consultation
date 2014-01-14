@@ -20,13 +20,20 @@
           <td rowspan="2">MS</td>
           <td rowspan="2">Bio</td>
           <td colspan="4">Range</td>
+          <td colspan="4">Population</td>
         </tr>
         <tr>
           <td>Surface</td>
           <td>%XR</td>
           <td>Trend</td>
           <td>Ref.</td>
+
+          <td>Surface</td>
+          <td>%XR</td>
+          <td>Trend</td>
+          <td>Ref.</td>
         </tr>
+
       </thead>
       <tbody>
       {% for row in objects %}
@@ -46,6 +53,7 @@
           {% include 'summary/range.html' with context %}
 
           {#- Population columns -#}
+          {% include 'summary/population.html' with context %}
 
           {#- Habitat columns -#}
 

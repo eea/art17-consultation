@@ -14,8 +14,14 @@ from art17.models import (
     t_restricted_species,
 )
 
-from art17.common import get_default_period, admin_perm, expert_perm, \
-    CONCLUSION_CLASSES, COUNTRY_ASSESSMENTS
+from art17.common import (
+    get_default_period,
+    admin_perm,
+    expert_perm,
+    population_size_unit,
+    CONCLUSION_CLASSES,
+    COUNTRY_ASSESSMENTS,
+)
 from art17.forms import SummaryFilterForm
 
 
@@ -38,6 +44,7 @@ def inject_fuctions():
     return {
         'record_errors': record_errors,
         'parse_qa_errors': parse_qa_errors,
+        'population_size_unit': population_size_unit,
     }
 
 
@@ -64,8 +71,9 @@ def record_errors(record):
 
 
 def format_error(error, record, field):
-    if field == 'range_surface_area':
+    if field in ('range_surface_area', 'population_yearly_magnitude'):
         return '%s: %s' % (error['text'], error['suspect_value'])
+
     return error['text']
 
 

@@ -1,4 +1,5 @@
 from flask_principal import Permission, RoleNeed
+from .utils import str2num
 
 CONCLUSION_CLASSES = {
     'FV': 'FV',
@@ -41,3 +42,23 @@ def admin_perm():
 
 def expert_perm():
     return Permission(RoleNeed('expert'))
+
+
+def population_size_unit(row):
+
+    min_size = row.population_minimum_size or ''
+    max_size = row.population_maximum_size or ''
+    filled = row.filled_population or 'N/A'
+    size_unit = row.population_size_unit or 'N/A'
+
+    if filled == 'Min':
+        min_size = '(%s)' % min_size
+    if filled == 'Max':
+        max_size = '(%s)' % max_size
+
+    if min_size or max_size:
+        size_unit_value = '%s - %s' % (min_size, max_size)
+    else:
+        size_unit_value = 'N/A'
+
+    return '%s %s' % (str2num(size_unit_value), size_unit)
