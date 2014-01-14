@@ -1,6 +1,6 @@
 {% from '_macros.html' import parse_errors with context %}
 
-  <td {{ parse_errors(['range_surface_area'], qa_errors, '', 'text-right') }}>
+  <td {{ parse_errors('range_surface_area', row, qa_errors, '', 'text-right') }}>
     {{ row.range_surface_area|int }}
   </td>
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} text-center"

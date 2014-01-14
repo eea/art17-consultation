@@ -60,12 +60,18 @@ def record_errors(record):
     raise ValueError("Invalid record type" + str(type(record)))
 
 
-def parse_qa_errors(fields, qa_errors):
+def format_error(error, record, field):
+    return error['text']
+
+
+def parse_qa_errors(fields, record, qa_errors):
     title = []
     classes = []
+    if isinstance(fields, str):
+        fields = [fields]
     for field in fields:
         if field in qa_errors:
-            title.append(qa_errors[field]['text'])
+            title.append(format_error(qa_errors[field], record, field))
             classes.append('qa_error')
     return ' '.join(title), ' '.join(classes)
 
