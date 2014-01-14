@@ -2,4 +2,5 @@ instance
 gen
 .webassets-cache
 sandbox
-
+*~
+*.pyc
