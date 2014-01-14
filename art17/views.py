@@ -119,6 +119,7 @@ class Summary(views.View):
             'summary_filter_form': summary_filter_form,
             'current_selection': current_selection,
             'annexes': annexes,
+            'group': group,
         }
 
         return render_template('summary.html', **context)
