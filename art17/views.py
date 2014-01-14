@@ -56,11 +56,16 @@ def record_errors(record):
             region=record.region,
             eu_country_code=record.eu_country_code,
         )
-        return {e.field: {'text': e.text} for e in qs}
+        return {
+            e.field: {'text': e.text, 'suspect_value': e.suspect_value}
+            for e in qs
+        }
     raise ValueError("Invalid record type" + str(type(record)))
 
 
 def format_error(error, record, field):
+    if field == 'range_surface_area':
+        return '%s: %s' % (error['text'], error['suspect_value'])
     return error['text']
 
 
