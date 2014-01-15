@@ -1,6 +1,12 @@
 from flask_principal import Permission, RoleNeed
 from .utils import str2num
 
+QUALITIES = {
+    'P': 'Poor',
+    'G': 'Good',
+    'M': 'Moderate',
+}
+
 CONCLUSION_CLASSES = {
     'FV': 'FV',
     'U1': 'U1',
@@ -75,3 +81,4 @@ def population_ref(row):
 
     content = '%s(%s)' if filled else '%s%s'
     return content % (population_q, str2num(population, ''))
+

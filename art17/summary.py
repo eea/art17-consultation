@@ -26,6 +26,7 @@ from art17.common import (
     population_ref,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
+    QUALITIES,
 )
 from art17.forms import SummaryFilterForm
 from art17.utils import str2num
@@ -60,12 +61,20 @@ def inject_static():
     return {
         'CONCLUSION_CLASSES': CONCLUSION_CLASSES,
         'COUNTRY_ASSESSMENTS': COUNTRY_ASSESSMENTS,
+        'QUALITIES': QUALITIES,
     }
 
 
 @summary.app_template_filter('str2num')
 def _str2num(value, default='N/A'):
     return str2num(value, default=default)
+
+
+@summary.app_template_filter('get_quality')
+def get_quality(value, default='N/A'):
+    if value and value[0] in QUALITIES:
+        return value[0]
+    return default
 
 
 def record_errors(record):
