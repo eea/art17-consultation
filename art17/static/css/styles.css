@@ -63,6 +63,9 @@ td.XUU {
 .center {
     text-align: center;
 }
+.assesm {
+    font-style: italic;
+}
 
 .table, .table td, .table th {
     border: 1px solid #000;

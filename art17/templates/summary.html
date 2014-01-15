@@ -40,7 +40,7 @@
       {% for row in objects %}
         {% set visible = can_view(row, restricted_countries) %}
         {% set qa_errors = record_errors(row) %}
-        <tr {% if not row.is_assesm %}style="font-style:italic"{% endif %}>
+        <tr {% if row.is_assesm %}class="assesm"{% endif %}>
           <td>{{ row.eu_country_code }}</td>
           <td>{{ row.region }}</td>
 
