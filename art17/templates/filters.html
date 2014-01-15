@@ -7,19 +7,16 @@
 
   <fieldset>
     <legend>{{ summary_filter_form.group.label }}</legend>
-    {% set group_url = url_for('summary.species-summary-groups') %}
     {{ summary_filter_form.group(**{'data-href': group_url}) }}
   </fieldset>
 
   <fieldset>
-    <legend>{{ summary_filter_form.species.label }}</legend>
-    {% set species_url = url_for('summary.species-summary-species') %}
-    {{ summary_filter_form.species(**{'data-href': species_url}) }}
+    <legend>{{ summary_filter_form.subject.label }}</legend>
+    {{ summary_filter_form.subject(**{'data-href': subjects_url}) }}
   </fieldset>
 
   <fieldset>
     <legend>{{ summary_filter_form.region.label }}</legend>
-    {% set regions_url = url_for('summary.species-summary-regions') %}
     {{ summary_filter_form.region(**{'data-href': regions_url}) }}
   </fieldset>
 

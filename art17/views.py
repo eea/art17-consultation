@@ -4,6 +4,7 @@ from flask import (
     request,
     render_template,
     jsonify,
+    url_for,
 )
 
 from art17.models import (
@@ -13,7 +14,9 @@ from art17.models import (
     Dataset,
     db,
     t_restricted_species,
-    EtcDataHabitattypeRegion)
+    EtcDataHabitattypeRegion,
+    EtcDicHdHabitat,
+)
 
 from art17.common import (
     get_default_period,
@@ -112,86 +115,33 @@ def parse_qa_errors(fields, record, qa_errors):
     return '<br/>'.join(title), ' '.join(classes)
 
 
-def get_groups(period):
-    group_field = EtcDataSpeciesRegion.group
-    dataset_id_field = EtcDataSpeciesRegion.dataset_id
-    groups = (
-        EtcDataSpeciesRegion.query
-        .filter(group_field != None, dataset_id_field == period)
-        .with_entities(group_field, group_field)
-        .distinct()
-       .order_by(group_field)
-       .all()
-    )
-    return [('', '-')] + groups
-
-
-def get_species(period, group):
-    blank_option = [('', '-')]
-    if group is None:
-        return blank_option
-    group_field = EtcDataSpeciesRegion.group
-    dataset_id_field = EtcDataSpeciesRegion.dataset_id
-    assesment_field = EtcDataSpeciesRegion.assesment_speciesname
-    species = (
-        EtcDataSpeciesRegion.query
-        .filter(assesment_field != None)
-        .filter(group_field == group)
-        .filter(dataset_id_field == period)
-        .with_entities(assesment_field, assesment_field)
-        .distinct()
-        .order_by(assesment_field)
-        .all()
-    )
-    return blank_option + species
-
-
-def get_regions(period, species):
-    blank_option = [('', 'All bioregions')]
-
-    assesment_field = EtcDataSpeciesRegion.assesment_speciesname
-    reg_field = EtcDataSpeciesRegion.region
-    reg_code_field = EtcDicBiogeoreg.reg_code
-    reg_name_field = EtcDicBiogeoreg.reg_name
-    dataset_id_field = EtcDataSpeciesRegion.dataset_id
-
-    regions = (
-        EtcDicBiogeoreg.query
-        .join(EtcDataSpeciesRegion, reg_code_field == reg_field)
-        .filter(assesment_field == species)
-        .filter(dataset_id_field == period)
-        .with_entities(reg_field, reg_name_field)
-        .distinct()
-        .order_by(reg_field)
-        .all()
-    )
-    return blank_option + regions
-
-
 class Summary(views.View):
+
+    def get_context(self):
+        return {}
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
-        subject = request.args.get(self.subject_name)
+        subject = request.args.get('subject')
         group = request.args.get('group')
-        species = request.args.get('species')
         region = request.args.get('region')
         self.objects = []
         self.restricted_countries = []
         self.setup_objects_and_data(period, subject, region)
 
         summary_filter_form = SummaryFilterForm(request.args)
-        summary_filter_form.group.choices = get_groups(period)
-        summary_filter_form.species.choices = get_species(period, group)
-        summary_filter_form.region.choices = get_regions(period, species)
+        summary_filter_form.group.choices = self.get_groups(period)
+        summary_filter_form.subject.choices = self.get_subjects(period, group)
+        summary_filter_form.region.choices = self.get_regions(period, subject)
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
 
         current_selection = self.get_current_selection(
-            period_name, group, species, region)
-        annexes = self.get_annexes(species)
-        context = {
+            period_name, group, subject, region)
+        annexes = self.get_annexes(subject)
+        context = self.get_context()
+        context.update({
             'objects': self.objects,
             'restricted_countries': self.restricted_countries,
             'regions': EtcDicBiogeoreg.query.all(),
@@ -200,7 +150,7 @@ class Summary(views.View):
             'annexes': annexes,
             'group': group,
             'period_name': period_name,
-        }
+        })
 
         return render_template(self.template_name, **context)
 
@@ -262,11 +212,124 @@ class SpeciesMixin(object):
             filter_by(group=group, dataset_id=period).distinct()
         return [row[0] for row in qs]
 
+    @classmethod
+    def get_groups(cls, period):
+        group_field = EtcDataSpeciesRegion.group
+        dataset_id_field = EtcDataSpeciesRegion.dataset_id
+        groups = (
+            EtcDataSpeciesRegion.query
+            .filter(group_field != None, dataset_id_field == period)
+            .with_entities(group_field, group_field)
+            .distinct()
+           .order_by(group_field)
+           .all()
+        )
+        return [('', '-')] + groups
+
+    @classmethod
+    def get_subjects(cls, period, group):
+        blank_option = [('', '-')]
+        if group is None:
+            return blank_option
+        group_field = EtcDataSpeciesRegion.group
+        dataset_id_field = EtcDataSpeciesRegion.dataset_id
+        assesment_field = EtcDataSpeciesRegion.assesment_speciesname
+        subjects = (
+            EtcDataSpeciesRegion.query
+            .filter(assesment_field != None)
+            .filter(group_field == group)
+            .filter(dataset_id_field == period)
+            .with_entities(assesment_field, assesment_field)
+            .distinct()
+            .order_by(assesment_field)
+            .all()
+        )
+        return blank_option + subjects
+
+    @classmethod
+    def get_regions(cls, period, species):
+        blank_option = [('', 'All bioregions')]
+    
+        assesment_field = EtcDataSpeciesRegion.assesment_speciesname
+        reg_field = EtcDataSpeciesRegion.region
+        reg_code_field = EtcDicBiogeoreg.reg_code
+        reg_name_field = EtcDicBiogeoreg.reg_name
+        dataset_id_field = EtcDataSpeciesRegion.dataset_id
+    
+        regions = (
+            EtcDicBiogeoreg.query
+            .join(EtcDataSpeciesRegion, reg_code_field == reg_field)
+            .filter(assesment_field == species)
+            .filter(dataset_id_field == period)
+            .with_entities(reg_field, reg_name_field)
+            .distinct()
+            .order_by(reg_field)
+            .all()
+        )
+        return blank_option + regions
+
 
 class HabitatMixin(object):
 
     model_cls = EtcDataHabitattypeRegion
     subject_name = 'habitat'
+
+    @classmethod
+    def get_groups(cls, period):
+        group_field = EtcDicHdHabitat.group
+        dataset_id_field = EtcDicHdHabitat.dataset_id
+        groups = (
+            EtcDicHdHabitat.query
+            .filter(group_field != None, dataset_id_field == period)
+            .with_entities(group_field, group_field)
+            .distinct()
+           .order_by(group_field)
+           .all()
+        )
+        return [('', '-')] + groups
+
+    @classmethod
+    def get_subjects(cls, period, group):
+        blank_option = [('', '-')]
+        if group is None:
+            return blank_option
+        group_field = EtcDicHdHabitat.group
+        dataset_id_field = EtcDicHdHabitat.dataset_id
+        value_field = EtcDicHdHabitat.habcode
+        assesment_field = EtcDicHdHabitat.name
+        subjects = (
+            EtcDicHdHabitat.query
+            .filter(assesment_field != None)
+            .filter(group_field == group)
+            .filter(dataset_id_field == period)
+            .with_entities(value_field, assesment_field)
+            .distinct()
+            .order_by(assesment_field)
+            .all()
+        )
+        return blank_option + subjects
+
+    @classmethod
+    def get_regions(cls, period, subject):
+        blank_option = [('', 'All bioregions')]
+
+        assesment_field = EtcDataHabitattypeRegion.code
+        reg_field = EtcDataHabitattypeRegion.region
+        reg_code_field = EtcDicBiogeoreg.reg_code
+        reg_name_field = EtcDicBiogeoreg.reg_name
+        dataset_id_field = EtcDataHabitattypeRegion.dataset_id
+
+        regions = (
+            EtcDicBiogeoreg.query
+            .join(EtcDataHabitattypeRegion, reg_code_field == reg_field)
+            .filter(assesment_field == subject)
+            .filter(dataset_id_field == period)
+            .with_entities(reg_field, reg_name_field)
+            .distinct()
+            .order_by(reg_field)
+            .all()
+        )
+        return blank_option + regions
 
 
 class SpeciesSummary(Summary, SpeciesMixin):
@@ -292,6 +355,13 @@ class SpeciesSummary(Summary, SpeciesMixin):
             self.objects = self.model_cls.query.filter_by(**filter_args)
         return True
 
+    def get_context(self):
+        return {
+            'groups_url': url_for('.species-summary-groups'),
+            'subjects_url': url_for('.species-summary-species'),
+            'regions_url': url_for('.species-summary-regions'),
+        }
+
 
 class SpeciesProgress(Progress, SpeciesMixin):
     pass
@@ -302,26 +372,53 @@ class HabitatSummary(Summary, HabitatMixin):
     template_name = 'habitat_summary.html'
 
     def setup_objects_and_data(self, period, subject, region):
-        pass
+        return []
+
+    def get_context(self):
+        return {
+            'groups_url': url_for('.habitat-summary-groups'),
+            'subjects_url': url_for('.habitat-summary-species'),
+            'regions_url': url_for('.habitat-summary-regions'),
+        }
 
 
 @summary.route('/species/summary/groups', endpoint='species-summary-groups')
 def _groups():
-    data = get_groups(request.args['period'])
+    data = SpeciesMixin.get_groups(request.args['period'])
     return jsonify(data)
 
 
 @summary.route('/species/summary/species', endpoint='species-summary-species')
 def _species():
     period, group = request.args['period'], request.args['group']
-    data = get_species(period, group)
+    data = SpeciesMixin.get_subjects(period, group)
     return jsonify(data)
 
 
 @summary.route('/species/summary/regions', endpoint='species-summary-regions')
 def _regions():
-    period, species = request.args['period'], request.args['species']
-    data = get_regions(period, species)
+    period, subject = request.args['period'], request.args['subject']
+    data = SpeciesMixin.get_regions(period, subject)
+    return jsonify(data)
+
+
+@summary.route('/habitat/summary/groups', endpoint='habitat-summary-groups')
+def _groups():
+    data = HabitatMixin.get_groups(request.args['period'])
+    return jsonify(data)
+
+
+@summary.route('/habitat/summary/habitat', endpoint='habitat-summary-species')
+def _species():
+    period, group = request.args['period'], request.args['group']
+    data = HabitatMixin.get_subjects(period, group)
+    return jsonify(data)
+
+
+@summary.route('/habitat/summary/regions', endpoint='habitat-summary-regions')
+def _regions():
+    period, subject = request.args['period'], request.args['subject']
+    data = HabitatMixin.get_regions(period, subject)
     return jsonify(data)
 
 

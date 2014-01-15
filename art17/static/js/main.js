@@ -5,13 +5,13 @@ $(function () {
         var group = $('#group');
         group.remoteChained('#period', group.data('href'));
 
-        var species = $('#species');
-        species.remoteChained('#period, #group', species.data('href'));
+        var subject = $('#subject');
+        subject.remoteChained('#period, #group', subject.data('href'));
 
         var region = $('#region');
-        region.remoteChained('#period, #group, #species', region.data('href'));
+        region.remoteChained('#period, #group, #subject', region.data('href'));
 
-        if(species.find('option:selected').val() == '') {
+        if(subject.find('option:selected').val() == '') {
             region.prop('disabled', true);
         }
 
