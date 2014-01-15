@@ -26,7 +26,7 @@
       {% set range_q = row.complementary_favourable_range_q or '' %}
       {% set range = row.complementary_favourable_range %}
       {% if range_q or range %}
-        {{ range_q }}{{range|int}}
+        {{ range_q }}{{range|str2num('')}}
       {% else %}
         N/A
       {% endif %}
