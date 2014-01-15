@@ -2,9 +2,10 @@ import flask
 from flask.ext.script import Manager
 
 from models import db, db_manager
+from art17.layout import layout
 from art17.views import summary
 from art17.auth import auth
-from art17.dataset_manager import dataset_manager
+from art17.dataset import dataset_manager
 from assets import assets_env
 
 
@@ -19,6 +20,7 @@ def create_app():
     app.config.from_pyfile('settings.py')
     assets_env.init_app(app)
     db.init_app(app)
+    app.register_blueprint(layout)
     app.register_blueprint(summary)
     app.register_blueprint(auth)
     return app

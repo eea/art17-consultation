@@ -14,9 +14,13 @@
   {{ row.percentage_population_mean_size|str2num }}
 </td>
 
-{# TODO special qa_error case #}
-<td {{ parse_errors(fields='population_yearly_magnitude', row=row,
-                    qa_errors=qa_errors, classes='text-center') }}>
+{% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude',
+                                          row, qa_errors) %}
+<td class="{{ qclasses }} center"
+    title="{%- if qtitle -%}{{ qtitle }}
+           {%- elif row.population_yearly_magnitude -%}
+           Yearly magnitude = {{ row.population_yearly_magnitude}}
+           {%- endif -%}">
   {{ row.population_trend or 'N/A' }}</td>
 
 <td {{ parse_errors(['complementary_favourable_population_q',
