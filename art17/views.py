@@ -13,7 +13,7 @@ from art17.models import (
     Dataset,
     db,
     t_restricted_species,
-)
+    EtcDataHabitattypeRegion)
 
 from art17.common import (
     get_default_period,
@@ -158,6 +158,8 @@ class Summary(views.View):
         group = request.args.get('group')
         species = request.args.get('species')
         region = request.args.get('region')
+        self.objects = []
+        self.restricted_countries = []
         self.setup_objects_and_data(period, subject, region)
 
         summary_filter_form = SummaryFilterForm(request.args)
@@ -243,6 +245,12 @@ class SpeciesMixin(object):
         return [row[0] for row in qs]
 
 
+class HabitatMixin(object):
+
+    model_cls = EtcDataHabitattypeRegion
+    subject_name = 'habitat'
+
+
 class SpeciesSummary(Summary, SpeciesMixin):
 
     template_name = 'species_summary.html'
@@ -269,6 +277,14 @@ class SpeciesSummary(Summary, SpeciesMixin):
 
 class SpeciesProgress(Progress, SpeciesMixin):
     pass
+
+
+class HabitatSummary(Summary, HabitatMixin):
+
+    template_name = 'habitat_summary.html'
+
+    def setup_objects_and_data(self, period, subject, region):
+        pass
 
 
 class Group(views.MethodView):
@@ -306,6 +322,8 @@ summary.add_url_rule('/species/summary/species',
 summary.add_url_rule('/species/summary/regions',
                      view_func=Regions.as_view('species-summary-regions'))
 
+summary.add_url_rule('/habitat/summary/',
+                     view_func=HabitatSummary.as_view('habitat-summary'))
 
 @summary.app_template_filter('str2num')
 def _str2num(value, default='N/A'):
