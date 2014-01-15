@@ -7,7 +7,7 @@ class SummaryFilterForm(Form):
 
     period = SelectField('Period...')
     group =  SelectField('Group...')
-    species = SelectField('Name...')
+    subject = SelectField('Name...')
     region = SelectField('Bio-region...')
 
     def __init__(self, *args, **kwargs):
