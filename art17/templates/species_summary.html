@@ -22,6 +22,11 @@
           <th rowspan="2">Bio</th>
           <th colspan="4">Range</th>
           <th colspan="4">Population</th>
+          <th colspan="4">Habitat(km<sup>2</sup>)</th>
+          <th rowspan="2">Future prosp.</th>
+          <th rowspan="2">Overall asses.</th>
+          <th colspan="4">Grided maps(km<sup>2</sup>)</th>
+          <th colspan="4">Quality</th>
         </tr>
         <tr>
           <th>Surface</th>
@@ -29,10 +34,24 @@
           <th>Trend</th>
           <th>Ref.</th>
 
-          <th>Surface</th>
+          <th>Size&Unit</th>
           <th>%XP</th>
           <th>Trend</th>
           <th>Ref.</th>
+
+          <th>Area</th>
+          <th>%XH</th>
+          <th>Trend</th>
+          <th>Suitable</th>
+
+          <th>Range</th>
+          <th>%GR</th>
+          <th>Distrib.</th>
+          <th>%GD</th>
+
+          <th>Range</th>
+          <th>Population</th>
+          <th>Habitat</th>
         </tr>
 
       </thead>
@@ -57,12 +76,23 @@
           {% include 'summary/population.html' with context %}
 
           {#- Habitat columns -#}
-
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
           {#- Prospects -#}
-
+          <td></td>
+          {#- Overall asses. -#}
+          <td></td>
           {#- Grided maps columns -#}
-
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
           {#- Quality columns -#}
+          <td></td>
+          <td></td>
+          <td></td>
 
           {% endif %}
         </tr>
