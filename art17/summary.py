@@ -192,19 +192,6 @@ class Summary(views.View):
         return filter(bool, annexes)
 
 
-class Progress(views.View):
-
-    def dispatch_request(self):
-        period = request.args.get('period') or get_default_period()
-        group = request.args.get('group')
-        # conclusion = request.args.get('conclusion')
-        context = {
-            'subjects': self.subjects_by_group(period, group),
-            'regions': EtcDicBiogeoreg.query.all(),
-        }
-        return render_template('progress.html', **context)
-
-
 class SpeciesMixin(object):
 
     model_cls = EtcDataSpeciesRegion
@@ -279,6 +266,11 @@ class HabitatMixin(object):
 
     model_cls = EtcDataHabitattypeRegion
     subject_name = 'habitat'
+
+    def subjects_by_group(self, period, group):
+        qs = db.session.query(self.model_cls.code).\
+            filter_by(group=group, dataset_id=period).distinct()
+        return [row[0] for row in qs]
 
     @classmethod
     def get_groups(cls, period):
@@ -369,10 +361,6 @@ class SpeciesSummary(Summary, SpeciesMixin):
         }
 
 
-class SpeciesProgress(Progress, SpeciesMixin):
-    pass
-
-
 class HabitatSummary(Summary, HabitatMixin):
 
     template_name = 'habitat_summary.html'
@@ -430,8 +418,6 @@ def _regions_habitat():
 
 summary.add_url_rule('/species/summary/',
                      view_func=SpeciesSummary.as_view('species-summary'))
-summary.add_url_rule('/species/progress/',
-                     view_func=SpeciesProgress.as_view('species-progress'))
 
 summary.add_url_rule('/habitat/summary/',
                      view_func=HabitatSummary.as_view('habitat-summary'))

@@ -5,9 +5,10 @@
     <h1>Art 17</h1>
 
     <a href="{{ url_for('.species-summary') }}">Species summary</a>
-    <a href="{{ url_for('.species-progress') }}">Species progress</a>
+    <a href="{{ url_for('progress.species-progress') }}">Species progress</a>
 
     <br/>
 
     <a href="{{ url_for('.habitat-summary') }}">Habitat summary</a>
+    <a href="{{ url_for('progress.habitat-progress') }}">Habitat progress</a>
 {% endblock content %}
