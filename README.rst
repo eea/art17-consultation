@@ -13,6 +13,7 @@ Art 17 Consultation
     source sandbox/bin/activate
 
 3. Install prerequisites if missing::
+
     python2.7 or higher
     apt-get install python-setuptools python-dev
 
@@ -28,6 +29,7 @@ Art 17 Consultation
     # Check settings.local.example for configuration details
 
 6. Set up the MySQL database::
+
     mysql> create database art17 CHARACTER SET utf8 COLLATE utf8_general_ci;
     ./manage.py db upgrade
 
