@@ -182,7 +182,7 @@ class Summary(views.View):
             'period_name': period_name,
         }
 
-        return render_template('summary.html', **context)
+        return render_template(self.template_name, **context)
 
     def get_current_selection(self, period_name, group, species, region):
         if not group and not species:
@@ -244,6 +244,8 @@ class SpeciesMixin(object):
 
 
 class SpeciesSummary(Summary, SpeciesMixin):
+
+    template_name = 'species_summary.html'
 
     def setup_objects_and_data(self, period, subject, region):
         self.objects = []
