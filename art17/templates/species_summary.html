@@ -1,4 +1,4 @@
-{% extends layout_template %}
+{% extends 'layout.html' %}
 
 {% block content %}
 
@@ -76,23 +76,14 @@
           {% include 'summary/species/population.html' with context %}
 
           {#- Habitat columns -#}
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+
           {#- Prospects -#}
-          <td></td>
-          {#- Overall asses. -#}
-          <td></td>
+
+          {#- Overall assessment -#}
+          {% include 'summary/species/overall.html' with context %}
+
           {#- Grided maps columns -#}
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          {#- Quality columns -#}
-          <td></td>
-          <td></td>
-          <td></td>
+
 
           {% endif %}
         </tr>

@@ -1,0 +1,12 @@
+{% from '_macros.html' import parse_errors with context %}
+
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' center' %}
+  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
+  <td {{ parse_errors('conclusion_assessment',
+                      row, qa_errors, title=title, classes=classes) }}>
+    {{ row.conclusion_assessment|str2num }}
+  </td>
+
+  <td>{{ row.conclusion_assessment_trend|str2num }}</td>
+  <td>{{ row.conclusion_assessment_prev|str2num }}</td>
+  <td>{{ row.conclusion_assessment_change|str2num }}</td>
