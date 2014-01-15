@@ -63,3 +63,17 @@ td.XUU {
 .center {
     text-align: center;
 }
+
+.table, .table td, .table th {
+    border: 1px solid #000;
+}
+.table {
+    border-collapse: collapse;
+}
+.table th {
+    font-weight: bold;
+}
+
+#filterform fieldset {
+    display: inline-block;
+}
