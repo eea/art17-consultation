@@ -16,14 +16,15 @@ def ls():
 @dataset_manager.command
 def rm(dataset_id):
     """ Remove a dataset """
-    model_map = _get_model_map()
     dataset = models.Dataset.query.get(int(dataset_id))
     if dataset is None:
         print "No such dataset"
         return
     for table_name in CLEANUP_TABLES:
-        table_model = model_map[table_name]
-        table_model.query.filter_by(dataset_id=dataset.id).delete()
+        models.db.session.execute(
+            "DELETE FROM `%s` WHERE ext_dataset_id = %d"
+            % (table_name, dataset.id)
+        )
     models.db.session.delete(dataset)
     models.db.session.commit()
 
@@ -31,14 +32,6 @@ def rm(dataset_id):
 def stdout_write(msg):
     sys.stdout.write(msg)
     sys.stdout.flush()
-
-
-def _get_model_map():
-    rv = {}
-    for k, model_cls in models.db.Model._decl_class_registry.items():
-        if not k.startswith('_'):
-            rv[model_cls.__table__.name] = model_cls
-    return rv
 
 
 class ImportCommand(Command):
@@ -53,8 +46,6 @@ class ImportCommand(Command):
         ]
 
     def handle(self, app, input_db, schema, dataset_name, no_commit):
-        model_map = _get_model_map()
-
         with app.app_context():
             input_conn = create_engine(input_db + '?charset=utf8').connect()
             dataset = models.Dataset(name=dataset_name)
@@ -62,21 +53,24 @@ class ImportCommand(Command):
             models.db.session.flush()
 
             for table_name, columns in IMPORT_SCHEMA[schema]:
-                stdout_write(table_name + ' ')
-                out_model = model_map[table_name]
-                query = (
-                    "SELECT " +
-                    ", ".join('`%s`' % c for c in columns) +
-                    " FROM `%s`" % table_name
+                stdout_write(table_name + ' ... ')
+                out_columns = columns + ['ext_dataset_id']
+                columns_sql = ", ".join('`%s`' % c for c in columns)
+                out_columns_sql = ", ".join('`%s`' % c for c in out_columns)
+                out_values_sql = ", ".join('%s' for c in out_columns)
+                query = "SELECT " + columns_sql + " FROM `%s`" % table_name
+
+                values = [
+                    list(row) + [dataset.id]
+                    for row in input_conn.execute(query)
+                ]
+                rv = models.db.session.connection().execute(
+                    "INSERT INTO `%s` (%s) VALUES (%s)"
+                    % (table_name, out_columns_sql, out_values_sql),
+                    values,
                 )
-                n = 0
-                for in_row in input_conn.execute(query):
-                    row_data = dict(in_row.items())
-                    out_row = out_model(dataset_id=dataset.id, **row_data)
-                    models.db.session.add(out_row)
-                    stdout_write('.')
-                    n += 1
-                stdout_write("\ndone, %d records\n" % n)
+
+                stdout_write("%d\n" % len(values))
 
                 models.db.session.flush()
 
