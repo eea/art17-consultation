@@ -28,12 +28,28 @@ Art 17 Consultation
     # Check settings.local.example for configuration details
 
 6. Set up the MySQL database::
-    mysql> create database art17;
+    mysql> create database art17 CHARACTER SET utf8 COLLATE utf8_general_ci;
     ./manage.py db upgrade
 
-7. Import sql data dump in your art17 database::
-    Due to rights policies we cannot make the data public.
+7. Import sql data dump in your art17 database, see "data import" below.
 
 8. Run a test server::
 
     ./manage.py runserver
+
+
+
+Data import
+===========
+
+Initially the application's database is empty. We need to import data
+from a dump (the old 2006 app's database or the new reporting data).
+First we need to load this dump into a separate MySQL databse::
+
+    mysql -e 'create database art17_2006 CHARACTER SET utf8 COLLATE utf8_general_ci;'
+    mysql art17_2006 < art17_2006.sql
+
+Then we can import this data into our app's database. Make sure to
+specify the right schema version, in this case '2006'::
+
+    ./manage.py dataset import -d import-from-2006 -i 'mysql://user:pass@localhost/art17_2006' -s 2006
