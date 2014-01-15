@@ -60,6 +60,11 @@ def inject_static():
     }
 
 
+@summary.app_template_filter('str2num')
+def _str2num(value, default='N/A'):
+    return str2num(value, default=default)
+
+
 def record_errors(record):
     if isinstance(record, EtcDataSpeciesRegion):
         qs = EtcQaErrorsSpeciesManualChecked.query.filter_by(
@@ -293,27 +298,24 @@ class HabitatSummary(Summary, HabitatMixin):
         pass
 
 
-class Group(views.MethodView):
-
-    def get(self):
-        data = get_groups(request.args['period'])
-        return jsonify(data)
-
-
-class Species(views.MethodView):
-
-    def get(self):
-        period, group = request.args['period'], request.args['group']
-        data = get_species(period, group)
-        return jsonify(data)
+@summary.route('/species/summary/groups', endpoint='species-summary-groups')
+def _groups():
+    data = get_groups(request.args['period'])
+    return jsonify(data)
 
 
-class Regions(views.MethodView):
+@summary.route('/species/summary/species', endpoint='species-summary-species')
+def _species():
+    period, group = request.args['period'], request.args['group']
+    data = get_species(period, group)
+    return jsonify(data)
 
-    def get(self):
-        period, species = request.args['period'], request.args['species']
-        data = get_regions(period, species)
-        return jsonify(data)
+
+@summary.route('/species/summary/regions', endpoint='species-summary-regions')
+def _regions():
+    period, species = request.args['period'], request.args['species']
+    data = get_regions(period, species)
+    return jsonify(data)
 
 
 summary.add_url_rule('/species/summary/',
@@ -321,16 +323,5 @@ summary.add_url_rule('/species/summary/',
 summary.add_url_rule('/species/progress/',
                      view_func=SpeciesProgress.as_view('species-progress'))
 
-summary.add_url_rule('/species/summary/groups',
-                     view_func=Group.as_view('species-summary-groups'))
-summary.add_url_rule('/species/summary/species',
-                     view_func=Species.as_view('species-summary-species'))
-summary.add_url_rule('/species/summary/regions',
-                     view_func=Regions.as_view('species-summary-regions'))
-
 summary.add_url_rule('/habitat/summary/',
                      view_func=HabitatSummary.as_view('habitat-summary'))
-
-@summary.app_template_filter('str2num')
-def _str2num(value, default='N/A'):
-    return str2num(value, default=default)
