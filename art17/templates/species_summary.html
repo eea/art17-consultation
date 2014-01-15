@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends 'layout_default.html' %}
 
 {% block content %}
 
@@ -13,7 +13,7 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th colspan="6">
+          <th colspan="23">
             ETC/BD treated member states' data
           </th>
         </tr>
@@ -24,7 +24,7 @@
           <th colspan="4">Population</th>
           <th colspan="4">Habitat(km<sup>2</sup>)</th>
           <th rowspan="2">Future prosp.</th>
-          <th rowspan="2">Overall asses.</th>
+          <th colspan="4">Overall asses.</th>
           <th colspan="4">Grided maps(km<sup>2</sup>)</th>
           <th colspan="4">Quality</th>
         </tr>
@@ -43,6 +43,11 @@
           <th>%XH</th>
           <th>Trend</th>
           <th>Suitable</th>
+
+          <th>Curr CS</th>
+          <th>Trend</th>
+          <th>Prev CS</th>
+          <th>Nat of ch</th>
 
           <th>Range</th>
           <th>%GR</th>
@@ -76,6 +81,11 @@
           {% include 'summary/species/population.html' with context %}
 
           {#- Habitat columns -#}
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
 
           {#- Prospects -#}
 
