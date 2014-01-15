@@ -28,7 +28,7 @@ CREATE TABLE `comments` (
   `region` varchar(4) NOT NULL,
   `assesment_speciesname` varchar(50) NOT NULL,
   `user` varchar(25) NOT NULL,
-  `MS` varchar(4) NOT NULL DEFAULT 'EU25',
+  `MS` varchar(4) NOT NULL DEFAULT 'EU27',
   `comment` longtext,
   `author` varchar(25) NOT NULL,
   `post_date` varchar(16) NOT NULL,
@@ -92,6 +92,10 @@ CREATE TABLE `etc_data_habitattype_automatic_assessment` (
   `conclusion_future` varchar(3) DEFAULT NULL,
   `percentage_assessment` varchar(100) DEFAULT NULL,
   `conclusion_assessment` varchar(3) DEFAULT NULL,
+  `percentage_assessment_trend` varchar(100) DEFAULT NULL,
+  `conclusion_assessment_trend` varchar(100) DEFAULT NULL,
+  `percentage_assessment_change` varchar(100) DEFAULT NULL,
+  `conclusion_assessment_change` varchar(100) DEFAULT NULL,
   `range_grid_area` varchar(100) DEFAULT NULL,
   `percentage_range_grid_area` varchar(100) DEFAULT NULL,
   `distribution_grid_area` varchar(100) DEFAULT NULL,
@@ -123,12 +127,14 @@ CREATE TABLE `etc_data_habitattype_regions` (
   `habitattype_type` varchar(5) DEFAULT NULL,
   `habitattype_type_asses` tinyint(1) DEFAULT NULL,
   `range_surface_area` double DEFAULT NULL,
+  `range_change_reason` varchar(150) DEFAULT NULL,
   `percentage_range_surface_area` double DEFAULT NULL,
   `range_trend` varchar(1) DEFAULT NULL,
   `range_yearly_magnitude` double DEFAULT NULL,
   `complementary_favourable_range_q` varchar(2) DEFAULT NULL,
   `complementary_favourable_range` double DEFAULT NULL,
   `coverage_surface_area` double DEFAULT NULL,
+  `coverage_change_reason` varchar(150) DEFAULT NULL,
   `percentage_coverage_surface_area` double DEFAULT NULL,
   `coverage_trend` varchar(1) DEFAULT NULL,
   `coverage_yearly_magnitude` double DEFAULT NULL,
@@ -139,6 +145,9 @@ CREATE TABLE `etc_data_habitattype_regions` (
   `conclusion_structure` varchar(3) DEFAULT NULL,
   `conclusion_future` varchar(3) DEFAULT NULL,
   `conclusion_assessment` varchar(3) DEFAULT NULL,
+  `conclusion_assessment_trend` varchar(1) DEFAULT NULL,
+  `conclusion_assessment_prev` varchar(3) DEFAULT NULL,
+  `conclusion_assessment_change` varchar(2) DEFAULT NULL,
   `range_quality` varchar(13) DEFAULT NULL,
   `coverage_quality` varchar(13) DEFAULT NULL,
   `complementary_other_information` text,
@@ -211,6 +220,10 @@ CREATE TABLE `etc_data_species_automatic_assessment` (
   `conclusion_future` varchar(3) DEFAULT NULL,
   `percentage_assessment` varchar(100) DEFAULT NULL,
   `conclusion_assessment` varchar(3) DEFAULT NULL,
+  `percentage_assessment_trend` varchar(100) DEFAULT NULL,
+  `conclusion_assessment_trend` varchar(100) DEFAULT NULL,
+  `percentage_assessment_change` varchar(100) DEFAULT NULL,
+  `conclusion_assessment_change` varchar(100) DEFAULT NULL,
   `range_grid_area` varchar(100) DEFAULT NULL,
   `percentage_range_grid_area` varchar(100) DEFAULT NULL,
   `distribution_grid_area` varchar(100) DEFAULT NULL,
@@ -260,6 +273,7 @@ CREATE TABLE `etc_data_species_regions` (
   `species_type` varchar(5) DEFAULT NULL,
   `species_type_asses` tinyint(1) DEFAULT NULL,
   `range_surface_area` double DEFAULT NULL,
+  `range_change_reason` varchar(150) DEFAULT NULL,
   `percentage_range_surface_area` double DEFAULT NULL,
   `range_trend` varchar(1) DEFAULT NULL,
   `range_yearly_magnitude` double DEFAULT NULL,
@@ -271,6 +285,9 @@ CREATE TABLE `etc_data_species_regions` (
   `percentage_population_maximum_size` double DEFAULT NULL,
   `filled_population` varchar(3) DEFAULT NULL,
   `population_size_unit` varchar(6) DEFAULT NULL,
+  `population_units_agreed` varchar(50) DEFAULT NULL,
+  `population_units_other` varchar(50) DEFAULT NULL,
+  `population_change_reason` varchar(150) DEFAULT NULL,
   `number_of_different_population_units` int(2) DEFAULT NULL,
   `different_population_percentage` tinyint(1) DEFAULT NULL,
   `percentage_population_mean_size` double DEFAULT NULL,
@@ -280,6 +297,7 @@ CREATE TABLE `etc_data_species_regions` (
   `complementary_favourable_population` double DEFAULT NULL,
   `filled_complementary_favourable_population` varchar(3) DEFAULT NULL,
   `habitat_surface_area` double DEFAULT NULL,
+  `habitat_change_reason` varchar(150) DEFAULT NULL,
   `percentage_habitat_surface_area` double DEFAULT NULL,
   `habitat_trend` varchar(1) DEFAULT NULL,
   `complementary_suitable_habitat` double DEFAULT NULL,
@@ -289,6 +307,9 @@ CREATE TABLE `etc_data_species_regions` (
   `conclusion_habitat` varchar(3) DEFAULT NULL,
   `conclusion_future` varchar(3) DEFAULT NULL,
   `conclusion_assessment` varchar(3) DEFAULT NULL,
+  `conclusion_assessment_trend` varchar(1) DEFAULT NULL,
+  `conclusion_assessment_prev` varchar(3) DEFAULT NULL,
+  `conclusion_assessment_change` varchar(2) DEFAULT NULL,
   `range_quality` varchar(13) DEFAULT NULL,
   `population_quality` varchar(13) DEFAULT NULL,
   `habitat_quality` varchar(13) DEFAULT NULL,
@@ -482,7 +503,7 @@ CREATE TABLE `habitat_comments` (
   `region` varchar(4) NOT NULL,
   `habitat` varchar(50) NOT NULL,
   `user` varchar(25) NOT NULL,
-  `MS` varchar(4) NOT NULL DEFAULT 'EU25',
+  `MS` varchar(4) NOT NULL DEFAULT 'EU27',
   `comment` longtext,
   `author` varchar(25) NOT NULL,
   `post_date` varchar(16) NOT NULL,
@@ -514,23 +535,11 @@ CREATE TABLE `habitat_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
-
-# Dump of table habitats2eunis
-# ------------------------------------------------------------
-
-CREATE TABLE `habitats2eunis` (
-  `CODE_2000` varchar(4) NOT NULL,
-  `ID_HABITAT` int(11) DEFAULT NULL,
-  PRIMARY KEY (`CODE_2000`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
-
-
 # Dump of table habitattypes_manual_assessment
 # ------------------------------------------------------------
 
 CREATE TABLE `habitattypes_manual_assessment` (
-  `MS` varchar(4) NOT NULL DEFAULT 'EU25',
+  `MS` varchar(4) NOT NULL DEFAULT 'EU27',
   `region` varchar(4) NOT NULL,
   `habitatcode` varchar(50) NOT NULL,
   `range_surface_area` varchar(23) DEFAULT NULL,
@@ -551,6 +560,10 @@ CREATE TABLE `habitattypes_manual_assessment` (
   `conclusion_future` varchar(2) DEFAULT NULL,
   `method_assessment` varchar(3) DEFAULT NULL,
   `conclusion_assessment` varchar(2) DEFAULT NULL,
+  `conclusion_assessment_trend` varchar(1) DEFAULT NULL,
+  `conclusion_assessment_prev` varchar(3) DEFAULT NULL,
+  `conclusion_assessment_change` varchar(2) DEFAULT NULL,
+  `conclusion_target1` varchar(3) DEFAULT NULL,
   `user` varchar(25) NOT NULL DEFAULT '',
   `last_update` varchar(16) DEFAULT NULL,
   `deleted_record` tinyint(1) DEFAULT NULL,
@@ -674,7 +687,7 @@ CREATE TABLE `species_group` (
 # ------------------------------------------------------------
 
 CREATE TABLE `species_manual_assessment` (
-  `MS` varchar(4) NOT NULL DEFAULT 'EU25',
+  `MS` varchar(4) NOT NULL DEFAULT 'EU27',
   `region` varchar(4) NOT NULL,
   `assesment_speciesname` varchar(60) NOT NULL,
   `range_surface_area` varchar(23) DEFAULT NULL,
@@ -699,6 +712,10 @@ CREATE TABLE `species_manual_assessment` (
   `conclusion_future` varchar(2) DEFAULT NULL,
   `method_assessment` varchar(3) DEFAULT NULL,
   `conclusion_assessment` varchar(2) DEFAULT NULL,
+  `conclusion_assessment_trend` varchar(1) DEFAULT NULL,
+  `conclusion_assessment_prev` varchar(3) DEFAULT NULL,
+  `conclusion_assessment_change` varchar(2) DEFAULT NULL,
+  `conclusion_target1` varchar(3) DEFAULT NULL,
   `user` varchar(25) NOT NULL DEFAULT '',
   `last_update` varchar(16) DEFAULT NULL,
   `deleted_record` tinyint(1) DEFAULT NULL,
@@ -838,44 +855,6 @@ CREATE TABLE `wiki_trail_comments_read` (
   CONSTRAINT `wiki_trail_comments_read_fk` FOREIGN KEY (`comment_id`) REFERENCES `wiki_trail_comments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-
-
-
-
-# Replace placeholder table for habitat_group with correct view syntax
-# ------------------------------------------------------------
-
-DROP TABLE `habitat_group`;
-
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `habitat_group`
-AS SELECT
-   distinct sql_no_cache `etc_data_habitattype_regions`.`habitatcode` AS `habitatcode`,
-   `etc_data_habitattype_regions`.`group` AS `group`
-FROM `etc_data_habitattype_regions`;
-
-
-# Replace placeholder table for species_group with correct view syntax
-# ------------------------------------------------------------
-
-DROP TABLE `species_group`;
-
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `species_group`
-AS SELECT
-   distinct `etc_data_species_regions`.`assesment_speciesname` AS `assesment_speciesname`,
-   `etc_data_species_regions`.`group` AS `group`
-FROM `etc_data_species_regions`;
-
-
-# Replace placeholder table for species_name with correct view syntax
-# ------------------------------------------------------------
-
-DROP TABLE `species_name`;
-
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `species_name`
-AS SELECT
-   `etc_data_species_regions`.`priority` AS `priority`,
-   `etc_data_species_regions`.`assesment_speciesname` AS `assesment_speciesname`
-FROM `etc_data_species_regions`;
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
