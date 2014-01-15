@@ -292,7 +292,7 @@ class EtcDataSpeciesRegion(Base):
     population_size_unit = Column(String(6))
     population_units_agreed = Column(String(50))
     population_units_other = Column(String(50))
-    population_units_reason = Column(String(150))
+    population_change_reason = Column(String(150))
     number_of_different_population_units = Column(Integer)
     different_population_percentage = Column(Integer)
     percentage_population_mean_size = Column(Float(asdecimal=True))
