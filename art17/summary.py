@@ -192,19 +192,6 @@ class Summary(views.View):
         return filter(bool, annexes)
 
 
-class Progress(views.View):
-
-    def dispatch_request(self):
-        period = request.args.get('period') or get_default_period()
-        group = request.args.get('group')
-        # conclusion = request.args.get('conclusion')
-        context = {
-            'subjects': self.subjects_by_group(period, group),
-            'regions': EtcDicBiogeoreg.query.all(),
-        }
-        return render_template('progress.html', **context)
-
-
 class SpeciesSummary(Summary, SpeciesMixin):
 
     template_name = 'species_summary.html'
