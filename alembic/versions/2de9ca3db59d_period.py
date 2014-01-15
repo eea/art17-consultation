@@ -49,28 +49,13 @@ def upgrade():
                     sa.Column('name', NVARCHAR2(255), nullable=True),
                     sa.PrimaryKeyConstraint('id'),
     )
-    datasets_table = table(
-        'datasets',
-        column('id', sa.Integer),
-        column('name', sa.String),
-    )
-    op.bulk_insert(datasets_table,
-                   [
-                       {'id': 1, 'name': '2001-2006'},
-                       {'id': 2, 'name': '2007-2012'},
-                   ]
-    )
     for tbl in period_tables:
         op.add_column(tbl,
                       sa.Column('ext_dataset_id', sa.Integer, nullable=True),
         )
-        op.execute("UPDATE `%s` SET `ext_dataset_id`='1'" % tbl)
 
 
 def downgrade():
     for tbl in period_tables:
-        try:
-            op.drop_column(tbl, 'ext_dataset_id')
-        except:
-            pass
+        op.drop_column(tbl, 'ext_dataset_id')
     op.drop_table('datasets')
