@@ -202,8 +202,8 @@ IMPORT_SCHEMA = {
         #('habitat_comments', [
         #    'id', 'region', 'habitat', 'user', 'MS', 'comment', 'author',
         #    'post_date', 'deleted']),
-        ('habitats2eunis', [
-            'CODE_2000', 'ID_HABITAT']),
+        #('habitats2eunis', [
+        #    'CODE_2000', 'ID_HABITAT']),
         #('habitattypes_manual_assessment', [
         #    'MS', 'region', 'habitatcode', 'range_surface_area', 'range_trend',
         #    'range_yearly_magnitude', 'complementary_favourable_range',
