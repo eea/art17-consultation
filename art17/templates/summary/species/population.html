@@ -1,40 +1,32 @@
 {% from '_macros.html' import parse_errors with context %}
 
-<td class="number">
-  {{ population_size_unit(row) }}
-</td>
+    <td class="number">
+      {{ population_size_unit(row) }}
+    </td>
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') + ' center' %}
-{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') %}
-<td {{ parse_errors(['conclusion_population',
-                     'percentage_population_mean_size'],
-                      row, qa_errors,
-                      title=title,
-                      classes=classes) }}>
-  {{ row.percentage_population_mean_size|str2num }}
-</td>
+    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') + ' center' %}
+    {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') %}
+    <td {{ parse_errors(['conclusion_population',
+                         'percentage_population_mean_size'],
+                          row, qa_errors,
+                          title=title,
+                          classes=classes) }}>
+      {{ row.percentage_population_mean_size|str2num }}
+    </td>
 
-{% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude',
-                                          row, qa_errors) %}
-<td class="{{ qclasses }} center"
-    title="{%- if qtitle -%}{{ qtitle }}
-           {%- elif row.population_yearly_magnitude -%}
-           Yearly magnitude = {{ row.population_yearly_magnitude}}
-           {%- endif -%}">
-  {{ row.population_trend or 'N/A' }}</td>
+    {% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude',
+                                              row, qa_errors) %}
+    <td class="{{ qclasses }} center"
+        title="{%- if qtitle -%}{{ qtitle }}
+               {%- elif row.population_yearly_magnitude -%}
+               Yearly magnitude = {{ row.population_yearly_magnitude}}
+               {%- endif -%}">
+      {{ row.population_trend or 'N/A' }}</td>
 
-<td {{ parse_errors(['complementary_favourable_population_q',
-                     'complementary_favourable_population',
-                     'filled_complementary_favourable_population'],
-                      row, qa_errors,
-                      classes='number section-border') }}>
-  {{ population_ref(row) }}
-</td>
-
-{#   <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} text-center"
-      title="{{ COUNTRY_ASSESSMENTS[row.conclusion_range] }}">
-    {{ row.percentage_range_surface_area|float }}
-  </td>
-  <td>{{ row.range_trend }}</td>
-  <td>{{ row.complementary_favourable_range_q }}{{ row.complementary_favourable_range|float }}</td>
- #}
+    <td {{ parse_errors(['complementary_favourable_population_q',
+                         'complementary_favourable_population',
+                         'filled_complementary_favourable_population'],
+                          row, qa_errors,
+                          classes='number section-border') }}>
+      {{ population_ref(row) }}
+    </td>
