@@ -30,7 +30,6 @@ period_tables = [
     'habitat_comments',
     #'habitat_group',
     #'species_group',
-    'habitats2eunis',
     'habitattypes_manual_assessment',
     'lu_hd_habitats',
     'photo_habitats',

@@ -35,7 +35,6 @@ tables = [
     ('etc_qa_errors_species_manual_checked',
             ['country', 'filename', 'region', 'error_code']),
     ('habitat_comments', ['id']),
-    ('habitats2eunis', ['code_2000']),
     ('habitattypes_manual_assessment', ['MS', 'region', 'habitatcode']),
     ('lu_hd_habitats', ['habcode']),
     ('photo_habitats', ['id']),

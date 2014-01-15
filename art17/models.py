@@ -578,19 +578,6 @@ t_habitat_group = Table(
 )
 
 
-class Habitats2euni(Base):
-    __tablename__ = 'habitats2eunis'
-
-    code_2000 = Column('CODE_2000', String(4), primary_key=True)
-    id_habitat = Column('ID_HABITAT', Integer)
-
-    dataset_id = Column(
-        'ext_dataset_id',
-        ForeignKey('datasets.id'),
-        primary_key=True,
-    )
-
-
 class HabitattypesManualAssessment(Base):
     __tablename__ = 'habitattypes_manual_assessment'
 
