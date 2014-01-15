@@ -60,6 +60,10 @@ td.XUU {
     text-align: right;
 }
 
+.qa_error {
+    color: blue;
+}
+
 .center {
     text-align: center;
 }

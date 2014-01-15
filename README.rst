@@ -55,3 +55,21 @@ Then we can import this data into our app's database. Make sure to
 specify the right schema version, in this case '2006'::
 
     ./manage.py dataset import -d import-from-2006 -i 'mysql://user:pass@localhost/art17_2006' -s 2006
+
+
+Configuring the Zope API
+========================
+
+Some functionality (authentication and layout template) is provided by a
+Zope server. Here is how to configure the app to fetch this information.
+
+First, the Zope server needs a few scripts in its object tree. Create a
+folder, for example ``art17_api``, and create `Script (Python)` objects
+inside, using the files in the `zope_api` folder of this repository.
+
+Then, add the following configuration variables to the app, using the
+correct URLs for the Zope server::
+
+    AUTH_ZOPE = True
+    AUTH_ZOPE_WHOAMI_URL = 'http://zope.server.url/art17_api/whoami'
+    LAYOUT_ZOPE_URL = 'http://zope.server.url/art17_api/layout'
