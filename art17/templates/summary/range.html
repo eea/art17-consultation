@@ -1,10 +1,13 @@
 {% from '_macros.html' import parse_errors with context %}
 
   <td {{ parse_errors('range_surface_area', row, qa_errors, classes='number') }}>
-    {{ row.range_surface_area|int }}
+    {{ row.range_surface_area|str2num }}
   </td>
-  <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} text-center"
-      title="{{ COUNTRY_ASSESSMENTS[row.conclusion_range] }}">
+    {% set classes=CONCLUSION_CLASSES[row.conclusion_range] + ' center' %}
+    {% set title=COUNTRY_ASSESSMENTS[row.conclusion_range] %}
+  <td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'],
+                      row, qa_errors, title=title, classes=classes) }}
+  >
     {{ row.percentage_range_surface_area|str2num }}
   </td>
   <td>{{ row.range_trend }}</td>
