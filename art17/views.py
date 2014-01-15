@@ -75,7 +75,8 @@ def record_errors(record):
 
 
 def format_error(error, record, field):
-    if field in ('range_surface_area', 'population_yearly_magnitude',
+    if field in ('range_surface_area',
+                 'population_yearly_magnitude',
                  'complementary_favourable_range',
                  'complementary_favourable_range_q',
                  'range_yearly_magnitude',
@@ -83,7 +84,13 @@ def format_error(error, record, field):
                  'percentage_range_surface_area',
                  'complementary_favourable_population_q',
                  'complementary_favourable_population',
-                 'filled_complementary_favourable_population'):
+                 'filled_complementary_favourable_population',
+                 'habitat_surface_area',
+                 'conclusion_habitat',
+                 'percentage_habitat_surface_area',
+                 'habitat_trend',
+                 'complementary_suitable_habitat'
+                 ):
         return '%s: %s' % (error['text'], error['suspect_value'])
     return error['text']
 

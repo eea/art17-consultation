@@ -1,0 +1,25 @@
+{% from '_macros.html' import parse_errors with context %}
+
+    <td {{ parse_errors('habitat_surface_area', row, qa_errors, classes='number') }}>
+        {{ row.habitat_surface_area|str2num }}
+    </td>
+
+    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') + ' center' %}
+    {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_habitat, '') %}
+    <td {{ parse_errors(['conclusion_habitat',
+                         'percentage_habitat_surface_area'],
+                          row, qa_errors,
+                          title=title,
+                          classes=classes) }}>
+      {{ row.percentage_habitat_surface_area|str2num }}
+    </td>
+
+    <td {{ parse_errors('habitat_trend', row, qa_errors, classes='center') }}>
+        {{ row.habitat_trend or 'N/A' }}
+    </td>
+
+    <td {{ parse_errors('complementary_suitable_habitat',
+                        row, qa_errors,
+                        classes='number section-border') }}>
+      {{ row.complementary_suitable_habitat|str2num }}
+    </td>
