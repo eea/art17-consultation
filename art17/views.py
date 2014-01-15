@@ -23,6 +23,7 @@ from art17.common import (
     COUNTRY_ASSESSMENTS,
 )
 from art17.forms import SummaryFilterForm
+from art17.utils import str2num
 
 
 summary = Blueprint('summary', __name__)
@@ -87,7 +88,7 @@ def parse_qa_errors(fields, record, qa_errors):
         if field in qa_errors:
             title.append(format_error(qa_errors[field], record, field))
             classes.append('qa_error')
-    return ' '.join(title), ' '.join(classes)
+    return '<br/>'.join(title), ' '.join(classes)
 
 
 def get_groups(period):
@@ -294,3 +295,8 @@ summary.add_url_rule('/species/summary/species',
                      view_func=Species.as_view('species-summary-species'))
 summary.add_url_rule('/species/summary/regions',
                      view_func=Regions.as_view('species-summary-regions'))
+
+
+@summary.app_template_filter('str2num')
+def _str2num(value, default='N/A'):
+    return str2num(value, default=default)

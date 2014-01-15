@@ -54,3 +54,8 @@ td.XUU {
 .NA {
 	background-color: #A9CAFC;
 }
+
+/* migrated, generic */
+.number {
+    text-align: right;
+}
