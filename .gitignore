@@ -4,3 +4,4 @@ gen
 sandbox
 *~
 *.pyc
+__pycache__
