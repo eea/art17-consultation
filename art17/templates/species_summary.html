@@ -98,7 +98,9 @@
       </tr>
       {% for row in auto_objects %}
       <tr>
-        <td>{{ row.assessment_method }}</td>
+        <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+          {{ row.assessment_method or 'N/A' }}
+        </td>
       </tr>
       {% endfor %}
       </tbody>

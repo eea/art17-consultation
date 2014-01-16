@@ -14,7 +14,10 @@ from art17.models import (
     Dataset,
     db,
     t_restricted_species,
-    EtcDataHabitattypeRegion, EtcQaErrorsHabitattypeManualChecked)
+    EtcDataHabitattypeRegion,
+    EtcQaErrorsHabitattypeManualChecked,
+    EtcDicMethod,
+)
 
 from art17.mixins import SpeciesMixin, HabitatMixin
 
@@ -62,6 +65,9 @@ def inject_static():
         'CONCLUSION_CLASSES': CONCLUSION_CLASSES,
         'COUNTRY_ASSESSMENTS': COUNTRY_ASSESSMENTS,
         'QUALITIES': QUALITIES,
+        'ASSESSMENT_DETAILS': dict(
+            db.session.query(EtcDicMethod.method, EtcDicMethod.details)
+        ),
     }
 
 
