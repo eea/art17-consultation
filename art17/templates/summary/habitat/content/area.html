@@ -26,8 +26,8 @@
   <td {{ parse_errors(['complementary_favourable_area_q',
                        'complementary_favourable_area'],
                        row, qa_errors, '', 'number section-border') }}>
-      {% set range_q = row.complementary_favourable_range_q or '' %}
-      {% set range = row.complementary_favourable_range %}
+      {% set range_q = row.complementary_favourable_area_q or '' %}
+      {% set range = row.complementary_favourable_area %}
       {% if range_q or range %}
         {{ range_q }}{{range|str2num('')}}
       {% else %}

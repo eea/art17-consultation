@@ -33,10 +33,12 @@
         <col span="1" class="col_border">
         <col span="4" class="col_border_left">
         <col span="2" class="col_border_left">
+
+        <col span="5" class="col_border">
       </colgroup>
       <thead>
         <tr class="section-header">
-          <th colspan="19">
+          <th colspan="24">
             ETC/BD treated member states' data
           </th>
         </tr>
@@ -45,11 +47,13 @@
           <th rowspan="2">Reg</th>
           <th colspan="4">Range</th>
           <th colspan="4">Area</th>
-          <th rowspan="2">Struct & func.</th>
+          <th rowspan="2">Struct &amp; func.</th>
           <th rowspan="2">Future prosp.</th>
           <th rowspan="2">Overall asses.</th>
           <th colspan="4">Grided maps</th>
           <th colspan="2">Quality</th>
+
+          <th rowspan="2" colspan="5"></th>
         </tr>
         <tr>
           <th>Area</th>
@@ -87,21 +91,21 @@
           {% else %}
 
           {#- Range columns -#}
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          {#- Area columns -#}
-          {% include 'summary/habitat/area.html' with context %}
+          {% include 'summary/habitat/content/range.html' with context %}
 
-          {#- Habitat columns -#}
+          {#- Area columns -#}
+          {% include 'summary/habitat/content/area.html' with context %}
+
+          {#- Struct and funct. -#}
 
           {#- Prospects -#}
+
+          {#- Overall asses. -#}
 
           {#- Grided maps columns -#}
 
           {#- Quality columns -#}
-          <td colspan="17"></td>
+          <td colspan="22"></td>
           {% endif %}
         </tr>
       {% endfor %}
@@ -109,40 +113,10 @@
 
       <thead>
         <tr class="section-header">
-          <th colspan="19">
+          <th colspan="24">
             Automatic assessments
             <button onclick="$('#automatic_body').toggle()">show/hide</button>
           </th>
-        </tr>
-        <tr>
-          <th rowspan="2">MS</th>
-          <th rowspan="2">Reg</th>
-          <th colspan="4">Range</th>
-          <th colspan="4">Area</th>
-          <th rowspan="2">Struct & func.</th>
-          <th rowspan="2">Future prosp.</th>
-          <th rowspan="2">Overall asses.</th>
-          <th colspan="4">Grided maps</th>
-          <th colspan="2">Quality</th>
-        </tr>
-        <tr>
-          <th>Area</th>
-          <th>%XR</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Ref.</th>
-
-          <th>Area</th>
-          <th>%XR</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Ref.</th>
-
-          <th>Range</th>
-          <th>%GR</th>
-          <th>Distrib</th>
-          <th>%GD</th>
-
-          <th>Range</th>
-          <th>Area</th>
         </tr>
       </thead>
       <tbody id="automatic_body" class="hidden">
@@ -171,16 +145,84 @@
 
         {# Quality #}
         <td colspan="2"></td>
+
+        {# padding #}
+        <td colspan="5"></td>
       </tr>
       {% endfor %}
       </tbody>
 
       <thead>
         <tr class="section-header">
-          <th colspan="19">
-           ETC/BD biogeographical assessment & users proposed corrections
+          <th colspan="24">
+           ETC/BD biogeographical assessment &amp; users proposed corrections
           </th>
         </tr>
+        <tr>
+          <th rowspan="2">MS</th>
+          <th rowspan="2">Reg</th>
+          <th colspan="4">Range</th>
+          <th colspan="4">Area</th>
+          <th rowspan="2">Struct & func.</th>
+          <th rowspan="2">Future prosp.</th>
+          <th rowspan="2">Overall asses.</th>
+          <th colspan="4">Grided maps</th>
+          <th colspan="2">Quality</th>
+
+          <th rowspan="2"><abbr title="Comments">Comm.</abbr></th>
+          <th rowspan="2">Date</th>
+          <th rowspan="2">Name</th>
+          <th rowspan="2"><abbr title="Institution">Instit.</abbr></th>
+          <th rowspan="2">MS</th>
+        </tr>
+        <tr>
+          <th>Area</th>
+          <th>%XR</th>
+          <th><abbr title="Trend">T</abbr></th>
+          <th>Ref.</th>
+
+          <th>Area</th>
+          <th>%XR</th>
+          <th><abbr title="Trend">T</abbr></th>
+          <th>Ref.</th>
+
+          <th>Range</th>
+          <th>%GR</th>
+          <th>Distrib</th>
+          <th>%GD</th>
+
+          <th>Range</th>
+          <th>Area</th>
+        </tr>
       </thead>
+      <tbody>
+      {% for row in manual_objects %}
+      <tr>
+        {# MS and region #}
+        {% include 'summary/common/manual/ms.html' %}
+
+        {# Range #}
+        <td colspan="4"></td>
+
+        {# Area #}
+        <td colspan="4"></td>
+
+        {# Struct Func Overall#}
+        <td></td>
+        <td></td>
+        <td></td>
+
+        {# Grided #}
+        <td colspan="4"></td>
+
+        {# Quality #}
+        <td colspan="2"></td>
+
+        {# Comments #}
+        <td colspan="5"></td>
+
+      </tr>
+      {% endfor %}
+      </tbody>
     </table>
 {% endblock %}

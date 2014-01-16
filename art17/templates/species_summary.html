@@ -51,7 +51,7 @@
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
 
-      <th>Size&Unit</th>
+      <th>Size&amp;Unit</th>
       <th>%MS</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
@@ -88,22 +88,22 @@
       {% else %}
 
       {#- Range columns -#}
-      {% include 'summary/species/range.html' with context %}
+      {% include 'summary/species/content/range.html' with context %}
 
       {#- Population columns -#}
-      {% include 'summary/species/population.html' with context %}
+      {% include 'summary/species/content/population.html' with context %}
 
       {#- Habitat columns -#}
-      {% include 'summary/species/habitat.html' with context %}
+      {% include 'summary/species/content/habitat.html' with context %}
 
       {#- Prospects -#}
-      {% include 'summary/species/future_prospects.html' with context %}
+      {% include 'summary/species/content/future_prospects.html' with context %}
 
       {#- Overall assessment -#}
-      {% include 'summary/species/overall.html' with context %}
+      {% include 'summary/species/content/overall.html' with context %}
 
       {#- Grided maps columns -#}
-      {% include 'summary/species/grided_maps.html' with context %}
+      {% include 'summary/species/content/grided_maps.html' with context %}
 
       {# Padding #}
       <td colspan="5"></td>
@@ -157,7 +157,7 @@
     <thead>
     <tr class="section-header">
       <th colspan="29">
-        ETC/BD biogeographical assessment & users proposed corrections
+        ETC/BD biogeographical assessment &amp; users proposed corrections
       </th>
     </tr>
     <tr>
@@ -183,7 +183,7 @@
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
 
-      <th>Size&Unit</th>
+      <th>Size&amp;Unit</th>
       <th>%MS</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
@@ -204,12 +204,8 @@
     <tbody>
     {% for row in manual_objects %}
     <tr>
-      <td>
-        {{ row.decision }}
-      </td>
-      <td>
-        {{ row.region or 'N/A' }}
-      </td>
+      {# MS and region #}
+      {% include 'summary/common/manual/ms.html' %}
 
       {# Range #}
       <td colspan="4"></td>
