@@ -93,6 +93,14 @@
           {% endif %}
         </tr>
       {% endfor %}
+      <tr>
+        <td colspan="24">Automatic assessments</td>
+      </tr>
+      {% for row in auto_objects %}
+      <tr>
+        <td>{{ row.assessment_method }}</td>
+      </tr>
+      {% endfor %}
       </tbody>
     </table>
 {% endblock %}

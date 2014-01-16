@@ -4,12 +4,14 @@ from art17.models import (
     EtcDataHabitattypeRegion,
     EtcDicHdHabitat,
     db,
+    EtcDataSpeciesAutomaticAssessment,
 )
 
 
 class SpeciesMixin(object):
 
     model_cls = EtcDataSpeciesRegion
+    model_auto_cls = EtcDataSpeciesAutomaticAssessment
     subject_name = 'species'
 
     def objects_by_group(self, period, group):
