@@ -113,10 +113,13 @@
 
   <thead>
   <tr class="section-header">
-    <th colspan="24">Automatic assessments</th>
+    <th colspan="24">
+      Automatic assessments
+      <button onclick="$('#automatic_body').toggle()">show/hide</button>
+    </th>
   </tr>
   </thead>
-  <tbody>
+  <tbody id="automatic_body" class="hidden">
   {% for row in auto_objects %}
   <tr>
         <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">

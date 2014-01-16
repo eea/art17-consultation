@@ -212,3 +212,6 @@ td.XUU {
     border-width: 1px;
     background-color: #fafafa;
 }
+.hidden {
+    display: none;
+}
