@@ -1,0 +1,16 @@
+<td class="number">
+  {{ row.population_size|default('', true)|parse_semicolon|safe }}
+</td>
+
+<td class="center {{ CONCLUSION_CLASSES[row.conclusion_population] }}"
+    title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') }}">
+  {{ row.percentage_population_mean_size|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="center">
+  {{ row.population_trend|default('', true)|parse_semicolon }}
+</td>
+
+<td class="number section-border">
+  {{ row.complementary_favourable_population|parse_semicolon|str2num('')|safe }}
+</td>
