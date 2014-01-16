@@ -33,6 +33,8 @@
         <col span="1" class="col_border">
         <col span="4" class="col_border_left">
         <col span="2" class="col_border_left">
+
+        <col span="5" class="col_border">
       </colgroup>
       <thead>
         <tr class="section-header">
@@ -89,7 +91,7 @@
           {% else %}
 
           {#- Range columns -#}
-          {% include 'summary/habitat/range.html' with context %}
+          {% include 'summary/habitat/content/range.html' with context %}
 
           {#- Population columns -#}
 
@@ -225,30 +227,25 @@
       <tbody>
       {% for row in manual_objects %}
       <tr>
-        <td>
-          {{ row.decision }}
-        </td>
-        <td>
-          {{ row.region or 'N/A' }}
-        </td>
+        {# MS and region #}
+        {% include 'summary/common/manual/ms.html' %}
 
         {# Range #}
         <td colspan="4"></td>
 
-        {# Population #}
+        {# Area #}
         <td colspan="4"></td>
 
-        {# Habitat #}
-        <td colspan="5"></td>
-
-        {# Prospects #}
+        {# Struct Func Overall#}
+        <td></td>
+        <td></td>
         <td></td>
 
-        {# Overall #}
+        {# Grided #}
         <td colspan="4"></td>
 
-        {# Contrib #}
-        <td colspan="4"></td>
+        {# Quality #}
+        <td colspan="2"></td>
 
         {# Comments #}
         <td colspan="5"></td>
