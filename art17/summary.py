@@ -14,7 +14,7 @@ from art17.models import (
     Dataset,
     db,
     t_restricted_species,
-)
+    EtcDataHabitattypeRegion, EtcQaErrorsHabitattypeManualChecked)
 
 from art17.mixins import SpeciesMixin, HabitatMixin
 
@@ -84,11 +84,18 @@ def record_errors(record):
             region=record.region,
             eu_country_code=record.eu_country_code,
         )
-        return {
-            e.field: {'text': e.text, 'suspect_value': e.suspect_value}
-            for e in qs
-        }
-    raise ValueError("Invalid record type" + str(type(record)))
+    elif isinstance(record, EtcDataHabitattypeRegion):
+        qs = EtcQaErrorsHabitattypeManualChecked.query.filter_by(
+            habitatcode=record.code,
+            region=record.region,
+            eu_country_code=record.eu_country_code,
+        )
+    else:
+        raise ValueError("Invalid record type" + str(type(record)))
+    return {
+        e.field: {'text': e.text, 'suspect_value': e.suspect_value}
+        for e in qs
+    }
 
 
 def format_error(error, record, field):
@@ -206,8 +213,6 @@ class SpeciesSummary(Summary, SpeciesMixin):
     template_name = 'species_summary.html'
 
     def setup_objects_and_data(self, period, subject, region):
-        self.objects = []
-        self.restricted_countries = []
         filter_args = {}
         if subject:
             filter_args['assesment_speciesname'] = subject
@@ -238,7 +243,18 @@ class HabitatSummary(Summary, HabitatMixin):
     template_name = 'habitat_summary.html'
 
     def setup_objects_and_data(self, period, subject, region):
-        return []
+        filter_args = {}
+
+        if subject:
+            filter_args['code'] = subject
+        else:
+            return False
+        if region:
+            filter_args['region'] = region
+        if filter_args:
+            filter_args['dataset_id'] = period
+            self.objects = self.model_cls.query.filter_by(**filter_args)
+        return True
 
     def get_context(self):
         return {
