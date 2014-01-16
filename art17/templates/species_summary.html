@@ -101,6 +101,28 @@
         <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
           {{ row.assessment_method or 'N/A' }}
         </td>
+        <td>
+          {{ row.region or 'N/A' }}
+        </td>
+
+        {# Range #}
+        <td colspan="4"></td>
+
+        {# Population #}
+        <td colspan="4"></td>
+
+        {# Habitat #}
+        <td colspan="5"></td>
+
+        {# Prospects #}
+        <td></td>
+
+        {# Overall #}
+        <td colspan="4"></td>
+
+        {# Grided #}
+        <td colspan="4"></td>
+
       </tr>
       {% endfor %}
       </tbody>
