@@ -105,16 +105,15 @@ class HabitatMixin(object):
             return blank_option
         group_field = EtcDicHdHabitat.group
         dataset_id_field = EtcDicHdHabitat.dataset_id
-        value_field = EtcDicHdHabitat.habcode
-        assesment_field = EtcDicHdHabitat.name
+        code_field = EtcDicHdHabitat.habcode
+        name_field = code_field.concat(' ' + EtcDicHdHabitat.name)
         subjects = (
             EtcDicHdHabitat.query
-            .filter(assesment_field != None)
-            .filter(group_field == group)
-            .filter(dataset_id_field == period)
-            .with_entities(value_field, assesment_field)
+            .filter(name_field != None, group_field == group,
+                    dataset_id_field == period)
+            .with_entities(code_field, name_field)
             .distinct()
-            .order_by(assesment_field)
+            .order_by(name_field)
             .all()
         )
         return blank_option + subjects
