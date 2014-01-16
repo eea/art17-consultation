@@ -10,11 +10,27 @@
 
   {% include 'filters.html' %}
 
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th colspan="24">
-            ETC/BD treated member states' data
+<table class="complex_datatable datatable">
+  <colgroup>
+    <col span="1">
+    <col span="1" class="col_border">
+
+    <col span="4" class="col_border_left">
+
+    <col span="4" class="col_border_left">
+
+    <col span="5" class="col_border_left">
+
+    <col span="1" class="col_border_left">
+
+    <col span="4" class="col_border_left">
+
+    <col span="4" class="col_border_left">
+  </colgroup>
+  <thead>
+  <tr class="section-header">
+    <th colspan="24">
+    ETC/BD treated member states' data
           </th>
         </tr>
         <tr>
@@ -23,29 +39,29 @@
           <th colspan="4">Range</th>
           <th colspan="4">Population</th>
           <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
-          <th rowspan="2">Future prosp.</th>
-          <th colspan="4">Overall asses.</th>
+          <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
+          <th colspan="4">Overall assessment</th>
           <th colspan="4">Grided maps(km<sup>2</sup>)</th>
         </tr>
         <tr>
           <th>Area</th>
           <th>%MS</th>
-          <th>Trend</th>
+          <th><abbr title="Trend">T</abbr></th>
           <th>Ref.</th>
 
           <th>Size&Unit</th>
           <th>%MS</th>
-          <th>Trend</th>
+          <th><abbr title="Trend">T</abbr></th>
           <th>Ref.</th>
 
           <th>Area</th>
           <th>%MS</th>
           <th>Qual.</th>
-          <th>Trend</th>
+          <th><abbr title="Trend">T</abbr></th>
           <th>Suitable</th>
 
           <th>Curr CS</th>
-          <th>Trend</th>
+          <th><abbr title="Trend">T</abbr></th>
           <th>Prev CS</th>
           <th>Nat of ch</th>
 
@@ -93,11 +109,16 @@
           {% endif %}
         </tr>
       {% endfor %}
-      <tr>
-        <td colspan="24">Automatic assessments</td>
-      </tr>
-      {% for row in auto_objects %}
-      <tr>
+      </tbody>
+
+  <thead>
+  <tr class="section-header">
+    <th colspan="24">Automatic assessments</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for row in auto_objects %}
+  <tr>
         <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
           {{ row.assessment_method or 'N/A' }}
         </td>

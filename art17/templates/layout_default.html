@@ -7,14 +7,23 @@
       <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
-    <link href="{{ url_for('static', filename='css/styles.css') }}"
-          type="text/css" rel="stylesheet" />
+    <!--<link href="{{ url_for('static', filename='css/styles.css') }}"
+          type="text/css" rel="stylesheet" />-->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/screen.css') }}"
+          media="screen">
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/complex_datatable.css') }}"
+          media="screen">
+    <link href="http://fonts.googleapis.com/css?family=Roboto+Condensed"
+          rel="stylesheet" type="text/css">
+
     <title></title>
   </head>
 
-  <body>
-    <a href="{{ url_for('summary.homepage') }}">Home</a>
-    {% if art17_auth_debug %}
+  <body class="fullscreen">
+  <a href="{{ url_for('summary.homepage') }}">Home</a>
+  {% if art17_auth_debug %}
       <a href="{{ url_for('auth.debug') }}">Auth debug</a>
     {% endif %}
 
@@ -28,10 +37,10 @@
       {{ g.identity.id }}
     {% endif %}
 
-    <div class="container">
-      <div class="row">
+  <div id="container">
+    <div id="workarea">
       {% block content %}{% endblock content %}
-      </div>
+    </div>
     </div>
 
   </body>
