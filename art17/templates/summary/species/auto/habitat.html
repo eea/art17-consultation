@@ -1,0 +1,15 @@
+<td class="number">
+  {{ row.habitat_surface_area|parse_semicolon|str2num('') }}
+</td>
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_habitat] }}">
+  {{ row.percentage_habitat_surface_area|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="center">
+  {{ row.habitat_trend|parse_semicolon or '' }}
+</td>
+
+<td class="number section-border">
+  {{ row.complementary_suitable_habitat|parse_semicolon|str2num('')|safe }}
+</td>
