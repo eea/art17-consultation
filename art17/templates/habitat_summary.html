@@ -50,7 +50,7 @@
           <th rowspan="2">Struct &amp; func.</th>
           <th rowspan="2">Future prosp.</th>
           <th rowspan="2">Overall asses.</th>
-          <th colspan="4">Grided maps</th>
+          <th colspan="4">Grided maps(km<sup>2</sup>)</th>
           <th colspan="2">Quality</th>
 
           <th rowspan="2" colspan="5"></th>
@@ -99,12 +99,14 @@
           {#- Struct and funct. -#}
           {% include 'summary/habitat/content/struct_func.html' with context %}
 
-
           {#- Prospects -#}
+          <td></td>
 
           {#- Overall asses. -#}
+          <td></td>
 
           {#- Grided maps columns -#}
+          {% include 'summary/habitat/content/grided_maps.html' with context %}
 
           {#- Quality columns -#}
           <td colspan="22"></td>
