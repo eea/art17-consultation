@@ -51,9 +51,8 @@
           <th rowspan="2">Future prosp.</th>
           <th rowspan="2">Overall asses.</th>
           <th colspan="4">Grided maps(km<sup>2</sup>)</th>
-          <th colspan="2">Quality</th>
 
-          <th rowspan="2" colspan="5"></th>
+          <th rowspan="2" colspan="7"></th>
         </tr>
         <tr>
           <th>Area</th>
@@ -70,9 +69,6 @@
           <th>%GR</th>
           <th>Distrib</th>
           <th>%GD</th>
-
-          <th>Range</th>
-          <th>Area</th>
         </tr>
 
       </thead>
@@ -108,8 +104,6 @@
           {#- Grided maps columns -#}
           {% include 'summary/habitat/content/grided_maps.html' with context %}
 
-          {#- Quality columns -#}
-          <td colspan="22"></td>
           {% endif %}
         </tr>
       {% endfor %}
