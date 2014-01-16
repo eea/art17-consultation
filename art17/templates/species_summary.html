@@ -1,154 +1,197 @@
 {% extends layout_template %}
 
 {% block content %}
-
   <p>Assessments on the <strong>conservation status of the habitat types and species</strong> of Community interest have been carried out in EU27 for the period {{ period_name }}, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view. <br>
-  Choose a period, group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.</p>
+    Choose a period, group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.</p>
 
   <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc).
-  Select from "Period..." value "2001-2006" in order to see the previous reported data.</p>
+    Select from "Period..." value "2001-2006" in order to see the previous reported data.</p>
 
   {% include 'filters.html' %}
 
-<table class="complex_datatable datatable">
-  <colgroup>
-    <col span="1">
-    <col span="1" class="col_border">
+  <table class="complex_datatable datatable">
+    <colgroup>
+      <col span="1">
+      <col span="1" class="col_border">
 
-    <col span="4" class="col_border_left">
+      <col span="4" class="col_border_left">
 
-    <col span="4" class="col_border_left">
+      <col span="4" class="col_border_left">
 
-    <col span="5" class="col_border_left">
+      <col span="5" class="col_border_left">
 
-    <col span="1" class="col_border_left">
+      <col span="1" class="col_border_left">
 
-    <col span="4" class="col_border_left">
+      <col span="4" class="col_border_left">
 
-    <col span="4" class="col_border_left">
-  </colgroup>
-  <thead>
-  <tr class="section-header">
-    <th colspan="24">
-    ETC/BD treated member states' data
-          </th>
-        </tr>
-        <tr>
-          <th rowspan="2">MS</th>
-          <th rowspan="2">Reg</th>
-          <th colspan="4">Range</th>
-          <th colspan="4">Population</th>
-          <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
-          <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
-          <th colspan="4">Overall assessment</th>
-          <th colspan="4">Grided maps(km<sup>2</sup>)</th>
-        </tr>
-        <tr>
-          <th>Area</th>
-          <th>%MS</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Ref.</th>
+      <col span="5" class="col_border">
+    </colgroup>
+    <thead>
+    <tr class="section-header">
+      <th colspan="29">
+        ETC/BD treated member states' data
+      </th>
+    </tr>
+    <tr>
+      <th rowspan="2">MS</th>
+      <th rowspan="2">Reg</th>
+      <th colspan="4">Range</th>
+      <th colspan="4">Population</th>
+      <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
+      <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
+      <th colspan="4">Overall assessment</th>
+      <th colspan="4">Grided maps(km<sup>2</sup>)</th>
+    </tr>
+    <tr>
+      <th>Area</th>
+      <th>%MS</th>
+      <th><abbr title="Trend">T</abbr></th>
+      <th>Ref.</th>
 
-          <th>Size&Unit</th>
-          <th>%MS</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Ref.</th>
+      <th>Size&Unit</th>
+      <th>%MS</th>
+      <th><abbr title="Trend">T</abbr></th>
+      <th>Ref.</th>
 
-          <th>Area</th>
-          <th>%MS</th>
-          <th>Qual.</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Suitable</th>
+      <th>Area</th>
+      <th>%MS</th>
+      <th>Qual.</th>
+      <th><abbr title="Trend">T</abbr></th>
+      <th>Suitable</th>
 
-          <th>Curr CS</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Prev CS</th>
-          <th>Nat of ch</th>
+      <th>Curr CS</th>
+      <th><abbr title="Trend">T</abbr></th>
+      <th>Prev CS</th>
+      <th>Nat of ch</th>
 
-          <th>Range</th>
-          <th title="%GR">%MS</th>
-          <th>Distrib.</th>
-          <th title="%GD">%MS</th>
+      <th>Range</th>
+      <th title="%GR">%MS</th>
+      <th>Distrib.</th>
+      <th title="%GD">%MS</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in objects %}
+    {% set visible = can_view(row, restricted_countries) %}
+    {% set qa_errors = record_errors(row) %}
+    <tr {% if row.is_assesm %}class="assesm"{% endif %}>
+      <td>{{ row.eu_country_code }}</td>
+      <td>{{ row.region }}</td>
 
-        </tr>
+      {% if not visible %}
+      <td colspan="4">
+        {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
+      </td>
+      {% else %}
 
-      </thead>
-      <tbody>
-      {% for row in objects %}
-        {% set visible = can_view(row, restricted_countries) %}
-        {% set qa_errors = record_errors(row) %}
-        <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-          <td>{{ row.eu_country_code }}</td>
-          <td>{{ row.region }}</td>
+      {#- Range columns -#}
+      {% include 'summary/species/range.html' with context %}
 
-          {% if not visible %}
-          <td colspan="4">
-            {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
-          </td>
-          {% else %}
+      {#- Population columns -#}
+      {% include 'summary/species/population.html' with context %}
 
-          {#- Range columns -#}
-          {% include 'summary/species/range.html' with context %}
+      {#- Habitat columns -#}
+      {% include 'summary/species/habitat.html' with context %}
 
-          {#- Population columns -#}
-          {% include 'summary/species/population.html' with context %}
+      {#- Prospects -#}
+      {% include 'summary/species/future_prospects.html' with context %}
 
-          {#- Habitat columns -#}
-          {% include 'summary/species/habitat.html' with context %}
+      {#- Overall assessment -#}
+      {% include 'summary/species/overall.html' with context %}
 
-          {#- Prospects -#}
-          {% include 'summary/species/future_prospects.html' with context %}
+      {#- Grided maps columns -#}
+      {% include 'summary/species/grided_maps.html' with context %}
 
-          {#- Overall assessment -#}
-          {% include 'summary/species/overall.html' with context %}
+      {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
 
-          {#- Grided maps columns -#}
-          {% include 'summary/species/grided_maps.html' with context %}
+    <thead>
+    <tr class="section-header">
+      <th colspan="29">
+        Automatic assessments
+        <button onclick="$('#automatic_body').toggle()">show/hide</button>
+      </th>
+    </tr>
+    </thead>
+    <tbody id="automatic_body" class="hidden">
+    {% for row in auto_objects %}
+    <tr>
+      <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+        {{ row.assessment_method or 'N/A' }}
+      </td>
+      <td>
+        {{ row.region or 'N/A' }}
+      </td>
 
+      {# Range #}
+      <td colspan="4"></td>
 
-          {% endif %}
-        </tr>
-      {% endfor %}
-      </tbody>
+      {# Population #}
+      <td colspan="4"></td>
 
-  <thead>
-  <tr class="section-header">
-    <th colspan="24">
-      Automatic assessments
-      <button onclick="$('#automatic_body').toggle()">show/hide</button>
-    </th>
-  </tr>
-  </thead>
-  <tbody id="automatic_body" class="hidden">
-  {% for row in auto_objects %}
-  <tr>
-        <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
-          {{ row.assessment_method or 'N/A' }}
-        </td>
-        <td>
-          {{ row.region or 'N/A' }}
-        </td>
+      {# Habitat #}
+      <td colspan="5"></td>
 
-        {# Range #}
-        <td colspan="4"></td>
+      {# Prospects #}
+      <td></td>
 
-        {# Population #}
-        <td colspan="4"></td>
+      {# Overall #}
+      <td colspan="4"></td>
 
-        {# Habitat #}
-        <td colspan="5"></td>
+      {# Grided #}
+      <td colspan="4"></td>
 
-        {# Prospects #}
-        <td></td>
+    </tr>
+    {% endfor %}
+    </tbody>
 
-        {# Overall #}
-        <td colspan="4"></td>
+    <thead>
+    <tr class="section-header">
+      <th colspan="29">
+        ETC/BD biogeographical assessment & users proposed corrections
+      </th>
+    </tr>
+    <tr>
+      <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
+      <th rowspan="2">Reg</th>
+      <th colspan="4">Range</th>
+      <th colspan="4">Population</th>
+      <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
+      <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
+      <th colspan="4">Overall assessment</th>
+      <th rowspan="2" colspan="2">Contrib. target 1</th>
+      <th rowspan="2" colspan="2"></th>
 
-        {# Grided #}
-        <td colspan="4"></td>
+      <th rowspan="2"><abbr title="Comments">Comm.</abbr></th>
+      <th rowspan="2">Date</th>
+      <th rowspan="2">Name</th>
+      <th rowspan="2"><abbr title="Institution">Instit.</abbr></th>
+      <th rowspan="2">MS</th>
+    </tr>
+    <tr>
+      <th>Area</th>
+      <th>%MS</th>
+      <th><abbr title="Trend">T</abbr></th>
+      <th>Ref.</th>
 
-      </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+      <th>Size&Unit</th>
+      <th>%MS</th>
+      <th><abbr title="Trend">T</abbr></th>
+      <th>Ref.</th>
+
+      <th>Area</th>
+      <th>%MS</th>
+      <th>Qual.</th>
+      <th><abbr title="Trend">T</abbr></th>
+      <th>Suitable</th>
+
+      <th>Curr CS</th>
+      <th><abbr title="Trend">T</abbr></th>
+      <th>Prev CS</th>
+      <th>Nat of ch</th>
+    </tr>
+    </thead>
+  </table>
 {% endblock %}
