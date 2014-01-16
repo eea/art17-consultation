@@ -204,16 +204,16 @@ IMPORT_SCHEMA = {
         #    'post_date', 'deleted']),
         #('habitats2eunis', [
         #    'CODE_2000', 'ID_HABITAT']),
-        #('habitattypes_manual_assessment', [
-        #    'MS', 'region', 'habitatcode', 'range_surface_area', 'range_trend',
-        #    'range_yearly_magnitude', 'complementary_favourable_range',
-        #    'coverage_surface_area', 'coverage_trend',
-        #    'coverage_yearly_magnitude', 'complementary_favourable_area',
-        #    'method_range', 'conclusion_range', 'method_area',
-        #    'conclusion_area', 'method_structure', 'conclusion_structure',
-        #    'method_future', 'conclusion_future', 'method_assessment',
-        #    'conclusion_assessment', 'user', 'last_update', 'deleted_record',
-        #    'decision', 'user_decision', 'last_update_decision']),
+        ('habitattypes_manual_assessment', [
+           'MS', 'region', 'habitatcode', 'range_surface_area', 'range_trend',
+           'range_yearly_magnitude', 'complementary_favourable_range',
+           'coverage_surface_area', 'coverage_trend',
+           'coverage_yearly_magnitude', 'complementary_favourable_area',
+           'method_range', 'conclusion_range', 'method_area',
+           'conclusion_area', 'method_structure', 'conclusion_structure',
+           'method_future', 'conclusion_future', 'method_assessment',
+           'conclusion_assessment', 'user', 'last_update', 'deleted_record',
+           'decision', 'user_decision', 'last_update_decision']),
         ('lu_hd_habitats', [
             'habcode', 'group', 'priority', 'name', 'annex_I_comments',
             'marine']),
