@@ -44,7 +44,7 @@
           <th rowspan="2">MS</th>
           <th rowspan="2">Reg</th>
           <th colspan="4">Range</th>
-          <th colspan="4">Population</th>
+          <th colspan="4">Area</th>
           <th rowspan="2">Struct & func.</th>
           <th rowspan="2">Future prosp.</th>
           <th rowspan="2">Overall asses.</th>
@@ -107,10 +107,69 @@
         <tr class="section-header">
           <th colspan="19">
             Automatic assessments
-            <button>show/hide</button>
+            <button onclick="$('#automatic_body').toggle()">show/hide</button>
           </th>
         </tr>
+        <tr>
+          <th rowspan="2">MS</th>
+          <th rowspan="2">Reg</th>
+          <th colspan="4">Range</th>
+          <th colspan="4">Area</th>
+          <th rowspan="2">Struct & func.</th>
+          <th rowspan="2">Future prosp.</th>
+          <th rowspan="2">Overall asses.</th>
+          <th colspan="4">Grided maps</th>
+          <th colspan="2">Quality</th>
+        </tr>
+        <tr>
+          <th>Area</th>
+          <th>%XR</th>
+          <th><abbr title="Trend">T</abbr></th>
+          <th>Ref.</th>
+
+          <th>Area</th>
+          <th>%XR</th>
+          <th><abbr title="Trend">T</abbr></th>
+          <th>Ref.</th>
+
+          <th>Range</th>
+          <th>%GR</th>
+          <th>Distrib</th>
+          <th>%GD</th>
+
+          <th>Range</th>
+          <th>Area</th>
+        </tr>
       </thead>
+      <tbody id="automatic_body" class="hidden">
+      {% for row in auto_objects %}
+      <tr>
+        <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+          {{ row.assessment_method or 'N/A' }}
+        </td>
+        <td>
+          {{ row.region or 'N/A' }}
+        </td>
+
+        {# Range #}
+        <td colspan="4"></td>
+
+        {# Area #}
+        <td colspan="4"></td>
+
+        {# Struct Func Overall#}
+        <td></td>
+        <td></td>
+        <td></td>
+
+        {# Grided #}
+        <td colspan="4"></td>
+
+        {# Quality #}
+        <td colspan="2"></td>
+      </tr>
+      {% endfor %}
+      </tbody>
 
       <thead>
         <tr class="section-header">

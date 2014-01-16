@@ -262,7 +262,7 @@ class HabitatSummary(Summary, HabitatMixin):
         filter_args = {}
 
         if subject:
-            filter_args['code'] = subject
+            filter_args['habitatcode'] = subject
         else:
             return False
         if region:
@@ -270,6 +270,12 @@ class HabitatSummary(Summary, HabitatMixin):
         if filter_args:
             filter_args['dataset_id'] = period
             self.objects = self.model_cls.query.filter_by(**filter_args)
+            self.auto_objects = self.model_auto_cls.query.filter_by(
+                **filter_args
+            )
+            self.manual_objects = self.model_manual_cls.query.filter_by(
+                **filter_args
+            ).order_by(self.model_manual_cls.decision.desc())
         return True
 
     def get_context(self):
