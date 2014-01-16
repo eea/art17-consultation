@@ -57,8 +57,8 @@
           <th><abbr title="Trend">T</abbr></th>
           <th>Ref.</th>
 
-          <th>Area</th>
-          <th>%XR</th>
+          <th>Surface</th>
+          <th>%XA</th>
           <th><abbr title="Trend">T</abbr></th>
           <th>Ref.</th>
 
@@ -87,8 +87,12 @@
           {% else %}
 
           {#- Range columns -#}
-
-          {#- Population columns -#}
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          {#- Area columns -#}
+          {% include 'summary/habitat/area.html' with context %}
 
           {#- Habitat columns -#}
 

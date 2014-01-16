@@ -125,7 +125,13 @@ def format_error(error, record, field):
                  'conclusion_habitat',
                  'percentage_habitat_surface_area',
                  'habitat_trend',
-                 'complementary_suitable_habitat'
+                 'complementary_suitable_habitat',
+                 'coverage_surface_area',
+                 'conclusion_area',
+                 'percentage_coverage_surface_area',
+                 'coverage_yearly_magnitude',
+                 'complementary_favourable_area',
+                 'complementary_favourable_area_q',
                  ):
         return '%s: %s' % (error['text'], error['suspect_value'])
     return error['text']
