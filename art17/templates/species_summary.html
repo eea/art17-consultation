@@ -41,6 +41,9 @@
       <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
       <th colspan="4">Overall assessment</th>
       <th colspan="4">Grided maps(km<sup>2</sup>)</th>
+
+      {# Padding #}
+      <td colspan="5" rowspan="2"></td>
     </tr>
     <tr>
       <th>Area</th>
@@ -102,6 +105,8 @@
       {#- Grided maps columns -#}
       {% include 'summary/species/grided_maps.html' with context %}
 
+      {# Padding #}
+      <td colspan="5"></td>
       {% endif %}
     </tr>
     {% endfor %}
@@ -143,6 +148,8 @@
       {# Grided #}
       <td colspan="4"></td>
 
+      {# Padding #}
+      <td colspan="5"></td>
     </tr>
     {% endfor %}
     </tbody>
@@ -193,5 +200,40 @@
       <th>Nat of ch</th>
     </tr>
     </thead>
+
+    <tbody>
+    {% for row in manual_objects %}
+    <tr>
+      <td>
+        {{ row.decision }}
+      </td>
+      <td>
+        {{ row.region or 'N/A' }}
+      </td>
+
+      {# Range #}
+      <td colspan="4"></td>
+
+      {# Population #}
+      <td colspan="4"></td>
+
+      {# Habitat #}
+      <td colspan="5"></td>
+
+      {# Prospects #}
+      <td></td>
+
+      {# Overall #}
+      <td colspan="4"></td>
+
+      {# Contrib #}
+      <td colspan="4"></td>
+
+      {# Comments #}
+      <td colspan="5"></td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
   </table>
 {% endblock %}

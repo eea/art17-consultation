@@ -5,13 +5,14 @@ from art17.models import (
     EtcDicHdHabitat,
     db,
     EtcDataSpeciesAutomaticAssessment,
-)
+    HabitattypesManualAssessment, EtcDataHabitattypeAutomaticAssessment, SpeciesManualAssessment)
 
 
 class SpeciesMixin(object):
 
     model_cls = EtcDataSpeciesRegion
     model_auto_cls = EtcDataSpeciesAutomaticAssessment
+    model_manual_cls = SpeciesManualAssessment
     subject_name = 'species'
 
     def objects_by_group(self, period, group):
@@ -82,6 +83,8 @@ class SpeciesMixin(object):
 class HabitatMixin(object):
 
     model_cls = EtcDataHabitattypeRegion
+    model_auto_cls = EtcDataHabitattypeAutomaticAssessment
+    model_manual_cls = HabitattypesManualAssessment
     subject_name = 'habitat'
 
     @classmethod

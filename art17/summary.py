@@ -156,6 +156,7 @@ class Summary(views.View):
         self.objects = []
         self.restricted_countries = []
         self.auto_objects = []
+        self.manual_objects = []
         self.setup_objects_and_data(period, subject, region)
 
         summary_filter_form = SummaryFilterForm(request.args)
@@ -173,6 +174,7 @@ class Summary(views.View):
         context.update({
             'objects': self.objects,
             'auto_objects': self.auto_objects,
+            'manual_objects': self.manual_objects,
             'restricted_countries': self.restricted_countries,
             'regions': EtcDicBiogeoreg.query.all(),
             'summary_filter_form': summary_filter_form,
@@ -239,6 +241,9 @@ class SpeciesSummary(Summary, SpeciesMixin):
             self.auto_objects = self.model_auto_cls.query.filter_by(
                 **filter_args
             )
+            self.manual_objects = self.model_manual_cls.query.filter_by(
+                **filter_args
+            ).order_by(self.model_manual_cls.decision.desc())
         return True
 
     def get_context(self):
