@@ -32,7 +32,7 @@ from art17.common import (
     QUALITIES,
 )
 from art17.forms import SummaryFilterForm
-from art17.utils import str2num
+from art17.utils import str2num, parse_semicolon
 
 
 summary = Blueprint('summary', __name__)
@@ -74,6 +74,11 @@ def inject_static():
 @summary.app_template_filter('str2num')
 def _str2num(value, default='N/A'):
     return str2num(value, default=default)
+
+
+@summary.app_template_filter('parse_semicolon')
+def _parse_semicolon(value, sep='<br/>'):
+    return parse_semicolon(value, sep=sep)
 
 
 @summary.app_template_filter('get_quality')
