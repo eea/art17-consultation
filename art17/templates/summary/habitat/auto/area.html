@@ -1,0 +1,15 @@
+<td class="number">
+  {{ row.coverage_surface_area|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_coverage] }}">
+  {{ row.percentage_coverage_surface_area|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="center">
+  {{ row.coverage_trend|parse_semicolon or '' }}
+</td>
+
+<td class="center">
+  {{ row.complementary_favourable_area|parse_semicolon|str2num('')|safe }}
+</td>
