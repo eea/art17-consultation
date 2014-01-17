@@ -128,23 +128,20 @@
         </td>
 
         {# Range #}
-        {% include 'summary/habitat/auto/range.html' %}
+        {% include 'summary/habitat/auto/range.html' with context %}
 
         {# Area #}
-        {% include 'summary/habitat/auto/area.html' %}
+        {% include 'summary/habitat/auto/area.html' with context %}
 
         {# Struct Func Overall#}
-        {% include 'summary/habitat/auto/struct_funct.html' %}
+        {% include 'summary/habitat/auto/struct_funct.html' with context %}
 
         {# Future prospects #}
-        {% include 'summary/habitat/auto/future_prosp.html' %}
+        {% include 'summary/habitat/auto/future_prosp.html' with context %}
         <td></td>
 
-        {# Grided #}
-        <td colspan="4"></td>
-
-        {# Quality #}
-        <td colspan="2"></td>
+        {#- Grided maps columns -#}
+        {% include 'summary/habitat/auto/grided_maps.html' with context %}
 
         {# padding #}
         <td colspan="5"></td>
