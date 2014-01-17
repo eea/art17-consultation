@@ -1,0 +1,3 @@
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_assessment] }} center section-border">
+  {{ row.percentage_assessment|parse_semicolon|str2num('')|safe or '' }}
+</td>
