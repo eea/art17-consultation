@@ -15,10 +15,11 @@ DEFAULT_CONFIG = {
 }
 
 
-def create_app():
+def create_app(config={}):
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.update(DEFAULT_CONFIG)
     app.config.from_pyfile('settings.py')
+    app.config.update(config)
     assets_env.init_app(app)
     db.init_app(app)
     app.register_blueprint(layout)
