@@ -130,7 +130,6 @@ class HabitatMixin(object):
         reg_code_field = EtcDicBiogeoreg.reg_code
         reg_name_field = EtcDicBiogeoreg.reg_name
         dataset_id_field = EtcDataHabitattypeRegion.dataset_id
-
         regions = (
             EtcDicBiogeoreg.query
             .join(EtcDataHabitattypeRegion, reg_code_field == reg_field)

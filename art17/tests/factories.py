@@ -33,3 +33,33 @@ class EtcDicBiogeoregFactory(SQLAlchemyModelFactory):
 
     reg_code = 'ALP'
     reg_name = 'Alpine'
+
+
+class EtcDicHdHabitat(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDicHdHabitat
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+    habcode = 1110
+    group = 'coastals habitat'
+    priority = 0
+    name = 'Sandbanks which are slightly covered by sea water all the time'
+
+
+class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDataHabitattypeRegion
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+    country = 'AT2'
+    eu_country_code = 'AT'
+    delivery = 2
+    envelope = 'http://'
+    filename = 'filename'
+    region = 'ALP'
+
+    code = 1110
+
+
