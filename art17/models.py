@@ -395,7 +395,6 @@ class EtcDicBiogeoreg(Base):
         )
 
 
-
 class EtcDicConclusion(Base):
     __tablename__ = 'etc_dic_conclusion'
 

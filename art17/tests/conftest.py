@@ -1,43 +1,56 @@
-import pytest
+from flask.ext.webtest import TestApp
+from pytest import fixture
+from alembic import command, config
+from path import path
+
 from art17.app import create_app
 from art17.models import db
 
 
-# self.client = TestApp(self.app, db=db, use_session_scopes=True)
-
-CONFIG = {
+test_config = {
+    'SERVER_NAME': 'localhost',
     'TESTING': True,
     'SECRET_KEY': 'test',
     'ASSETS_DEBUG': True,
-    'SQLALCHEMY_DATABASE_URI': 'mysql://root@localhost/',
-    'SQLALCHEMY_BINDS': {
-        'testing': 'mysql://root@localhost/art17testing'
-    }
+    'SQLALCHEMY_DATABASE_URI': 'mysql://root@localhost/art17testing',
+    'SQLALCHEMY_MYSQL_URI': 'mysql://root@localhost/',
 }
 
 
-def create_db(db):
-    conn = db.engine.connect()
+alembic_cfg_path = path(__file__).dirname() / '..' / '..' / 'alembic.ini'
+alembic_cfg = config.Config(alembic_cfg_path.abspath())
+
+
+def create_db(url):
+    conn = db.create_engine(url).connect()
     conn.execute('drop schema if exists art17testing')
     conn.execute('create schema art17testing')
     conn.close()
 
 
-def drop_db(db):
-    conn = db.engine.connect()
+def drop_db(url):
+    conn = db.create_engine(url).connect()
     conn.execute('drop schema art17testing')
     conn.close()
 
 
-@pytest.fixture(scope='module')
+@fixture
 def app(request):
-    app = create_app(CONFIG)
-    with app.app_context():
-        create_db(db)
-        db.create_all(bind='testing')
+    app = create_app(test_config)
+    app_context = app.app_context()
+    app_context.push()
+
+    create_db(app.config['SQLALCHEMY_MYSQL_URI'])
+    command.upgrade(alembic_cfg, 'head')
 
     @request.addfinalizer
     def fin():
-        with app.app_context():
-            drop_db(db)
+        drop_db(app.config['SQLALCHEMY_MYSQL_URI'])
+        app_context.pop()
     return app
+
+
+@fixture
+def client(app):
+    client = TestApp(app, db=db, use_session_scopes=True)
+    return client
