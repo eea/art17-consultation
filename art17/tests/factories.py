@@ -24,3 +24,12 @@ class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
     envelope = 'http://'
     filename = 'filename'
     region = 'ALP'
+
+
+class EtcDicBiogeoregFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDicBiogeoreg
+    FACTORY_SESSION = models.db.session
+
+    reg_code = 'ALP'
+    reg_name = 'Alpine'
