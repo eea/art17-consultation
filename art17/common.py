@@ -1,4 +1,5 @@
 from flask_principal import Permission, RoleNeed
+from art17.models import EtcDataSpeciesAutomaticAssessment
 from .utils import str2num
 
 QUALITIES = {
@@ -82,3 +83,14 @@ def population_ref(row):
     content = '%s(%s)' if filled else '%s%s'
     return content % (population_q, str2num(population, ''))
 
+
+def get_range_conclusion_value(assesment_speciesname, region,
+                               assessment_method):
+    query = (
+        EtcDataSpeciesAutomaticAssessment.query
+        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_range_surface_area)
+        .filter_by(assesment_speciesname=assesment_speciesname, region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+    return query.percentage_range_surface_area if query else ''
