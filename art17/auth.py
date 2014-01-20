@@ -1,22 +1,70 @@
+import logging
+from datetime import datetime
 import flask
-from flask.ext.principal import Principal, Identity, RoleNeed, UserNeed
+from werkzeug.local import LocalProxy
+from flask.ext.script import Manager, Option
+from flask.ext.security import Security, SQLAlchemyUserDatastore, AnonymousUser
+from flask.ext.security import core as flask_security_core
+from flask.ext.security import forms as flask_security_forms
+from flask.ext.security.script import (
+    CreateUserCommand as BaseCreateUserCommand,
+    CreateRoleCommand,
+    AddRoleCommand,
+    RemoveRoleCommand,
+    DeactivateUserCommand,
+    ActivateUserCommand,
+)
 import requests
+from art17 import models
+
+logger = logging.getLogger(__name__)
+
+current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
+flask_security_core.current_user = current_user
+flask_security_core._get_login_manager = lambda app: None
+flask_security_forms.password_length.min = 1
+
+
+class UserDatastore(SQLAlchemyUserDatastore):
+
+    def create_user(self, **kwargs):
+        del kwargs['password']
+        kwargs['account_date'] = datetime.utcnow()
+        super(UserDatastore, self).create_user(**kwargs)
+
+    def _prepare_role_modify_args(self, user, role):
+        return (self.find_user(id=user), self.find_role(role))
+
 
 auth = flask.Blueprint('auth', __name__)
-
-principals = Principal(use_sessions=False)
+security = Security(
+    datastore=UserDatastore(
+        models.db,
+        models.RegisteredUser,
+        models.Role,
+    ),
+)
 
 
 @auth.record
 def setup_auth_handlers(state):
     app = state.app
-    principals.init_app(app)
 
     if app.config.get('AUTH_DEBUG'):
         DebugAuthProvider().init_app(app)
 
     if app.config.get('AUTH_ZOPE'):
         ZopeAuthProvider().init_app(app)
+
+    security.init_app(app)
+
+
+def set_user(user_id):
+    user = models.RegisteredUser.query.get(user_id)
+    if user is None:
+        logger.warn("Autheticated user %r not found in database", user_id)
+    else:
+        flask.g.user = user
 
 
 class DebugAuthProvider(object):
@@ -36,12 +84,7 @@ class DebugAuthProvider(object):
     def before_request_handler(self):
         auth_data = flask.session.get('auth')
         if auth_data and auth_data.get('user_id'):
-            identity = Identity(id=auth_data['user_id'], auth_type='debug')
-            principals.set_identity(identity)
-
-            identity.provides.add(UserNeed(identity.id))
-            for role_name in auth_data.get('roles', []):
-                identity.provides.add(RoleNeed(role_name))
+            set_user(user_id=auth_data['user_id'])
 
     def view(self):
         auth_debug_allowed = bool(flask.current_app.config.get('AUTH_DEBUG'))
@@ -50,16 +93,13 @@ class DebugAuthProvider(object):
                 flask.abort(403)
             user_id = flask.request.form['user_id']
             if user_id:
-                roles = flask.request.form['roles'].strip().split()
-                flask.session['auth'] = {'user_id': user_id, 'roles': roles}
+                flask.session['auth'] = {'user_id': user_id}
             else:
                 flask.session.pop('auth', None)
             return flask.redirect(flask.url_for('.debug'))
 
-        roles = flask.session.get('auth', {}).get('roles', [])
         return flask.render_template('auth_debug.html', **{
-            'user_id': flask.g.identity.id,
-            'roles_txt': ''.join('%s\n' % r for r in roles),
+            'user_id': current_user.get_id(),
             'auth_debug_allowed': auth_debug_allowed,
         })
 
@@ -81,6 +121,42 @@ class ZopeAuthProvider(object):
         )
         user_id = resp.json()['user_id']
         if user_id:
-            identity = Identity(id=user_id, auth_type='zope')
-            principals.set_identity(identity)
-            identity.provides.add(UserNeed(identity.id))
+            set_user(user_id=user_id)
+
+
+class CreateUserCommand(BaseCreateUserCommand):
+
+    option_list = BaseCreateUserCommand.option_list + (
+        Option('-i', '--id', dest='id', default=None),
+    )
+
+    def run(self, **kwargs):
+        kwargs['password'] = 'foo'
+        super(CreateUserCommand, self).run(**kwargs)
+
+
+user_manager = Manager()
+user_manager.add_command('create', CreateUserCommand())
+user_manager.add_command('deactivate', DeactivateUserCommand())
+user_manager.add_command('activate', ActivateUserCommand())
+
+role_manager = Manager()
+role_manager.add_command('create', CreateRoleCommand())
+role_manager.add_command('add', AddRoleCommand())
+role_manager.add_command('remove', RemoveRoleCommand())
+
+
+@role_manager.command
+def ls():
+    for role in models.Role.query:
+        print "{r.name}: {r.description}".format(r=role)
+
+
+@role_manager.command
+def members(role):
+    role_ob = models.Role.query.filter_by(name=role).first()
+    if role_ob is None:
+        print 'No such role %r' % role
+        return
+    for user in role_ob.users:
+        print "{u.id} <{u.email}>".format(u=user)

@@ -6,6 +6,7 @@ from sqlalchemy.dialects.mysql.base import MEDIUMBLOB
 from sqlalchemy.orm import relationship
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
+from flask.ext.security import UserMixin, RoleMixin
 
 
 db = SQLAlchemy()
@@ -690,7 +691,7 @@ roles_users = db.Table('roles_users',
 )
 
 
-class RegisteredUser(Base):
+class RegisteredUser(Base, UserMixin):
     __tablename__ = 'registered_users'
 
     id = Column('user', String(50), primary_key=True)
@@ -711,7 +712,7 @@ class RegisteredUser(Base):
     )
 
 
-class Role(Base):
+class Role(Base, RoleMixin):
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer, primary_key=True)
