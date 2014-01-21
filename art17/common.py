@@ -139,8 +139,8 @@ def get_future_conclusion_value_for_habitat(habitatcode, region,
     return query.percentage_future if query else ''
 
 
-def get_assesm_conclusion_value(assesment_speciesname, region,
-                                assessment_method):
+def get_assesm_conclusion_value_for_species(assesment_speciesname, region,
+                                            assessment_method):
     query = (
         EtcDataSpeciesAutomaticAssessment.query
         .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_assessment)
