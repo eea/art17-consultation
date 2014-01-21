@@ -28,6 +28,8 @@ from art17.common import (
     population_size_unit,
     population_ref,
     get_future_conclusion_value,
+    get_range_conclusion_value,
+    get_population_conclusion_value,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
@@ -58,6 +60,8 @@ def inject_fuctions():
         'population_size_unit': population_size_unit,
         'population_ref': population_ref,
         'get_future_conclusion_value': get_future_conclusion_value,
+        'get_range_conclusion_value': get_range_conclusion_value,
+        'get_population_conclusion_value': get_population_conclusion_value,
     }
 
 

@@ -1,11 +1,12 @@
 # coding: utf-8
 import argparse
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer,\
-    LargeBinary, SmallInteger, String, Table, Text
+    LargeBinary, SmallInteger, String, Table, Text, Boolean
 from sqlalchemy.dialects.mysql.base import MEDIUMBLOB
 from sqlalchemy.orm import relationship
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
+from flask.ext.security import UserMixin, RoleMixin
 
 
 db = SQLAlchemy()
@@ -683,10 +684,17 @@ class PhotoSpecy(Base):
     )
 
 
-class RegisteredUser(Base):
+roles_users = db.Table('roles_users',
+    db.Column('registered_users_user', db.String(50),
+              db.ForeignKey('registered_users.user')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('roles.id')),
+)
+
+
+class RegisteredUser(Base, UserMixin):
     __tablename__ = 'registered_users'
 
-    user = Column(String(50), primary_key=True)
+    id = Column('user', String(50), primary_key=True)
     name = Column(String(255))
     institution = Column(String(45))
     abbrev = Column(String(10))
@@ -695,6 +703,21 @@ class RegisteredUser(Base):
     qualification = Column(String(255))
     account_date = Column(String(16), nullable=False)
     show_assessment = Column(Integer, nullable=False, server_default=u"'1'")
+    active = Column(Boolean)
+    confirmed_at = db.Column(db.DateTime())
+    roles = db.relationship(
+        'Role',
+        secondary=roles_users,
+        backref=db.backref('users', lazy='dynamic'),
+    )
+
+
+class Role(Base, RoleMixin):
+    __tablename__ = 'roles'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    description = db.Column(db.String(255))
 
 
 t_restricted_habitats = Table(

@@ -1,0 +1,21 @@
+<td class="number">
+  {{ row.range_surface_area }}
+</td>
+
+{% set title = COUNTRY_ASSESSMENTS.get(row.conclusion_range, '') %}
+{% set concl_value = get_range_conclusion_value(row.assesment_speciesname,
+                                                row.region,
+                                                row.method_range) %}
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} center"
+    title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
+    {{ row.method_range }}
+</td>
+
+<td class="center">
+  {{ row.range_trend or '' }}
+</td>
+
+<td class="center section-border">
+  {{ row.complementary_favourable_range|str2num('') }}
+</td>
