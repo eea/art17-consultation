@@ -84,20 +84,6 @@ def population_ref(row):
     return content % (population_q, str2num(population, ''))
 
 
-def get_future_conclusion_value(assesment_speciesname, region,
-                                assessment_method):
-    query = (
-        EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_future)
-        .filter_by(assesment_speciesname=assesment_speciesname,
-                   region=region,
-                   assessment_method=assessment_method)
-        .first()
-    )
-
-    return query.percentage_future if query else ''
-
-
 def get_range_conclusion_value(assesment_speciesname, region,
                                assessment_method):
     query = (
@@ -121,3 +107,31 @@ def get_population_conclusion_value(assesment_speciesname, region,
         .first()
     )
     return query.percentage_population_mean_size if query else ''
+
+
+def get_future_conclusion_value(assesment_speciesname, region,
+                                assessment_method):
+    query = (
+        EtcDataSpeciesAutomaticAssessment.query
+        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_future)
+        .filter_by(assesment_speciesname=assesment_speciesname,
+                   region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+
+    return query.percentage_future if query else ''
+
+
+def get_assesm_conclusion_value(assesment_speciesname, region,
+                                assessment_method):
+    query = (
+        EtcDataSpeciesAutomaticAssessment.query
+        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_assessment)
+        .filter_by(assesment_speciesname=assesment_speciesname,
+                   region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+
+    return query.percentage_assessment if query else ''
