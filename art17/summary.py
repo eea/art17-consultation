@@ -27,6 +27,7 @@ from art17.common import (
     expert_perm,
     population_size_unit,
     population_ref,
+    get_future_conclusion_value,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
@@ -56,6 +57,7 @@ def inject_fuctions():
         'parse_qa_errors': parse_qa_errors,
         'population_size_unit': population_size_unit,
         'population_ref': population_ref,
+        'get_future_conclusion_value': get_future_conclusion_value,
     }
 
 

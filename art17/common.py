@@ -1,5 +1,6 @@
 from flask_principal import Permission, RoleNeed
 from .utils import str2num
+from art17.models  import EtcDataSpeciesAutomaticAssessment
 
 QUALITIES = {
     'P': 'Poor',
@@ -82,3 +83,16 @@ def population_ref(row):
     content = '%s(%s)' if filled else '%s%s'
     return content % (population_q, str2num(population, ''))
 
+
+def get_future_conclusion_value(assesment_speciesname, region,
+                                assessment_method):
+    query = (
+        EtcDataSpeciesAutomaticAssessment.query
+        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_future)
+        .filter_by(assesment_speciesname=assesment_speciesname,
+                   region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+
+    return query.percentage_future if query else ''
