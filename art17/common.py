@@ -153,6 +153,20 @@ def get_assesm_conclusion_value_for_species(assesment_speciesname, region,
     return query.percentage_assessment if query else ''
 
 
+def get_assesm_conclusion_value_for_habitat(habitatcode, region,
+                                            assessment_method):
+    query = (
+        EtcDataHabitattypeAutomaticAssessment.query
+        .with_entities(EtcDataHabitattypeAutomaticAssessment.percentage_assessment)
+        .filter_by(habitatcode=habitatcode,
+                   region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+
+    return query.percentage_assessment if query else ''
+
+
 def get_coverage_conclusion_value(habitatcode, region, assessment_method):
     query = (
         EtcDataHabitattypeAutomaticAssessment.query
