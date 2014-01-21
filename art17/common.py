@@ -1,5 +1,8 @@
 from flask_principal import Permission, RoleNeed
-from art17.models import EtcDataSpeciesAutomaticAssessment
+from art17.models import (
+    EtcDataSpeciesAutomaticAssessment,
+    EtcDataHabitattypeAutomaticAssessment,
+)
 from .utils import str2num
 
 QUALITIES = {
@@ -98,7 +101,6 @@ def get_range_conclusion_value(assesment_speciesname, region,
 
 def get_population_conclusion_value(assesment_speciesname, region,
                                     assessment_method):
-
     query = (
         EtcDataSpeciesAutomaticAssessment.query
         .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_population_mean_size)
@@ -135,3 +137,14 @@ def get_assesm_conclusion_value(assesment_speciesname, region,
     )
 
     return query.percentage_assessment if query else ''
+
+
+def get_coverage_conclusion_value(habitatcode, region, assessment_method):
+    query = (
+        EtcDataHabitattypeAutomaticAssessment.query
+        .with_entities(EtcDataHabitattypeAutomaticAssessment.percentage_coverage_surface_area)
+        .filter_by(habitatcode=habitatcode, region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+    return query.percentage_coverage_surface_area if query else ''
