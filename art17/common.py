@@ -94,3 +94,16 @@ def get_range_conclusion_value(assesment_speciesname, region,
         .first()
     )
     return query.percentage_range_surface_area if query else ''
+
+
+def get_population_conclusion_value(assesment_speciesname, region,
+                                    assessment_method):
+
+    query = (
+        EtcDataSpeciesAutomaticAssessment.query
+        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_population_mean_size)
+        .filter_by(assesment_speciesname=assesment_speciesname, region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+    return query.percentage_population_mean_size if query else ''

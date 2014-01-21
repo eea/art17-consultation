@@ -1,0 +1,21 @@
+<td>
+  {{ row.population_size or ''}} {{ row.population_size_unit or '' }}
+</td>
+
+
+{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') %}
+{% set concl_value = get_population_conclusion_value(row.assesment_speciesname,
+                                                row.region,
+                                                row.method_range) %}
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }} center"
+    title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
+    {{ row.method_population or '' }}
+</td>
+
+<td class="center">
+  {{ row.population_trend or '' }}
+</td>
+
+<td class="number section-border">
+  {{ row.complementary_favourable_population|str2num('') }}
+</td>
