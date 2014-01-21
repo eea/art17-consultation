@@ -161,3 +161,14 @@ def get_coverage_conclusion_value(habitatcode, region, assessment_method):
         .first()
     )
     return query.percentage_coverage_surface_area if query else ''
+
+
+def get_struct_conclusion_value(habitatcode, region, assessment_method):
+    query = (
+        EtcDataHabitattypeAutomaticAssessment.query
+        .with_entities(EtcDataHabitattypeAutomaticAssessment.percentage_structure)
+        .filter_by(habitatcode=habitatcode, region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+    return query.percentage_structure if query else ''

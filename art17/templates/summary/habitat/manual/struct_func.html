@@ -1,0 +1,8 @@
+
+{% set title = COUNTRY_ASSESSMENTS.get(row.conclusion_structure, '') %}
+{% set concl_value = get_range_conclusion_value(row.habitat,
+                                                row.region,
+                                                row.method_structure) %}
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} center section-border" title="{{ title }}{% if concl_value %}: {{ concl_value }}{% endif %}">
+  {{ row.method_structure }}
+</td>

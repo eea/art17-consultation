@@ -33,6 +33,7 @@ from art17.common import (
     get_future_conclusion_value_for_habitat,
     get_assesm_conclusion_value,
     get_coverage_conclusion_value,
+    get_struct_conclusion_value,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
@@ -68,6 +69,7 @@ def inject_fuctions():
         'get_future_conclusion_value_for_habitat': get_future_conclusion_value_for_habitat,
         'get_assesm_conclusion_value': get_assesm_conclusion_value,
         'get_coverage_conclusion_value': get_coverage_conclusion_value,
+        'get_struct_conclusion_value': get_struct_conclusion_value,
     }
 
 
