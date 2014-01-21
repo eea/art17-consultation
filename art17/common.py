@@ -111,12 +111,26 @@ def get_population_conclusion_value(assesment_speciesname, region,
     return query.percentage_population_mean_size if query else ''
 
 
-def get_future_conclusion_value(assesment_speciesname, region,
-                                assessment_method):
+def get_future_conclusion_value_for_species(assesment_speciesname, region,
+                                            assessment_method):
     query = (
         EtcDataSpeciesAutomaticAssessment.query
         .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_future)
         .filter_by(assesment_speciesname=assesment_speciesname,
+                   region=region,
+                   assessment_method=assessment_method)
+        .first()
+    )
+
+    return query.percentage_future if query else ''
+
+
+def get_future_conclusion_value_for_habitat(habitatcode, region,
+                                            assessment_method):
+    query = (
+        EtcDataHabitattypeAutomaticAssessment.query
+        .with_entities(EtcDataHabitattypeAutomaticAssessment.percentage_future)
+        .filter_by(habitatcode=habitatcode,
                    region=region,
                    assessment_method=assessment_method)
         .first()
@@ -142,7 +156,6 @@ def get_assesm_conclusion_value(assesment_speciesname, region,
 def get_coverage_conclusion_value(habitatcode, region, assessment_method):
     query = (
         EtcDataHabitattypeAutomaticAssessment.query
-        .with_entities(EtcDataHabitattypeAutomaticAssessment.percentage_coverage_surface_area)
         .filter_by(habitatcode=habitatcode, region=region,
                    assessment_method=assessment_method)
         .first()
