@@ -64,7 +64,10 @@ def set_user(user_id):
     if user is None:
         logger.warn("Autheticated user %r not found in database", user_id)
     else:
-        flask.g.user = user
+        if user.is_active():
+            flask.g.user = user
+        else:
+            logger.warn("User %r is marked as inactive", user_id)
 
 
 class DebugAuthProvider(object):
