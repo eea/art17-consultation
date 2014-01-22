@@ -220,10 +220,10 @@ class Summary(views.View):
 
         return render_template(self.template_name, **context)
 
-    def get_current_selection(self, period_name, group, species, region):
-        if not group and not species:
+    def get_current_selection(self, period_name, group, subject, region):
+        if not subject:
             return []
-        current_selection = [period_name, group, species]
+        current_selection = [period_name, group, subject]
         if region:
             region_name = EtcDicBiogeoreg.get_region_name(region)
             if region_name:
