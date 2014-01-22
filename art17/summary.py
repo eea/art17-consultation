@@ -5,7 +5,9 @@ from flask import (
     render_template,
     jsonify,
     url_for,
+    flash,
 )
+from art17.auth import current_user
 
 from art17.models import (
     EtcDicBiogeoreg,
@@ -60,6 +62,14 @@ def homepage():
 def can_view(record, countries):
     return (admin_perm().can() or expert_perm().can() or
             record.eu_country_code not in countries)
+
+
+@summary.app_template_global('can_add_conclusion')
+def can_add_conclusion(zone, subject, region=None):
+    """
+    Zone: one of 'species', 'habitat'
+    """
+    return admin_perm().can()
 
 
 @summary.app_context_processor
@@ -203,13 +213,21 @@ class Summary(views.View):
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
         manual_form = self.manual_form_cls(request.form)
+        manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if request.method == 'POST' and manual_form.validate():
+            admin_perm().test()
             obj = self.flatten_form(manual_form.data, subject)
-            obj.region = region
-            #obj.user = 1 FIXME
+            obj.user = current_user.id
             obj.dataset_id = period
-            db.session.add(obj)
-            db.session.commit()
+            db.session.flush()
+            try:
+                db.session.add(obj)
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                import logging
+                logging.exception(e)
+                flash('A record with the same keys exist. Cannot add', 'error')
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
@@ -223,12 +241,13 @@ class Summary(views.View):
             'auto_objects': self.auto_objects,
             'manual_objects': self.manual_objects,
             'restricted_countries': self.restricted_countries,
-            'regions': EtcDicBiogeoreg.query.all(),
+            'regions': self.get_regions(period, subject),
             'summary_filter_form': summary_filter_form,
             'manual_form': manual_form,
             'current_selection': current_selection,
             'annexes': annexes,
             'group': group,
+            'subject': subject,
             'period_name': period_name,
         })
 

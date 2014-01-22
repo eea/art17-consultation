@@ -1,6 +1,6 @@
 from flask_wtf import Form
 from wtforms import SelectField, DecimalField, TextField
-from art17.models import Dataset, EtcDicMethod, EtcDicConclusion, EtcDicTrend, EtcDicPopulationUnit
+from art17.models import Dataset, EtcDicMethod, EtcDicConclusion, EtcDicTrend, EtcDicPopulationUnit, EtcDicBiogeoreg
 
 
 class SummaryFilterForm(Form):
@@ -16,6 +16,8 @@ class SummaryFilterForm(Form):
 
 
 class SummaryManualFormSpecies(Form):
+
+    region = SelectField()
 
     range_surface_area = TextField(default=None)
     method_range = SelectField()

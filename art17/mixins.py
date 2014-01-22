@@ -67,13 +67,16 @@ class SpeciesMixin(object):
         return blank_option + subjects
 
     @classmethod
-    def get_regions(cls, period, species):
+    def get_regions(cls, period, species, short=False):
         blank_option = [('', 'All bioregions')]
 
         assesment_field = EtcDataSpeciesRegion.assesment_speciesname
         reg_field = EtcDataSpeciesRegion.region
         reg_code_field = EtcDicBiogeoreg.reg_code
-        reg_name_field = EtcDicBiogeoreg.reg_name
+        if not short:
+            reg_name_field = EtcDicBiogeoreg.reg_name
+        else:
+            reg_name_field = EtcDicBiogeoreg.reg_code
         dataset_id_field = EtcDataSpeciesRegion.dataset_id
 
         regions = (

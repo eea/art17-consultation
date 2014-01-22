@@ -156,6 +156,7 @@
     </tbody>
 
     {# Add manual assessment #}
+    {% if can_add_conclusion('species', subject) %}
     <thead>
       <tr>
         <th rowspan="2"></th>
@@ -211,12 +212,13 @@
     <tbody>
       <tr class="form">
         <td></td>
-        <td></td>
+        <td>{{ manual_form.region() }}</td>
 
         {% include 'summary/species/manual_form.html' %}
       </tr>
     </tbody>
     </form>
+    {% endif %}
 
     {# Manual assessments - conclusions #}
     <thead>
