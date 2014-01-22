@@ -631,6 +631,7 @@ class HabitattypesManualAssessment(Base):
     conclusion_assessment_trend = Column(String(1))
     conclusion_assessment_prev = Column(String(3))
     conclusion_assessment_change = Column(String(2))
+    method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     user = Column(String(25), primary_key=True, nullable=False,
                   server_default=u"''")
@@ -805,7 +806,7 @@ class SpeciesManualAssessment(Base):
     conclusion_assessment_trend = Column(String(1))
     conclusion_assessment_prev = Column(String(3))
     conclusion_assessment_change = Column(String(2))
-    # method_target1 (?)
+    method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     user = Column(String(25), primary_key=True, nullable=False,
                   server_default=u"''")
