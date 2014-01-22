@@ -1,9 +1,10 @@
-<td class="number">
+<td class="number" colspan="2">
   {{ row.population_size|default('', true)|parse_semicolon|safe }}
 </td>
 
 <td class="center {{ CONCLUSION_CLASSES[row.conclusion_population] }}"
-    title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') }}">
+    title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') }}"
+    colspan="2">
   {{ row.percentage_population_mean_size|parse_semicolon|str2num('')|safe }}
 </td>
 
