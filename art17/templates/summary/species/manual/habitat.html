@@ -1,0 +1,24 @@
+<td class="number">
+    {{ row.habitat_surface_area|str2num('')|safe }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') + ' center section-border' %}
+{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_habitat, '') %}
+
+{% set concl_value = get_habitat_conclusion_value(row.assesment_speciesname,
+                                                  row.region,
+                                                  row.method_future) %}
+
+<td class="{{ classes }}" title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
+    {{ row.method_habitat or '' }}
+</td>
+
+<td></td>
+
+<td class="center">
+    {{ row.habitat_trend or '' }}
+</td>
+
+<td class="number section-border">
+  {{ row.complementary_suitable_habitat|str2num('')|safe }}
+</td>
