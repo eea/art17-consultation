@@ -43,6 +43,7 @@ class SummaryManualFormSpecies(Form):
     conclusion_assessment_trend = SelectField()
     conclusion_assessment_change = SelectField()
 
+    method_target1 = SelectField()
     conclusion_target1 = SelectField()
 
     def __init__(self, *args, **kwargs):
@@ -58,7 +59,7 @@ class SummaryManualFormSpecies(Form):
 
         for f in (self.method_range, self.method_population,
                   self.method_habitat, self.method_future,
-                  self.method_assessment):
+                  self.method_assessment, self.method_target1):
             f.choices = methods
 
         for f in (self.conclusion_range, self.conclusion_population,
