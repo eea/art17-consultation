@@ -178,8 +178,13 @@ def parse_qa_errors(fields, record, qa_errors):
 
 class Summary(views.View):
 
+    methods = ['GET', 'POST']
+
     def get_context(self):
         return {}
+
+    def flatten_form(self, form):
+        raise NotImplementedError()
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -198,6 +203,13 @@ class Summary(views.View):
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
         manual_form = self.manual_form_cls(request.form)
+        if request.method == 'POST' and manual_form.validate():
+            obj = self.flatten_form(manual_form.data, subject)
+            obj.region = region
+            #obj.user = 1 FIXME
+            obj.dataset_id = period
+            db.session.add(obj)
+            db.session.commit()
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
@@ -254,7 +266,7 @@ class Summary(views.View):
         return filter(bool, annexes)
 
 
-class SpeciesSummary(Summary, SpeciesMixin):
+class SpeciesSummary(SpeciesMixin, Summary):
 
     template_name = 'species_summary.html'
     manual_form_cls = SummaryManualFormSpecies
@@ -291,7 +303,7 @@ class SpeciesSummary(Summary, SpeciesMixin):
         }
 
 
-class HabitatSummary(Summary, HabitatMixin):
+class HabitatSummary(HabitatMixin, Summary):
 
     template_name = 'habitat_summary.html'
     manual_form_cls = SummaryManualFormHabitat

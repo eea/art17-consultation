@@ -5,7 +5,10 @@ from art17.models import (
     EtcDicHdHabitat,
     db,
     EtcDataSpeciesAutomaticAssessment,
-    HabitattypesManualAssessment, EtcDataHabitattypeAutomaticAssessment, SpeciesManualAssessment)
+    HabitattypesManualAssessment,
+    EtcDataHabitattypeAutomaticAssessment,
+    SpeciesManualAssessment,
+)
 
 
 class SpeciesMixin(object):
@@ -22,6 +25,12 @@ class SpeciesMixin(object):
         qs = db.session.query(self.model_cls.speciesname).\
             filter_by(group=group, dataset_id=period).distinct()
         return [row[0] for row in qs]
+
+    def flatten_form(self, form, subject):
+        data = dict(form)
+        data['assesment_speciesname'] = subject
+        return self.model_manual_cls(**data)
+
 
     @classmethod
     def get_groups(cls, period):
