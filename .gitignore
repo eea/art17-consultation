@@ -5,3 +5,4 @@ sandbox
 *~
 *.pyc
 __pycache__
+env.ini
