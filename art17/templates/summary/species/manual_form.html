@@ -1,0 +1,48 @@
+{% set form=manual_form %}
+{# Range #}
+<td>
+  {{ form.range_surface_area(size=5) }}
+</td>
+<td>
+  {{ form.method_range() }}
+</td>
+<td>
+  {{ form.conclusion_range() }}
+</td>
+<td>
+  {{ form.range_trend() }}
+</td>
+<td>
+  {{ form.complementary_favourable_range(size=5) }}
+</td>
+{# Population #}
+<td>{{ form.population_size(size=5) }}</td>
+<td>{{ form.population_size_unit() }}</td>
+<td>{{ form.method_population() }}</td>
+<td>{{ form.conclusion_population() }}</td>
+<td>{{ form.population_trend() }}</td>
+<td>{{ form.complementary_favourable_population(size=5) }}</td>
+{# Habitat #}
+<td>{{ form.habitat_surface_area(size=5) }}</td>
+<td>{{ form.method_habitat() }}</td>
+<td>{{ form.conclusion_habitat() }}</td>
+<td></td>
+<td>{{ form.habitat_trend() }}</td>
+<td>{{ form.complementary_suitable_habitat(size=5) }}</td>
+{# FP #}
+<td>{{ form.method_future() }}</td>
+<td>{{ form.conclusion_future() }}</td>
+{# Overall #}
+<td>{{ form.method_assessment() }}</td>
+<td>{{ form.conclusion_assessment() }}</td>
+<td>{{ form.conclusion_assessment_trend() }}</td>
+<td></td>
+<td>{{ form.conclusion_assessment_change() }}</td>
+{# Contrib target 1 #}
+<td>{{ form.method_target1() }}</td>
+<td>{{ form.conclusion_target1() }}</td>
+
+{# Buttons #}
+<td colspan="2">
+  <button type="submit">add</button>
+</td>

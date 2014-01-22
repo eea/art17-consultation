@@ -1,6 +1,6 @@
 {% from '_macros.html' import parse_errors with context %}
 
-    <td class="number">
+    <td class="number" colspan="2">
       {{ population_size_unit(row) }}
     </td>
 
@@ -10,7 +10,8 @@
                          'percentage_population_mean_size'],
                           row, qa_errors,
                           title=title,
-                          classes=classes) }}>
+                          classes=classes) }}
+      colspan="2">
       {{ row.percentage_population_mean_size|str2num }}
     </td>
 

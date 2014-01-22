@@ -1,4 +1,4 @@
-<td>
+<td colspan="2" class="number">
   {{ row.population_size or ''}} {{ row.population_size_unit or '' }}
 </td>
 
@@ -8,7 +8,8 @@
                                                 row.region,
                                                 row.method_range) %}
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }} center"
-    title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
+    title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}"
+    colspan="2">
     {{ row.method_population or '' }}
 </td>
 

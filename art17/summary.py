@@ -40,7 +40,11 @@ from art17.common import (
     COUNTRY_ASSESSMENTS,
     QUALITIES,
 )
-from art17.forms import SummaryFilterForm
+from art17.forms import (
+    SummaryFilterForm,
+    SummaryManualFormSpecies,
+    SummaryManualFormHabitat,
+)
 from art17.utils import str2num, parse_semicolon
 
 
@@ -193,6 +197,8 @@ class Summary(views.View):
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
+        manual_form = self.manual_form_cls(request.form)
+
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
 
@@ -207,6 +213,7 @@ class Summary(views.View):
             'restricted_countries': self.restricted_countries,
             'regions': EtcDicBiogeoreg.query.all(),
             'summary_filter_form': summary_filter_form,
+            'manual_form': manual_form,
             'current_selection': current_selection,
             'annexes': annexes,
             'group': group,
@@ -250,6 +257,7 @@ class Summary(views.View):
 class SpeciesSummary(Summary, SpeciesMixin):
 
     template_name = 'species_summary.html'
+    manual_form_cls = SummaryManualFormSpecies
 
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}
@@ -286,6 +294,7 @@ class SpeciesSummary(Summary, SpeciesMixin):
 class HabitatSummary(Summary, HabitatMixin):
 
     template_name = 'habitat_summary.html'
+    manual_form_cls = SummaryManualFormHabitat
 
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}

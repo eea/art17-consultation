@@ -2,7 +2,7 @@
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' center section-border' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
-<td class="{{ classes }}" title="{{ title }}">
+<td class="{{ classes }}" title="{{ title }}" colspan="2">
   {{ row.percentage_assessment|default('', true)|parse_semicolon|safe}}
 </td>
 

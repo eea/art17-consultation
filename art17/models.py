@@ -409,6 +409,10 @@ class EtcDicConclusion(Base):
         primary_key=True,
     )
 
+    @classmethod
+    def all(cls):
+        return cls.query.with_entities(cls.conclusion).order_by(cls.conclusion)
+
 
 class EtcDicDecision(Base):
     __tablename__ = 'etc_dic_decision'
@@ -455,6 +459,16 @@ class EtcDicMethod(Base):
         primary_key=True,
     )
 
+    @classmethod
+    def all(cls):
+        return (
+            cls.query.filter(
+                (cls.method.startswith('1') | cls.method.startswith('2')))
+            .filter(cls.method != '2XA')
+            .with_entities(cls.method)
+            .order_by(cls.method)
+        )
+
 
 class EtcDicPopulationUnit(Base):
     __tablename__ = 'etc_dic_population_units'
@@ -469,6 +483,13 @@ class EtcDicPopulationUnit(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+    @classmethod
+    def all(cls):
+        return (
+            cls.query.with_entities(cls.population_units)
+            .order_by(cls.order)
+        )
 
 
 class EtcDicSpeciesType(Base):
@@ -499,6 +520,10 @@ class EtcDicTrend(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+    @classmethod
+    def all(cls):
+        return cls.query.with_entities(cls.trend).all()
 
 
 class EtcQaErrorsHabitattypeManualChecked(Base):
@@ -606,6 +631,7 @@ class HabitattypesManualAssessment(Base):
     conclusion_assessment_trend = Column(String(1))
     conclusion_assessment_prev = Column(String(3))
     conclusion_assessment_change = Column(String(2))
+    method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     user = Column(String(25), primary_key=True, nullable=False,
                   server_default=u"''")
@@ -780,6 +806,7 @@ class SpeciesManualAssessment(Base):
     conclusion_assessment_trend = Column(String(1))
     conclusion_assessment_prev = Column(String(3))
     conclusion_assessment_change = Column(String(2))
+    method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     user = Column(String(25), primary_key=True, nullable=False,
                   server_default=u"''")
