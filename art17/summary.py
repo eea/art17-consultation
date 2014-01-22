@@ -60,7 +60,7 @@ def homepage():
 
 @summary.app_template_global('can_view')
 def can_view(record, countries):
-    return (admin_perm().can() or expert_perm().can() or
+    return (admin_perm.can() or expert_perm.can() or
             record.eu_country_code not in countries)
 
 
@@ -69,7 +69,7 @@ def can_add_conclusion(zone, subject, region=None):
     """
     Zone: one of 'species', 'habitat'
     """
-    return admin_perm().can()
+    return admin_perm.can()
 
 
 @summary.app_context_processor
@@ -215,7 +215,7 @@ class Summary(views.View):
         manual_form = self.manual_form_cls(request.form)
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if request.method == 'POST' and manual_form.validate():
-            admin_perm().test()
+            admin_perm.test()
             obj = self.flatten_form(manual_form.data, subject)
             obj.user = current_user.id
             obj.dataset_id = period

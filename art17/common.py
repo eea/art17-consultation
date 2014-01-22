@@ -46,12 +46,8 @@ def get_default_period():
     return '1'
 
 
-def admin_perm():
-    return Permission(RoleNeed('admin'))
-
-
-def expert_perm():
-    return Permission(RoleNeed('expert'))
+admin_perm = Permission(RoleNeed('admin'))
+expert_perm = Permission(RoleNeed('expert'))
 
 
 def population_size_unit(row):
