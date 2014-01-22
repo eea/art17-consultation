@@ -9,6 +9,7 @@
 
   {% include 'filters.html' %}
 
+  {% if current_selection %}
   <table class="complex_datatable datatable">
     <colgroup>
       <col span="1">
@@ -206,9 +207,16 @@
         <td colspan="5"></td>
       </tr>
     </thead>
+    <form method="get" action="">
     <tbody>
+      <tr class="form">
+        <td></td>
+        <td></td>
 
+        {% include 'summary/species/manual_form.html' %}
+      </tr>
     </tbody>
+    </form>
 
     {# Manual assessments - conclusions #}
     <thead>
@@ -289,4 +297,5 @@
     {% endfor %}
     </tbody>
   </table>
+  {% endif %}
 {% endblock %}

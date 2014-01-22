@@ -215,3 +215,6 @@ td.XUU {
 .hidden {
     display: none;
 }
+.complex_datatable tr.form td {
+	padding: 0;
+}
