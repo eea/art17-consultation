@@ -214,6 +214,13 @@
 
         {% include 'summary/species/manual_form.html' %}
       </tr>
+      {% if manual_form.errors %}
+      <tr>
+        <td colspan="{{ colspan_all }}">
+          {{ manual_form.all_errors() | safe }}
+        </td>
+      </tr>
+      {% endif %}
     </tbody>
     </form>
     {% endif %}
