@@ -134,7 +134,7 @@ class HabitatMixin(object):
         return blank_option + subjects
 
     @classmethod
-    def get_regions(cls, period, subject):
+    def get_regions(cls, period, subject, short=False):
         blank_option = [('', 'All bioregions')]
 
         assesment_field = EtcDataHabitattypeRegion.code

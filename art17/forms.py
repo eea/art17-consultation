@@ -78,4 +78,5 @@ class SummaryManualFormSpecies(Form):
 
 
 class SummaryManualFormHabitat(Form):
-    pass
+
+    region = SelectField()

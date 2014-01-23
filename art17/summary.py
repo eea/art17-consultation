@@ -287,7 +287,7 @@ class Summary(views.View):
 
 class SpeciesSummary(SpeciesMixin, Summary):
 
-    template_name = 'species_summary.html'
+    template_name = 'summary/species.html'
     manual_form_cls = SummaryManualFormSpecies
 
     def setup_objects_and_data(self, period, subject, region):
@@ -324,7 +324,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
 
 class HabitatSummary(HabitatMixin, Summary):
 
-    template_name = 'habitat_summary.html'
+    template_name = 'summary/habitat.html'
     manual_form_cls = SummaryManualFormHabitat
 
     def setup_objects_and_data(self, period, subject, region):
