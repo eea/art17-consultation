@@ -3,4 +3,13 @@
 
 {% block content %}
 
+  {% if objects.count() %}
+
+    {% for row in objects %}
+      {{ row }}
+    {% endfor %}
+
+  {% endif %}
+
+
 {% endblock%}
