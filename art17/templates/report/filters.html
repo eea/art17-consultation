@@ -1,0 +1,41 @@
+<form id="filterform" name="filterform" method="get">
+
+  <fieldset>
+    <legend>{{ report_filter_form.period.label }}</legend>
+    {{ report_filter_form.period }}
+  </fieldset>
+
+  <fieldset>
+    <legend>{{ report_filter_form.group.label }}</legend>
+    {{ report_filter_form.group(**{'data-href': groups_url}) }}
+  </fieldset>
+
+  <fieldset>
+    <legend>{{ report_filter_form.country.label }}</legend>
+    {{ report_filter_form.country(**{'data-href': country_url}) }}
+  </fieldset>
+
+  <fieldset>
+    <legend>{{ report_filter_form.region.label }}</legend>
+    {{ report_filter_form.region(**{'data-href': regions_url}) }}
+  </fieldset>
+
+  <button type="submit">Filter</button>
+
+</form>
+
+<div class="current_selection">
+  {% if current_selection %}
+  <p>
+    <b>Current selection</b>:
+    {{ current_selection|join(', ') }}.
+    {% if annexes %}
+      <b>Annexes</b> {{ annexes|join(', ') }}.
+    {% endif %}
+    <a href="">Show all {{ group }}</a>
+  </p>
+  {% else %}
+    <p><b>Please select a group and a species.</b></p>
+  {% endif %}
+
+</div>

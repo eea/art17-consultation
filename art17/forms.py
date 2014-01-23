@@ -1,9 +1,13 @@
 # coding=utf-8
+
 from flask_wtf import Form as Form_base
-from wtforms import SelectField, DecimalField, TextField
+from wtforms import SelectField, TextField
 from art17.models import (
-    Dataset, EtcDicMethod, EtcDicConclusion, EtcDicTrend, EtcDicPopulationUnit,
-    EtcDicBiogeoreg,
+    Dataset,
+    EtcDicMethod,
+    EtcDicConclusion,
+    EtcDicTrend,
+    EtcDicPopulationUnit,
 )
 
 
@@ -27,16 +31,25 @@ class Form(Form_base):
         return True
 
 
-class SummaryFilterForm(Form):
+class CommonFilterForm(Form):
 
     period = SelectField('Period...')
     group = SelectField('Group...')
-    subject = SelectField('Name...')
     region = SelectField('Bio-region...')
 
     def __init__(self, *args, **kwargs):
-        super(SummaryFilterForm, self).__init__(*args, **kwargs)
+        super(CommonFilterForm, self).__init__(*args, **kwargs)
         self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
+
+
+class SummaryFilterForm(CommonFilterForm):
+
+    subject = SelectField('Name...')
+
+
+class ReportFilterForm(CommonFilterForm):
+
+    country = SelectField('Country...')
 
 
 class SummaryManualFormSpecies(Form):
@@ -77,10 +90,10 @@ class SummaryManualFormSpecies(Form):
         methods = [a[0] for a in EtcDicMethod.all()]
         methods = [('', '')] + zip(methods, methods)
         conclusions = [a[0] for a in EtcDicConclusion.all()]
-        conclusions = zip(conclusions, conclusions) # TODO filter acl
+        conclusions = zip(conclusions, conclusions)  # TODO filter acl
         trends = [a[0] for a in EtcDicTrend.all()]
         trends = zip(trends, trends)
-        units = [a[0] for a  in EtcDicPopulationUnit.all()]
+        units = [a[0] for a in EtcDicPopulationUnit.all()]
         units = zip(units, units)
 
         for f in (self.method_range, self.method_population,
@@ -144,8 +157,8 @@ class SummaryManualFormHabitat(Form):
 class ProgressFilterForm(Form):
 
     period = SelectField('Period...')
-    group =  SelectField('Group...')
-    conclusion =  SelectField('Conclusion...')
+    group = SelectField('Group...')
+    conclusion = SelectField('Conclusion...')
 
     def __init__(self, *args, **kwargs):
         super(ProgressFilterForm, self).__init__(*args, **kwargs)

@@ -633,13 +633,19 @@ class HabitattypesManualAssessment(Base):
     conclusion_assessment_change = Column(String(2))
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
-    user = Column(String(25), primary_key=True, nullable=False,
-                  server_default=u"''")
+    user_id = Column('user', String(25), primary_key=True, nullable=False,
+                     server_default=u"''")
     last_update = Column(String(16))
     deleted_record = Column(Integer)
     decision = Column(String(3))
     user_decision = Column(String(25))
     last_update_decision = Column(String(16))
+
+    user = relationship(
+        'RegisteredUser',
+        primaryjoin="HabitattypesManualAssessment.user_id==RegisteredUser.id",
+        foreign_keys=user_id,
+    )
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -808,13 +814,19 @@ class SpeciesManualAssessment(Base):
     conclusion_assessment_change = Column(String(2))
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
-    user = Column(String(25), primary_key=True, nullable=False,
+    user_id = Column('user', String(25), primary_key=True, nullable=False,
                   server_default=u"''")
     last_update = Column(String(16))
     deleted_record = Column(Integer)
     decision = Column(String(3))
     user_decision = Column(String(25))
     last_update_decision = Column(String(16))
+
+    user = relationship(
+        'RegisteredUser',
+        primaryjoin="SpeciesManualAssessment.user_id==RegisteredUser.id",
+        foreign_keys=user_id,
+    )
 
     dataset_id = Column(
         'ext_dataset_id',
