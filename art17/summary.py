@@ -224,6 +224,7 @@ class Summary(views.View):
             if manual_form.validate():
                 admin_perm.test()
                 obj = self.flatten_form(manual_form.data, subject)
+                obj.last_update = str(datetime.now())
                 obj.user_id = current_user.id
                 obj.dataset_id = period
                 db.session.flush()
