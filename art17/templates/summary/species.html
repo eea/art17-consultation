@@ -311,7 +311,17 @@
       <td colspan="2"></td>
 
       {# Actions #}
-      <td colspan="2"></td>
+      <td>{# delete #}</td>
+      <td>
+        {% if can_edit(row) %}
+        <form method="post" action="">
+          <input type="hidden" name="subject" value="{{ subject }}" />
+          <input type="hidden" name="region" value="{{ row.region }}" />
+          <input type="hidden" name="user" value="{{ row.user_id }}" />
+          <button type="submit" name="submit" value="edit">edit</button>
+        </form>
+        {% endif %}
+      </td>
 
       {# Comments #}
       {% include 'summary/common/manual/conclusion_details.html' %}
