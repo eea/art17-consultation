@@ -7,6 +7,7 @@ from flask import (
     url_for,
     flash,
 )
+from sqlalchemy.exc import IntegrityError
 from art17.auth import current_user
 
 from art17.models import (
@@ -227,10 +228,8 @@ class Summary(views.View):
             try:
                 db.session.add(obj)
                 db.session.commit()
-            except Exception as e:
+            except IntegrityError:
                 db.session.rollback()
-                import logging
-                logging.exception(e)
                 flash('A record with the same keys exist. Cannot add', 'error')
 
         period_query = Dataset.query.get(period)
