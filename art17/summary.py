@@ -251,6 +251,7 @@ class Summary(views.View):
             'annexes': annexes,
             'group': group,
             'subject': subject,
+            'region': region,
             'period_name': period_name,
         })
 
