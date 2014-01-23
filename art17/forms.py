@@ -108,6 +108,24 @@ class SummaryManualFormSpecies(Form):
             fields[1].errors.append(u"Please fill at least one field")
             return False
 
+        method_conclusions = [
+            (self.method_range, self.conclusion_range),
+            (self.method_population, self.conclusion_population),
+            (self.method_habitat, self.conclusion_habitat),
+            (self.method_future, self.conclusion_future),
+            (self.method_assessment, self.conclusion_assessment),
+            (self.method_target1, self.conclusion_target1),
+        ]
+        data = [(bool(m.data), bool(c.data)) for m, c in method_conclusions]
+        if (True, False) in data or (False, True) in data:
+            fields[1].errors.append(
+                u"Both method and conclusion must be filled"
+            )
+        elif (True, True) not in data:
+            fields[1].errors.append(
+                u"At least one method and conclusion must be filled"
+            )
+
         return True
 
     def all_errors(self):
