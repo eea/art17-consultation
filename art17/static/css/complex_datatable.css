@@ -1,23 +1,35 @@
-.tooltip {
-	display: none;
-}
-
+/*GENERAL TABLE STYLES*/
 .complex_datatable {
-	font-family: 'Roboto Condensed';
-	font-weight: 300;
-	font-size: 12px;
 	border-collapse: collapse;
 	border-color: #b6b6b6;
 	border-width: 1px;
 	border-style: solid;
-	/*text-transform: lowercase;*/
+}
+
+.complex_datatable td,
+.complex_datatable th,
+.complex_datatable caption {
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-left-width: inherit;
+	border-right-width: inherit;
+	border-style: inherit;
+	border-color: transparent;
+	padding: 6px 5px;
+}
+
+.complex_datatable thead,
+.complex_datatable tfoot,
+.complex_datatable tbody {
+	font-family: 'Roboto Condensed';
+	font-weight: 300;
+	font-size: 12px;
 }
 
 /*LINKS*/
 .complex_datatable a {
 	color: blue;
 	text-decoration: none;
-	display: block;
 }
 
 .complex_datatable a:hover {
@@ -25,36 +37,43 @@
 	text-decoration: underline;
 }
 
+.complex_datatable tbody a {
+	display: block;
+}
+
 /*ABBR*/
 abbr {
 	color: black;
 }
 
+/*CAPTION*/
+.complex_datatable caption {
+	border-color: inherit;
+	font-weight: normal;
+	border-top-width: 1px;
+}
+
 /*TABLE HEADER*/
+.complex_datatable thead tr:first-child,
+.complex_datatable .thead tr:first-child {
+	border-top-width: 2px;
+}
+
 .complex_datatable thead th,
-.complex_datatable thead td {
+.complex_datatable thead td,
+.complex_datatable .thead th,
+.complex_datatable .thead td {
 	font-weight: 500;
 	color: black;
+	border: 1px solid #b6b6b6;
+	background: #f6f6f6;
 }
+
 
 /*CELLS*/
-
-.complex_datatable thead th {
-	border: 1px solid #b6b6b6;
-}
-
 .complex_datatable td,
 .complex_datatable th {
 	white-space: nowrap;
-	border-bottom: 0;	
-	position: relative;
-	padding: 6px 5px;
-}
-
-.complex_datatable tbody th {
-	font-weight: 300;
-	text-align: left;
-	background: none;
 }
 
 .complex_datatable tbody th a,
@@ -68,21 +87,9 @@ abbr {
 	overflow: hidden;
 }
 
-/*.complex_datatable td:hover .tooltip {
-	display: block;
-	position: absolute;
-	top: 100%;
-	left: 0;
-	z-index: 1000;
-	max-width: 300px;
-	white-space: normal;
-	background: #ddd;
-}*/
-
 /*ROWS*/
-
 .complex_datatable tbody tr:nth-child(3n+0) {
-	border-bottom: 1px solid #b6b6b6;
+	border-bottom: 1px solid #ddd;
 }
 
 .complex_datatable tbody tr:hover {
@@ -90,19 +97,18 @@ abbr {
 }
 
 /*COLUMNS*/
-.col_border {
+.complex_datatable .col_border {
 	border-left: 1px solid #ddd;
 	border-right: 1px solid #ddd;
 }
 
-.col_border_left {
+.complex_datatable .col_border_left {
 	border-left: 1px solid #ddd;
 }
 
-.col_border_right {
+.complex_datatable .col_border_right {
 	border-right: 1px solid #ddd;
 }
-
 
 /*HIGHLIGHTS*/
 .FV {
@@ -201,11 +207,6 @@ td.XUU {
 }
 
 /* added */
-#filterform {
-    font-family: 'Roboto Condensed';
-	font-weight: 300;
-	font-size: 12px;
-}
 #filterform fieldset {
     display: inline-block;
     border-style: solid;
@@ -215,6 +216,7 @@ td.XUU {
 .hidden {
     display: none;
 }
+
 .complex_datatable tr.form td {
 	padding: 0;
 }

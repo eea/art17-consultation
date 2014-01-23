@@ -12,25 +12,43 @@
   {% set colspan_all=34 if region else 35 %}
   {% if current_selection %}
   <table class="complex_datatable datatable">
-    <colgroup>
-      <col span="1" class="col_border">
-      {% if not region %}
-      <col span="1" class="col_border">
+    <caption>
+      <b>Current selection</b>:
+      {{ current_selection|join(', ') }}.
+      {% if annexes %}
+        <b>Annexes</b> {{ annexes|join(', ') }}.
       {% endif %}
+      <a href="">Show all {{ group }}</a>
+    </caption>
+    <colgroup>
+      <col span="1" class="col_border_right">{% if not region %}
+      <col span="1" class="col_border_right">{% endif %}
+      {# Range #}
+      <col span="1" class="col_border_left">
+      <col span="3">
+      <col span="1" class="col_border_right">
 
-      <col span="5" class="col_border_left">
-
-      <col span="5" class="col_border_left">
-
-      <col span="6" class="col_border_left">
-
-      <col span="2" class="col_border_left">
-
-      <col span="5" class="col_border_left">
-
-      <col span="5" class="col_border">
+      {# Population #}
+      <col span="1" class="col_border_left">
+      <col span="4">
+      <col span="1" class="col_border_right">
+      {# Habitat #}
+      <col span="1" class="col_border_left">
+      <col span="4">
+      <col span="1" class="col_border_right">
+      {# FP #}
+      <col span="1" class="col_border_left">
+      <col span="1" class="col_border_right">
+      {# Overall ass. #}
+      <col span="1" class="col_border_left">
+      <col span="3">
+      <col span="1" class="col_border_right">
+      {# Grided maps #}
+      <col span="1" class="col_border_left">
+      <col span="2">
+      <col span="1" class="col_border_right">
     </colgroup>
-    <thead>
+    <tbody class="thead">
     <tr class="section-header">
       <th colspan="{{ colspan_all }}">
         ETC/BD treated member states' data
@@ -76,7 +94,7 @@
       <th>Distrib.</th>
       <th title="%GD">%MS</th>
     </tr>
-    </thead>
+    </tbody>
     <tbody>
     {% for row in objects %}
     {% set visible = can_view(row, restricted_countries) %}
@@ -116,18 +134,20 @@
     {% endfor %}
     </tbody>
 
-    <thead>
+    <tbody class="thead">
     <tr class="section-header">
       <th colspan="{{ colspan_all }}">
-        Automatic assessments
-        <button onclick="$('#automatic_body').toggle()">show/hide</button>
+        <button onclick="$('#automatic_body').toggle()">Show/Hide Automatic assessments</button>
       </th>
     </tr>
-    </thead>
+    </tbody>
     <tbody id="automatic_body" class="hidden">
     {% for row in auto_objects %}
     <tr>
-      {% include 'summary/common/auto/ms.html' %}
+      <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+        {{ row.assessment_method or 'N/A' }}
+      </td>
+      {% if not region %}<td>{{ row.region or 'N/A' }}</td>{% endif %}
 
       {# Range #}
       {% include 'summary/species/auto/range.html' %}
@@ -155,7 +175,7 @@
 
     {# Add manual assessment #}
     {% if can_add_conclusion('species', subject) %}
-    <thead>
+    <tbody class="thead">
       <tr>
         <th rowspan="2"></th>
         {% if not region %}<th rowspan="2">Reg</th>{% endif %}
@@ -205,7 +225,7 @@
 
         <td colspan="5"></td>
       </tr>
-    </thead>
+    </tbody>
     <form method="post" action="">
     <tbody>
       <tr class="form">
@@ -214,19 +234,12 @@
 
         {% include 'summary/species/manual_form.html' %}
       </tr>
-      {% if manual_form.errors %}
-      <tr>
-        <td colspan="{{ colspan_all }}">
-          {{ manual_form.all_errors() | safe }}
-        </td>
-      </tr>
-      {% endif %}
     </tbody>
     </form>
     {% endif %}
 
     {# Manual assessments - conclusions #}
-    <thead>
+    <tbody class="thead">
     <tr class="section-header">
       <th colspan="{{ colspan_all }}">
         ETC/BD biogeographical assessment &amp; users proposed corrections
@@ -271,7 +284,7 @@
       <th>Prev CS</th>
       <th>Nat of ch</th>
     </tr>
-    </thead>
+    </tbody>
 
     <tbody>
     {% for row in manual_objects %}
@@ -307,5 +320,7 @@
     {% endfor %}
     </tbody>
   </table>
+  {% else %}
+  <p><b>Please select a group and a species.</b></p>
   {% endif %}
 {% endblock %}

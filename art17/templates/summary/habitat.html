@@ -39,7 +39,7 @@
 
         <col span="5" class="col_border">
       </colgroup>
-      <thead>
+      <tbody class="thead">
         <tr class="section-header">
           <th colspan="{{ colspan_all }}">
             ETC/BD treated member states' data
@@ -74,7 +74,7 @@
           <th>%GD</th>
         </tr>
 
-      </thead>
+      </tbody>
       <tbody>
       {% for row in objects %}
         {% set visible = can_view(row, restricted_countries) %}
@@ -114,14 +114,13 @@
       {% endfor %}
       </tbody>
 
-      <thead>
+      <tbody class="thead">
         <tr class="section-header">
           <th colspan="{{ colspan_all }}">
-            Automatic assessments
-            <button onclick="$('#automatic_body').toggle()">show/hide</button>
+            <button onclick="$('#automatic_body').toggle()">Show/Hide Automatic assessments</button>
           </th>
         </tr>
-      </thead>
+      </tbody>
       <tbody id="automatic_body" class="hidden">
       {% for row in auto_objects %}
       <tr>
@@ -151,7 +150,7 @@
       {% endfor %}
       </tbody>
 
-      <thead>
+      <tbody class="thead">
         <tr class="section-header">
           <th colspan="{{ colspan_all }}">
            ETC/BD biogeographical assessment &amp; users proposed corrections
@@ -193,7 +192,7 @@
           <th>Range</th>
           <th>Area</th>
         </tr>
-      </thead>
+      </tbody>
       <tbody>
       {% for row in manual_objects %}
       <tr>
@@ -224,5 +223,7 @@
       {% endfor %}
       </tbody>
     </table>
+    {% else %}
+    <p><b>Please select a group and a species.</b></p>
     {% endif %}
 {% endblock %}
