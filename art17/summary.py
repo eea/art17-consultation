@@ -394,6 +394,13 @@ def _regions():
     return jsonify(data)
 
 
+@summary.route('/species/summary/countries', endpoint='species-summary-countries')
+def _countries():
+    period, group = request.args['period'], request.args['group']
+    data = SpeciesMixin.get_countries(period, group)
+    return jsonify(data)
+
+
 @summary.route('/habitat/summary/groups', endpoint='habitat-summary-groups')
 def _groups_habitat():
     data = HabitatMixin.get_groups(request.args['period'])

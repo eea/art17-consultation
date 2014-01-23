@@ -38,7 +38,7 @@ class CommonFilterForm(Form):
     region = SelectField('Bio-region...')
 
     def __init__(self, *args, **kwargs):
-        super(SummaryFilterForm, self).__init__(*args, **kwargs)
+        super(CommonFilterForm, self).__init__(*args, **kwargs)
         self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
 
 

@@ -91,6 +91,10 @@ class SpeciesMixin(object):
         )
         return blank_option + regions
 
+    @classmethod
+    def get_countries(cls, period, group):
+        return []
+
 
 class HabitatMixin(object):
 
