@@ -1,7 +1,7 @@
 from flask import views, request, render_template, Blueprint
 from art17.common import get_default_period
 from art17.forms import ProgressFilterForm
-from art17.models import Dataset
+from art17.models import Dataset, EtcDicBiogeoreg
 from art17.summary import SpeciesMixin, HabitatMixin
 
 progress = Blueprint('progress', __name__)
@@ -35,6 +35,9 @@ class Progress(views.View):
             'period_name': period_name,
             'group': group,
             'conclusion': conclusion,
+            'subjects': self.subjects_by_group(period, group),
+            'regions': EtcDicBiogeoreg.query.all(),
+            'data': self.setup_objects_and_data(period, group, conclusion),
         })
 
         return render_template(self.template_name, **context)
@@ -47,6 +50,47 @@ class SpeciesProgress(Progress, SpeciesMixin):
         conclusions = ['range', 'population', 'habitat',
                        'future prospects', 'overall assessment']
         return zip(conclusions, conclusions)
+
+
+    def setup_objects_and_data(self, period, group, conclusion_type):
+
+        if conclusion_type == 'range':
+            fields = (self.model_manual_cls.method_range,
+                      self.model_manual_cls.conclusion_range)
+        elif conclusion_type == 'population':
+            fields = (self.model_manual_cls.method_population,
+                      self.model_manual_cls.conclusion_population)
+        elif conclusion_type == 'habitat':
+            fields = (self.model_manual_cls.method_habitat,
+                      self.model_manual_cls.conclusion_habitat)
+        elif conclusion_type == 'future prospects':
+            fields = (self.model_manual_cls.method_future,
+                      self.model_manual_cls.conclusion_future)
+        elif conclusion_type == 'overall assessment':
+            fields = (self.model_manual_cls.method_assessment,
+                      self.model_manual_cls.conclusion_assessment)
+        else:
+            return
+
+        self.objects = (
+            self.model_manual_cls.query
+            .with_entities(self.model_manual_cls.assesment_speciesname,
+                           self.model_manual_cls.region,
+                           *fields)
+            .filter_by(dataset_id=period)
+        )
+
+        data_dict = {}
+        for entry in self.objects.all():
+            # entry example ('Canis Lupus', 'ALP', 'method', 'conclusion')
+            if entry[0] not in data_dict:
+                data_dict[entry[0]] = {}
+            if entry[1] and entry[1] not in data_dict[entry[0]]:
+                data_dict[entry[0]][entry[1]] = {}
+            if entry[2]:
+                data_dict[entry[0]][entry[1]][entry[2]] = entry[3]
+
+        return data_dict
 
 
 class HabitatProgress(Progress, HabitatMixin):
