@@ -80,3 +80,14 @@ class SummaryManualFormSpecies(Form):
 class SummaryManualFormHabitat(Form):
 
     region = SelectField()
+
+
+class ProgressFilterForm(Form):
+
+    period = SelectField('Period...')
+    group =  SelectField('Group...')
+    conclusion =  SelectField('Conclusion...')
+
+    def __init__(self, *args, **kwargs):
+        super(ProgressFilterForm, self).__init__(*args, **kwargs)
+        self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
