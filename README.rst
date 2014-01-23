@@ -73,3 +73,11 @@ correct URLs for the Zope server::
     AUTH_ZOPE = True
     AUTH_ZOPE_WHOAMI_URL = 'http://zope.server.url/art17_api/whoami'
     LAYOUT_ZOPE_URL = 'http://zope.server.url/art17_api/layout'
+
+
+Configure deploy
+================
+
+- copy fabfile/env.ini.example to fabfile/env.ini
+- configure staging and production settings
+- run fab staging deploy or fab production deploy
