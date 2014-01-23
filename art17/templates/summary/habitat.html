@@ -125,10 +125,7 @@
       <tbody id="automatic_body" class="hidden">
       {% for row in auto_objects %}
       <tr>
-        <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
-          {{ row.assessment_method or 'N/A' }}
-        </td>
-        {% if not region %}<td>{{ row.region or 'N/A' }}</td>{% endif %}
+        {% include 'summary/common/auto/ms.html' with context %}
 
         {# Range #}
         {% include 'summary/habitat/auto/range.html' with context %}
