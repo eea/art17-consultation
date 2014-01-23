@@ -9,11 +9,14 @@
 
   {% include 'summary/filters.html' %}
 
+  {% set colspan_all=34 if region else 35 %}
   {% if current_selection %}
   <table class="complex_datatable datatable">
     <colgroup>
-      <col span="1">
       <col span="1" class="col_border">
+      {% if not region %}
+      <col span="1" class="col_border">
+      {% endif %}
 
       <col span="5" class="col_border_left">
 
@@ -29,13 +32,13 @@
     </colgroup>
     <thead>
     <tr class="section-header">
-      <th colspan="35">
+      <th colspan="{{ colspan_all }}">
         ETC/BD treated member states' data
       </th>
     </tr>
     <tr>
       <th rowspan="2">MS</th>
-      <th rowspan="2">Reg</th>
+      {% if not region %}<th rowspan="2">Reg</th>{% endif %}
       <th colspan="5">Range</th>
       <th colspan="6">Population</th>
       <th colspan="6">Habitat for the species (km<sup>2</sup>)</th>
@@ -80,7 +83,7 @@
     {% set qa_errors = record_errors(row) %}
     <tr {% if row.is_assesm %}class="assesm"{% endif %}>
       <td>{{ row.eu_country_code }}</td>
-      <td>{{ row.region }}</td>
+      {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
       {% if not visible %}
       <td colspan="4">
@@ -115,7 +118,7 @@
 
     <thead>
     <tr class="section-header">
-      <th colspan="35">
+      <th colspan="{{ colspan_all }}">
         Automatic assessments
         <button onclick="$('#automatic_body').toggle()">show/hide</button>
       </th>
@@ -127,9 +130,7 @@
       <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
         {{ row.assessment_method or 'N/A' }}
       </td>
-      <td>
-        {{ row.region or 'N/A' }}
-      </td>
+      {% if not region %}<td>{{ row.region or 'N/A' }}</td>{% endif %}
 
       {# Range #}
       {% include 'summary/species/auto/range.html' %}
@@ -160,7 +161,7 @@
     <thead>
       <tr>
         <th rowspan="2"></th>
-        <th rowspan="2">Reg</th>
+        {% if not region %}<th rowspan="2">Reg</th>{% endif %}
         <th colspan="5">Range</th>
         <th colspan="6">Population</th>
         <th colspan="6">Habitat for the species (km<sup>2</sup>)</th>
@@ -212,7 +213,7 @@
     <tbody>
       <tr class="form">
         <td></td>
-        <td>{{ manual_form.region() }}</td>
+        {% if not region %}<td>{{ manual_form.region() }}</td>{% endif %}
 
         {% include 'summary/species/manual_form.html' %}
       </tr>
@@ -223,13 +224,13 @@
     {# Manual assessments - conclusions #}
     <thead>
     <tr class="section-header">
-      <th colspan="35">
+      <th colspan="{{ colspan_all }}">
         ETC/BD biogeographical assessment &amp; users proposed corrections
       </th>
     </tr>
     <tr>
       <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
-      <th rowspan="2">Reg</th>
+      {% if not region %}<th rowspan="2">Reg</th>{% endif %}
       <th colspan="5">Range</th>
       <th colspan="6">Population</th>
       <th colspan="6">Habitat for the species (km<sup>2</sup>)</th>

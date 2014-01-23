@@ -7,6 +7,7 @@ from flask import (
     url_for,
     flash,
 )
+from sqlalchemy.exc import IntegrityError
 from art17.auth import current_user
 
 from art17.models import (
@@ -212,8 +213,12 @@ class Summary(views.View):
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
+        self.manual_form_cls.region.default = region
         manual_form = self.manual_form_cls(request.form)
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
+        if not request.form.get('region'):
+            manual_form.region.process_data(region)
+
         if request.method == 'POST' and manual_form.validate():
             admin_perm.test()
             obj = self.flatten_form(manual_form.data, subject)
@@ -223,10 +228,8 @@ class Summary(views.View):
             try:
                 db.session.add(obj)
                 db.session.commit()
-            except Exception as e:
+            except IntegrityError:
                 db.session.rollback()
-                import logging
-                logging.exception(e)
                 flash('A record with the same keys exist. Cannot add', 'error')
 
         period_query = Dataset.query.get(period)
@@ -248,6 +251,7 @@ class Summary(views.View):
             'annexes': annexes,
             'group': group,
             'subject': subject,
+            'region': region,
             'period_name': period_name,
         })
 

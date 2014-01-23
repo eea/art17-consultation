@@ -22,9 +22,12 @@
 
   {% include 'summary/filters.html' %}
 
+    {% set colspan_all=23 if region else 24 %}
+    {% if current_selection %}
     <table class="complex_datatable datatable">
       <colgroup>
-        <col span="2">
+        <col span="1" class="col_border">
+        {% if not region %}<col span="1" class="col_border">{% endif %}
 
         <col span="4" class="col_border_left">
         <col span="4" class="col_border_left">
@@ -38,13 +41,13 @@
       </colgroup>
       <thead>
         <tr class="section-header">
-          <th colspan="24">
+          <th colspan="{{ colspan_all }}">
             ETC/BD treated member states' data
           </th>
         </tr>
         <tr>
           <th rowspan="2">MS</th>
-          <th rowspan="2">Reg</th>
+          {% if not region %}<th rowspan="2">Reg</th>{% endif %}
           <th colspan="4">Range</th>
           <th colspan="4">Area</th>
           <th rowspan="2">Struct &amp; func.</th>
@@ -78,7 +81,7 @@
         {% set qa_errors = record_errors(row) %}
         <tr {% if row.is_assesm %}class="assesm"{% endif %}>
           <td>{{ row.eu_country_code }}</td>
-          <td>{{ row.region }}</td>
+          {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
           {% if not visible %}
           <td colspan="4">
@@ -104,6 +107,8 @@
           {#- Grided maps columns -#}
           {% include 'summary/habitat/content/grided_maps.html' with context %}
 
+          {# padding #}
+          <td colspan="7"></td>
           {% endif %}
         </tr>
       {% endfor %}
@@ -111,7 +116,7 @@
 
       <thead>
         <tr class="section-header">
-          <th colspan="24">
+          <th colspan="{{ colspan_all }}">
             Automatic assessments
             <button onclick="$('#automatic_body').toggle()">show/hide</button>
           </th>
@@ -123,9 +128,7 @@
         <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
           {{ row.assessment_method or 'N/A' }}
         </td>
-        <td>
-          {{ row.region or 'N/A' }}
-        </td>
+        {% if not region %}<td>{{ row.region or 'N/A' }}</td>{% endif %}
 
         {# Range #}
         {% include 'summary/habitat/auto/range.html' with context %}
@@ -146,20 +149,20 @@
         {% include 'summary/habitat/auto/grided_maps.html' with context %}
 
         {# padding #}
-        <td colspan="5"></td>
+        <td colspan="7"></td>
       </tr>
       {% endfor %}
       </tbody>
 
       <thead>
         <tr class="section-header">
-          <th colspan="24">
+          <th colspan="{{ colspan_all }}">
            ETC/BD biogeographical assessment &amp; users proposed corrections
           </th>
         </tr>
         <tr>
           <th rowspan="2">MS</th>
-          <th rowspan="2">Reg</th>
+          {% if not region %}<th rowspan="2">Reg</th>{% endif %}
           <th colspan="4">Range</th>
           <th colspan="4">Area</th>
           <th rowspan="2">Struct & func.</th>
@@ -224,4 +227,5 @@
       {% endfor %}
       </tbody>
     </table>
+    {% endif %}
 {% endblock %}
