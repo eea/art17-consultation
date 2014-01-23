@@ -51,7 +51,7 @@ class SummaryManualFormSpecies(Form):
     def __init__(self, *args, **kwargs):
         super(SummaryManualFormSpecies, self).__init__(*args, **kwargs)
         methods = [a[0] for a in EtcDicMethod.all()]
-        methods = zip(methods, methods)
+        methods = [('', '')] + zip(methods, methods)
         conclusions = [a[0] for a in EtcDicConclusion.all()]
         conclusions = zip(conclusions, conclusions) # TODO filter acl
         trends = [a[0] for a in EtcDicTrend.all()]

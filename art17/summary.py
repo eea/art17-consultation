@@ -212,8 +212,12 @@ class Summary(views.View):
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
+        self.manual_form_cls.region.default = region
         manual_form = self.manual_form_cls(request.form)
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
+        if not request.form.get('region'):
+            manual_form.region.process_data(region)
+
         if request.method == 'POST' and manual_form.validate():
             admin_perm.test()
             obj = self.flatten_form(manual_form.data, subject)
