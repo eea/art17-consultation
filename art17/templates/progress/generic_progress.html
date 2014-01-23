@@ -2,10 +2,11 @@
 
 {% block content %}
 
+    {% block text_description %}{% endblock text_description %}
     <table>
       <thead>
         <tr>
-          <th rowspan="2">Species</th>
+          <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
           <th>Regions</th>
         </tr>
         <tr>

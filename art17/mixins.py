@@ -99,6 +99,11 @@ class HabitatMixin(object):
     model_manual_cls = HabitattypesManualAssessment
     subject_name = 'habitat'
 
+    def subjects_by_group(self, period, group):
+        qs = db.session.query(self.model_cls.habitatcode).\
+            filter_by(group=group, dataset_id=period).distinct()
+        return [row[0] for row in qs]
+
     @classmethod
     def get_groups(cls, period):
         group_field = EtcDicHdHabitat.group

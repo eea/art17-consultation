@@ -16,15 +16,15 @@ class Progress(views.View):
             'subjects': self.subjects_by_group(period, group),
             'regions': EtcDicBiogeoreg.query.all(),
         }
-        return render_template('progress.html', **context)
+        return render_template(self.template_name, **context)
 
 
 class SpeciesProgress(Progress, SpeciesMixin):
-    pass
+    template_name = 'progress/species.html'
 
 
 class HabitatProgress(Progress, HabitatMixin):
-    pass
+    template_name = 'progress/habitat.html'
 
 
 progress.add_url_rule('/species/progress/',
