@@ -54,6 +54,7 @@ from art17.utils import str2num, parse_semicolon
 
 summary = Blueprint('summary', __name__)
 
+DATE_FORMAT = '%d/%m/%Y %H:%M'
 
 @summary.route('/')
 def homepage():
@@ -121,6 +122,14 @@ def get_quality(value, default='N/A'):
         return value[0]
     return default
 
+
+@summary.app_template_filter('format_date')
+def format_date(value):
+    try:
+        date = datetime.strptime(value, DATE_FORMAT)
+    except ValueError:
+        return value
+    return date.strftime('%m/%y')
 
 def record_errors(record):
     if isinstance(record, EtcDataSpeciesRegion):
@@ -224,7 +233,7 @@ class Summary(views.View):
             if manual_form.validate():
                 admin_perm.test()
                 obj = self.flatten_form(manual_form.data, subject)
-                obj.last_update = str(datetime.now())
+                obj.last_update = datetime.now().strftime(DATE_FORMAT)
                 obj.user_id = current_user.id
                 obj.dataset_id = period
                 db.session.flush()
