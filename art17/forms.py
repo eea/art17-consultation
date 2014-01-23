@@ -1,12 +1,36 @@
-from flask_wtf import Form
+# coding=utf-8
+from flask_wtf import Form as Form_base
 from wtforms import SelectField, DecimalField, TextField
-from art17.models import Dataset, EtcDicMethod, EtcDicConclusion, EtcDicTrend, EtcDicPopulationUnit, EtcDicBiogeoreg
+from art17.models import (
+    Dataset, EtcDicMethod, EtcDicConclusion, EtcDicTrend, EtcDicPopulationUnit,
+    EtcDicBiogeoreg,
+)
+
+
+def all_fields(form):
+    for field in form:
+        if hasattr(field, 'form'):
+            for subfield in all_fields(field.form):
+                yield subfield
+        else:
+            yield field
+
+
+class Form(Form_base):
+    def validate(self):
+        if not super(Form, self).validate():
+            return False
+
+        return self.custom_validate()
+
+    def custom_validate(self):
+        return True
 
 
 class SummaryFilterForm(Form):
 
     period = SelectField('Period...')
-    group =  SelectField('Group...')
+    group = SelectField('Group...')
     subject = SelectField('Name...')
     region = SelectField('Bio-region...')
 
@@ -75,6 +99,41 @@ class SummaryManualFormSpecies(Form):
             f.choices = trends
 
         self.population_size_unit.choices = units
+
+    def custom_validate(self):
+        fields = [f for f in all_fields(self) if f != self.region]
+        empty = [f for f in fields if not f.data]
+
+        if empty and len(empty) == len(fields):
+            fields[1].errors.append(u"Please fill at least one field")
+            return False
+
+        method_conclusions = [
+            (self.method_range, self.conclusion_range),
+            (self.method_population, self.conclusion_population),
+            (self.method_habitat, self.conclusion_habitat),
+            (self.method_future, self.conclusion_future),
+            (self.method_assessment, self.conclusion_assessment),
+            (self.method_target1, self.conclusion_target1),
+        ]
+        data = [(bool(m.data), bool(c.data)) for m, c in method_conclusions]
+        if (True, False) in data or (False, True) in data:
+            fields[1].errors.append(
+                u"Both method and conclusion must be filled"
+            )
+        elif (True, True) not in data:
+            fields[1].errors.append(
+                u"At least one method and conclusion must be filled"
+            )
+
+        return True
+
+    def all_errors(self):
+        text = '<ul>'
+        for field_name, field_errors in self.errors.iteritems():
+            text += '<li>' + ', '.join(field_errors) + '</li>'
+        text += '</ul>'
+        return text
 
 
 class SummaryManualFormHabitat(Form):

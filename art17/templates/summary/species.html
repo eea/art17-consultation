@@ -127,10 +127,7 @@
     <tbody id="automatic_body" class="hidden">
     {% for row in auto_objects %}
     <tr>
-      <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
-        {{ row.assessment_method or 'N/A' }}
-      </td>
-      {% if not region %}<td>{{ row.region or 'N/A' }}</td>{% endif %}
+      {% include 'summary/common/auto/ms.html' %}
 
       {# Range #}
       {% include 'summary/species/auto/range.html' %}
@@ -217,6 +214,13 @@
 
         {% include 'summary/species/manual_form.html' %}
       </tr>
+      {% if manual_form.errors %}
+      <tr>
+        <td colspan="{{ colspan_all }}">
+          {{ manual_form.all_errors() | safe }}
+        </td>
+      </tr>
+      {% endif %}
     </tbody>
     </form>
     {% endif %}

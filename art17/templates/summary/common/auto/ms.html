@@ -1,0 +1,4 @@
+  <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+    {{ row.assessment_method or 'N/A' }}
+  </td>
+  {% if not region %}<td>{{ row.region or 'N/A' }}</td>{% endif %}

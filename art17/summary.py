@@ -219,18 +219,22 @@ class Summary(views.View):
         if not request.form.get('region'):
             manual_form.region.process_data(region)
 
-        if request.method == 'POST' and manual_form.validate():
-            admin_perm.test()
-            obj = self.flatten_form(manual_form.data, subject)
-            obj.user = current_user.id
-            obj.dataset_id = period
-            db.session.flush()
-            try:
-                db.session.add(obj)
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
-                flash('A record with the same keys exist. Cannot add', 'error')
+        if request.method == 'POST':
+            if manual_form.validate():
+                admin_perm.test()
+                obj = self.flatten_form(manual_form.data, subject)
+                obj.user = current_user.id
+                obj.dataset_id = period
+                db.session.flush()
+                try:
+                    db.session.add(obj)
+                    db.session.commit()
+                except IntegrityError:
+                    db.session.rollback()
+                    flash('A record with the same keys exist. Cannot add',
+                          'error')
+            else:
+                flash('The form is invalid.')
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''

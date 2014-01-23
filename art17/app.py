@@ -5,6 +5,7 @@ from models import db, db_manager
 from art17.layout import layout
 from art17.summary import summary
 from art17.progress import progress
+from art17.report import report
 from art17.auth import auth, user_manager, role_manager
 from art17.dataset import dataset_manager
 from assets import assets_env
@@ -24,6 +25,7 @@ def create_app(config={}):
     db.init_app(app)
     app.register_blueprint(layout)
     app.register_blueprint(summary)
+    app.register_blueprint(report)
     app.register_blueprint(progress)
     app.register_blueprint(auth)
     return app
