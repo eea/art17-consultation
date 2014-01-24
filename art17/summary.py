@@ -134,6 +134,8 @@ def get_quality(value, default='N/A'):
 
 @summary.app_template_filter('format_date')
 def format_date(value):
+    if not value:
+        return ''
     try:
         date = datetime.strptime(value, DATE_FORMAT)
     except ValueError:
