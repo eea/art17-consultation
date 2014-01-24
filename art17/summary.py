@@ -134,6 +134,8 @@ def get_quality(value, default='N/A'):
 
 @summary.app_template_filter('format_date')
 def format_date(value):
+    if not value:
+        return ''
     try:
         date = datetime.strptime(value, DATE_FORMAT)
     except ValueError:
@@ -216,23 +218,33 @@ class Summary(views.View):
     def flatten_form(self, form, subject):
         raise NotImplementedError()
 
-    def parse_object(self, obj):
+    def parse_object(self, subject, form):
         raise NotImplementedError()
 
     def get_manual_form(self):
-        if request.form.get('submit') == 'edit':
+        manual_assessment = None
+        if request.form.get('submit') != 'add':
             subject = request.form.get('subject')
             region = request.form.get('region')
             user_id = request.form.get('user')
-            row = self.model_manual_cls.query.filter_by(
-                assesment_speciesname=subject, region=region, user_id=user_id
+            filters = {
+                'region': region,
+                'user_id': user_id,
+                self.subject_field: subject,
+            }
+            manual_assessment = self.model_manual_cls.query.filter_by(
+                **filters
             ).first()
-            if row:
-                return self.manual_form_cls(MultiDict(self.parse_object(row)))
+        if request.form.get('submit') == 'edit':
+            if manual_assessment:
+                form = self.manual_form_cls()
+                data = MultiDict(self.parse_object(manual_assessment, form))
+                form.process(data)
+                return form, manual_assessment
             else:
                 raise ValueError('No data found.')
         # Default: add
-        return self.manual_form_cls(request.form)
+        return self.manual_form_cls(request.form), manual_assessment
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -250,7 +262,7 @@ class Summary(views.View):
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
-        manual_form = self.get_manual_form()
+        manual_form, manual_assessment = self.get_manual_form()
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
             manual_form.region.process_data(region)
@@ -258,18 +270,27 @@ class Summary(views.View):
         if request.method == 'POST' and request.form.get('submit') != 'edit':
             if manual_form.validate():
                 admin_perm.test()
-                obj = self.flatten_form(manual_form.data, subject)
-                obj.last_update = datetime.now().strftime(DATE_FORMAT)
-                obj.user_id = current_user.id
-                obj.dataset_id = period
-                db.session.flush()
-                try:
-                    db.session.add(obj)
+                if not manual_assessment:
+                    manual_assessment = self.model_manual_cls(
+                        **{self.subject_field: subject}
+                    )
+                    self.flatten_form(manual_form, manual_assessment)
+                    manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
+                    manual_assessment.user_id = current_user.id
+                    manual_assessment.dataset_id = period
+                    db.session.flush()
+                    db.session.add(manual_assessment)
+                    try:
+                        db.session.commit()
+                    except IntegrityError:
+                        db.session.rollback()
+                        flash('A record with the same keys exist. Cannot add',
+                              'error')
+                else:
+                    self.flatten_form(manual_form, manual_assessment)
+                    manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
+                    db.session.add(manual_assessment)
                     db.session.commit()
-                except IntegrityError:
-                    db.session.rollback()
-                    flash('A record with the same keys exist. Cannot add',
-                          'error')
             else:
                 flash('The form is invalid.')
 
@@ -288,6 +309,7 @@ class Summary(views.View):
             'regions': self.get_regions(period, subject),
             'summary_filter_form': summary_filter_form,
             'manual_form': manual_form,
+            'manual_assessment': manual_assessment,
             'current_selection': current_selection,
             'annexes': annexes,
             'group': group,
