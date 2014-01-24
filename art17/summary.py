@@ -9,6 +9,7 @@ from flask import (
     flash,
 )
 from sqlalchemy.exc import IntegrityError
+from werkzeug.datastructures import MultiDict
 from art17.auth import current_user
 
 from art17.models import (
@@ -65,6 +66,14 @@ def homepage():
 def can_view(record, countries):
     return (admin_perm.can() or expert_perm.can() or
             record.eu_country_code not in countries)
+
+
+@summary.app_template_global('can_edit')
+def can_edit(record):
+    if record.user_id == current_user.id:
+        return True
+
+    return admin_perm.can()
 
 
 @summary.app_template_global('can_add_conclusion')
@@ -204,8 +213,26 @@ class Summary(views.View):
     def get_context(self):
         return {}
 
-    def flatten_form(self, form):
+    def flatten_form(self, form, subject):
         raise NotImplementedError()
+
+    def parse_object(self, obj):
+        raise NotImplementedError()
+
+    def get_manual_form(self):
+        if request.form.get('submit') == 'edit':
+            subject = request.form.get('subject')
+            region = request.form.get('region')
+            user_id = request.form.get('user')
+            row = self.model_manual_cls.query.filter_by(
+                assesment_speciesname=subject, region=region, user_id=user_id
+            ).first()
+            if row:
+                return self.manual_form_cls(MultiDict(self.parse_object(row)))
+            else:
+                raise ValueError('No data found.')
+        # Default: add
+        return self.manual_form_cls(request.form)
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -223,13 +250,12 @@ class Summary(views.View):
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
-        self.manual_form_cls.region.default = region
-        manual_form = self.manual_form_cls(request.form)
+        manual_form = self.get_manual_form()
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
             manual_form.region.process_data(region)
 
-        if request.method == 'POST':
+        if request.method == 'POST' and request.form.get('submit') != 'edit':
             if manual_form.validate():
                 admin_perm.test()
                 obj = self.flatten_form(manual_form.data, subject)

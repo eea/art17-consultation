@@ -31,6 +31,11 @@ class SpeciesMixin(object):
         data['assesment_speciesname'] = subject
         return self.model_manual_cls(**data)
 
+    def parse_object(self, subject):
+        data = {}
+        data['region'] = subject.region
+        data['range_surface_area'] = subject.range_surface_area
+        return data
 
     @classmethod
     def get_groups(cls, period):
