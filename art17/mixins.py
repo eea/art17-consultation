@@ -28,9 +28,11 @@ class SpeciesMixin(object):
         return [row[0] for row in qs]
 
     def flatten_form(self, form, subject):
-        data = dict(form)
-        data[self.subject_field] = subject
-        return self.model_manual_cls(**data)
+        data = dict(form.data)
+        for k, v in data.iteritems():
+            if hasattr(subject, k):
+                setattr(subject, k, v)
+        return subject
 
     def parse_object(self, subject, form):
         data = {}

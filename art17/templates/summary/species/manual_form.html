@@ -59,9 +59,12 @@
   <button type="submit">Add assesment</button>
 </td>
 {% else %}
+{% set row=manual_assessment %}
 <td colspan="2">
+  <input type="hidden" name="subject" value="{{ subject }}" />
+  <input type="hidden" name="region" value="{{ row.region }}" />
+  <input type="hidden" name="user" value="{{ row.user_id }}" />
   <button type="submit" name="submit" value="update">update</button>
 </td>
-{% set row=manual_assessment %}
   {% include 'summary/common/manual/conclusion_details.html' %}
 {% endif %}
