@@ -84,6 +84,8 @@ class SpeciesProgress(Progress, SpeciesMixin):
         data_dict = {}
         for entry in self.objects.all():
             # entry sample: ('Canis Lupus', 'ALP', decision, method, conclusion)
+            if not (entry[0] and entry[1]):
+                continue
             if entry[0] not in data_dict:
                 data_dict[entry[0]] = {}
             if entry[1] and entry[1] not in data_dict[entry[0]]:
