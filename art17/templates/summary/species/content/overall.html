@@ -3,8 +3,7 @@
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' center' %}
   {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
   <td {{ parse_errors('conclusion_assessment',
-                      row, qa_errors, title=title, classes=classes) }}
-    colspan="2">
+                      row, qa_errors, title=title, classes=classes) }}>
     {{ row.conclusion_assessment|str2num }}
   </td>
 

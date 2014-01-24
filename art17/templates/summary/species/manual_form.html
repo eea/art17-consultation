@@ -3,7 +3,7 @@
 <td>
   {{ form.range_surface_area(size=5) }}
 </td>
-<td colspan="2">
+<td>
   {{ form.method_range() }}
   {{ form.conclusion_range() }}
 </td>
@@ -14,11 +14,11 @@
   {{ form.complementary_favourable_range(size=5) }}
 </td>
 {# Population #}
-<td colspan="2">
+<td>
 	{{ form.population_size(size=5) }}
 	{{ form.population_size_unit() }}
 </td>
-<td colspan="2">
+<td>
 	{{ form.method_population() }}
 	{{ form.conclusion_population() }}
 </td>
@@ -26,7 +26,7 @@
 <td>{{ form.complementary_favourable_population(size=5) }}</td>
 {# Habitat #}
 <td>{{ form.habitat_surface_area(size=5) }}</td>
-<td colspan="2">
+<td>
 	{{ form.method_habitat() }}
 	{{ form.conclusion_habitat() }}
 </td>
@@ -34,20 +34,19 @@
 <td>{{ form.habitat_trend() }}</td>
 <td>{{ form.complementary_suitable_habitat(size=5) }}</td>
 {# FP #}
-<td colspan="2">
+<td>
 	{{ form.method_future() }}
 	{{ form.conclusion_future() }}
 </td>
 {# Overall #}
-<td colspan="2">
+<td>
 	{{ form.method_assessment() }}
 	{{ form.conclusion_assessment() }}
 </td>
 <td>{{ form.conclusion_assessment_trend() }}</td>
-<td></td>
 <td>{{ form.conclusion_assessment_change() }}</td>
 {# Contrib target 1 #}
-<td colspan="2">
+<td>
 	{{ form.method_target1() }}
 	{{ form.conclusion_target1() }}
 </td>
@@ -55,12 +54,12 @@
 {# Buttons #}
 
 {% if not manual_assessment %}
-<td colspan="7">
+<td colspan="9">
   <button type="submit">Add assesment</button>
 </td>
 {% else %}
 {% set row=manual_assessment %}
-<td colspan="2">
+<td>
   <input type="hidden" name="subject" value="{{ subject }}" />
   <input type="hidden" name="region" value="{{ row.region }}" />
   <input type="hidden" name="user" value="{{ row.user_id }}" />

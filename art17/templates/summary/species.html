@@ -9,7 +9,7 @@
 
   {% include 'summary/filters.html' %}
 
-  {% set colspan_all=34 if region else 35 %}
+  {% set colspan_all=28 if region else 29 %}
   {% if current_selection %}
   <table class="complex_datatable datatable">
     <caption>
@@ -25,23 +25,22 @@
       <col span="1" class="col_border_right">{% endif %}
       {# Range #}
       <col span="1" class="col_border_left">
-      <col span="3">
+      <col span="2">
       <col span="1" class="col_border_right">
 
       {# Population #}
       <col span="1" class="col_border_left">
-      <col span="4">
+      <col span="2">
       <col span="1" class="col_border_right">
       {# Habitat #}
       <col span="1" class="col_border_left">
-      <col span="4">
+      <col span="3">
       <col span="1" class="col_border_right">
       {# FP #}
-      <col span="1" class="col_border_left">
-      <col span="1" class="col_border_right">
+      <col span="1" class="col_border">
       {# Overall ass. #}
       <col span="1" class="col_border_left">
-      <col span="3">
+      <col span="2">
       <col span="1" class="col_border_right">
       {# Grided maps #}
       <col span="1" class="col_border_left">
@@ -57,11 +56,11 @@
     <tr>
       <th rowspan="2">MS</th>
       {% if not region %}<th rowspan="2">Reg</th>{% endif %}
-      <th colspan="5">Range</th>
-      <th colspan="6">Population</th>
-      <th colspan="6">Habitat for the species (km<sup>2</sup>)</th>
-      <th colspan="2" rowspan="2"><abbr title="Future prospects">FP</abbr></th>
-      <th colspan="5">Overall assessment</th>
+      <th colspan="4">Range</th>
+      <th colspan="4">Population</th>
+      <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
+      <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
+      <th colspan="4">Overall assessment</th>
       <th colspan="4">Grided maps(km<sup>2</sup>)</th>
 
       {# Padding #}
@@ -69,22 +68,22 @@
     </tr>
     <tr>
       <th>Area</th>
-      <th colspan="2">%MS</th>
+      <th>%MS</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
 
-      <th colspan="2">Size&amp;Unit</th>
-      <th colspan="2">%MS</th>
+      <th>Size&amp;Unit</th>
+      <th>%MS</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
 
       <th>Area</th>
-      <th colspan="2">%MS</th>
+      <th>%MS</th>
       <th>Qual.</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Suitable</th>
 
-      <th colspan="2">Curr CS</th>
+      <th>Curr CS</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Prev CS</th>
       <th>Nat of ch</th>
@@ -104,7 +103,7 @@
       {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
       {% if not visible %}
-      <td colspan="4">
+      <td colspan="2">
         {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
       </td>
       {% else %}
@@ -182,11 +181,11 @@
     <tr>
       <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
       {% if not region %}<th rowspan="2">Reg</th>{% endif %}
-      <th colspan="5">Range</th>
-      <th colspan="6">Population</th>
-      <th colspan="6">Habitat for the species (km<sup>2</sup>)</th>
-      <th colspan="2" rowspan="2"><abbr title="Future prospects">FP</abbr></th>
-      <th colspan="5">Overall assessment</th>
+      <th colspan="4">Range</th>
+      <th colspan="4">Population</th>
+      <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
+      <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
+      <th colspan="4">Overall assessment</th>
       <th rowspan="2" colspan="2">Contrib. target 1</th>
       <th rowspan="2" colspan="2"></th>
 
@@ -198,22 +197,22 @@
     </tr>
     <tr>
       <th>Area</th>
-      <th colspan="2">%MS</th>
+      <th>%MS</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
 
-      <th colspan="2">Size&amp;Unit</th>
-      <th colspan="2">%MS</th>
+      <th>Size&amp;Unit</th>
+      <th>%MS</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
 
       <th>Area</th>
-      <th colspan="2">%MS</th>
+      <th>%MS</th>
       <th>Qual.</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Suitable</th>
 
-      <th colspan="2">Curr CS</th>
+      <th>Curr CS</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Prev CS</th>
       <th>Nat of ch</th>

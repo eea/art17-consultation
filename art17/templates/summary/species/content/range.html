@@ -7,8 +7,7 @@
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') + ' center' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_range, '') %}
 <td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'],
-                    row, qa_errors, title=title, classes=classes) }}
-  colspan="2">
+                    row, qa_errors, title=title, classes=classes) }}>
   {{ row.percentage_range_surface_area|str2num }}
 </td>
 
