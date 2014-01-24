@@ -25,7 +25,7 @@ class Report(views.View):
 
         report_filter_form = ReportFilterForm(request.args)
         report_filter_form.group.choices = self.get_groups(period)
-        report_filter_form.country.choices = self.get_countries(period, group)
+        report_filter_form.country.choices = self.get_countries(period)
         report_filter_form.region.choices = self.get_regions(period, country)
 
         context = self.get_context()

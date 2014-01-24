@@ -8,6 +8,7 @@ from art17.models import (
     HabitattypesManualAssessment,
     EtcDataHabitattypeAutomaticAssessment,
     SpeciesManualAssessment,
+    DicCountryCode,
 )
 
 
@@ -101,8 +102,15 @@ class SpeciesMixin(object):
         return blank_option + regions
 
     @classmethod
-    def get_countries(cls, period, group):
-        return []
+    def get_countries(cls, period):
+        blank_option = [('', 'All MS')]
+        countries = (
+            DicCountryCode.query
+            .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
+            .filter(DicCountryCode.dataset_id == period)
+            .all()
+        )
+        return blank_option + countries
 
 
 class HabitatMixin(object):
