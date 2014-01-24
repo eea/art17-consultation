@@ -17,6 +17,7 @@ class SpeciesMixin(object):
     model_auto_cls = EtcDataSpeciesAutomaticAssessment
     model_manual_cls = SpeciesManualAssessment
     subject_name = 'species'
+    subject_field = 'assesment_speciesname'
 
     def objects_by_group(self, period, group):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
@@ -28,7 +29,7 @@ class SpeciesMixin(object):
 
     def flatten_form(self, form, subject):
         data = dict(form)
-        data['assesment_speciesname'] = subject
+        data[self.subject_field] = subject
         return self.model_manual_cls(**data)
 
     def parse_object(self, subject, form):
@@ -108,6 +109,7 @@ class HabitatMixin(object):
     model_auto_cls = EtcDataHabitattypeAutomaticAssessment
     model_manual_cls = HabitattypesManualAssessment
     subject_name = 'habitat'
+    subject_field = 'code'
 
     def subjects_by_group(self, period, group):
         qs = db.session.query(self.model_cls.habitatcode).\

@@ -226,8 +226,13 @@ class Summary(views.View):
             subject = request.form.get('subject')
             region = request.form.get('region')
             user_id = request.form.get('user')
+            filters = {
+                'region': region,
+                'user_id': user_id,
+                self.subject_field: subject,
+            }
             manual_assessment = self.model_manual_cls.query.filter_by(
-                assesment_speciesname=subject, region=region, user_id=user_id
+                **filters
             ).first()
             if manual_assessment:
                 form = self.manual_form_cls()
