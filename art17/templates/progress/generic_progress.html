@@ -1,36 +1,46 @@
 {% extends layout_template %}
 
 {% block content %}
+
     {% include 'progress/filters.html' %}
 
     {% if current_selection %}
         {% block text_description %}{% endblock text_description %}
-            <table class="complex_datatable datatable">
-              <thead>
-                <tr>
-                  <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
-                  <th colspan="{{ regions|count }}">Regions</th>
-                </tr>
-                <tr>
-                  {% for region in regions %}
-                  <th>
-                    {{ region.reg_code }}
-                  </th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {% for subject in subjects %}
-                <tr>
-                  <th>
-                    {{ subject }}
-                  </th>
-                  {% for region in regions %}
-                  <td>{{ data.get(subject, {}).get(region.reg_code, '') }}</td>
-                  {% endfor %}
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+            {% if species_data %}
+                <table class="complex_datatable datatable">
+                  <thead>
+                    <tr>
+                      <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
+                      <th colspan="{{ regions|count }}">Regions</th>
+                    </tr>
+                    <tr>
+                      {% for region in regions %}
+                      <th>
+                        {{ region.reg_code }}
+                      </th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for subject in subjects %}
+                    <tr>
+                      <th>
+                        {{ subject }}
+                      </th>
+                      {% for region in regions %}
+                        <!--{% set data = species_data.get(subject, {}).get(region.reg_code, '') %}
+                        {% set title = COUNTRY_ASSESSMENTS.get(data['conclusion'], '') %}
+
+                        <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} center"
+                            title="{{ title }}">
+                            {{ data['method'] }}
+                        </td><-->
+                        <td>{{species_data.get(subject, {}).get(region.reg_code, '')}}</td>
+                      {% endfor %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            {% endif %}
     {% endif %}
 {% endblock %}

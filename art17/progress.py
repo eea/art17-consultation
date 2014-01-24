@@ -37,7 +37,7 @@ class Progress(views.View):
             'conclusion': conclusion,
             'subjects': self.subjects_by_group(period, group),
             'regions': EtcDicBiogeoreg.query.all(),
-            'data': self.setup_objects_and_data(period, group, conclusion),
+            'species_data': self.setup_objects_and_data(period, group, conclusion),
         })
 
         return render_template(self.template_name, **context)
@@ -70,25 +70,29 @@ class SpeciesProgress(Progress, SpeciesMixin):
             fields = (self.model_manual_cls.method_assessment,
                       self.model_manual_cls.conclusion_assessment)
         else:
-            return
+            return {}
 
         self.objects = (
             self.model_manual_cls.query
             .with_entities(self.model_manual_cls.assesment_speciesname,
                            self.model_manual_cls.region,
+                           self.model_manual_cls.decision,
                            *fields)
             .filter_by(dataset_id=period)
         )
 
         data_dict = {}
         for entry in self.objects.all():
-            # entry example ('Canis Lupus', 'ALP', 'method', 'conclusion')
+            # entry sample: ('Canis Lupus', 'ALP', decision, method, conclusion)
             if entry[0] not in data_dict:
                 data_dict[entry[0]] = {}
             if entry[1] and entry[1] not in data_dict[entry[0]]:
-                data_dict[entry[0]][entry[1]] = {}
-            if entry[2]:
-                data_dict[entry[0]][entry[1]][entry[2]] = entry[3]
+                data_dict[entry[0]][entry[1]] = []
+            data_dict[entry[0]][entry[1]].append({
+                'decision': entry[2],
+                'method': entry[3],
+                'conclusion': entry[4],
+            })
 
         return data_dict
 
