@@ -218,7 +218,7 @@ class Summary(views.View):
     def flatten_form(self, form, subject):
         raise NotImplementedError()
 
-    def parse_object(self, obj):
+    def parse_object(self, subject, form):
         raise NotImplementedError()
 
     def get_manual_form(self):
@@ -226,15 +226,18 @@ class Summary(views.View):
             subject = request.form.get('subject')
             region = request.form.get('region')
             user_id = request.form.get('user')
-            row = self.model_manual_cls.query.filter_by(
+            manual_assessment = self.model_manual_cls.query.filter_by(
                 assesment_speciesname=subject, region=region, user_id=user_id
             ).first()
-            if row:
-                return self.manual_form_cls(MultiDict(self.parse_object(row)))
+            if manual_assessment:
+                form = self.manual_form_cls()
+                data = MultiDict(self.parse_object(manual_assessment, form))
+                form.process(data)
+                return form, manual_assessment
             else:
                 raise ValueError('No data found.')
         # Default: add
-        return self.manual_form_cls(request.form)
+        return self.manual_form_cls(request.form), None
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -252,7 +255,7 @@ class Summary(views.View):
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
-        manual_form = self.get_manual_form()
+        manual_form, manual_assessment = self.get_manual_form()
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
             manual_form.region.process_data(region)
@@ -290,6 +293,7 @@ class Summary(views.View):
             'regions': self.get_regions(period, subject),
             'summary_filter_form': summary_filter_form,
             'manual_form': manual_form,
+            'manual_assessment': manual_assessment,
             'current_selection': current_selection,
             'annexes': annexes,
             'group': group,

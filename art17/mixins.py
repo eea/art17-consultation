@@ -31,10 +31,12 @@ class SpeciesMixin(object):
         data['assesment_speciesname'] = subject
         return self.model_manual_cls(**data)
 
-    def parse_object(self, subject):
+    def parse_object(self, subject, form):
         data = {}
-        data['region'] = subject.region
-        data['range_surface_area'] = subject.range_surface_area
+        for field in form:
+            name = field.name
+            if hasattr(subject, name):
+                data[name] = getattr(subject, name)
         return data
 
     @classmethod

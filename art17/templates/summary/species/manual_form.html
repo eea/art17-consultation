@@ -53,6 +53,15 @@
 </td>
 
 {# Buttons #}
+
+{% if not manual_assessment %}
 <td colspan="7">
   <button type="submit">Add assesment</button>
 </td>
+{% else %}
+<td colspan="2">
+  <button type="submit" name="submit" value="update">update</button>
+</td>
+{% set row=manual_assessment %}
+  {% include 'summary/common/manual/conclusion_details.html' %}
+{% endif %}

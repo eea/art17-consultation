@@ -247,12 +247,16 @@
       <td>{# delete #}</td>
       <td>
         {% if can_edit(row) %}
-        <form method="post" action="">
-          <input type="hidden" name="subject" value="{{ subject }}" />
-          <input type="hidden" name="region" value="{{ row.region }}" />
-          <input type="hidden" name="user" value="{{ row.user_id }}" />
-          <button type="submit" name="submit" value="edit">edit</button>
-        </form>
+          {% if row != manual_assessment %}
+          <form method="post" action="">
+            <input type="hidden" name="subject" value="{{ subject }}" />
+            <input type="hidden" name="region" value="{{ row.region }}" />
+            <input type="hidden" name="user" value="{{ row.user_id }}" />
+            <button type="submit" name="submit" value="edit">edit</button>
+          </form>
+          {% else %}
+          <em>editting</em>
+          {% endif %}
         {% endif %}
       </td>
 
