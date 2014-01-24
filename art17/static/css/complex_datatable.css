@@ -96,6 +96,40 @@ abbr {
 	background-color: #f6f6f6;
 }
 
+/*FORMS*/
+.complex_datatable .form_row {
+	border-top: 1px solid #ddd;
+}
+
+.complex_datatable .form_row:hover {
+	background-color: transparent;
+}
+
+.complex_datatable .form_row td {
+	white-space: normal;
+	padding: 0;
+	border: 1px solid #ccc;
+	background: #fafafa;
+}
+
+.complex_datatable .form_row select,
+.complex_datatable .form_row input {
+	display: block;
+	min-width: 100%;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	font: inherit;
+}
+
+.complex_datatable .form_row select + select,
+.complex_datatable .form_row select + input,
+.complex_datatable .form_row input + select,
+.complex_datatable .form_row input + input {
+	border-bottom: 0;
+}
+
+
 /*COLUMNS*/
 .complex_datatable .col_border {
 	border-left: 1px solid #ddd;
@@ -215,8 +249,4 @@ td.XUU {
 }
 .hidden {
     display: none;
-}
-
-.complex_datatable tr.form td {
-	padding: 0;
 }

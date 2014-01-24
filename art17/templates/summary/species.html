@@ -172,72 +172,6 @@
     </tr>
     {% endfor %}
     </tbody>
-
-    {# Add manual assessment #}
-    {% if can_add_conclusion('species', subject) %}
-    <tbody class="thead">
-      <tr>
-        <th rowspan="2"></th>
-        {% if not region %}<th rowspan="2">Reg</th>{% endif %}
-        <th colspan="5">Range</th>
-        <th colspan="6">Population</th>
-        <th colspan="6">Habitat for the species (km<sup>2</sup>)</th>
-        <th colspan="2"><abbr title="Future prospects">FP</abbr></th>
-        <th colspan="5">Overall assessment</th>
-        <th colspan="2">Contrib. target 1</th>
-
-        <th colspan="2"></th>
-        <th colspan="5"></th>
-      </tr>
-      <tr>
-        <th>Area</th>
-        <th><abbr title="Method">M</abbr></th>
-        <th><abbr title="Conclusion">C</abbr></th>
-        <th><abbr title="Trend">T</abbr></th>
-        <th>Ref.</th>
-
-        <th>Size</th>
-        <th>Unit</th>
-        <th><abbr title="Method">M</abbr></th>
-        <th><abbr title="Conclusion">C</abbr></th>
-        <th><abbr title="Trend">T</abbr></th>
-        <th>Ref.</th>
-
-        <th>Area</th>
-        <th><abbr title="Method">M</abbr></th>
-        <th><abbr title="Conclusion">C</abbr></th>
-        <th>{# Qual. #}</th>
-        <th><abbr title="Trend">T</abbr></th>
-        <th>Suitable</th>
-
-        <th><abbr title="Method">M</abbr></th>
-        <th><abbr title="Conclusion">C</abbr></th>
-
-        <th><abbr title="Method">M</abbr></th>
-        <th><abbr title="Conclusion">C</abbr></th>
-        <th><abbr title="Trend">T</abbr></th>
-        <th>{# Prev CS #}</th>
-        <th>Nat of ch</th>
-
-        <th><abbr title="Method">M</abbr></th>
-        <th><abbr title="Conclusion">C</abbr></th>
-        <th colspan="2"></th>
-
-        <td colspan="5"></td>
-      </tr>
-    </tbody>
-    <form method="post" action="">
-    <tbody>
-      <tr class="form">
-        <td></td>
-        {% if not region %}<td>{{ manual_form.region() }}</td>{% endif %}
-
-        {% include 'summary/species/manual_form.html' %}
-      </tr>
-    </tbody>
-    </form>
-    {% endif %}
-
     {# Manual assessments - conclusions #}
     <tbody class="thead">
     <tr class="section-header">
@@ -285,7 +219,6 @@
       <th>Nat of ch</th>
     </tr>
     </tbody>
-
     <tbody>
     {% for row in manual_objects %}
     <tr>
@@ -308,17 +241,27 @@
       {% include 'summary/species/manual/overall.html' %}
 
       {# Contrib #}
-      <td colspan="2"></td>
-
-      {# Actions #}
-      <td colspan="2"></td>
+      <td colspan="4"></td>
 
       {# Comments #}
-      {% include 'summary/common/manual/conclusion_details.html' %}
+      <td colspan="5"></td>
 
     </tr>
     {% endfor %}
     </tbody>
+    {# Add manual assessment #}
+    {% if can_add_conclusion('species', subject) %}
+    <form method="post" action="">
+    <tbody>
+      <tr class="form_row">
+        <td></td>
+        {% if not region %}<td>{{ manual_form.region() }}</td>{% endif %}
+
+        {% include 'summary/species/manual_form.html' %}
+      </tr>
+    </tbody>
+    </form>
+    {% endif %}
   </table>
   {% else %}
   <p><b>Please select a group and a species.</b></p>
