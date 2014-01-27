@@ -77,9 +77,11 @@ class SummaryManualFormSpecies(Form):
 
     method_future = SelectField()
     conclusion_future = SelectField()
+
     method_assessment = SelectField()
     conclusion_assessment = SelectField()
     conclusion_assessment_trend = SelectField()
+    conclusion_assessment_prev = SelectField()
     conclusion_assessment_change = SelectField()
 
     method_target1 = SelectField()
@@ -103,7 +105,8 @@ class SummaryManualFormSpecies(Form):
 
         for f in (self.conclusion_range, self.conclusion_population,
                   self.conclusion_habitat, self.conclusion_future,
-                  self.conclusion_assessment, self.conclusion_target1):
+                  self.conclusion_assessment, self.conclusion_assessment_prev,
+                  self.conclusion_target1):
             f.choices = conclusions
 
         for f in (self.range_trend, self.population_trend, self.habitat_trend,

@@ -9,6 +9,6 @@
     title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
     {{ row.method_assessment or '' }}
 </td>
-<td></td>
-<td></td>
-<td></td>
+<td>{{ row.conclusion_assessment_trend or 'N/A' }}</td>
+<td>{{ row.conclusion_assessment_prev or 'N/A' }}</td>
+<td>{{ row.conclusion_assessment_change or 'N/A' }}</td>

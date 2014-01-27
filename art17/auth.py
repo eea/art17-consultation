@@ -29,7 +29,7 @@ class UserDatastore(SQLAlchemyUserDatastore):
 
     def create_user(self, **kwargs):
         del kwargs['password']
-        kwargs['account_date'] = datetime.utcnow()
+        kwargs['account_date'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
         super(UserDatastore, self).create_user(**kwargs)
 
     def _prepare_role_modify_args(self, user, role):
@@ -64,7 +64,10 @@ def set_user(user_id):
     if user is None:
         logger.warn("Autheticated user %r not found in database", user_id)
     else:
-        flask.g.user = user
+        if user.is_active():
+            flask.g.user = user
+        else:
+            logger.warn("User %r is marked as inactive", user_id)
 
 
 class DebugAuthProvider(object):
@@ -139,6 +142,20 @@ user_manager = Manager()
 user_manager.add_command('create', CreateUserCommand())
 user_manager.add_command('deactivate', DeactivateUserCommand())
 user_manager.add_command('activate', ActivateUserCommand())
+
+
+@user_manager.command
+def ls():
+    for user in models.RegisteredUser.query:
+        print "{u.id} <{u.email}>".format(u=user)
+
+
+@user_manager.command
+def remove(user_id):
+    user = models.RegisteredUser.query.get(user_id)
+    models.db.session.delete(user)
+    models.db.session.commit()
+
 
 role_manager = Manager()
 role_manager.add_command('create', CreateRoleCommand())
