@@ -9,7 +9,7 @@
 {% endif %}
 
 {% if can_view_decision(row) %}
-<td title="{{ title }}">
+<td title="{{ title }}" class="form_cell">
   <select>
     {% for decision in DECISION_DETAILS %}
     <option {% if decision == row.decision %}selected="selected"{% endif %}>

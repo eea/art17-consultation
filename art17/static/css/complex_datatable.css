@@ -97,7 +97,7 @@ abbr {
 	background-color: #f6f6f6;
 }
 
-/*FORMS*/
+/*FORM ROW*/
 .complex_datatable .form_row:first-child {
 	border-top: 3px solid #366888;
 }
@@ -116,16 +116,35 @@ abbr {
 
 .complex_datatable .form_row select,
 .complex_datatable .form_row input {
-	display: block;
-	min-width: 100%;
 	border: 1px solid #366888;
-	margin-bottom: 1px;
-	font: inherit;
 }
 
 .complex_datatable .form_row button {
 	border-color: #366888;
 }
+
+.complex_datatable .form_row select,
+.complex_datatable .form_row input {
+	display: block;
+	min-width: 100%;
+	margin-bottom: 1px;
+	font: inherit;
+}
+
+/*FORM CELL*/
+.complex_datatable .form_cell {
+	white-space: normal;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+.complex_datatable .form_cell select,
+.complex_datatable .form_cell input {
+	display: block;
+	min-width: 100%;
+	font: inherit;
+}
+
 
 
 
