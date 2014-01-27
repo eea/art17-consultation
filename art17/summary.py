@@ -70,6 +70,9 @@ def can_view(record, countries):
 
 @summary.app_template_global('can_edit')
 def can_edit(record):
+    if current_user.is_anonymous():
+        return False
+
     if record.user_id == current_user.id:
         return True
 
