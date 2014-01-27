@@ -161,7 +161,7 @@ abbr {
 	display: inline-block;
 	*zoom: 1;
 	padding: 1px 2px;
-	margin: -3px -3px;
+	margin: -1px 0 -3px -3px;
 	border-width: 1px;
 	border-style: solid;
 	border-radius: 2px;
@@ -290,9 +290,9 @@ td.U2U {
 }*/
 
 .XX > span {
-	color: #bbb;
-	border-color: #ddd;
-	background-color: #eee;
+	/*color: #bbb;*/
+	border-color: #999;
+	background-color: #fff;
 }
 
 /*.XX {
@@ -301,9 +301,9 @@ td.U2U {
 }*/
 
 .XXU > span {
-	color: #bbb;
-	border-color: #ddd;
-	background-color: #eee;
+	/*color: #bbb;*/
+	border-color: #999;
+	background-color: #fff;
 }
 
 td.XXU {
@@ -315,9 +315,9 @@ td.XXU {
 }
 
 .XU > span {
-	color: #bbb;
-	border-color: #ddd;
-	background-color: #eee;
+	/*color: #bbb;*/
+	border-color: #999;
+	background-color: #fff;
 }
 
 td.XU {
@@ -329,23 +329,23 @@ td.XU {
 }
 
 .XUU > span {
-	color: #bbb;
-	border-color: #ddd;
-	background-color: #eee;
+	/*color: #bbb;*/
+	border-color: #999;
+	background-color: #fff;
 }
 
 td.XUU {
 	background-image:url(images/corner-316ac5.gif);
 	background-repeat: no-repeat;
 	background-position: top right;
-/*	color: inherit;
-	background-color: #eee;*/
+	border-color: #999;
+	background-color: #fff;
 }
 
 .NA > span {
-	color: #bbb;
-	border-color: #ddd;
-	background-color: #eee;
+	/*color: #bbb;*/
+	border-color: #999;
+	background-color: #fff;
 }
 
 /*.NA {
