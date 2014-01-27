@@ -747,6 +747,7 @@ class RegisteredUser(Base, UserMixin):
         secondary=roles_users,
         backref=db.backref('users', lazy='dynamic'),
     )
+    password = None  # placeholder to make flask_security forms happy
 
 
 class Role(Base, RoleMixin):

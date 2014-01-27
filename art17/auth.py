@@ -2,10 +2,17 @@ import logging
 from datetime import datetime
 import flask
 from werkzeug.local import LocalProxy
+from wtforms import TextField
 from flask.ext.script import Manager, Option
 from flask.ext.security import Security, SQLAlchemyUserDatastore, AnonymousUser
 from flask.ext.security import core as flask_security_core
-from flask.ext.security import forms as flask_security_forms
+from flask.ext.security import views as flask_security_views
+from flask.ext.security.forms import (
+    ConfirmRegisterForm,
+    password_length,
+    Required,
+)
+from flask.ext.security.registerable import register_user
 from flask.ext.security.script import (
     CreateUserCommand as BaseCreateUserCommand,
     CreateRoleCommand,
@@ -21,19 +28,28 @@ logger = logging.getLogger(__name__)
 
 current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
 flask_security_core.current_user = current_user
+flask_security_views.current_user = current_user
+flask_security_views.logout_user = lambda: None
+flask_security_views.login_user = lambda new_user: None
 flask_security_core._get_login_manager = lambda app: None
-flask_security_forms.password_length.min = 1
+password_length.min = 1
 
 
 class UserDatastore(SQLAlchemyUserDatastore):
 
     def create_user(self, **kwargs):
         del kwargs['password']
+        kwargs.setdefault('active', False)
         kwargs['account_date'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
-        super(UserDatastore, self).create_user(**kwargs)
+        return super(UserDatastore, self).create_user(**kwargs)
 
     def _prepare_role_modify_args(self, user, role):
         return (self.find_user(id=user), self.find_role(role))
+
+
+class Art17ConfirmRegisterForm(ConfirmRegisterForm):
+
+    id = TextField('id', validators=[Required("User ID is required")])
 
 
 auth = flask.Blueprint('auth', __name__)
@@ -56,7 +72,15 @@ def setup_auth_handlers(state):
     if app.config.get('AUTH_ZOPE'):
         ZopeAuthProvider().init_app(app)
 
-    security.init_app(app)
+    app.config.update({
+        'SECURITY_CONFIRMABLE': True,
+        'SECURITY_REGISTERABLE': True,
+    })
+
+    security.init_app(
+        app,
+        confirm_register_form=Art17ConfirmRegisterForm,
+    )
 
 
 def set_user(user_id):
