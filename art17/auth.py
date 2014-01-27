@@ -29,7 +29,7 @@ class UserDatastore(SQLAlchemyUserDatastore):
 
     def create_user(self, **kwargs):
         del kwargs['password']
-        kwargs['account_date'] = datetime.utcnow()
+        kwargs['account_date'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
         super(UserDatastore, self).create_user(**kwargs)
 
     def _prepare_role_modify_args(self, user, role):
