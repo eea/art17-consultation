@@ -1,5 +1,5 @@
 revision = '288787a39e0b'
-down_revision = '45579674231a'
+down_revision = '287871a68b8e'
 
 from alembic import op
 from sqlalchemy.dialects import mysql

@@ -17,4 +17,11 @@ $(function () {
 
     }
 
+    if($('#report-filterform').length == 1) {
+
+        var region = $('#region');
+        region.remoteChained('#period, #country', region.data('href'));
+
+    }
+
 });

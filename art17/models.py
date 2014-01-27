@@ -638,13 +638,18 @@ class HabitattypesManualAssessment(Base):
     last_update = Column(String(16))
     deleted_record = Column(Integer)
     decision = Column(String(3))
-    user_decision = Column(String(25))
+    user_decision_id = Column('user_decision', String(25))
     last_update_decision = Column(String(16))
 
     user = relationship(
         'RegisteredUser',
         primaryjoin="HabitattypesManualAssessment.user_id==RegisteredUser.id",
         foreign_keys=user_id,
+    )
+    user_decision = relationship(
+        'RegisteredUser',
+        primaryjoin="HabitattypesManualAssessment.user_decision_id==RegisteredUser.id",
+        foreign_keys=user_decision_id,
     )
 
     dataset_id = Column(
@@ -819,13 +824,18 @@ class SpeciesManualAssessment(Base):
     last_update = Column(String(16))
     deleted_record = Column(Integer)
     decision = Column(String(3))
-    user_decision = Column(String(25))
+    user_decision_id = Column('user_decision', String(25))
     last_update_decision = Column(String(16))
 
     user = relationship(
         'RegisteredUser',
         primaryjoin="SpeciesManualAssessment.user_id==RegisteredUser.id",
         foreign_keys=user_id,
+    )
+    user_decision = relationship(
+        'RegisteredUser',
+        primaryjoin="SpeciesManualAssessment.user_decision_id==RegisteredUser.id",
+        foreign_keys=user_decision_id,
     )
 
     dataset_id = Column(
