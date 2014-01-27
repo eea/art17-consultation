@@ -1,24 +1,24 @@
-<form id="filterform" name="filterform" method="get">
+<form id="filterform" class="clearfix" name="filterform" method="get">
 
-  <fieldset>
-    <legend>{{ summary_filter_form.period.label }}</legend>
+  <div class="form_group">
+    <label>{{ summary_filter_form.period.label }}</label>
     {{ summary_filter_form.period }}
-  </fieldset>
+  </div>
 
-  <fieldset>
-    <legend>{{ summary_filter_form.group.label }}</legend>
+  <div class="form_group">
+    <label>{{ summary_filter_form.group.label }}</label>
     {{ summary_filter_form.group(**{'data-href': groups_url}) }}
-  </fieldset>
+  </div>
 
-  <fieldset>
-    <legend>{{ summary_filter_form.subject.label }}</legend>
+  <div class="form_group">
+    <label>{{ summary_filter_form.subject.label }}</label>
     {{ summary_filter_form.subject(**{'data-href': subjects_url}) }}
-  </fieldset>
+  </div>
 
-  <fieldset>
-    <legend>{{ summary_filter_form.region.label }}</legend>
+  <div class="form_group">
+    <label>{{ summary_filter_form.region.label }}</label>
     {{ summary_filter_form.region(**{'data-href': regions_url}) }}
-  </fieldset>
+  </div>
 
-  <button type="submit">Filter</button>
+  <button type="submit" class="offset_top_label">Filter</button>
 </form>

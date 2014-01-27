@@ -15,7 +15,7 @@
 	border-right-width: inherit;
 	border-style: inherit;
 	border-color: transparent;
-	padding: 6px 5px;
+	padding: 5px 4px;
 }
 
 .complex_datatable thead,
@@ -50,6 +50,7 @@ abbr {
 .complex_datatable caption {
 	border-color: inherit;
 	font-weight: normal;
+	text-align: left;
 	border-top-width: 1px;
 }
 
@@ -359,11 +360,54 @@ td.XUU {
 }
 
 /* added */
-#filterform fieldset {
-    display: inline-block;
-    border-style: solid;
-    border-width: 1px;
-    background-color: #fafafa;
+#filterform {
+	display: inline-block;
+	border: 1px solid #b6b6b6;
+  background-color: #fafafa;
+  padding: 12px;
+	margin-bottom: 12px;
+}
+
+.form_group:before,
+.form_group:after {
+	display:table;
+	content:" ";
+}
+
+.form_group:after{
+	clear:both;
+}
+
+.form_group {
+	float: left;
+	margin-right: 6px;
+}
+
+.form_group label {
+	display: block;
+	margin-bottom: 6px;
+	white-space: nowrap;
+}
+
+.offset_top_label {
+	float: left;
+	margin-top: 22px;
+}
+
+.form_group input,
+.form_group select {
+	width: 100%;
+	max-width: 200px;
+}
+
+.clearfix:before,
+.clearfix:after {
+	display:table;
+	content:" ";
+}
+
+.clearfix:after{
+	clear:both;
 }
 
 .hidden {
