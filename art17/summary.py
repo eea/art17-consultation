@@ -224,12 +224,13 @@ class Summary(views.View):
     def parse_object(self, subject, form):
         raise NotImplementedError()
 
-    def get_manual_form(self):
+    def get_manual_form(self, data=None):
         manual_assessment = None
-        if request.form.get('submit') != 'add':
-            subject = request.form.get('subject')
-            region = request.form.get('region')
-            user_id = request.form.get('user')
+        data = data or MultiDict({})
+        if data.get('submit') != 'add':
+            subject = data.get('subject')
+            region = data.get('region')
+            user_id = data.get('user')
             filters = {
                 'region': region,
                 'user_id': user_id,
@@ -238,7 +239,7 @@ class Summary(views.View):
             manual_assessment = self.model_manual_cls.query.filter_by(
                 **filters
             ).first()
-        if request.form.get('submit') == 'edit':
+        if data.get('submit') == 'edit':
             if manual_assessment:
                 form = self.manual_form_cls()
                 data = MultiDict(self.parse_object(manual_assessment, form))
@@ -247,7 +248,7 @@ class Summary(views.View):
             else:
                 raise ValueError('No data found.')
         # Default: add
-        return self.manual_form_cls(request.form), manual_assessment
+        return self.manual_form_cls(data), manual_assessment
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -265,7 +266,7 @@ class Summary(views.View):
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = self.get_regions(period, subject)
 
-        manual_form, manual_assessment = self.get_manual_form()
+        manual_form, manual_assessment = self.get_manual_form(request.form)
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
             manual_form.region.process_data(region)
@@ -289,6 +290,7 @@ class Summary(views.View):
                         db.session.rollback()
                         flash('A record with the same keys exist. Cannot add',
                               'error')
+                    manual_assessment = None
                 else:
                     self.flatten_form(manual_form, manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
