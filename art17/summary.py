@@ -22,6 +22,7 @@ from art17.models import (
     EtcDataHabitattypeRegion,
     EtcQaErrorsHabitattypeManualChecked,
     EtcDicMethod,
+    EtcDicDecision,
 )
 
 from art17.mixins import SpeciesMixin, HabitatMixin
@@ -79,6 +80,12 @@ def can_edit(record):
     return admin_perm.can()
 
 
+@summary.app_template_global('can_view_decision')
+def can_view_decision(record):
+    # TODO: check acl_manager code for checkPermissionViewDecision
+    return expert_perm.can() or admin_perm.can()
+
+
 @summary.app_template_global('can_add_conclusion')
 def can_add_conclusion(zone, subject, region=None):
     """
@@ -109,12 +116,16 @@ def inject_fuctions():
 @summary.app_context_processor
 def inject_static():
     return {
+        'expert_perm': expert_perm,
         'CONCLUSION_CLASSES': CONCLUSION_CLASSES,
         'COUNTRY_ASSESSMENTS': COUNTRY_ASSESSMENTS,
         'QUALITIES': QUALITIES,
         'ASSESSMENT_DETAILS': dict(
             db.session.query(EtcDicMethod.method, EtcDicMethod.details)
         ),
+        'DECISION_DETAILS': dict(
+            db.session.query(EtcDicDecision.decision, EtcDicDecision.details)
+        )
     }
 
 
@@ -144,6 +155,7 @@ def format_date(value):
     except ValueError:
         return value
     return date.strftime('%m/%y')
+
 
 def record_errors(record):
     if isinstance(record, EtcDataSpeciesRegion):
