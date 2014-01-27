@@ -28,14 +28,13 @@
                         {{ subject }}
                       </th>
                       {% for region in regions %}
-                        <!--{% set data = species_data.get(subject, {}).get(region.reg_code, '') %}
+                        {% set data = species_data.get(subject, {}).get(region.reg_code, '') %}
                         {% set title = COUNTRY_ASSESSMENTS.get(data['conclusion'], '') %}
 
                         <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} center"
                             title="{{ title }}">
                             {{ data['method'] }}
-                        </td><-->
-                        <td>{{species_data.get(subject, {}).get(region.reg_code, '')}}</td>
+                        </td>
                       {% endfor %}
                     </tr>
                     {% endfor %}

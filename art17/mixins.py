@@ -24,8 +24,9 @@ class SpeciesMixin(object):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
 
     def subjects_by_group(self, period, group):
-        qs = db.session.query(self.model_cls.speciesname).\
-            filter_by(group=group, dataset_id=period).distinct()
+        qs = db.session.query(self.model_cls.speciesname)\
+            .filter_by(group=group, dataset_id=period).distinct()\
+            .order_by(self.model_cls.speciesname)
         return [row[0] for row in qs]
 
     def flatten_form(self, form, subject):
