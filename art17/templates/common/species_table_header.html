@@ -1,0 +1,61 @@
+<tbody class="thead">
+
+  <tr class="section-header">
+    <th colspan="{{ colspan_all }}">
+      ETC/BD treated member states' data
+    </th>
+  </tr>
+
+  <tr>
+
+    {% if show_species_report_headers %}
+      <th>Species</th>
+      <th></th>
+    {% endif %}
+
+    {% if not country %}<th rowspan="2">MS</th>{% endif %}
+    {% if not region %}<th rowspan="2">Reg</th>{% endif %}
+    <th colspan="4">Range</th>
+    <th colspan="4">Population</th>
+    <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
+    <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
+    <th colspan="4">Overall assessment</th>
+    <th colspan="4">Grided maps(km<sup>2</sup>)</th>
+
+    {# Padding #}
+    <td colspan="5" rowspan="2"></td>
+  </tr>
+
+  <tr>
+    {% if show_species_report_headers %}
+      <th colspan="2"></th>
+    {% endif %}
+
+    <th>Area</th>
+    <th>%MS</th>
+    <th><abbr title="Trend">T</abbr></th>
+    <th>Ref.</th>
+
+    <th>Size&amp;Unit</th>
+    <th>%MS</th>
+    <th><abbr title="Trend">T</abbr></th>
+    <th>Ref.</th>
+
+    <th>Area</th>
+    <th>%MS</th>
+    <th>Qual.</th>
+    <th><abbr title="Trend">T</abbr></th>
+    <th>Suitable</th>
+
+    <th>Curr CS</th>
+    <th><abbr title="Trend">T</abbr></th>
+    <th>Prev CS</th>
+    <th>Nat of ch</th>
+
+    <th>Range</th>
+    <th title="%GR">%MS</th>
+    <th>Distrib.</th>
+    <th title="%GD">%MS</th>
+  </tr>
+
+</tbody>

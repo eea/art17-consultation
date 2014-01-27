@@ -166,7 +166,7 @@ def record_errors(record):
         )
     elif isinstance(record, EtcDataHabitattypeRegion):
         qs = EtcQaErrorsHabitattypeManualChecked.query.filter_by(
-            habitatcode=record.code,
+            habitatcode=record.habitatcode,
             region=record.region,
             eu_country_code=record.eu_country_code,
         )
@@ -273,10 +273,11 @@ class Summary(views.View):
         self.manual_objects = []
         self.setup_objects_and_data(period, subject, region)
 
+        regions = self.get_regions(period, subject)
         summary_filter_form = SummaryFilterForm(request.args)
         summary_filter_form.group.choices = self.get_groups(period)
         summary_filter_form.subject.choices = self.get_subjects(period, group)
-        summary_filter_form.region.choices = self.get_regions(period, subject)
+        summary_filter_form.region.choices = regions
 
         manual_form, manual_assessment = self.get_manual_form(request.form)
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
@@ -323,7 +324,7 @@ class Summary(views.View):
             'auto_objects': self.auto_objects,
             'manual_objects': self.manual_objects,
             'restricted_countries': self.restricted_countries,
-            'regions': self.get_regions(period, subject),
+            'regions': regions,
             'summary_filter_form': summary_filter_form,
             'manual_form': manual_form,
             'manual_assessment': manual_assessment,

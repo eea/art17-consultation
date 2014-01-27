@@ -1,26 +1,26 @@
-<form id="filterform" name="filterform" method="get">
+<form id="report-filterform" class="inline-form" name="filterform" method="get">
 
-  <fieldset>
-    <legend>{{ report_filter_form.period.label }}</legend>
+  <div class="form_group">
+    <label>{{ report_filter_form.period.label }}</label>
     {{ report_filter_form.period }}
-  </fieldset>
+  </div>
 
-  <fieldset>
-    <legend>{{ report_filter_form.group.label }}</legend>
-    {{ report_filter_form.group(**{'data-href': groups_url}) }}
-  </fieldset>
+  <div class="form_group">
+    <label>{{ report_filter_form.group.label }}</label>
+    {{ report_filter_form.group }}
+  </div>
 
-  <fieldset>
-    <legend>{{ report_filter_form.country.label }}</legend>
-    {{ report_filter_form.country(**{'data-href': country_url}) }}
-  </fieldset>
+  <div class="form_group">
+    <label>{{ report_filter_form.country.label }}</label>
+    {{ report_filter_form.country }}
+  </div>
 
-  <fieldset>
-    <legend>{{ report_filter_form.region.label }}</legend>
+  <div class="form_group">
+    <label>{{ report_filter_form.region.label }}</label>
     {{ report_filter_form.region(**{'data-href': regions_url}) }}
-  </fieldset>
+  </div>
 
-  <button type="submit">Filter</button>
+  <button class="offset_top_label" type="submit">Filter</button>
 
 </form>
 

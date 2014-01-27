@@ -39,6 +39,11 @@ class Progress(views.View):
 
     methods = ['GET']
 
+    def get_conclusions(self):
+        conclusions = ['range', 'population', 'habitat',
+                       'future prospects', 'overall assessment']
+        return zip(conclusions, conclusions)
+
     def get_context(self):
         return {}
 
@@ -73,11 +78,6 @@ class Progress(views.View):
 
 class SpeciesProgress(Progress, SpeciesMixin):
     template_name = 'progress/species.html'
-
-    def get_conclusions(self):
-        conclusions = ['range', 'population', 'habitat',
-                       'future prospects', 'overall assessment']
-        return zip(conclusions, conclusions)
 
     def process_cell(self, cell_options, conclusion_type):
         output = {
@@ -176,6 +176,9 @@ class SpeciesProgress(Progress, SpeciesMixin):
 
 class HabitatProgress(Progress, HabitatMixin):
     template_name = 'progress/habitat.html'
+
+    def setup_objects_and_data(self, period, group, conclusion_type):
+        pass
 
 
 progress.add_url_rule('/species/progress/',
