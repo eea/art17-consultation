@@ -135,7 +135,7 @@ class HabitatMixin(object):
     model_auto_cls = EtcDataHabitattypeAutomaticAssessment
     model_manual_cls = HabitattypesManualAssessment
     subject_name = 'habitat'
-    subject_field = 'code'
+    subject_field = 'habitatcode'
 
     def subjects_by_group(self, period, group):
         qs = db.session.query(self.model_cls.habitatcode).\

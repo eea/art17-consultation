@@ -166,7 +166,7 @@ def record_errors(record):
         )
     elif isinstance(record, EtcDataHabitattypeRegion):
         qs = EtcQaErrorsHabitattypeManualChecked.query.filter_by(
-            habitatcode=record.code,
+            habitatcode=record.habitatcode,
             region=record.region,
             eu_country_code=record.eu_country_code,
         )
