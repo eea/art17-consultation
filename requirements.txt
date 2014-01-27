@@ -19,7 +19,6 @@ passlib==1.6.2
 requests==2.2.1
 sqlacodegen==1.1.4
 SQLAlchemy==0.9.1
-test-pkg==0.0
 webassets==0.9
 Werkzeug==0.9.4
 WTForms==1.0.5

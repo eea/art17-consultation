@@ -64,11 +64,12 @@ class ImportCommand(Command):
                     list(row) + [dataset.id]
                     for row in input_conn.execute(query)
                 ]
-                rv = models.db.session.connection().execute(
-                    "INSERT INTO `%s` (%s) VALUES (%s)"
-                    % (table_name, out_columns_sql, out_values_sql),
-                    values,
-                )
+                if values:
+                    rv = models.db.session.connection().execute(
+                        "INSERT INTO `%s` (%s) VALUES (%s)"
+                        % (table_name, out_columns_sql, out_values_sql),
+                        values,
+                    )
 
                 stdout_write("%d\n" % len(values))
 

@@ -15,7 +15,7 @@ Art 17 Consultation
 3. Install prerequisites if missing::
 
     python2.7 or higher
-    apt-get install python-setuptools python-dev
+    apt-get install python-setuptools python-dev libmysqlclient-dev
 
 4. Install dependencies::
 
@@ -35,7 +35,13 @@ Art 17 Consultation
 
 7. Import sql data dump in your art17 database, see "data import" below.
 
-8. Run a test server::
+8. Create your user and assign admin role to it::
+
+    ./manage.py user create -e user_email -i user_id
+    ./manage.py role create -n admin
+    ./manage.py role add -u user_id -r admin
+
+9. Run a test server::
 
     ./manage.py runserver
 
