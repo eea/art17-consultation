@@ -64,6 +64,7 @@ def app(request):
 
     @request.addfinalizer
     def fin():
+        db.session.rollback()
         drop_db(app.config['MYSQL_URI'], app.config['DB_NAME'])
         app_context.pop()
     return app
