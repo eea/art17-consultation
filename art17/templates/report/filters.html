@@ -1,4 +1,4 @@
-<form id="filterform" name="filterform" method="get">
+<form id="report-filterform" name="filterform" method="get">
 
   <fieldset>
     <legend>{{ report_filter_form.period.label }}</legend>
@@ -7,12 +7,12 @@
 
   <fieldset>
     <legend>{{ report_filter_form.group.label }}</legend>
-    {{ report_filter_form.group(**{'data-href': groups_url}) }}
+    {{ report_filter_form.group }}
   </fieldset>
 
   <fieldset>
     <legend>{{ report_filter_form.country.label }}</legend>
-    {{ report_filter_form.country(**{'data-href': country_url}) }}
+    {{ report_filter_form.country }}
   </fieldset>
 
   <fieldset>
