@@ -143,6 +143,20 @@ user_manager.add_command('create', CreateUserCommand())
 user_manager.add_command('deactivate', DeactivateUserCommand())
 user_manager.add_command('activate', ActivateUserCommand())
 
+
+@user_manager.command
+def ls():
+    for user in models.RegisteredUser.query:
+        print "{u.id} <{u.email}>".format(u=user)
+
+
+@user_manager.command
+def remove(user_id):
+    user = models.RegisteredUser.query.get(user_id)
+    models.db.session.delete(user)
+    models.db.session.commit()
+
+
 role_manager = Manager()
 role_manager.add_command('create', CreateRoleCommand())
 role_manager.add_command('add', AddRoleCommand())
