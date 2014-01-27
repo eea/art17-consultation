@@ -24,7 +24,8 @@ alembic_cfg = config.Config(alembic_cfg_path.abspath())
 def create_db(url):
     conn = db.create_engine(url).connect()
     conn.execute('drop schema if exists art17testing')
-    conn.execute('create schema art17testing')
+    conn.execute('create schema art17testing '
+                 'CHARACTER SET utf8 COLLATE utf8_general_ci')
     conn.close()
 
 
