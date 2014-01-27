@@ -1,5 +1,6 @@
 import flask
 from flask.ext.script import Manager
+from flask.ext.mail import Mail
 
 from models import db, db_manager
 from art17.layout import layout
@@ -31,6 +32,7 @@ def create_app(config={}, testing=False):
     app.register_blueprint(report)
     app.register_blueprint(progress)
     app.register_blueprint(auth)
+    Mail().init_app(app)
     return app
 
 

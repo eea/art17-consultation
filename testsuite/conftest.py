@@ -74,3 +74,14 @@ def app(request):
 def client(app):
     client = TestApp(app, db=db, use_session_scopes=True)
     return client
+
+
+@fixture
+def outbox(app, request):
+    outbox_ctx = app.extensions['mail'].record_messages()
+
+    @request.addfinalizer
+    def cleanup():
+        outbox_ctx.__exit__(None, None, None)
+
+    return outbox_ctx.__enter__()
