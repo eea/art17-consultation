@@ -1,6 +1,26 @@
-<td>
-  {{ row.decision }}
+{% if expert_perm.can() %}
+  {% if row.user_decision %}
+    {% set title='added by ' + row.user_decision.name + ' <br/>on ' + row.last_update_decision %}
+  {% else %}
+    {% set title='' %}
+  {% endif %}
+{% else %}
+    {% set title=DECISION_DETAILS.get(row.decision, '') %}
+{% endif %}
+
+{% if can_view_decision(row) %}
+<td title="{{ title }}">
+  <select>
+    {% for decision in DECISION_DETAILS %}
+    <option {% if decision == row.decision %}selected="selected"{% endif %}>
+      {{ decision }}
+    </option>
+    {% endfor %}
+  </select>
 </td>
+{% else %}
+<td></td>
+{% endif %}
 
 {% if not region %}
 <td>

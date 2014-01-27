@@ -3,6 +3,6 @@
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_future, '') %}
 
 <td class="{{ classes }}" title="{{ title }}">
-  {{ row.percentage_future|default('', true)|parse_semicolon|safe  }}
+  <span>{{ row.percentage_future|default('', true)|parse_semicolon|safe  }}</span>
 </td>
 

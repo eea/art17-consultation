@@ -4,7 +4,7 @@
   {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
   <td {{ parse_errors('conclusion_assessment',
                       row, qa_errors, title=title, classes=classes) }}>
-    {{ row.conclusion_assessment|str2num }}
+    <span>{{ row.conclusion_assessment|str2num }}</span>
   </td>
 
   <td>{{ row.conclusion_assessment_trend|str2num }}</td>

@@ -4,7 +4,7 @@
 
 <td class="center {{ CONCLUSION_CLASSES[row.conclusion_population] }}"
     title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') }}">
-  {{ row.percentage_population_mean_size|parse_semicolon|str2num('')|safe }}
+  <span>{{ row.percentage_population_mean_size|parse_semicolon|str2num('')|safe }}</span>
 </td>
 
 <td class="center">

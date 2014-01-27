@@ -3,7 +3,8 @@ from flask import (
     views,
     request,
     url_for,
-    render_template
+    render_template,
+    jsonify,
 )
 
 from art17.common import get_default_period
@@ -52,10 +53,15 @@ class SpeciesReport(SpeciesMixin, Report):
 
     def get_context(self):
         return {
-            'groups_url': url_for('summary.species-summary-groups'),
-            'countries_url': url_for('summary.species-summary-countries'),
-            'regions_url': url_for('summary.species-summary-regions'),
+            'regions_url': url_for('.species-report-regions'),
         }
+
+
+@report.route('/species/report/regions', endpoint='species-report-regions')
+def _regions():
+    period, country = request.args['period'], request.args['country']
+    data = SpeciesMixin.get_regions_by_country(period, country)
+    return jsonify(data)
 
 
 report.add_url_rule('/species/report/',

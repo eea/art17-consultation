@@ -78,26 +78,42 @@ class SpeciesMixin(object):
         return blank_option + subjects
 
     @classmethod
-    def get_regions(cls, period, species, short=False):
-        blank_option = [('', 'All bioregions')]
-
-        assesment_field = cls.model_cls.assesment_speciesname
+    def _get_regions_query(cls, period, short=False):
+        dataset_id_field = cls.model_cls.dataset_id
         reg_field = cls.model_cls.region
         reg_code_field = EtcDicBiogeoreg.reg_code
         if not short:
             reg_name_field = EtcDicBiogeoreg.reg_name
         else:
             reg_name_field = EtcDicBiogeoreg.reg_code
-        dataset_id_field = cls.model_cls.dataset_id
 
         regions = (
             EtcDicBiogeoreg.query
             .join(cls.model_cls, reg_code_field == reg_field)
-            .filter(assesment_field == species, dataset_id_field == period)
+            .filter(dataset_id_field == period)
             .with_entities(reg_field, reg_name_field)
             .distinct()
             .order_by(reg_field)
-            .all()
+        )
+        return regions
+
+    @classmethod
+    def get_regions(cls, period, species, short=False):
+        blank_option = [('', 'All bioregions')]
+        assesment_field = cls.model_cls.assesment_speciesname
+        regions = (
+            cls._get_regions_query(period, short)
+            .filter(assesment_field == species).all()
+        )
+        return blank_option + regions
+
+    @classmethod
+    def get_regions_by_country(cls, period, country, short=False):
+        blank_option = [('', 'All bioregions')]
+        country_field = cls.model_cls.eu_country_code
+        regions = (
+            cls._get_regions_query(period, short)
+            .filter(country_field == country).all()
         )
         return blank_option + regions
 

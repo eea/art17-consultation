@@ -11,7 +11,7 @@
                           row, qa_errors,
                           title=title,
                           classes=classes) }}>
-      {{ row.percentage_habitat_surface_area|str2num }}
+      <span>{{ row.percentage_habitat_surface_area|str2num }}</span>
     </td>
 
     {% set title=QUALITIES.get(row.habitat_quality|get_quality, '') %}
@@ -26,5 +26,5 @@
     <td {{ parse_errors('complementary_suitable_habitat',
                         row, qa_errors,
                         classes='number section-border') }}>
-      {{ row.complementary_suitable_habitat|str2num }}
+      <span>{{ row.complementary_suitable_habitat|str2num }}</span>
     </td>

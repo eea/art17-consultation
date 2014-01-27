@@ -46,6 +46,10 @@
       <col span="1" class="col_border_left">
       <col span="2">
       <col span="1" class="col_border_right">
+      {# Comments #}
+      <col span="1" class="col_border_left">
+      <col span="3">
+      <col span="1" class="col_border_right">
     </colgroup>
     <tbody class="thead">
     <tr class="section-header">
@@ -240,27 +244,13 @@
       {% include 'summary/species/manual/overall.html' %}
 
       {# Contrib #}
-      <td colspan="2"></td>
+      {% include 'summary/common/manual/contrib_target1.html' %}
 
       {# Actions #}
-      <td>{# delete #}</td>
-      <td>
-        {% if can_edit(row) %}
-          {% if row != manual_assessment %}
-          <form method="post" action="">
-            <input type="hidden" name="subject" value="{{ subject }}" />
-            <input type="hidden" name="region" value="{{ row.region }}" />
-            <input type="hidden" name="user" value="{{ row.user_id }}" />
-            <button type="submit" name="submit" value="edit">edit</button>
-          </form>
-          {% else %}
-          <em>editting</em>
-          {% endif %}
-        {% endif %}
-      </td>
+      {% include 'summary/common/manual/actions.html' with context %}
 
       {# Comments #}
-      <td colspan="5"></td>
+      {% include 'summary/common/manual/conclusion_details.html' %}
 
     </tr>
     {% endfor %}
