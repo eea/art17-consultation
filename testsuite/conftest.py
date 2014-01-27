@@ -8,12 +8,12 @@ from art17.app import create_app
 from art17.models import db
 
 
-test_config = {
+TEST_CONFIG = {
     'SERVER_NAME': 'localhost',
     'SECRET_KEY': 'test',
     'ASSETS_DEBUG': True,
-    'SQLALCHEMY_DATABASE_URI': 'mysql://root@localhost/art17testing',
-    'SQLALCHEMY_MYSQL_URI': 'mysql://root@localhost/',
+    'MYSQL_URI': 'mysql://root@localhost/',
+    'DB_NAME': 'art17testing',
 }
 
 
@@ -21,21 +21,32 @@ alembic_cfg_path = path(__file__).dirname() / '..' / 'alembic.ini'
 alembic_cfg = config.Config(alembic_cfg_path.abspath())
 
 
-def create_db(url):
+def create_db(url, db_name):
     conn = db.create_engine(url).connect()
-    conn.execute('drop schema if exists art17testing')
-    conn.execute('create schema art17testing '
-                 'CHARACTER SET utf8 COLLATE utf8_general_ci')
+    conn.execute('drop schema if exists %s' % db_name)
+    conn.execute('create schema %s CHARACTER SET utf8 COLLATE utf8_general_ci'
+                 % db_name)
     conn.close()
 
 
-def drop_db(url):
+def drop_db(url, db_name):
     conn = db.create_engine(url).connect()
-    conn.execute('drop schema art17testing')
+    conn.execute('drop schema %s' % db_name)
     conn.close()
 
 
 def create_testing_app():
+    local_config = create_app().config
+
+    test_config = dict(TEST_CONFIG)
+
+    for name, value in local_config.iteritems():
+        if name.startswith('TESTING_'):
+            test_config[name[len('TESTING_'):]] = value
+
+    test_config['SQLALCHEMY_DATABASE_URI'] = (
+        test_config['MYSQL_URI'] + test_config['DB_NAME'])
+
     app = create_app(test_config, testing=True)
     return app
 
@@ -47,12 +58,12 @@ def app(request):
     app_context = app.app_context()
     app_context.push()
 
-    create_db(app.config['SQLALCHEMY_MYSQL_URI'])
+    create_db(app.config['MYSQL_URI'], app.config['DB_NAME'])
     command.upgrade(alembic_cfg, 'head')
 
     @request.addfinalizer
     def fin():
-        drop_db(app.config['SQLALCHEMY_MYSQL_URI'])
+        drop_db(app.config['MYSQL_URI'], app.config['DB_NAME'])
         app_context.pop()
     return app
 
