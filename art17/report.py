@@ -21,19 +21,24 @@ class Report(views.View):
         period = request.args.get('period') or get_default_period()
         group = request.args.get('group')
         country = request.args.get('country')
+        region = request.args.get('region')
+
         self.objects = []
         self.setup_objects_and_data(period, group)
 
+        regions = self.get_regions_by_country(period, country)
         report_filter_form = ReportFilterForm(request.args)
         report_filter_form.group.choices = self.get_groups(period)
         report_filter_form.country.choices = self.get_countries(period)
-        report_filter_form.region.choices = self.get_regions(period, country)
+        report_filter_form.region.choices = regions
 
         context = self.get_context()
         context.update({
             'objects': self.objects,
             'report_filter_form': report_filter_form,
-
+            'region': region,
+            'country': country,
+            'show_species_report_headers': True,
         })
         return render_template(self.template_name, **context)
 

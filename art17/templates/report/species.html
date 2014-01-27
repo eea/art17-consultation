@@ -14,42 +14,49 @@
       {% include "common/species_table_header.html" with context %}
 
       <tbody>
+
         {% for row in objects %}
-        {% set visible = can_view(row, restricted_countries) %}
-        {% set qa_errors = record_errors(row) %}
-        <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-          <td>{{ row.eu_country_code }}</td>
-          {% if not region %}<td>{{ row.region }}</td>{% endif %}
+          {% set visible = can_view(row, restricted_countries) %}
+          {% set qa_errors = record_errors(row) %}
+          <tr {% if row.is_assesm %}class="assesm"{% endif %}>
 
-          {% if not visible %}
-          <td colspan="4">
-            {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
-          </td>
-          {% else %}
+            <td><a>{{ row.assesment_speciesname }}</a>
 
-          {#- Range columns -#}
-          {% include 'summary/species/content/range.html' with context %}
+            <td><a>map</a></td>
 
-          {#- Population columns -#}
-          {% include 'summary/species/content/population.html' with context %}
+            {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
+            {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
-          {#- Habitat columns -#}
-          {% include 'summary/species/content/habitat.html' with context %}
+            {% if not visible %}
+            <td colspan="2">
+              {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
+            </td>
+            {% else %}
 
-          {#- Prospects -#}
-          {% include 'summary/species/content/future_prospects.html' with context %}
+            {#- Range columns -#}
+            {% include 'summary/species/content/range.html' with context %}
 
-          {#- Overall assessment -#}
-          {% include 'summary/species/content/overall.html' with context %}
+            {#- Population columns -#}
+            {% include 'summary/species/content/population.html' with context %}
 
-          {#- Grided maps columns -#}
-          {% include 'summary/species/content/grided_maps.html' with context %}
+            {#- Habitat columns -#}
+            {% include 'summary/species/content/habitat.html' with context %}
 
-          {# Padding #}
-          <td colspan="5"></td>
-          {% endif %}
-        </tr>
+            {#- Prospects -#}
+            {% include 'summary/species/content/future_prospects.html' with context %}
+
+            {#- Overall assessment -#}
+            {% include 'summary/species/content/overall.html' with context %}
+
+            {#- Grided maps columns -#}
+            {% include 'summary/species/content/grided_maps.html' with context %}
+
+            {# Padding #}
+            <td colspan="5"></td>
+            {% endif %}
+          </tr>
         {% endfor %}
+
       </tbody>
 
     </table>

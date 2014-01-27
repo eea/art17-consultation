@@ -56,40 +56,40 @@
 
     <tbody>
     {% for row in objects %}
-    {% set visible = can_view(row, restricted_countries) %}
-    {% set qa_errors = record_errors(row) %}
-    <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-      <td>{{ row.eu_country_code }}</td>
-      {% if not region %}<td>{{ row.region }}</td>{% endif %}
+      {% set visible = can_view(row, restricted_countries) %}
+      {% set qa_errors = record_errors(row) %}
+      <tr {% if row.is_assesm %}class="assesm"{% endif %}>
+        <td>{{ row.eu_country_code }}</td>
+        {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
-      {% if not visible %}
-      <td colspan="2">
-        {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
-      </td>
-      {% else %}
+        {% if not visible %}
+        <td colspan="2">
+          {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
+        </td>
+        {% else %}
 
-      {#- Range columns -#}
-      {% include 'summary/species/content/range.html' with context %}
+        {#- Range columns -#}
+        {% include 'summary/species/content/range.html' with context %}
 
-      {#- Population columns -#}
-      {% include 'summary/species/content/population.html' with context %}
+        {#- Population columns -#}
+        {% include 'summary/species/content/population.html' with context %}
 
-      {#- Habitat columns -#}
-      {% include 'summary/species/content/habitat.html' with context %}
+        {#- Habitat columns -#}
+        {% include 'summary/species/content/habitat.html' with context %}
 
-      {#- Prospects -#}
-      {% include 'summary/species/content/future_prospects.html' with context %}
+        {#- Prospects -#}
+        {% include 'summary/species/content/future_prospects.html' with context %}
 
-      {#- Overall assessment -#}
-      {% include 'summary/species/content/overall.html' with context %}
+        {#- Overall assessment -#}
+        {% include 'summary/species/content/overall.html' with context %}
 
-      {#- Grided maps columns -#}
-      {% include 'summary/species/content/grided_maps.html' with context %}
+        {#- Grided maps columns -#}
+        {% include 'summary/species/content/grided_maps.html' with context %}
 
-      {# Padding #}
-      <td colspan="5"></td>
-      {% endif %}
-    </tr>
+        {# Padding #}
+        <td colspan="5"></td>
+        {% endif %}
+      </tr>
     {% endfor %}
     </tbody>
 

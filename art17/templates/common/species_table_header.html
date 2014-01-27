@@ -7,10 +7,14 @@
   </tr>
 
   <tr>
-    <th rowspan="2">MS</th>
-    {% if not region %}
-      <th rowspan="2">Reg</th>
+
+    {% if show_species_report_headers %}
+      <th>Species</th>
+      <th></th>
     {% endif %}
+
+    {% if not country %}<th rowspan="2">MS</th>{% endif %}
+    {% if not region %}<th rowspan="2">Reg</th>{% endif %}
     <th colspan="4">Range</th>
     <th colspan="4">Population</th>
     <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
@@ -23,6 +27,10 @@
   </tr>
 
   <tr>
+    {% if show_species_report_headers %}
+      <th colspan="2"></th>
+    {% endif %}
+
     <th>Area</th>
     <th>%MS</th>
     <th><abbr title="Trend">T</abbr></th>
