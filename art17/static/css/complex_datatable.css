@@ -360,7 +360,7 @@ td.XUU {
 }
 
 /* added */
-#filterform {
+.inline-form {
 	display: inline-block;
 	border: 1px solid #b6b6b6;
   background-color: #fafafa;
