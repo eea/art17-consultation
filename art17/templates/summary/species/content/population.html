@@ -11,7 +11,7 @@
                           row, qa_errors,
                           title=title,
                           classes=classes) }}>
-      {{ row.percentage_population_mean_size|str2num }}
+      <span>{{ row.percentage_population_mean_size|str2num }}</span>
     </td>
 
     {% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude',
@@ -21,7 +21,7 @@
                {%- elif row.population_yearly_magnitude -%}
                Yearly magnitude = {{ row.population_yearly_magnitude}}
                {%- endif -%}">
-      {{ row.population_trend or 'N/A' }}</td>
+      <span>{{ row.population_trend or 'N/A' }}</span></td>
 
     <td {{ parse_errors(['complementary_favourable_population_q',
                          'complementary_favourable_population',
