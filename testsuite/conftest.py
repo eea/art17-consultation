@@ -1,3 +1,4 @@
+import flask
 from flask.ext.webtest import TestApp
 from pytest import fixture
 from alembic import command, config
@@ -9,7 +10,6 @@ from art17.models import db
 
 test_config = {
     'SERVER_NAME': 'localhost',
-    'TESTING': True,
     'SECRET_KEY': 'test',
     'ASSETS_DEBUG': True,
     'SQLALCHEMY_DATABASE_URI': 'mysql://root@localhost/art17testing',
@@ -35,9 +35,15 @@ def drop_db(url):
     conn.close()
 
 
+def create_testing_app():
+    app = create_app(test_config, testing=True)
+    return app
+
+
 @fixture
 def app(request):
-    app = create_app(test_config)
+    app = create_testing_app()
+
     app_context = app.app_context()
     app_context.push()
 
