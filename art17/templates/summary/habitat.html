@@ -25,6 +25,15 @@
     {% set colspan_all=23 if region else 24 %}
     {% if current_selection %}
     <table class="complex_datatable datatable">
+      <caption>
+      <b>Current selection</b>:
+      {{ current_selection|join(', ') }}.
+      {% if annexes %}
+          <b>Annexes</b> {{ annexes|join(', ') }}.
+      {% endif %}
+      <a href="">Show all {{ group }}</a>
+      </caption>
+
       <colgroup>
         <col span="1" class="col_border">
         {% if not region %}<col span="1" class="col_border">{% endif %}
