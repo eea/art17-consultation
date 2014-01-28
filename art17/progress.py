@@ -59,7 +59,8 @@ class Progress(views.View):
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
 
-        current_selection = [period_name, group, conclusion]
+        current_selection = self.get_current_selection(
+            period_name, group, conclusion)
 
         context = self.get_context()
         context.update({
@@ -74,6 +75,12 @@ class Progress(views.View):
         })
 
         return render_template(self.template_name, **context)
+
+    def get_current_selection(self, period_name, group, conclusion):
+        if not group:
+            return []
+        current_selection = [period_name, group, conclusion]
+        return current_selection
 
 
 class SpeciesProgress(Progress, SpeciesMixin):
