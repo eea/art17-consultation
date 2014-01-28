@@ -1,5 +1,3 @@
-from pytest import fixture
-
 from factory.alchemy import SQLAlchemyModelFactory
 from art17 import models
 
@@ -63,3 +61,10 @@ class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
     code = 1110
 
 
+class EtcDicMethodFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDicMethod
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+    method = '1'
