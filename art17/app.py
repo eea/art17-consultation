@@ -7,7 +7,8 @@ from art17.layout import layout
 from art17.summary import summary
 from art17.progress import progress
 from art17.report import report
-from art17.auth import auth, user_manager, role_manager
+from art17.auth import auth
+from art17.auth.script import user_manager, role_manager
 from art17.dataset import dataset_manager
 from assets import assets_env
 
