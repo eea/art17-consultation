@@ -9,18 +9,12 @@
 
     <!--<link href="{{ url_for('static', filename='css/styles.css') }}"
           type="text/css" rel="stylesheet" />-->
-    <link rel="stylesheet" type="text/css" 
-          href="{{ url_for('static', filename='css/formalize.css') }}"
-          media="screen">
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/screen.css') }}"
           media="screen">
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='css/complex_datatable.css') }}"
-          media="screen">
-    <link href="http://fonts.googleapis.com/css?family=Roboto+Condensed"
-          rel="stylesheet" type="text/css">
 
+    {%- from '_macros.html' import art17_stylesheets %}
+    {{- art17_stylesheets() }}
     <title></title>
   </head>
 
