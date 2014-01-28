@@ -2,7 +2,9 @@ import flask
 from art17 import models
 
 
-def test_self_registration_flow(client, outbox):
+def test_self_registration_flow(app, client, outbox):
+    app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
+
     register_page = client.get(flask.url_for('security.register'))
     register_page.form['id'] = 'foo'
     register_page.form['email'] = 'foo@example.com'
@@ -26,5 +28,17 @@ def test_self_registration_flow(client, outbox):
     assert foo_user.confirmed_at is not None
     assert not foo_user.active
 
-    # TODO: admin receives email and activates account
+    assert len(outbox) == 1
+    admin_message = outbox.pop()
+    assert "New user has registered" in admin_message.body
+    url = admin_message.body.split()[-1]
+    assert url == 'http://localhost/auth/admin/foo'
+    # TODO login as admin
+    activation_page = client.get(url)
+    activation_page.form['active'] = True
+    activation_page.form.submit()
+
+    foo_user = models.RegisteredUser.query.get('foo')
+    assert foo_user.active
+
     # TODO: user receives email and logs in

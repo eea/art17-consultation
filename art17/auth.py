@@ -21,6 +21,8 @@ from flask.ext.security.script import (
     DeactivateUserCommand,
     ActivateUserCommand,
 )
+from flask.ext.security import signals as security_signals
+from flask.ext.mail import Message
 import requests
 from art17 import models
 
@@ -33,6 +35,24 @@ flask_security_views.logout_user = lambda: None
 flask_security_views.login_user = lambda new_user: None
 flask_security_core._get_login_manager = lambda app: None
 password_length.min = 1
+
+
+@security_signals.user_confirmed.connect
+def notify_administrator(app, user, **extra):
+    msg = Message(
+        subject="User has registered",
+        sender=app.extensions['security'].email_sender,
+        recipients=[app.config['AUTH_ADMIN_EMAIL']],
+    )
+    msg.body = flask.render_template(
+        'auth/email_activate_user.txt',
+        activation_link=flask.url_for(
+            'auth.admin_user',
+            user_id=user.id,
+            _external=True,
+        ),
+    )
+    app.extensions['mail'].send(msg)
 
 
 class UserDatastore(SQLAlchemyUserDatastore):
@@ -81,6 +101,18 @@ def setup_auth_handlers(state):
         app,
         confirm_register_form=Art17ConfirmRegisterForm,
     )
+
+
+@auth.route('/auth/admin/<user_id>', methods=['GET', 'POST'])
+def admin_user(user_id):
+    user = models.RegisteredUser.query.get_or_404(user_id)
+    if flask.request.method == 'POST':
+        user.active = flask.request.form.get('active', type=bool)
+        models.db.session.commit()
+        flask.flash("User information updated for %s" % user_id, 'success')
+        return flask.redirect(flask.url_for('.admin_user', user_id=user_id))
+
+    return flask.render_template('auth/admin_user.html', user=user)
 
 
 def set_user(user_id):

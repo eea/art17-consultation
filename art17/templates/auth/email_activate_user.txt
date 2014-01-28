@@ -1,0 +1,5 @@
+New user has registered.
+
+You can activate the account through the link below:
+
+{{ activation_link }}
