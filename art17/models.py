@@ -410,8 +410,9 @@ class EtcDicConclusion(Base):
     )
 
     @classmethod
-    def all(cls):
-        return cls.query.with_entities(cls.conclusion).order_by(cls.conclusion)
+    def all(cls, dataset_id):
+        return cls.query.with_entities(cls.conclusion)\
+            .filter_by(dataset_id=dataset_id).order_by(cls.conclusion)
 
 
 class EtcDicDecision(Base):
@@ -460,11 +461,12 @@ class EtcDicMethod(Base):
     )
 
     @classmethod
-    def all(cls):
+    def all(cls, dataset_id):
         return (
             cls.query.filter(
                 (cls.method.startswith('1') | cls.method.startswith('2')))
             .filter(cls.method != '2XA')
+            .filter_by(dataset_id=dataset_id)
             .with_entities(cls.method)
             .order_by(cls.method)
         )
@@ -485,9 +487,10 @@ class EtcDicPopulationUnit(Base):
     )
 
     @classmethod
-    def all(cls):
+    def all(cls, dataset_id):
         return (
             cls.query.with_entities(cls.population_units)
+            .filter_by(dataset_id=dataset_id)
             .order_by(cls.order)
         )
 
@@ -522,8 +525,9 @@ class EtcDicTrend(Base):
     )
 
     @classmethod
-    def all(cls):
-        return cls.query.with_entities(cls.trend).all()
+    def all(cls, dataset_id):
+        return cls.query.with_entities(cls.trend) \
+            .filter_by(dataset_id=dataset_id).all()
 
 
 class EtcQaErrorsHabitattypeManualChecked(Base):

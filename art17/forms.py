@@ -106,16 +106,15 @@ class SummaryManualFormSpecies(Form):
     method_target1 = OptionalSelectField()
     conclusion_target1 = OptionalSelectField()
 
-    def __init__(self, *args, **kwargs):
-        super(SummaryManualFormSpecies, self).__init__(*args, **kwargs)
+    def setup_choices(self, dataset_id):
         empty = [('', '')]
-        methods = [a[0] for a in EtcDicMethod.all()]
+        methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
         methods = empty + zip(methods, methods)
-        conclusions = [a[0] for a in EtcDicConclusion.all() if a[0]]
+        conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + zip(conclusions, conclusions)  # TODO filter acl
-        trends = [a[0] for a in EtcDicTrend.all() if a[0]]
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
         trends = empty + zip(trends, trends)
-        units = [a[0] for a in EtcDicPopulationUnit.all() if a[0]]
+        units = [a[0] for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
         units = empty + zip(units, units)
 
         self.region.choices = empty
@@ -189,6 +188,9 @@ class SummaryManualFormSpecies(Form):
 class SummaryManualFormHabitat(Form):
 
     region = SelectField()
+
+    def setup_choices(self, dataset_id):
+        pass
 
 
 class ProgressFilterForm(Form):

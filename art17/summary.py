@@ -236,7 +236,7 @@ class Summary(views.View):
     def parse_object(self, subject, form):
         raise NotImplementedError()
 
-    def get_manual_form(self, data=None):
+    def get_manual_form(self, data=None, period=None):
         manual_assessment = None
         data = data or MultiDict({})
         if data.get('submit') != 'add':
@@ -255,12 +255,15 @@ class Summary(views.View):
             if manual_assessment:
                 form = self.manual_form_cls()
                 data = MultiDict(self.parse_object(manual_assessment, form))
+                form.setup_choices(dataset_id=period)
                 form.process(data)
                 return form, manual_assessment
             else:
                 raise ValueError('No data found.')
         # Default: add
-        return self.manual_form_cls(data), manual_assessment
+        form = self.manual_form_cls(data)
+        form.setup_choices(dataset_id=period)
+        return form, manual_assessment
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -279,7 +282,9 @@ class Summary(views.View):
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = regions
 
-        manual_form, manual_assessment = self.get_manual_form(request.form)
+        manual_form, manual_assessment = self.get_manual_form(
+            request.form, period=period,
+        )
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
             manual_form.region.process_data(region)
