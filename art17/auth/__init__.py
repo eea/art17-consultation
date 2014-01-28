@@ -3,7 +3,6 @@ from datetime import datetime
 import flask
 from werkzeug.local import LocalProxy
 from wtforms import TextField
-from flask.ext.script import Manager, Option
 from flask.ext.security import Security, SQLAlchemyUserDatastore, AnonymousUser
 from flask.ext.security import core as flask_security_core
 from flask.ext.security import views as flask_security_views
@@ -13,14 +12,6 @@ from flask.ext.security.forms import (
     Required,
 )
 from flask.ext.security.registerable import register_user
-from flask.ext.security.script import (
-    CreateUserCommand as BaseCreateUserCommand,
-    CreateRoleCommand,
-    AddRoleCommand,
-    RemoveRoleCommand,
-    DeactivateUserCommand,
-    ActivateUserCommand,
-)
 from flask.ext.security import signals as security_signals
 from flask.ext.mail import Message
 import requests
@@ -181,55 +172,3 @@ class ZopeAuthProvider(object):
         user_id = resp.json()['user_id']
         if user_id:
             set_user(user_id=user_id)
-
-
-class CreateUserCommand(BaseCreateUserCommand):
-
-    option_list = BaseCreateUserCommand.option_list + (
-        Option('-i', '--id', dest='id', default=None),
-    )
-
-    def run(self, **kwargs):
-        kwargs['password'] = 'foo'
-        super(CreateUserCommand, self).run(**kwargs)
-
-
-user_manager = Manager()
-user_manager.add_command('create', CreateUserCommand())
-user_manager.add_command('deactivate', DeactivateUserCommand())
-user_manager.add_command('activate', ActivateUserCommand())
-
-
-@user_manager.command
-def ls():
-    for user in models.RegisteredUser.query:
-        print "{u.id} <{u.email}>".format(u=user)
-
-
-@user_manager.command
-def remove(user_id):
-    user = models.RegisteredUser.query.get(user_id)
-    models.db.session.delete(user)
-    models.db.session.commit()
-
-
-role_manager = Manager()
-role_manager.add_command('create', CreateRoleCommand())
-role_manager.add_command('add', AddRoleCommand())
-role_manager.add_command('remove', RemoveRoleCommand())
-
-
-@role_manager.command
-def ls():
-    for role in models.Role.query:
-        print "{r.name}: {r.description}".format(r=role)
-
-
-@role_manager.command
-def members(role):
-    role_ob = models.Role.query.filter_by(name=role).first()
-    if role_ob is None:
-        print 'No such role %r' % role
-        return
-    for user in role_ob.users:
-        print "{u.id} <{u.email}>".format(u=user)
