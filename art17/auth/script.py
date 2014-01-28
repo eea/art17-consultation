@@ -7,6 +7,7 @@ from flask.ext.security.script import (
     DeactivateUserCommand,
     ActivateUserCommand,
 )
+from art17.auth import zope_acl_manager
 from art17 import models
 
 
@@ -31,6 +32,24 @@ user_manager.add_command('activate', ActivateUserCommand())
 def ls():
     for user in models.RegisteredUser.query:
         print "{u.id} <{u.email}>".format(u=user)
+
+
+@user_manager.command
+def activate(user_id):
+    user = models.RegisteredUser.query.get(user_id)
+    zope_acl_manager.create(user)
+    user.active = True
+    models.db.session.commit()
+    print "user", user.id, "has been created in Zope"
+
+
+@user_manager.command
+def deactivate(user_id):
+    user = models.RegisteredUser.query.get(user_id)
+    zope_acl_manager.delete(user)
+    user.active = False
+    models.db.session.commit()
+    print "user", user.id, "has been removed from Zope"
 
 
 @user_manager.command
