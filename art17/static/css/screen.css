@@ -904,6 +904,11 @@ input.error[type="radio"], input.error[type="checkbox"], select.error {
 	border: 2px solid #A42322;
 }
 
+/* change me */
+td.errors {
+    background-color: red !important;
+}
+
 .error-hint {
 	font-size: 80%;
 	margin: 2px;
