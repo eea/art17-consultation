@@ -9,6 +9,15 @@ from art17.models import (
     EtcDicTrend,
     EtcDicPopulationUnit,
 )
+from art17.utils import validate_field
+
+
+NOT_NUMERIC_VALUES = (
+    "Only numeric values with not more than two decimals are accepted!"
+)
+METH_CONCL_MANDATORY = "At leat one method and conclusion must be filled!"
+METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
+    "nor a method without a conclusion"
 
 
 def all_fields(form):
@@ -132,17 +141,30 @@ class SummaryManualFormSpecies(Form):
             (self.method_assessment, self.conclusion_assessment),
             (self.method_target1, self.conclusion_target1),
         ]
-        data = [(bool(m.data), bool(c.data)) for m, c in method_conclusions]
-        if (True, False) in data or (False, True) in data:
-            fields[1].errors.append(
-                u"Both method and conclusion must be filled"
-            )
-        elif (True, True) not in data:
-            fields[1].errors.append(
-                u"At least one method and conclusion must be filled"
-            )
+        one = False
+        for m, c in method_conclusions:
+            mc, cc = m.data, c.data
+            if mc and not cc:
+                c.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif cc and not mc:
+                m.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif mc and cc:
+                one = True
+        if not one:
+            fields[1].errors.append(METH_CONCL_MANDATORY)
 
-        return True
+        numeric_values = [
+            self.range_surface_area, self.complementary_favourable_range,
+            # self.range_yearly_magnitude
+            self.population_size, self.complementary_favourable_population,
+            # self.population_yearly_magnitude
+            self.habitat_surface_area, self.complementary_suitable_habitat
+        ]
+        for f in numeric_values:
+            if not validate_field(f.data):
+                f.errors.append(NOT_NUMERIC_VALUES)
+
+        return not self.errors
 
     def all_errors(self):
         text = '<ul>'
