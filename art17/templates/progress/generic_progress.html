@@ -1,45 +1,51 @@
 {% extends layout_template %}
 
 {% block content %}
-
+    {% block text_description %}{% endblock text_description %}
+    <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc).
+    Select from "Period..." value "2001-2006" in order to see the previous reported data.</p>
     {% include 'progress/filters.html' %}
 
     {% if current_selection %}
-        {% block text_description %}{% endblock text_description %}
-            {% if species_data %}
-                <table class="complex_datatable datatable">
-                  <thead>
-                    <tr>
-                      <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
-                      <th colspan="{{ regions|count }}">Regions</th>
-                    </tr>
-                    <tr>
-                      {% for region in regions %}
-                      <th>
-                        {{ region.reg_code }}
-                      </th>
-                      {% endfor %}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for subject in subjects %}
-                    <tr>
-                      <th>
-                        {{ subject }}
-                      </th>
-                      {% for region in regions %}
-                        {% set data = species_data.get(subject, {}).get(region.reg_code, '') %}
-                        {% set title = COUNTRY_ASSESSMENTS.get(data['conclusion'], '') %}
+        <table class="complex_datatable datatable">
+          <caption>
+            <b>Current selection</b>:
+            {{ current_selection|join(', ') }}.
+            <a href="">Show all {{ group }}</a>
+          </caption>
+          <thead>
+            <tr>
+              <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
+              <th colspan="{{ regions|count }}">Regions</th>
+            </tr>
+            <tr>
+              {% for region in regions %}
+              <th>
+                {{ region.reg_code }}
+              </th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for subject in subjects %}
+            <tr>
+              <th>
+                {{ subject }}
+              </th>
+              {% for region in regions %}
+                {% set data = species_data.get(subject, {}).get(region.reg_code, '') %}
+                {% set title = COUNTRY_ASSESSMENTS.get(data['conclusion'], '') %}
 
-                        <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} center"
-                            title="{{ title }}">
-                            {{ data['method'] }}
-                        </td>
-                      {% endfor %}
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-            {% endif %}
+                <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} center"
+                    title="{{ title }}">
+                    <span>{{ data['method'] }}</span>
+                </td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% else %}
+        <p><b>Please select a group and a species.</b></p>
     {% endif %}
 {% endblock %}
