@@ -4,7 +4,7 @@ def test_homepage(app, client):
     assert resp.status_code == 200
 
 
-def test_species_summary_view_1(app, client):
+def test_species_summary_view_filter_element_found(app, client):
     resp = client.get('/species/summary/',
                       {'group': 'Mammals', 'period': '1',
                        'subject': 'Canis lupus', 'region': ''})
@@ -13,7 +13,7 @@ def test_species_summary_view_1(app, client):
     assert 'Canis lupus' in resp.text
 
 
-def test_species_summary_view_2(app, client):
+def test_species_summary_view_filter_element_not_found(app, client):
     resp = client.get('/species/summary/',
                       {'group': 'Mammals', 'period': '1',
                        'subject': 'Capra ibex', 'region': ''})
@@ -22,7 +22,7 @@ def test_species_summary_view_2(app, client):
     assert 'Canis lupus' not in resp.text
 
 
-def test_species_progress_view_1(app, client):
+def test_species_progress_view_filter_element_found(app, client):
     resp = client.get('/species/progress/', {'period': '1', 'group': 'Mammals',
                                              'conclusion': 'population'})
     assert resp.status_code == 200
@@ -30,7 +30,7 @@ def test_species_progress_view_1(app, client):
     assert 'Mammals, population' in resp.text
 
 
-def test_species_progress_view_2(app, client):
+def test_species_progress_view_filter_element_not_found(app, client):
     resp = client.get('/species/progress/', {'period': '1', 'group': 'Fish',
                                              'conclusion': 'range'})
     assert resp.status_code == 200
@@ -38,7 +38,7 @@ def test_species_progress_view_2(app, client):
     assert 'Mammals, population' not in resp.text
 
 
-def test_habitat_summary_view_1(app, client):
+def test_habitat_summary_view_filter_element_found(app, client):
     resp = client.get('/habitat/summary/', {
         'period': '1', 'group': 'forests', 'subject': '9010', 'region': ''})
     assert resp.status_code == 200
@@ -46,7 +46,7 @@ def test_habitat_summary_view_1(app, client):
     assert 'forests, 9010' in resp.text
 
 
-def test_habitat_summary_view_2(app, client):
+def test_habitat_summary_view_filter_element_not_found(app, client):
     resp = client.get('/habitat/summary/', {
         'period': '1', 'group': 'grasslands', 'subject': '6110', 'region': ''})
     assert resp.status_code == 200
