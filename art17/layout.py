@@ -21,3 +21,8 @@ def load_zope_template():
     zope_url = flask.current_app.config['LAYOUT_ZOPE_URL']
     resp = requests.get(zope_url)
     flask.g.zope_layout = resp.json()
+
+    art17_css = flask.render_template('header_styles.html')
+    flask.g.zope_layout['standard_html_header'] = \
+        flask.g.zope_layout['standard_html_header'].replace(
+            '</head>', art17_css + '</head>')
