@@ -24,4 +24,11 @@ $(function () {
 
     }
 
+    if($('#progress-filterform').length == 1) {
+
+        var group = $('#group');
+        var conclusion = $('#conclusion');
+
+        group.remoteChained('#period', group.data('href'));
+    }
 });

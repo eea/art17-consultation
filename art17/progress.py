@@ -1,4 +1,11 @@
-from flask import views, request, render_template, Blueprint
+from flask import (
+    views,
+    request,
+    render_template,
+    Blueprint,
+    url_for,
+    jsonify,
+)
 from art17.common import get_default_period
 from art17.forms import ProgressFilterForm
 from art17.models import Dataset, EtcDicBiogeoreg
@@ -180,6 +187,11 @@ class SpeciesProgress(Progress, SpeciesMixin):
 
         return ret_dict
 
+    def get_context(self):
+        return {
+            'groups_url': url_for('.species-progress-groups'),
+        }
+
 
 class HabitatProgress(Progress, HabitatMixin):
     template_name = 'progress/habitat.html'
@@ -187,6 +199,11 @@ class HabitatProgress(Progress, HabitatMixin):
     def setup_objects_and_data(self, period, group, conclusion_type):
         pass
 
+
+@progress.route('/species/progress/groups', endpoint='species-progress-groups')
+def _groups():
+    data = SpeciesMixin.get_groups(request.args['period'])
+    return jsonify(data)
 
 progress.add_url_rule('/species/progress/',
                      view_func=SpeciesProgress.as_view('species-progress'))
