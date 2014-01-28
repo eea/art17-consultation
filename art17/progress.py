@@ -65,6 +65,11 @@ class Progress(views.View):
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
+        regions = (
+            EtcDicBiogeoreg.query
+            .with_entities(EtcDicBiogeoreg.reg_code)
+            .filter_by(dataset_id=period)
+        )
 
         current_selection = self.get_current_selection(
             period_name, group, conclusion)
@@ -77,7 +82,7 @@ class Progress(views.View):
             'group': group,
             'conclusion': conclusion,
             'subjects': self.subjects_by_group(period, group),
-            'regions': EtcDicBiogeoreg.query.all(),
+            'regions': regions.all(),
             'species_data': self.setup_objects_and_data(period, group, conclusion),
         })
 
