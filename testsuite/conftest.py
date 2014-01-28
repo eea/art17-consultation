@@ -12,8 +12,7 @@ TEST_CONFIG = {
     'SERVER_NAME': 'localhost',
     'SECRET_KEY': 'test',
     'ASSETS_DEBUG': True,
-    'MYSQL_URI': 'mysql://root@localhost/',
-    'DB_NAME': 'art17testing',
+    'SQLALCHEMY_DATABASE_URI': 'mysql://root@localhost/art17test',
 }
 
 
@@ -44,9 +43,6 @@ def create_testing_app():
         if name.startswith('TESTING_'):
             test_config[name[len('TESTING_'):]] = value
 
-    test_config['SQLALCHEMY_DATABASE_URI'] = (
-        test_config['MYSQL_URI'] + test_config['DB_NAME'])
-
     app = create_app(test_config, testing=True)
     return app
 
@@ -58,13 +54,16 @@ def app(request):
     app_context = app.app_context()
     app_context.push()
 
-    create_db(app.config['MYSQL_URI'], app.config['DB_NAME'])
+    parts = app.config['SQLALCHEMY_DATABASE_URI'].rsplit('/')
+    url, db_name = '/'.join(parts[:-1]), parts[-1]
+
+    create_db(url, db_name)
     command.upgrade(alembic_cfg, 'head')
 
     @request.addfinalizer
     def fin():
         db.session.rollback()
-        drop_db(app.config['MYSQL_URI'], app.config['DB_NAME'])
+        drop_db(url, db_name)
         app_context.pop()
     return app
 
