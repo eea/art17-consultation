@@ -1,3 +1,4 @@
 
 SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17'
+TEST_SQLALCHEMY_DATABASE_URI = 'mysql://root:password@localhost/'
 ASSETS_DEBUG = True

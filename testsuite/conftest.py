@@ -39,6 +39,7 @@ def create_testing_app():
     local_config = create_app().config
 
     test_config = dict(TEST_CONFIG)
+    test_config['MYSQL_URI'] = local_config['TEST_SQLALCHEMY_DATABASE_URI']
 
     for name, value in local_config.iteritems():
         if name.startswith('TESTING_'):
