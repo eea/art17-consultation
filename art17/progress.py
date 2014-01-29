@@ -274,10 +274,20 @@ class HabitatProgress(Progress, HabitatMixin):
 
         return ret_dict
 
+    def get_context(self):
+        return {
+            'groups_url': url_for('.habitat-progress-groups'),
+        }
+
 
 @progress.route('/species/progress/groups', endpoint='species-progress-groups')
 def _groups():
     data = SpeciesMixin.get_groups(request.args['period'])
+    return jsonify(data)
+
+@progress.route('/habitat/progress/groups', endpoint='habitat-progress-groups')
+def _habitat_groups():
+    data = HabitatMixin.get_groups(request.args['period'])
     return jsonify(data)
 
 progress.add_url_rule('/species/progress/',

@@ -139,9 +139,9 @@ class HabitatMixin(object):
     subject_field = 'habitatcode'
 
     def subjects_by_group(self, period, group):
-        qs = db.session.query(EtcDicHdHabitat).with_entities(
-            EtcDicHdHabitat.habcode, EtcDicHdHabitat.shortname).filter_by(
-                group=group, dataset_id=period).distinct()
+        qs = db.session.query(EtcDicHdHabitat)\
+            .with_entities(EtcDicHdHabitat.habcode, EtcDicHdHabitat.shortname)\
+            .filter_by(group=group, dataset_id=period).distinct()
         return [' - '.join(row) for row in qs]
 
     @classmethod
@@ -153,8 +153,8 @@ class HabitatMixin(object):
             .filter(group_field != None, dataset_id_field == period)
             .with_entities(group_field, group_field)
             .distinct()
-           .order_by(group_field)
-           .all()
+            .order_by(group_field)
+            .all()
         )
         return [('', '-')] + groups
 
