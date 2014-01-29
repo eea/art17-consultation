@@ -14,6 +14,14 @@ from art17.summary import SpeciesMixin, HabitatMixin
 progress = Blueprint('progress', __name__)
 
 
+@progress.app_template_filter('methodify')
+def methodify(s):
+    """
+    Append 'M' to '0' and '00' from old application
+    """
+    return 'M' + s if s in ('0', '00') else s
+
+
 def user_is_expert(user):
     return True if user in ('maximiur', 'iurieetcbd') else False
 

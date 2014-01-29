@@ -39,7 +39,7 @@
 
                 <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} center"
                     title="{{ title }}">
-                    <span>{{ data['method'] }}</span>
+                    <span>{{ data['method']|methodify }}</span>
                 </td>
               {% endfor %}
             </tr>
