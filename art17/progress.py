@@ -8,7 +8,7 @@ from flask import (
 )
 from art17.common import get_default_period
 from art17.forms import ProgressFilterForm
-from art17.models import Dataset, EtcDicBiogeoreg
+from art17.models import Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db
 from art17.summary import SpeciesMixin, HabitatMixin
 
 progress = Blueprint('progress', __name__)
@@ -47,12 +47,51 @@ class Progress(views.View):
     methods = ['GET']
 
     def get_conclusions(self):
-        conclusions = ['range', 'population', 'habitat',
-                       'future prospects', 'overall assessment']
-        return zip(conclusions, conclusions)
+        return {}
 
     def get_context(self):
         return {}
+
+    def process_cell(self, cell_options, conclusion_type):
+        output = {
+            'main_decision': '',
+            'other_decisions': [],
+            'method': '',
+            'user_id': '',
+        }
+
+        for option in cell_options:
+            decision = option['decision']
+            user = option['user_id']
+            # if current conclusion is acceptated
+            if decision == 'OK':
+                 if output['main_decision'] == 'END':
+                     output['other_decisions'].append(decision)
+                 else:
+                     if output['main_decision'] != '':
+                         output = save_decision(output)
+                     output = save_conclusion(output, decision, option, conclusion_type)
+
+            # else current conclusion is not acceptated
+            else:
+                if output['main_decision'] in ['OK', 'END']:
+                    output['other_decisions'].append(decision)
+                else:
+                    if user_is_expert(user):
+                        if output['main_decision'] != '':
+                            if output['user_id'] != user and output['overall'] == 'MTX':
+                                output['other_decisions'].append(decision)
+                            else:
+                                output = save_decision(output)
+                                output = save_conclusion(output, 'A', option, conclusion_type)
+                        else:
+                            output = save_conclusion(output, 'A', option, conclusion_type)
+                    elif decision:
+                        if output['main_decision'] != '' and user_is_expert(output['user_id']):
+                            output['other_decisions'].append(decision)
+                        else:
+                            output = save_conclusion(output, decision, option, conclusion_type)
+        return output
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -98,46 +137,10 @@ class Progress(views.View):
 class SpeciesProgress(Progress, SpeciesMixin):
     template_name = 'progress/species.html'
 
-    def process_cell(self, cell_options, conclusion_type):
-        output = {
-            'main_decision': '',
-            'other_decisions': [],
-            'method': '',
-            'user_id': '',
-        }
-
-        for option in cell_options:
-            decision = option['decision']
-            user = option['user_id']
-            # if current conclusion is acceptated
-            if decision == 'OK':
-                 if output['main_decision'] == 'END':
-                     output['other_decisions'].append(decision)
-                 else:
-                     if output['main_decision'] != '':
-                         output = save_decision(output)
-                     output = save_conclusion(output, decision, option, conclusion_type)
-
-            # else current conclusion is not acceptated
-            else:
-                if output['main_decision'] in ['OK', 'END']:
-                    output['other_decisions'].append(decision)
-                else:
-                    if user_is_expert(user):
-                        if output['main_decision'] != '':
-                            if output['user_id'] != user and output['overall'] == 'MTX':
-                                output['other_decisions'].append(decision)
-                            else:
-                                output = save_decision(output)
-                                output = save_conclusion(output, 'A', option, conclusion_type)
-                        else:
-                            output = save_conclusion(output, 'A', option, conclusion_type)
-                    elif decision:
-                        if output['main_decision'] != '' and user_is_expert(output['user_id']):
-                            output['other_decisions'].append(decision)
-                        else:
-                            output = save_conclusion(output, decision, option, conclusion_type)
-        return output
+    def get_conclusions(self):
+        conclusions = ['range', 'population', 'habitat',
+                       'future prospects', 'overall assessment']
+        return zip(conclusions, conclusions)
 
     def setup_objects_and_data(self, period, group, conclusion_type):
         if conclusion_type == 'range':
@@ -201,8 +204,67 @@ class SpeciesProgress(Progress, SpeciesMixin):
 class HabitatProgress(Progress, HabitatMixin):
     template_name = 'progress/habitat.html'
 
+    def get_conclusions(self):
+        conclusions = ['range', 'area', 'future prospects',
+                       'structure', 'overall assessment']
+        return zip(conclusions, conclusions)
+
     def setup_objects_and_data(self, period, group, conclusion_type):
-        pass
+        if conclusion_type == 'range':
+            fields = (self.model_manual_cls.method_range,
+                      self.model_manual_cls.conclusion_range)
+        elif conclusion_type == 'area':
+            fields = (self.model_manual_cls.method_area,
+                      self.model_manual_cls.conclusion_area)
+        elif conclusion_type == 'future prospects':
+            fields = (self.model_manual_cls.method_future,
+                      self.model_manual_cls.conclusion_future)
+        elif conclusion_type == 'structure':
+            fields = (self.model_manual_cls.method_structure,
+                      self.model_manual_cls.conclusion_structure)
+        elif conclusion_type == 'overall assessment':
+            fields = (self.model_manual_cls.method_assessment,
+                      self.model_manual_cls.conclusion_assessment)
+        else:
+            return {}
+
+        self.objects = (
+            db.session.query(self.model_manual_cls)
+            .join(EtcDicHdHabitat, self.model_manual_cls.habitatcode ==
+                  EtcDicHdHabitat.habcode)
+            .with_entities(self.model_manual_cls.habitatcode,
+                           EtcDicHdHabitat.shortname,
+                           self.model_manual_cls.region,
+                           self.model_manual_cls.decision,
+                           self.model_manual_cls.user_id,
+                           self.model_manual_cls.method_assessment,
+                           self.model_manual_cls.method_range,
+                           *fields)
+            .filter_by(dataset_id=period)
+        )
+
+        data_dict = {}
+        for entry in self.objects.all():
+            fields = ('subject', 'region', 'decision', 'user_id',
+                      'overall', 'range', 'method', 'conclusion')
+            processed_entry = tuple([' - '.join(entry[0:2])] + list(entry[2:]))
+            row = dict(zip(fields, processed_entry))
+            if not (row['subject'] and row['region']):
+                continue
+
+            if row['subject'] not in data_dict:
+                data_dict[row['subject']] = {}
+            if row['region'] and row['region'] not in data_dict[row['subject']]:
+                data_dict[row['subject']][row['region']] = []
+            data_dict[row['subject']][row['region']].append(row)
+
+        ret_dict = {}
+        for subject,region in data_dict.iteritems():
+            ret_dict[subject] = {}
+            for region, cell_options in region.iteritems():
+                ret_dict[subject][region] = self.process_cell(cell_options, conclusion_type)
+
+        return ret_dict
 
 
 @progress.route('/species/progress/groups', endpoint='species-progress-groups')
