@@ -29,6 +29,7 @@ class EtcDicBiogeoregFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDicBiogeoreg
     FACTORY_SESSION = models.db.session
 
+    dataset_id = 1
     reg_code = 'ALP'
     reg_name = 'Alpine'
 
@@ -40,9 +41,10 @@ class EtcDicHdHabitat(SQLAlchemyModelFactory):
 
     dataset_id = 1
     habcode = 1110
-    group = 'coastals habitat'
+    group = 'coastal habitats'
     priority = 0
     name = 'Sandbanks which are slightly covered by sea water all the time'
+    shortname = 'Sandbanks slightly covered by sea water all time'
 
 
 class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):

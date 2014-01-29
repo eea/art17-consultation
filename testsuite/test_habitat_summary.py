@@ -26,12 +26,12 @@ def test_filter_groups_view(app, client):
     assert resp.status_code == 200
     assert resp.content_type == 'application/json'
     assert resp.json[''] == '-'
-    assert resp.json['coastals habitat'] == 'coastals habitat'
+    assert resp.json['coastal habitats'] == 'coastal habitats'
 
 
 def test_filter_species_view(app, client):
     url = url_for('summary.habitat-summary-species', period='1',
-                  group='coastals habitat')
+                  group='coastal habitats')
     resp = client.get(url)
     assert resp.status_code == 200
     assert resp.content_type == 'application/json'
