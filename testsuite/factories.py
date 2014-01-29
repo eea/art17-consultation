@@ -68,3 +68,35 @@ class EtcDicMethodFactory(SQLAlchemyModelFactory):
 
     dataset_id = 1
     method = '1'
+
+
+class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.SpeciesManualAssessment
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+
+
+class EtcDataSpeciesAutomaticAssessmentFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDataSpeciesAutomaticAssessment
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+
+
+class EtcDataHabitattypeAutomaticAssessmentFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDataHabitattypeAutomaticAssessment
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+
+
+class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.HabitattypesManualAssessment
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
