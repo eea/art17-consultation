@@ -27,7 +27,7 @@ class Report(views.View):
         region = request.args.get('region')
 
         self.objects = []
-        self.setup_objects_and_data(period, group)
+        self.setup_objects_and_data(period, group, country)
 
         countries = self.get_countries(period)
         regions = self.get_regions_by_country(period, country)
@@ -67,14 +67,19 @@ class SpeciesReport(SpeciesMixin, Report):
 
     template_name = 'report/species.html'
 
-    def setup_objects_and_data(self, period, group):
+    def setup_objects_and_data(self, period, group, country):
         filter_args = {}
         if group:
             filter_args['group'] = group
         else:
             return
         filter_args['dataset_id'] = period
-        self.objects = self.model_cls.query.filter_by(**filter_args)
+        filter_args['eu_country_code'] = country
+        self.objects = (
+            self.model_cls.query
+            .filter_by(**filter_args)
+            .order_by(self.model_cls.speciesname)
+        )
 
     def get_context(self):
         return {
