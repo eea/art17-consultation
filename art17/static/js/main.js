@@ -22,6 +22,8 @@ $(function () {
         var region = $('#region');
         region.remoteChained('#period, #country', region.data('href'));
 
+        var group = $('#group');
+        group.remoteChained('#period', group.data('href'));
     }
 
     if($('#progress-filterform').length == 1) {

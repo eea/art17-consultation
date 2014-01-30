@@ -84,7 +84,14 @@ class SpeciesReport(SpeciesMixin, Report):
     def get_context(self):
         return {
             'regions_url': url_for('.species-report-regions'),
+            'groups_url': url_for('.species-report-groups'),
         }
+
+
+@report.route('/species/report/groups', endpoint='species-report-groups')
+def _groups():
+    data = SpeciesMixin.get_groups(request.args['period'])
+    return jsonify(data)
 
 
 @report.route('/species/report/regions', endpoint='species-report-regions')

@@ -7,7 +7,7 @@
 
   <div class="form_group">
     <label>{{ report_filter_form.group.label }}</label>
-    {{ report_filter_form.group }}
+    {{ report_filter_form.group(**{'data-href': groups_url }) }}
   </div>
 
   <div class="form_group">

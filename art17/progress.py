@@ -285,10 +285,12 @@ def _groups():
     data = SpeciesMixin.get_groups(request.args['period'])
     return jsonify(data)
 
+
 @progress.route('/habitat/progress/groups', endpoint='habitat-progress-groups')
 def _habitat_groups():
     data = HabitatMixin.get_groups(request.args['period'])
     return jsonify(data)
+
 
 progress.add_url_rule('/species/progress/',
                      view_func=SpeciesProgress.as_view('species-progress'))
