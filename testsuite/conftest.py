@@ -12,8 +12,7 @@ TEST_CONFIG = {
     'SERVER_NAME': 'localhost',
     'SECRET_KEY': 'test',
     'ASSETS_DEBUG': True,
-    'MYSQL_URI': 'mysql://root@localhost/',
-    'DB_NAME': 'art17testing',
+    'SQLALCHEMY_DATABASE_URI': 'mysql://root@localhost/art17test',
 }
 
 
@@ -39,14 +38,10 @@ def create_testing_app():
     local_config = create_app().config
 
     test_config = dict(TEST_CONFIG)
-    test_config['MYSQL_URI'] = local_config['TEST_SQLALCHEMY_DATABASE_URI']
 
     for name, value in local_config.iteritems():
         if name.startswith('TESTING_'):
             test_config[name[len('TESTING_'):]] = value
-
-    test_config['SQLALCHEMY_DATABASE_URI'] = (
-        test_config['MYSQL_URI'] + test_config['DB_NAME'])
 
     app = create_app(test_config, testing=True)
     return app
@@ -59,12 +54,16 @@ def app(request):
     app_context = app.app_context()
     app_context.push()
 
-    create_db(app.config['MYSQL_URI'], app.config['DB_NAME'])
+    parts = app.config['SQLALCHEMY_DATABASE_URI'].rsplit('/')
+    url, db_name = '/'.join(parts[:-1]), parts[-1]
+
+    create_db(url, db_name)
     command.upgrade(alembic_cfg, 'head')
 
     @request.addfinalizer
     def fin():
-        drop_db(app.config['MYSQL_URI'], app.config['DB_NAME'])
+        db.session.rollback()
+        drop_db(url, db_name)
         app_context.pop()
     return app
 
@@ -73,3 +72,14 @@ def app(request):
 def client(app):
     client = TestApp(app, db=db, use_session_scopes=True)
     return client
+
+
+@fixture
+def outbox(app, request):
+    outbox_ctx = app.extensions['mail'].record_messages()
+
+    @request.addfinalizer
+    def cleanup():
+        outbox_ctx.__exit__(None, None, None)
+
+    return outbox_ctx.__enter__()

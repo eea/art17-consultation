@@ -1,10 +1,25 @@
-from flask import views, request, render_template, Blueprint
+from flask import (
+    views,
+    request,
+    render_template,
+    Blueprint,
+    url_for,
+    jsonify,
+)
 from art17.common import get_default_period
 from art17.forms import ProgressFilterForm
-from art17.models import Dataset, EtcDicBiogeoreg
+from art17.models import Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db
 from art17.summary import SpeciesMixin, HabitatMixin
 
 progress = Blueprint('progress', __name__)
+
+
+@progress.app_template_filter('methodify')
+def methodify(s):
+    """
+    Append 'M' to '0' and '00' from old application
+    """
+    return 'M' + s if s in ('0', '00') else s
 
 
 def user_is_expert(user):
@@ -40,51 +55,10 @@ class Progress(views.View):
     methods = ['GET']
 
     def get_conclusions(self):
-        conclusions = ['range', 'population', 'habitat',
-                       'future prospects', 'overall assessment']
-        return zip(conclusions, conclusions)
+        return {}
 
     def get_context(self):
         return {}
-
-    def dispatch_request(self):
-        period = request.args.get('period') or get_default_period()
-        group = request.args.get('group')
-        conclusion = request.args.get('conclusion')
-
-        progress_filter_form = ProgressFilterForm(request.args)
-        progress_filter_form.group.choices = self.get_groups(period)
-        progress_filter_form.conclusion.choices = self.get_conclusions()
-
-        period_query = Dataset.query.get(period)
-        period_name = period_query.name if period_query else ''
-
-        current_selection = self.get_current_selection(
-            period_name, group, conclusion)
-
-        context = self.get_context()
-        context.update({
-            'progress_filter_form': progress_filter_form,
-            'current_selection': current_selection,
-            'period_name': period_name,
-            'group': group,
-            'conclusion': conclusion,
-            'subjects': self.subjects_by_group(period, group),
-            'regions': EtcDicBiogeoreg.query.all(),
-            'species_data': self.setup_objects_and_data(period, group, conclusion),
-        })
-
-        return render_template(self.template_name, **context)
-
-    def get_current_selection(self, period_name, group, conclusion):
-        if not group:
-            return []
-        current_selection = [period_name, group, conclusion]
-        return current_selection
-
-
-class SpeciesProgress(Progress, SpeciesMixin):
-    template_name = 'progress/species.html'
 
     def process_cell(self, cell_options, conclusion_type):
         output = {
@@ -126,6 +100,55 @@ class SpeciesProgress(Progress, SpeciesMixin):
                         else:
                             output = save_conclusion(output, decision, option, conclusion_type)
         return output
+
+    def dispatch_request(self):
+        period = request.args.get('period') or get_default_period()
+        group = request.args.get('group')
+        conclusion = request.args.get('conclusion')
+
+        progress_filter_form = ProgressFilterForm(request.args)
+        progress_filter_form.group.choices = self.get_groups(period)
+        progress_filter_form.conclusion.choices = self.get_conclusions()
+
+        period_query = Dataset.query.get(period)
+        period_name = period_query.name if period_query else ''
+        regions = (
+            EtcDicBiogeoreg.query
+            .with_entities(EtcDicBiogeoreg.reg_code)
+            .filter_by(dataset_id=period)
+        )
+
+        current_selection = self.get_current_selection(
+            period_name, group, conclusion)
+
+        context = self.get_context()
+        context.update({
+            'progress_filter_form': progress_filter_form,
+            'current_selection': current_selection,
+            'period_name': period_name,
+            'group': group,
+            'conclusion': conclusion,
+            'subjects': self.subjects_by_group(period, group),
+            'regions': regions.all(),
+            'objects': self.setup_objects_and_data(period, group, conclusion),
+        })
+
+        return render_template(self.template_name, **context)
+
+    def get_current_selection(self, period_name, group, conclusion):
+        if not group:
+            return []
+        current_selection = [period_name, group, conclusion]
+        return current_selection
+
+
+class SpeciesProgress(Progress, SpeciesMixin):
+    template_name = 'progress/species.html'
+
+    def get_conclusions(self):
+        conclusions = ['range', 'population', 'habitat',
+                       'future prospects', 'overall assessment']
+        return zip(conclusions, conclusions)
 
     def setup_objects_and_data(self, period, group, conclusion_type):
         if conclusion_type == 'range':
@@ -180,12 +203,93 @@ class SpeciesProgress(Progress, SpeciesMixin):
 
         return ret_dict
 
+    def get_context(self):
+        return {
+            'groups_url': url_for('.species-progress-groups'),
+        }
+
 
 class HabitatProgress(Progress, HabitatMixin):
     template_name = 'progress/habitat.html'
 
+    def get_conclusions(self):
+        conclusions = ['range', 'area', 'future prospects',
+                       'structure', 'overall assessment']
+        return zip(conclusions, conclusions)
+
     def setup_objects_and_data(self, period, group, conclusion_type):
-        pass
+        if conclusion_type == 'range':
+            fields = (self.model_manual_cls.method_range,
+                      self.model_manual_cls.conclusion_range)
+        elif conclusion_type == 'area':
+            fields = (self.model_manual_cls.method_area,
+                      self.model_manual_cls.conclusion_area)
+        elif conclusion_type == 'future prospects':
+            fields = (self.model_manual_cls.method_future,
+                      self.model_manual_cls.conclusion_future)
+        elif conclusion_type == 'structure':
+            fields = (self.model_manual_cls.method_structure,
+                      self.model_manual_cls.conclusion_structure)
+        elif conclusion_type == 'overall assessment':
+            fields = (self.model_manual_cls.method_assessment,
+                      self.model_manual_cls.conclusion_assessment)
+        else:
+            return {}
+
+        self.objects = (
+            db.session.query(self.model_manual_cls)
+            .join(EtcDicHdHabitat, self.model_manual_cls.habitatcode ==
+                  EtcDicHdHabitat.habcode)
+            .with_entities(self.model_manual_cls.habitatcode,
+                           EtcDicHdHabitat.shortname,
+                           self.model_manual_cls.region,
+                           self.model_manual_cls.decision,
+                           self.model_manual_cls.user_id,
+                           self.model_manual_cls.method_assessment,
+                           self.model_manual_cls.method_range,
+                           *fields)
+            .filter_by(dataset_id=period)
+        )
+
+        data_dict = {}
+        for entry in self.objects.all():
+            fields = ('subject', 'region', 'decision', 'user_id',
+                      'overall', 'range', 'method', 'conclusion')
+            processed_entry = tuple([' - '.join(entry[0:2])] + list(entry[2:]))
+            row = dict(zip(fields, processed_entry))
+            if not (row['subject'] and row['region']):
+                continue
+
+            if row['subject'] not in data_dict:
+                data_dict[row['subject']] = {}
+            if row['region'] and row['region'] not in data_dict[row['subject']]:
+                data_dict[row['subject']][row['region']] = []
+            data_dict[row['subject']][row['region']].append(row)
+
+        ret_dict = {}
+        for subject,region in data_dict.iteritems():
+            ret_dict[subject] = {}
+            for region, cell_options in region.iteritems():
+                ret_dict[subject][region] = self.process_cell(cell_options, conclusion_type)
+
+        return ret_dict
+
+    def get_context(self):
+        return {
+            'groups_url': url_for('.habitat-progress-groups'),
+        }
+
+
+@progress.route('/species/progress/groups', endpoint='species-progress-groups')
+def _groups():
+    data = SpeciesMixin.get_groups(request.args['period'])
+    return jsonify(data)
+
+
+@progress.route('/habitat/progress/groups', endpoint='habitat-progress-groups')
+def _habitat_groups():
+    data = HabitatMixin.get_groups(request.args['period'])
+    return jsonify(data)
 
 
 progress.add_url_rule('/species/progress/',

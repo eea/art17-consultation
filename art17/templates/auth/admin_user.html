@@ -1,0 +1,18 @@
+{% extends layout_template %}
+
+
+{% block content %}
+  <h1>User administration: <tt>{{ user.id }}</tt></h1>
+
+  <form method="post">
+    <div>
+      <input type="checkbox" id="user-active" name="active"
+             {%- if user.active %} checked{% endif %}>
+      <label for="user-active">Active</label>
+    </div>
+
+    <div>
+      <button type="submit">Save</button>
+    </div>
+  </form>
+{% endblock content %}

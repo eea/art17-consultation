@@ -1,5 +1,3 @@
-from pytest import fixture
-
 from factory.alchemy import SQLAlchemyModelFactory
 from art17 import models
 
@@ -31,6 +29,7 @@ class EtcDicBiogeoregFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDicBiogeoreg
     FACTORY_SESSION = models.db.session
 
+    dataset_id = 1
     reg_code = 'ALP'
     reg_name = 'Alpine'
 
@@ -42,9 +41,10 @@ class EtcDicHdHabitat(SQLAlchemyModelFactory):
 
     dataset_id = 1
     habcode = 1110
-    group = 'coastals habitat'
+    group = 'coastal habitats'
     priority = 0
     name = 'Sandbanks which are slightly covered by sea water all the time'
+    shortname = 'Sandbanks slightly covered by sea water all time'
 
 
 class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
@@ -63,3 +63,42 @@ class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
     code = 1110
 
 
+class EtcDicMethodFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDicMethod
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+    method = '1'
+
+
+class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.SpeciesManualAssessment
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+
+
+class EtcDataSpeciesAutomaticAssessmentFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDataSpeciesAutomaticAssessment
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+
+
+class EtcDataHabitattypeAutomaticAssessmentFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDataHabitattypeAutomaticAssessment
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1
+
+
+class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.HabitattypesManualAssessment
+    FACTORY_SESSION = models.db.session
+
+    dataset_id = 1

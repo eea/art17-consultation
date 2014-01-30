@@ -31,15 +31,40 @@ class Comment(Base):
     user = Column(String(25), nullable=False)
     MS = Column(String(4), nullable=False, server_default=u"'EU25'")
     comment = Column(String)
-    author = Column(String(25), nullable=False)
+    author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
 
+    record = relationship(
+        'SpeciesManualAssessment',
+        primaryjoin=(
+            "and_(SpeciesManualAssessment.assesment_speciesname=="
+            "Comment.assesment_speciesname,"
+            "SpeciesManualAssessment.region==Comment.region,"
+            "SpeciesManualAssessment.user_id==Comment.user,"
+            "SpeciesManualAssessment.MS==Comment.MS)"),
+        foreign_keys=[assesment_speciesname, region, user, MS],
+        backref='comments',
+    )
+    author = relationship(
+        'RegisteredUser',
+        primaryjoin="Comment.author_id==RegisteredUser.id",
+        foreign_keys=author_id,
+    )
+
+    def read_for(self, user):
+        return bool(
+            db.session.query(Comment.id)
+            .join(t_comments_read)
+            .filter(Comment.id == self.id)
+            .filter('comments_read.reader_user_id="%s"' % user)
+            .count()
+        )
 
 t_comments_read = Table(
     'comments_read', metadata,
     Column('id_comment', ForeignKey('comments.id'), nullable=False),
-    Column('reader_user_id', String(25), nullable=False)
+    Column('reader_user_id', String(25), nullable=False),
 )
 
 
@@ -410,8 +435,9 @@ class EtcDicConclusion(Base):
     )
 
     @classmethod
-    def all(cls):
-        return cls.query.with_entities(cls.conclusion).order_by(cls.conclusion)
+    def all(cls, dataset_id):
+        return cls.query.with_entities(cls.conclusion)\
+            .filter_by(dataset_id=dataset_id).order_by(cls.conclusion)
 
 
 class EtcDicDecision(Base):
@@ -460,11 +486,12 @@ class EtcDicMethod(Base):
     )
 
     @classmethod
-    def all(cls):
+    def all(cls, dataset_id):
         return (
             cls.query.filter(
                 (cls.method.startswith('1') | cls.method.startswith('2')))
             .filter(cls.method != '2XA')
+            .filter_by(dataset_id=dataset_id)
             .with_entities(cls.method)
             .order_by(cls.method)
         )
@@ -485,9 +512,10 @@ class EtcDicPopulationUnit(Base):
     )
 
     @classmethod
-    def all(cls):
+    def all(cls, dataset_id):
         return (
             cls.query.with_entities(cls.population_units)
+            .filter_by(dataset_id=dataset_id)
             .order_by(cls.order)
         )
 
@@ -522,8 +550,9 @@ class EtcDicTrend(Base):
     )
 
     @classmethod
-    def all(cls):
-        return cls.query.with_entities(cls.trend).all()
+    def all(cls, dataset_id):
+        return cls.query.with_entities(cls.trend) \
+            .filter_by(dataset_id=dataset_id).all()
 
 
 class EtcQaErrorsHabitattypeManualChecked(Base):
@@ -577,7 +606,7 @@ class HabitatComment(Base):
     user = Column(String(25), nullable=False)
     MS = Column(String(4), nullable=False, server_default=u"'EU27'")
     comment = Column(String)
-    author = Column(String(25), nullable=False)
+    author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
 
@@ -587,6 +616,22 @@ class HabitatComment(Base):
         primary_key=True,
     )
 
+    record = relationship(
+        'HabitattypesManualAssessment',
+        primaryjoin=(
+            "and_(HabitattypesManualAssessment.habitatcode=="
+            "HabitatComment.habitat,"
+            "HabitattypesManualAssessment.region==Comment.region,"
+            "HabitattypesManualAssessment.user_id==Comment.user,"
+            "HabitattypesManualAssessment.MS==Comment.MS)"),
+        foreign_keys=[habitat, region, user, MS],
+        backref='comments',
+    )
+    author = relationship(
+        'RegisteredUser',
+        primaryjoin="HabitatComment.author_id==RegisteredUser.id",
+        foreign_keys=author_id,
+    )
 
 t_habitat_comments_read = Table(
     'habitat_comments_read', metadata,
@@ -657,6 +702,24 @@ class HabitattypesManualAssessment(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+    def comments_count_unread(self, user):
+        if not self.comments:
+            return 0
+        return len(
+            db.session.query(HabitatComment.id)
+            .join(t_comments_read)
+            .filter(HabitatComment.habitat == self.habitatcode)
+            .filter(HabitatComment.region == self.region)
+            .filter(HabitatComment.MS == self.MS)
+            .filter(HabitatComment.user == self.user_id)
+            .filter('habitat_comments_read.reader_user_id="%s"' % user)
+            .all()
+        )
+
+    @property
+    def subject(self):
+        return self.habitatcode
 
 
 class LuHdHabitat(Base):
@@ -747,6 +810,7 @@ class RegisteredUser(Base, UserMixin):
         secondary=roles_users,
         backref=db.backref('users', lazy='dynamic'),
     )
+    password = None  # placeholder to make flask_security forms happy
 
 
 class Role(Base, RoleMixin):
@@ -844,6 +908,23 @@ class SpeciesManualAssessment(Base):
         primary_key=True,
     )
 
+    def comments_count_unread(self, user):
+        if not self.comments:
+            return 0
+        return len(
+            db.session.query(Comment.id)
+            .join(t_comments_read)
+            .filter(Comment.assesment_speciesname == self.assesment_speciesname)
+            .filter(Comment.region == self.region)
+            .filter(Comment.MS == self.MS)
+            .filter(Comment.user == self.user_id)
+            .filter('comments_read.reader_user_id="%s"' % user)
+            .all()
+        )
+
+    @property
+    def subject(self):
+        return self.assesment_speciesname
 
 t_species_name = Table(
     'species_name', metadata,

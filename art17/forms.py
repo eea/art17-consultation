@@ -2,6 +2,7 @@
 
 from flask_wtf import Form as Form_base
 from wtforms import SelectField, TextField
+from wtforms.validators import Optional
 from art17.models import (
     Dataset,
     EtcDicMethod,
@@ -9,6 +10,15 @@ from art17.models import (
     EtcDicTrend,
     EtcDicPopulationUnit,
 )
+from art17.utils import validate_field
+
+EMPTY_FORM = "Please fill at least one field"
+NOT_NUMERIC_VALUES = (
+    "Only numeric values with not more than two decimals are accepted!"
+)
+METH_CONCL_MANDATORY = "At least one method and conclusion must be filled!"
+METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
+    "nor a method without a conclusion"
 
 
 def all_fields(form):
@@ -18,6 +28,15 @@ def all_fields(form):
                 yield subfield
         else:
             yield field
+
+
+class OptionalSelectField(SelectField):
+
+    def __init__(self, validators=None, default=None, **kwargs):
+        validators = validators or [Optional()]
+        default = default or ''
+        super(OptionalSelectField, self).__init__(validators=validators,
+                                                  default=default, **kwargs)
 
 
 class Form(Form_base):
@@ -54,50 +73,51 @@ class ReportFilterForm(CommonFilterForm):
 
 class SummaryManualFormSpecies(Form):
 
-    region = SelectField()
+    region = SelectField(default='')
 
     range_surface_area = TextField(default=None)
-    method_range = SelectField()
-    conclusion_range = SelectField()
-    range_trend = SelectField()
+    method_range = OptionalSelectField()
+    conclusion_range = OptionalSelectField()
+    range_trend = OptionalSelectField()
     complementary_favourable_range = TextField()
 
     population_size = TextField()
-    population_size_unit = SelectField()
-    method_population = SelectField()
-    conclusion_population = SelectField()
-    population_trend = SelectField()
+    population_size_unit = OptionalSelectField()
+    method_population = OptionalSelectField()
+    conclusion_population = OptionalSelectField()
+    population_trend = OptionalSelectField()
     complementary_favourable_population = TextField()
 
     habitat_surface_area = TextField()
-    method_habitat = SelectField()
-    conclusion_habitat = SelectField()
-    habitat_trend = SelectField()
+    method_habitat = OptionalSelectField()
+    conclusion_habitat = OptionalSelectField()
+    habitat_trend = OptionalSelectField()
     complementary_suitable_habitat = TextField()
 
-    method_future = SelectField()
-    conclusion_future = SelectField()
+    method_future = OptionalSelectField()
+    conclusion_future = OptionalSelectField()
 
-    method_assessment = SelectField()
-    conclusion_assessment = SelectField()
-    conclusion_assessment_trend = SelectField()
-    conclusion_assessment_prev = SelectField()
-    conclusion_assessment_change = SelectField()
+    method_assessment = OptionalSelectField()
+    conclusion_assessment = OptionalSelectField()
+    conclusion_assessment_trend = OptionalSelectField()
+    conclusion_assessment_prev = OptionalSelectField()
+    conclusion_assessment_change = OptionalSelectField()
 
-    method_target1 = SelectField()
-    conclusion_target1 = SelectField()
+    method_target1 = OptionalSelectField()
+    conclusion_target1 = OptionalSelectField()
 
-    def __init__(self, *args, **kwargs):
-        super(SummaryManualFormSpecies, self).__init__(*args, **kwargs)
-        methods = [a[0] for a in EtcDicMethod.all()]
-        methods = [('', '')] + zip(methods, methods)
-        conclusions = [a[0] for a in EtcDicConclusion.all()]
-        conclusions = zip(conclusions, conclusions)  # TODO filter acl
-        trends = [a[0] for a in EtcDicTrend.all()]
-        trends = zip(trends, trends)
-        units = [a[0] for a in EtcDicPopulationUnit.all()]
-        units = zip(units, units)
+    def setup_choices(self, dataset_id):
+        empty = [('', '')]
+        methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
+        methods = empty + zip(methods, methods)
+        conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
+        conclusions = empty + zip(conclusions, conclusions)  # TODO filter acl
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + zip(trends, trends)
+        units = [a[0] for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
+        units = empty + zip(units, units)
 
+        self.region.choices = empty
         for f in (self.method_range, self.method_population,
                   self.method_habitat, self.method_future,
                   self.method_assessment, self.method_target1):
@@ -121,7 +141,7 @@ class SummaryManualFormSpecies(Form):
         empty = [f for f in fields if not f.data]
 
         if empty and len(empty) == len(fields):
-            fields[1].errors.append(u"Please fill at least one field")
+            fields[1].errors.append(EMPTY_FORM)
             return False
 
         method_conclusions = [
@@ -132,17 +152,30 @@ class SummaryManualFormSpecies(Form):
             (self.method_assessment, self.conclusion_assessment),
             (self.method_target1, self.conclusion_target1),
         ]
-        data = [(bool(m.data), bool(c.data)) for m, c in method_conclusions]
-        if (True, False) in data or (False, True) in data:
-            fields[1].errors.append(
-                u"Both method and conclusion must be filled"
-            )
-        elif (True, True) not in data:
-            fields[1].errors.append(
-                u"At least one method and conclusion must be filled"
-            )
+        one = False
+        for m, c in method_conclusions:
+            mc, cc = m.data, c.data
+            if mc and not cc:
+                c.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif cc and not mc:
+                m.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif mc and cc:
+                one = True
+        if not one:
+            fields[1].errors.append(METH_CONCL_MANDATORY)
 
-        return True
+        numeric_values = [
+            self.range_surface_area, self.complementary_favourable_range,
+            # self.range_yearly_magnitude
+            self.population_size, self.complementary_favourable_population,
+            # self.population_yearly_magnitude
+            self.habitat_surface_area, self.complementary_suitable_habitat
+        ]
+        for f in numeric_values:
+            if not validate_field(f.data):
+                f.errors.append(NOT_NUMERIC_VALUES)
+
+        return not self.errors
 
     def all_errors(self):
         text = '<ul>'
@@ -155,6 +188,9 @@ class SummaryManualFormSpecies(Form):
 class SummaryManualFormHabitat(Form):
 
     region = SelectField()
+
+    def setup_choices(self, dataset_id):
+        pass
 
 
 class ProgressFilterForm(Form):

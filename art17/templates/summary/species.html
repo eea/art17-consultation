@@ -180,50 +180,32 @@
     </tbody>
     <tbody>
     {% for row in manual_objects %}
-    <tr>
-      {# MS and region #}
-      {% include 'summary/common/manual/ms.html' %}
+      {% if row != manual_assessment %}
+      <tr>
+        {% include 'summary/common/manual/ms.html' %}
+        {% include 'summary/common/manual/range.html' %}
+        {% include 'summary/species/manual/population.html' %}
+        {% include 'summary/species/manual/habitat.html' %}
+        {% include 'summary/species/manual/future_prospects.html' %}
+        {% include 'summary/species/manual/overall.html' %}
+        {% include 'summary/common/manual/contrib_target1.html' %}
+        {% include 'summary/common/manual/actions.html' with context %}
 
-      {# Range #}
-      {% include 'summary/common/manual/range.html' %}
-
-      {# Population #}
-      {% include 'summary/species/manual/population.html' %}
-
-      {# Habitat #}
-      {% include 'summary/species/manual/habitat.html' %}
-
-      {# Prospects #}
-      {% include 'summary/species/manual/future_prospects.html' %}
-
-      {# Overall #}
-      {% include 'summary/species/manual/overall.html' %}
-
-      {# Contrib #}
-      {% include 'summary/common/manual/contrib_target1.html' %}
-
-      {# Actions #}
-      {% include 'summary/common/manual/actions.html' with context %}
-
-      {# Comments #}
-      {% include 'summary/common/manual/conclusion_details.html' %}
-
-    </tr>
+        {% include 'summary/common/manual/conclusion_details.html' %}
+      </tr>
+      {% else %}
+        {% include 'summary/species/manual_form.html' %}
+      {% endif %}
     {% endfor %}
     </tbody>
-    {# Add manual assessment #}
-    {% if can_add_conclusion('species', subject) %}
-    <form method="post" action="">
-    <tbody>
-      <tr class="form_row">
-        <td></td>
-        {% if not region %}<td>{{ manual_form.region() }}</td>{% endif %}
 
-        {% include 'summary/species/manual_form.html' %}
-      </tr>
+    {# Add manual assessment form #}
+    {% if not manual_assessment and can_add_conclusion('species', subject) %}
+    <tbody>
+      {% include 'summary/species/manual_form.html' %}
     </tbody>
-    </form>
     {% endif %}
+
   </table>
   {% else %}
   <p><b>Please select a group and a species.</b></p>

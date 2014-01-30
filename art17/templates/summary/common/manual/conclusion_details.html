@@ -1,5 +1,10 @@
 
-<td>{# Comments all/nr_read #}</td>
+<td>
+  {% set url=url_for(comments_endpoint, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
+  <a href="{{ url }}" class="comments-btn">
+  {{ row.comments_count_unread(g.identity.id) }}/{{ row.comments|count }}
+  </a>
+</td>
 <td>{{ row.last_update|format_date }}</td>
 <td>{{ row.user.name or row.user_id}}</td>
 <td>{{ row.user.institution }}</td>

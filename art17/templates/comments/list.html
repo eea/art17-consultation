@@ -1,0 +1,33 @@
+{% extends 'comments/layout.html' %}
+
+{% block content %}
+<h1>Comments</h1>
+
+{% set comments = record.comments %}
+{% if not comments %}
+  <p>No comments were added</p>
+{% else %}
+  <p>
+    <strong>Comment colours:</strong>
+    <span style="color: rgb(224, 124, 34);">red border shows your comment</span>,
+    <span style="color: rgb(135, 179, 207);">blue borders shows the comments that have been read</span>,
+    <span style="color: rgb(135, 139, 142);">grey borders shows the comments that have been deleted</span>
+  </p>
+
+  <ol>
+  {% for comment in comments %}
+    {% set is_owner = comment.author.id == g.identity.id %}
+    {% set read = comment.read_for(g.identity.id) %}
+    {% set deleted = comment.deleted %}
+    <li class="comment {% if is_owner %}comment-owner{% elif deleted %}comment-deleted{% elif read %}comment-read{% endif %}">
+      <dl>
+        <dt>{{ comment.author.name or comment.author_id }} - {{ comment.author.institution }}</dt>
+        <dd>{{ comment.comment }}</dd>
+        <dd>{{ comment.post_date }}</dd>
+      </dl>
+    </li>
+  {% endfor %}
+  </ol>
+{% endif %}
+
+{% endblock %}

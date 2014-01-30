@@ -904,6 +904,11 @@ input.error[type="radio"], input.error[type="checkbox"], select.error {
 	border: 2px solid #A42322;
 }
 
+/* change me */
+td.errors {
+    background-color: red !important;
+}
+
 .error-hint {
 	font-size: 80%;
 	margin: 2px;
@@ -1805,4 +1810,18 @@ img.border {
 	max-width: 98%;
 }
 
+}
+
+/* change me */
+.comment {
+    border: 1px solid #aaa;
+}
+.comment-owner {
+    border-color: rgb(224, 124, 34);
+}
+.comment-read {
+    border-color: rgb(135, 179, 207);
+}
+.comment-deleted {
+    border-color: rgb(135, 139, 142);
 }

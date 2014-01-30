@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Comments</title>
+  {% assets "js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+   <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='css/screen.css') }}"
+        media="screen">
+  {% include 'header_styles.html' %}
+</head>
+<body>
+<div id="container">
+  {% block content %}
+  {% endblock content %}
+</div>
+</body>
+</html>

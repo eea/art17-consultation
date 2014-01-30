@@ -13,8 +13,7 @@
           href="{{ url_for('static', filename='css/screen.css') }}"
           media="screen">
 
-    {%- from '_macros.html' import art17_stylesheets %}
-    {{- art17_stylesheets() }}
+    {% include 'header_styles.html' %}
     <title></title>
   </head>
 
