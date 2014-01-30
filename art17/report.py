@@ -77,8 +77,10 @@ class SpeciesReport(SpeciesMixin, Report):
             filter_args['group'] = group
         else:
             return
+        if country:
+            filter_args['eu_country_code'] = country
+
         filter_args['dataset_id'] = period
-        filter_args['eu_country_code'] = country
         self.objects = (
             self.model_cls.query
             .filter_by(**filter_args)
