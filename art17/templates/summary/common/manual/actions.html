@@ -1,4 +1,9 @@
-  <td>{# delete #}</td>
+  <td>
+    {% if can_delete(row) %}
+      {% set url = url_for(delete_endpoint, subject=subject, region=row.region, user=row.user_id, ms=row.MS) %}
+      <a class="button_text delete-btn" href="{{ url }}">{% if row.deleted %}undelete{% else %}delete{% endif %}</a>
+    {% endif %}
+  </td>
   <td>
     {% if can_edit(row) %}
       <form method="post" action="">

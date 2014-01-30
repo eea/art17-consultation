@@ -51,5 +51,15 @@ $(function() {
       window.close();
     });
 
+    $('body').on('click', '.delete-btn', function (evt) {
+        evt.preventDefault();
+        var url = $(this).attr('href');
+        var request = $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "script"
+        }).done(function (msg) { location.reload(); });
+    });
+
 })();
 

@@ -173,8 +173,8 @@
           <th rowspan="2">Struct & func.</th>
           <th rowspan="2">Future prosp.</th>
           <th rowspan="2">Overall asses.</th>
-          <th colspan="4">Grided maps</th>
-          <th colspan="2">Quality</th>
+
+          <th colspan="4" rowspan="2"></th>
 
           <th rowspan="2"><abbr title="Comments">Comm.</abbr></th>
           <th rowspan="2">Date</th>
@@ -192,19 +192,11 @@
           <th>%XR</th>
           <th><abbr title="Trend">T</abbr></th>
           <th>Ref.</th>
-
-          <th>Range</th>
-          <th>%GR</th>
-          <th>Distrib</th>
-          <th>%GD</th>
-
-          <th>Range</th>
-          <th>Area</th>
         </tr>
       </tbody>
       <tbody>
       {% for row in manual_objects %}
-      <tr>
+      <tr {% if row.deleted %}class="deleted"{% endif %}>
         {# MS and region #}
         {% include 'summary/common/manual/ms.html' %}
 
@@ -219,11 +211,12 @@
         {% include 'summary/habitat/manual/struct_func.html' %}
         {% include 'summary/habitat/manual/overall.html' %}
 
-        {# Grided #}
-        <td colspan="4"></td>
 
         {# Quality #}
         <td colspan="2"></td>
+
+        {# Actions #}
+        {% include 'summary/common/manual/actions.html' with context%}
 
         {# Comments #}
         {% include 'summary/common/manual/conclusion_details.html' %}

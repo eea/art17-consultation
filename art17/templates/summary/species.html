@@ -181,7 +181,7 @@
     <tbody>
     {% for row in manual_objects %}
       {% if row != manual_assessment %}
-      <tr>
+      <tr {% if row.deleted %}class="deleted"{% endif %}>
         {% include 'summary/common/manual/ms.html' %}
         {% include 'summary/common/manual/range.html' %}
         {% include 'summary/species/manual/population.html' %}
