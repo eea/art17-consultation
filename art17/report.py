@@ -10,12 +10,15 @@ from flask import (
 from art17.common import get_default_period
 from art17.mixins import SpeciesMixin
 from art17.forms import ReportFilterForm
-
+from art17.models import Dataset, EtcDicBiogeoreg, DicCountryCode
 
 report = Blueprint('report', __name__)
 
 
 class Report(views.View):
+
+    def get_context(self):
+        return {}
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -32,16 +35,44 @@ class Report(views.View):
         report_filter_form.country.choices = self.get_countries(period)
         report_filter_form.region.choices = regions
 
+        period_query = Dataset.query.get(period)
+        period_name = period_query.name if period_query else ''
+
+        current_selection = self.get_current_selection(
+            period_name, group, country, region)
+
         context = self.get_context()
         context.update({
             'objects': self.objects,
+            'current_selection': current_selection,
             'report_filter_form': report_filter_form,
             'region': region,
             'country': country,
             'show_species_report_headers': True,
         })
+
         return render_template(self.template_name, **context)
 
+    def get_current_selection(self, period_name, group, country, region):
+        if not group:
+            return []
+        current_selection = [period_name, group]
+
+        if country:
+            country_name = DicCountryCode.get_country_name(country)
+            if country_name:
+                current_selection.append(country_name[0])
+        else:
+            current_selection.append('All MS')
+
+        if region:
+            region_name = EtcDicBiogeoreg.get_region_name(region)
+            if region_name:
+                current_selection.append(region_name[0])
+        else:
+            current_selection.append('All bioregions')
+
+        return current_selection
 
 class SpeciesReport(SpeciesMixin, Report):
 
