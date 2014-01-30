@@ -139,7 +139,7 @@ class SpeciesMixin(MixinsCommon):
         return blank_option + countries
 
 
-class HabitatMixin(object):
+class HabitatMixin(MixinsCommon):
 
     model_cls = EtcDataHabitattypeRegion
     model_auto_cls = EtcDataHabitattypeAutomaticAssessment

@@ -681,7 +681,7 @@ class HabitattypesManualAssessment(Base):
     user_id = Column('user', String(25), primary_key=True, nullable=False,
                      server_default=u"''")
     last_update = Column(String(16))
-    deleted_record = Column(Integer)
+    deleted = Column('deleted_record', Integer)
     decision = Column(String(3))
     user_decision_id = Column('user_decision', String(25))
     last_update_decision = Column(String(16))
@@ -886,7 +886,7 @@ class SpeciesManualAssessment(Base):
     user_id = Column('user', String(25), primary_key=True, nullable=False,
                   server_default=u"''")
     last_update = Column(String(16))
-    deleted_record = Column(Integer)
+    deleted = Column('deleted_record', Integer)
     decision = Column(String(3))
     user_decision_id = Column('user_decision', String(25))
     last_update_decision = Column(String(16))

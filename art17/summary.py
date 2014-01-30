@@ -7,6 +7,7 @@ from flask import (
     jsonify,
     url_for,
     flash,
+    abort,
 )
 from sqlalchemy.exc import IntegrityError
 from werkzeug.datastructures import MultiDict
@@ -74,10 +75,21 @@ def can_edit(record):
     if current_user.is_anonymous():
         return False
 
+    if record.deleted:
+        return False
+
     if record.user_id == current_user.id:
         return True
 
     return admin_perm.can()
+
+
+@summary.app_template_global('can_delete')
+def can_delete(record):
+    if current_user.is_anonymous():
+        return False
+
+    return record.user_id == current_user.id
 
 
 @summary.app_template_global('can_view_decision')
@@ -410,6 +422,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'subjects_url': url_for('.species-summary-species'),
             'regions_url': url_for('.species-summary-regions'),
             'comments_endpoint': 'comments.species-comments',
+            'delete_endpoint': '.species-delete',
         }
 
 
@@ -444,6 +457,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'subjects_url': url_for('.habitat-summary-species'),
             'regions_url': url_for('.habitat-summary-regions'),
             'comments_endpoint': 'comments.habitat-comments',
+            'delete_endpoint': '.habitat-delete',
         }
 
 
@@ -493,6 +507,33 @@ def _regions_habitat():
     data = HabitatMixin.get_regions(period, subject)
     return jsonify(data)
 
+
+class ConclusionDelete(views.View):
+
+    def __init__(self, mixin):
+        self.mixin = mixin
+
+    def dispatch_request(self, subject, region, user, ms):
+        record = self.mixin.get_manual_record(subject, region, user, ms)
+        if not record:
+            abort(404)
+        if not can_delete(record):
+            abort(403)
+        if record.deleted:
+            record.deleted = 0
+        else:
+            record.deleted = 1
+        db.session.add(record)
+        db.session.commit()
+        return ''
+
+
+summary.add_url_rule('/species/conc/delete/<subject>/<region>/<user>/<ms>/',
+                     view_func=ConclusionDelete
+                     .as_view('species-delete', mixin=SpeciesMixin))
+summary.add_url_rule('/habitat/conc/delete/<subject>/<region>/<user>/<ms>/',
+                     view_func=ConclusionDelete
+                     .as_view('habitat-delete', mixin=HabitatMixin))
 
 summary.add_url_rule('/species/summary/',
                      view_func=SpeciesSummary.as_view('species-summary'))
