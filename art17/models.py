@@ -35,11 +35,23 @@ class Comment(Base):
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
 
+    record = relationship(
+        'SpeciesManualAssessment',
+        primaryjoin=(
+            "and_(SpeciesManualAssessment.assesment_speciesname=="
+            "Comment.assesment_speciesname,"
+            "SpeciesManualAssessment.region==Comment.region,"
+            "SpeciesManualAssessment.user_id==Comment.user,"
+            "SpeciesManualAssessment.MS==Comment.MS)"),
+        foreign_keys=[assesment_speciesname, region, user, MS],
+        backref='comments',
+    )
+
 
 t_comments_read = Table(
     'comments_read', metadata,
     Column('id_comment', ForeignKey('comments.id'), nullable=False),
-    Column('reader_user_id', String(25), nullable=False)
+    Column('reader_user_id', String(25), nullable=False),
 )
 
 
@@ -849,6 +861,19 @@ class SpeciesManualAssessment(Base):
         primary_key=True,
     )
 
+    def comments_count_unread(self, user):
+        if not self.comments:
+            return 0
+        return len(
+            db.session.query(Comment.id)
+            .join(t_comments_read)
+            .filter(Comment.assesment_speciesname == self.assesment_speciesname)
+            .filter(Comment.region == self.region)
+            .filter(Comment.MS == self.MS)
+            .filter(Comment.user == self.user_id)
+            .filter('comments_read.reader_user_id="%s"' % user)
+            .all()
+        )
 
 t_species_name = Table(
     'species_name', metadata,
