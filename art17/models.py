@@ -603,6 +603,17 @@ class HabitatComment(Base):
         primary_key=True,
     )
 
+    record = relationship(
+        'HabitattypesManualAssessment',
+        primaryjoin=(
+            "and_(HabitattypesManualAssessment.habitatcode=="
+            "HabitatComment.habitat,"
+            "HabitattypesManualAssessment.region==Comment.region,"
+            "HabitattypesManualAssessment.user_id==Comment.user,"
+            "HabitattypesManualAssessment.MS==Comment.MS)"),
+        foreign_keys=[habitat, region, user, MS],
+        backref='comments',
+    )
 
 t_habitat_comments_read = Table(
     'habitat_comments_read', metadata,
@@ -673,6 +684,20 @@ class HabitattypesManualAssessment(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+    def comments_count_unread(self, user):
+        if not self.comments:
+            return 0
+        return len(
+            db.session.query(Comment.id)
+            .join(t_comments_read)
+            .filter(Comment.assesment_speciesname == self.assesment_speciesname)
+            .filter(Comment.region == self.region)
+            .filter(Comment.MS == self.MS)
+            .filter(Comment.user == self.user_id)
+            .filter('comments_read.reader_user_id="%s"' % user)
+            .all()
+        )
 
 
 class LuHdHabitat(Base):
