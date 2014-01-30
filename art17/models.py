@@ -689,13 +689,13 @@ class HabitattypesManualAssessment(Base):
         if not self.comments:
             return 0
         return len(
-            db.session.query(Comment.id)
+            db.session.query(HabitatComment.id)
             .join(t_comments_read)
-            .filter(Comment.assesment_speciesname == self.assesment_speciesname)
-            .filter(Comment.region == self.region)
-            .filter(Comment.MS == self.MS)
-            .filter(Comment.user == self.user_id)
-            .filter('comments_read.reader_user_id="%s"' % user)
+            .filter(HabitatComment.habitat == self.habitatcode)
+            .filter(HabitatComment.region == self.region)
+            .filter(HabitatComment.MS == self.MS)
+            .filter(HabitatComment.user == self.user_id)
+            .filter('habitat_comments_read.reader_user_id="%s"' % user)
             .all()
         )
 
