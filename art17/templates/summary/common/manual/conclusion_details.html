@@ -1,5 +1,5 @@
 
-<td>{# Comments all/nr_read #}</td>
+<td>{{ row.comments_count_unread(g.identity.id) }}/{{ row.comments|count }}</td>
 <td>{{ row.last_update|format_date }}</td>
 <td>{{ row.user.name or row.user_id}}</td>
 <td>{{ row.user.institution }}</td>
