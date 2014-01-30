@@ -339,7 +339,7 @@ class Summary(views.View):
         context.update({
             'objects': self.objects,
             'auto_objects': self.auto_objects,
-            'manual_objects': self.manual_objects,
+            'manual_objects': self.view_conclusions(self.manual_objects),
             'restricted_countries': self.restricted_countries,
             'regions': regions,
             'summary_filter_form': summary_filter_form,
@@ -385,6 +385,27 @@ class Summary(views.View):
         if annexes[0] and priority:
             annexes[0] += '*'
         return filter(bool, annexes)
+
+    def view_conclusions(self, conclusions):
+        if admin_perm.can() or expert_perm.can():
+            return conclusions
+        conclusions = list(conclusions)
+        ok_conclusions = filter(lambda c: c.decision in ['OK', 'END'],
+                                conclusions)
+        user_or_expert = (
+            lambda c:
+            not c.user.has_role('admin') and not c.user.has_role('expert')
+            if c.user else False
+        )
+        user_iurmax = (
+            lambda c:
+            not c.user.has_role('expert')
+            if c.user else False
+        )
+        if ok_conclusions:
+            return ok_conclusions + filter(user_or_expert, conclusions)
+        else:
+            return filter(user_iurmax, conclusions)
 
 
 class SpeciesSummary(SpeciesMixin, Summary):

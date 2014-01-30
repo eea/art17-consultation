@@ -812,6 +812,9 @@ class RegisteredUser(Base, UserMixin):
     )
     password = None  # placeholder to make flask_security forms happy
 
+    def has_role(self, role):
+        return role in [r.name for r in self.roles]
+
 
 class Role(Base, RoleMixin):
     __tablename__ = 'roles'
