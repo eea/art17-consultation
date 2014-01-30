@@ -8,7 +8,7 @@ from flask import (
 )
 
 from art17.common import get_default_period
-from art17.mixins import SpeciesMixin
+from art17.mixins import SpeciesMixin, HabitatMixin, MixinsCommon
 from art17.forms import ReportFilterForm
 from art17.models import Dataset, EtcDicBiogeoreg, DicCountryCode
 
@@ -94,6 +94,14 @@ class SpeciesReport(SpeciesMixin, Report):
         }
 
 
+class HabitatReport(HabitatMixin, Report):
+
+    template_name = 'report/habitat.html'
+
+    def setup_objects_and_data(self, period, group, country):
+        return []
+
+
 @report.route('/species/report/groups', endpoint='species-report-groups')
 def _groups():
     data = SpeciesMixin.get_groups(request.args['period'])
@@ -103,9 +111,12 @@ def _groups():
 @report.route('/species/report/regions', endpoint='species-report-regions')
 def _regions():
     period, country = request.args['period'], request.args['country']
-    data = SpeciesMixin.get_regions_by_country(period, country)
+    data = MixinsCommon.get_regions_by_country(period, country)
     return jsonify(data)
 
 
 report.add_url_rule('/species/report/',
                     view_func=SpeciesReport.as_view('species-report'))
+
+report.add_url_rule('/habitat/report/',
+                    view_func=HabitatReport.as_view('habitat-report'))

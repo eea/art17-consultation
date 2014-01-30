@@ -1,0 +1,78 @@
+{% extends layout_template %}
+
+{% block content %}
+
+  <p>Choose a group and then a country. Optionally, further refine your query
+  by selecting one of the available biogeographical regions for that
+  country.</p>
+  <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse
+  over and rows in italic shows data not taken into account when performing the
+  assessments (marginal presence, occasional, extinct prior HD, information,
+  etc)</p>
+  {% include 'report/filters.html' %}
+
+  {% if current_selection %}
+
+    {% set colspan_all=35 if region else 36 %}
+
+    <table class="complex_datatable datatable">
+      <caption>
+        <b>Current selection</b>:
+        {{ current_selection|join(', ') }}.
+        <a href="">Show all {{ group }}</a>
+      </caption>
+
+      {% include "common/species_table_header.html" with context %}
+
+      <tbody>
+
+        {% for row in objects %}
+          {% set visible = can_view(row, restricted_countries) %}
+          {% set qa_errors = record_errors(row) %}
+          <tr {% if row.is_assesm %}class="assesm"{% endif %}>
+
+            <td><a>{{ row.assesment_speciesname }}</a>
+
+            <td><a>map</a></td>
+
+            {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
+            {% if not region %}<td>{{ row.region }}</td>{% endif %}
+
+            {% if not visible %}
+            <td colspan="2">
+              {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
+            </td>
+            {% else %}
+
+            {#- Range columns -#}
+            {% include 'summary/species/content/range.html' with context %}
+
+            {#- Population columns -#}
+            {% include 'summary/species/content/population.html' with context %}
+
+            {#- Habitat columns -#}
+            {% include 'summary/species/content/habitat.html' with context %}
+
+            {#- Prospects -#}
+            {% include 'summary/species/content/future_prospects.html' with context %}
+
+            {#- Overall assessment -#}
+            {% include 'summary/species/content/overall.html' with context %}
+
+            {#- Grided maps columns -#}
+            {% include 'summary/species/content/grided_maps.html' with context %}
+
+            {# Padding #}
+            <td colspan="5"></td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+  {% else %}
+    <p><b>Please select a group and a species.</b></p>
+  {% endif %}
+
+{% endblock %}
