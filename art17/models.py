@@ -81,15 +81,6 @@ class DicCountryCode(Base):
         primary_key=True,
     )
 
-    @classmethod
-    def get_country_name(cls, country_code):
-        return (
-            cls.query
-            .with_entities(cls.name)
-            .filter(cls.codeEU == country_code)
-            .first()
-        )
-
 
 class EtcDataHabitattypeAutomaticAssessment(Base):
     __tablename__ = 'etc_data_habitattype_automatic_assessment'

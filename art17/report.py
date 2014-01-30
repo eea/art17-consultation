@@ -29,17 +29,19 @@ class Report(views.View):
         self.objects = []
         self.setup_objects_and_data(period, group)
 
+        countries = self.get_countries(period)
         regions = self.get_regions_by_country(period, country)
         report_filter_form = ReportFilterForm(request.args)
         report_filter_form.group.choices = self.get_groups(period)
-        report_filter_form.country.choices = self.get_countries(period)
+        report_filter_form.country.choices = countries
         report_filter_form.region.choices = regions
 
+        COUNTRIES = dict(countries)
+        REGIONS = dict(regions)
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
-
         current_selection = self.get_current_selection(
-            period_name, group, country, region)
+            period_name, group, COUNTRIES[country], REGIONS[region])
 
         context = self.get_context()
         context.update({
@@ -53,26 +55,13 @@ class Report(views.View):
 
         return render_template(self.template_name, **context)
 
-    def get_current_selection(self, period_name, group, country, region):
+    def get_current_selection(self, period_name, group,
+                              country_name, region_name):
         if not group:
             return []
-        current_selection = [period_name, group]
-
-        if country:
-            country_name = DicCountryCode.get_country_name(country)
-            if country_name:
-                current_selection.append(country_name[0])
-        else:
-            current_selection.append('All MS')
-
-        if region:
-            region_name = EtcDicBiogeoreg.get_region_name(region)
-            if region_name:
-                current_selection.append(region_name[0])
-        else:
-            current_selection.append('All bioregions')
-
+        current_selection = [period_name, group, country_name, region_name]
         return current_selection
+
 
 class SpeciesReport(SpeciesMixin, Report):
 
