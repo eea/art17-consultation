@@ -364,8 +364,9 @@ td.XUU {
 
 .NA > span {
 	/*color: #bbb;*/
-	border-color: #999;
-	background-color: #fff;
+	color: #999;
+	border-color: #ccc;
+	background-color: transparent;
 }
 
 /*.NA {

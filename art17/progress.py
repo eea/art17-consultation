@@ -130,7 +130,7 @@ class Progress(views.View):
             'conclusion': conclusion,
             'subjects': self.subjects_by_group(period, group),
             'regions': regions.all(),
-            'species_data': self.setup_objects_and_data(period, group, conclusion),
+            'objects': self.setup_objects_and_data(period, group, conclusion),
         })
 
         return render_template(self.template_name, **context)
@@ -285,10 +285,12 @@ def _groups():
     data = SpeciesMixin.get_groups(request.args['period'])
     return jsonify(data)
 
+
 @progress.route('/habitat/progress/groups', endpoint='habitat-progress-groups')
 def _habitat_groups():
     data = HabitatMixin.get_groups(request.args['period'])
     return jsonify(data)
+
 
 progress.add_url_rule('/species/progress/',
                      view_func=SpeciesProgress.as_view('species-progress'))
