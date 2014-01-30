@@ -409,6 +409,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'groups_url': url_for('.species-summary-groups'),
             'subjects_url': url_for('.species-summary-species'),
             'regions_url': url_for('.species-summary-regions'),
+            'comments_endpoint': 'comments.species-comments',
         }
 
 
@@ -442,6 +443,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'groups_url': url_for('.habitat-summary-groups'),
             'subjects_url': url_for('.habitat-summary-species'),
             'regions_url': url_for('.habitat-summary-regions'),
+            'comments_endpoint': 'comments.habitat-comments',
         }
 
 

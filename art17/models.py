@@ -31,7 +31,7 @@ class Comment(Base):
     user = Column(String(25), nullable=False)
     MS = Column(String(4), nullable=False, server_default=u"'EU25'")
     comment = Column(String)
-    author = Column(String(25), nullable=False)
+    author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
 
@@ -46,7 +46,20 @@ class Comment(Base):
         foreign_keys=[assesment_speciesname, region, user, MS],
         backref='comments',
     )
+    author = relationship(
+        'RegisteredUser',
+        primaryjoin="Comment.author_id==RegisteredUser.id",
+        foreign_keys=author_id,
+    )
 
+    def read_for(self, user):
+        return bool(
+            db.session.query(Comment.id)
+            .join(t_comments_read)
+            .filter(Comment.id == self.id)
+            .filter('comments_read.reader_user_id="%s"' % user)
+            .count()
+        )
 
 t_comments_read = Table(
     'comments_read', metadata,
@@ -593,7 +606,7 @@ class HabitatComment(Base):
     user = Column(String(25), nullable=False)
     MS = Column(String(4), nullable=False, server_default=u"'EU27'")
     comment = Column(String)
-    author = Column(String(25), nullable=False)
+    author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
 
@@ -613,6 +626,11 @@ class HabitatComment(Base):
             "HabitattypesManualAssessment.MS==Comment.MS)"),
         foreign_keys=[habitat, region, user, MS],
         backref='comments',
+    )
+    author = relationship(
+        'RegisteredUser',
+        primaryjoin="HabitatComment.author_id==RegisteredUser.id",
+        foreign_keys=author_id,
     )
 
 t_habitat_comments_read = Table(
@@ -698,6 +716,10 @@ class HabitattypesManualAssessment(Base):
             .filter('habitat_comments_read.reader_user_id="%s"' % user)
             .all()
         )
+
+    @property
+    def subject(self):
+        return self.habitatcode
 
 
 class LuHdHabitat(Base):
@@ -899,6 +921,10 @@ class SpeciesManualAssessment(Base):
             .filter('comments_read.reader_user_id="%s"' % user)
             .all()
         )
+
+    @property
+    def subject(self):
+        return self.assesment_speciesname
 
 t_species_name = Table(
     'species_name', metadata,
