@@ -1,15 +1,26 @@
 {% extends layout_template %}
 
-
 {% block content %}
 
+  <p>Choose a group and then a country. Optionally, further refine your query
+  by selecting one of the available biogeographical regions for that
+  country.</p>
+  <p><strong>NOTE:</strong>Texts in blue shows relevant information on mouse
+  over and rows in italic shows data not taken into account when performing the
+  assessments (marginal presence, occasional, extinct prior HD, information,
+  etc)</p>
   {% include 'report/filters.html' %}
 
-  {% if objects %}
+  {% if current_selection %}
 
     {% set colspan_all=35 if region else 36 %}
 
     <table class="complex_datatable datatable">
+      <caption>
+        <b>Current selection</b>:
+        {{ current_selection|join(', ') }}.
+        <a href="">Show all {{ group }}</a>
+      </caption>
 
       {% include "common/species_table_header.html" with context %}
 
@@ -60,7 +71,8 @@
       </tbody>
 
     </table>
-
+  {% else %}
+    <p><b>Please select a group and a species.</b></p>
   {% endif %}
 
 {% endblock %}

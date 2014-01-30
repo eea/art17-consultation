@@ -23,19 +23,3 @@
   <button class="offset_top_label" type="submit">Filter</button>
 
 </form>
-
-<div class="current_selection">
-  {% if current_selection %}
-  <p>
-    <b>Current selection</b>:
-    {{ current_selection|join(', ') }}.
-    {% if annexes %}
-      <b>Annexes</b> {{ annexes|join(', ') }}.
-    {% endif %}
-    <a href="">Show all {{ group }}</a>
-  </p>
-  {% else %}
-    <p><b>Please select a group and a species.</b></p>
-  {% endif %}
-
-</div>

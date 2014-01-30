@@ -14,6 +14,7 @@
             {{ current_selection|join(', ') }}.
             <a href="">Show all {{ group }}</a>
           </caption>
+
           <thead>
             <tr>
               <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
@@ -27,6 +28,7 @@
               {% endfor %}
             </tr>
           </thead>
+
           <tbody>
             {% for subject in subjects %}
             <tr>
@@ -49,4 +51,5 @@
     {% else %}
         <p><b>Please select a group and a species.</b></p>
     {% endif %}
+
 {% endblock %}
