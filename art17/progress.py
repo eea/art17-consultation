@@ -130,7 +130,7 @@ class Progress(views.View):
             'conclusion': conclusion,
             'subjects': self.subjects_by_group(period, group),
             'regions': regions.all(),
-            'species_data': self.setup_objects_and_data(period, group, conclusion),
+            'objects': self.setup_objects_and_data(period, group, conclusion),
         })
 
         return render_template(self.template_name, **context)
