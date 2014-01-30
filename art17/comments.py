@@ -15,12 +15,6 @@ class CommentsList(views.View):
         record = self.get_manual_record(subject, region, user, MS)
         return render_template('comments/list.html', record=record)
 
-    @classmethod
-    def get_manual_record(cls, subject, region, user, MS):
-        filters = {cls.subject_field: subject, 'region': region,
-                   'user_id': user, 'MS': MS}
-        return cls.model_manual_cls.query.filter_by(**filters).first()
-
 
 class SpeciesCommentsList(SpeciesMixin, CommentsList):
 

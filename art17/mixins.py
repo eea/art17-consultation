@@ -12,7 +12,16 @@ from art17.models import (
 )
 
 
-class SpeciesMixin(object):
+class MixinsCommon(object):
+
+    @classmethod
+    def get_manual_record(cls, subject, region, user, MS):
+        filters = {cls.subject_field: subject, 'region': region,
+                   'user_id': user, 'MS': MS}
+        return cls.model_manual_cls.query.filter_by(**filters).first()
+
+
+class SpeciesMixin(MixinsCommon):
 
     model_cls = EtcDataSpeciesRegion
     model_auto_cls = EtcDataSpeciesAutomaticAssessment
