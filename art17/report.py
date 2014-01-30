@@ -36,12 +36,16 @@ class Report(views.View):
         report_filter_form.country.choices = countries
         report_filter_form.region.choices = regions
 
-        COUNTRIES = dict(countries)
-        REGIONS = dict(regions)
+        countries_map = dict(countries)
+        regions_map = dict(regions)
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
+
         current_selection = self.get_current_selection(
-            period_name, group, COUNTRIES[country], REGIONS[region])
+            period_name, group,
+            countries_map.get(country),
+            regions_map.get(region)
+        )
 
         context = self.get_context()
         context.update({
