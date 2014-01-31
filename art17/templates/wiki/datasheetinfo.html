@@ -1,0 +1,57 @@
+{% extends layout_wiki %}
+
+{% block content %}
+
+<h3>Data Sheet Info</h3>
+
+{{ wiki_body|striptags }}
+
+<br/><br/>
+
+{% if user_logged_in %}
+
+<input type="button" onclick="setVisibility('editWiki', 'content');"; value="Edit page">
+<input type="button" onclick="setVisibility('addComm', 'content');"; value="Add Comment">
+<input type="button" onclick="setVisibility('pageHist', 'content');"; value="Page history">
+
+<br/><br/>
+
+<div class="editWiki content" style='display:none'>
+    <b>Edit page</b>
+    <form name="edit_wiki_form" method="post">
+      {{ edit_page_form.text(class='ckeditor') }}
+
+      <button type="submit" name="submit" value="edit_wiki" >Submit</button>
+    </form>
+</div>
+
+<div class="addComm content" style='display:none'>
+    <b>Add comment</b>
+    <form name="add_comm_form" method="post">
+      {{ add_comm_form.text(class='ckeditor') }}
+
+      <button type="submit" name="submit" value="add_comm" >Submit</button>
+    </form>
+</div>
+
+<div class="pageHist content" style='display:none'>
+    <b>Page history</b>
+    <form name="page_hist_form" method="post">
+
+      {% for row in page_history %}
+      <li> <input type="radio" name="hist_page" value="{{ row['id'] }}"
+           {% if row['active'] %} checked {% endif%}>
+        {{ row['changed']|format_date_ph }} by {{ row['editor'] }}
+        {% if row['active'] %} (active) {% endif %}
+      </li>
+      {% endfor %}
+
+      <button type="submit" name="submit" value="hist_page" >Make active</button>
+
+    </form>
+</div>
+
+  <script type=text/javascript src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+{% endif %}
+
+{% endblock %}

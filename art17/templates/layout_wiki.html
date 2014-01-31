@@ -1,0 +1,25 @@
+<html>
+<head>
+  <script type="text/javascript">
+    function setVisibility(visClsName, hidClsName) {
+        var visible_elems = document.getElementsByClassName(visClsName);
+        var displayVal = 'inline'
+        var hidden_elems = document.getElementsByClassName(hidClsName);
+        var hideVal = 'none'
+
+        for (var i = 0; i < hidden_elems.length; i++) {
+            hidden_elems[i].style.display = hideVal;
+        }
+
+        for (var i = 0; i < visible_elems.length; i++) {
+            visible_elems[i].style.display = displayVal;
+        }
+    }
+  </script>
+</head>
+
+<body>
+    {% block content %} {% endblock content%} 
+    {% include 'flash_messages.html' %}
+<body>
+</html>

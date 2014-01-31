@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask_wtf import Form as Form_base
-from wtforms import SelectField, TextField
+from wtforms import SelectField, TextField, TextAreaField
 from wtforms.validators import Optional
 from art17.models import (
     Dataset,
@@ -202,3 +202,8 @@ class ProgressFilterForm(Form):
     def __init__(self, *args, **kwargs):
         super(ProgressFilterForm, self).__init__(*args, **kwargs)
         self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
+
+
+class DataSheetInfoForm(Form):
+
+    text = TextAreaField()

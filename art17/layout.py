@@ -8,6 +8,7 @@ layout = flask.Blueprint('layout', __name__)
 def set_up_layout_template(state):
     app = state.app
     zope_url = app.config.get('LAYOUT_ZOPE_URL')
+    app.jinja_env.globals['layout_wiki'] = 'layout_wiki.html'
 
     if zope_url:
         app.jinja_env.globals['layout_template'] = 'layout_zope.html'
