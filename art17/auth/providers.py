@@ -49,7 +49,7 @@ class DebugAuthProvider(object):
                 flask.session.pop('auth', None)
             return flask.redirect(flask.url_for('.debug'))
 
-        return flask.render_template('auth_debug.html', **{
+        return flask.render_template('auth/debug.html', **{
             'user_id': current_user.get_id(),
             'auth_debug_allowed': auth_debug_allowed,
         })
