@@ -7,6 +7,9 @@
 ##parameters=v
 ##title=
 ##
+user = context.REQUEST.AUTHENTICATED_USER
+
 return container.json_dumps({
-    'user_id': context.REQUEST.AUTHENTICATED_USER.getId(),
+    'user_id': user.getId(),
+    'is_ldap_user': repr(user).startswith("<LDAPUser '"),
 })

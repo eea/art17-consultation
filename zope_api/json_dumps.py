@@ -9,7 +9,7 @@
 ##
 def quote(ch):
     ord_ch = ord(ch)
-    if 0x21 <= ord(ch) <= 0x7e and ch not in ['\\', '"']:
+    if 0x20 <= ord(ch) <= 0x7e and ch not in ['\\', '"']:
         return ch
     else:
         assert 0 <= ord_ch <= 0xffff
@@ -19,10 +19,14 @@ def quote(ch):
 def json_dumps(v):
     if v is None:
         return 'null'
-    elif hasattr(v, 'items'):  # string
+    elif hasattr(v, 'items'):  # dict
         return '{%s}' % ', '.join('%s: %s' % (json_dumps(vk), json_dumps(vv)) for vk, vv in v.items())
-    elif hasattr(v, 'encode'):  # dict
+    elif hasattr(v, 'encode'):  # string
         return '"%s"' % ''.join(quote(ch) for ch in v)
+    elif v in [True, False]:  # boolean
+        return v and 'true' or 'false'
+    elif hasattr(v, 'imag'):  # number
+        return str(v)
     else:
         raise ValueError("can't encode %r" % v)
 
