@@ -43,8 +43,8 @@ class Report(views.View):
 
         current_selection = self.get_current_selection(
             period_name, group,
-            countries_map.get(country),
-            regions_map.get(region)
+            countries_map.get(country, country),
+            regions_map.get(region, region)
         )
 
         context = self.get_context()
@@ -63,8 +63,7 @@ class Report(views.View):
                               country_name, region_name):
         if not group:
             return []
-        current_selection = [period_name, group, country_name, region_name]
-        return current_selection
+        return [period_name, group, country_name, region_name]
 
 
 class SpeciesReport(SpeciesMixin, Report):
