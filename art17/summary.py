@@ -26,7 +26,7 @@ from art17.models import (
     EtcDicDecision,
 )
 
-from art17.mixins import SpeciesMixin, HabitatMixin, MixinsCommon
+from art17.mixins import SpeciesMixin, HabitatMixin
 
 from art17.common import (
     get_default_period,
@@ -505,7 +505,7 @@ def _regions():
 @summary.route('/species/summary/countries', endpoint='species-summary-countries')
 def _countries():
     period, group = request.args['period'], request.args['group']
-    data = MixinsCommon.get_countries(period, group)
+    data = SpeciesMixin.get_countries(period, group)
     return jsonify(data)
 
 

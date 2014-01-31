@@ -8,7 +8,7 @@ from flask import (
 )
 
 from art17.common import get_default_period
-from art17.mixins import SpeciesMixin, HabitatMixin, MixinsCommon
+from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.forms import ReportFilterForm
 from art17.models import Dataset, EtcDicBiogeoreg, DicCountryCode
 
@@ -111,7 +111,7 @@ def _groups():
 @report.route('/species/report/regions', endpoint='species-report-regions')
 def _regions():
     period, country = request.args['period'], request.args['country']
-    data = MixinsCommon.get_regions_by_country(period, country)
+    data = SpeciesMixin.get_regions_by_country(period, country)
     return jsonify(data)
 
 
