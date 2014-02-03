@@ -206,6 +206,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
     def get_context(self):
         return {
             'groups_url': url_for('.species-progress-groups'),
+            'summary_endpoint': 'summary.species-summary',
         }
 
 
@@ -277,6 +278,7 @@ class HabitatProgress(Progress, HabitatMixin):
     def get_context(self):
         return {
             'groups_url': url_for('.habitat-progress-groups'),
+            'summary_endpoint': 'summary.habitat-summary',
         }
 
 

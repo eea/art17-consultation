@@ -85,7 +85,7 @@ class SpeciesMixin(MixinsCommon):
         qs = db.session.query(self.model_cls.speciesname)\
             .filter_by(group=group, dataset_id=period).distinct()\
             .order_by(self.model_cls.speciesname)
-        return [row[0] for row in qs]
+        return [(row[0], row[0]) for row in qs]
 
     def flatten_form(self, form, subject):
         data = dict(form.data)
@@ -159,7 +159,7 @@ class HabitatMixin(MixinsCommon):
         qs = db.session.query(EtcDicHdHabitat)\
             .with_entities(EtcDicHdHabitat.habcode, EtcDicHdHabitat.shortname)\
             .filter_by(group=group, dataset_id=period).distinct()
-        return [' - '.join(row) for row in qs]
+        return [(row[0], ' - '.join(row)) for row in qs]
 
     @classmethod
     def get_groups(cls, period):

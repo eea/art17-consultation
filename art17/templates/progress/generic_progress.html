@@ -30,17 +30,20 @@
 
           <tbody>
             {% for subject in subjects %}
+            {% set subject_name, subject_title = subject %}
             <tr>
               <th>
-                {{ subject }}
+                {{ subject_title }}
               </th>
               {% for region in regions %}
-                {% set data = objects.get(subject, {}).get(region.reg_code, '') %}
+                {% set data = objects.get(subject_title, {}).get(region.reg_code, '') %}
                 {% set title = COUNTRY_ASSESSMENTS.get(data['conclusion'], '') %}
-
+                {% set url = url_for(summary_endpoint, subject=subject_name, region=region.reg_code) %}
                 <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} center"
                     title="{{ title }}">
-                    <span>{{ data['method']|methodify }}</span>
+                    <span>
+                      <a href="{{ url }}">{{ data['method']|methodify }}</a>
+                    </span>
                 </td>
               {% endfor %}
             </tr>
