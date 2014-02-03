@@ -5,7 +5,9 @@ from art17 import models
 def test_self_registration_flow(app, client, outbox):
     app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
 
-    register_page = client.get(flask.url_for('security.register'))
+    register_page = client.get(flask.url_for('auth.register'))
+    register_page = register_page.click('new art17 consultation account')
+    print register_page
     register_page.form['id'] = 'foo'
     register_page.form['email'] = 'foo@example.com'
     register_page.form['password'] = 'p455w4rd'
@@ -55,7 +57,7 @@ def test_ldap_account_activation_flow(app, client, outbox, ldap_user_info):
     def set_testing_user():
         set_user('foo', is_ldap_user=True)
 
-    register_page = client.get(flask.url_for('security.register'))
+    register_page = client.get(flask.url_for('auth.register_ldap'))
     result_page = register_page.form.submit().follow()
     assert "Eionet account foo has been activated" in result_page.text
 

@@ -89,7 +89,7 @@ def outbox(app, request):
 @fixture
 def ldap_user_info(request):
     library = {}
-    ldap_patch = patch('art17.auth.security.get_ldap_user_info')
+    ldap_patch = patch('art17.auth.get_ldap_user_info')
     mock = ldap_patch.start()
     request.addfinalizer(ldap_patch.stop)
     mock.side_effect = library.get

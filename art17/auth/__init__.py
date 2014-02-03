@@ -1,3 +1,4 @@
+from datetime import datetime
 import flask
 from flask.ext.security import Security
 from flask.ext.security import signals as security_signals
@@ -39,6 +40,13 @@ security_ext = Security(
 )
 
 
+def get_ldap_user_info(user_id):
+    from eea.usersdb import UsersDB
+    ldap_server = flask.current_app.config['EEA_LDAP_SERVER']
+    users_db = UsersDB(ldap_server=ldap_server)
+    return users_db.user_info(user_id)
+
+
 @auth.record
 def setup_auth_handlers(state):
     app = state.app
@@ -52,6 +60,7 @@ def setup_auth_handlers(state):
     app.config.update({
         'SECURITY_CONFIRMABLE': True,
         'SECURITY_REGISTERABLE': True,
+        'SECURITY_REGISTER_URL': '/auth/register/local',
     })
 
     security_ext.init_app(
@@ -70,3 +79,43 @@ def admin_user(user_id):
         return flask.redirect(flask.url_for('.admin_user', user_id=user_id))
 
     return flask.render_template('auth/admin_user.html', user=user)
+
+
+@auth.route('/auth/register')
+def register():
+    user_credentials = flask.g.get('user_credentials', {})
+    if user_credentials.get('is_ldap_user'):
+        return flask.redirect(flask.url_for('.register_ldap'))
+
+    return flask.render_template('auth/register_choices.html')
+
+
+@auth.route('/auth/register/ldap', methods=['GET', 'POST'])
+def register_ldap():
+    user_credentials = flask.g.get('user_credentials', {})
+    if not user_credentials.get('is_ldap_user'):
+        return flask.redirect(flask.url_for('.register'))
+
+    if flask.request.method == 'POST':
+        datastore = flask.current_app.extensions['security'].datastore
+        ldap_user_info = get_ldap_user_info(user_credentials['user_id'])
+        user = datastore.create_user(
+            id=user_credentials['user_id'],
+            is_ldap=True,
+            password='',
+            confirmed_at=datetime.utcnow(),
+            email=ldap_user_info.get('email'),
+        )
+        datastore.commit()
+        flask.flash(
+            "Eionet account %s has been activated"
+            % user_credentials['user_id'],
+            'success',
+        )
+        notify_administrator(flask._app_ctx_stack.top.app, user)
+        return flask.redirect('/')
+
+    return flask.render_template('auth/register_ldap.html', **{
+        'already_registered': flask.g.get('user') is not None,
+        'user_id': user_credentials['user_id'],
+    })

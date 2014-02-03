@@ -13,7 +13,8 @@
 
   <p>
     If you don't have an EIONET account, register for a
-    <a href="?local=on">new art17 consultation account</a>.
+    {%- set register_url = url_for('security.register') %}
+    <a href="{{ register_url }}">new art17 consultation account</a>.
   </p>
 
 {% endblock content %}
