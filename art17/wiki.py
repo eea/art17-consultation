@@ -94,22 +94,25 @@ class DataSheetInfoWiki(WikiView):
 
     def get_wiki_changes(self):
         period = request.args.get('period')
-        column = request.args.get('column')
+        page = request.args.get('page')
         subject = request.args.get('subject')
         region = request.args.get('region')
 
-        wiki_changes = (
-            db.session.query(WikiChange)
-            .join(Wiki, Wiki.id == WikiChange.wiki_id)
-            .filter(getattr(Wiki, column) == subject,
-                    Wiki.region == region,
-                    Wiki.dataset_id == period)
-        )
+        if page == 'species':
+            column = 'assesment_speciesname'
+        elif page == 'habitat':
+            column = 'habitatcode'
+
+        wiki = Wiki.query.filter(getattr(Wiki, column) == subject,
+                                 Wiki.region == region,
+                                 Wiki.dataset_id == period).first()
+
+        wiki_changes = WikiChange.query.filter_by(wiki=wiki)
 
         return wiki_changes
 
     def get_active_change(self):
-        return self.get_wiki_changes().filter(WikiChange.active == 1).first()
+        return self.get_wiki_changes().filter_by(active=1).first()
 
     def get_context(self):
         wiki_changes = self.get_wiki_changes()
