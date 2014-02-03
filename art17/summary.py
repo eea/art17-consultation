@@ -287,9 +287,14 @@ class Summary(views.View):
         self.auto_objects = []
         self.manual_objects = []
         self.setup_objects_and_data(period, subject, region)
+        group = group or self.get_group_for_subject(subject)
 
         regions = self.get_regions(period, subject)
-        summary_filter_form = SummaryFilterForm(request.args)
+        summary_filter_form = SummaryFilterForm(
+            MultiDict(dict(period=period, group=group, subject=subject,
+                           region=region)
+            )
+        )
         summary_filter_form.group.choices = self.get_groups(period)
         summary_filter_form.subject.choices = self.get_subjects(period, group)
         summary_filter_form.region.choices = regions

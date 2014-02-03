@@ -61,6 +61,14 @@ class MixinsCommon(object):
         )
         return blank_option + regions
 
+    @classmethod
+    def get_group_for_subject(cls, subject):
+        record = (
+            cls.model_cls.query
+            .filter_by(**{cls.subject_field: subject}).first()
+        )
+        return record.group if record else ''
+
 
 class SpeciesMixin(MixinsCommon):
 
