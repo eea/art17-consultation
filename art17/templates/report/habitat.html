@@ -47,7 +47,7 @@
           <td>
             {% set original_url=get_original_record_url(row) %}
             <a class="popup" data-title="Factsheet" href="{{ original_url }}">
-              {{ row.subject }}
+              {{ row.subject }} - {{ row.habitat.name }}
             </a>
           </td>
           <td><a href="">map</a></td>

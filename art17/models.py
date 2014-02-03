@@ -183,6 +183,12 @@ class EtcDataHabitattypeRegion(Base):
         primary_key=True,
     )
 
+    habitat = relationship(
+        'EtcDicHdHabitat',
+        primaryjoin='EtcDicHdHabitat.habcode==EtcDataHabitattypeRegion.subject',
+        foreign_keys=[habitatcode]
+    )
+
     @hybrid_property
     def subject(self):
         return self.habitatcode
