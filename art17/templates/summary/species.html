@@ -63,7 +63,12 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       {% set visible = can_view(row, restricted_countries) %}
       {% set qa_errors = record_errors(row) %}
       <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-        <td>{{ row.eu_country_code }}</td>
+        <td>
+          {% set original_url=get_original_record_url(row) %}
+          <a class="popup" data-title="Factsheet" href="{{ original_url }}">
+            {{ row.eu_country_code }}
+          </a>
+        </td>
         {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
         {% if not visible %}

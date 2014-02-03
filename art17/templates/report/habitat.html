@@ -31,7 +31,12 @@
           {% set qa_errors = record_errors(row) %}
           <tr {% if row.is_assesm %}class="assesm"{% endif %}>
 
-            <td><a>{{ row.assesment_speciesname }}</a>
+             <td>
+              {% set original_url=get_original_record_url(row) %}
+              <a class="popup" data-title="Factsheet" href="{{ original_url }}">
+                {{ row.assesment_speciesname }}
+              </a>
+            </td>
 
             <td><a>map</a></td>
 
