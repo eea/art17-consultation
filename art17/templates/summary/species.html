@@ -18,7 +18,8 @@
       {% if annexes %}
         <b>Annexes</b> {{ annexes|join(', ') }}.
       {% endif %}
-      <a href="">Show all {{ group }}</a>
+      {% set show_all_url=url_for(progress_endpoint, group=group, conclusion='overall assessment') %}
+      <a href="{{ show_all_url }}">Show all {{ group }}</a>
     </caption>
     <colgroup>
       <col span="1" class="col_border_right">{% if not region %}
@@ -63,31 +64,19 @@
         {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
         {% if not visible %}
-        <td colspan="2">
-          {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
-        </td>
+          <td colspan="2">
+            {{ row.eu_country_code }} has provided a report to the European
+            Commission under Article 17
+          </td>
         {% else %}
-
-        {#- Range columns -#}
-        {% include 'summary/species/content/range.html' with context %}
-
-        {#- Population columns -#}
-        {% include 'summary/species/content/population.html' with context %}
-
-        {#- Habitat columns -#}
-        {% include 'summary/species/content/habitat.html' with context %}
-
-        {#- Prospects -#}
-        {% include 'summary/species/content/future_prospects.html' with context %}
-
-        {#- Overall assessment -#}
-        {% include 'summary/species/content/overall.html' with context %}
-
-        {#- Grided maps columns -#}
-        {% include 'summary/species/content/grided_maps.html' with context %}
-
-        {# Padding #}
-        <td colspan="5"></td>
+          {% include 'summary/species/content/range.html' with context %}
+          {% include 'summary/species/content/population.html' with context %}
+          {% include 'summary/species/content/habitat.html' with context %}
+          {% include 'summary/species/content/future_prospects.html' with context %}
+          {% include 'summary/species/content/overall.html' with context %}
+          {% include 'summary/species/content/grided_maps.html' with context %}
+          {# Padding #}
+          <td colspan="5"></td>
         {% endif %}
       </tr>
     {% endfor %}

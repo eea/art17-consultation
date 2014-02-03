@@ -453,7 +453,8 @@ class SpeciesSummary(SpeciesMixin, Summary):
                                 column='assesment_speciesname',
                                 subject=request.args.get('subject'),
                                 region=request.args.get('region'),
-                                period=request.args.get('period'))
+                                period=request.args.get('period')),
+            'progress_endpoint': 'progress.species-progress',
         }
 
 
@@ -494,7 +495,8 @@ class HabitatSummary(HabitatMixin, Summary):
                                 subject=request.args['subject'].split(' ')[0]
                                 if request.args.get('subject') else None,
                                 region=request.args.get('region'),
-                                period=request.args.get('period'))
+                                period=request.args.get('period')),
+            'progress_endpoint': 'progress.habitat-progress',
         }
 
 
