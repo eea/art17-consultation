@@ -45,6 +45,7 @@ def register():
             datastore.create_user(
                 id=user_credentials['user_id'],
                 password='',
+                confirmed_at=datetime.utcnow(),
             )
             datastore.commit()
             flask.flash(
