@@ -16,6 +16,7 @@ Jinja2==2.7.2
 jsmin==2.0.8
 Mako==0.9.1
 MarkupSafe==0.18
+mock==1.0.1
 MySQL-python==1.2.5
 passlib==1.6.2
 python-ldap==2.4.14

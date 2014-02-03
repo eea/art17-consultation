@@ -37,16 +37,25 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
     id = TextField('id', validators=[Required("User ID is required")])
 
 
+def get_ldap_user_info(user_id):
+    from eea.usersdb import UsersDB
+    ldap_server = flask.current_app.config['EEA_LDAP_SERVER']
+    users_db = UsersDB(ldap_server=ldap_server)
+    return users_db.user_info(user_id)
+
+
 def register():
     user_credentials = flask.g.get('user_credentials', {})
     if user_credentials.get('is_ldap_user'):
         if flask.request.method == 'POST':
             datastore = flask.current_app.extensions['security'].datastore
+            ldap_user_info = get_ldap_user_info(user_credentials['user_id'])
             datastore.create_user(
                 id=user_credentials['user_id'],
                 is_ldap=True,
                 password='',
                 confirmed_at=datetime.utcnow(),
+                email=ldap_user_info.get('email'),
             )
             datastore.commit()
             flask.flash(

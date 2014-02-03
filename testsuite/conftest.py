@@ -3,6 +3,7 @@ from flask.ext.webtest import TestApp
 from pytest import fixture
 from alembic import command, config
 from path import path
+from mock import patch
 
 from art17.app import create_app
 from art17.models import db
@@ -83,3 +84,13 @@ def outbox(app, request):
         outbox_ctx.__exit__(None, None, None)
 
     return outbox_ctx.__enter__()
+
+
+@fixture
+def ldap_user_info(request):
+    library = {}
+    ldap_patch = patch('art17.auth.security.get_ldap_user_info')
+    mock = ldap_patch.start()
+    request.addfinalizer(ldap_patch.stop)
+    mock.side_effect = library.get
+    return library

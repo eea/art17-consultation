@@ -46,9 +46,10 @@ def test_self_registration_flow(app, client, outbox):
     # TODO: user receives email and logs in
 
 
-def test_ldap_account_activation_flow(app, client, outbox):
+def test_ldap_account_activation_flow(app, client, outbox, ldap_user_info):
     from art17.auth.providers import set_user
     app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
+    ldap_user_info['foo'] = {'email': 'foo@example.com'}
 
     @app.before_request
     def set_testing_user():
@@ -59,6 +60,7 @@ def test_ldap_account_activation_flow(app, client, outbox):
     assert "Eionet account foo has been activated" in result_page.text
 
     foo_user = models.RegisteredUser.query.get('foo')
+    assert foo_user.email == 'foo@example.com'
     assert foo_user.confirmed_at is not None
     assert not foo_user.active
     assert foo_user.is_ldap
