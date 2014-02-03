@@ -805,6 +805,7 @@ class RegisteredUser(Base, UserMixin):
     show_assessment = Column(Integer, nullable=False, server_default=u"'1'")
     active = Column(Boolean)
     confirmed_at = db.Column(db.DateTime())
+    is_ldap = db.Column(Boolean, nullable=False, server_default='0')
     roles = db.relationship(
         'Role',
         secondary=roles_users,
