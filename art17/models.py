@@ -621,9 +621,9 @@ class HabitatComment(Base):
         primaryjoin=(
             "and_(HabitattypesManualAssessment.habitatcode=="
             "HabitatComment.habitat,"
-            "HabitattypesManualAssessment.region==Comment.region,"
-            "HabitattypesManualAssessment.user_id==Comment.user,"
-            "HabitattypesManualAssessment.MS==Comment.MS)"),
+            "HabitattypesManualAssessment.region==HabitatComment.region,"
+            "HabitattypesManualAssessment.user_id==HabitatComment.user,"
+            "HabitattypesManualAssessment.MS==HabitatComment.MS)"),
         foreign_keys=[habitat, region, user, MS],
         backref='comments',
     )
