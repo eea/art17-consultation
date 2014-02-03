@@ -9,7 +9,7 @@ from art17.models import (
     EtcDataHabitattypeAutomaticAssessment,
     SpeciesManualAssessment,
     DicCountryCode,
-)
+    HabitatComment, Comment)
 
 
 class MixinsCommon(object):
@@ -67,6 +67,7 @@ class SpeciesMixin(MixinsCommon):
     model_cls = EtcDataSpeciesRegion
     model_auto_cls = EtcDataSpeciesAutomaticAssessment
     model_manual_cls = SpeciesManualAssessment
+    model_comment_cls = Comment
     subject_name = 'species'
     subject_field = 'assesment_speciesname'
 
@@ -144,6 +145,7 @@ class HabitatMixin(MixinsCommon):
     model_cls = EtcDataHabitattypeRegion
     model_auto_cls = EtcDataHabitattypeAutomaticAssessment
     model_manual_cls = HabitattypesManualAssessment
+    model_comment_cls = HabitatComment
     subject_name = 'habitat'
     subject_field = 'habitatcode'
 

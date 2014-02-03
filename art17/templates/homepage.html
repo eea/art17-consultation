@@ -13,4 +13,11 @@
     <a href="{{ url_for('.habitat-summary') }}">Habitat summary</a>
     <a href="{{ url_for('progress.habitat-progress') }}">Habitat progress</a>
     <a href="{{ url_for('report.habitat-report') }}">Habitat report</a>
+
+    <br/>
+
+    {% if g.identity.id is not none %}
+    <br/>
+    <a href="{{ url_for('comments.species-history') }}">User summary</a>
+    {% endif %}
 {% endblock content %}

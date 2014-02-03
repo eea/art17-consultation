@@ -1,0 +1,52 @@
+{% extends layout_template %}
+
+{% block content %}
+    <h1>User summary</h1>
+
+    <a class="btn btn-default {% if subject_name == 'species' %}active{% endif %}"
+       href="{{ url_for('.species-history') }}">Species</a>
+    <a class="btn btn-default {% if subject_name == 'habitat' %}active{% endif %}"
+      href="{{ url_for('.habitat-history') }}">Habitats</a>
+
+    <table class="complex_datatable datatable">
+      <caption>Recent conclusions</caption>
+      <tr>
+        <th>Date</th>
+        <th>User</th>
+        <th>{{ subject_name|capitalize }}</th>
+        <th>Region</th>
+        <th></th>
+      </tr>
+      {% for c in history.conclusions %}
+      <tr>
+        <td>{{ c.last_update }}</td>
+        <td>{{ c.user.name or c.user_id }}</td>
+        <td>{{ c.subject }}</td>
+        <td>{{ c.region }}</td>
+        <td><a href="{{ url_for(summary_endpoint, subject=c.subject, region=c.region) }}">view</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <table class="complex_datatable datatable">
+      <caption>Recent comments</caption>
+      <tr>
+        <th>Date</th>
+        <th>Author</th>
+        <th>User</th>
+        <th>{{ subject_name|capitalize }}</th>
+        <th>Region</th>
+        <th>Read</th>
+      </tr>
+      {% for c in history.comments %}
+      <tr>
+        <td>{{ c.post_date }}</td>
+        <td>{{ c.author.name or c.author_id }}</td>
+        <td>{{ c.user.name or c.user_id }}</td>
+        <td>{{ c.subject }}</td>
+        <td>{{ c.region }}</td>
+        <td>{{ c.read_for(user) }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+{% endblock %}
