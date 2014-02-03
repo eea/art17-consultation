@@ -1,7 +1,7 @@
 -f http://eggshop.eaudeweb.ro/
 alembic==0.6.2
 colander==0.9.9
-eea.usersdb==1.3.4
+eea.usersdb==1.3.9
 Flask-Assets==0.8
 Flask-Login==0.2.9
 Flask-Mail==0.9.0
