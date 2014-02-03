@@ -16,6 +16,7 @@ def test_self_registration_flow(app, client, outbox):
     assert foo_user.email == 'foo@example.com'
     assert foo_user.confirmed_at is None
     assert not foo_user.active
+    assert not foo_user.is_ldap
 
     assert len(outbox) == 1
     confirm_message = outbox.pop()
@@ -60,3 +61,4 @@ def test_ldap_account_activation_flow(app, client, outbox):
     foo_user = models.RegisteredUser.query.get('foo')
     assert foo_user.confirmed_at is not None
     assert not foo_user.active
+    assert foo_user.is_ldap

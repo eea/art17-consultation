@@ -44,6 +44,7 @@ def register():
             datastore = flask.current_app.extensions['security'].datastore
             datastore.create_user(
                 id=user_credentials['user_id'],
+                is_ldap=True,
                 password='',
                 confirmed_at=datetime.utcnow(),
             )
