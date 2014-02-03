@@ -23,9 +23,8 @@
   <button type="submit" class="offset_top_label">Filter</button>
 
   {% if current_selection %}
-    <button type="button" class="offset_top_label" 
-        onclick="javascript:window.open('{{ wiki_url }}', '_blank',
-        'scrollbars=1, resizable=1, height=600, width=600')">
+  <button type="button" class="offset_top_label" id="wikibutton"
+      url='{{ wiki_url }}' >
         View data sheet info</button>
   {% endif %}
 </form>

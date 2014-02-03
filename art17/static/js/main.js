@@ -75,5 +75,17 @@ $(function() {
       popup.focus();
     });
 
-})();
+});
+
+$(function () {
+    $('body').on('click', '#wikibutton', function(evt) {
+        evt.preventDefault();
+        var btn = $(this);
+        var url = btn.attr('url');
+        var title = 'Data Sheet Info';
+        var params = 'scrollbars=1, resizable=1, height=600, width=600';
+        var popup = window.open(url, title, params);
+        popup.focus();
+    });
+});
 
