@@ -30,6 +30,7 @@ def test_self_registration_flow(app, client, outbox):
 
     assert len(outbox) == 1
     admin_message = outbox.pop()
+    assert admin_message.recipients == ['admin@example.com']
     assert "New user has registered" in admin_message.body
     url = admin_message.body.split()[-1]
     assert url == 'http://localhost/auth/admin/foo'
