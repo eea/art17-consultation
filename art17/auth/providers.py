@@ -7,8 +7,12 @@ from art17.auth.security import current_user
 logger = logging.getLogger(__name__)
 
 
-def set_user(user_id):
+def set_user(user_id, is_ldap_user=False):
     user = models.RegisteredUser.query.get(user_id)
+    flask.g.user_credentials = {
+        'user_id': user_id,
+        'is_ldap_user': is_ldap_user,
+    }
     if user is None:
         logger.warn("Autheticated user %r not found in database", user_id)
     else:
@@ -70,6 +74,9 @@ class ZopeAuthProvider(object):
             self.whoami_url,
             headers={'Authorization': auth_header},
         )
-        user_id = resp.json()['user_id']
-        if user_id:
-            set_user(user_id=user_id)
+        resp_data = resp.json()
+        if resp_data['user_id']:
+            set_user(
+                user_id=resp_data['user_id'],
+                is_ldap_user=resp_data['is_ldap_user'],
+            )
