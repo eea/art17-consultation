@@ -20,6 +20,7 @@ def notify_administrator(app, user, **extra):
     )
     msg.body = flask.render_template(
         'auth/email_activate_user.txt',
+        user=user,
         activation_link=flask.url_for(
             'auth.admin_user',
             user_id=user.id,

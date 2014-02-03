@@ -64,3 +64,10 @@ def test_ldap_account_activation_flow(app, client, outbox, ldap_user_info):
     assert foo_user.confirmed_at is not None
     assert not foo_user.active
     assert foo_user.is_ldap
+
+    assert len(outbox) == 1
+    admin_message = outbox.pop()
+    assert admin_message.recipients == ['admin@example.com']
+    assert "Eionet user has registered" in admin_message.body
+    url = admin_message.body.split()[-1]
+    assert url == 'http://localhost/auth/admin/foo'

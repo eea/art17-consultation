@@ -45,12 +45,13 @@ def get_ldap_user_info(user_id):
 
 
 def register():
+    from art17.auth import notify_administrator
     user_credentials = flask.g.get('user_credentials', {})
     if user_credentials.get('is_ldap_user'):
         if flask.request.method == 'POST':
             datastore = flask.current_app.extensions['security'].datastore
             ldap_user_info = get_ldap_user_info(user_credentials['user_id'])
-            datastore.create_user(
+            user = datastore.create_user(
                 id=user_credentials['user_id'],
                 is_ldap=True,
                 password='',
@@ -63,6 +64,7 @@ def register():
                 % user_credentials['user_id'],
                 'success',
             )
+            notify_administrator(flask._app_ctx_stack.top.app, user)
             return flask.redirect('/')
 
         return flask.render_template('auth/register_ldap.html', **{
