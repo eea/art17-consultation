@@ -3,7 +3,7 @@
 </td>
 
 {% set title = COUNTRY_ASSESSMENTS.get(row.conclusion_range, '') %}
-{% set concl_value = get_range_conclusion_value(row.assesment_speciesname,
+{% set concl_value = get_range_conclusion_value(row.subject,
                                                 row.region,
                                                 row.method_range) %}
 

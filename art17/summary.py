@@ -172,20 +172,17 @@ def format_date(value):
 
 
 def record_errors(record):
-    if isinstance(record, EtcDataSpeciesRegion):
-        qs = EtcQaErrorsSpeciesManualChecked.query.filter_by(
-            assesment_speciesname=record.assesment_speciesname,
-            region=record.region,
-            eu_country_code=record.eu_country_code,
-        )
+    if isinstance(record, (EtcDataSpeciesRegion, EtcDataHabitattypeRegion)):
+        error_cls = EtcQaErrorsSpeciesManualChecked
     elif isinstance(record, EtcDataHabitattypeRegion):
-        qs = EtcQaErrorsHabitattypeManualChecked.query.filter_by(
-            habitatcode=record.habitatcode,
-            region=record.region,
-            eu_country_code=record.eu_country_code,
-        )
+        error_cls = EtcQaErrorsHabitattypeManualChecked
     else:
         raise ValueError("Invalid record type" + str(type(record)))
+    qs = error_cls.query.filter_by(
+        subject=record.subject,
+        region=record.region,
+        eu_country_code=record.eu_country_code,
+    )
     return {
         e.field: {'text': e.text, 'suspect_value': e.suspect_value}
         for e in qs
@@ -260,7 +257,7 @@ class Summary(views.View):
             filters = {
                 'region': region,
                 'user_id': user_id,
-                self.subject_field: subject,
+                'subject': subject,
             }
             manual_assessment = self.model_manual_cls.query.filter_by(
                 **filters
@@ -312,9 +309,7 @@ class Summary(views.View):
             if manual_form.validate():
                 admin_perm.test()
                 if not manual_assessment:
-                    manual_assessment = self.model_manual_cls(
-                        **{self.subject_field: subject}
-                    )
+                    manual_assessment = self.model_manual_cls(subject=subject)
                     self.flatten_form(manual_form, manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
@@ -378,7 +373,7 @@ class Summary(views.View):
         annexes_results = (
             EtcDataSpeciesRegion.query
             .with_entities('annex_II', 'annex_IV', 'annex_V', 'priority')
-            .filter(EtcDataSpeciesRegion.assesment_speciesname == species)
+            .filter(EtcDataSpeciesRegion.subject == species)
             .distinct()
             .first()
         )

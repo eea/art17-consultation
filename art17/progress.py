@@ -171,7 +171,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
 
         self.objects = (
             self.model_manual_cls.query
-            .with_entities(self.model_manual_cls.assesment_speciesname,
+            .with_entities(self.model_manual_cls.subject,
                            self.model_manual_cls.region,
                            self.model_manual_cls.decision,
                            self.model_manual_cls.user_id,
@@ -240,7 +240,7 @@ class HabitatProgress(Progress, HabitatMixin):
             db.session.query(self.model_manual_cls)
             .join(EtcDicHdHabitat, self.model_manual_cls.habitatcode ==
                   EtcDicHdHabitat.habcode)
-            .with_entities(self.model_manual_cls.habitatcode,
+            .with_entities(self.model_manual_cls.subject,
                            EtcDicHdHabitat.shortname,
                            self.model_manual_cls.region,
                            self.model_manual_cls.decision,

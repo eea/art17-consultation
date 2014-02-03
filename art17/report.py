@@ -17,9 +17,6 @@ report = Blueprint('report', __name__)
 
 class Report(views.View):
 
-    def get_context(self):
-        return {}
-
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
         group = request.args.get('group')
@@ -65,11 +62,6 @@ class Report(views.View):
             return []
         return [period_name, group, country_name, region_name]
 
-
-class SpeciesReport(SpeciesMixin, Report):
-
-    template_name = 'report/species.html'
-
     def setup_objects_and_data(self, period, group, country):
         filter_args = {}
         if group:
@@ -83,8 +75,13 @@ class SpeciesReport(SpeciesMixin, Report):
         self.objects = (
             self.model_cls.query
             .filter_by(**filter_args)
-            .order_by(self.model_cls.speciesname)
+            .order_by(self.model_cls.subject)
         )
+
+
+class SpeciesReport(SpeciesMixin, Report):
+
+    template_name = 'report/species.html'
 
     def get_context(self):
         return {
@@ -96,9 +93,6 @@ class SpeciesReport(SpeciesMixin, Report):
 class HabitatReport(HabitatMixin, Report):
 
     template_name = 'report/habitat.html'
-
-    def setup_objects_and_data(self, period, group, country):
-        return []
 
     def get_context(self):
         return {

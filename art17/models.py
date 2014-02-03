@@ -4,6 +4,7 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer,\
     LargeBinary, SmallInteger, String, Table, Text, Boolean
 from sqlalchemy.dialects.mysql.base import MEDIUMBLOB
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
 from flask.ext.security import UserMixin, RoleMixin
@@ -181,6 +182,10 @@ class EtcDataHabitattypeRegion(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+    @hybrid_property
+    def subject(self):
+        return self.habitatcode
 
 
 class EtcDataHcoveragePressure(Base):
@@ -360,6 +365,10 @@ class EtcDataSpeciesRegion(Base):
     @property
     def is_assesm(self):
         return self.species_type_asses == 0
+
+    @hybrid_property
+    def subject(self):
+        return self.assesment_speciesname
 
 
 class EtcDataSpopulationPressure(Base):
@@ -575,6 +584,10 @@ class EtcQaErrorsHabitattypeManualChecked(Base):
         primary_key=True,
     )
 
+    @hybrid_property
+    def subject(self):
+        return self.habitatcode
+
 
 class EtcQaErrorsSpeciesManualChecked(Base):
     __tablename__ = 'etc_qa_errors_species_manual_checked'
@@ -595,6 +608,10 @@ class EtcQaErrorsSpeciesManualChecked(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+    @hybrid_property
+    def subject(self):
+        return self.assesment_speciesname
 
 
 class HabitatComment(Base):
@@ -717,7 +734,7 @@ class HabitattypesManualAssessment(Base):
             .all()
         )
 
-    @property
+    @hybrid_property
     def subject(self):
         return self.habitatcode
 
@@ -926,7 +943,7 @@ class SpeciesManualAssessment(Base):
             .all()
         )
 
-    @property
+    @hybrid_property
     def subject(self):
         return self.assesment_speciesname
 
