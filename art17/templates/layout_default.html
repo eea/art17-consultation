@@ -2,17 +2,6 @@
 <html>
 
   <head>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    {% assets "js" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-
-    <!--<link href="{{ url_for('static', filename='css/styles.css') }}"
-          type="text/css" rel="stylesheet" />-->
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='css/screen.css') }}"
-          media="screen">
-
     {% include 'header_styles.html' %}
     <title></title>
   </head>
