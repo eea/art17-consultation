@@ -7,13 +7,13 @@
   {%- if user %}
     <p>
       You have already registered your account:
-      <tt>{{ user.id }}</tt>.
+      <tt>{{ user_id }}</tt>.
     </p>
   {%- else %}
     <form method="post" name="user">
       <p>
         Register the account named
-        <tt>{{ user.id }}</tt>.
+        <tt>{{ user_id }}</tt>.
       </p>
 
       <div>

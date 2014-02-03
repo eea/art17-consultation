@@ -68,10 +68,15 @@ def register():
             return flask.redirect('/')
 
         return flask.render_template('auth/register_ldap.html', **{
-            'user': flask.g.get('user'),
+            'already_registered': flask.g.get('user') is not None,
+            'user_id': user_credentials['user_id'],
         })
 
-    return register_orig()
+    elif flask.request.args.get('local', type=bool):
+        return register_orig()
+
+    else:
+        return flask.render_template('auth/register_choices.html')
 
 register_orig = flask_security_views.register
 flask_security_views.register = register
