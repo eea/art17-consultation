@@ -1,5 +1,7 @@
 {{- g.zope_layout.standard_html_header|safe }}
 
+  <script>$('body').addClass('fullscreen')</script>
+
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       <ul class=flashes>
