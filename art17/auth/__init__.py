@@ -29,7 +29,7 @@ def notify_administrator(app, user, **extra):
     app.extensions['mail'].send(msg)
 
 auth = flask.Blueprint('auth', __name__)
-security = Security(
+security_ext = Security(
     datastore=UserDatastore(
         models.db,
         models.RegisteredUser,
@@ -53,7 +53,7 @@ def setup_auth_handlers(state):
         'SECURITY_REGISTERABLE': True,
     })
 
-    security.init_app(
+    security_ext.init_app(
         app,
         confirm_register_form=Art17ConfirmRegisterForm,
     )
