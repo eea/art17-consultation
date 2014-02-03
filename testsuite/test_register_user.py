@@ -1,8 +1,53 @@
 import flask
+import pytest
+from mock import patch
 from art17 import models
 
 
-def test_self_registration_flow(app, client, outbox):
+@pytest.fixture
+def zope_auth(app, request):
+    from art17.auth import auth
+
+    app.config['AUTH_ZOPE'] = True
+    app.config['AUTH_ZOPE_WHOAMI_URL'] = 'http://example.com/'
+    app.register_blueprint(auth)
+
+    requests_patch = patch('art17.auth.providers.requests')
+    requests = requests_patch.start()
+    request.addfinalizer(requests_patch.stop)
+
+    whoami_data = {'user_id': None, 'is_ldap_user': False}
+    requests.get.return_value.json.return_value = whoami_data
+
+    return whoami_data
+
+
+def test_identity_is_set_from_zope_whoami(app, zope_auth, client):
+    from art17.models import RegisteredUser, Role, db
+
+    admin_role = Role.query.filter_by(name='admin').first()
+    from datetime import datetime
+    ze_admin = RegisteredUser(id='ze_admin', account_date=datetime.utcnow(), active=True)
+    db.session.add(ze_admin)
+    ze_admin.roles.append(admin_role)
+    db.session.commit()
+
+    @app.route('/identity')
+    def get_identity():
+        identity = flask.g.identity
+        return flask.jsonify(
+            id=identity.id,
+            provides=sorted(list(identity.provides)),
+        )
+
+    zope_auth.update({'user_id': 'ze_admin', 'is_ldap_user': False})
+
+    identity = client.get('/identity').json
+    assert identity['id'] == 'ze_admin'
+    assert identity['provides'] == [['id', 'ze_admin'], ['role', 'admin']]
+
+
+def test_self_registration_flow(app, zope_auth, client, outbox):
     app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
 
     register_page = client.get(flask.url_for('auth.register'))
@@ -48,7 +93,7 @@ def test_self_registration_flow(app, client, outbox):
     # TODO: user receives email and logs in
 
 
-def test_ldap_account_activation_flow(app, client, outbox, ldap_user_info):
+def test_ldap_account_activation_flow(app, zope_auth, client, outbox, ldap_user_info):
     from art17.auth.providers import set_user
     app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
     ldap_user_info['foo'] = {'email': 'foo@example.com'}

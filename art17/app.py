@@ -35,7 +35,8 @@ def create_app(config={}, testing=False):
     app.register_blueprint(summary)
     app.register_blueprint(report)
     app.register_blueprint(progress)
-    app.register_blueprint(auth)
+    if not app.testing:
+        app.register_blueprint(auth)
     app.register_blueprint(comments)
     app.register_blueprint(common)
     app.register_blueprint(wiki)

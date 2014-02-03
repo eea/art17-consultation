@@ -52,6 +52,11 @@ def create_testing_app():
 def app(request):
     app = create_testing_app()
 
+    @app.before_request
+    def set_identity():
+        from flask.ext.principal import AnonymousIdentity
+        flask.g.identity = AnonymousIdentity()
+
     app_context = app.app_context()
     app_context.push()
 
