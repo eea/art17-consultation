@@ -452,7 +452,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'comments_endpoint': 'comments.species-comments',
             'delete_endpoint': '.species-delete',
             'wiki_url': url_for('wiki.data-sheet-info',
-                                column='assesment_speciesname',
+                                page='species',
                                 subject=request.args.get('subject'),
                                 region=request.args.get('region'),
                                 period=request.args.get('period')),
@@ -493,7 +493,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'comments_endpoint': 'comments.habitat-comments',
             'delete_endpoint': '.habitat-delete',
             'wiki_url': url_for('wiki.data-sheet-info',
-                                column='habitatcode',
+                                page='habitat',
                                 subject=request.args['subject'].split(' ')[0]
                                 if request.args.get('subject') else None,
                                 region=request.args.get('region'),
