@@ -41,42 +41,9 @@
 
         <col span="5" class="col_border">
       </colgroup>
-      <tbody class="thead">
-        <tr class="section-header">
-          <th colspan="{{ colspan_all }}">
-            ETC/BD treated member states' data
-          </th>
-        </tr>
-        <tr>
-          <th rowspan="2">MS</th>
-          {% if not region %}<th rowspan="2">Reg</th>{% endif %}
-          <th colspan="4">Range</th>
-          <th colspan="4">Area</th>
-          <th rowspan="2">Struct &amp; func.</th>
-          <th rowspan="2">Future prosp.</th>
-          <th rowspan="2">Overall asses.</th>
-          <th colspan="4">Grided maps(km<sup>2</sup>)</th>
 
-          <th rowspan="2" colspan="7"></th>
-        </tr>
-        <tr>
-          <th>Area</th>
-          <th>%XR</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Ref.</th>
+      {% include 'common/habitat_table_header.html' with context %}
 
-          <th>Surface</th>
-          <th>%XA</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Ref.</th>
-
-          <th>Range</th>
-          <th>%GR</th>
-          <th>Distrib</th>
-          <th>%GD</th>
-        </tr>
-
-      </tbody>
       <tbody>
       {% for row in objects %}
         {% set visible = can_view(row, restricted_countries) %}

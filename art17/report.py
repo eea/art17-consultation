@@ -51,7 +51,7 @@ class Report(views.View):
             'report_filter_form': report_filter_form,
             'region': region,
             'country': country,
-            'show_species_report_headers': True,
+            'show_report_headers': True,
         })
 
         return render_template(self.template_name, **context)
