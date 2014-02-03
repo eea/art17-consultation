@@ -446,7 +446,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
 
     def get_context(self):
         return {
-            'groups_url': url_for('.species-summary-groups'),
+            'groups_url': url_for('common.species-groups'),
             'subjects_url': url_for('.species-summary-species'),
             'regions_url': url_for('.species-summary-regions'),
             'comments_endpoint': 'comments.species-comments',
@@ -487,7 +487,7 @@ class HabitatSummary(HabitatMixin, Summary):
 
     def get_context(self):
         return {
-            'groups_url': url_for('.habitat-summary-groups'),
+            'groups_url': url_for('common.habitat-groups'),
             'subjects_url': url_for('.habitat-summary-species'),
             'regions_url': url_for('.habitat-summary-regions'),
             'comments_endpoint': 'comments.habitat-comments',
@@ -500,12 +500,6 @@ class HabitatSummary(HabitatMixin, Summary):
                                 period=request.args.get('period')),
             'progress_endpoint': 'progress.habitat-progress',
         }
-
-
-@summary.route('/species/summary/groups', endpoint='species-summary-groups')
-def _groups():
-    data = SpeciesMixin.get_groups(request.args['period'])
-    return jsonify(data)
 
 
 @summary.route('/species/summary/species', endpoint='species-summary-species')
@@ -526,12 +520,6 @@ def _regions():
 def _countries():
     period, group = request.args['period'], request.args['group']
     data = SpeciesMixin.get_countries(period, group)
-    return jsonify(data)
-
-
-@summary.route('/habitat/summary/groups', endpoint='habitat-summary-groups')
-def _groups_habitat():
-    data = HabitatMixin.get_groups(request.args['period'])
     return jsonify(data)
 
 

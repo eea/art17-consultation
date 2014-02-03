@@ -20,7 +20,7 @@ def setup(app):
 
 
 def test_filter_groups_view(app, client):
-    url = url_for('summary.habitat-summary-groups', period='1')
+    url = url_for('common.habitat-groups', period='1')
     resp = client.get(url)
 
     assert resp.status_code == 200

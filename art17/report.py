@@ -88,8 +88,8 @@ class SpeciesReport(SpeciesMixin, Report):
 
     def get_context(self):
         return {
+            'groups_url': url_for('common.species-groups'),
             'regions_url': url_for('.species-report-regions'),
-            'groups_url': url_for('.species-report-groups'),
         }
 
 
@@ -100,17 +100,24 @@ class HabitatReport(HabitatMixin, Report):
     def setup_objects_and_data(self, period, group, country):
         return []
 
-
-@report.route('/species/report/groups', endpoint='species-report-groups')
-def _groups():
-    data = SpeciesMixin.get_groups(request.args['period'])
-    return jsonify(data)
+    def get_context(self):
+        return {
+            'groups_url': url_for('common.habitat-groups'),
+            'regions_url': url_for('.habitat-report-regions')
+        }
 
 
 @report.route('/species/report/regions', endpoint='species-report-regions')
-def _regions():
+def species_regions():
     period, country = request.args['period'], request.args['country']
     data = SpeciesMixin.get_regions_by_country(period, country)
+    return jsonify(data)
+
+
+@report.route('/habitat/report/regions', endpoint='habitat-report-regions')
+def habitat_regions():
+    period, country = request.args['period'], request.args['country']
+    data = HabitatMixin.get_regions_by_country(period, country)
     return jsonify(data)
 
 

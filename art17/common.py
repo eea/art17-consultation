@@ -1,5 +1,7 @@
 from urlparse import urlparse
+from flask import Blueprint, request, jsonify
 from flask_principal import Permission, RoleNeed
+from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
     EtcDataSpeciesAutomaticAssessment,
     EtcDataHabitattypeAutomaticAssessment,
@@ -43,6 +45,9 @@ COUNTRY_ASSESSMENTS = {
     'XX':  'Unknown (XX)',
     'NA':  'Imposible to be assesed',
 }
+
+
+common = Blueprint('common', __name__)
 
 
 def get_default_period():
@@ -218,3 +223,14 @@ def get_original_record_url(row):
         region=row.region,
     )
 
+
+@common.route('/common/species/groups', endpoint='species-groups')
+def species_groups():
+    data = SpeciesMixin.get_groups(request.args['period'])
+    return jsonify(data)
+
+
+@common.route('/common/habitat/groups', endpoint='habitat-groups')
+def habitat_groups():
+    data = HabitatMixin.get_groups(request.args['period'])
+    return jsonify(data)
