@@ -35,3 +35,30 @@ class UserDatastore(SQLAlchemyUserDatastore):
 class Art17ConfirmRegisterForm(ConfirmRegisterForm):
 
     id = TextField('id', validators=[Required("User ID is required")])
+
+
+def register():
+    user_credentials = flask.g.get('user_credentials', {})
+    if user_credentials.get('is_ldap_user'):
+        if flask.request.method == 'POST':
+            datastore = flask.current_app.extensions['security'].datastore
+            datastore.create_user(
+                id=user_credentials['user_id'],
+                password='',
+            )
+            datastore.commit()
+            flask.flash(
+                "Eionet account %s has been activated"
+                % user_credentials['user_id'],
+                'success',
+            )
+            return flask.redirect('/')
+
+        return flask.render_template('auth/register_ldap.html', **{
+            'user': flask.g.get('user'),
+        })
+
+    return register_orig()
+
+register_orig = flask_security_views.register
+flask_security_views.register = register

@@ -42,3 +42,16 @@ def test_self_registration_flow(app, client, outbox):
     assert foo_user.active
 
     # TODO: user receives email and logs in
+
+
+def test_ldap_account_activation_flow(app, client, outbox):
+    from art17.auth.providers import set_user
+    app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
+
+    @app.before_request
+    def set_testing_user():
+        set_user('foo', is_ldap_user=True)
+
+    register_page = client.get(flask.url_for('security.register'))
+    result_page = register_page.form.submit().follow()
+    assert "Eionet account foo has been activated" in result_page.text
