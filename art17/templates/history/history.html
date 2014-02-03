@@ -3,6 +3,7 @@
 {% block content %}
     <h1>User summary</h1>
 
+    <p>Showing data for period: {{ period.name }}.</p>
     <a class="btn btn-default {% if subject_name == 'species' %}active{% endif %}"
        href="{{ url_for('.species-history') }}">Species</a>
     <a class="btn btn-default {% if subject_name == 'habitat' %}active{% endif %}"

@@ -2,11 +2,13 @@ from flask import (
     Blueprint,
     views,
     render_template,
+    request,
 )
 from werkzeug.utils import redirect
 from art17.auth import current_user
+from art17.common import get_default_period
 from art17.mixins import SpeciesMixin, HabitatMixin
-from art17.models import Comment
+from art17.models import Dataset
 
 
 comments = Blueprint('comments', __name__)
@@ -43,19 +45,29 @@ class UserSummary(views.View):
     def dispatch_request(self):
         if not current_user.is_authenticated():
             return redirect('/')
-        history = self.get_history()
+        period = request.args.get('period') or get_default_period()
+        period_obj = Dataset.query.get(period)
+        history = self.get_history(period)
         return render_template(
             self.template,
             history=history,
             subject_name=self.subject_name,
             summary_endpoint=self.summary_endpoint,
+            period=period_obj,
         )
 
-    def get_history(self):
+    def get_history(self, period):
         conclusions = (
-            self.model_manual_cls.query.order_by('-last_update').limit(100)
+            self.model_manual_cls.query
+            .filter_by(dataset_id=period)
+            .order_by('-last_update').limit(100)
         )
-        comments_qs = self.model_comment_cls.query.order_by('-post_date')
+        comments_qs = (
+            self.model_comment_cls.query
+            .join(self.model_comment_cls.record)
+            .filter(self.model_manual_cls.dataset_id==period)
+            .order_by('-post_date')
+        )
         return {'conclusions': conclusions, 'comments': comments_qs}
 
 
