@@ -31,7 +31,10 @@
       {% if annexes %}
           <b>Annexes</b> {{ annexes|join(', ') }}.
       {% endif %}
-      {% set show_all_url=url_for(progress_endpoint, group=group, conclusion='overall assessment') %}
+      {% set show_all_url=url_for(progress_endpoint,
+          period=period,
+          group=group,
+          conclusion='overall assessment') %}
       <a href="{{ show_all_url }}">Show all {{ group }}</a>
       </caption>
 
