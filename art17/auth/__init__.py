@@ -11,6 +11,8 @@ from art17.auth.security import (
 from art17 import models
 from art17.auth.providers import DebugAuthProvider, ZopeAuthProvider
 
+HOMEPAGE_VIEW_NAME = 'summary.homepage'
+
 
 @security_signals.user_confirmed.connect
 def notify_administrator(app, user, **extra):
@@ -61,6 +63,7 @@ def setup_auth_handlers(state):
         'SECURITY_CONFIRMABLE': True,
         'SECURITY_REGISTERABLE': True,
         'SECURITY_REGISTER_URL': '/auth/register/local',
+        'SECURITY_POST_CONFIRM_VIEW': HOMEPAGE_VIEW_NAME,
     })
 
     security_ext.init_app(
@@ -113,7 +116,7 @@ def register_ldap():
             'success',
         )
         notify_administrator(flask._app_ctx_stack.top.app, user)
-        return flask.redirect('/')
+        return flask.render_template('auth/register_ldap_done.html')
 
     return flask.render_template('auth/register_ldap.html', **{
         'already_registered': flask.g.get('user') is not None,

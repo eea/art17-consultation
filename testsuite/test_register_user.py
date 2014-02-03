@@ -58,8 +58,8 @@ def test_ldap_account_activation_flow(app, client, outbox, ldap_user_info):
         set_user('foo', is_ldap_user=True)
 
     register_page = client.get(flask.url_for('auth.register_ldap'))
-    result_page = register_page.form.submit().follow()
-    assert "Eionet account foo has been activated" in result_page.text
+    result_page = register_page.form.submit()
+    assert "has been registered" in result_page.text
 
     foo_user = models.RegisteredUser.query.get('foo')
     assert foo_user.email == 'foo@example.com'
