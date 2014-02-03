@@ -22,11 +22,11 @@ def format_date_ph(value):
 class WikiView(views.View):
     methods = ['GET', 'POST']
 
-    def dispatch_request(self):
+    def dispatch_request(self, page):
         if request.method == 'POST':
             self.process_post_request()
 
-        context = self.get_context()
+        context = self.get_context(page)
 
         wiki_edit_page_form = self.wiki_form_cls()
         wiki_edit_page_form.text.data = context['wiki_body']
@@ -92,9 +92,8 @@ class DataSheetInfoWiki(WikiView):
 
             flash("Comment successfully added.")
 
-    def get_wiki_changes(self):
+    def get_wiki_changes(self, page):
         period = request.args.get('period')
-        page = request.args.get('page')
         subject = request.args.get('subject')
         region = request.args.get('region')
 
@@ -111,12 +110,12 @@ class DataSheetInfoWiki(WikiView):
 
         return wiki_changes
 
-    def get_active_change(self):
-        return self.get_wiki_changes().filter_by(active=1).first()
+    def get_active_change(self, page):
+        return self.get_wiki_changes(page).filter_by(active=1).first()
 
-    def get_context(self):
-        wiki_changes = self.get_wiki_changes()
-        active_change = self.get_active_change()
+    def get_context(self, page):
+        wiki_changes = self.get_wiki_changes(page)
+        active_change = self.get_active_change(page)
 
         all_changes = wiki_changes.order_by(WikiChange.changed.desc()).all()
         page_history = [{'changed': c.changed,
@@ -131,5 +130,5 @@ class DataSheetInfoWiki(WikiView):
         return context
 
 
-wiki.add_url_rule('/species/summary/wiki/',
+wiki.add_url_rule('/<page>/summary/wiki/',
                   view_func=DataSheetInfoWiki.as_view('data-sheet-info'))
