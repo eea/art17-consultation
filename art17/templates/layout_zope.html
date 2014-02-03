@@ -2,15 +2,7 @@
 
   <script>$('body').addClass('fullscreen')</script>
 
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <ul class=flashes>
-      {% for category, message in messages %}
-        <li class="{{ category }}">{{ message }}</li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
+  {% include 'flash_messages.html' %}
 
   {%- block content %}
   {%- endblock content %}
