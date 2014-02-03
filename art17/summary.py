@@ -53,7 +53,7 @@ from art17.forms import (
     SummaryManualFormSpecies,
     SummaryManualFormHabitat,
 )
-from art17.utils import str2num, parse_semicolon
+from art17.utils import str2num, parse_semicolon, str1num
 
 
 summary = Blueprint('summary', __name__)
@@ -146,6 +146,11 @@ def inject_static():
 @summary.app_template_filter('str2num')
 def _str2num(value, default='N/A'):
     return str2num(value, default=default)
+
+
+@summary.app_template_filter('str1num')
+def _str1num(value, default='N/A'):
+    return str1num(value, default=default)
 
 
 @summary.app_template_filter('parse_semicolon')
