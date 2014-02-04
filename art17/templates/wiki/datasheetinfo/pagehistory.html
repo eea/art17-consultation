@@ -1,0 +1,14 @@
+<b>Page history</b>
+<form name="page_hist_form" method="post">
+
+    {% for row in page_history %}
+    <li> <input type="radio" name="hist_page" value="{{ row['id'] }}"
+        {% if row['active'] %} checked {% endif%}>
+    {{ row['changed']|format_date_ph }} by {{ row['editor'] }}
+    {% if row['active'] %} (active) {% endif %}
+    </li>
+    {% endfor %}
+
+    <button type="submit" name="submit" value="hist_page" >Make active</button>
+
+</form>
