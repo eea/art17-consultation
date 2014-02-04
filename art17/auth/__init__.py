@@ -78,6 +78,8 @@ def setup_auth_handlers(state):
         'SECURITY_REGISTERABLE': True,
         'SECURITY_REGISTER_URL': '/auth/register/local',
         'SECURITY_POST_CONFIRM_VIEW': HOMEPAGE_VIEW_NAME,
+        'SECURITY_PASSWORD_HASH': 'ldap_salted_sha1',
+        'SECURITY_PASSWORD_SALT': '',  # not used but flask_security wants it
     })
 
     security_ext.init_app(
