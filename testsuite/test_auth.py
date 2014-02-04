@@ -123,6 +123,7 @@ def test_ldap_account_activation_flow(
     from art17.auth.providers import set_user
     app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
     ldap_user_info['foo'] = {'email': 'foo@example.com'}
+    _create_user('ze_admin', ['admin'])
 
     @app.before_request
     def set_testing_user():
@@ -144,6 +145,21 @@ def test_ldap_account_activation_flow(
     assert "Eionet user has registered" in admin_message.body
     url = admin_message.body.split()[-1]
     assert url == 'http://localhost/auth/admin/foo'
+
+    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+        zope_auth['user_id'] = 'ze_admin'
+        activation_page = client.get(url)
+        activation_page.form['active'] = True
+        activation_page.form.submit()
+        assert create_in_zope.call_count == 0
+
+    foo_user = models.RegisteredUser.query.get('foo')
+    assert foo_user.active
+
+    assert len(outbox) == 1
+    user_message = outbox.pop()
+    assert user_message.recipients == ['foo@example.com']
+    assert 'has been activated' in user_message.body
 
 
 def test_view_requires_admin(app, zope_auth, client):
