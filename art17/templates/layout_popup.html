@@ -1,5 +1,7 @@
+<!doctype html>
 <html>
 <head>
+  {% include 'header_styles.html' %}
   <script type="text/javascript">
     function setVisibility(visClsName, hidClsName) {
         var visible_elems = document.getElementsByClassName(visClsName);
@@ -21,5 +23,5 @@
 <body>
     {% include 'flash_messages.html' %}
     {% block content %} {% endblock content%} 
-<body>
+</body>
 </html>

@@ -207,3 +207,8 @@ class ProgressFilterForm(Form):
 class DataSheetInfoForm(Form):
 
     text = TextAreaField()
+
+
+class CommentForm(Form):
+
+    comment = TextAreaField()

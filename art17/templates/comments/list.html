@@ -1,4 +1,4 @@
-{% extends 'comments/layout.html' %}
+{% extends 'layout_popup.html' %}
 
 {% block content %}
 <h1>Comments</h1>
@@ -14,20 +14,34 @@
     <span style="color: rgb(135, 139, 142);">grey borders shows the comments that have been deleted</span>
   </p>
 
+  <div id="comments">
+  {% if can_post_comment(record) %}
+  <p class="jump"><a href="#theform" title="Add a comment for this conclusion">Add a comment</a> &#8595;</p>
+  {% endif %}
   <ol>
   {% for comment in comments %}
     {% set is_owner = comment.author.id == g.identity.id %}
     {% set read = comment.read_for(g.identity.id) %}
     {% set deleted = comment.deleted %}
-    <li class="comment {% if is_owner %}comment-owner{% elif deleted %}comment-deleted{% elif read %}comment-read{% endif %}">
+    <li class="comment {% if is_owner %}comment-owner{% elif deleted %}comment-deleted{% elif read %}comment-read{% endif %}"
+        id="comment-{{ comment.id }}">
       <dl>
         <dt>{{ comment.author.name or comment.author_id }} - {{ comment.author.institution }}</dt>
         <dd>{{ comment.comment }}</dd>
-        <dd>{{ comment.post_date }}</dd>
+        <dd>Posted on: {{ comment.post_date }}</dd>
       </dl>
     </li>
   {% endfor %}
   </ol>
+  </div>
+  <p class="jump"><a href="#comments" title="Jump up to the start of the comments &#8593;">Start of the comments</a> &#8593;</p>
+
+  {% if can_post_comment(record) %}
+  <form method="post" action="" id="theform">
+    {{ form.comment() }}
+    <button type="submit" name="submit" value="add">Add</button>
+  </form>
+  {% endif %}
 {% endif %}
 
 {% endblock %}

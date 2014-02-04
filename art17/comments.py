@@ -1,24 +1,58 @@
+from datetime import datetime
 from flask import (
     Blueprint,
     views,
     render_template,
     request,
+    flash,
 )
+from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
 from art17.auth import current_user
-from art17.common import get_default_period
+from art17.common import get_default_period, admin_perm
+from art17.forms import CommentForm
 from art17.mixins import SpeciesMixin, HabitatMixin
-from art17.models import Dataset
+from art17.models import Dataset, Comment, db
+
+
+DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 comments = Blueprint('comments', __name__)
 
 
+@comments.app_template_global('can_post_comment')
+def can_post_comment(record):
+    return not record.deleted and admin_perm.can()
+
+
 class CommentsList(views.View):
+
+    methods = ['GET', 'POST']
 
     def dispatch_request(self, subject, region, user, MS):
         record = self.get_manual_record(subject, region, user, MS)
-        return render_template('comments/list.html', record=record)
+        if request.method == 'POST':
+            if not can_post_comment(record):
+                flash('You are not allowed here', 'error')
+            else:
+                form = CommentForm(request.form)
+                if form.validate():
+                    comment = Comment(
+                        subject=subject, region=region, user=user,
+                        MS=MS, comment=form.comment.data,
+                        author_id=current_user.id,
+                        post_date=datetime.now().strftime(DATE_FORMAT)
+                    )
+                    db.session.add(comment)
+                    db.session.commit()
+                    flash('Comment successfully added')
+                    form = CommentForm(MultiDict({}))
+                else:
+                    flash('The form has errors', 'error')
+        else:
+            form = CommentForm()
+        return render_template('comments/list.html', record=record, form=form)
 
 
 class SpeciesCommentsList(SpeciesMixin, CommentsList):

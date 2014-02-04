@@ -62,6 +62,15 @@ class Comment(Base):
             .count()
         )
 
+    @hybrid_property
+    def subject(self):
+        return self.assesment_speciesname
+
+    @subject.setter
+    def subject(self, value):
+        self.assesment_speciesname = value
+
+
 t_comments_read = Table(
     'comments_read', metadata,
     Column('id_comment', ForeignKey('comments.id'), nullable=False),
@@ -655,6 +664,15 @@ class HabitatComment(Base):
         primaryjoin="HabitatComment.author_id==RegisteredUser.id",
         foreign_keys=author_id,
     )
+
+    @hybrid_property
+    def subject(self):
+        return self.habitat
+
+    @subject.setter
+    def subject(self, value):
+        self.habitat = value
+
 
 t_habitat_comments_read = Table(
     'habitat_comments_read', metadata,
