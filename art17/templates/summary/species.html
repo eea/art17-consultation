@@ -11,6 +11,14 @@
 
   {% set colspan_all=28 if region else 29 %}
   {% if current_selection %}
+
+  <div>
+    <button type="button"
+        onclick="javascript:window.open('{{ wiki_url }}', '_blank',
+        'scrollbars=1, resizable=1, height=660, width=660')">
+        View data sheet info</button>
+  </div>
+
   <table class="complex_datatable datatable">
     <caption>
       <b>Current selection</b>:

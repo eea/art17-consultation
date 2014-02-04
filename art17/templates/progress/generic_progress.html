@@ -32,9 +32,9 @@
           <tbody>
             {% for subject in subjects %}
             <tr>
-              <th>
+              <td>
                 {{ subject }}
-              </th>
+              </td>
               {% for region in regions %}
                 {% set data = objects.get(subject, {}).get(region.reg_code, '') %}
                 {% set title = COUNTRY_ASSESSMENTS.get(data['conclusion'], '') %}

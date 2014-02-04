@@ -11,7 +11,7 @@
                           row, qa_errors,
                           title=title,
                           classes=classes) }}>
-      {{ row.percentage_coverage_surface_area|str2num }}
+      <span>{{ row.percentage_coverage_surface_area|str2num }}</span>
     </td>
 
    {% set qtitle, qclasses = parse_qa_errors('coverage_yearly_magnitude', row, qa_errors) %}
@@ -20,7 +20,7 @@
               {%- elif row.coverage_yearly_magnitude -%}
               Yearly magnitude = {{ row.coverage_yearly_magnitude}}
               {%- endif -%}">
-     {{ row.coverage_trend or 'N/A' }}
+     <span>{{ row.coverage_trend or 'N/A' }}</span>
    </td>
 
   <td {{ parse_errors(['complementary_favourable_area_q',

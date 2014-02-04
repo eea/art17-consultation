@@ -1,0 +1,431 @@
+/*GENERAL TABLE STYLES*/
+.complex_datatable {
+	border-collapse: collapse;
+	border-color: #b6b6b6;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.complex_datatable td,
+.complex_datatable th,
+.complex_datatable caption {
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-left-width: inherit;
+	border-right-width: inherit;
+	border-style: inherit;
+	border-color: transparent;
+	padding: 5px 4px;
+}
+
+.complex_datatable thead,
+.complex_datatable tfoot,
+.complex_datatable tbody {
+	font-family: 'Roboto Condensed';
+	font-weight: 300;
+	font-size: 12px;
+}
+
+/*LINKS*/
+.complex_datatable a {
+	color: blue;
+	text-decoration: none;
+}
+
+.complex_datatable a:hover {
+	color: blue;
+	text-decoration: underline;
+}
+
+.complex_datatable tbody a {
+	display: block;
+}
+
+/*ABBR*/
+abbr {
+	color: black;
+}
+
+/*CAPTION*/
+.complex_datatable caption {
+	border-color: inherit;
+	font-weight: normal;
+	text-align: left;
+	border-top-width: 1px;
+}
+
+/*TABLE HEADER*/
+.complex_datatable thead tr:first-child,
+.complex_datatable .thead tr:first-child {
+	border-top-width: 2px;
+}
+
+.complex_datatable thead th,
+.complex_datatable thead td,
+.complex_datatable .thead th,
+.complex_datatable .thead td {
+	font-weight: 500;
+	color: black;
+	border: 1px solid #b6b6b6;
+	background: #f6f6f6;
+}
+
+
+
+/*CELLS*/
+.complex_datatable td,
+.complex_datatable th {
+	white-space: nowrap;
+}
+
+.complex_datatable tbody th a,
+.complex_datatable tbody td:first-child a {
+	font-weight: 300;
+	text-align: left;
+	background: none;
+	max-width: 100px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+/*ROWS*/
+.complex_datatable tbody tr:nth-child(3n+0) {
+	border-bottom: 1px solid #ddd;
+}
+
+.complex_datatable tbody tr:hover {
+	background-color: #f6f6f6;
+}
+
+/*FORM ROW*/
+.complex_datatable .form_row:first-child {
+	border-top: 3px solid #366888;
+}
+
+.complex_datatable .form_row:hover {
+	background-color: transparent;
+}
+
+.complex_datatable .form_row td {
+	white-space: normal;
+	padding-left: 0;
+	padding-right: 0;
+	border: 1px solid #7cadcc;
+	background: #7cadcc;
+}
+
+.complex_datatable .form_row select,
+.complex_datatable .form_row input {
+	border: 1px solid #366888;
+}
+
+.complex_datatable .form_row button {
+	border-color: #366888;
+}
+
+.complex_datatable .form_row select,
+.complex_datatable .form_row input {
+	display: block;
+	min-width: 100%;
+	margin-bottom: 1px;
+	font: inherit;
+}
+
+/*FORM CELL*/
+.complex_datatable .form_cell {
+	white-space: normal;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+.complex_datatable .form_cell select,
+.complex_datatable .form_cell input {
+	display: block;
+	min-width: 100%;
+	font: inherit;
+}
+
+
+
+
+/*COLUMNS*/
+.complex_datatable .col_border {
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+}
+
+.complex_datatable .col_border_left {
+	border-left: 1px solid #ddd;
+}
+
+.complex_datatable .col_border_right {
+	border-right: 1px solid #ddd;
+}
+
+/*HIGHLIGHTS*/
+.FV > span,
+.FVU > span,
+.U1 > span,
+.U1U > span,
+.U1M > span,
+.U1P > span,
+.U2 > span,
+.U2U > span,
+.U2M > span,
+.U2P > span,
+.XX > span,
+.XXU > span,
+.XU > span,
+.XUU > span,
+.NA > span  {
+	display: inline-block;
+	*zoom: 1;
+	padding: 1px 2px;
+	margin: -1px 0 -3px -3px;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 2px;
+	min-width: 100%;
+	min-height: 16px;
+	vertical-align: baseline;
+}
+
+.FV > span {
+	color: #000;
+	border-color: #639500;
+	background-color: #9aca3b;
+}
+
+.FVU > span {
+	color: #000;
+	border-color: #639500;
+	background-color: #9aca3b;
+}
+
+.U1 > span {
+	color: #000;
+	border-color: #b05f00;
+	background-color: #e69800;
+}
+
+.U1U > span {
+	color: #000;
+	border-color: #b05f00;
+	background-color: #e69800;
+}
+
+.U1M > span {
+	color: #000;
+	border-color: #b05f00;
+	background-color: #e69800;
+}
+
+.U1P > span {
+	color: #000;
+	border-color: #b05f00;
+	background-color: #e69800;
+}
+
+.U2 > span {
+	color: #000;
+	border-color: #742c2c;
+	background-color: #eb6847;
+}
+
+.U2U > span {
+	color: #000;
+	border-color: #742c2c;
+	background-color: #eb6847;
+}
+
+.U2M > span {
+	color: #000;
+	border-color: #742c2c;
+	background-color: #eb6847;
+}
+
+.U2P > span {
+	color: #000;
+	border-color: #742c2c;
+	background-color: #eb6847;
+}
+
+.XX > span {
+	color: #000;
+	border-color: #888;
+	background-color: #b4b4b4;
+}
+
+.XXU > span {
+	color: #000;
+	border-color: #888;
+	background-color: #b4b4b4;
+}
+
+.XU > span {
+	color: #000;
+	border-color: #888;
+	background-color: #b4b4b4;
+}
+
+.XUU > span {
+	color: #000;
+	border-color: #888;
+	background-color: #b4b4b4;
+}
+
+.NA > span {
+	color: #000;
+	border-color: #4774c7;
+	background-color: #78bbee;
+}
+
+.assesm {
+	color: #666666 !important;
+	font-style: italic;
+}
+
+/* added */
+.inline-form {
+	display: inline-block;
+	border: 1px solid #b6b6b6;
+  background-color: #fafafa;
+  padding: 12px;
+	margin-bottom: 12px;
+}
+
+.form_group:before,
+.form_group:after {
+	display:table;
+	content:" ";
+}
+
+.form_group:after{
+	clear:both;
+}
+
+.form_group {
+	float: left;
+	margin-right: 6px;
+}
+
+.form_group label {
+	display: block;
+	margin-bottom: 6px;
+	white-space: nowrap;
+}
+
+.offset_top_label {
+	float: left;
+	margin-top: 22px;
+}
+
+.form_group input,
+.form_group select {
+	width: 100%;
+	max-width: 200px;
+}
+
+
+
+.hidden {
+    display: none;
+}
+
+.button_text {
+	display: inline;
+	background: none;
+	padding: 0;
+	border: 0;
+	color: blue;
+	font-weight: normal;
+}
+
+.button_text:hover {
+	background: none;
+	text-decoration: underline;
+}
+
+
+/* popout */
+.popout {
+	display: block;
+	position: relative;
+}
+
+.complex_datatable td .popout {
+	margin: -5px -4px;
+	padding: 5px 4px;
+}
+
+.details {
+	display: none;
+	position: absolute;
+	bottom: 100%;
+	right:-1px;
+
+	font-family: "Nimbus sans L", Helvetica, Arial, Verdana, sans-serif;
+	line-height: 24px;
+	color: #333;
+	padding: 12px;
+	border: 1px solid #ddd;
+	background: #fff;
+}
+
+.details hr {
+	height: 1px;
+	margin: 12px 0;
+	border: 0;
+	background: #ddd;
+}
+
+.details.visible {
+	display: block;
+}
+
+.complex_datatable tr {
+	position:relative;
+}
+
+/*.complex_datatable tr:hover {
+
+}*/
+
+.details .close {
+	float: right;
+}
+
+.close {
+	display: block;
+	padding: 0;
+	height: 16px;
+	width: 16px;
+	border: 0;
+	background: transparent;
+}
+
+.close:hover {
+	background: transparent;
+}
+
+/* Helpers */
+.clearfix:before,
+.clearfix:after {
+	display:table;
+	content:" ";
+}
+
+.clearfix:after{
+	clear:both;
+}
+
+.no-list {
+	list-style-type: none!important;
+	padding-left: 0!important;
+	margin: 0!important;
+}
+
+.muted {
+	color: #888;
+}

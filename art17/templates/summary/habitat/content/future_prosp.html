@@ -6,5 +6,5 @@
 
 <td {{ parse_errors(['conclusion_future'], row, qa_errors,
                     title=title, classes=classes) }}>
-  {{ row.conclusion_future|str2num }}
+  <span>{{ row.conclusion_future|str2num }}</span>
 </td>

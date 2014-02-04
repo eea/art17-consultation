@@ -1,4 +1,4 @@
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} center section-border"
     title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_structure, '') }}">
-  {{ row.percentage_structure|parse_semicolon|str2num('')|safe or '' }}
+  <span>{{ row.percentage_structure|parse_semicolon|str2num('')|safe or '' }}</span>
 </td>

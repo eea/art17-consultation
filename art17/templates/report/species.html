@@ -22,6 +22,38 @@
         <a href="">Show all {{ group }}</a>
       </caption>
 
+      <colgroup>
+        <col span="1" class="col_border_right">{% if not region %}
+        <col span="1" class="col_border_right">{% endif %}
+        {# Range #}
+        <col span="1" class="col_border_left">
+        <col span="2">
+        <col span="1" class="col_border_right">
+
+        {# Population #}
+        <col span="1" class="col_border_left">
+        <col span="2">
+        <col span="1" class="col_border_right">
+        {# Habitat #}
+        <col span="1" class="col_border_left">
+        <col span="3">
+        <col span="1" class="col_border_right">
+        {# FP #}
+        <col span="1" class="col_border">
+        {# Overall ass. #}
+        <col span="1" class="col_border_left">
+        <col span="2">
+        <col span="1" class="col_border_right">
+        {# Grided maps #}
+        <col span="1" class="col_border_left">
+        <col span="2">
+        <col span="1" class="col_border_right">
+        {# Comments #}
+        <col span="1" class="col_border_left">
+        <col span="3">
+        <col span="1" class="col_border_right">
+      </colgroup>
+
       {% include "common/species_table_header.html" with context %}
 
       <tbody>
@@ -31,12 +63,14 @@
           {% set qa_errors = record_errors(row) %}
           <tr {% if row.is_assesm %}class="assesm"{% endif %}>
 
-            <td><a>{{ row.assesment_speciesname }}</a>
-
-            <td><a>map</a></td>
+            <td><a href="">{{ row.assesment_speciesname }}</a></td>
 
             {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
-            {% if not region %}<td>{{ row.region }}</td>{% endif %}
+
+            <!-- Add link to map -->
+            {% if not region %}
+              <td><a href="map">{{ row.region }}</a></td>
+            {% endif %}
 
             {% if not visible %}
             <td colspan="2">
