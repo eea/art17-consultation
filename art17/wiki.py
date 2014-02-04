@@ -50,13 +50,13 @@ class DataSheetInfo(WikiView):
         region = request.args.get('region')
 
         if self.page == 'species':
-            self.column = 'assesment_speciesname'
+            self.subject_field = 'assesment_speciesname'
         elif self.page == 'habitat':
-            self.column = 'habitatcode'
+            self.subject_field = 'habitatcode'
         else:
             abort(404)
 
-        wiki = Wiki.query.filter(getattr(Wiki, self.column) == subject,
+        wiki = Wiki.query.filter(getattr(Wiki, self.subject_field) == subject,
                                  Wiki.region == region,
                                  Wiki.dataset_id == period).first()
         return wiki
@@ -97,7 +97,8 @@ class DataSheetInfoPageHistory(DataSheetInfo):
         new_active_change = wiki_changes.filter(
             WikiChange.id == new_change_id).first()
 
-        active_change.active = 0
+        if active_change:
+            active_change.active = 0
         new_active_change.active = 1
 
         db.session.commit()
@@ -123,9 +124,18 @@ class DataSheetInfoPageHistory(DataSheetInfo):
 class DataSheetInfoAddComment(DataSheetInfo):
 
     def process_post_request(self):
-        active_change = self.get_active_change()
+        wiki = self.get_wiki()
+        if not wiki:
+            wiki_attrs = {
+                'region': request.args.get('region'),
+                self.subject_field: request.args.get('subject'),
+                'dataset_id': request.args.get('period')
+            }
+            wiki = Wiki(**wiki_attrs)
+            db.session.add(wiki)
+            db.session.commit()
 
-        comment_attrs = {'wiki_id': active_change.wiki_id,
+        comment_attrs = {'wiki_id': wiki.id,
                          'comment': request.form.get('text'),
                          'author': current_user.name,
                          'posted': datetime.now()}
@@ -155,7 +165,7 @@ class DataSheetInfoEditPage(DataSheetInfo):
             if not self.get_wiki():
                 wiki_attrs = {
                     'region': request.args.get('region'),
-                    self.column: request.args.get('subject'),
+                    self.subject_field: request.args.get('subject'),
                     'dataset_id': request.args.get('period')
                 }
                 new_wiki = Wiki(**wiki_attrs)
