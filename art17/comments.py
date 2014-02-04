@@ -15,7 +15,7 @@ from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import Dataset, Comment, db
 
 
-DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATE_FORMAT = '%Y-%m-%d'
 
 
 comments = Blueprint('comments', __name__)
@@ -23,36 +23,85 @@ comments = Blueprint('comments', __name__)
 
 @comments.app_template_global('can_post_comment')
 def can_post_comment(record):
+    authors = [c.author_id for c in record.comments]
+    if current_user.id in authors:
+        return False
     return not record.deleted and admin_perm.can()
+
+
+@comments.app_template_global('can_edit_comment')
+def can_edit_comment(comment):
+    if not comment:
+        return False
+    return (
+        not comment.record.deleted
+        and (comment.author_id == current_user.id or admin_perm.can())
+    )
 
 
 class CommentsList(views.View):
 
     methods = ['GET', 'POST']
 
-    def dispatch_request(self, subject, region, user, MS):
-        record = self.get_manual_record(subject, region, user, MS)
-        if request.method == 'POST':
-            if not can_post_comment(record):
-                flash('You are not allowed here', 'error')
+    def process_form(self, form, edited_comment):
+        if form.validate():
+            if edited_comment:
+                if not can_edit_comment(edited_comment):
+                    flash('You are not allowed here', 'error')
+                    return False
+                edited_comment.comment = form.comment.data
+                edited_comment.post_date = datetime.now().strftime(DATE_FORMAT)
             else:
-                form = CommentForm(request.form)
-                if form.validate():
-                    comment = Comment(
-                        subject=subject, region=region, user=user,
-                        MS=MS, comment=form.comment.data,
-                        author_id=current_user.id,
-                        post_date=datetime.now().strftime(DATE_FORMAT)
-                    )
-                    db.session.add(comment)
-                    db.session.commit()
-                    flash('Comment successfully added')
-                    form = CommentForm(MultiDict({}))
-                else:
-                    flash('The form has errors', 'error')
+                if not can_post_comment(self.record):
+                    flash('You are not allowed here', 'error')
+                    return False
+                comment = Comment(
+                    subject=self.record.subject,
+                    region=self.record.region,
+                    user=self.record.user_id,
+                    MS=self.record.MS,
+                    comment=form.comment.data,
+                    author_id=current_user.id,
+                    post_date=datetime.now().strftime(DATE_FORMAT),
+                )
+                db.session.add(comment)
+            db.session.commit()
+            return True
         else:
-            form = CommentForm()
-        return render_template('comments/list.html', record=record, form=form)
+            flash('The form has errors', 'error')
+            return False
+
+    def dispatch_request(self, subject, region, user, MS):
+        self.record = self.get_manual_record(subject, region, user, MS)
+        edited_comment = None
+        if request.args.get('edit'):
+            edit_id = request.args.get('edit')
+            edited_comment = Comment.query.get(edit_id)
+            if not can_edit_comment(edited_comment):
+                flash('You are not allowed to edit this comment', 'error')
+                edited_comment = None
+
+        if request.method == 'POST':
+            form = CommentForm(request.form)
+            if self.process_form(form, edited_comment):
+                if edited_comment:
+                    hash = '#comment-%s' % edited_comment.id
+                else:
+                    hash = '#theform'
+                return redirect(request.base_url + hash)
+        else:
+            if edited_comment:
+                form_data = MultiDict({'comment': edited_comment.comment})
+            else:
+                form_data = MultiDict({})
+            form = CommentForm(form_data)
+
+        return render_template(
+            'comments/list.html',
+            record=self.record,
+            form=form,
+            edited_comment=edited_comment,
+        )
 
 
 class SpeciesCommentsList(SpeciesMixin, CommentsList):
