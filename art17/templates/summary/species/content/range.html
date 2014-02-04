@@ -4,7 +4,7 @@
   {{ row.range_surface_area|str2num }}
 </td>
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') + ' center' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') + ' conclusion' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_range, '') %}
 <td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'],
                     row, qa_errors, title=title, classes=classes) }}>
@@ -12,7 +12,7 @@
 </td>
 
 {% set qtitle, qclasses = parse_qa_errors('range_yearly_magnitude', row, qa_errors) %}
-<td class="{{ qclasses }} center"
+<td class="{{ qclasses }} conclusion"
     title="{%- if qtitle -%}{{ qtitle }}
            {%- elif row.range_yearly_magnitude -%}
            Yearly magnitude = {{ row.range_yearly_magnitude}}

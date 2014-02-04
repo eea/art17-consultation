@@ -4,7 +4,7 @@
       {{ population_size_unit(row) }}
     </td>
 
-    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') + ' center' %}
+    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') + ' conclusion' %}
     {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') %}
     <td {{ parse_errors(['conclusion_population',
                          'percentage_population_mean_size'],
@@ -16,7 +16,7 @@
 
     {% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude',
                                               row, qa_errors) %}
-    <td class="{{ qclasses }} center"
+    <td class="{{ qclasses }} conclusion"
         title="{%- if qtitle -%}{{ qtitle }}
                {%- elif row.population_yearly_magnitude -%}
                Yearly magnitude = {{ row.population_yearly_magnitude}}
@@ -27,6 +27,6 @@
                          'complementary_favourable_population',
                          'filled_complementary_favourable_population'],
                           row, qa_errors,
-                          classes='number section-border') }}>
+                          classes='number') }}>
       {{ population_ref(row) }}
     </td>

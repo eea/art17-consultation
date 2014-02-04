@@ -39,7 +39,7 @@
                 {% set data = objects.get(subject_title, {}).get(region.reg_code, '') %}
                 {% set title = COUNTRY_ASSESSMENTS.get(data['conclusion'], '') %}
                 {% set url = url_for(summary_endpoint, subject=subject_name, region=region.reg_code) %}
-                <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} center"
+                <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} conclusion"
                     title="{{ title }}">
                     <span>
                       <a href="{{ url }}">{{ data['method']|methodify }}</a>

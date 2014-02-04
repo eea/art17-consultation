@@ -1,6 +1,6 @@
 {% from '_macros.html' import parse_errors with context %}
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' center section-border' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
 <td class="{{ classes }}" title="{{ title }}">
   <span>{{ row.percentage_assessment|default('', true)|parse_semicolon|safe}}</span>

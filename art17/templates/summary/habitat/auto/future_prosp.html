@@ -1,4 +1,4 @@
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} center"
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} conclusion"
     title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_future, '') }}">
   <span>{{ row.percentage_future|parse_semicolon|str2num('')|safe or '' }}</span>
 </td>

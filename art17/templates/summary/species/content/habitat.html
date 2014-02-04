@@ -4,7 +4,7 @@
         {{ row.habitat_surface_area|str2num }}
     </td>
 
-    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') + ' center' %}
+    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') + ' conclusion' %}
     {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_habitat, '') %}
     <td {{ parse_errors(['conclusion_habitat',
                          'percentage_habitat_surface_area'],
@@ -25,6 +25,6 @@
 
     <td {{ parse_errors('complementary_suitable_habitat',
                         row, qa_errors,
-                        classes='number section-border') }}>
+                        classes='') }}>
       <span>{{ row.complementary_suitable_habitat|str2num }}</span>
     </td>

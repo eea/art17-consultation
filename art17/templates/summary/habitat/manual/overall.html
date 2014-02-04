@@ -1,4 +1,4 @@
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' center section-border' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
 
 {% set concl_value = get_assesm_conclusion_value_for_habitat(row.habitat,

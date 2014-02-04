@@ -2,7 +2,7 @@
     {{ row.habitat_surface_area|str2num('')|safe }}
 </td>
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') + ' center section-border' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') + ' conclusion' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_habitat, '') %}
 
 {% set concl_value = get_habitat_conclusion_value(row.assesment_speciesname,
@@ -10,7 +10,7 @@
                                                   row.method_future) %}
 
 <td class="{{ classes }}" title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
-    {{ row.method_habitat or '' }}
+    <span>{{ row.method_habitat or '' }}</span>
 </td>
 
 <td></td>

@@ -5,7 +5,7 @@
 </td>
 
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') + ' number' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') + ' conclusion' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_range, '') %}
 <td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'],
                     row, qa_errors, title=title, classes=classes) }}>
@@ -14,7 +14,7 @@
 
 {% set qtitle, qclasses = parse_qa_errors('range_yearly_magnitude', row,
                                          qa_errors) %}
-<td class="{{ qclasses }} center"
+<td class="{{ qclasses }} conclusion"
     title="{%- if qtitle -%}{{ qtitle }}
            {%- elif row.range_yearly_magnitude -%}
            Yearly magnitude = {{ row.range_yearly_magnitude}}
@@ -24,7 +24,7 @@
 
 <td {{ parse_errors(['complementary_favourable_range_q',
                      'complementary_favourable_range'],
-                     row, qa_errors, '', 'number section-border') }}>
+                     row, qa_errors, '', 'number') }}>
   {% set range_q = row.complementary_favourable_range_q or '' %}
   {% set range = row.complementary_favourable_range %}
 

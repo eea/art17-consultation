@@ -7,7 +7,7 @@
                                                 row.region,
                                                 row.method_range) %}
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} center"
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} conclusion"
     title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
     <span>{{ row.method_range }}</span>
 </td>
@@ -16,6 +16,6 @@
   {{ row.range_trend or '' }}
 </td>
 
-<td class="center section-border">
+<td class="center">
   {{ row.complementary_favourable_range|str2num('') }}
 </td>
