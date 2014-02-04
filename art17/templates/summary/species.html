@@ -13,10 +13,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
   {% if current_selection %}
 
   <div>
-    <button type="button"
-        onclick="javascript:window.open('{{ wiki_url }}', '_blank',
-        'scrollbars=1, resizable=1, height=660, width=660')">
-        View data sheet info</button>
+      <button type="button" id="wikibutton" url="{{ wiki_url }}">
+          View data sheet info</button>
   </div>
 
   <table class="complex_datatable datatable">

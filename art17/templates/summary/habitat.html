@@ -13,6 +13,12 @@
 
     {% set colspan_all=23 if region else 24 %}
     {% if current_selection %}
+
+    <div>
+        <button type="button" id="wikibutton" url="{{ wiki_url }}">
+            View data sheet info</button>
+    </div>
+
     <table class="complex_datatable datatable">
       <caption>
       <b>Current selection</b>:
