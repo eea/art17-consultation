@@ -1022,6 +1022,12 @@ class WikiComment(Base):
 
     wiki = relationship(u'Wiki')
 
+    author_ob = relationship(
+        'RegisteredUser',
+        primaryjoin="WikiComment.author==RegisteredUser.name",
+        foreign_keys=author,
+    )
+
 
 t_wiki_comments_read = Table(
     'wiki_comments_read', metadata,

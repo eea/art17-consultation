@@ -8,7 +8,7 @@ from flask import (
     abort)
 from datetime import datetime
 
-from models import Wiki, WikiChange, WikiComment, db
+from models import Wiki, WikiChange, WikiComment, RegisteredUser, db
 from forms import DataSheetInfoForm
 from auth import current_user
 
@@ -24,6 +24,16 @@ def format_date_ph(value):
         return ''
     date = datetime.strftime(value, DATE_FORMAT)
     return date
+
+
+@wiki.app_template_filter('hide_adm_etc_username')
+def hide_adm_etc_username(name):
+    author = RegisteredUser.query.filter_by(name=name).first()
+    if (author.has_role('etc') or author.has_role('admin')) and not (
+            current_user.has_role('etc') or current_user.has_role('admin')):
+        return ''
+    else:
+        return name
 
 
 class WikiView(views.View):
@@ -70,11 +80,16 @@ class DataSheetInfo(WikiView):
 
     def get_context(self):
         active_change = self.get_active_change()
+        wiki = self.get_wiki()
+
+        comments = WikiComment.query.filter_by(wiki_id=wiki.id).all() \
+            if wiki else []
 
         request_args = {arg: request.args.get(arg) for arg in
                         ['subject', 'region', 'period']}
 
         return {'wiki_body': active_change.body if active_change else '',
+                'comments': comments,
                 'page_history_url': url_for('.data-sheet-info-page-history',
                                             page=self.page,
                                             **request_args),

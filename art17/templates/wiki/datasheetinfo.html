@@ -6,26 +6,30 @@
 
 {{ wiki_body|safe}}
 
-<br/><br/>
-
 {% if g.identity %}
 
-    <a href='{{ edit_page_url }}'>Edit page</a>
-    <a href='{{ add_comment_url }}'>Add comment</a>
-    <a href='{{ page_history_url }}'>Page history</a>
+  {% if comments %}
+    {% include 'wiki/datasheetinfo/comments.html' %}
+  {% endif %}
 
-    <br/><br/>
+<br/> <br/>
 
-    {% if 'page_history' in request.base_url %}
-        {% include 'wiki/datasheetinfo/pagehistory.html' %}
+  <a href='{{ edit_page_url }}'>Edit page</a>
+  <a href='{{ add_comment_url }}'>Add comment</a>
+  <a href='{{ page_history_url }}'>Page history</a>
 
-    {% elif 'add_comment' in request.base_url %}
-        {% include 'wiki/datasheetinfo/addcomment.html' %}
+  <br/><br/>
 
-    {% elif 'edit_page' in request.base_url %}
-        {% include 'wiki/datasheetinfo/editpage.html' %}
+  {% if 'page_history' in request.base_url %}
+    {% include 'wiki/datasheetinfo/pagehistory.html' %}
 
-    {% endif %}
+  {% elif 'add_comment' in request.base_url %}
+    {% include 'wiki/datasheetinfo/addcomment.html' %}
+
+  {% elif 'edit_page' in request.base_url %}
+    {% include 'wiki/datasheetinfo/editpage.html' %}
+
+  {% endif %}
 
 {% endif %}
 
