@@ -57,7 +57,12 @@ def test_identity_is_set_from_zope_whoami(app, zope_auth, client):
 
 
 def test_self_registration_flow(app, zope_auth, client, outbox):
+    from art17.models import RegisteredUser, Role, db
+    from art17.auth.providers import set_user
+
     app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
+
+    _create_user('ze_admin', ['admin'])
 
     register_page = client.get(flask.url_for('auth.register'))
     register_page = register_page.click('new art17 consultation account')
@@ -91,7 +96,8 @@ def test_self_registration_flow(app, zope_auth, client, outbox):
     assert "New user has registered" in admin_message.body
     url = admin_message.body.split()[-1]
     assert url == 'http://localhost/auth/admin/foo'
-    # TODO login as admin
+
+    zope_auth['user_id'] = 'ze_admin'
     activation_page = client.get(url)
     activation_page.form['active'] = True
     activation_page.form.submit()
@@ -127,3 +133,14 @@ def test_ldap_account_activation_flow(app, zope_auth, client, outbox, ldap_user_
     assert "Eionet user has registered" in admin_message.body
     url = admin_message.body.split()[-1]
     assert url == 'http://localhost/auth/admin/foo'
+
+
+def test_view_requires_admin(app, zope_auth, client):
+    _create_user('ze_admin', ['admin'])
+    _create_user('foo')
+    admin_user_url = flask.url_for('auth.admin_user', user_id='foo')
+
+    assert client.get(admin_user_url, expect_errors=True).status_code == 403
+
+    zope_auth.update({'user_id': 'ze_admin'})
+    assert client.get(admin_user_url).status_code == 200

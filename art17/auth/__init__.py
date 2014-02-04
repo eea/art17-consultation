@@ -1,5 +1,7 @@
 from datetime import datetime
+from functools import wraps
 import flask
+from flask.ext.principal import PermissionDenied
 from flask.ext.security import Security
 from flask.ext.security import signals as security_signals
 from flask.ext.mail import Message
@@ -10,6 +12,7 @@ from art17.auth.security import (
 )
 from art17 import models
 from art17.auth.providers import DebugAuthProvider, ZopeAuthProvider
+from art17.common import admin_perm
 
 HOMEPAGE_VIEW_NAME = 'summary.homepage'
 
@@ -42,6 +45,14 @@ security_ext = Security(
 )
 
 
+def require_admin(view):
+    @wraps(view)
+    def wrapper(*args, **kwargs):
+        admin_perm.test()
+        return view(*args, **kwargs)
+    return wrapper
+
+
 def get_ldap_user_info(user_id):
     from eea.usersdb import UsersDB
     ldap_server = flask.current_app.config['EEA_LDAP_SERVER']
@@ -72,7 +83,13 @@ def setup_auth_handlers(state):
     )
 
 
+@auth.app_errorhandler(PermissionDenied)
+def handle_permission_denied(error):
+    return flask.Response('permission denied', status=403)
+
+
 @auth.route('/auth/admin/<user_id>', methods=['GET', 'POST'])
+@require_admin
 def admin_user(user_id):
     user = models.RegisteredUser.query.get_or_404(user_id)
     if flask.request.method == 'POST':
