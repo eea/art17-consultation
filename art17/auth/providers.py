@@ -27,7 +27,7 @@ class DebugAuthProvider(object):
     def init_app(self, app):
         app.before_request(self.before_request_handler)
         app.add_url_rule(
-            '/auth_debug',
+            '/auth/debug',
             endpoint='auth.debug',
             methods=['GET', 'POST'],
             view_func=self.view,
