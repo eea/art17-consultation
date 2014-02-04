@@ -19,7 +19,8 @@ def set_up_layout_template(state):
 
 def load_zope_template():
     zope_url = flask.current_app.config['LAYOUT_ZOPE_URL']
-    resp = requests.get(zope_url)
+    auth_header = flask.request.headers.get('Authorization')
+    resp = requests.get(zope_url, headers={'Authorization': auth_header})
     flask.g.zope_layout = resp.json()
 
     art17_css = flask.render_template('header_styles.html')
