@@ -2,8 +2,12 @@
 
 {% block content %}
     {% block text_description %}{% endblock text_description %}
-    <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc).
-    Select from "Period..." value "2001-2006" in order to see the previous reported data.</p>
+    <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse
+      over. The conservation status colours are explained on mouse over. Rows in
+      italic shows data not taken into account when performing the assessments
+      (marginal presence, occasional, extinct prior HD, information, etc).
+    Select from "Period..." value "2001-2006" in order to see the previous
+      reported data.</p>
 
     {% include 'progress/filters.html' %}
 
@@ -37,14 +41,27 @@
               </th>
               {% for region in regions %}
                 {% set data = objects.get(subject_title, {}).get(region.reg_code, '') %}
-                {% set title = COUNTRY_ASSESSMENTS.get(data['conclusion'], '') %}
                 {% set url = url_for(summary_endpoint, subject=subject_name, region=region.reg_code) %}
-                <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} conclusion"
-                    title="{{ title }}">
-                    <span>
-                      <a href="{{ url }}">{{ data['method']|methodify }}</a>
-                    </span>
-                </td>
+
+                {% if data %}
+                  <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} conclusion"
+                      title="{{ data['title'] }}">
+                      <span>
+                        <a href="{{ url }}">
+                        {% if can_view_details() %}
+                          {{ data['main_decision'] }}
+                          {{ ' '.join(data['other_decisions']) }}
+                          {{ data['method']|methodify }}<br/>
+                          0 0 0 {# TODO unread counters #}
+                        {% else %}
+                          {{ data['method']|methodify }}
+                        {% endif %}
+                        </a>
+                      </span>
+                  </td>
+                {% else %}
+                <td></td>
+                {% endif %}
               {% endfor %}
             </tr>
             {% endfor %}

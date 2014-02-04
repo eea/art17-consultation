@@ -6,9 +6,13 @@ from flask import (
     url_for,
     jsonify,
 )
-from art17.common import get_default_period
+from art17.auth import current_user
+from art17.common import get_default_period, COUNTRY_ASSESSMENTS
 from art17.forms import ProgressFilterForm
-from art17.models import Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db
+from art17.models import (
+    Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db,
+    EtcDicDecision, EtcDicMethod,
+)
 from art17.summary import SpeciesMixin, HabitatMixin
 
 progress = Blueprint('progress', __name__)
@@ -20,6 +24,14 @@ def methodify(s):
     Append 'M' to '0' and '00' from old application
     """
     return 'M' + s if s in ('0', '00') else s
+
+
+@progress.app_template_global('can_view_details')
+def can_view_details():
+    if not current_user.is_authenticated():
+        return False
+
+    return current_user.has_role('etc') or current_user.has_role('admin')
 
 
 def user_is_expert(user):
@@ -60,6 +72,49 @@ class Progress(views.View):
     def get_context(self):
         return {}
 
+    def get_decision_details(self):
+        d = dict((r.decision, r.details) for r in EtcDicDecision.query.all())
+        d['no decision'] = 'Auto'
+        return d
+
+    def get_method_details(self):
+        return dict((r.method, r.details) for r in EtcDicMethod.query.all())
+
+    def process_presence(self, presence):
+        occasional = (
+            ','.join([row['eu_country_code']
+                      for row in presence if row['species_type_asses'] == 0])
+        )
+        present = (
+            ','.join([row['eu_country_code']
+                      for row in presence if row['species_type_asses'] != 0])
+        )
+        return dict(occasional=occasional, present=present)
+
+    def process_title(self, subject, region, conclusion_type, cell, presence):
+        title = []
+        title.append(
+            'Species: {species}, Region: {region}'.format(
+                species=subject, region=region))
+        if presence['present']:
+            title.append('Reported as present by: ' + presence['present'])
+        if presence['occasional']:
+            title.append('Reported as occasional by: ' + presence['occasional'])
+        title.append('Assessment {type} : {details}'.format(
+            type=conclusion_type,
+            details=COUNTRY_ASSESSMENTS.get(cell['conclusion'],'')
+        ))
+        if current_user.has_role('etc') or current_user.has_role('admin'):
+            title.append('Decision: {main} ({details})'.format(
+                main=cell['main_decision'],
+                details=self.DECISION_DETAILS.get(cell['main_decision'], 'Auto')
+            ))
+        title.append('Method {method} ({details})'.format(
+                method=cell['method'],
+                details=self.METHOD_DETAILS.get(cell['method'], '')
+        ))
+        return '\n'.join(title)
+
     def process_cell(self, cell_options, conclusion_type):
         output = {
             'main_decision': '',
@@ -69,7 +124,7 @@ class Progress(views.View):
         }
 
         for option in cell_options:
-            decision = option['decision']
+            decision = option['decision'] or ''
             user = option['user_id']
             # if current conclusion is acceptated
             if decision == 'OK':
@@ -191,15 +246,45 @@ class SpeciesProgress(Progress, SpeciesMixin):
 
             if row['subject'] not in data_dict:
                 data_dict[row['subject']] = {}
-            if row['region'] and row['region'] not in data_dict[row['subject']]:
-                data_dict[row['subject']][row['region']] = []
-            data_dict[row['subject']][row['region']].append(row)
+            if row['region']:
+                if row['region'] not in data_dict[row['subject']]:
+                    data_dict[row['subject']][row['region']] = []
+                data_dict[row['subject']][row['region']].append(row)
+
+        presence_qs = (
+            self.model_cls.query
+            .with_entities(self.model_cls.subject,
+                           self.model_cls.region,
+                           self.model_cls.eu_country_code,
+                           self.model_cls.species_type_asses)
+            .filter_by(dataset_id=period)
+        )
+        presence = {}
+        for report in presence_qs:
+            fields = ('subject', 'region', 'eu_country_code',
+                      'species_type_asses')
+            row = dict(zip(fields, report))
+            if row['subject'] not in presence:
+                presence[row['subject']] = {}
+            if row['region']:
+                if row['region'] not in presence[row['subject']]:
+                    presence[row['subject']][row['region']] = []
+                presence[row['subject']][row['region']].append(row)
 
         ret_dict = {}
-        for subject,region in data_dict.iteritems():
+        self.DECISION_DETAILS = self.get_decision_details()
+        self.METHOD_DETAILS = self.get_method_details()
+        for subject, region in data_dict.iteritems():
             ret_dict[subject] = {}
             for region, cell_options in region.iteritems():
-                ret_dict[subject][region] = self.process_cell(cell_options, conclusion_type)
+                cell = self.process_cell(cell_options, conclusion_type)
+                ret_dict[subject][region] = cell
+                if cell['main_decision']:
+                    pi = presence.get(subject, {}).get(region, {})
+                    presence_info = self.process_presence(pi)
+                    ret_dict[subject][region]['title'] = self.process_title(
+                        subject, region, conclusion_type, cell, presence_info
+                    )
 
         return ret_dict
 
