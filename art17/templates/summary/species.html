@@ -73,7 +73,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <tr {% if row.is_assesm %}class="assesm"{% endif %}>
         <td>
           {% set original_url=get_original_record_url(row) %}
-          <a class="popup" data-title="Factsheet" href="{{ original_url }}">
+          <a class="popup-btn" data-title="Factsheet" href="{{ original_url }}">
             {{ row.eu_country_code }}
           </a>
         </td>

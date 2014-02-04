@@ -65,7 +65,7 @@ $(function() {
         }).done(function (msg) { location.reload(); });
     });
 
-    $('body').on('click', '.popup', function(evt) {
+    $('body').on('click', '.popup-btn', function(evt) {
       evt.preventDefault();
       var link = $(this);
       var url = link.attr('href');
