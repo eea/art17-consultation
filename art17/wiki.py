@@ -37,7 +37,6 @@ class WikiView(views.View):
 
         context = self.get_context()
 
-        context.update({'user_logged_in': not current_user.is_anonymous()})
         return render_template(self.template_name, **context)
 
 
@@ -45,24 +44,25 @@ class DataSheetInfo(WikiView):
     template_name = 'wiki/datasheetinfo.html'
     wiki_form_cls = DataSheetInfoForm
 
-    def get_wiki_changes(self):
+    def get_wiki(self):
         period = request.args.get('period')
         subject = request.args.get('subject')
         region = request.args.get('region')
 
         if self.page == 'species':
-            column = 'assesment_speciesname'
+            self.column = 'assesment_speciesname'
         elif self.page == 'habitat':
-            column = 'habitatcode'
+            self.column = 'habitatcode'
         else:
             abort(404)
 
-        wiki = Wiki.query.filter(getattr(Wiki, column) == subject,
+        wiki = Wiki.query.filter(getattr(Wiki, self.column) == subject,
                                  Wiki.region == region,
                                  Wiki.dataset_id == period).first()
+        return wiki
 
-        wiki_changes = WikiChange.query.filter_by(wiki=wiki)
-
+    def get_wiki_changes(self):
+        wiki_changes = WikiChange.query.filter_by(wiki=self.get_wiki())
         return wiki_changes
 
     def get_active_change(self):
@@ -74,7 +74,7 @@ class DataSheetInfo(WikiView):
         request_args = {arg: request.args.get(arg) for arg in
                         ['subject', 'region', 'period']}
 
-        return {'wiki_body': active_change.body if active_change else None,
+        return {'wiki_body': active_change.body if active_change else '',
                 'page_history_url': url_for('.data-sheet-info-page-history',
                                             page=self.page,
                                             **request_args),
@@ -149,9 +149,20 @@ class DataSheetInfoEditPage(DataSheetInfo):
 
     def process_post_request(self):
         active_change = self.get_active_change()
-        active_change.active = 0
+        if active_change:
+            active_change.active = 0
+        else:
+            if not self.get_wiki():
+                wiki_attrs = {
+                    'region': request.args.get('region'),
+                    self.column: request.args.get('subject'),
+                    'dataset_id': request.args.get('period')
+                }
+                new_wiki = Wiki(**wiki_attrs)
+                db.session.add(new_wiki)
+                db.session.commit()
 
-        new_change_attrs = {'wiki_id': active_change.wiki_id,
+        new_change_attrs = {'wiki_id': self.get_wiki().id,
                             'body': request.form.get('text'),
                             'editor': current_user.name,
                             'changed': datetime.now(),
