@@ -85,7 +85,8 @@ def setup_auth_handlers(state):
 
 @auth.app_errorhandler(PermissionDenied)
 def handle_permission_denied(error):
-    return flask.Response('permission denied', status=403)
+    html = flask.render_template('auth/permission_denied.html')
+    return flask.Response(html, status=403)
 
 
 @auth.route('/auth/admin/<user_id>', methods=['GET', 'POST'])
