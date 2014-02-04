@@ -17,10 +17,6 @@ class CreateUserCommand(BaseCreateUserCommand):
         Option('-i', '--id', dest='id', default=None),
     )
 
-    def run(self, **kwargs):
-        kwargs['password'] = 'foo'
-        super(CreateUserCommand, self).run(**kwargs)
-
 
 user_manager = Manager()
 user_manager.add_command('create', CreateUserCommand())

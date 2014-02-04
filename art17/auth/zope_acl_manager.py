@@ -16,7 +16,7 @@ def create(user):
         url + '/create_user',
         data = {
             'username': user.id,
-            'password': 'foo',  # TODO real password
+            'password': user.password,
             'api_key': key,
         },
     )

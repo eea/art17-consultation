@@ -78,6 +78,7 @@ def test_self_registration_flow(app, zope_auth, client, outbox):
     assert foo_user.confirmed_at is None
     assert not foo_user.active
     assert not foo_user.is_ldap
+    assert foo_user.password.startswith('{SSHA}')
 
     assert len(outbox) == 1
     confirm_message = outbox.pop()
