@@ -15,7 +15,7 @@ def str2num(s, default='N/A', number_format='%.2f'):
     if isinstance(s, Decimal):
         buffer = number_format % s
     else:
-        buffer = str(s)
+        buffer = unicode(s)
     if buffer:
         return re.sub(patt, r"\1", buffer)
     else:
