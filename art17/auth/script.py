@@ -59,6 +59,16 @@ def remove(user_id):
     models.db.session.commit()
 
 
+@user_manager.command
+def info(user_id):
+    user = models.RegisteredUser.query.get(user_id)
+    print user.id
+    print "name: %r" % user.name
+    print "active:", user.active
+    print "ldap:", user.is_ldap
+    print "roles:", [r.name for r in user.roles]
+
+
 role_manager = Manager()
 role_manager.add_command('create', CreateRoleCommand())
 role_manager.add_command('add', AddRoleCommand())
