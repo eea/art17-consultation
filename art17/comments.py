@@ -23,10 +23,21 @@ comments = Blueprint('comments', __name__)
 
 @comments.app_template_global('can_post_comment')
 def can_post_comment(record):
-    authors = [c.author_id for c in record.comments]
-    if current_user.id in authors:
-        return False
-    return not record.deleted and admin_perm.can()
+    can_add = False
+    if current_user.has_role('stakeholder') or current_user.has_role('nat'):
+        if record.user.has_role('stakeholder') or \
+            (record.user.has_role('nat')
+             and record.user_id == current_user.id):
+                can_add = True
+    else:
+        can_add = True
+
+    if can_add:
+        authors = [c.author_id for c in record.comments]
+        if current_user.id in authors:
+            return False
+
+    return not record.deleted and can_add
 
 
 @comments.app_template_global('can_edit_comment')
