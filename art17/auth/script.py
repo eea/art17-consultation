@@ -36,23 +36,21 @@ def ls():
 
 @user_manager.command
 def activate(user_id):
+    from art17.auth import set_user_active
     user = models.RegisteredUser.query.get(user_id)
-    user.active = True
-    models.db.session.commit()
+    set_user_active(user, True)
     print "user", user.id, "has been activated"
     if not user.is_ldap:
-        zope_acl_manager.create(user)
         print "user", user.id, "has been created in Zope"
 
 
 @user_manager.command
 def deactivate(user_id):
+    from art17.auth import set_user_active
     user = models.RegisteredUser.query.get(user_id)
-    zope_acl_manager.delete(user)
-    models.db.session.commit()
+    set_user_active(user, False)
     print "user", user.id, "has been deactivated"
     if not user.is_ldap:
-        user.active = False
         print "user", user.id, "has been removed from Zope"
 
 

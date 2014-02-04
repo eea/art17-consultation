@@ -89,19 +89,23 @@ def handle_permission_denied(error):
     return flask.Response(html, status=403)
 
 
+def set_user_active(user, new_active):
+    was_active = user.active
+    user.active = new_active
+    models.db.session.commit()
+    if not user.is_ldap:
+        if was_active and not new_active:
+            zope_acl_manager.delete(user)
+        if new_active and not was_active:
+            zope_acl_manager.create(user)
+
+
 @auth.route('/auth/admin/<user_id>', methods=['GET', 'POST'])
 @require_admin
 def admin_user(user_id):
     user = models.RegisteredUser.query.get_or_404(user_id)
     if flask.request.method == 'POST':
-        was_active = user.active
-        user.active = flask.request.form.get('active', type=bool)
-        models.db.session.commit()
-        if not user.is_ldap:
-            if was_active and not user.active:
-                zope_acl_manager.delete(user)
-            if user.active and not was_active:
-                zope_acl_manager.create(user)
+        set_user_active(user, flask.request.form.get('active', type=bool))
         flask.flash("User information updated for %s" % user_id, 'success')
         return flask.redirect(flask.url_for('.admin_user', user_id=user_id))
 
