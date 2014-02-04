@@ -25,7 +25,7 @@ def notify_administrator(app, user, **extra):
         recipients=[app.config['AUTH_ADMIN_EMAIL']],
     )
     msg.body = flask.render_template(
-        'auth/email_activate_user.txt',
+        'auth/email_admin_new_user.txt',
         user=user,
         activation_link=flask.url_for(
             'auth.admin_user',
