@@ -97,10 +97,11 @@ def test_self_registration_flow(app, zope_auth, client, outbox):
     url = admin_message.body.split()[-1]
     assert url == 'http://localhost/auth/admin/foo'
 
-    zope_auth['user_id'] = 'ze_admin'
-    activation_page = client.get(url)
-    activation_page.form['active'] = True
-    activation_page.form.submit()
+    with patch('art17.auth.zope_acl_manager.create'):
+        zope_auth['user_id'] = 'ze_admin'
+        activation_page = client.get(url)
+        activation_page.form['active'] = True
+        activation_page.form.submit()
 
     foo_user = models.RegisteredUser.query.get('foo')
     assert foo_user.active
