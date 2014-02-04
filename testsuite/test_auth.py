@@ -109,7 +109,13 @@ def test_self_registration_flow(app, zope_auth, client, outbox):
     # TODO: user receives email and logs in
 
 
-def test_ldap_account_activation_flow(app, zope_auth, client, outbox, ldap_user_info):
+def test_ldap_account_activation_flow(
+        app,
+        zope_auth,
+        client,
+        outbox,
+        ldap_user_info,
+    ):
     from art17.auth.providers import set_user
     app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
     ldap_user_info['foo'] = {'email': 'foo@example.com'}
