@@ -9,70 +9,85 @@
   over and rows in italic shows data not taken into account when performing the
   assessments (marginal presence, occasional, extinct prior HD, information,
   etc)</p>
+
   {% include 'report/filters.html' %}
 
-  {% if current_selection %}
-
-    {% set colspan_all=35 if region else 36 %}
-
+    {% set colspan_all=23 if region else 24 %}
+    {% if current_selection %}
     <table class="complex_datatable datatable">
       <caption>
-        <b>Current selection</b>:
-        {{ current_selection|join(', ') }}.
-        <a href="">Show all {{ group }}</a>
+      <b>Current selection</b>:
+      {{ current_selection|join(', ') }}.
+      {% if annexes %}
+          <b>Annexes</b> {{ annexes|join(', ') }}.
+      {% endif %}
       </caption>
 
-      {% include "common/species_table_header.html" with context %}
+      <colgroup>
+        <col span="1" class="col_border">
+        {% if not region %}<col span="1" class="col_border">{% endif %}
 
+        <col span="4" class="col_border_left">
+        <col span="4" class="col_border_left">
+        <col span="1" class="col_border">
+        <col span="1" class="col_border">
+        <col span="1" class="col_border">
+        <col span="4" class="col_border_left">
+        <col span="2" class="col_border_left">
+
+        <col span="5" class="col_border">
+      </colgroup>
+
+      {% include 'common/habitat_table_header.html' with context %}
       <tbody>
+      {% for row in objects %}
+        {% set visible = can_view(row, restricted_countries) %}
+        {% set qa_errors = record_errors(row) %}
+        <tr {% if row.is_assesm %}class="assesm"{% endif %}>
+          <td>
+            {% set original_url=get_original_record_url(row) %}
+            <a class="popup" data-title="Factsheet" href="{{ original_url }}">
+              {{ row.subject }} - {{ row.habitat.name }}
+            </a>
+          </td>
+          <td><a href="">map</a></td>
 
-        {% for row in objects %}
-          {% set visible = can_view(row, restricted_countries) %}
-          {% set qa_errors = record_errors(row) %}
-          <tr {% if row.is_assesm %}class="assesm"{% endif %}>
+          {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
+          {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
-            <td><a>{{ row.assesment_speciesname }}</a>
+          {% if not visible %}
+          <td colspan="4">
+            {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
+          </td>
+          {% else %}
 
-            <td><a>map</a></td>
+          {#- Range columns -#}
+          {% include 'summary/habitat/content/range.html' with context %}
 
-            {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
-            {% if not region %}<td>{{ row.region }}</td>{% endif %}
+          {#- Area columns -#}
+          {% include 'summary/habitat/content/area.html' with context %}
 
-            {% if not visible %}
-            <td colspan="2">
-              {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
-            </td>
-            {% else %}
+          {#- Struct and funct. -#}
+          {% include 'summary/habitat/content/struct_func.html' with context %}
 
-            {#- Range columns -#}
-            {% include 'summary/species/content/range.html' with context %}
+          {#- Prospects -#}
+          {% include 'summary/habitat/content/future_prosp.html' with context %}
 
-            {#- Population columns -#}
-            {% include 'summary/species/content/population.html' with context %}
+          {#- Overall asses. -#}
+          {% include 'summary/habitat/content/overall_assestment.html' with context %}
 
-            {#- Habitat columns -#}
-            {% include 'summary/species/content/habitat.html' with context %}
+          {#- Grided maps columns -#}
+          {% include 'summary/habitat/content/grided_maps.html' with context %}
 
-            {#- Prospects -#}
-            {% include 'summary/species/content/future_prospects.html' with context %}
-
-            {#- Overall assessment -#}
-            {% include 'summary/species/content/overall.html' with context %}
-
-            {#- Grided maps columns -#}
-            {% include 'summary/species/content/grided_maps.html' with context %}
-
-            {# Padding #}
-            <td colspan="5"></td>
-            {% endif %}
-          </tr>
-        {% endfor %}
-
+          {# padding #}
+          <td colspan="7"></td>
+          {% endif %}
+        </tr>
+      {% endfor %}
       </tbody>
 
     </table>
-  {% else %}
-    <p><b>Please select a group and a species.</b></p>
-  {% endif %}
-
+    {% else %}
+    <p><b>Please select a group.</b></p>
+    {% endif %}
 {% endblock %}

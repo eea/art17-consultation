@@ -2,22 +2,11 @@
 
 {% block content %}
 
-  <p>Assessments on the <strong>conservation status of the habitat types and
-    species</strong> of Community interest have been carried out in EU 27 for
-    the period 2001-2006, compiled as part of the Habitats Directive - Article
-    17 reporting process. The data summary sheet for habitat conservation status
-    provides an overview per biogeographical region. Once a selection has been
-    made the conservation status can be visualised in a map view.
+  <p>Assessments on the conservation status of the habitat types and species of Community interest have been carried out in EU25 for the period 2001-2006 and in EU 27 for the period 2007-2012, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view.
+  Choose a period, a group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.
   </p>
 
-  <p>Choose a group, then a habitat belonging to that group. Optionally, further
-    refine your query by selecting one of the available biogeographical regions
-    for that habitat.
-  </p>
-  <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse
-    over. The conservation status colours are explained on mouse over. Rows in
-    italic shows data not taken into account when performing the assessments
-    (marginal presence, occasional, extinct prior HD, information, etc)
+  <p><strong>NOTE</strong>: Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc)
   </p>
 
   {% include 'summary/filters.html' %}
@@ -31,7 +20,11 @@
       {% if annexes %}
           <b>Annexes</b> {{ annexes|join(', ') }}.
       {% endif %}
-      <a href="">Show all {{ group }}</a>
+      {% set show_all_url=url_for(progress_endpoint,
+          period=period,
+          group=group,
+          conclusion='overall assessment') %}
+      <a href="{{ show_all_url }}">Show all {{ group }}</a>
       </caption>
 
       <colgroup>
@@ -48,48 +41,20 @@
 
         <col span="5" class="col_border">
       </colgroup>
-      <tbody class="thead">
-        <tr class="section-header">
-          <th colspan="{{ colspan_all }}">
-            ETC/BD treated member states' data
-          </th>
-        </tr>
-        <tr>
-          <th rowspan="2">MS</th>
-          {% if not region %}<th rowspan="2">Reg</th>{% endif %}
-          <th colspan="4">Range</th>
-          <th colspan="4">Area</th>
-          <th rowspan="2">Struct &amp; func.</th>
-          <th rowspan="2">Future prosp.</th>
-          <th rowspan="2">Overall asses.</th>
-          <th colspan="4">Grided maps(km<sup>2</sup>)</th>
 
-          <th rowspan="2" colspan="7"></th>
-        </tr>
-        <tr>
-          <th>Area</th>
-          <th>%XR</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Ref.</th>
+      {% include 'common/habitat_table_header.html' with context %}
 
-          <th>Surface</th>
-          <th>%XA</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Ref.</th>
-
-          <th>Range</th>
-          <th>%GR</th>
-          <th>Distrib</th>
-          <th>%GD</th>
-        </tr>
-
-      </tbody>
       <tbody>
       {% for row in objects %}
         {% set visible = can_view(row, restricted_countries) %}
         {% set qa_errors = record_errors(row) %}
         <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-          <td>{{ row.eu_country_code }}</td>
+          <td>
+            {% set original_url=get_original_record_url(row) %}
+            <a class="popup" data-title="Factsheet" href="{{ original_url }}">
+              {{ row.eu_country_code }}
+            </a>
+          </td>
           {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
           {% if not visible %}

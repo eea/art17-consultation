@@ -1,12 +1,12 @@
 {% extends layout_template %}
 
 {% block content %}
-  <p>Assessments on the <strong>conservation status of the habitat types and species</strong> of Community interest have been carried out in EU27 for the period {{ period_name }}, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view. <br>
-    Choose a period, group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.</p>
+  <p>Assessments on the conservation status of the habitat types and species of Community interest have been carried out in EU25 for the period 2001-2006 and in EU 27 for the period 2007-2012, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view.
+Choose a period, a group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.
+  </p>
 
-  <p><strong>NOTE:</strong> Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc).
-    Select from "Period..." value "2001-2006" in order to see the previous reported data.</p>
-
+  <p><strong>NOTE</strong>: Texts in blue shows relevant information on mouse over. The conservation status colours are explained on mouse over. Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc)
+  </p>
   {% include 'summary/filters.html' %}
 
   {% set colspan_all=28 if region else 29 %}
@@ -26,7 +26,11 @@
       {% if annexes %}
         <b>Annexes</b> {{ annexes|join(', ') }}.
       {% endif %}
-      <a href="">Show all {{ group }}</a>
+      {% set show_all_url=url_for(progress_endpoint,
+          period=period,
+          group=group,
+          conclusion='overall assessment') %}
+      <a href="{{ show_all_url }}">Show all {{ group }}</a>
     </caption>
     <colgroup>
       <col span="1" class="col_border_right">{% if not region %}
@@ -67,35 +71,28 @@
       {% set visible = can_view(row, restricted_countries) %}
       {% set qa_errors = record_errors(row) %}
       <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-        <td>{{ row.eu_country_code }}</td>
+        <td>
+          {% set original_url=get_original_record_url(row) %}
+          <a class="popup" data-title="Factsheet" href="{{ original_url }}">
+            {{ row.eu_country_code }}
+          </a>
+        </td>
         {% if not region %}<td>{{ row.region }}</td>{% endif %}
 
         {% if not visible %}
-        <td colspan="2">
-          {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
-        </td>
+          <td colspan="2">
+            {{ row.eu_country_code }} has provided a report to the European
+            Commission under Article 17
+          </td>
         {% else %}
-
-        {#- Range columns -#}
-        {% include 'summary/species/content/range.html' with context %}
-
-        {#- Population columns -#}
-        {% include 'summary/species/content/population.html' with context %}
-
-        {#- Habitat columns -#}
-        {% include 'summary/species/content/habitat.html' with context %}
-
-        {#- Prospects -#}
-        {% include 'summary/species/content/future_prospects.html' with context %}
-
-        {#- Overall assessment -#}
-        {% include 'summary/species/content/overall.html' with context %}
-
-        {#- Grided maps columns -#}
-        {% include 'summary/species/content/grided_maps.html' with context %}
-
-        {# Padding #}
-        <td colspan="5"></td>
+          {% include 'summary/species/content/range.html' with context %}
+          {% include 'summary/species/content/population.html' with context %}
+          {% include 'summary/species/content/habitat.html' with context %}
+          {% include 'summary/species/content/future_prospects.html' with context %}
+          {% include 'summary/species/content/overall.html' with context %}
+          {% include 'summary/species/content/grided_maps.html' with context %}
+          {# Padding #}
+          <td colspan="5"></td>
         {% endif %}
       </tr>
     {% endfor %}

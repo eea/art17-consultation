@@ -1,7 +1,12 @@
+from urlparse import urlparse
+from flask import Blueprint, request, jsonify
 from flask_principal import Permission, RoleNeed
+from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
     EtcDataSpeciesAutomaticAssessment,
     EtcDataHabitattypeAutomaticAssessment,
+    EtcDataSpeciesRegion,
+    EtcDataHabitattypeRegion,
 )
 from .utils import str2num
 
@@ -40,6 +45,9 @@ COUNTRY_ASSESSMENTS = {
     'XX':  'Unknown (XX)',
     'NA':  'Imposible to be assesed',
 }
+
+
+common = Blueprint('common', __name__)
 
 
 def get_default_period():
@@ -198,3 +206,31 @@ def get_struct_conclusion_value(habitatcode, region, assessment_method):
     return query.percentage_structure if query else ''
 
 
+def get_original_record_url(row):
+    url_format = '{scheme}://{host}/Converters/run_conversion?' \
+        'file={path}/{filename}&conv={conv}&source=remote#{region}'
+
+    if isinstance(row, EtcDataSpeciesRegion):
+        conv = 24
+    elif isinstance(row, EtcDataHabitattypeRegion):
+        conv = 23
+    else:
+        url_format = ''
+    info = urlparse(row.envelope)
+    return url_format.format(
+        scheme=info.scheme, host=info.netloc, path=info.path,
+        filename=row.filename, conv=conv,
+        region=row.region,
+    )
+
+
+@common.route('/common/species/groups', endpoint='species-groups')
+def species_groups():
+    data = SpeciesMixin.get_groups(request.args['period'])
+    return jsonify(data)
+
+
+@common.route('/common/habitat/groups', endpoint='habitat-groups')
+def habitat_groups():
+    data = HabitatMixin.get_groups(request.args['period'])
+    return jsonify(data)

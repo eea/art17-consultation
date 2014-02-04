@@ -43,6 +43,7 @@ from art17.common import (
     get_habitat_conclusion_value,
     get_coverage_conclusion_value,
     get_struct_conclusion_value,
+    get_original_record_url,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
@@ -52,7 +53,7 @@ from art17.forms import (
     SummaryManualFormSpecies,
     SummaryManualFormHabitat,
 )
-from art17.utils import str2num, parse_semicolon
+from art17.utils import str2num, parse_semicolon, str1num
 
 
 summary = Blueprint('summary', __name__)
@@ -122,6 +123,7 @@ def inject_fuctions():
         'get_habitat_conclusion_value': get_habitat_conclusion_value,
         'get_coverage_conclusion_value': get_coverage_conclusion_value,
         'get_struct_conclusion_value': get_struct_conclusion_value,
+        'get_original_record_url': get_original_record_url,
     }
 
 
@@ -144,6 +146,11 @@ def inject_static():
 @summary.app_template_filter('str2num')
 def _str2num(value, default='N/A'):
     return str2num(value, default=default)
+
+
+@summary.app_template_filter('str1num')
+def _str1num(value, default='N/A'):
+    return str1num(value, default=default)
 
 
 @summary.app_template_filter('parse_semicolon')
@@ -170,20 +177,17 @@ def format_date(value):
 
 
 def record_errors(record):
-    if isinstance(record, EtcDataSpeciesRegion):
-        qs = EtcQaErrorsSpeciesManualChecked.query.filter_by(
-            assesment_speciesname=record.assesment_speciesname,
-            region=record.region,
-            eu_country_code=record.eu_country_code,
-        )
+    if isinstance(record, (EtcDataSpeciesRegion, EtcDataHabitattypeRegion)):
+        error_cls = EtcQaErrorsSpeciesManualChecked
     elif isinstance(record, EtcDataHabitattypeRegion):
-        qs = EtcQaErrorsHabitattypeManualChecked.query.filter_by(
-            habitatcode=record.habitatcode,
-            region=record.region,
-            eu_country_code=record.eu_country_code,
-        )
+        error_cls = EtcQaErrorsHabitattypeManualChecked
     else:
         raise ValueError("Invalid record type" + str(type(record)))
+    qs = error_cls.query.filter_by(
+        subject=record.subject,
+        region=record.region,
+        eu_country_code=record.eu_country_code,
+    )
     return {
         e.field: {'text': e.text, 'suspect_value': e.suspect_value}
         for e in qs
@@ -258,7 +262,7 @@ class Summary(views.View):
             filters = {
                 'region': region,
                 'user_id': user_id,
-                self.subject_field: subject,
+                'subject': subject,
             }
             manual_assessment = self.model_manual_cls.query.filter_by(
                 **filters
@@ -310,9 +314,7 @@ class Summary(views.View):
             if manual_form.validate():
                 admin_perm.test()
                 if not manual_assessment:
-                    manual_assessment = self.model_manual_cls(
-                        **{self.subject_field: subject}
-                    )
+                    manual_assessment = self.model_manual_cls(subject=subject)
                     self.flatten_form(manual_form, manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
@@ -376,7 +378,7 @@ class Summary(views.View):
         annexes_results = (
             EtcDataSpeciesRegion.query
             .with_entities('annex_II', 'annex_IV', 'annex_V', 'priority')
-            .filter(EtcDataSpeciesRegion.assesment_speciesname == species)
+            .filter(EtcDataSpeciesRegion.subject == species)
             .distinct()
             .first()
         )
@@ -444,16 +446,17 @@ class SpeciesSummary(SpeciesMixin, Summary):
 
     def get_context(self):
         return {
-            'groups_url': url_for('.species-summary-groups'),
+            'groups_url': url_for('common.species-groups'),
             'subjects_url': url_for('.species-summary-species'),
             'regions_url': url_for('.species-summary-regions'),
             'comments_endpoint': 'comments.species-comments',
             'delete_endpoint': '.species-delete',
             'wiki_url': url_for('wiki.data-sheet-info',
-                                column='assesment_speciesname',
+                                page='species',
                                 subject=request.args.get('subject'),
                                 region=request.args.get('region'),
-                                period=request.args.get('period'))
+                                period=request.args.get('period')),
+            'progress_endpoint': 'progress.species-progress',
         }
 
 
@@ -484,24 +487,19 @@ class HabitatSummary(HabitatMixin, Summary):
 
     def get_context(self):
         return {
-            'groups_url': url_for('.habitat-summary-groups'),
+            'groups_url': url_for('common.habitat-groups'),
             'subjects_url': url_for('.habitat-summary-species'),
             'regions_url': url_for('.habitat-summary-regions'),
             'comments_endpoint': 'comments.habitat-comments',
             'delete_endpoint': '.habitat-delete',
             'wiki_url': url_for('wiki.data-sheet-info',
-                                column='habitatcode',
+                                page='habitat',
                                 subject=request.args['subject'].split(' ')[0]
                                 if request.args.get('subject') else None,
                                 region=request.args.get('region'),
-                                period=request.args.get('period'))
+                                period=request.args.get('period')),
+            'progress_endpoint': 'progress.habitat-progress',
         }
-
-
-@summary.route('/species/summary/groups', endpoint='species-summary-groups')
-def _groups():
-    data = SpeciesMixin.get_groups(request.args['period'])
-    return jsonify(data)
 
 
 @summary.route('/species/summary/species', endpoint='species-summary-species')
@@ -522,12 +520,6 @@ def _regions():
 def _countries():
     period, group = request.args['period'], request.args['group']
     data = SpeciesMixin.get_countries(period, group)
-    return jsonify(data)
-
-
-@summary.route('/habitat/summary/groups', endpoint='habitat-summary-groups')
-def _groups_habitat():
-    data = HabitatMixin.get_groups(request.args['period'])
     return jsonify(data)
 
 

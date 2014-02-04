@@ -1,0 +1,41 @@
+<tbody class="thead">
+
+  <tr class="section-header">
+    <th colspan="{{ colspan_all }}">
+      ETC/BD treated member states' data
+    </th>
+  </tr>
+  <tr>
+    {% if show_report_headers %}
+    <th rowspan="2">Habitat</th>
+    <th rowspan="2"></th>
+    {% endif %}
+    {% if not country %}<th rowspan="2">MS</th>{% endif %}
+    {% if not region %}<th rowspan="2">Reg</th>{% endif %}
+    <th colspan="4">Range</th>
+    <th colspan="4">Area</th>
+    <th rowspan="2">Struct &amp; func.</th>
+    <th rowspan="2">Future prosp.</th>
+    <th rowspan="2">Overall asses.</th>
+    <th colspan="4">Grided maps(km<sup>2</sup>)</th>
+
+    <th rowspan="2" colspan="7"></th>
+  </tr>
+  <tr>
+    <th>Area</th>
+    <th>%XR</th>
+    <th><abbr title="Trend">T</abbr></th>
+    <th>Ref.</th>
+
+    <th>Surface</th>
+    <th>%XA</th>
+    <th><abbr title="Trend">T</abbr></th>
+    <th>Ref.</th>
+
+    <th>Range</th>
+    <th>%GR</th>
+    <th>Distrib</th>
+    <th>%GD</th>
+  </tr>
+
+</tbody>

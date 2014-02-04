@@ -17,9 +17,6 @@ report = Blueprint('report', __name__)
 
 class Report(views.View):
 
-    def get_context(self):
-        return {}
-
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
         group = request.args.get('group')
@@ -54,7 +51,7 @@ class Report(views.View):
             'report_filter_form': report_filter_form,
             'region': region,
             'country': country,
-            'show_species_report_headers': True,
+            'show_report_headers': True,
         })
 
         return render_template(self.template_name, **context)
@@ -64,11 +61,6 @@ class Report(views.View):
         if not group:
             return []
         return [period_name, group, country_name, region_name]
-
-
-class SpeciesReport(SpeciesMixin, Report):
-
-    template_name = 'report/species.html'
 
     def setup_objects_and_data(self, period, group, country):
         filter_args = {}
@@ -83,13 +75,18 @@ class SpeciesReport(SpeciesMixin, Report):
         self.objects = (
             self.model_cls.query
             .filter_by(**filter_args)
-            .order_by(self.model_cls.speciesname)
+            .order_by(self.model_cls.subject)
         )
+
+
+class SpeciesReport(SpeciesMixin, Report):
+
+    template_name = 'report/species.html'
 
     def get_context(self):
         return {
+            'groups_url': url_for('common.species-groups'),
             'regions_url': url_for('.species-report-regions'),
-            'groups_url': url_for('.species-report-groups'),
         }
 
 
@@ -97,20 +94,24 @@ class HabitatReport(HabitatMixin, Report):
 
     template_name = 'report/habitat.html'
 
-    def setup_objects_and_data(self, period, group, country):
-        return []
-
-
-@report.route('/species/report/groups', endpoint='species-report-groups')
-def _groups():
-    data = SpeciesMixin.get_groups(request.args['period'])
-    return jsonify(data)
+    def get_context(self):
+        return {
+            'groups_url': url_for('common.habitat-groups'),
+            'regions_url': url_for('.habitat-report-regions')
+        }
 
 
 @report.route('/species/report/regions', endpoint='species-report-regions')
-def _regions():
+def species_regions():
     period, country = request.args['period'], request.args['country']
     data = SpeciesMixin.get_regions_by_country(period, country)
+    return jsonify(data)
+
+
+@report.route('/habitat/report/regions', endpoint='habitat-report-regions')
+def habitat_regions():
+    period, country = request.args['period'], request.args['country']
+    data = HabitatMixin.get_regions_by_country(period, country)
     return jsonify(data)
 
 

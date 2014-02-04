@@ -16,7 +16,7 @@ class MixinsCommon(object):
 
     @classmethod
     def get_manual_record(cls, subject, region, user, MS):
-        filters = {cls.subject_field: subject, 'region': region,
+        filters = {'subject': subject, 'region': region,
                    'user_id': user, 'MS': MS}
         return cls.model_manual_cls.query.filter_by(**filters).first()
 
@@ -65,7 +65,7 @@ class MixinsCommon(object):
     def get_group_for_subject(cls, subject):
         record = (
             cls.model_cls.query
-            .filter_by(**{cls.subject_field: subject}).first()
+            .filter_by(subject=subject).first()
         )
         return record.group if record else ''
 
@@ -77,7 +77,6 @@ class SpeciesMixin(MixinsCommon):
     model_manual_cls = SpeciesManualAssessment
     model_comment_cls = Comment
     subject_name = 'species'
-    subject_field = 'assesment_speciesname'
 
     def objects_by_group(self, period, group):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
@@ -86,7 +85,7 @@ class SpeciesMixin(MixinsCommon):
         qs = db.session.query(self.model_cls.speciesname)\
             .filter_by(group=group, dataset_id=period).distinct()\
             .order_by(self.model_cls.speciesname)
-        return [row[0] for row in qs]
+        return [(row[0], row[0]) for row in qs]
 
     def flatten_form(self, form, subject):
         data = dict(form.data)
@@ -124,7 +123,7 @@ class SpeciesMixin(MixinsCommon):
             return blank_option
         group_field = cls.model_cls.group
         dataset_id_field = cls.model_cls.dataset_id
-        assesment_field = cls.model_cls.assesment_speciesname
+        assesment_field = cls.model_cls.subject
         subjects = (
             cls.model_cls.query
             .filter(assesment_field != None)
@@ -140,7 +139,7 @@ class SpeciesMixin(MixinsCommon):
     @classmethod
     def get_regions(cls, period, species, short=False):
         blank_option = [('', 'All bioregions')]
-        assesment_field = cls.model_cls.assesment_speciesname
+        assesment_field = cls.model_cls.subject
         regions = (
             cls._get_regions_query(period, short)
             .filter(assesment_field == species).all()
@@ -155,13 +154,12 @@ class HabitatMixin(MixinsCommon):
     model_manual_cls = HabitattypesManualAssessment
     model_comment_cls = HabitatComment
     subject_name = 'habitat'
-    subject_field = 'habitatcode'
 
     def subjects_by_group(self, period, group):
         qs = db.session.query(EtcDicHdHabitat)\
             .with_entities(EtcDicHdHabitat.habcode, EtcDicHdHabitat.shortname)\
             .filter_by(group=group, dataset_id=period).distinct()
-        return [' - '.join(row) for row in qs]
+        return [(row[0], ' - '.join(row)) for row in qs]
 
     @classmethod
     def get_groups(cls, period):

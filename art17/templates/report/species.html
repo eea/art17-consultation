@@ -19,7 +19,6 @@
       <caption>
         <b>Current selection</b>:
         {{ current_selection|join(', ') }}.
-        <a href="">Show all {{ group }}</a>
       </caption>
 
       <colgroup>
@@ -62,8 +61,12 @@
           {% set visible = can_view(row, restricted_countries) %}
           {% set qa_errors = record_errors(row) %}
           <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-
-            <td><a href="">{{ row.assesment_speciesname }}</a></td>
+            <td>
+              {% set original_url=get_original_record_url(row) %}
+              <a class="popup" data-title="Factsheet" href="{{ original_url }}">
+                {{ row.subject }}
+              </a>
+            </td>
 
             {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
 
@@ -106,7 +109,7 @@
 
     </table>
   {% else %}
-    <p><b>Please select a group and a species.</b></p>
+    <p><b>Please select a group.</b></p>
   {% endif %}
 
 {% endblock %}

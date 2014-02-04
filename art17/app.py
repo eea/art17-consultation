@@ -9,6 +9,7 @@ from art17.progress import progress
 from art17.report import report
 from art17.auth import auth
 from art17.comments import comments
+from art17.common import common
 from art17.wiki import wiki
 from art17.auth.script import user_manager, role_manager
 from art17.dataset import dataset_manager
@@ -36,6 +37,7 @@ def create_app(config={}, testing=False):
     app.register_blueprint(progress)
     app.register_blueprint(auth)
     app.register_blueprint(comments)
+    app.register_blueprint(common)
     app.register_blueprint(wiki)
     Mail().init_app(app)
     return app

@@ -171,7 +171,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
 
         self.objects = (
             self.model_manual_cls.query
-            .with_entities(self.model_manual_cls.assesment_speciesname,
+            .with_entities(self.model_manual_cls.subject,
                            self.model_manual_cls.region,
                            self.model_manual_cls.decision,
                            self.model_manual_cls.user_id,
@@ -206,6 +206,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
     def get_context(self):
         return {
             'groups_url': url_for('.species-progress-groups'),
+            'summary_endpoint': 'summary.species-summary',
         }
 
 
@@ -240,7 +241,7 @@ class HabitatProgress(Progress, HabitatMixin):
             db.session.query(self.model_manual_cls)
             .join(EtcDicHdHabitat, self.model_manual_cls.habitatcode ==
                   EtcDicHdHabitat.habcode)
-            .with_entities(self.model_manual_cls.habitatcode,
+            .with_entities(self.model_manual_cls.subject,
                            EtcDicHdHabitat.shortname,
                            self.model_manual_cls.region,
                            self.model_manual_cls.decision,
@@ -277,6 +278,7 @@ class HabitatProgress(Progress, HabitatMixin):
     def get_context(self):
         return {
             'groups_url': url_for('.habitat-progress-groups'),
+            'summary_endpoint': 'summary.habitat-summary',
         }
 
 

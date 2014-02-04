@@ -11,6 +11,10 @@ $(function () {
         var region = $('#region');
         region.remoteChained('#period, #group, #subject', region.data('href'));
 
+        if(group.find('option:selected').val() == '') {
+            subject.prop('disabled', true);
+        }
+
         if(subject.find('option:selected').val() == '') {
             region.prop('disabled', true);
         }
@@ -61,4 +65,26 @@ $(function() {
         }).done(function (msg) { location.reload(); });
     });
 
-})();
+    $('body').on('click', '.popup', function(evt) {
+      evt.preventDefault();
+      var link = $(this);
+      var url = link.attr('href');
+      var title = link.data('title');
+      var params = 'height=600,width=600,screenX=300,screenY=100,scrollbars=1';
+      var popup = window.open(url, title, params);
+      popup.focus();
+    });
+
+});
+
+$(function () {
+    $('body').on('click', '#wikibutton', function(evt) {
+        evt.preventDefault();
+        var btn = $(this);
+        var url = btn.attr('url');
+        var title = 'Data Sheet Info';
+        var params = 'scrollbars=1, resizable=1, height=600, width=600';
+        var popup = window.open(url, title, params);
+        popup.focus();
+    });
+});
