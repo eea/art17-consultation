@@ -1,3 +1,4 @@
+from datetime import datetime
 import flask
 import pytest
 from mock import patch
@@ -22,15 +23,23 @@ def zope_auth(app, request):
     return whoami_data
 
 
-def test_identity_is_set_from_zope_whoami(app, zope_auth, client):
-    from art17.models import RegisteredUser, Role, db
+def _create_user(user_id, role_names=[]):
+    user = models.RegisteredUser(
+        id=user_id,
+        account_date=datetime.utcnow(),
+        active=True,
+    )
+    models.db.session.add(user)
+    for name in role_names:
+        role = models.Role.query.filter_by(name=name).first()
+        user.roles.append(role)
+    models.db.session.commit()
 
-    admin_role = Role.query.filter_by(name='admin').first()
-    from datetime import datetime
-    ze_admin = RegisteredUser(id='ze_admin', account_date=datetime.utcnow(), active=True)
-    db.session.add(ze_admin)
-    ze_admin.roles.append(admin_role)
-    db.session.commit()
+    return user
+
+
+def test_identity_is_set_from_zope_whoami(app, zope_auth, client):
+    _create_user('ze_admin', ['admin'])
 
     @app.route('/identity')
     def get_identity():
