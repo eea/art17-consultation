@@ -1,9 +1,9 @@
 revision = '5922950725a2'
-down_revision = '38df911fba43'
+down_revision = '3c11e7800475'
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects import mysql
+
 
 def upgrade():
     op.add_column('registered_users',
