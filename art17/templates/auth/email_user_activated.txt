@@ -1,0 +1,3 @@
+Your user account {{ user.id }} has been activated.
+
+{{ home_url }}

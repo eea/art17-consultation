@@ -107,7 +107,10 @@ def test_self_registration_flow(app, zope_auth, client, outbox):
     foo_user = models.RegisteredUser.query.get('foo')
     assert foo_user.active
 
-    # TODO: user receives email
+    assert len(outbox) == 1
+    user_message = outbox.pop()
+    assert user_message.recipients == ['foo@example.com']
+    assert 'has been activated' in user_message.body
 
 
 def test_ldap_account_activation_flow(

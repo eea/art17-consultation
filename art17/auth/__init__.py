@@ -18,7 +18,10 @@ HOMEPAGE_VIEW_NAME = 'summary.homepage'
 
 
 @security_signals.user_confirmed.connect
-def notify_administrator(app, user, **extra):
+def put_in_activation_queue(app, user, **extra):
+    user.waiting_for_activation = True
+    models.db.session.commit()
+
     msg = Message(
         subject="User has registered",
         sender=app.extensions['security'].email_sender,
@@ -89,9 +92,27 @@ def handle_permission_denied(error):
     return flask.Response(html, status=403)
 
 
+def notify_user_account_activated(user):
+    app = flask.current_app
+    msg = Message(
+        subject="Account has been activated",
+        sender=app.extensions['security'].email_sender,
+        recipients=[user.email],
+    )
+    msg.body = flask.render_template(
+        'auth/email_user_activated.txt',
+        user=user,
+        home_url=flask.url_for(HOMEPAGE_VIEW_NAME),
+    )
+    app.extensions['mail'].send(msg)
+
+
 def set_user_active(user, new_active):
     was_active = user.active
     user.active = new_active
+    if user.waiting_for_activation and not was_active and new_active:
+        user.waiting_for_activation = False
+        notify_user_account_activated(user)
     models.db.session.commit()
     if not user.is_ldap:
         if was_active and not new_active:
@@ -143,7 +164,7 @@ def register_ldap():
             % user_credentials['user_id'],
             'success',
         )
-        notify_administrator(flask._app_ctx_stack.top.app, user)
+        put_in_activation_queue(flask._app_ctx_stack.top.app, user)
         return flask.render_template('auth/register_ldap_done.html')
 
     return flask.render_template('auth/register_ldap.html', **{
