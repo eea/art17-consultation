@@ -2,22 +2,31 @@
 
 
 {% block content %}
-    <h1>Art 17</h1>
+  <h1>Art 17</h1>
 
-    <a href="{{ url_for('.species-summary') }}">Species summary</a>
-    <a href="{{ url_for('progress.species-progress') }}">Species progress</a>
-    <a href="{{ url_for('report.species-report') }}">Species report</a>
+  <a href="{{ url_for('.species-summary') }}">Species summary</a>
+  <a href="{{ url_for('progress.species-progress') }}">Species progress</a>
+  <a href="{{ url_for('report.species-report') }}">Species report</a>
 
-    <br/>
+  <br/>
 
-    <a href="{{ url_for('.habitat-summary') }}">Habitat summary</a>
-    <a href="{{ url_for('progress.habitat-progress') }}">Habitat progress</a>
-    <a href="{{ url_for('report.habitat-report') }}">Habitat report</a>
+  <a href="{{ url_for('.habitat-summary') }}">Habitat summary</a>
+  <a href="{{ url_for('progress.habitat-progress') }}">Habitat progress</a>
+  <a href="{{ url_for('report.habitat-report') }}">Habitat report</a>
 
-    <br/>
+  <br/>
 
-    {% if g.identity.id is not none %}
+  {% if g.identity.id is not none %}
     <br/>
     <a href="{{ url_for('comments.species-history') }}">User summary</a>
+
+    {% if not g.user.is_ldap %}
+      <a href="{{ url_for('auth.change_password') }}">
+        Change password ({{ g.user.id }})
+      </a>
     {% endif %}
+
+  {% else %}
+    <a href="{{ url_for('auth.register') }}">Register for an account</a>
+  {% endif %}
 {% endblock content %}
