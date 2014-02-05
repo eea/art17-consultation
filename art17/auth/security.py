@@ -6,6 +6,7 @@ from werkzeug.local import LocalProxy
 from wtforms import TextField
 import flask
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
+import flask.ext.security.script
 import flask.ext.security as flask_security
 
 from flask.ext.security.forms import (
@@ -27,8 +28,24 @@ password_length.min = 1
 # zope uses ldap-style SSHA passwords
 flask_security.core._allowed_password_hash_schemes[:] = ['ldap_salted_sha1']
 
-# disable hmac, because zope doesn't know about it
-flask.ext.security.utils.get_hmac = lambda x: x
+
+def encrypt_password(password):
+    pwd_context = flask.current_app.extensions['security'].pwd_context
+    return pwd_context.encrypt(password.encode('utf-8'))
+
+
+def verify(password, user):
+    pwd_context = flask.current_app.extensions['security'].pwd_context
+    return pwd_context.verify(password, user.password)
+
+
+# override encrypt_password with our simplified version
+flask_security.registerable.encrypt_password = encrypt_password
+flask_security.script.encrypt_password = encrypt_password
+flask_security.recoverable.encrypt_password = encrypt_password
+flask_security.utils.encrypt_password = encrypt_password
+flask_security.changeable.encrypt_password = encrypt_password
+flask_security.forms.verify_and_update_password = verify
 
 
 class UserDatastore(SQLAlchemyUserDatastore):

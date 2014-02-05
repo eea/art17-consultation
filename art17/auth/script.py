@@ -74,7 +74,8 @@ def reset_password(user_id):
     if user.is_ldap:
         print "Can't reset password for LDAP users"
         return
-    user.password = encrypt_password(raw_input("new password: "))
+    plaintext_password = raw_input("new password: ").decode('utf-8')
+    user.password = encrypt_password(plaintext_password)
     models.db.session.commit()
     print "password for %s has been reset" % user_id
     if user.active:
