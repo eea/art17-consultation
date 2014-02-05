@@ -67,6 +67,21 @@ def info(user_id):
     print "roles:", [r.name for r in user.roles]
 
 
+@user_manager.command
+def reset_password(user_id):
+    from flask.ext.security.utils import encrypt_password
+    user = models.RegisteredUser.query.get(user_id)
+    if user.is_ldap:
+        print "Can't reset password for LDAP users"
+        return
+    user.password = encrypt_password(raw_input("new password: "))
+    models.db.session.commit()
+    print "password for %s has been reset" % user_id
+    if user.active:
+        zope_acl_manager.create(user)
+        print "Zope password has been updated"
+
+
 role_manager = Manager()
 role_manager.add_command('create', CreateRoleCommand())
 role_manager.add_command('add', AddRoleCommand())
