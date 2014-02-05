@@ -4,6 +4,8 @@ import flask
 from flask.ext.principal import PermissionDenied
 from flask.ext.security import Security
 from flask.ext.security import signals as security_signals
+from flask.ext.security.forms import ChangePasswordForm
+from flask.ext.security.changeable import change_user_password
 from flask.ext.mail import Message
 from art17.auth.security import (
     UserDatastore,
@@ -80,6 +82,7 @@ def setup_auth_handlers(state):
         'SECURITY_POST_CONFIRM_VIEW': HOMEPAGE_VIEW_NAME,
         'SECURITY_PASSWORD_HASH': 'ldap_salted_sha1',
         'SECURITY_PASSWORD_SALT': '',  # not used but flask_security wants it
+        'SECURITY_SEND_PASSWORD_CHANGE_EMAIL': False,
     })
 
     security_ext.init_app(
@@ -172,4 +175,21 @@ def register_ldap():
     return flask.render_template('auth/register_ldap.html', **{
         'already_registered': flask.g.get('user') is not None,
         'user_id': user_credentials['user_id'],
+    })
+
+
+@auth.route('/auth/change_password', methods=['GET', 'POST'])
+def change_password():
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+        change_user_password(current_user, form.new_password.data)
+        models.db.session.commit()
+        msg = "Your password has been changed. Please log in again."
+        flask.flash(msg, 'success')
+        zope_acl_manager.create(current_user)
+        return flask.redirect(flask.url_for(HOMEPAGE_VIEW_NAME))
+
+    return flask.render_template('auth/change_password.html', **{
+        'form': form,
     })

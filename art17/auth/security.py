@@ -17,6 +17,7 @@ from flask.ext.security.forms import (
 
 current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
 flask_security.core.current_user = current_user
+flask_security.forms.current_user = current_user
 flask_security.views.current_user = current_user
 flask_security.views.logout_user = lambda: None
 flask_security.views.login_user = lambda new_user: None

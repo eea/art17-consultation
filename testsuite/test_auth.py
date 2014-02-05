@@ -172,3 +172,25 @@ def test_view_requires_admin(app, zope_auth, client):
 
     zope_auth.update({'user_id': 'ze_admin'})
     assert client.get(admin_user_url).status_code == 200
+
+
+def test_change_local_password(app, zope_auth, client):
+    from flask.ext.security.utils import encrypt_password
+    foo = _create_user('foo')
+    old_enc_password = encrypt_password('my old pw')
+    foo.password = old_enc_password
+    models.db.session.commit()
+
+    zope_auth.update({'user_id': 'foo'})
+    page = client.get(flask.url_for('auth.change_password'))
+    page.form['password'] = 'my old pw'
+    page.form['new_password'] = 'the new pw'
+    page.form['new_password_confirm'] = 'the new pw'
+    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+        confirmation_page = page.form.submit().follow()
+
+    assert "password has been changed" in confirmation_page.text
+    assert create_in_zope.call_count == 1
+
+    foo = models.RegisteredUser.query.filter_by(id='foo').first()
+    assert foo.password != old_enc_password
