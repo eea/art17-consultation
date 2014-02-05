@@ -23,7 +23,12 @@ flask_security.views.logout_user = lambda: None
 flask_security.views.login_user = lambda new_user: None
 flask_security.core._get_login_manager = lambda app: None
 password_length.min = 1
+
+# zope uses ldap-style SSHA passwords
 flask_security.core._allowed_password_hash_schemes[:] = ['ldap_salted_sha1']
+
+# disable hmac, because zope doesn't know about it
+flask.ext.security.utils.get_hmac = lambda x: x
 
 
 class UserDatastore(SQLAlchemyUserDatastore):
