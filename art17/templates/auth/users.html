@@ -1,0 +1,30 @@
+{% extends layout_template %}
+
+
+{% block content %}
+  <h1>Users</h1>
+
+  <table class="datatable">
+    <thead>
+      <th>ID</th>
+      <th>name</th>
+      <th>email</th>
+      <th>source</th>
+      <th></th>
+    </thead>
+
+    {% for user in user_list %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ 'Eionet' if user.is_ldap else 'local' }}</td>
+        <td>
+          <a href="{{ url_for('.admin_user', user_id=user.id) }}">
+            edit
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock content %}

@@ -95,3 +95,12 @@ def change_password():
     return flask.render_template('auth/change_password.html', **{
         'form': form,
     })
+
+
+@auth.route('/auth/users')
+@require_admin
+def users():
+    user_query = models.RegisteredUser.query.order_by(models.RegisteredUser.id)
+    return flask.render_template('auth/users.html', **{
+        'user_list': user_query.all(),
+    })
