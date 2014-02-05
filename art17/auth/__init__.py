@@ -84,6 +84,8 @@ def setup_auth_handlers(state):
         'SECURITY_SEND_PASSWORD_CHANGE_EMAIL': False,
     })
 
+    app.jinja_env.globals['AUTH_BLUEPRINT_INSTALLED'] = True
+
     security_ext.init_app(
         app,
         confirm_register_form=Art17ConfirmRegisterForm,

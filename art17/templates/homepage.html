@@ -27,6 +27,8 @@
     {% endif %}
 
   {% else %}
-    <a href="{{ url_for('auth.register') }}">Register for an account</a>
+    {% if AUTH_BLUEPRINT_INSTALLED %}
+      <a href="{{ url_for('auth.register') }}">Register for an account</a>
+    {% endif %}
   {% endif %}
 {% endblock content %}
