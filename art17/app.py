@@ -41,6 +41,11 @@ def create_app(config={}, testing=False):
     app.register_blueprint(common)
     app.register_blueprint(wiki)
     Mail().init_app(app)
+
+    @app.route('/temp.html')
+    def temp():
+        return flask.render_template('temp.html')
+
     return app
 
 
