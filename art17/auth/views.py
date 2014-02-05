@@ -1,4 +1,5 @@
 from datetime import datetime
+from collections import defaultdict
 import flask
 from flask.ext.principal import PermissionDenied
 from flask.ext.security.forms import ChangePasswordForm
@@ -85,12 +86,30 @@ def change_password():
     })
 
 
+def get_roles_for_all_users():
+    roles_query = (
+        models.db.session.query(
+            models.roles_users.c.registered_users_user,
+            models.Role.name,
+        )
+        .join(
+            models.Role,
+            models.roles_users.c.role_id == models.Role.id,
+        )
+    )
+    rv = defaultdict(list)
+    for user_id, role_name in roles_query:
+        rv[user_id].append(role_name)
+    return dict(rv)
+
+
 @auth.route('/auth/users')
 @require_admin
 def users():
     user_query = models.RegisteredUser.query.order_by(models.RegisteredUser.id)
     return flask.render_template('auth/users.html', **{
         'user_list': user_query.all(),
+        'role_map': get_roles_for_all_users(),
     })
 
 
