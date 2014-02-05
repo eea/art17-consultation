@@ -2,26 +2,13 @@
 <html>
 <head>
   {% include 'header_styles.html' %}
-  <script type="text/javascript">
-    function setVisibility(visClsName, hidClsName) {
-        var visible_elems = document.getElementsByClassName(visClsName);
-        var displayVal = 'inline'
-        var hidden_elems = document.getElementsByClassName(hidClsName);
-        var hideVal = 'none'
-
-        for (var i = 0; i < hidden_elems.length; i++) {
-            hidden_elems[i].style.display = hideVal;
-        }
-
-        for (var i = 0; i < visible_elems.length; i++) {
-            visible_elems[i].style.display = displayVal;
-        }
-    }
-  </script>
+  <link rel="stylesheet" type="text/css"
+      href="{{ url_for('static', filename='css/popup.css') }}"
+      media="screen">
 </head>
 
 <body>
     {% include 'flash_messages.html' %}
-    {% block content %} {% endblock content%} 
+    {% block content %} {% endblock content%}
 </body>
 </html>

@@ -1009,31 +1009,46 @@ class WikiChange(Base):
     wiki = relationship(u'Wiki')
 
 
+t_wiki_comments_read = Table(
+    'wiki_comments_read', metadata,
+    Column('comment_id', ForeignKey('wiki_comments.id')),
+    Column('reader_id', String(60), ForeignKey('registered_users.user'))
+)
+
+
 class WikiComment(Base):
     __tablename__ = 'wiki_comments'
 
     id = Column(Integer, primary_key=True)
     wiki_id = Column(ForeignKey('wiki.id'), nullable=False)
     comment = Column(String, nullable=False)
-    author = Column(String(60), nullable=False)
+    author_name = Column('author', String(60), nullable=False)
     deleted = Column(Integer)
-    posted = Column(DateTime, nullable=False,
-            server_default=u'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+    posted = Column(
+        DateTime, nullable=False,
+        server_default=u'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
 
-    wiki = relationship(u'Wiki')
+    wiki = relationship(u'Wiki', backref='comments')
 
-    author_ob = relationship(
+    author = relationship(
         'RegisteredUser',
-        primaryjoin="WikiComment.author==RegisteredUser.name",
-        foreign_keys=author,
+        primaryjoin="WikiComment.author_name==RegisteredUser.name",
+        foreign_keys=author_name,
     )
 
+    readers = relationship("RegisteredUser",
+                           secondary=t_wiki_comments_read,
+                           backref='read_comments')
 
-t_wiki_comments_read = Table(
-    'wiki_comments_read', metadata,
-    Column('comment_id', ForeignKey('wiki_comments.id')),
-    Column('reader_id', String(60))
-)
+    def set_css_class(self, current_user):
+        if self.deleted:
+            self.css_class = 'comment_deleted'
+        elif self.author == current_user:
+            self.css_class = 'comment_owned'
+        elif current_user in self.readers:
+            self.css_class = 'comment_read'
+        else:
+            return ''
 
 
 class WikiTrail(Base):

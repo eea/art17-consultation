@@ -1,0 +1,14 @@
+<strong>Comments:</strong>
+<span style="color: rgb(224, 124, 34);">red border shows your comment</span>,
+<span style="color: rgb(135, 179, 207);">blue borders shows the comments that have been read</span>,
+<span style="color: rgb(135, 139, 142);">grey borders shows the comments that have been deleted</span>
+
+
+{% for comment in comments %}
+
+  <li class="{{ comment.css_class }}">
+    {{ comment.comment | safe }} - {{ comment.author_name | hide_adm_etc_username }}
+    {{ comment.author.institution }}
+  </li>
+
+{% endfor %}

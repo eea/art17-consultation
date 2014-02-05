@@ -1,0 +1,17 @@
+li {
+    border: 1px solid;
+    list-style-type: none;
+}
+
+.comment_owned {
+    background-color: #FCF3EB;
+    border-color: #E07C22;
+}
+.comment_read {
+    background-color: #F4F8FB;
+    border-color: #87B3CF;
+}
+.comment_deleted {
+    background-color: #C6C6C6;
+    border-color: #878B8E;
+}

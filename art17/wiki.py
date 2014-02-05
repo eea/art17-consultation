@@ -80,16 +80,17 @@ class DataSheetInfo(WikiView):
 
     def get_context(self):
         active_change = self.get_active_change()
-        wiki = self.get_wiki()
 
-        comments = WikiComment.query.filter_by(wiki_id=wiki.id).all() \
-            if wiki else []
+        wiki = self.get_wiki()
+        if wiki:
+            for comment in wiki.comments:
+                comment.set_css_class(current_user)
 
         request_args = {arg: request.args.get(arg) for arg in
                         ['subject', 'region', 'period']}
 
         return {'wiki_body': active_change.body if active_change else '',
-                'comments': comments,
+                'comments': wiki.comments if wiki else [],
                 'page_history_url': url_for('.data-sheet-info-page-history',
                                             page=self.page,
                                             **request_args),
