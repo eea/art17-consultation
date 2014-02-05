@@ -476,8 +476,7 @@ abbr {
 
 .register-choice {
 	float: left;
-	/*max-width: 400px;
-	width: 200px;*/
+	max-width: 400px;
 	min-height: 250px;
 	padding: 12px;
 	border: 1px solid #ddd;

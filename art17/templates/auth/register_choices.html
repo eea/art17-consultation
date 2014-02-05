@@ -5,9 +5,29 @@
   <!-- <h1>Register</h1> -->
 
   <div id="registration" class="clearfix">
-
+    <div class="register-choice">
+      Eionet
+    </div>
 
     <div class="register-choice">
+      Activate account
+    </div>    
+  </div>
+
+  <p>
+    Activate your existing EIONET account
+    (first <a href="/loggedin">log in</a>)
+  </p>
+
+  <p>or</p>
+
+  <p>
+    If you don't have an EIONET account, register for a
+    {%- set register_url = url_for('security.register') %}
+    <a href="{{ register_url }}">new art17 consultation account</a>.
+  </p>
+
+<!-- <div class="register-choice">
       <stron>Request account</strong>
       <form class="wizard">
         <div class="wizard-step">
@@ -58,31 +78,6 @@
           <input type="submit" value="Request Account">
         </div>
       </form>
-      <!-- <div class="wizard-nav">
-        1 2 3
-      </div> -->
-    </div>
-
-    <!-- <div class="register-choice">
-      <small>Register</small>
-      <strong>EIONET account</strong>
-      <hr />
     </div> -->
-
-
-  </div>
-
-  <p>
-    Activate your existing EIONET account
-    (first <a href="/loggedin">log in</a>)
-  </p>
-
-  <p>or</p>
-
-  <p>
-    If you don't have an EIONET account, register for a
-    {%- set register_url = url_for('security.register') %}
-    <a href="{{ register_url }}">new art17 consultation account</a>.
-  </p>
 
 {% endblock content %}
