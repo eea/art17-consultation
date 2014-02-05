@@ -199,3 +199,12 @@ def test_change_local_password(app, zope_auth, client):
 def test_change_anonymous_password(app, zope_auth, client):
     page = client.get(flask.url_for('auth.change_password'))
     assert "You must log in before changing your password" in page
+
+
+def test_change_ldap_password(app, zope_auth, client):
+    foo = _create_user('foo')
+    foo.is_ldap = True
+    models.db.session.commit()
+    zope_auth.update({'user_id': 'foo'})
+    page = client.get(flask.url_for('auth.change_password'))
+    assert "Please go to the EIONET account change password page" in page

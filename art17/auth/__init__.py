@@ -184,6 +184,10 @@ def change_password():
         message = "You must log in before changing your password."
         return flask.render_template('message.html', message=message)
 
+    if current_user.is_ldap:
+        message = "Please go to the EIONET account change password page."
+        return flask.render_template('message.html', message=message)
+
     form = ChangePasswordForm()
 
     if form.validate_on_submit():
