@@ -151,9 +151,10 @@ class DataSheetInfoAddComment(DataSheetInfo):
             db.session.add(wiki)
             db.session.commit()
 
+        import pdb; pdb.set_trace()  # XXX BREAKPOINT
         comment_attrs = {'wiki_id': wiki.id,
                          'comment': request.form.get('text'),
-                         'author': current_user.name,
+                         'author_id': current_user.id,
                          'posted': datetime.now()}
 
         comment = WikiComment(**comment_attrs)
