@@ -15,6 +15,12 @@ def set_user(user_id, is_ldap_user=False):
     }
     if user is None:
         logger.warn("Autheticated user %r not found in database", user_id)
+    elif user.is_ldap != is_ldap_user:
+        logger.warn(
+            "Mix-up between LDAP and non-LDAP users: "
+            "Zope says %r, database says %r",
+            is_ldap_user, user.is_ldap,
+        )
     else:
         if user.is_active():
             flask.g.user = user

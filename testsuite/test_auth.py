@@ -205,6 +205,6 @@ def test_change_ldap_password(app, zope_auth, client):
     foo = _create_user('foo')
     foo.is_ldap = True
     models.db.session.commit()
-    zope_auth.update({'user_id': 'foo'})
+    zope_auth.update({'user_id': 'foo', 'is_ldap_user': True})
     page = client.get(flask.url_for('auth.change_password'))
     assert "Please go to the EIONET account change password page" in page
