@@ -180,6 +180,10 @@ def register_ldap():
 
 @auth.route('/auth/change_password', methods=['GET', 'POST'])
 def change_password():
+    if current_user.is_anonymous():
+        message = "You must log in before changing your password."
+        return flask.render_template('message.html', message=message)
+
     form = ChangePasswordForm()
 
     if form.validate_on_submit():

@@ -194,3 +194,8 @@ def test_change_local_password(app, zope_auth, client):
 
     foo = models.RegisteredUser.query.filter_by(id='foo').first()
     assert foo.password != old_enc_password
+
+
+def test_change_anonymous_password(app, zope_auth, client):
+    page = client.get(flask.url_for('auth.change_password'))
+    assert "You must log in before changing your password" in page
