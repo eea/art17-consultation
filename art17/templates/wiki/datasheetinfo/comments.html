@@ -1,14 +1,27 @@
-<strong>Comments:</strong>
-<span style="color: rgb(224, 124, 34);">red border shows your comment</span>,
-<span style="color: rgb(135, 179, 207);">blue borders shows the comments that have been read</span>,
-<span style="color: rgb(135, 139, 142);">grey borders shows the comments that have been deleted</span>
 
+<div class="comment-section">
+  <h2>Comments</h2>
+  <button>Add comment</button>
+  
+	<ul class="cmnt-list no-list">
+	{% for comment in comments %}
 
-{% for comment in comments %}
+	<li class="{{ comment.css_class }}">
+	  <div class="clearfix">
+	  	<!-- Ifs -->
+	    <span class="cmnt-type">Not read</span>
+	    <button class="button_text">Mark as read</button>
+	  </div>
+	  <div class="cmnt-body">{{ comment.comment | safe }}</div>
+	  <div class="small clearfix">
+	    <div class="pull-left">
+	      <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>,
+	      {{ comment.author.institution }}
+	    </div>
+	    <span class="muted pull-right">December 13, 2013</span>
+	  </div>
+	</li>
 
-  <li class="{{ comment.css_class }}">
-    {{ comment.comment | safe }} - {{ comment.author.name | hide_adm_etc_username }}
-    {{ comment.author.institution }}
-  </li>
-
-{% endfor %}
+	{% endfor %}
+	</ul>
+</div>

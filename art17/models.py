@@ -1042,13 +1042,13 @@ class WikiComment(Base):
 
     def set_css_class(self, current_user):
         if self.deleted:
-            self.css_class = 'comment_deleted'
+            self.css_class = 'cmnt-deleted'
         elif self.author == current_user:
-            self.css_class = 'comment_owned'
+            self.css_class = 'cmnt-owned'
         elif current_user in self.readers:
-            self.css_class = 'comment_read'
+            self.css_class = 'cmnt-read'
         else:
-            return ''
+            return 'cmnt-unread'
 
 
 class WikiTrail(Base):

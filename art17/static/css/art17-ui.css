@@ -383,6 +383,7 @@ abbr {
 	padding: 0;
 	border: 0;
 	color: blue;
+	font-size: inherit;
 	font-weight: normal;
 }
 
@@ -467,6 +468,18 @@ abbr {
 
 .muted {
 	color: #888;
+}
+
+.small {
+	font-size: smaller;
+}
+
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
 }
 
 /* User registration */
@@ -575,4 +588,109 @@ abbr {
 .form-error {
 	border: 1px solid red!important;
 	color: red!important;
+}
+
+
+
+
+/* Comments */
+.comment-section {
+	background: #f6f6f6;
+	margin: 0 -1em;
+	padding: 1em;
+}
+
+.cmnt-list li {
+	margin-bottom: -1px;
+	padding: 1em;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+
+/* Comment type - comment */
+.cmnt-list li.cmnt-owned {
+	margin-left: -1em;
+	margin-right: -1em;
+	padding-left: 2em;
+	padding-right: 2em;
+	border-left: 0;
+	border-right: 0;
+}
+
+.cmnt-list .button_text {
+	color: #888;
+}
+
+.cmnt-list .button_text:hover {
+	color: blue;
+}
+
+/* Comment type - label */
+.cmnt-type {
+	float: left;
+	text-decoration: none;
+	margin: -3px 0.5em -4px -1em;
+	padding: 3px 8px;
+	border-width: 1px 1px 1px 0;
+	border-radius: 0 2px 2px 0;
+	border-style: solid;
+	border-color: transparent;
+	background: transparent;
+}
+
+/* Owned comment */
+.cmnt-owned .cmnt-type {
+	position: static;
+	padding: 0;
+	margin: 0 0.5em 0 0;
+	font-style: italic;
+	float: left;
+}
+
+/* Not read comment */
+.cmnt-list li.cmnt-notread {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	z-index: 100;
+	border-color: #2ca0d2;
+}
+
+.cmnt-list li.cmnt-notread .button_text {
+	color: blue;
+}
+
+.cmnt-notread .cmnt-type {
+	color: #2388b4;
+	background-color: #c3e2ff;
+  border-color: #2ca0d2;
+}
+
+/* Read comment */
+.cmnt-list li.cmnt-read {
+	/*background: transparent;*/
+}
+
+.cmnt-read .cmnt-type {
+	color: #888;
+	border-color: #ccc;
+	/*background: #f6f6f6;*/
+}
+
+/* Deleted comment */
+.cmnt-list li.cmnt-deleted {
+	color: #888;
+	background: none;
+}
+.cmnt-list li.cmnt-deleted > .cmnt-body {
+	text-decoration: line-through;
+}
+
+.cmnt-list li.cmnt-deleted:hover > .cmnt-body {
+	text-decoration: none;
+}
+
+.cmnt-deleted .cmnt-type {
+	color: #888;
+	border-color: #ccc;
+	background: #f6f6f6;
 }
