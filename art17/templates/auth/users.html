@@ -11,6 +11,7 @@
       <th>email</th>
       <th>source</th>
       <th>roles</th>
+      <th>status</th>
       <th></th>
     </thead>
 
@@ -21,6 +22,15 @@
         <td>{{ user.email }}</td>
         <td>{{ 'Eionet' if user.is_ldap else 'local' }}</td>
         <td>{{ ', '.join(role_map.get(user.id, [])) or '-' }}</td>
+        <td>
+          {% if user.active %}
+            active
+          {% elif user.waiting_for_activation %}
+            new
+          {% else %}
+            inactive
+          {% endif %}
+        </td>
         <td>
           <a href="{{ url_for('.admin_user', user_id=user.id) }}">
             edit
