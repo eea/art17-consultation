@@ -46,6 +46,7 @@ COUNTRY_ASSESSMENTS = {
     'NA':  'Imposible to be assesed',
 }
 
+HOMEPAGE_VIEW_NAME = 'summary.homepage'
 
 common = Blueprint('common', __name__)
 
