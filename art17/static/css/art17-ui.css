@@ -163,8 +163,8 @@ abbr {
 	border-right: 1px solid #ddd;
 }
 
-/*HIGHLIGHTS*/
-.conclusion > span {
+/* Conclusion */
+.conclusion > * {
 	display: inline-block;
 	*zoom: 1;
 	padding: 1px 2px;
@@ -179,108 +179,108 @@ abbr {
 	vertical-align: baseline;
 }
 
-.conclusion > span > a {
+.conclusion > * > a {
 	color: inherit;
 	padding: 1px 2px;
-	margin: -3px -4px;
-	border-radius: 3px;
-	border: 2px solid transparent;
+	margin: -2px -3px;
+	border-radius: 2px;
+	border: 1px solid transparent;
 	text-decoration: none;
 	display: block;
 }
 
-.conclusion > span > a:hover {
+.conclusion > * > a:hover {
 	color: inherit;
 	text-decoration: none;
 	background: rgba(255, 255, 255, 0.25);
 	border-color: blue;
 }
-
-.FV > span {
+/* Conclusion Types */
+.FV > * {
 	color: #000;
 	border-color: #639500;
 	background-color: #9aca3b;
 }
 
-.FVU > span {
+.FVU > * {
 	color: #000;
 	border-color: #639500;
 	background-color: #9aca3b;
 }
 
-.U1 > span {
+.U1 > * {
 	color: #000;
 	border-color: #b05f00;
 	background-color: #e69800;
 }
 
-.U1U > span {
+.U1U > * {
 	color: #000;
 	border-color: #b05f00;
 	background-color: #e69800;
 }
 
-.U1M > span {
+.U1M > * {
 	color: #000;
 	border-color: #b05f00;
 	background-color: #e69800;
 }
 
-.U1P > span {
+.U1P > * {
 	color: #000;
 	border-color: #b05f00;
 	background-color: #e69800;
 }
 
-.U2 > span {
+.U2 > * {
 	color: #000;
 	border-color: #742c2c;
 	background-color: #eb6847;
 }
 
-.U2U > span {
+.U2U > * {
 	color: #000;
 	border-color: #742c2c;
 	background-color: #eb6847;
 }
 
-.U2M > span {
+.U2M > * {
 	color: #000;
 	border-color: #742c2c;
 	background-color: #eb6847;
 }
 
-.U2P > span {
+.U2P > * {
 	color: #000;
 	border-color: #742c2c;
 	background-color: #eb6847;
 }
 
-.XX > span {
+.XX > * {
 	color: #000;
 	border-color: #888;
 	background-color: #b4b4b4;
 }
 
-.XXU > span {
+.XXU > * {
 	color: #000;
 	border-color: #888;
 	background-color: #b4b4b4;
 }
 
-.XU > span {
+.XU > * {
 	color: #000;
 	border-color: #888;
 	background-color: #b4b4b4;
 }
 
-.XUU > span {
+.XUU > * {
 	color: #000;
 	border-color: #888;
 	background-color: #b4b4b4;
 }
 
-.NA > span {
+.NA > * {
 	color: #000;
 	border-color: #4774c7;
 	background-color: #78bbee;
@@ -289,6 +289,45 @@ abbr {
 .assesm {
 	color: #666666 !important;
 	font-style: italic;
+}
+
+/* Legend */
+.legend {
+	margin: 12px 0;
+}
+.legend dl {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.legend dt,
+.legend dd {
+	float: left;
+}
+
+.legend dt {
+	font-family: 'Roboto Condensed';
+	font-weight: 300;
+	margin: 0 6px 0 0;
+}
+
+.legend dd {
+	margin: 0 12px 0 6px;
+	line-height: 1;
+}
+
+.legend .conclusion {
+	margin-top: -3px;
+}
+
+.legend strong {
+	display: block;
+	margin-right: 18px;
+	float: left;
+}
+.legend strong:after{
+	content: ":";
 }
 
 /* added */
@@ -335,7 +374,7 @@ abbr {
 
 
 .hidden {
-    display: none;
+    display: none!important;
 }
 
 .button_text {
@@ -389,20 +428,15 @@ abbr {
 	display: block;
 }
 
-.complex_datatable tr {
-	position:relative;
-}
-
-/*.complex_datatable tr:hover {
-
-}*/
 
 .details .close {
+	display: block;
 	float: right;
 }
 
+
+
 .close {
-	display: block;
 	padding: 0;
 	height: 16px;
 	width: 16px;
@@ -433,4 +467,113 @@ abbr {
 
 .muted {
 	color: #888;
+}
+
+/* User registration */
+#registration {
+
+}
+
+.register-choice {
+	float: left;
+	/*max-width: 400px;
+	width: 200px;*/
+	min-height: 250px;
+	padding: 12px;
+	border: 1px solid #ddd;
+}
+
+/*.register-choice:hover {
+	border-color: #ccc;
+	background: #fafafa;
+}*/
+
+.register-choice:first-child {
+	margin-right: 18px;
+}
+
+.register-choice > small,
+.register-choice > strong {
+	display: block;
+}
+
+.register-choice > hr {
+	margin: 12px -12px;
+	border: 0;
+	height: 1px;
+	background: #ddd;
+}
+
+.wizard {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.wizard-step {
+	float: left;
+	/*display: none;*/
+	width: 200px;
+	margin: 0 18px;
+}
+
+.wizard-step:first-child {
+	display: block;
+}
+
+.input-message {
+	color: red;
+	font-size: smaller;
+	font-style: italic;
+	margin-top:3px;
+	margin-bottom: 0;
+}
+
+.notification {
+	position: relative;
+	padding: 6px 18px 6px 6px;
+	background: #fafafa;
+	border: 1px solid #ddd;
+}
+
+
+
+.notification .close {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+}
+
+
+.wizard label,
+.wizard input[type="text"],
+.wizard input[type="password"],
+.wizard select,
+.wizard textarea {
+	display: block;
+	width: 100%;
+}
+
+
+.wizard label {
+	font-weight: bold;
+	margin-bottom: 3px;
+}
+
+.wizard label[for] {
+	cursor: pointer;
+}
+
+.form-group {
+	margin-bottom: 12px;
+}
+
+.jq-test {
+	color: red!important;
+	margin: 20px!important;
+	background: green!important;
+}
+
+.form-error {
+	border: 1px solid red!important;
+	color: red!important;
 }
