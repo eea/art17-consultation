@@ -32,7 +32,7 @@ def ls():
 
 @user_manager.command
 def activate(user_id):
-    from art17.auth import set_user_active
+    from art17.auth.common import set_user_active
     user = models.RegisteredUser.query.get(user_id)
     set_user_active(user, True)
     print "user", user.id, "has been activated"
@@ -42,7 +42,7 @@ def activate(user_id):
 
 @user_manager.command
 def deactivate(user_id):
-    from art17.auth import set_user_active
+    from art17.auth.common import set_user_active
     user = models.RegisteredUser.query.get(user_id)
     set_user_active(user, False)
     print "user", user.id, "has been deactivated"
