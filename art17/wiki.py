@@ -190,7 +190,7 @@ class DataSheetInfoEditPage(DataSheetInfo):
 
         new_change_attrs = {'wiki_id': self.get_wiki().id,
                             'body': request.form.get('text'),
-                            'editor': current_user.name,
+                            'editor': current_user.user,
                             'changed': datetime.now(),
                             'active': 1}
 

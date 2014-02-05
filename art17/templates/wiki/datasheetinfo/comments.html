@@ -7,7 +7,7 @@
 {% for comment in comments %}
 
   <li class="{{ comment.css_class }}">
-    {{ comment.comment | safe }} - {{ comment.author_name | hide_adm_etc_username }}
+    {{ comment.comment | safe }} - {{ comment.author.name | hide_adm_etc_username }}
     {{ comment.author.institution }}
   </li>
 

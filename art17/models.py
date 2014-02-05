@@ -1022,7 +1022,7 @@ class WikiComment(Base):
     id = Column(Integer, primary_key=True)
     wiki_id = Column(ForeignKey('wiki.id'), nullable=False)
     comment = Column(String, nullable=False)
-    author_name = Column('author', String(60), nullable=False)
+    author_id = Column('author', String(60), nullable=False)
     deleted = Column(Integer)
     posted = Column(
         DateTime, nullable=False,
@@ -1032,8 +1032,8 @@ class WikiComment(Base):
 
     author = relationship(
         'RegisteredUser',
-        primaryjoin="WikiComment.author_name==RegisteredUser.name",
-        foreign_keys=author_name,
+        primaryjoin="WikiComment.author_id==RegisteredUser.id",
+        foreign_keys=author_id,
     )
 
     readers = relationship("RegisteredUser",
