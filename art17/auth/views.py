@@ -20,18 +20,6 @@ def handle_permission_denied(error):
     return flask.Response(html, status=403)
 
 
-@auth.route('/auth/admin/<user_id>', methods=['GET', 'POST'])
-@require_admin
-def admin_user(user_id):
-    user = models.RegisteredUser.query.get_or_404(user_id)
-    if flask.request.method == 'POST':
-        set_user_active(user, flask.request.form.get('active', type=bool))
-        flask.flash("User information updated for %s" % user_id, 'success')
-        return flask.redirect(flask.url_for('.admin_user', user_id=user_id))
-
-    return flask.render_template('auth/admin_user.html', user=user)
-
-
 @auth.route('/auth/register')
 def register():
     user_credentials = flask.g.get('user_credentials', {})
@@ -104,3 +92,15 @@ def users():
     return flask.render_template('auth/users.html', **{
         'user_list': user_query.all(),
     })
+
+
+@auth.route('/auth/users/<user_id>', methods=['GET', 'POST'])
+@require_admin
+def admin_user(user_id):
+    user = models.RegisteredUser.query.get_or_404(user_id)
+    if flask.request.method == 'POST':
+        set_user_active(user, flask.request.form.get('active', type=bool))
+        flask.flash("User information updated for %s" % user_id, 'success')
+        return flask.redirect(flask.url_for('.users', user_id=user_id))
+
+    return flask.render_template('auth/admin_user.html', user=user)

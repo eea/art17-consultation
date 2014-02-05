@@ -96,7 +96,7 @@ def test_self_registration_flow(app, zope_auth, client, outbox):
     assert admin_message.recipients == ['admin@example.com']
     assert "New user has registered" in admin_message.body
     url = admin_message.body.split()[-1]
-    assert url == 'http://localhost/auth/admin/foo'
+    assert url == 'http://localhost/auth/users/foo'
 
     with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
         zope_auth['user_id'] = 'ze_admin'
@@ -145,7 +145,7 @@ def test_ldap_account_activation_flow(
     assert admin_message.recipients == ['admin@example.com']
     assert "Eionet user has registered" in admin_message.body
     url = admin_message.body.split()[-1]
-    assert url == 'http://localhost/auth/admin/foo'
+    assert url == 'http://localhost/auth/users/foo'
 
     with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
         zope_auth['user_id'] = 'ze_admin'
