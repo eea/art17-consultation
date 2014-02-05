@@ -12,61 +12,64 @@
     {% include 'progress/filters.html' %}
 
     {% if current_selection %}
-        <table class="complex_datatable datatable">
-          <caption>
-            <b>Current selection</b>:
-            {{ current_selection|join(', ') }}.
-          </caption>
 
-          <thead>
-            <tr>
-              <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
-              <th colspan="{{ regions|count }}">Regions</th>
-            </tr>
-            <tr>
-              {% for region in regions %}
-              <th>
-                {{ region.reg_code }}
-              </th>
-              {% endfor %}
-            </tr>
-          </thead>
+    {% include 'common/table_legend.html' %}
 
-          <tbody>
-            {% for subject in subjects %}
-            {% set subject_name, subject_title = subject %}
-            <tr>
-              <th>
-                {{ subject_title }}
-              </th>
-              {% for region in regions %}
-                {% set data = objects.get(subject_title, {}).get(region.reg_code, '') %}
-                {% set url = url_for(summary_endpoint, subject=subject_name, region=region.reg_code) %}
+    <table class="complex_datatable datatable">
+      <caption>
+        <b>Current selection</b>:
+        {{ current_selection|join(', ') }}.
+      </caption>
 
-                {% if data %}
-                  <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} conclusion"
-                      title="{{ data['title'] }}">
-                      <span>
-                        <a href="{{ url }}">
-                        {% if can_view_details() %}
-                          {{ data['main_decision'] }}
-                          {{ ' '.join(data['other_decisions']) }}
-                          {{ data['method']|methodify }}<br/>
-                          0 0 0 {# TODO unread counters #}
-                        {% else %}
-                          {{ data['method']|methodify }}
-                        {% endif %}
-                        </a>
-                      </span>
-                  </td>
-                {% else %}
-                <td></td>
-                {% endif %}
-              {% endfor %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+      <thead>
+        <tr>
+          <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
+          <th colspan="{{ regions|count }}">Regions</th>
+        </tr>
+        <tr>
+          {% for region in regions %}
+          <th>
+            {{ region.reg_code }}
+          </th>
+          {% endfor %}
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for subject in subjects %}
+        {% set subject_name, subject_title = subject %}
+        <tr>
+          <th>
+            {{ subject_title }}
+          </th>
+          {% for region in regions %}
+            {% set data = objects.get(subject_title, {}).get(region.reg_code, '') %}
+            {% set url = url_for(summary_endpoint, subject=subject_name, region=region.reg_code) %}
+
+            {% if data %}
+              <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} conclusion"
+                  title="{{ data['title'] }}">
+                  <span>
+                    <a href="{{ url }}">
+                    {% if can_view_details() %}
+                      {{ data['main_decision'] }}
+                      {{ ' '.join(data['other_decisions']) }}
+                      {{ data['method']|methodify }}<br/>
+                      0 0 0 {# TODO unread counters #}
+                    {% else %}
+                      {{ data['method']|methodify }}
+                    {% endif %}
+                    </a>
+                  </span>
+              </td>
+            {% else %}
+            <td></td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     {% else %}
         <p><b>Please select a group and a species.</b></p>
     {% endif %}

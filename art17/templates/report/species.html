@@ -13,6 +13,8 @@
 
   {% if current_selection %}
 
+    {% include 'common/table_legend.html' %}
+
     {% set colspan_all=35 if region else 36 %}
 
     <table class="complex_datatable datatable">

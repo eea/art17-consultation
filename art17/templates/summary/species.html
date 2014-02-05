@@ -16,38 +16,9 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <button type="button" id="wikibutton" url="{{ wiki_url }}">
           View data sheet info</button>
   </div>
-  <div class="legend clearfix">
-    <strong>Legend</strong>
-    <dl>
-      <dt class="conclusion FV">
-        <abbr title="Favourable">FV</abbr>
-      </dt>
-      <dd>
-        Favourable
-      </dd>
+  
+  {% include 'common/table_legend.html' %}
 
-      <dt class="conclusion XX">
-        <abbr title="Unknown">XX</abbr>
-      </dt>
-      <dd>
-        Unknown
-      </dd>
-
-      <dt class="conclusion U1">
-        <abbr title="Inadequate">U1</abbr>
-      </dt>
-      <dd>
-        Inadequate
-      </dd>
-
-      <dt class="conclusion U2">
-        <abbr title="Unfavorable">U2</abbr>
-      </dt>
-      <dd>
-        Unfavorable
-      </dd>    
-    </dl>
-  </div>
   <table class="complex_datatable datatable">
     <caption>
       <b>Current selection</b>:

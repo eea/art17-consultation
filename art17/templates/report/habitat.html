@@ -14,6 +14,9 @@
 
     {% set colspan_all=23 if region else 24 %}
     {% if current_selection %}
+
+    {% include 'common/table_legend.html' %}
+    
     <table class="complex_datatable datatable">
       <caption>
       <b>Current selection</b>:

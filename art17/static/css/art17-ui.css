@@ -293,7 +293,7 @@ abbr {
 
 /* Legend */
 .legend {
-	margin: 12px 0;
+	margin: 24px 0;
 }
 .legend dl {
 	float: left;
@@ -309,16 +309,16 @@ abbr {
 .legend dt {
 	font-family: 'Roboto Condensed';
 	font-weight: 300;
-	margin: 0 6px 0 0;
+	margin: 0;
 }
 
 .legend dd {
-	margin: 0 12px 0 6px;
+	margin: 0 18px 0 6px;
 	line-height: 1;
 }
 
 .legend .conclusion {
-	margin-top: -3px;
+	margin-top: -4px;
 }
 
 .legend strong {
