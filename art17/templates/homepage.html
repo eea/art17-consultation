@@ -31,4 +31,8 @@
       <a href="{{ url_for('auth.register') }}">Register for an account</a>
     {% endif %}
   {% endif %}
+
+  {% if AUTH_BLUEPRINT_INSTALLED and admin_perm.can() %}
+    <a href="{{ url_for('auth.users') }}">User list</a>
+  {% endif %}
 {% endblock content %}

@@ -59,6 +59,14 @@ admin_perm = Permission(RoleNeed('admin'))
 expert_perm = Permission(RoleNeed('expert'))
 
 
+@common.record
+def register_permissions_in_template_globals(state):
+    app = state.app
+
+    app.jinja_env.globals['admin_perm'] = admin_perm
+    app.jinja_env.globals['expert_perm'] = expert_perm
+
+
 def population_size_unit(row):
 
     min_size = row.population_minimum_size or ''
