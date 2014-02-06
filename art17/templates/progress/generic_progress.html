@@ -43,7 +43,7 @@
             {{ subject_title }}
           </th>
           {% for region in regions %}
-            {% set data = objects.get(subject_title, {}).get(region.reg_code, '') %}
+            {% set data = objects.get(subject_name, {}).get(region.reg_code, '') %}
             {% set url = url_for(summary_endpoint, subject=subject_name, region=region.reg_code) %}
 
             {% if data %}
@@ -54,8 +54,12 @@
                     {% if can_view_details() %}
                       {{ data['main_decision'] }}
                       {{ ' '.join(data['other_decisions']) }}
-                      {{ data['method']|methodify }}<br/>
-                      0 0 0 {# TODO unread counters #}
+                      {{ data['method']|methodify }}
+                      {% if data.get('comments') %}<br/>
+                        {{ data['comments']['user'] }}
+                        {{ data['comments']['all'] }}
+                        {{ data['comments']['wiki'] }}
+                      {% endif %}
                     {% else %}
                       {{ data['method']|methodify }}
                     {% endif %}

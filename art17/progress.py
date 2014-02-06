@@ -4,7 +4,6 @@ from flask import (
     render_template,
     Blueprint,
     url_for,
-    jsonify,
 )
 from art17.auth import current_user
 from art17.common import get_default_period, COUNTRY_ASSESSMENTS
@@ -32,6 +31,21 @@ def can_view_details():
         return False
 
     return current_user.has_role('etc') or current_user.has_role('admin')
+
+
+def unread_for_my(user, subject, region):
+    #return user.read_habitat_comments.filter_by(subject=subject, region=region).count()
+    return 0
+
+
+def unread_for_all(user, subject, region):
+    #return user.read_habitat_comments.filter_by(subject=subject, region=region).count()
+    return 0
+
+
+def unread_for_wiki(user, subject, region):
+    #return user.read_habitat_comments.filter_by(subject=subject, region=region).count()
+    return 0
 
 
 def user_is_expert(user):
@@ -215,6 +229,11 @@ class Progress(views.View):
                     ret_dict[subject][region]['title'] = self.process_title(
                         subject, region, conclusion, cell, presence_info
                     )
+                    ret_dict[subject][region]['comments'] = {
+                        'user': unread_for_my(current_user, subject, region),
+                        'all': unread_for_all(current_user, subject, region),
+                        'wiki': unread_for_wiki(current_user, subject, region),
+                    }
 
         context = self.get_context()
         context.update({
@@ -332,7 +351,6 @@ class HabitatProgress(Progress, HabitatMixin):
             .join(EtcDicHdHabitat, self.model_manual_cls.habitatcode ==
                   EtcDicHdHabitat.habcode)
             .with_entities(self.model_manual_cls.subject,
-                           EtcDicHdHabitat.shortname,
                            self.model_manual_cls.region,
                            self.model_manual_cls.decision,
                            self.model_manual_cls.user_id,
@@ -346,8 +364,7 @@ class HabitatProgress(Progress, HabitatMixin):
         for entry in self.objects.all():
             fields = ('subject', 'region', 'decision', 'user_id',
                       'overall', 'range', 'method', 'conclusion')
-            processed_entry = tuple([' - '.join(entry[0:2])] + list(entry[2:]))
-            row = dict(zip(fields, processed_entry))
+            row = dict(zip(fields, entry))
             if not (row['subject'] and row['region']):
                 continue
 
