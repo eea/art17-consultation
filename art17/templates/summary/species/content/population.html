@@ -11,7 +11,7 @@
                           row, qa_errors,
                           title=title,
                           classes=classes) }}>
-      <span>{{ row.percentage_population_mean_size|str2num }}</span>
+      <span>{{ row.percentage_population_mean_size|str1num }}</span>
     </td>
 
     {% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude',
