@@ -86,7 +86,7 @@ class Progress(views.View):
             .with_entities(self.model_cls.subject,
                            self.model_cls.region,
                            self.model_cls.eu_country_code,
-                           self.model_cls.habitattype_type_asses)
+                           self.model_cls.presence)
             .filter_by(dataset_id=period)
         )
         presence = {}
@@ -200,6 +200,22 @@ class Progress(views.View):
 
         self.DECISION_DETAILS = self.get_decision_details()
         self.METHOD_DETAILS = self.get_method_details()
+
+        presence = self.get_presence(period)
+        data_dict = self.setup_objects_and_data(period, group, conclusion)
+        ret_dict = {}
+        for subject, region in data_dict.iteritems():
+            ret_dict[subject] = {}
+            for region, cell_options in region.iteritems():
+                cell = self.process_cell(cell_options, conclusion)
+                ret_dict[subject][region] = cell
+                if cell['main_decision']:
+                    pi = presence.get(subject, {}).get(region, {})
+                    presence_info = self.process_presence(pi)
+                    ret_dict[subject][region]['title'] = self.process_title(
+                        subject, region, conclusion, cell, presence_info
+                    )
+
         context = self.get_context()
         context.update({
             'progress_filter_form': progress_filter_form,
@@ -209,7 +225,7 @@ class Progress(views.View):
             'conclusion': conclusion,
             'subjects': self.subjects_by_group(period, group),
             'regions': regions.all(),
-            'objects': self.setup_objects_and_data(period, group, conclusion),
+            'objects': ret_dict,
         })
 
         return render_template(self.template_name, **context)
@@ -275,21 +291,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
                     data_dict[row['subject']][row['region']] = []
                 data_dict[row['subject']][row['region']].append(row)
 
-        presence = self.get_presence(period)
-        ret_dict = {}
-        for subject, region in data_dict.iteritems():
-            ret_dict[subject] = {}
-            for region, cell_options in region.iteritems():
-                cell = self.process_cell(cell_options, conclusion_type)
-                ret_dict[subject][region] = cell
-                if cell['main_decision']:
-                    pi = presence.get(subject, {}).get(region, {})
-                    presence_info = self.process_presence(pi)
-                    ret_dict[subject][region]['title'] = self.process_title(
-                        subject, region, conclusion_type, cell, presence_info
-                    )
-
-        return ret_dict
+        return data_dict
 
     def get_context(self):
         return {
@@ -355,21 +357,7 @@ class HabitatProgress(Progress, HabitatMixin):
                 data_dict[row['subject']][row['region']] = []
             data_dict[row['subject']][row['region']].append(row)
 
-        presence = self.get_presence(period)
-        ret_dict = {}
-        for subject,region in data_dict.iteritems():
-            ret_dict[subject] = {}
-            for region, cell_options in region.iteritems():
-                cell = self.process_cell(cell_options, conclusion_type)
-                ret_dict[subject][region] = cell
-                if cell['main_decision']:
-                    pi = presence.get(subject, {}).get(region, {})
-                    presence_info = self.process_presence(pi)
-                    ret_dict[subject][region]['title'] = self.process_title(
-                        subject, region, conclusion_type, cell, presence_info
-                    )
-
-        return ret_dict
+        return data_dict
 
     def get_context(self):
         return {
