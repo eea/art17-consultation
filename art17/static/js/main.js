@@ -142,13 +142,26 @@ $(function() {
 $(function () {
 
 
-  $('#history').on('click', 'li', function () {
+  $('#history').on('click', 'li', function (event) {
     event.stopPropagation();
     $(this).addClass('selected')
     .siblings('.selected').removeClass('selected');
+    revision_id = $(this).attr('id');
+    url = $(this).attr('href');
+    var request = $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "html",
+        success: function(result) {
+            $('#active-wiki').hide()
+            $('#preview-wiki').html(result).show()
+        }
+    });
   });
 
   $('html').click( function () {
     $('#history .selected').removeClass('selected');
+    $('#active-wiki').show()
+    $('#preview-wiki').hide()
   });
 });

@@ -20,6 +20,7 @@ DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 DATE_FORMAT_CMNT = '%B %-d, %Y'
 TIME_FORMAT_CMNT = '%H:%M:%S'
 
+
 def format_datetime(value, format):
     if not value:
         return ''
@@ -66,7 +67,6 @@ def get_edit_url(comment):
     )
 
 
-
 @wiki.app_template_global('get_css_class')
 def get_css_class(comment):
     if comment.deleted:
@@ -77,6 +77,13 @@ def get_css_class(comment):
         return 'cmnt-read'
     else:
         return 'cmnt-notread'
+
+
+@wiki.app_template_global('can_edit_cmnt')
+def can_edit(comment):
+    if current_user == comment.author and not comment.deleted:
+        return True
+    return False
 
 
 class WikiView(views.View):
@@ -130,12 +137,21 @@ class DataSheetInfo(WikiView):
     def get_context(self):
         active_change = self.get_active_change()
         wiki = self.get_wiki()
+        wiki_changes = self.get_wiki_changes()
+
+        all_changes = wiki_changes.order_by(WikiChange.changed.desc()).all()
+        page_history = [{'changed': c.changed,
+                         'editor': c.editor,
+                         'active': c.active,
+                         'id': c.id}
+                        for c in all_changes]
 
         request_args = {arg: request.args.get(arg) for arg in
                         ['subject', 'region', 'period']}
 
         return {'wiki_body': active_change.body if active_change else '',
                 'comments': wiki.comments if wiki else [],
+                'page_history': page_history,
                 'page_history_url': url_for('.data-sheet-info-page-history',
                                             page=self.page,
                                             **request_args),
@@ -310,6 +326,16 @@ def _manage_comment(page):
         abort(404)
 
     return ''
+
+
+@wiki.route('/species/summary/wiki', endpoint='get-revision')
+def _get_revision():
+    revision_id = request.args.get('revision_id')
+    revision = WikiChange.query.filter_by(id=revision_id).first()
+    if not revision:
+        abort(404)
+
+    return revision.body
 
 wiki.add_url_rule('/<page>/summary/wiki/',
                   view_func=DataSheetInfo.as_view('data-sheet-info'))
