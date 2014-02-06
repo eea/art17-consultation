@@ -2,20 +2,25 @@
 <div class="comment-section">
   <h2>Comments</h2>
   <button>Add comment</button>
-  
+
 	<ul class="cmnt-list no-list">
 	{% for comment in comments %}
+          {% set edit_button = False %}
           {% if g.identity.id == comment.author_id %}
-            {% set href = url_for('.manage-comment', comment_id=comment.id, toggle='del') %}
+            {% set href = url_for('.manage-comment', comment_id=comment.id,
+            toggle='del', page=page) %}
+            {% set edit_button = True %}
             {% if comment.deleted %}
               {% set comment_type = 'Deleted' %}
               {% set button_text  = 'Undo' %}
             {% else %}
               {% set comment_type = 'Your comment'%}
               {% set button_text  = 'Delete'%}
+              {% set edit_button = True %}
             {% endif %}
           {% else %}
-            {% set href = url_for('.manage-comment', comment_id=comment.id, toggle='read') %}
+            {% set href = url_for('.manage-comment', comment_id=comment.id,
+            toggle='read', page=page) %}
             {% if is_read(comment) %}
               {% set comment_type = 'Read'%}
               {% set button_text  = 'Mark as not read'%}
@@ -29,15 +34,24 @@
 	  <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
             <button class="button_text" href="{{ href }}">{{ button_text }}</button>
+            {% if edit_button %}
+            <button class="button_text" id="edit-btn" href="{{ get_edit_url(comment) }}">Edit</button>
+            {% endif %}
 	  </div>
 
-	  <div class="cmnt-body">{{ comment.comment | safe }}</div>
+          {% if edit_comment_form and edit_button %}
+            {% include 'wiki/datasheetinfo/editcomment.html' %}
+          {% else%}
+	    <div class="cmnt-body">{{ comment.comment | safe }}</div>
+          {% endif %}
+
 	  <div class="small clearfix">
 	    <div class="pull-left">
 	      <strong>{{ comment.author.name | hide_adm_etc_username }}
               </strong> from {{ comment.author.institution }}
 	    </div>
-            <span class="muted pull-right">{{ comment.posted | format_date_cmnt }}</span>
+            <span class="muted pull-right" title="{{ comment.posted |
+            format_time_cmnt }}">{{ comment.posted | format_date_cmnt }}</span>
 	  </div>
 	</li>
 
