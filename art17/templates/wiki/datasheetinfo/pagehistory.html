@@ -1,14 +1,44 @@
-<b>Page history</b>
-<form name="page_hist_form" method="post">
+<div id="history" class="hidden">
+	<div class="history-header clearfix">
+		<strong class="pull-left">10 revisions</strong>
+		<button onclick="$('#history').toggleClass('hidden')"
+						class="button_text pull-right">Close</button>
+	</div>
+	<ul class="history-list">
 
-    {% for row in page_history %}
-    <li> <input type="radio" name="hist_page" value="{{ row['id'] }}"
-        {% if row['active'] %} checked {% endif%}>
-    {{ row['changed']|format_date_ph }} by {{ row['editor'] }}
-    {% if row['active'] %} (active) {% endif %}
-    </li>
-    {% endfor %}
 
-    <button type="submit" name="submit" value="hist_page" >Make active</button>
+		{% for row in page_history %}
+	  <li> <input type="radio" name="hist_page" value="{{ row['id'] }}"
+	      {% if row['active'] %} checked {% endif%}>
+	  {{ row['changed']|format_date_ph }} by {{ row['editor'] }}
+	  {% if row['active'] %} (active) {% endif %}
+	  </li>
+	  {% endfor %}
 
-</form>
+		<li>
+			Supember 12, 2014 
+			<br/>by Some Person
+			<button class="button_text">Restore version</button>
+		</li>
+		<li>
+			Supember 12, 2014
+			<br/>by Some Person
+			<button class="button_text">Restore version</button>
+		</li>
+		<li>
+			Supember 12, 2014
+			<br/>by Some Person
+			<button class="button_text">Restore version</button>
+		</li>
+		<li>
+			Supember 12, 2014
+			<br/>by Some Person
+			<button class="button_text">Restore version</button>
+		</li>
+		<li>
+			Supember 12, 2014
+			<br/>by Some Person
+			<button class="button_text">Restore version</button>
+		</li>
+	</ul>
+</div>

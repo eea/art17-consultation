@@ -131,3 +131,17 @@ $(function() {
         })
     });
 });
+
+$(function () {
+
+
+  $('#history').on('click', 'li', function () {
+    event.stopPropagation();
+    $(this).addClass('selected')
+    .siblings('.selected').removeClass('selected');
+  });
+
+  $('html').click( function () {
+    $('#history .selected').removeClass('selected');
+  });
+});
