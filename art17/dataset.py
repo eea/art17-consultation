@@ -46,9 +46,12 @@ class ImportCommand(Command):
         ]
 
     def handle(self, app, input_db, schema, dataset_name, no_commit):
+        if schema not in IMPORT_SCHEMA:
+            stdout_write('Unknown schema: %s\n' % schema)
+            return
         with app.app_context():
             input_conn = create_engine(input_db + '?charset=utf8').connect()
-            dataset = models.Dataset(name=dataset_name)
+            dataset = models.Dataset(name=dataset_name, schema=schema)
             models.db.session.add(dataset)
             models.db.session.flush()
 

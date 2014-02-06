@@ -21,6 +21,7 @@ class Dataset(Base):
 
     id = Column(Integer, primary_key=True, unique=True)
     name = Column(String(255), nullable=False)
+    schema = Column(String(4))
 
 
 class Comment(Base):
