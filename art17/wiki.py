@@ -305,7 +305,7 @@ class DataSheetInfoEditComment(DataSheetInfo):
         return context
 
 
-@wiki.route('/<page>/summary/wiki', endpoint='manage-comment')
+@wiki.route('/<page>/summary/wiki/comment', endpoint='manage-comment')
 def _manage_comment(page):
     comment_id = request.args.get('comment_id')
     comment = WikiComment.query.filter_by(id=comment_id).first()
@@ -328,8 +328,8 @@ def _manage_comment(page):
     return ''
 
 
-@wiki.route('/species/summary/wiki', endpoint='get-revision')
-def _get_revision():
+@wiki.route('/<page>/summary/wiki/history', endpoint='get-revision')
+def _get_revision(page):
     revision_id = request.args.get('revision_id')
     revision = WikiChange.query.filter_by(id=revision_id).first()
     if not revision:

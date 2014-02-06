@@ -13,7 +13,7 @@
                         {{ row['changed'] | format_date_cmnt }}
                         <br/>by {{ row['editor'] }}{% if row['active'] %}
                         (active) {% endif %}
-			<button class="button_text">Restore version</button>
+                        <button class="button_text">Restore version {{page}}</button>
 	  </li>
 	        {% endfor %}
 	</ul>
