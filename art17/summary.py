@@ -112,6 +112,8 @@ def can_add_conclusion(dataset, zone, subject, region=None):
     """
     Zone: one of 'species', 'habitat'
     """
+    if not dataset:
+        return False
     return not dataset.is_readonly and admin_perm.can()
 
 
