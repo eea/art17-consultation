@@ -23,6 +23,9 @@ class Dataset(Base):
     name = Column(String(255), nullable=False)
     schema = Column(String(4))
 
+    def is_readonly(self):
+        return self.schema == '2006'
+
 
 t_comments_read = Table(
     'comments_read', metadata,
