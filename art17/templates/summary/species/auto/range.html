@@ -1,5 +1,5 @@
 <td class="number">
-  {{ row.range_surface_area|parse_semicolon|str2num('') }}
+  {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} conclusion">
