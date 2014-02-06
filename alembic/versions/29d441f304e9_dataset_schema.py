@@ -8,7 +8,7 @@ from sqlalchemy.dialects import mysql
 
 def upgrade():
     op.add_column('datasets',
-                  sa.Column('schema', sa.String(4), default=2006, nullable=True),
+                  sa.Column('schema', sa.String(4), default='2006'),
     )
 
 

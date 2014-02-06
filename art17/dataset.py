@@ -435,3 +435,21 @@ CLEANUP_TABLES = set(
     for definition in IMPORT_SCHEMA.values()
     for table_name, cols in definition
 )
+
+
+CONVERTER_URLS = {
+    '2006': {
+        'species': '{scheme}://{host}/Converters/run_conversion?' +
+                   'file={path}/{filename}&conv=24&source=remote#{region}',
+        'habitat': '{scheme}://{host}/Converters/run_conversion?' +
+                   'file={path}/{filename}&conv=23&source=remote#{region}',
+    },
+    '2012': {
+        'species': '{scheme}://{host}/Converters/run_conversion?' +
+                   'file={path}/{filename}&conv=354&source=remote' +
+                   '#{subject}{region}',
+        'habitat': '{scheme}://{host}/Converters/run_conversion?' +
+                   'file={path}/{filename}&conv=350&source=remote' +
+                   '#{subject}{region}',
+    },
+}

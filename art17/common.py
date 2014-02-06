@@ -1,6 +1,7 @@
 from urlparse import urlparse
 from flask import Blueprint, request, jsonify
 from flask_principal import Permission, RoleNeed
+from art17.dataset import CONVERTER_URLS
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
     EtcDataSpeciesAutomaticAssessment,
@@ -216,20 +217,20 @@ def get_struct_conclusion_value(habitatcode, region, assessment_method):
 
 
 def get_original_record_url(row):
-    url_format = '{scheme}://{host}/Converters/run_conversion?' \
-        'file={path}/{filename}&conv={conv}&source=remote#{region}'
-
+    url_scheme = CONVERTER_URLS.get(row.dataset.schema, {})
     if isinstance(row, EtcDataSpeciesRegion):
-        conv = 24
+        page = 'species'
     elif isinstance(row, EtcDataHabitattypeRegion):
-        conv = 23
+        page = 'habitat'
     else:
-        url_format = ''
+        raise NotImplementedError
+    url_format = url_scheme.get(page, '')
     info = urlparse(row.envelope)
     return url_format.format(
         scheme=info.scheme, host=info.netloc, path=info.path,
-        filename=row.filename, conv=conv,
+        filename=row.filename,
         region=row.region,
+        subject=row.speciescode if page == 'species' else row.habitatcode,
     )
 
 

@@ -192,6 +192,7 @@ class EtcDataHabitattypeRegion(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+    dataset = relationship(Dataset)
 
     habitat = relationship(
         'EtcDicHdHabitat',
@@ -377,6 +378,7 @@ class EtcDataSpeciesRegion(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+    dataset = relationship(Dataset)
 
     @property
     def is_assesm(self):
