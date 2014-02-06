@@ -59,7 +59,8 @@
         <tr {% if row.is_assesm %}class="assesm"{% endif %}>
           <td>
             {% set original_url=get_original_record_url(row) %}
-            <a class="popup-btn" data-title="Factsheet" href="{{ original_url }}">
+            {% set country_title = get_title_for_habitat_country(row) %}
+            <a class="popup-btn" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
               {{ row.eu_country_code }}
             </a>
           </td>
