@@ -21,6 +21,20 @@ DATE_FORMAT = '%Y-%m-%d'
 comments = Blueprint('comments', __name__)
 
 
+def mark_read(comment, user_id):
+    q = "INSERT INTO comments_read (id_comment, reader_user_id) " + \
+        "VALUES(" + str(comment.id) + ",'" + user_id + "')"
+    db.session.execute(q)
+    db.session.commit()
+
+
+def mark_unread(comment, user_id):
+    q = "DELETE FROM comments_read WHERE id_comment=" + str(comment.id) + \
+        " AND reader_user_id='" + user_id + "'"
+    db.session.execute(q)
+    db.session.commit()
+
+
 @comments.app_template_global('can_post_comment')
 def can_post_comment(record):
     if not current_user.is_authenticated():
@@ -52,9 +66,30 @@ def can_edit_comment(comment):
     )
 
 
+@comments.app_template_global('can_toggle_read')
+def can_toggle_read(comment):
+    if not comment or not current_user.is_authenticated():
+        return False
+
+    if comment.author_id == current_user.id:
+        return False
+
+    return True
+
+
 class CommentsList(views.View):
 
     methods = ['GET', 'POST']
+
+    def toggle_read(self, comment_id):
+        comment = Comment.query.get_or_404(comment_id)
+        if not can_toggle_read(comment):
+            flash('You are not allowed here', 'error')
+            return False
+        if comment.read_for(current_user.id):
+            mark_unread(comment, current_user.id)
+        else:
+            mark_read(comment, current_user.id)
 
     def process_form(self, form, edited_comment):
         if form.validate():
@@ -79,6 +114,8 @@ class CommentsList(views.View):
                 )
                 db.session.add(comment)
             db.session.commit()
+            if not edited_comment:
+                mark_read(comment, current_user.id)
             return True
         else:
             flash('The form has errors', 'error')
@@ -93,6 +130,8 @@ class CommentsList(views.View):
             if not can_edit_comment(edited_comment):
                 flash('You are not allowed to edit this comment', 'error')
                 edited_comment = None
+        if request.args.get('toggle'):
+            self.toggle_read(request.args['toggle'])
 
         if request.method == 'POST':
             form = CommentForm(request.form)

@@ -34,7 +34,15 @@
       <dl>
         <dt>
           {{ comment.author.name or comment.author_id }} - {{ comment.author.institution }}
-          {% if is_owner %}<a href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>{% endif %}
+
+          {% if is_owner %}
+            <a href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>
+          {% endif %}
+          {% if can_toggle_read(comment) %}
+            <a href="?toggle={{ comment.id }}&read={{ read }}#comment-{{ comment.id }}">
+              {% if read %}Mark as unread{% else %}Mark as read{% endif %}
+            </a>
+          {% endif %}
         </dt>
         <dd>{{ comment.comment }}</dd>
         <dd>Posted on: {{ comment.post_date }}</dd>
