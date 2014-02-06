@@ -21,15 +21,15 @@ DATE_FORMAT = '%Y-%m-%d'
 comments = Blueprint('comments', __name__)
 
 
-def mark_read(comment, user_id):
-    q = "INSERT INTO comments_read (id_comment, reader_user_id) " + \
+def mark_read(comment, user_id, table):
+    q = "INSERT INTO " + table + " (id_comment, reader_user_id) " + \
         "VALUES(" + str(comment.id) + ",'" + user_id + "')"
     db.session.execute(q)
     db.session.commit()
 
 
-def mark_unread(comment, user_id):
-    q = "DELETE FROM comments_read WHERE id_comment=" + str(comment.id) + \
+def mark_unread(comment, user_id, table):
+    q = "DELETE FROM " + table + " WHERE id_comment=" + str(comment.id) + \
         " AND reader_user_id='" + user_id + "'"
     db.session.execute(q)
     db.session.commit()
@@ -61,7 +61,7 @@ def can_edit_comment(comment):
     if not comment or not current_user.is_authenticated():
         return False
     return (
-        not comment.record.deleted
+        not comment.record.deleted and not comment.deleted
         and (comment.author_id == current_user.id or admin_perm.can())
     )
 
@@ -92,8 +92,7 @@ class CommentsList(views.View):
 
     methods = ['GET', 'POST']
 
-    def toggle_delete(self, comment_id):
-        comment = Comment.query.get_or_404(comment_id)
+    def toggle_delete(self, comment):
         if not can_delete_comment(comment):
             flash('You are not allowed here', 'error')
             return False
@@ -103,15 +102,14 @@ class CommentsList(views.View):
         comment.deleted = 1 - comment.deleted
         db.session.commit()
 
-    def toggle_read(self, comment_id):
-        comment = Comment.query.get_or_404(comment_id)
+    def toggle_read(self, comment):
         if not can_toggle_read(comment):
             flash('You are not allowed here', 'error')
             return False
         if comment.read_for(current_user.id):
-            mark_unread(comment, current_user.id)
+            mark_unread(comment, current_user.id, self.read_table)
         else:
-            mark_read(comment, current_user.id)
+            mark_read(comment, current_user.id, self.read_table)
 
     def process_form(self, form, edited_comment):
         if form.validate():
@@ -125,7 +123,7 @@ class CommentsList(views.View):
                 if not can_post_comment(self.record):
                     flash('You are not allowed here', 'error')
                     return False
-                comment = Comment(
+                comment = self.model_comment_cls(
                     subject=self.record.subject,
                     region=self.record.region,
                     user=self.record.user_id,
@@ -133,11 +131,12 @@ class CommentsList(views.View):
                     comment=form.comment.data,
                     author_id=current_user.id,
                     post_date=datetime.now().strftime(DATE_FORMAT),
+                    dataset_id=self.record.dataset_id,
                 )
                 db.session.add(comment)
             db.session.commit()
             if not edited_comment:
-                mark_read(comment, current_user.id)
+                mark_read(comment, current_user.id, self.read_table)
             return True
         else:
             flash('The form has errors', 'error')
@@ -148,14 +147,21 @@ class CommentsList(views.View):
         edited_comment = None
         if request.args.get('edit'):
             edit_id = request.args.get('edit')
-            edited_comment = Comment.query.get(edit_id)
+            edited_comment = self.model_comment_cls.query.get(
+                (edit_id, self.record.dataset_id))
             if not can_edit_comment(edited_comment):
                 flash('You are not allowed to edit this comment', 'error')
                 edited_comment = None
         if request.args.get('toggle'):
-            self.toggle_read(request.args['toggle'])
+            comment = self.model_comment_cls.query.get(
+                (request.args['toggle'], self.record.dataset_id)
+            )
+            self.toggle_read(comment)
         if request.args.get('delete'):
-            self.toggle_delete(request.args['delete'])
+            comment = self.model_comment_cls.query.get(
+                (request.args['delete'], self.record.dataset_id)
+            )
+            self.toggle_delete(comment)
 
         if request.method == 'POST':
             form = CommentForm(request.form)
@@ -182,12 +188,12 @@ class CommentsList(views.View):
 
 class SpeciesCommentsList(SpeciesMixin, CommentsList):
 
-    pass
+    read_table = 'comments_read'
 
 
 class HabitatCommentsList(HabitatMixin, CommentsList):
 
-    pass
+    read_table = 'habitat_comments_read'
 
 
 comments.add_url_rule('/species/comments/<subject>/<region>/<user>/<MS>/',

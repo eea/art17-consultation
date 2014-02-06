@@ -35,7 +35,7 @@
         <dt>
           {{ comment.author.name or comment.author_id }} - {{ comment.author.institution }}
 
-          {% if is_owner %}
+          {% if can_edit_comment(comment) %}
             <a href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>
           {% endif %}
           {% if can_toggle_read(comment) %}
