@@ -206,6 +206,10 @@ class EtcDataHabitattypeRegion(Base):
     def subject(self):
         return self.habitatcode
 
+    @hybrid_property
+    def presence(self):
+        return self.habitattype_type_asses
+
 
 class EtcDataHcoveragePressure(Base):
     __tablename__ = 'etc_data_hcoverage_pressures'
@@ -389,6 +393,10 @@ class EtcDataSpeciesRegion(Base):
     @hybrid_property
     def subject(self):
         return self.assesment_speciesname
+
+    @hybrid_property
+    def presence(self):
+        return self.species_type_asses
 
 
 class EtcDataSpopulationPressure(Base):

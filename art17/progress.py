@@ -80,6 +80,28 @@ class Progress(views.View):
     def get_method_details(self):
         return dict((r.method, r.details) for r in EtcDicMethod.query.all())
 
+    def get_presence(self, period):
+        presence_qs = (
+            self.model_cls.query
+            .with_entities(self.model_cls.subject,
+                           self.model_cls.region,
+                           self.model_cls.eu_country_code,
+                           self.model_cls.habitattype_type_asses)
+            .filter_by(dataset_id=period)
+        )
+        presence = {}
+        for report in presence_qs:
+            fields = ('subject', 'region', 'eu_country_code',
+                      'species_type_asses')
+            row = dict(zip(fields, report))
+            if row['subject'] not in presence:
+                presence[row['subject']] = {}
+            if row['region']:
+                if row['region'] not in presence[row['subject']]:
+                    presence[row['subject']][row['region']] = []
+                presence[row['subject']][row['region']].append(row)
+        return presence
+
     def process_presence(self, presence):
         occasional = (
             ','.join([row['eu_country_code']
@@ -176,6 +198,8 @@ class Progress(views.View):
         current_selection = self.get_current_selection(
             period_name, group, conclusion)
 
+        self.DECISION_DETAILS = self.get_decision_details()
+        self.METHOD_DETAILS = self.get_method_details()
         context = self.get_context()
         context.update({
             'progress_filter_form': progress_filter_form,
@@ -251,29 +275,8 @@ class SpeciesProgress(Progress, SpeciesMixin):
                     data_dict[row['subject']][row['region']] = []
                 data_dict[row['subject']][row['region']].append(row)
 
-        presence_qs = (
-            self.model_cls.query
-            .with_entities(self.model_cls.subject,
-                           self.model_cls.region,
-                           self.model_cls.eu_country_code,
-                           self.model_cls.species_type_asses)
-            .filter_by(dataset_id=period)
-        )
-        presence = {}
-        for report in presence_qs:
-            fields = ('subject', 'region', 'eu_country_code',
-                      'species_type_asses')
-            row = dict(zip(fields, report))
-            if row['subject'] not in presence:
-                presence[row['subject']] = {}
-            if row['region']:
-                if row['region'] not in presence[row['subject']]:
-                    presence[row['subject']][row['region']] = []
-                presence[row['subject']][row['region']].append(row)
-
+        presence = self.get_presence(period)
         ret_dict = {}
-        self.DECISION_DETAILS = self.get_decision_details()
-        self.METHOD_DETAILS = self.get_method_details()
         for subject, region in data_dict.iteritems():
             ret_dict[subject] = {}
             for region, cell_options in region.iteritems():
@@ -352,11 +355,19 @@ class HabitatProgress(Progress, HabitatMixin):
                 data_dict[row['subject']][row['region']] = []
             data_dict[row['subject']][row['region']].append(row)
 
+        presence = self.get_presence(period)
         ret_dict = {}
         for subject,region in data_dict.iteritems():
             ret_dict[subject] = {}
             for region, cell_options in region.iteritems():
-                ret_dict[subject][region] = self.process_cell(cell_options, conclusion_type)
+                cell = self.process_cell(cell_options, conclusion_type)
+                ret_dict[subject][region] = cell
+                if cell['main_decision']:
+                    pi = presence.get(subject, {}).get(region, {})
+                    presence_info = self.process_presence(pi)
+                    ret_dict[subject][region]['title'] = self.process_title(
+                        subject, region, conclusion_type, cell, presence_info
+                    )
 
         return ret_dict
 
