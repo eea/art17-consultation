@@ -21,17 +21,13 @@ DATE_FORMAT = '%Y-%m-%d'
 comments = Blueprint('comments', __name__)
 
 
-def mark_read(comment, user_id, table):
-    q = "INSERT INTO " + table + " (id_comment, reader_user_id) " + \
-        "VALUES(" + str(comment.id) + ",'" + user_id + "')"
-    db.session.execute(q)
+def mark_read(comment, user):
+    comment.readers.append(user)
     db.session.commit()
 
 
-def mark_unread(comment, user_id, table):
-    q = "DELETE FROM " + table + " WHERE id_comment=" + str(comment.id) + \
-        " AND reader_user_id='" + user_id + "'"
-    db.session.execute(q)
+def mark_unread(comment, user):
+    comment.readers.remove(user)
     db.session.commit()
 
 
@@ -107,9 +103,9 @@ class CommentsList(views.View):
             flash('You are not allowed here', 'error')
             return False
         if comment.read_for(current_user.id):
-            mark_unread(comment, current_user.id, self.read_table)
+            mark_unread(comment, current_user)
         else:
-            mark_read(comment, current_user.id, self.read_table)
+            mark_read(comment, current_user)
 
     def process_form(self, form, edited_comment):
         if form.validate():
@@ -136,7 +132,7 @@ class CommentsList(views.View):
                 db.session.add(comment)
             db.session.commit()
             if not edited_comment:
-                mark_read(comment, current_user.id, self.read_table)
+                mark_read(comment, current_user)
             return True
         else:
             flash('The form has errors', 'error')
@@ -188,12 +184,12 @@ class CommentsList(views.View):
 
 class SpeciesCommentsList(SpeciesMixin, CommentsList):
 
-    read_table = 'comments_read'
+    pass
 
 
 class HabitatCommentsList(HabitatMixin, CommentsList):
 
-    read_table = 'habitat_comments_read'
+    pass
 
 
 comments.add_url_rule('/species/comments/<subject>/<region>/<user>/<MS>/',

@@ -24,6 +24,13 @@ class Dataset(Base):
     schema = Column(String(4))
 
 
+t_comments_read = Table(
+    'comments_read', metadata,
+    Column('id_comment', ForeignKey('comments.id'), nullable=False),
+    Column('reader_user_id', String(25), ForeignKey('registered_users.user')),
+)
+
+
 class Comment(Base):
     __tablename__ = 'comments'
 
@@ -36,7 +43,6 @@ class Comment(Base):
     author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
-
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
@@ -59,15 +65,12 @@ class Comment(Base):
         primaryjoin="Comment.author_id==RegisteredUser.id",
         foreign_keys=author_id,
     )
+    readers = relationship("RegisteredUser",
+                           secondary=t_comments_read,
+                           backref='read_species_comments')
 
     def read_for(self, user):
-        return bool(
-            db.session.query(Comment.id)
-            .join(t_comments_read)
-            .filter(Comment.id == self.id)
-            .filter('comments_read.reader_user_id="%s"' % user)
-            .count()
-        )
+        return user in self.readers
 
     @hybrid_property
     def subject(self):
@@ -76,13 +79,6 @@ class Comment(Base):
     @subject.setter
     def subject(self, value):
         self.assesment_speciesname = value
-
-
-t_comments_read = Table(
-    'comments_read', metadata,
-    Column('id_comment', ForeignKey('comments.id'), nullable=False),
-    Column('reader_user_id', String(25), nullable=False),
-)
 
 
 class DicCountryCode(Base):
@@ -638,6 +634,13 @@ class EtcQaErrorsSpeciesManualChecked(Base):
         return self.assesment_speciesname
 
 
+t_habitat_comments_read = Table(
+    'habitat_comments_read', metadata,
+    Column('id_comment', ForeignKey('habitat_comments.id'), nullable=False),
+    Column('reader_user_id', String(25), ForeignKey('registered_users.user'))
+)
+
+
 class HabitatComment(Base):
     __tablename__ = 'habitat_comments'
 
@@ -650,7 +653,6 @@ class HabitatComment(Base):
     author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
-
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
@@ -673,15 +675,12 @@ class HabitatComment(Base):
         primaryjoin="HabitatComment.author_id==RegisteredUser.id",
         foreign_keys=author_id,
     )
+    readers = relationship("RegisteredUser",
+                           secondary=t_habitat_comments_read,
+                           backref='read_habitat_comments')
 
     def read_for(self, user):
-        return bool(
-            db.session.query(HabitatComment.id)
-            .join(t_habitat_comments_read)
-            .filter(HabitatComment.id == self.id)
-            .filter('habitat_comments_read.reader_user_id="%s"' % user)
-            .count()
-        )
+        return user in self.readers
 
     @hybrid_property
     def subject(self):
@@ -690,13 +689,6 @@ class HabitatComment(Base):
     @subject.setter
     def subject(self, value):
         self.habitat = value
-
-
-t_habitat_comments_read = Table(
-    'habitat_comments_read', metadata,
-    Column('id_comment', ForeignKey('habitat_comments.id'), nullable=False),
-    Column('reader_user_id', String(25), nullable=False)
-)
 
 
 t_habitat_group = Table(
