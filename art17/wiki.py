@@ -15,14 +15,23 @@ from auth import current_user
 
 wiki = Blueprint('wiki', __name__)
 
-DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
+DATE_FORMAT_CMNT = '%B %-d, %Y'
 
 
 @wiki.app_template_filter('format_date_ph')
 def format_date_ph(value):
     if not value:
         return ''
-    date = datetime.strftime(value, DATE_FORMAT)
+    date = datetime.strftime(value, DATE_FORMAT_PH)
+    return date
+
+
+@wiki.app_template_filter('format_date_cmnt')
+def format_date_cmnt(value):
+    if not value:
+        return ''
+    date = datetime.strftime(value, DATE_FORMAT_CMNT)
     return date
 
 
@@ -31,9 +40,26 @@ def hide_adm_etc_username(name):
     author = RegisteredUser.query.filter_by(name=name).first()
     if (author.has_role('etc') or author.has_role('admin')) and not (
             current_user.has_role('etc') or current_user.has_role('admin')):
-        return ''
+        return 'Someone'
     else:
         return name
+
+
+@wiki.app_template_global('is_read')
+def is_read(comment):
+    return current_user in comment.readers
+
+
+@wiki.app_template_global('get_css_class')
+def get_css_class(comment):
+    if comment.deleted:
+        return 'cmnt-deleted'
+    elif comment.author == current_user:
+        return 'cmnt-owned'
+    elif current_user in comment.readers:
+        return 'cmnt-read'
+    else:
+        return 'cmnt-notread'
 
 
 class WikiView(views.View):
@@ -80,11 +106,7 @@ class DataSheetInfo(WikiView):
 
     def get_context(self):
         active_change = self.get_active_change()
-
         wiki = self.get_wiki()
-        if wiki:
-            for comment in wiki.comments:
-                comment.set_css_class(current_user)
 
         request_args = {arg: request.args.get(arg) for arg in
                         ['subject', 'region', 'period']}
@@ -151,7 +173,6 @@ class DataSheetInfoAddComment(DataSheetInfo):
             db.session.add(wiki)
             db.session.commit()
 
-        import pdb; pdb.set_trace()  # XXX BREAKPOINT
         comment_attrs = {'wiki_id': wiki.id,
                          'comment': request.form.get('text'),
                          'author_id': current_user.id,
@@ -212,6 +233,28 @@ class DataSheetInfoEditPage(DataSheetInfo):
 
         return context
 
+
+@wiki.route('/species/summary/wiki', endpoint='manage-comment')
+def _manage_comment():
+    comment_id = request.args.get('comment_id')
+    comment = WikiComment.query.filter_by(id=comment_id).first()
+    if not comment:
+        abort(404)
+
+    toggle = request.args.get('toggle')
+    if toggle == 'del':
+        comment.deleted = 1 - comment.deleted
+        db.session.commit()
+    elif toggle == 'read':
+        if is_read(comment):
+            comment.readers.remove(current_user)
+        else:
+            comment.readers.append(current_user)
+        db.session.commit()
+    else:
+        abort(404)
+
+    return ''
 
 wiki.add_url_rule('/<page>/summary/wiki/',
                   view_func=DataSheetInfo.as_view('data-sheet-info'))

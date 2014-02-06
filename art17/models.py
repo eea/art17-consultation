@@ -1058,16 +1058,6 @@ class WikiComment(Base):
                            secondary=t_wiki_comments_read,
                            backref='read_comments')
 
-    def set_css_class(self, current_user):
-        if self.deleted:
-            self.css_class = 'cmnt-deleted'
-        elif self.author == current_user:
-            self.css_class = 'cmnt-owned'
-        elif current_user in self.readers:
-            self.css_class = 'cmnt-read'
-        else:
-            return 'cmnt-unread'
-
 
 class WikiTrail(Base):
     __tablename__ = 'wiki_trail'

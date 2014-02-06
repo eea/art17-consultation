@@ -5,20 +5,39 @@
   
 	<ul class="cmnt-list no-list">
 	{% for comment in comments %}
+          {% if g.identity.id == comment.author_id %}
+            {% set href = url_for('.manage-comment', comment_id=comment.id, toggle='del') %}
+            {% if comment.deleted %}
+              {% set comment_type = 'Deleted' %}
+              {% set button_text  = 'Undo' %}
+            {% else %}
+              {% set comment_type = 'Your comment'%}
+              {% set button_text  = 'Delete'%}
+            {% endif %}
+          {% else %}
+            {% set href = url_for('.manage-comment', comment_id=comment.id, toggle='read') %}
+            {% if is_read(comment) %}
+              {% set comment_type = 'Read'%}
+              {% set button_text  = 'Mark as not read'%}
+            {% else %}
+              {% set comment_type = 'Not read'%}
+              {% set button_text  = 'Mark as read'%}
+            {% endif %}
+          {% endif %}
 
-	<li class="{{ comment.css_class }}">
+        <li class="{{ get_css_class(comment) }}" id="{{comment.id}}">
 	  <div class="clearfix">
-	  	<!-- Ifs -->
-	    <span class="cmnt-type">Not read</span>
-	    <button class="button_text">Mark as read</button>
+            <span class="cmnt-type">{{ comment_type }}</span>
+            <button class="button_text" href="{{ href }}">{{ button_text }}</button>
 	  </div>
+
 	  <div class="cmnt-body">{{ comment.comment | safe }}</div>
 	  <div class="small clearfix">
 	    <div class="pull-left">
-	      <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>,
-	      {{ comment.author.institution }}
+	      <strong>{{ comment.author.name | hide_adm_etc_username }}
+              </strong> from {{ comment.author.institution }}
 	    </div>
-	    <span class="muted pull-right">December 13, 2013</span>
+            <span class="muted pull-right">{{ comment.posted | format_date_cmnt }}</span>
 	  </div>
 	</li>
 
