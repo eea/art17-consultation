@@ -81,6 +81,9 @@ def can_edit(record):
     if record.deleted:
         return False
 
+    if record.dataset.is_readonly:
+        return False
+
     if record.user_id == current_user.id:
         return True
 
@@ -90,6 +93,9 @@ def can_edit(record):
 @summary.app_template_global('can_delete')
 def can_delete(record):
     if current_user.is_anonymous():
+        return False
+
+    if record.dataset.is_readonly:
         return False
 
     return record.user_id == current_user.id
@@ -102,11 +108,11 @@ def can_view_decision(record):
 
 
 @summary.app_template_global('can_add_conclusion')
-def can_add_conclusion(zone, subject, region=None):
+def can_add_conclusion(dataset, zone, subject, region=None):
     """
     Zone: one of 'species', 'habitat'
     """
-    return admin_perm.can()
+    return not dataset.is_readonly and admin_perm.can()
 
 
 @summary.app_context_processor
@@ -362,6 +368,7 @@ class Summary(views.View):
             'subject': subject,
             'region': region,
             'period_name': period_name,
+            'dataset': period_query,
         })
 
         return render_template(self.template_name, **context)

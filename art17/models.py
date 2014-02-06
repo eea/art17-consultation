@@ -23,6 +23,7 @@ class Dataset(Base):
     name = Column(String(255), nullable=False)
     schema = Column(String(4))
 
+    @property
     def is_readonly(self):
         return self.schema == '2006'
 
@@ -760,6 +761,11 @@ class HabitattypesManualAssessment(Base):
     decision = Column(String(3))
     user_decision_id = Column('user_decision', String(25))
     last_update_decision = Column(String(16))
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+        primary_key=True,
+    )
 
     user = relationship(
         'RegisteredUser',
@@ -771,12 +777,7 @@ class HabitattypesManualAssessment(Base):
         primaryjoin="HabitattypesManualAssessment.user_decision_id==RegisteredUser.id",
         foreign_keys=user_decision_id,
     )
-
-    dataset_id = Column(
-        'ext_dataset_id',
-        ForeignKey('datasets.id'),
-        primary_key=True,
-    )
+    dataset = relationship(Dataset)
 
     def comments_count_unread(self, user):
         if not self.comments:
@@ -974,6 +975,11 @@ class SpeciesManualAssessment(Base):
     decision = Column(String(3))
     user_decision_id = Column('user_decision', String(25))
     last_update_decision = Column(String(16))
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+        primary_key=True,
+    )
 
     user = relationship(
         'RegisteredUser',
@@ -985,12 +991,7 @@ class SpeciesManualAssessment(Base):
         primaryjoin="SpeciesManualAssessment.user_decision_id==RegisteredUser.id",
         foreign_keys=user_decision_id,
     )
-
-    dataset_id = Column(
-        'ext_dataset_id',
-        ForeignKey('datasets.id'),
-        primary_key=True,
-    )
+    dataset = relationship(Dataset)
 
     def comments_count_unread(self, user):
         if not self.comments:

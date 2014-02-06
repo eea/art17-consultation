@@ -137,6 +137,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     </tr>
     {% endfor %}
     </tbody>
+
     {# Manual assessments - conclusions #}
     <tbody class="thead">
     <tr class="section-header">
@@ -145,43 +146,34 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       </th>
     </tr>
     <tr>
-      <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
-      {% if not region %}<th rowspan="2">Reg</th>{% endif %}
-      <th colspan="4">Range</th>
-      <th colspan="4">Population</th>
-      <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
-      <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
-      <th colspan="4">Overall assessment</th>
-      <th rowspan="2" colspan="2">Contrib. target 1</th>
-      <th rowspan="2" colspan="2"></th>
-
-      <th rowspan="2"><abbr title="Comments">Comm.</abbr></th>
-      <th rowspan="2">Date</th>
-      <th rowspan="2">Name</th>
-      <th rowspan="2"><abbr title="Institution">Instit.</abbr></th>
-      <th rowspan="2">MS</th>
-    </tr>
-    <tr>
+      <th><abbr title="Decision">Dec.</abbr></th>
+      {% if not region %}<th>Reg</th>{% endif %}
       <th>Area</th>
-      <th>%MS</th>
+      <th><abbr title="Range conclusion">Range<br/>Concl.</abbr></th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
 
       <th>Size&amp;Unit</th>
-      <th>%MS</th>
+      <th><abbr title="Population conclusion">Pop.<br/>Concl.</abbr></th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Ref.</th>
 
       <th>Area</th>
-      <th>%MS</th>
-      <th>Qual.</th>
+      <th><abbr title="Habitat conclusion">Habitat<br/>Concl.</abbr></th>
+      <th></th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Suitable</th>
 
-      <th>Curr CS</th>
+      <th><abbr title="Future prospects">FP</abbr></th>
+      <th>Curr CS<br/>Concl.</th>
       <th><abbr title="Trend">T</abbr></th>
-      <th>Prev CS</th>
+      <th>Prev CS<br/>Concl.</th>
       <th>Nat of ch</th>
+
+      <th colspan="2">Contrib.<br/>target 1</th>
+      <th colspan="2"></th>
+
+      <th colspan="5">{# padding #}</th>
     </tr>
     </tbody>
     <tbody>
@@ -206,7 +198,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     </tbody>
 
     {# Add manual assessment form #}
-    {% if not manual_assessment and can_add_conclusion('species', subject) %}
+    {% if not manual_assessment and can_add_conclusion(dataset, 'species', subject) %}
     <tbody>
       {% include 'summary/species/manual_form.html' %}
     </tbody>
