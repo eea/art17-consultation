@@ -37,6 +37,12 @@ class Comment(Base):
     post_date = Column(String(16), nullable=False)
     deleted = Column(Integer)
 
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+        primary_key=True,
+    )
+
     record = relationship(
         'SpeciesManualAssessment',
         primaryjoin=(
@@ -668,6 +674,15 @@ class HabitatComment(Base):
         foreign_keys=author_id,
     )
 
+    def read_for(self, user):
+        return bool(
+            db.session.query(HabitatComment.id)
+            .join(t_habitat_comments_read)
+            .filter(HabitatComment.id == self.id)
+            .filter('habitat_comments_read.reader_user_id="%s"' % user)
+            .count()
+        )
+
     @hybrid_property
     def subject(self):
         return self.habitat
@@ -752,7 +767,7 @@ class HabitattypesManualAssessment(Base):
             return 0
         return len(
             db.session.query(HabitatComment.id)
-            .join(t_comments_read)
+            .join(t_habitat_comments_read)
             .filter(HabitatComment.habitat == self.habitatcode)
             .filter(HabitatComment.region == self.region)
             .filter(HabitatComment.MS == self.MS)
