@@ -102,7 +102,7 @@ class CommentsList(views.View):
         if not can_toggle_read(comment):
             flash('You are not allowed here', 'error')
             return False
-        if comment.read_for(current_user.id):
+        if comment.read_for(current_user):
             mark_unread(comment, current_user)
         else:
             mark_read(comment, current_user)

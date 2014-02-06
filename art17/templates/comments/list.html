@@ -21,7 +21,7 @@
   <ol>
   {% for comment in comments %}
     {% set is_owner = comment.author.id == g.identity.id %}
-    {% set read = comment.read_for(g.identity.id) %}
+    {% set read = comment.read_for(g.user) %}
     {% set deleted = comment.deleted %}
     <li class="comment {% if is_owner %}comment-owner{% elif deleted %}comment-deleted{% elif read %}comment-read{% endif %}"
         id="comment-{{ comment.id }}">
