@@ -43,6 +43,11 @@
               {% if read %}Mark as unread{% else %}Mark as read{% endif %}
             </a>
           {% endif %}
+          {% if can_delete_comment(comment) %}
+            <a href="?delete={{ comment.id }}&deleted={{ deleted }}#comment-{{ comment.id }}">
+              {% if deleted %}Undelete{% else %}Delete{% endif %}
+            </a>
+          {% endif %}
         </dt>
         <dd>{{ comment.comment }}</dd>
         <dd>Posted on: {{ comment.post_date }}</dd>

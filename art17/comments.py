@@ -77,9 +77,31 @@ def can_toggle_read(comment):
     return True
 
 
+@comments.app_template_global('can_delete_comment')
+def can_delete_comment(comment):
+    if not comment or not current_user.is_authenticated():
+        return False
+
+    if comment.author_id == current_user.id:
+        return True
+
+    return admin_perm.can()
+
+
 class CommentsList(views.View):
 
     methods = ['GET', 'POST']
+
+    def toggle_delete(self, comment_id):
+        comment = Comment.query.get_or_404(comment_id)
+        if not can_delete_comment(comment):
+            flash('You are not allowed here', 'error')
+            return False
+
+        if comment.deleted is None:
+            comment.deleted = 0
+        comment.deleted = 1 - comment.deleted
+        db.session.commit()
 
     def toggle_read(self, comment_id):
         comment = Comment.query.get_or_404(comment_id)
@@ -132,6 +154,8 @@ class CommentsList(views.View):
                 edited_comment = None
         if request.args.get('toggle'):
             self.toggle_read(request.args['toggle'])
+        if request.args.get('delete'):
+            self.toggle_delete(request.args['delete'])
 
         if request.method == 'POST':
             form = CommentForm(request.form)
