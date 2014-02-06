@@ -9,7 +9,7 @@
   <tr>
 
     {% if show_report_headers %}
-      <th>Species</th>
+      <th rowspan="2">Species</th>
     {% endif %}
 
     {% if not country %}<th rowspan="2">MS</th>{% endif %}
@@ -26,9 +26,6 @@
   </tr>
 
   <tr>
-    {% if show_report_headers %}
-      <th colspan="2"></th>
-    {% endif %}
 
     <th>Area</th>
     <th>%MS</th>

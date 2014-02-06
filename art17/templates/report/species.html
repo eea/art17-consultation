@@ -72,9 +72,8 @@
 
             {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
 
-            <!-- Add link to map -->
             {% if not region %}
-              <td><a href="map">{{ row.region }}</a></td>
+              <td><a href="#map">{{ row.region }}</a></td>
             {% endif %}
 
             {% if not visible %}
@@ -83,26 +82,14 @@
             </td>
             {% else %}
 
-            {#- Range columns -#}
-            {% include 'summary/species/content/range.html' with context %}
+              {% include 'summary/species/content/range.html' with context %}
+              {% include 'summary/species/content/population.html' with context %}
+              {% include 'summary/species/content/habitat.html' with context %}
+              {% include 'summary/species/content/future_prospects.html' with context %}
+              {% include 'summary/common/content/overall_assessment.html' with context %}
+              {% include 'summary/species/content/grided_maps.html' with context %}
 
-            {#- Population columns -#}
-            {% include 'summary/species/content/population.html' with context %}
-
-            {#- Habitat columns -#}
-            {% include 'summary/species/content/habitat.html' with context %}
-
-            {#- Prospects -#}
-            {% include 'summary/species/content/future_prospects.html' with context %}
-
-            {#- Overall assessment -#}
-            {% include 'summary/species/content/overall.html' with context %}
-
-            {#- Grided maps columns -#}
-            {% include 'summary/species/content/grided_maps.html' with context %}
-
-            {# Padding #}
-            <td colspan="5"></td>
+              <td colspan="5">{# Padding #}</td>
             {% endif %}
           </tr>
         {% endfor %}

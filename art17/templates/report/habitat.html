@@ -12,7 +12,7 @@
 
   {% include 'report/filters.html' %}
 
-    {% set colspan_all=23 if region else 24 %}
+    {% set colspan_all=22 if region else 23 %}
     {% if current_selection %}
 
     {% include 'common/table_legend.html' %}
@@ -53,10 +53,9 @@
               {{ row.subject }} - {{ row.habitat.name }}
             </a>
           </td>
-          <td><a href="">map</a></td>
 
           {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
-          {% if not region %}<td>{{ row.region }}</td>{% endif %}
+          {% if not region %}<td><a href="#map">{{ row.region }}</a></td>{% endif %}
 
           {% if not visible %}
           <td colspan="4">
@@ -64,26 +63,14 @@
           </td>
           {% else %}
 
-          {#- Range columns -#}
-          {% include 'summary/habitat/content/range.html' with context %}
+            {% include 'summary/habitat/content/range.html' with context %}
+            {% include 'summary/habitat/content/area.html' with context %}
+            {% include 'summary/habitat/content/struct_func.html' with context %}
+            {% include 'summary/habitat/content/future_prosp.html' with context %}
+            {% include 'summary/common/content/overall_assessment.html' with context %}
+            {% include 'summary/habitat/content/grided_maps.html' with context %}
 
-          {#- Area columns -#}
-          {% include 'summary/habitat/content/area.html' with context %}
-
-          {#- Struct and funct. -#}
-          {% include 'summary/habitat/content/struct_func.html' with context %}
-
-          {#- Prospects -#}
-          {% include 'summary/habitat/content/future_prosp.html' with context %}
-
-          {#- Overall asses. -#}
-          {% include 'summary/habitat/content/overall_assestment.html' with context %}
-
-          {#- Grided maps columns -#}
-          {% include 'summary/habitat/content/grided_maps.html' with context %}
-
-          {# padding #}
-          <td colspan="7"></td>
+            <td colspan="7">{# padding #}</td>
           {% endif %}
         </tr>
       {% endfor %}
