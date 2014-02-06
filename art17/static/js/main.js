@@ -107,12 +107,14 @@ $(function() {
                         comment.find('.cmnt-type').html('Deleted');
                         clicked_button.html('Undo');
                         clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=del');
+                        comment.find('#edit-btn').hide()
                         break;
                     case 'cmnt-deleted':
                         comment.attr('class', 'cmnt-owned');
                         comment.find('.cmnt-type').html('Your comment');
                         clicked_button.html('Delete');
                         clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=del');
+                        comment.find('#edit-btn').show()
                         break;
                     case 'cmnt-notread':
                         comment.attr('class', 'cmnt-read');
@@ -128,6 +130,25 @@ $(function() {
                         break;
                 }
             }
-        })
+        });
     });
+
+    $('body').on('click', '#edit-btn', function(evt) {
+        evt.preventDefault()
+        window.location = $(this).attr('href');
+    });
+});
+
+$(function () {
+
+
+  $('#history').on('click', 'li', function () {
+    event.stopPropagation();
+    $(this).addClass('selected')
+    .siblings('.selected').removeClass('selected');
+  });
+
+  $('html').click( function () {
+    $('#history .selected').removeClass('selected');
+  });
 });

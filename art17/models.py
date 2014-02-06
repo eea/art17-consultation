@@ -379,12 +379,19 @@ class EtcDataSpeciesRegion(Base):
     distribution_grid_area = Column(Float(asdecimal=True))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
 
+
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
         primary_key=True,
     )
     dataset = relationship(Dataset)
+
+    species_type_details = relationship(
+        'EtcDicSpeciesType',
+        primaryjoin="EtcDataSpeciesRegion.species_type==EtcDicSpeciesType.abbrev",
+        foreign_keys=species_type,
+    )
 
     @property
     def is_assesm(self):

@@ -5,7 +5,8 @@ from flask import (
     request,
     flash,
     url_for,
-    abort)
+    abort,
+    redirect)
 from datetime import datetime
 
 from models import Wiki, WikiChange, WikiComment, RegisteredUser, db
@@ -17,22 +18,28 @@ wiki = Blueprint('wiki', __name__)
 
 DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 DATE_FORMAT_CMNT = '%B %-d, %Y'
+TIME_FORMAT_CMNT = '%H:%M:%S'
+
+def format_datetime(value, format):
+    if not value:
+        return ''
+    date = datetime.strftime(value, format)
+    return date
 
 
 @wiki.app_template_filter('format_date_ph')
 def format_date_ph(value):
-    if not value:
-        return ''
-    date = datetime.strftime(value, DATE_FORMAT_PH)
-    return date
+    return format_datetime(value, DATE_FORMAT_PH)
 
 
 @wiki.app_template_filter('format_date_cmnt')
 def format_date_cmnt(value):
-    if not value:
-        return ''
-    date = datetime.strftime(value, DATE_FORMAT_CMNT)
-    return date
+    return format_datetime(value, DATE_FORMAT_CMNT)
+
+
+@wiki.app_template_filter('format_time_cmnt')
+def format_time_cmnt(value):
+    return format_datetime(value, TIME_FORMAT_CMNT)
 
 
 @wiki.app_template_filter('hide_adm_etc_username')
@@ -48,6 +55,16 @@ def hide_adm_etc_username(name):
 @wiki.app_template_global('is_read')
 def is_read(comment):
     return current_user in comment.readers
+
+
+@wiki.app_template_global('get_edit_url')
+def get_edit_url(comment):
+    return url_for(
+        '.edit-comment', comment_id=comment.id, period=request.args['period'],
+        subject=request.args['subject'], region=request.args['region'],
+        page='species'
+    )
+
 
 
 @wiki.app_template_global('get_css_class')
@@ -69,9 +86,15 @@ class WikiView(views.View):
         self.page = page
 
         if request.method == 'POST':
-            self.process_post_request()
+            if self.process_post_request():
+                return redirect(url_for('wiki.data-sheet-info',
+                                        page=self.page,
+                                        subject=request.args.get('subject'),
+                                        region=request.args.get('region'),
+                                        period=request.args.get('period')))
 
         context = self.get_context()
+        context['page'] = self.page
 
         return render_template(self.template_name, **context)
 
@@ -234,8 +257,40 @@ class DataSheetInfoEditPage(DataSheetInfo):
         return context
 
 
-@wiki.route('/species/summary/wiki', endpoint='manage-comment')
-def _manage_comment():
+class DataSheetInfoEditComment(DataSheetInfo):
+
+    def process_post_request(self):
+        comment_id = request.args.get('comment_id')
+        comment = WikiComment.query.filter_by(id=comment_id).first()
+
+        if not comment:
+            flash("The comment you are trying to edit was not found in the "
+                  "database.")
+            return False
+
+        comment.comment = request.form.get('text'),
+        db.session.commit()
+
+        flash("Comment successfully modified.")
+
+        return True
+
+    def get_context(self):
+        context = super(DataSheetInfoEditComment, self).get_context()
+
+        comment_id = request.args.get('comment_id')
+        comment = WikiComment.query.filter_by(id=comment_id).first()
+
+        wiki_edit_cmnt_form = self.wiki_form_cls()
+        wiki_edit_cmnt_form.text.data = comment.comment
+
+        context.update({'edit_comment_form': wiki_edit_cmnt_form})
+
+        return context
+
+
+@wiki.route('/<page>/summary/wiki', endpoint='manage-comment')
+def _manage_comment(page):
     comment_id = request.args.get('comment_id')
     comment = WikiComment.query.filter_by(id=comment_id).first()
     if not comment:
@@ -270,3 +325,7 @@ wiki.add_url_rule('/<page>/summary/wiki/add_comment',
 wiki.add_url_rule('/<page>/summary/wiki/edit_page',
                   view_func=DataSheetInfoEditPage
                   .as_view('data-sheet-info-edit-page'))
+
+wiki.add_url_rule('/<page>/summary/wiki/edit_cmnt',
+                  view_func=DataSheetInfoEditComment
+                  .as_view('edit-comment'))

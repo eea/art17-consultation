@@ -466,6 +466,10 @@ abbr {
 	margin: 0!important;
 }
 
+.no-break {
+	white-space: nowrap;
+}
+
 .muted {
 	color: #888;
 }
@@ -593,8 +597,107 @@ abbr {
 
 
 
+
+
+
+
+
+
+.wiki {
+	position: relative;
+	
+	min-height: 180px;
+	padding: 24px 0;
+}
+
+.title-section {
+	border-bottom: 1px solid #ddd;
+	background: #f6f6f6;
+	margin: 0 -1em;
+	padding: 1em;
+}
+
+.title-section h3 {
+	line-height: 23px;
+	margin: 0;
+}
+
+/* Wiki history */
+#history {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+	
+	max-width: 360px;
+	width: 33%;
+	min-width: 180px;
+	border: 1px solid #ccc;
+
+	background: #fff;
+}
+
+.history-header {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 30px;
+	line-height: 18px;
+	border-bottom: 1px solid #ddd;
+	background: #eee;
+}
+
+.history-header strong,
+.history-header button {
+	line-height: inherit;
+	padding: 6px 12px;
+}
+
+.history-list {
+	position: absolute;
+	top: 30px;
+	bottom: 0;
+	width: 100%;
+	overflow: auto;
+	list-style-type: none;
+	
+	padding: 0;
+	margin: 0;
+}
+
+.history-list li {
+	cursor: pointer;
+	margin-bottom: -1px;
+	padding: 6px 12px;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	
+}
+
+.history-list li:hover, 
+.history-list li.selected {
+	background: #eee;
+}
+
+.history-list li.selected {
+	cursor: auto;
+}
+
+.history-list li button {
+	display: none;
+}
+
+.history-list li.selected button {
+	display: block;
+}
+
+
+
+
 /* Comments */
 .comment-section {
+	border-top: 1px solid #ddd;
 	background: #f6f6f6;
 	margin: 0 -1em;
 	padding: 1em;

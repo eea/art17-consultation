@@ -16,7 +16,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <button type="button" id="wikibutton" url="{{ wiki_url }}">
           View data sheet info</button>
   </div>
-  
+
   {% include 'common/table_legend.html' %}
 
   <table class="complex_datatable datatable">
@@ -73,7 +73,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <tr {% if row.is_assesm %}class="assesm"{% endif %}>
         <td>
           {% set original_url=get_original_record_url(row) %}
-          <a class="popup-btn" data-title="Factsheet" href="{{ original_url }}">
+          {% set country_title = get_title_for_species_country(row) %}
+          <a class="popup-btn" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
             {{ row.eu_country_code }}
           </a>
         </td>
