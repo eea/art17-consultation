@@ -217,13 +217,13 @@ def get_struct_conclusion_value(habitatcode, region, assessment_method):
 
 
 def get_original_record_url(row):
-    url_scheme = CONVERTER_URLS.get(row.dataset.schema, {})
     if isinstance(row, EtcDataSpeciesRegion):
         page = 'species'
     elif isinstance(row, EtcDataHabitattypeRegion):
         page = 'habitat'
     else:
         raise NotImplementedError
+    url_scheme = CONVERTER_URLS.get(row.dataset.schema if row.dataset else 0, {})
     url_format = url_scheme.get(page, '')
     info = urlparse(row.envelope)
     return url_format.format(
