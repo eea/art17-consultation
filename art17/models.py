@@ -787,6 +787,10 @@ class HabitattypesManualAssessment(Base):
     def subject(self):
         return self.habitatcode
 
+    @subject.setter
+    def subject(self, value):
+        self.habitatcode = value
+
 
 class LuHdHabitat(Base):
     __tablename__ = 'lu_hd_habitats'
@@ -996,6 +1000,11 @@ class SpeciesManualAssessment(Base):
     @hybrid_property
     def subject(self):
         return self.assesment_speciesname
+
+    @subject.setter
+    def subject(self, value):
+        self.assesment_speciesname = value
+
 
 t_species_name = Table(
     'species_name', metadata,
