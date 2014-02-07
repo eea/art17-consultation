@@ -50,6 +50,9 @@ def register_ldap():
             password='',
             confirmed_at=datetime.utcnow(),
             email=ldap_user_info.get('email'),
+            name=ldap_user_info.get('full_name'),
+            institution=ldap_user_info.get('organisation'),
+            qualification=ldap_user_info.get('job_title'),
         )
         datastore.commit()
         flask.flash(
