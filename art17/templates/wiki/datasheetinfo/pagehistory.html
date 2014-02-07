@@ -1,20 +1,23 @@
 <div id="history" class="hidden">
-	<div class="history-header clearfix">
-            <strong class="pull-left">{{ page_history | length }} revisions</strong>
-		<button onclick="$('#history').toggleClass('hidden')"
-						class="button_text pull-right">Close</button>
-	</div>
-	<ul class="history-list">
+    <div class="history-header clearfix">
+        <strong class="pull-left">{{ page_history | length }} revisions</strong>
+        <button onclick="$('#history').toggleClass('hidden')"
+                                class="button_text pull-right">Close</button>
+    </div>
+    <ul class="history-list">
 
+    {% for row in page_history %}
+        <li id="{{ row['id'] }}" href="{{ url_for('.get-revision', page=page, 
+                                        revision_id=row['id'])}}"> 
+        {{ row['changed'] | format_date_cmnt }}
+        <br/>by {{ row['editor'] }}{% if row['active'] %} (active) {% endif %}
 
-		{% for row in page_history %}
-                <li id="{{ row['id'] }}" href="{{ url_for(
-                '.get-revision', page=page, revision_id=row['id'])}}"> 
-                        {{ row['changed'] | format_date_cmnt }}
-                        <br/>by {{ row['editor'] }}{% if row['active'] %}
-                        (active) {% endif %}
-                        <button class="button_text">Restore version {{page}}</button>
-	  </li>
-	        {% endfor %}
-	</ul>
+        <form method="post" action="{{ page_history_url }}">
+            <input type="hidden" name="revision_id" value="{{ row['id'] }}"/>
+            <button class="button_text" type="submit">Restore version</button>
+        </form>
+
+        </li>
+    {% endfor %}
+    </ul>
 </div>

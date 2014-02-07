@@ -90,7 +90,7 @@ $(function() {
 });
 
 $(function() {
-    $('body').on('click', '.button_text', function(evt) {
+    $('.comment-section').on('click', '.button_text', function(evt) {
         evt.preventDefault();
         var clicked_button = $(this);
         var comment = clicked_button.parent().parent();
@@ -133,10 +133,10 @@ $(function() {
         });
     });
 
-    $('body').on('click', '#edit-btn', function(evt) {
-        evt.preventDefault()
+    $('body').on('click', '.edit-btn', function(evt) {
         window.location = $(this).attr('href');
     });
+
 });
 
 $(function () {

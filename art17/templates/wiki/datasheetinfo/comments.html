@@ -1,7 +1,13 @@
 
 <div class="comment-section">
   <h2>Comments</h2>
-  <button>Add comment</button>
+  {% if can_add_comment(comments) %}
+    <button class='edit-btn' href="{{ add_comment_url }}">Add comment</button>
+
+    {% if add_cmnt_form %}
+        {% include 'wiki/datasheetinfo/addcomment.html'%}
+    {% endif %}
+  {% endif %}
 
 	<ul class="cmnt-list no-list">
 	{% for comment in comments %}
@@ -31,17 +37,24 @@
           {% endif %}
 
         <li class="{{ get_css_class(comment) }}" id="{{comment.id}}">
+        {% if can_view_cmnt_actions() %}
 	  <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
             <button class="button_text" href="{{ href }}">{{ button_text }}</button>
-            <button class="button_text" id="edit-btn" href="{{ edit_cmnt_url }}"
-            {% if not can_edit_cmnt(comment) %}style="display: none;"{% endif %}
-                >Edit</button>
+
+            <button class="button_text edit-btn" href="{{ edit_cmnt_url }}"
+            {% if not can_edit_cmnt(comment) or edit_comment_form %}
+            style="display: none;"{% endif %}>Edit</button>
+
+            <button class="button_text edit-btn" href="{{ home_url }}"
+                {% if not edit_comment_form %}style="display: none;"{% endif %}>Cancel</button>
+
 	  </div>
+        {% endif %}
 
           {% if edit_comment_form and can_edit_cmnt(comment) %}
             {% include 'wiki/datasheetinfo/editcomment.html' %}
-          {% else%}
+          {% else %}
 	    <div class="cmnt-body">{{ comment.comment | safe }}</div>
           {% endif %}
 
