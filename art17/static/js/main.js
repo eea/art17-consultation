@@ -1,3 +1,5 @@
+// TODO: split this file
+
 $(function () {
 
     if($('#filterform').length == 1) {
@@ -164,15 +166,25 @@ $(function () {
   });
 });
 
+
 $(function () {
-    $(".complex_datatable").on('mouseenter mouseleave', 'td', function (event) {
+    $('body').on('change', '.decision-select', function (event) {
         event.stopPropagation();
-        index = this.cellIndex;
-        if (index) {
-            $(this).parent().siblings().each ( function () {
-                $(this.cells[index]).toggleClass("hover");
-            });
-        }
-        console.log(index);
+        var select = $(this);
+        var url = select.data('href');
+        var decision = select.val();
+
+        var jqxhr = $.ajax({
+            type: "POST",
+            url: url,
+            data: { decision : decision},
+            dataType: "json"
+        }).done(function (msg) {
+            if (!msg.success) {
+                alert(msg.error);
+            }
+        }).fail(function (msg) {
+
+        });
     });
 });

@@ -61,6 +61,7 @@ from art17.utils import str2num, parse_semicolon, str1num
 summary = Blueprint('summary', __name__)
 
 DATE_FORMAT = '%d/%m/%Y %H:%M'
+DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 
 @summary.route('/')
 def homepage():
@@ -104,6 +105,11 @@ def can_delete(record):
 @summary.app_template_global('can_view_decision')
 def can_view_decision(record):
     # TODO: check acl_manager code for checkPermissionViewDecision
+    return expert_perm.can() or admin_perm.can()
+
+
+@summary.app_template_global('can_update_decision')
+def can_update_decision(record):
     return expert_perm.can() or admin_perm.can()
 
 
@@ -464,6 +470,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'regions_url': url_for('.species-summary-regions'),
             'comments_endpoint': 'comments.species-comments',
             'delete_endpoint': '.species-delete',
+            'update_endpoint': '.species-update',
             'wiki_url': url_for('wiki.data-sheet-info',
                                 page='species',
                                 subject=request.args.get('subject'),
@@ -505,6 +512,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'regions_url': url_for('.habitat-summary-regions'),
             'comments_endpoint': 'comments.habitat-comments',
             'delete_endpoint': '.habitat-delete',
+            'update_endpoint': '.habitat-update',
             'wiki_url': url_for('wiki.data-sheet-info',
                                 page='habitat',
                                 subject=request.args['subject'].split(' ')[0]
@@ -513,6 +521,13 @@ class HabitatSummary(HabitatMixin, Summary):
                                 period=request.args.get('period')),
             'progress_endpoint': 'progress.habitat-progress',
         }
+
+
+summary.add_url_rule('/species/summary/',
+                     view_func=SpeciesSummary.as_view('species-summary'))
+
+summary.add_url_rule('/habitat/summary/',
+                     view_func=HabitatSummary.as_view('habitat-summary'))
 
 
 @summary.route('/species/summary/species', endpoint='species-summary-species')
@@ -550,10 +565,13 @@ def _regions_habitat():
     return jsonify(data)
 
 
-class ConclusionDelete(views.View):
+class MixinView(object):
 
     def __init__(self, mixin):
         self.mixin = mixin
+
+
+class ConclusionDelete(MixinView, views.View):
 
     def dispatch_request(self, subject, region, user, ms):
         record = self.mixin.get_manual_record(subject, region, user, ms)
@@ -577,8 +595,59 @@ summary.add_url_rule('/habitat/conc/delete/<subject>/<region>/<user>/<ms>/',
                      view_func=ConclusionDelete
                      .as_view('habitat-delete', mixin=HabitatMixin))
 
-summary.add_url_rule('/species/summary/',
-                     view_func=SpeciesSummary.as_view('species-summary'))
 
-summary.add_url_rule('/habitat/summary/',
-                     view_func=HabitatSummary.as_view('habitat-summary'))
+class UpdateDecision(MixinView, views.View):
+
+    methods = ['GET', 'POST']
+
+    def dispatch_request(self, subject, region, user, ms):
+        self.record = self.mixin.get_manual_record(subject, region, user, ms)
+        if not self.record:
+            abort(404)
+
+        if not can_update_decision(self.record):
+            abort(403)
+
+        if not request.form.get('decision'):
+            abort(401)
+
+        decision = request.form['decision']
+        result = self.validate(decision)
+        if result['success']:
+            self.record.decision = decision
+            self.record.last_update = datetime.now().strftime(DATE_FORMAT_PH)
+            db.session.commit()
+        return jsonify(result)
+
+    def validate(self, decision):
+        validation_values = ['OK', 'END']
+        if decision == 'OK?':
+            return {
+                'success': False,
+                'error': "You are not allowed to select 'OK?'" +
+                         "Please select another value."
+            }
+        elif decision in validation_values:
+            for r in self.get_sister_records(self.record):
+                if r.decision in validation_values:
+                    return {
+                        'success': False,
+                        'error': "Another final decision already exists",
+                    }
+
+        return {'success': True}
+
+    def get_sister_records(self, record):
+        return (
+            self.mixin.model_manual_cls.query
+            .filter_by(subject=record.subject, region=record.region)
+            .filter(~(self.mixin.model_manual_cls.user == record.user))
+        )
+
+
+summary.add_url_rule('/species/conc/update/<subject>/<region>/<user>/<ms>/',
+                     view_func=UpdateDecision
+                     .as_view('species-update', mixin=SpeciesMixin))
+summary.add_url_rule('/habitat/conc/update/<subject>/<region>/<user>/<ms>/',
+                     view_func=UpdateDecision
+                     .as_view('habitat-update', mixin=HabitatMixin))
