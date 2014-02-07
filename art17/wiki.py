@@ -326,6 +326,8 @@ def _manage_comment(page):
 
     toggle = request.args.get('toggle')
     if toggle == 'del':
+        if comment.deleted is None:
+            comment.deleted = 0
         comment.deleted = 1 - comment.deleted
         db.session.commit()
     elif toggle == 'read':

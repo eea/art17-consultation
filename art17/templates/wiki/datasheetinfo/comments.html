@@ -1,4 +1,3 @@
-
 <div class="comment-section">
   <h2>Comments</h2>
   {% if can_add_comment(comments) %}
@@ -42,11 +41,11 @@
             <span class="cmnt-type">{{ comment_type }}</span>
             <button class="button_text" href="{{ href }}">{{ button_text }}</button>
 
-            <button class="button_text edit-btn" href="{{ edit_cmnt_url }}"
+            <button class="button_text edit-btn" href="{{ edit_cmnt_url ~ '#' ~ comment.id }}"
             {% if not can_edit_cmnt(comment) or edit_comment_form %}
             style="display: none;"{% endif %}>Edit</button>
 
-            <button class="button_text edit-btn" href="{{ home_url }}"
+            <button class="button_text edit-btn" href="{{ home_url ~ '#' ~ comment.id }}"
                 {% if not edit_comment_form %}style="display: none;"{% endif %}>Cancel</button>
 
 	  </div>
