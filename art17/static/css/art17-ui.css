@@ -15,7 +15,7 @@
 	border-right-width: inherit;
 	border-style: inherit;
 	border-color: transparent;
-	padding: 5px 4px;
+	padding: 5px 5px;
 }
 
 .complex_datatable thead,
@@ -94,8 +94,9 @@ abbr {
 	border-bottom: 1px solid #ddd;
 }
 
-.complex_datatable tbody tr:hover {
-	background-color: #f6f6f6;
+.complex_datatable tbody tr:hover,
+.complex_datatable tbody td.hover {
+	background-color: #f1f0f7;
 }
 
 /*FORM ROW*/
@@ -168,7 +169,7 @@ abbr {
 	display: inline-block;
 	*zoom: 1;
 	padding: 1px 2px;
-	margin: -1px 0 -3px -3px;
+	margin: -2px -3px;
 	text-align: center;
 	border-color: transparent;
 	border-width: 1px;
@@ -176,7 +177,7 @@ abbr {
 	border-radius: 2px;
 	min-width: 100%;
 	min-height: 16px;
-	vertical-align: baseline;
+	vertical-align: top;
 }
 
 .conclusion > * > a {

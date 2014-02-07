@@ -140,8 +140,6 @@ $(function() {
 });
 
 $(function () {
-
-
   $('#history').on('click', 'li', function (event) {
     event.stopPropagation();
     $(this).addClass('selected')
@@ -164,4 +162,17 @@ $(function () {
     $('#active-wiki').show()
     $('#preview-wiki').hide()
   });
+});
+
+$(function () {
+    $(".complex_datatable").on('mouseenter mouseleave', 'td', function (event) {
+        event.stopPropagation();
+        index = this.cellIndex;
+        if (index) {
+            $(this).parent().siblings().each ( function () {
+                $(this.cells[index]).toggleClass("hover");
+            });
+        }
+        console.log(index);
+    });
 });
