@@ -1,71 +1,86 @@
 {% extends 'layout_popup.html' %}
 
 {% block content %}
-<h1>Comments</h1>
+<div class="comment-section">
+  <h2>Comments</h2>
 
-{% set comments = record.comments %}
-{% if not comments %}
-  <p>No comments were added</p>
-{% else %}
-  <p>
-    <strong>Comment colours:</strong>
-    <span style="color: rgb(224, 124, 34);">red border shows your comment</span>,
-    <span style="color: rgb(135, 179, 207);">blue borders shows the comments that have been read</span>,
-    <span style="color: rgb(135, 139, 142);">grey borders shows the comments that have been deleted</span>
-  </p>
+  {% set comments = record.comments %}
+  {% if not comments %}
+    <p>No comments were added</p>
+  {% else %}
 
-  <div id="comments">
-  {% if not edited_comment and can_post_comment(record) %}
-  <p class="jump"><a href="#theform" title="Add a comment for this conclusion">Add a comment</a> &#8595;</p>
-  {% endif %}
-  <ol>
-  {% for comment in comments %}
-    {% set is_owner = comment.author.id == g.identity.id %}
-    {% set read = comment.read_for(g.user) %}
-    {% set deleted = comment.deleted %}
-    <li class="comment {% if is_owner %}comment-owner{% elif deleted %}comment-deleted{% elif read %}comment-read{% endif %}"
-        id="comment-{{ comment.id }}">
-      {% if edited_comment == comment %}
-        <form method="post" action="" id="theform">
-          {{ form.comment() }}
-          <button type="submit" name="submit" value="update">Update</button>
-        </form>
+    <div id="comments">
+    {% if not edited_comment and can_post_comment(record) %}
+      <p class="jump"><a href="#theform" title="Add a comment for this conclusion">Add a comment</a> &#8595;</p>
+    {% endif %}
+
+    <ul class="cmnt-list no-list">
+    {% for comment in comments %}
+      {% set is_owner = comment.author.id == g.identity.id %}
+      {% set read = comment.read_for(g.user) %}
+      {% set deleted = comment.deleted %}
+      {% if is_owner %}
+        {% if deleted %}
+          {% set comment_type = 'Deleted' %}
+        {% else %}
+          {% set comment_type = 'Your comment' %}
+        {% endif %}
       {% else %}
-      <dl>
-        <dt>
-          {{ comment.author.name or comment.author_id }} - {{ comment.author.institution }}
-
-          {% if can_edit_comment(comment) %}
-            <a href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>
-          {% endif %}
-          {% if can_toggle_read(comment) %}
-            <a href="?toggle={{ comment.id }}&read={{ read }}#comment-{{ comment.id }}">
-              {% if read %}Mark as unread{% else %}Mark as read{% endif %}
-            </a>
-          {% endif %}
-          {% if can_delete_comment(comment) %}
-            <a href="?delete={{ comment.id }}&deleted={{ deleted }}#comment-{{ comment.id }}">
-              {% if deleted %}Undelete{% else %}Delete{% endif %}
-            </a>
-          {% endif %}
-        </dt>
-        <dd>{{ comment.comment }}</dd>
-        <dd>Posted on: {{ comment.post_date }}</dd>
-      </dl>
+        {% if read %}
+          {% set comment_type = 'Read' %}
+        {% else %}
+          {% set comment_type = 'Read' %}
+        {% endif %}
       {% endif %}
-    </li>
-  {% endfor %}
-  </ol>
-  </div>
 
-  <p class="jump"><a href="#comments" title="Jump up to the start of the comments &#8593;">Start of the comments</a> &#8593;</p>
-{% endif %}
+      <li class="{{ get_css_class(comment) }}"
+          id="comment-{{ comment.id }}">
+          <div class="clearfix">
+            <span class="cmnt-type">{{ comment_type }}</span>
+            {% if can_edit_comment(comment) %}
+              <a class="button_text"
+                 href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>
+            {% endif %}
+            {% if can_toggle_read(comment) %}
+              <a class="button_text"
+                 href="?toggle={{ comment.id }}&read={{ read }}#comment-{{ comment.id }}">
+                {% if read %}Mark as unread{% else %}Mark as read{% endif %}
+              </a>
+            {% endif %}
+            {% if can_delete_comment(comment) %}
+              <a class="button_text"
+                 href="?delete={{ comment.id }}&deleted={{ deleted }}#comment-{{ comment.id }}">
+                {% if deleted %}Undelete{% else %}Delete{% endif %}
+              </a>
+            {% endif %}
+          </div>
 
-{% if not edited_comment and can_post_comment(record) %}
-<form method="post" action="" id="theform">
-  {{ form.comment() }}
-  <button type="submit" name="submit" value="add">Add</button>
-</form>
-{% endif %}
+          {% if edited_comment == comment %}
+            {% include 'comments/edit.html' with context %}
+          {% else %}
+            <div class="cmnt-body">{{ comment.comment | safe }}</div>
+          {% endif %}
+
+          <div class="small clearfix">
+            <div class="pull-left">
+              <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>
+              from {{ comment.author.institution or '-' }}
+            </div>
+            <span class="muted pull-right" title="{{ comment.posted | format_time_cmnt }}">
+              {{ comment.post_date }}
+            </span>
+          </div>
+      </li>
+    {% endfor %}
+    </ul>
+    </div>
+
+    <p class="jump"><a href="#comments" title="Jump up to the start of the comments &#8593;">Start of the comments</a> &#8593;</p>
+  {% endif %}
+
+  {% if not edited_comment and can_post_comment(record) %}
+    {% include 'comments/add.html' with context %}
+  {% endif %}
+</div>
 
 {% endblock %}

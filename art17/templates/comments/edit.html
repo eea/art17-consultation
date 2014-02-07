@@ -1,0 +1,7 @@
+<form method="post" action="" id="theform">
+  {{ form.comment(class='ckeditor') }}
+
+  <button type="submit" name="submit" value="update">Submit</button>
+</form>
+
+<script type=text/javascript src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
