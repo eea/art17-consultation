@@ -38,17 +38,17 @@
           <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
             {% if can_edit_comment(comment) %}
-              <a class="button_text"
+              <a class="button_text2"
                  href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>
             {% endif %}
             {% if can_toggle_read(comment) %}
-              <a class="button_text"
+              <a class="button_text2"
                  href="?toggle={{ comment.id }}&read={{ read }}#comment-{{ comment.id }}">
                 {% if read %}Mark as unread{% else %}Mark as read{% endif %}
               </a>
             {% endif %}
             {% if can_delete_comment(comment) %}
-              <a class="button_text"
+              <a class="button_text2"
                  href="?delete={{ comment.id }}&deleted={{ deleted }}#comment-{{ comment.id }}">
                 {% if deleted %}Undelete{% else %}Delete{% endif %}
               </a>
