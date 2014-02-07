@@ -80,10 +80,31 @@ def get_css_class(comment):
 
 
 @wiki.app_template_global('can_edit_cmnt')
-def can_edit(comment):
+def can_edit_cmnt(comment):
     if current_user == comment.author and not comment.deleted:
         return True
     return False
+
+
+@wiki.app_template_global('can_view_cmnt_actions')
+def can_view_cmnt_actions():
+    return not current_user.is_anonymous()
+
+
+@wiki.app_template_global('can_edit_wiki')
+def can_edit_wiki():
+    return not current_user.is_anonymous()
+
+
+@wiki.app_template_global('can_manage_wiki')
+def can_manage_wiki():
+    return not current_user.is_anonymous()
+
+
+@wiki.app_template_global('can_add_comment')
+def can_add_comment(comments):
+    is_author = current_user in [cmnt.author for cmnt in comments]
+    return not (current_user.is_anonymous() or is_author)
 
 
 class WikiView(views.View):
@@ -92,15 +113,12 @@ class WikiView(views.View):
     def dispatch_request(self, page):
         self.page = page
 
+        context = self.get_context()
+
         if request.method == 'POST':
             if self.process_post_request():
-                return redirect(url_for('wiki.data-sheet-info',
-                                        page=self.page,
-                                        subject=request.args.get('subject'),
-                                        region=request.args.get('region'),
-                                        period=request.args.get('period')))
+                return redirect(context['home_url'])
 
-        context = self.get_context()
         context['page'] = self.page
 
         return render_template(self.template_name, **context)
@@ -152,13 +170,16 @@ class DataSheetInfo(WikiView):
         return {'wiki_body': active_change.body if active_change else '',
                 'comments': wiki.comments if wiki else [],
                 'page_history': page_history,
-                'page_history_url': url_for('.data-sheet-info-page-history',
+                'home_url': url_for('wiki.data-sheet-info',
+                                    page=self.page,
+                                    **request_args),
+                'page_history_url': url_for('.page-history',
                                             page=self.page,
                                             **request_args),
-                'add_comment_url': url_for('.data-sheet-info-add-comment',
+                'add_comment_url': url_for('.add-comment',
                                            page=self.page,
                                            **request_args),
-                'edit_page_url': url_for('.data-sheet-info-edit-page',
+                'edit_page_url': url_for('.edit-page',
                                          page=self.page,
                                          **request_args)
                 }
@@ -170,9 +191,12 @@ class DataSheetInfoPageHistory(DataSheetInfo):
         wiki_changes = self.get_wiki_changes()
         active_change = self.get_active_change()
 
-        new_change_id = request.form.get('hist_page')
+        new_change_id = request.form.get('revision_id')
         new_active_change = wiki_changes.filter(
             WikiChange.id == new_change_id).first()
+
+        if not new_active_change:
+            abort(404)
 
         if active_change:
             active_change.active = 0
@@ -180,22 +204,8 @@ class DataSheetInfoPageHistory(DataSheetInfo):
 
         db.session.commit()
 
-        flash("Active data sheet changed.")
-
-    def get_context(self):
-        context = super(DataSheetInfoPageHistory, self).get_context()
-        wiki_changes = self.get_wiki_changes()
-
-        all_changes = wiki_changes.order_by(WikiChange.changed.desc()).all()
-        page_history = [{'changed': c.changed,
-                         'editor': c.editor,
-                         'active': c.active,
-                         'id': c.id}
-                        for c in all_changes]
-
-        context.update({'page_history': page_history})
-
-        return context
+        flash("Active revision changed.")
+        return True
 
 
 class DataSheetInfoAddComment(DataSheetInfo):
@@ -223,11 +233,12 @@ class DataSheetInfoAddComment(DataSheetInfo):
         db.session.commit()
 
         flash("Comment successfully added.")
+        return True
 
     def get_context(self):
         context = super(DataSheetInfoAddComment, self).get_context()
 
-        context.update({'add_comm_form': self.wiki_form_cls()})
+        context.update({'add_cmnt_form': self.wiki_form_cls()})
 
         return context
 
@@ -261,6 +272,7 @@ class DataSheetInfoEditPage(DataSheetInfo):
         db.session.commit()
 
         flash("New data sheet saved.")
+        return True
 
     def get_context(self):
         context = super(DataSheetInfoEditPage, self).get_context()
@@ -342,15 +354,15 @@ wiki.add_url_rule('/<page>/summary/wiki/',
 
 wiki.add_url_rule('/<page>/summary/wiki/page_history',
                   view_func=DataSheetInfoPageHistory
-                  .as_view('data-sheet-info-page-history'))
+                  .as_view('page-history'))
 
 wiki.add_url_rule('/<page>/summary/wiki/add_comment',
                   view_func=DataSheetInfoAddComment
-                  .as_view('data-sheet-info-add-comment'))
+                  .as_view('add-comment'))
 
 wiki.add_url_rule('/<page>/summary/wiki/edit_page',
                   view_func=DataSheetInfoEditPage
-                  .as_view('data-sheet-info-edit-page'))
+                  .as_view('edit-page'))
 
 wiki.add_url_rule('/<page>/summary/wiki/edit_cmnt',
                   view_func=DataSheetInfoEditComment
