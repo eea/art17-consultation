@@ -46,7 +46,21 @@ def create_app(config={}, testing=False):
     def temp():
         return flask.render_template('temp.html')
 
+    url_prefix = app.config.get('URL_PREFIX')
+    if url_prefix:
+        app.wsgi_app = create_url_prefix_middleware(app.wsgi_app, url_prefix)
+
     return app
+
+
+def create_url_prefix_middleware(wsgi_app, url_prefix):
+    def middleware(environ, start_response):
+        path_info = environ['PATH_INFO']
+        if path_info.startswith(url_prefix):
+            environ['PATH_INFO'] = path_info[len(url_prefix):]
+            environ['SCRIPT_NAME'] += url_prefix
+        return wsgi_app(environ, start_response)
+    return middleware
 
 
 def create_manager(app):
