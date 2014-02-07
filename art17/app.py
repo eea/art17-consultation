@@ -13,6 +13,7 @@ from art17.auth import auth
 from art17.comments import comments
 from art17.common import common
 from art17.wiki import wiki
+from art17.maps import maps
 from art17.auth.script import user_manager, role_manager
 from art17.dataset import dataset_manager
 from art17.assets import assets_env
@@ -58,6 +59,7 @@ def create_app(config={}, testing=False):
     app.register_blueprint(comments)
     app.register_blueprint(common)
     app.register_blueprint(wiki)
+    app.register_blueprint(maps)
     Mail().init_app(app)
 
     @app.route('/temp.html')

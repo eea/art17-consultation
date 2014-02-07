@@ -1,0 +1,87 @@
+<html>
+<head>
+    <title>Map</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script src="{{ url_for('static', filename='js/maps/AC_OETags.js') }}"></script>
+    <script>
+        var requiredMajorVersion = 9;
+        var requiredMinorVersion = 0;
+        var requiredRevision = 0;
+    </script>
+</head>
+<body>
+{#
+    <tal:block define="species python:request.get('species', '');
+            region python:request.get('region', '');
+            assesment_speciesname python:here.string_decode(species).lower();
+            auth_user python:request.AUTHENTICATED_USER.getUserName();
+            auth_roles python:here.acl_manager.getSpecificUserRoles(auth_user);">
+#}
+
+    <style>
+    #flashcontent {
+        width: 680px;
+        height: 400px;
+    }
+    </style>
+    <script src="{{ url_for('static', filename='js/maps/swfobject.js') }}"></script>
+    <script>
+    <!--
+        function openNewWindow(URLtoOpen, windowName, windowFeatures) {
+        // open a child popup
+            var newWin = window.open("", windowName, windowFeatures);
+            if (newWin != null) {
+                newWin.location.href = URLtoOpen;
+                newWin.focus();
+                childPopups[childPopupNr++] = newWin;
+            }
+        }
+        function closeDepWins() {
+        // Close any open child popup windows (called from body onUnload event)
+            for (var i = 0; i < childPopups.length; i++) {
+                if (childPopups[i] && !childPopups[i].closed) {
+                    childPopups[i].close();
+                }
+            }
+        }
+        // Version check based upon the values entered above in "Globals"
+        var hasReqestedVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
+        if (hasReqestedVersion == false) {
+            alternateContent = '<h3>This page requires the Adobe Flash Player version ' + requiredMajorVersion + '.  ' + '<a href="http:\/\/www.adobe.com\/go\/getflashplayer">Download Flash 9<\/a><\/h3>';
+            document.write(alternateContent);
+        }
+
+        function flamingo_onConfigComplete(){
+           //get swf object in htmlpage
+           var app = getMovie("flamingo"); //force an update of component with id='map1'
+           if(app) {
+            app.call("map1","update", 0, true);
+           } else {
+            alert("No app");
+           }
+        }
+        function getMovie(movieName) {
+            if (navigator.appName.indexOf("Microsoft") != -1) {
+            return window[movieName];
+            }else {
+            return document[movieName];
+            }
+        }
+    // -->
+    </script>
+    <noscript>
+        <a href="http://www.adobe.com/go/getflashplayer">Download Flash 9<object width="32" height="32"></object></a>
+    </noscript>
+
+    <div id="flashcontent">
+        <script>
+            childPopups  = new Array();
+            childPopupNr = 0;
+            var so = new SWFObject("{{ url_for('static', filename='js/maps/flamingo.swf') }}?config={{ url_for('.config_xml', page='species', _external=True) }}?region={{ region }}%26species%3D{{ species }}%26", "flamingo", "100%", "100%", "8", "#eaeaea");
+            so.write("flashcontent");
+        </script>
+    </div>
+
+    </tal:block>
+</body>
+</html>
