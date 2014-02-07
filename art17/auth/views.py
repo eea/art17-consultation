@@ -4,7 +4,9 @@ import flask
 from flask.ext.principal import PermissionDenied
 from flask.ext.security.forms import ChangePasswordForm
 from flask.ext.security.changeable import change_user_password
+from werkzeug.datastructures import MultiDict
 from art17 import models
+from art17.auth.forms import DatasetForm
 from art17.common import HOMEPAGE_VIEW_NAME
 from art17.auth import zope_acl_manager, current_user, auth
 from art17.auth.common import (
@@ -123,3 +125,28 @@ def admin_user(user_id):
         return flask.redirect(flask.url_for('.users', user_id=user_id))
 
     return flask.render_template('auth/admin_user.html', user=user)
+
+
+@auth.route('/admin/dataset/')
+@require_admin
+def dataset_list():
+    ds = models.Dataset.query.all()
+    return flask.render_template('admin/dataset_list.html', datasets=ds)
+
+
+@auth.route('/admin/dataset/<dataset_id>', methods=['GET', 'POST'])
+@require_admin
+def dataset_edit(dataset_id):
+    dataset = models.Dataset.query.get_or_404(dataset_id)
+
+    if flask.request.method == 'POST':
+        form = DatasetForm(flask.request.form)
+        if form.validate():
+            form.populate_obj(dataset)
+            models.db.session.commit()
+            flask.flash("Dataset updated")
+            return flask.redirect(flask.url_for('.dataset_list'))
+    else:
+        form = DatasetForm(obj=dataset)
+    return flask.render_template('admin/dataset_edit.html',
+                                 dataset=dataset, form=form)

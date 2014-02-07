@@ -1,0 +1,20 @@
+{% extends layout_template %}
+
+
+{% block content %}
+  <h1>Dataset administration: <tt>{{ dataset.name }}</tt></h1>
+
+  <form method="post">
+    <div>
+      <label for="name">Name: </label>
+      {{ form.name() }}
+    </div>   <div>
+      <label for="schema">Schema: </label>
+      {{ form.schema() }}
+    </div>
+
+    <div>
+      <button type="submit">Update</button>
+    </div>
+  </form>
+{% endblock content %}

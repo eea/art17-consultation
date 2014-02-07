@@ -35,4 +35,8 @@
   {% if AUTH_BLUEPRINT_INSTALLED and admin_perm.can() %}
     <a href="{{ url_for('auth.users') }}">User list</a>
   {% endif %}
+
+  {% if admin_perm.can() %}
+    <a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a>
+  {% endif %}
 {% endblock content %}
