@@ -22,8 +22,8 @@
         <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.institution }}</td>
-        <td>{{ user.qualification }}</td>
+        <td>{{ user.institution or '' }}</td>
+        <td>{{ user.qualification or '' }}</td>
         <td>{{ 'Eionet' if user.is_ldap else 'local' }}</td>
         <td>{{ ', '.join(role_map.get(user.id, [])) or '-' }}</td>
         <td>
