@@ -46,6 +46,8 @@ def format_time_cmnt(value):
 @wiki.app_template_filter('hide_adm_etc_username')
 def hide_adm_etc_username(name):
     author = RegisteredUser.query.filter_by(name=name).first()
+    if not author:
+        return name
     if (author.has_role('etc') or author.has_role('admin')) and not (
             current_user.has_role('etc') or current_user.has_role('admin')):
         return 'Someone'

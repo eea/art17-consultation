@@ -1,9 +1,17 @@
 {% extends 'layout_popup.html' %}
 
 {% block content %}
-<div class="comment-section">
-  <h2>Comments</h2>
 
+<div class="title-section clearfix">
+  <h3 class="pull-left">Conclusion comments</h3>
+  <div class="pull-right" style="padding: 4px">
+    Region: <em>{{ record.region }}</em>
+    User: <em>{{ record.user.name or record.user_id | hide_adm_etc_username}} from {{ record.user.institution }}</em>
+    MS: <em>{{ record.MS }}</em>
+  </div>
+</div>
+
+<div class="comment-section">
   {% set comments = record.comments %}
   {% if not comments %}
     <p>No comments were added</p>
