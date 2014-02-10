@@ -193,6 +193,25 @@ class SummaryManualFormHabitat(Form):
         pass
 
 
+class SummaryManualFormSpeciesRef(Form):
+
+    region = SelectField()
+
+    complementary_favourable_range = TextField()
+    complementary_favourable_population = TextField()
+
+    def setup_choices(self, dataset_id):
+        pass
+
+
+class SummaryManualFormHabitatRef(Form):
+
+    region = SelectField()
+
+    def setup_choices(self, dataset_id):
+        pass
+
+
 class ProgressFilterForm(Form):
 
     period = SelectField('Period...')

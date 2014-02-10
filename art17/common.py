@@ -59,6 +59,7 @@ def get_default_period():
 admin_perm = Permission(RoleNeed('admin'))
 expert_perm = Permission(RoleNeed('expert'))
 sta_perm = Permission(RoleNeed('stakeholder'))
+etc_perm = Permission(RoleNeed('etc'))
 
 @common.record
 def register_permissions_in_template_globals(state):

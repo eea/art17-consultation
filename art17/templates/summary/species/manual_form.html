@@ -1,86 +1,123 @@
+{% from '_macros.html' import conclusion_td with context %}
+
+{% set form=manual_form %}
 <form method="post" action="">
   <tr class="form_row">
     <td></td>
     {% if not region %}
-    <td>{{ manual_form.region() }}</td>
+    <td>{{ form.region() }}</td>
     {% endif %}
 
-    {% set form=manual_form %}
+    {% if not edit_ref %}
+      {# Range #}
+      <td {% if form.range_surface_area.errors %}class="errors"{% endif %}>
+      {{ form.range_surface_area(size=5) }}
+      </td>
+      <td {% if form.method_range.errors or form.conclusion_range.errors %}class="errors"{% endif %}>
+      {{ form.method_range() }}
+      {{ form.conclusion_range() }}
+      </td>
+      <td {% if form.range_trend.errors %}class="errors"{% endif %}>
+      {{ form.range_trend() }}
+      </td>
+      <td {% if form.complementary_favourable_range.errors %}class="errors"{% endif %}>
+      {{ form.complementary_favourable_range(size=5) }}
+      </td>
 
-    {# Range #}
-    <td {% if form.range_surface_area.errors %}class="errors"{% endif %}>
-    {{ form.range_surface_area(size=5) }}
-    </td>
-    <td {% if form.method_range.errors or form.conclusion_range.errors %}class="errors"{% endif %}>
-    {{ form.method_range() }}
-    {{ form.conclusion_range() }}
-    </td>
-    <td {% if form.range_trend.errors %}class="errors"{% endif %}>
-    {{ form.range_trend() }}
-    </td>
-    <td {% if form.complementary_favourable_range.errors %}class="errors"{% endif %}>
-    {{ form.complementary_favourable_range(size=5) }}
-    </td>
+      {# Population #}
+      <td {% if form.population_size.errors or form.population_size_unit.errors %}class="errors"{% endif %}>
+      {{ form.population_size(size=5) }}
+      {{ form.population_size_unit() }}
+      </td>
+      <td {% if form.method_population.errors or form.conclusion_population.errors %}class="errors"{% endif %}>
+      {{ form.method_population() }}
+      {{ form.conclusion_population() }}
+      </td>
+      <td {% if form.population_trend.errors %}class="errors"{% endif %}>
+      {{ form.population_trend() }}
+      </td>
+      <td {% if form.complementary_favourable_population.errors %}class="errors"{% endif %}>
+      {{ form.complementary_favourable_population(size=5) }}
+      </td>
 
-    {# Population #}
-    <td {% if form.population_size.errors or form.population_size_unit.errors %}class="errors"{% endif %}>
-    {{ form.population_size(size=5) }}
-    {{ form.population_size_unit() }}
-    </td>
-    <td {% if form.method_population.errors or form.conclusion_population.errors %}class="errors"{% endif %}>
-    {{ form.method_population() }}
-    {{ form.conclusion_population() }}
-    </td>
-    <td {% if form.population_trend.errors %}class="errors"{% endif %}>
-    {{ form.population_trend() }}
-    </td>
-    <td {% if form.complementary_favourable_population.errors %}class="errors"{% endif %}>
-    {{ form.complementary_favourable_population(size=5) }}
-    </td>
+      {# Habitat #}
+      <td {% if form.habitat_surface_area.errors %}class="errors"{% endif %}>
+      {{ form.habitat_surface_area(size=5) }}
+      </td>
+      <td {% if form.method_habitat.errors or form.conclusion_habitat.errors %}class="errors"{% endif %}>
+      {{ form.method_habitat() }}
+      {{ form.conclusion_habitat() }}
+      </td>
+      <td></td>
+      <td {% if form.habitat_trend.errors %}class="errors"{% endif %}>
+      {{ form.habitat_trend() }}
+      </td>
+      <td {% if form.complementary_suitable_habitat.errors %}class="errors"{% endif %}>
+      {{ form.complementary_suitable_habitat(size=5) }}
+      </td>
 
-    {# Habitat #}
-    <td {% if form.habitat_surface_area.errors %}class="errors"{% endif %}>
-    {{ form.habitat_surface_area(size=5) }}
-    </td>
-    <td {% if form.method_habitat.errors or form.conclusion_habitat.errors %}class="errors"{% endif %}>
-    {{ form.method_habitat() }}
-    {{ form.conclusion_habitat() }}
-    </td>
-    <td></td>
-    <td {% if form.habitat_trend.errors %}class="errors"{% endif %}>
-    {{ form.habitat_trend() }}
-    </td>
-    <td {% if form.complementary_suitable_habitat.errors %}class="errors"{% endif %}>
-    {{ form.complementary_suitable_habitat(size=5) }}
-    </td>
+      {# FP #}
+      <td {% if form.method_future.errors or form.conclusion_future.errors %}class="errors"{% endif %}>
+      {{ form.method_future() }}
+      {{ form.conclusion_future() }}
+      </td>
 
-    {# FP #}
-    <td {% if form.method_future.errors or form.conclusion_future.errors %}class="errors"{% endif %}>
-    {{ form.method_future() }}
-    {{ form.conclusion_future() }}
-    </td>
+      {# Overall #}
+      <td {% if form.method_assessment.errors or form.conclusion_assessment.errors %}class="errors"{% endif %}>
+      {{ form.method_assessment() }}
+      {{ form.conclusion_assessment() }}
+      </td>
+      <td {% if form.conclusion_assessment_trend.errors %}class="errors"{% endif %}>
+      {{ form.conclusion_assessment_trend() }}
+      </td>
+      <td {% if form.conclusion_assessment_prev.errors %}class="errors"{% endif %}>
+      {{ form.conclusion_assessment_prev() }}
+      </td>
+      <td {% if form.conclusion_assessment_change.errors %}class="errors"{% endif %}>
+      {{ form.conclusion_assessment_change() }}
+      </td>
 
-    {# Overall #}
-    <td {% if form.method_assessment.errors or form.conclusion_assessment.errors %}class="errors"{% endif %}>
-    {{ form.method_assessment() }}
-    {{ form.conclusion_assessment() }}
-    </td>
-    <td {% if form.conclusion_assessment_trend.errors %}class="errors"{% endif %}>
-    {{ form.conclusion_assessment_trend() }}
-    </td>
-    <td {% if form.conclusion_assessment_prev.errors %}class="errors"{% endif %}>
-    {{ form.conclusion_assessment_prev() }}
-    </td>
-    <td {% if form.conclusion_assessment_change.errors %}class="errors"{% endif %}>
-    {{ form.conclusion_assessment_change() }}
-    </td>
+      {# Contrib target 1 #}
+      <td {% if form.method_target1.errors or form.conclusion_target1.errors %}class="errors"{% endif %}
+      colspan="2">
+      {{ form.method_target1() }}
+      {{ form.conclusion_target1() }}
+      </td>
+    {% else %}
+      {# Edit reference values form #}
+      {% set ass = manual_assessment %}
+      <td>{{ ass.range_surface_area }}</td>
+      {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
+      <td>{{ ass.range_trend }}</td>
+      <td {% if form.complementary_favourable_range.errors %}class="errors"{% endif %}>
+        {{ form.complementary_favourable_range(size=5) }}
+      </td>
 
-    {# Contrib target 1 #}
-    <td {% if form.method_target1.errors or form.conclusion_target1.errors %}class="errors"{% endif %}
-    colspan="2">
-    {{ form.method_target1() }}
-    {{ form.conclusion_target1() }}
-    </td>
+      <td>{{ ass.population_size }}
+          {{ ass.population_size_unit }}</td>
+      {{ conclusion_td(ass.conclusion_population, ass.method_population) }}
+      <td>{{ ass.population_trend }}</td>
+      <td {% if form.complementary_favourable_population.errors %}class="errors"{% endif %}>
+        {{ form.complementary_favourable_population(size=5) }}
+      </td>
+
+      <td>{{ ass.habitat_surface_area }}</td>
+      {{ conclusion_td(ass.conclusion_habitat, ass.method_habitat) }}
+      <td></td>
+      <td>{{ ass.habitat_trend }}</td>
+      <td>{{ ass.complementary_suitable_habitat }}</td>
+
+      {# FP #}
+      {{ conclusion_td(ass.conclusion_future, ass.method_future) }}
+
+      {# Overall #}
+      {{ conclusion_td(ass.conclusion_assessment, ass.method_range) }}
+      <td>{{ ass.conclusion_assessment_trend }}</td>
+      <td>{{ ass.conclusion_assessment_prev }}</td>
+      <td>{{ ass.conclusion_assessment_change }}</td>
+
+      {{ conclusion_td(ass.conclusion_target1, ass.method_target1, colspan=2) }}
+    {% endif %}
 
     {% if not manual_assessment %}
     <td colspan="9">
@@ -88,7 +125,7 @@
     </td>
     {% else %}
     {% set row=manual_assessment %}
-    <td>
+    <td colspan="2">
       <input type="hidden" name="subject" value="{{ subject }}" />
       <input type="hidden" name="region" value="{{ row.region }}" />
       <input type="hidden" name="user" value="{{ row.user_id }}" />
@@ -98,4 +135,12 @@
     {% include 'summary/common/manual/conclusion_details.html' %}
     {% endif %}
   </tr>
+  {% if form.errors %}
+  <tr>
+    <td colspan="{{ colspan_all }}">
+      Errors:
+        {{ form.all_errors()|safe }}
+    </td>
+  </tr>
+  {% endif %}
 </form>

@@ -9,6 +9,7 @@ from flask import (
     flash,
     abort,
 )
+from flask.ext.principal import PermissionDenied
 from sqlalchemy.exc import IntegrityError
 from werkzeug.datastructures import MultiDict
 from art17.auth import current_user
@@ -33,6 +34,7 @@ from art17.common import (
     admin_perm,
     expert_perm,
     sta_perm,
+    etc_perm,
     population_size_unit,
     population_ref,
     get_range_conclusion_value,
@@ -55,6 +57,8 @@ from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
     SummaryManualFormHabitat,
+    SummaryManualFormHabitatRef,
+    SummaryManualFormSpeciesRef,
 )
 from art17.utils import str2num, parse_semicolon, str1num
 
@@ -89,7 +93,7 @@ def can_edit(record):
     if record.user_id == current_user.id:
         return True
 
-    return admin_perm.can()
+    return etc_perm.can() or admin_perm.can()
 
 
 @summary.app_template_global('can_delete')
@@ -271,6 +275,14 @@ class Summary(views.View):
     def parse_object(self, subject, form):
         raise NotImplementedError()
 
+    def must_edit_ref(self, assessment):
+        if not current_user.is_authenticated() or not assessment:
+            return False
+        if assessment.user_id == current_user.id:
+            return False
+
+        return etc_perm.can() or admin_perm.can()
+
     def get_manual_form(self, data=None, period=None):
         manual_assessment = None
         data = data or MultiDict({})
@@ -288,15 +300,21 @@ class Summary(views.View):
             ).first()
         if data.get('submit') == 'edit':
             if manual_assessment:
-                form = self.manual_form_cls()
+                if not self.must_edit_ref(manual_assessment):
+                    form = self.manual_form_cls()
+                else:
+                    form = self.manual_form_ref_cls()
                 data = MultiDict(self.parse_object(manual_assessment, form))
                 form.setup_choices(dataset_id=period)
                 form.process(data)
                 return form, manual_assessment
             else:
                 raise ValueError('No data found.')
-        # Default: add
-        form = self.manual_form_cls(data)
+        # Add or update
+        if not self.must_edit_ref(manual_assessment):
+            form = self.manual_form_cls(data)
+        else:
+            form = self.manual_form_ref_cls(data)
         form.setup_choices(dataset_id=period)
         return form, manual_assessment
 
@@ -331,7 +349,8 @@ class Summary(views.View):
 
         if request.method == 'POST' and request.form.get('submit') != 'edit':
             if manual_form.validate():
-                admin_perm.test()
+                if not sta_perm.can() and not admin_perm.can():
+                    raise PermissionDenied()
                 if not manual_assessment:
                     manual_assessment = self.model_manual_cls(subject=subject)
                     self.flatten_form(manual_form, manual_assessment)
@@ -371,6 +390,7 @@ class Summary(views.View):
             'summary_filter_form': summary_filter_form,
             'manual_form': manual_form,
             'manual_assessment': manual_assessment,
+            'edit_ref': self.must_edit_ref(manual_assessment),
             'current_selection': current_selection,
             'annexes': annexes,
             'group': group,
@@ -439,6 +459,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
 
     template_name = 'summary/species.html'
     manual_form_cls = SummaryManualFormSpecies
+    manual_form_ref_cls = SummaryManualFormSpeciesRef
 
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}
@@ -485,6 +506,7 @@ class HabitatSummary(HabitatMixin, Summary):
 
     template_name = 'summary/habitat.html'
     manual_form_cls = SummaryManualFormHabitat
+    manual_form_ref_cls = SummaryManualFormHabitatRef
 
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}
