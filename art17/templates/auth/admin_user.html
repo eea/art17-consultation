@@ -10,7 +10,15 @@
              {%- if user.active %} checked{% endif %}>
       <label for="user-active">Active</label>
     </div>
-
+    <label>Roles</label>
+    <select name="roles" multiple>
+      {% for role, role_name in all_roles.items() %}
+        <option value="{{ role }}"
+            {%- if role in current_user_roles %}selected{% endif %}>
+            {{ role_name }}
+        </option>
+      {% endfor %}
+    </select>
     <div>
       <button type="submit">Save</button>
     </div>

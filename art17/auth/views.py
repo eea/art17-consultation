@@ -125,12 +125,35 @@ def users():
 @require_admin
 def admin_user(user_id):
     user = models.RegisteredUser.query.get_or_404(user_id)
+    current_user_roles = [r.name for r in user.roles]
+    all_roles = (
+        models.Role.query
+        .with_entities(models.Role.name, models.Role.description)
+        .order_by(models.Role.id)
+        .all()
+    )
+
     if flask.request.method == 'POST':
         set_user_active(user, flask.request.form.get('active', type=bool))
+
+        datastore = flask.current_app.extensions['security'].datastore
+        new_roles = flask.request.form.getlist('roles')
+        expandable_roles = filter(lambda k: k not in new_roles, current_user_roles)
+
+        for role in new_roles:
+            datastore.add_role_to_user(user_id, role)
+        for role in expandable_roles:
+            datastore.remove_role_from_user(user_id, role)
+
+        datastore.commit()
         flask.flash("User information updated for %s" % user_id, 'success')
         return flask.redirect(flask.url_for('.users', user_id=user_id))
 
-    return flask.render_template('auth/admin_user.html', user=user)
+    return flask.render_template('auth/admin_user.html', **{
+        'user': user,
+        'current_user_roles': current_user_roles,
+        'all_roles': dict(all_roles),
+    })
 
 
 @auth.route('/admin/dataset/')
