@@ -1,4 +1,5 @@
 import logging
+from datetime import date
 from functools import wraps
 import flask
 from flask.ext.security import signals as security_signals
@@ -80,3 +81,21 @@ def set_user_active(user, new_active):
             zope_acl_manager.delete(user)
         if new_active and not was_active:
             zope_acl_manager.create(user)
+
+
+def check_dates(view):
+    @wraps(view)
+    def wrapper(*args, **kwargs):
+        config = get_config()
+
+        if config.start_date and config.start_date > date.today():
+            message = "Registration has not started yet"
+            return flask.render_template('message.html', message=message)
+
+        if config.end_date and config.end_date < date.today():
+            message = "Registration has finished"
+            return flask.render_template('message.html', message=message)
+
+        return view(*args, **kwargs)
+
+    return wrapper

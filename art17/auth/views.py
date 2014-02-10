@@ -14,6 +14,7 @@ from art17.auth.common import (
     set_user_active,
     get_ldap_user_info,
     put_in_activation_queue,
+    check_dates,
 )
 
 
@@ -24,6 +25,7 @@ def handle_permission_denied(error):
 
 
 @auth.route('/auth/register')
+@check_dates
 def register():
     user_credentials = flask.g.get('user_credentials', {})
     if user_credentials.get('is_ldap_user'):
@@ -33,6 +35,7 @@ def register():
 
 
 @auth.route('/auth/register/ldap', methods=['GET', 'POST'])
+@check_dates
 def register_ldap():
     user_credentials = flask.g.get('user_credentials', {})
     if not user_credentials.get('is_ldap_user'):

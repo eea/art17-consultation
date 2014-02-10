@@ -215,3 +215,25 @@ def test_change_ldap_password(app, zope_auth, client):
     zope_auth.update({'user_id': 'foo', 'is_ldap_user': True})
     page = client.get(flask.url_for('auth.change_password'))
     assert "Please go to the EIONET account change password page" in page
+
+
+def test_dates(app, zope_auth, client):
+    from datetime import date, timedelta
+    from art17.common import get_config
+    from art17.models import db
+
+    today = date.today()
+
+    _set_config(
+        start_date=today + timedelta(days=2),
+        end_date=today + timedelta(days=4),
+    )
+    page = client.get(flask.url_for('auth.register'))
+    assert "Registration has not started yet" in page
+
+    _set_config(
+        start_date=today - timedelta(days=4),
+        end_date=today - timedelta(days=2),
+    )
+    page = client.get(flask.url_for('auth.register'))
+    assert "Registration has finished" in page

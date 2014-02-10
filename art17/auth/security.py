@@ -8,12 +8,12 @@ import flask
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
 import flask.ext.security.script
 import flask.ext.security as flask_security
-
 from flask.ext.security.forms import (
     ConfirmRegisterForm,
     password_length,
     Required,
 )
+from art17.auth.common import check_dates
 
 
 current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
@@ -22,6 +22,7 @@ flask_security.forms.current_user = current_user
 flask_security.views.current_user = current_user
 flask_security.views.logout_user = lambda: None
 flask_security.views.login_user = lambda new_user: None
+flask_security.views.register = check_dates(flask_security.views.register)
 flask_security.core._get_login_manager = lambda app: None
 password_length.min = 1
 
