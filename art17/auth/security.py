@@ -63,9 +63,13 @@ class UserDatastore(SQLAlchemyUserDatastore):
 
 
 def check_duplicate_with_ldap(form, field):
-    user = get_ldap_user_info(field.data)
-    if user:
+    from eea.usersdb import UserNotFound
+
+    try:
+        user = get_ldap_user_info(field.data)
         raise ValidationError("User ID already exists in LDAP database.")
+    except UserNotFound:
+        pass
 
 
 class Art17ConfirmRegisterForm(ConfirmRegisterForm):
