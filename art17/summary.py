@@ -301,12 +301,10 @@ class Summary(views.View):
         if data.get('submit') == 'edit':
             if manual_assessment:
                 if not self.must_edit_ref(manual_assessment):
-                    form = self.manual_form_cls()
+                    form = self.manual_form_cls(formdata=None, obj=manual_assessment)
                 else:
-                    form = self.manual_form_ref_cls()
-                data = MultiDict(self.parse_object(manual_assessment, form))
+                    form = self.manual_form_ref_cls(formdata=None, obj=manual_assessment)
                 form.setup_choices(dataset_id=period)
-                form.process(data)
                 return form, manual_assessment
             else:
                 raise ValueError('No data found.')
@@ -353,7 +351,7 @@ class Summary(views.View):
                     raise PermissionDenied()
                 if not manual_assessment:
                     manual_assessment = self.model_manual_cls(subject=subject)
-                    self.flatten_form(manual_form, manual_assessment)
+                    manual_form.populate_obj(manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
@@ -367,7 +365,7 @@ class Summary(views.View):
                               'error')
                     manual_assessment = None
                 else:
-                    self.flatten_form(manual_form, manual_assessment)
+                    manual_form.populate_obj(manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     db.session.add(manual_assessment)
                     db.session.commit()

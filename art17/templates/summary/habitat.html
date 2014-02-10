@@ -145,34 +145,39 @@
       </tbody>
       <tbody>
       {% for row in manual_objects %}
-      <tr {% if row.deleted %}class="deleted"{% endif %}>
-        {# MS and region #}
-        {% include 'summary/common/manual/ms.html' %}
+        {% if row != manual_assessment %}
+        <tr {% if row.deleted %}class="deleted"{% endif %}>
+          {# MS and region #}
+          {% include 'summary/common/manual/ms.html' %}
 
-        {# Range #}
-        {% include 'summary/common/manual/range.html' %}
+          {# Range #}
+          {% include 'summary/common/manual/range.html' %}
 
-        {# Area #}
-        {% include 'summary/habitat/manual/area.html' %}
+          {# Area #}
+          {% include 'summary/habitat/manual/area.html' %}
 
-        {# Struct Func Overall#}
-        {% include 'summary/habitat/manual/future_prosp.html' %}
-        {% include 'summary/habitat/manual/struct_func.html' %}
-        {% include 'summary/common/manual/overall_assessment.html' %}
+          {# Struct Func Overall#}
+          {% include 'summary/habitat/manual/future_prosp.html' %}
+          {% include 'summary/habitat/manual/struct_func.html' %}
+          {% include 'summary/common/manual/overall_assessment.html' %}
 
+          {# Quality #}
+          {% include 'summary/common/manual/contrib_target1.html' %}
 
-        {# Quality #}
-        <td colspan="2"></td>
-
-        {# Actions #}
-        {% include 'summary/common/manual/actions.html' with context%}
-
-        {# Comments #}
-        {% include 'summary/common/manual/conclusion_details.html' %}
-
-      </tr>
+          {% include 'summary/common/manual/actions.html' with context%}
+          {% include 'summary/common/manual/conclusion_details.html' %}
+        </tr>
+        {% else %}
+          {% include 'summary/habitat/manual_form.html' %}
+        {% endif %}
       {% endfor %}
       </tbody>
+      {# Add manual assessment form #}
+      {% if not manual_assessment and can_add_conclusion(dataset, 'habitat', subject) %}
+      <tbody>
+        {% include 'summary/habitat/manual_form.html' %}
+      </tbody>
+      {% endif %}
     </table>
     {% else %}
     <p><b>Please select a group and a species.</b></p>

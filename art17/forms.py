@@ -225,12 +225,112 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         return text
 
 
-class SummaryManualFormHabitat(Form):
+class SummaryManualFormHabitat(Form, OptionsBase):
 
     region = SelectField()
 
+    range_surface_area = TextField()
+    method_range = OptionalSelectField()
+    conclusion_range = OptionalSelectField()
+    range_trend = OptionalSelectField()
+    range_yearly_magnitude = TextField()
+    complementary_favourable_range = TextField()
+
+    coverage_surface_area = TextField()
+    method_area = OptionalSelectField()
+    conclusion_area = OptionalSelectField()
+    coverage_trend = OptionalSelectField()
+    coverage_yearly_magnitude = TextField()
+    complementary_favourable_area = TextField()
+
+    method_structure = OptionalSelectField()
+    conclusion_structure = OptionalSelectField()
+
+    method_future = OptionalSelectField()
+    conclusion_future = OptionalSelectField()
+
+    method_assessment = OptionalSelectField()
+    conclusion_assessment = OptionalSelectField()
+    conclusion_assessment_trend = OptionalSelectField()
+    conclusion_assessment_prev = OptionalSelectField()
+    conclusion_assessment_change = OptionalSelectField()
+
+    method_target1 = OptionalSelectField()
+    conclusion_target1 = OptionalSelectField()
+
     def setup_choices(self, dataset_id):
-        pass
+        empty = [('', '')]
+        methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
+        methods = empty + zip(methods, methods)
+        conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
+        conclusions = empty + zip(conclusions, conclusions)
+        conclusions = self.filter_conclusions(conclusions)
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + zip(trends, trends)
+
+        self.region.choices = empty
+
+        self.method_range.choices = self.get_method_options(methods)
+        self.method_area.choices = self.get_method_options(methods)
+        self.method_structure.choices = self.get_sf_options(methods)
+        self.method_future.choices = self.get_sf_options(methods)
+        self.method_assessment.choices = self.get_assesm_options(methods)
+        self.method_target1.choices = self.get_assesm_options(methods)
+
+        for f in (self.range_trend, self.coverage_trend,
+                  self.conclusion_assessment_trend):
+            f.choices = trends
+        for f in (self.conclusion_range, self.conclusion_area,
+                  self.conclusion_structure, self.conclusion_future,
+                  self.conclusion_assessment, self.conclusion_target1,
+                  self.conclusion_assessment_prev,
+                  self.conclusion_assessment_change):
+            f.choices = conclusions
+
+    def custom_validate(self):
+        fields = [f for f in all_fields(self) if f != self.region]
+        empty = [f for f in fields if not f.data]
+
+        if empty and len(empty) == len(fields):
+            fields[1].errors.append(EMPTY_FORM)
+            return False
+
+        method_conclusions = [
+            (self.method_range, self.conclusion_range),
+            (self.method_area, self.conclusion_area),
+            (self.method_structure, self.conclusion_structure),
+            (self.method_future, self.conclusion_future),
+            (self.method_assessment, self.conclusion_assessment),
+            (self.method_target1, self.conclusion_target1),
+        ]
+        one = False
+        for m, c in method_conclusions:
+            mc, cc = m.data, c.data
+            if mc and not cc:
+                c.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif cc and not mc:
+                m.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif mc and cc:
+                one = True
+        if not one:
+            fields[1].errors.append(METH_CONCL_MANDATORY)
+
+        numeric_values = [
+            self.range_surface_area, self.complementary_favourable_range,
+            self.coverage_surface_area, self.complementary_favourable_area,
+        ]
+        for f in numeric_values:
+            if not validate_field(f.data):
+                f.errors.append(NOT_NUMERIC_VALUES)
+
+        return not self.errors
+
+    def all_errors(self):
+        text = '<ul>'
+        for field_name, field_errors in self.errors.iteritems():
+            text += '<li>' + ', '.join(field_errors) + '</li>'
+        text += '</ul>'
+        return text
 
 
 class SummaryManualFormSpeciesRef(Form):
@@ -247,6 +347,9 @@ class SummaryManualFormSpeciesRef(Form):
 class SummaryManualFormHabitatRef(Form):
 
     region = SelectField()
+    
+    complementary_favourable_range = TextField()
+    complementary_favourable_area = TextField()
 
     def setup_choices(self, dataset_id):
         pass
