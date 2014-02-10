@@ -32,6 +32,7 @@ from art17.common import (
     get_default_period,
     admin_perm,
     expert_perm,
+    sta_perm,
     population_size_unit,
     population_ref,
     get_range_conclusion_value,
@@ -120,7 +121,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
     """
     if not dataset:
         return False
-    return not dataset.is_readonly and admin_perm.can()
+    return not dataset.is_readonly and (sta_perm.can() or admin_perm.can())
 
 
 @summary.app_context_processor
