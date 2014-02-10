@@ -1,10 +1,21 @@
-{{- g.zope_layout.standard_html_header|safe }}
+{{ g.zope_layout.start_to_title }}
+
+  {%- block title %}{% endblock -%}
+
+{{ g.zope_layout.title_to_endofhead }}
+
+  {% include 'header_styles.html' %}
+
+{{ g.zope_layout.endofhead_to_breadcrumbs }}
+
+  {% block breadcrumbs %}
+    <div class="breadcrumbitemlast">art17</div>
+  {% endblock %}
+
+{{ g.zope_layout.breadcrumbs_to_content }}
 
   <script>$('body').addClass('fullscreen')</script>
-
   {% include 'flash_messages.html' %}
+  {% block content %}{% endblock %}
 
-  {%- block content %}
-  {%- endblock content %}
-
-{{- g.zope_layout.standard_html_footer|safe }}
+{{ g.zope_layout.content_to_end }}
