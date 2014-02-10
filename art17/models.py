@@ -1135,6 +1135,15 @@ t_wiki_trail_comments_read = Table(
 )
 
 
+class Config(Base):
+    __tablename__ = 'config'
+
+    id = Column(Integer, primary_key=True)
+    start_date = Column(db.Date)
+    end_date = Column(db.Date)
+    admin_email = Column(db.String(255))
+
+
 db_manager = Manager()
 
 
