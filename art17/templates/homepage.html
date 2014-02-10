@@ -38,5 +38,6 @@
 
   {% if admin_perm.can() %}
     <a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a>
+    <a href="{{ url_for('common.config') }}">Configuration</a>
   {% endif %}
 {% endblock content %}

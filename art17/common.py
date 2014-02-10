@@ -1,13 +1,17 @@
 from urlparse import urlparse
 import flask
 from flask_principal import Permission, RoleNeed
+from flask.ext.wtf import Form
+from wtforms.ext.sqlalchemy.orm import model_form
 from art17.dataset import CONVERTER_URLS
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
+    db,
     EtcDataSpeciesAutomaticAssessment,
     EtcDataHabitattypeAutomaticAssessment,
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion,
+    Config,
 )
 from .utils import str2num
 
@@ -280,3 +284,32 @@ def species_groups():
 def habitat_groups():
     data = HabitatMixin.get_groups(flask.request.args['period'])
     return flask.jsonify(data)
+
+
+def get_config():
+    rows = Config.query.all()
+    if len(rows) != 1:
+        raise RuntimeError("There should be exactly one config row")
+    return rows[0]
+
+
+ConfigForm = model_form(Config, base_class=Form, field_args={
+        'start_date': {'label': "Start date (YYYY-MM-DD)"},
+        'end_date': {'label': "End date (YYYY-MM-DD)"},
+        'admin_email': {'label': "Administrator email (space separated list)"},
+    })
+
+
+@common.route('/config', methods=['GET', 'POST'])
+def config():
+    admin_perm.test()
+    row = get_config()
+    form = ConfigForm(flask.request.form, row)
+
+    if form.validate_on_submit():
+        form.populate_obj(row)
+        db.session.commit()
+        flask.flash("Configuration saved", 'success')
+        return flask.redirect(flask.url_for('.config'))
+
+    return flask.render_template('config.html', form=form)
