@@ -20,7 +20,7 @@
     {% for user in user_list %}
       <tr>
         <td>{{ user.id }}</td>
-        <td>{{ user.name }}</td>
+        <td>{{ user.name or '' }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.institution or '' }}</td>
         <td>{{ user.qualification or '' }}</td>

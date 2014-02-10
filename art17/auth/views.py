@@ -98,13 +98,14 @@ def get_roles_for_all_users():
     roles_query = (
         models.db.session.query(
             models.roles_users.c.registered_users_user,
-            models.Role.name,
+            models.Role.description,
         )
         .join(
             models.Role,
             models.roles_users.c.role_id == models.Role.id,
         )
     )
+
     rv = defaultdict(list)
     for user_id, role_name in roles_query:
         rv[user_id].append(role_name)
