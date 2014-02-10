@@ -1,5 +1,5 @@
 from urlparse import urlparse
-from flask import Blueprint, request, jsonify
+import flask
 from flask_principal import Permission, RoleNeed
 from art17.dataset import CONVERTER_URLS
 from art17.mixins import SpeciesMixin, HabitatMixin
@@ -49,7 +49,7 @@ COUNTRY_ASSESSMENTS = {
 
 HOMEPAGE_VIEW_NAME = 'summary.homepage'
 
-common = Blueprint('common', __name__)
+common = flask.Blueprint('common', __name__)
 
 
 def get_default_period():
@@ -272,11 +272,11 @@ def get_title_for_habitat_country(row):
 
 @common.route('/common/species/groups', endpoint='species-groups')
 def species_groups():
-    data = SpeciesMixin.get_groups(request.args['period'])
-    return jsonify(data)
+    data = SpeciesMixin.get_groups(flask.request.args['period'])
+    return flask.jsonify(data)
 
 
 @common.route('/common/habitat/groups', endpoint='habitat-groups')
 def habitat_groups():
-    data = HabitatMixin.get_groups(request.args['period'])
-    return jsonify(data)
+    data = HabitatMixin.get_groups(flask.request.args['period'])
+    return flask.jsonify(data)
