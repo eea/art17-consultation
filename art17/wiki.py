@@ -353,12 +353,12 @@ class EditPage(WikiView):
 class EditComment(WikiView):
 
     def process_post_request(self):
-        if not can_edit_comment():
-            abort(403)
-
         comment_id = request.args.get('comment_id')
         comment = (self.section.wiki_comment_cls.query
                    .filter_by(id=comment_id).first_or_404())
+
+        if not can_edit_comment(comment):
+            abort(403)
 
         comment.comment = request.form.get('text'),
         db.session.commit()

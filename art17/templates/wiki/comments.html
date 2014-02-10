@@ -2,7 +2,16 @@
   <h3>Comments</h3>
 
   {% if can_add_comment(comments) %}
-    <button class='edit-btn' href="{{ add_comment_url }}">Add comment</button>
+    <button class='edit-btn' href="{{ add_comment_url }}"
+        {% if add_cmnt_form %}
+            style="display: none;"
+        {% endif %}
+        >Add comment</button>
+    <button class='edit-btn' href="{{ home_url }}"
+        {% if not add_cmnt_form %}
+            style="display: none;"
+        {% endif %}
+        >Cancel</button>
     {% if add_cmnt_form %}
         {% include 'wiki/addcomment.html'%}
     {% endif %}
@@ -39,7 +48,11 @@
         {% if can_manage_comment() %}
 	  <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
-            <button class="button_text" href="{{ href }}">{{ button_text }}</button>
+            <button class="button_text" href="{{ href }}"
+                {% if edit_comment_form %}
+                    style="display: none;"
+                {% endif %}
+                >{{ button_text }}</button>
 
             <button class="button_text edit-btn" href="{{ edit_cmnt_url ~ '#' ~ comment.id }}"
             {% if not can_edit_comment(comment) or edit_comment_form %}
@@ -47,18 +60,14 @@
 
             <button class="button_text edit-btn cancel-edit" href="{{ home_url ~ '#' ~ comment.id }}"
                 {% if not edit_comment_form %}style="display: none;"{% endif %}>Cancel</button>
+         </div>
+        {% endif %}
 
           {% if edit_comment_form and can_edit_comment(comment) %}
             {% include 'wiki/editcomment.html' %}
           {% else %}
 	    <div class="cmnt-body">{{ comment.comment | safe }}</div>
           {% endif %}
-
-      {% if edit_comment_form and can_edit_cmnt(comment) %}
-        {% include 'wiki/datasheetinfo/editcomment.html' %}
-      {% else %}
-        <div class="cmnt-body">{{ comment.comment | safe }}</div>
-      {% endif %}
 
       <div class="small clearfix">
         <div class="pull-left">
