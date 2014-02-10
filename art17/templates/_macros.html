@@ -1,4 +1,5 @@
 {% macro parse_errors(fields, row, qa_errors, title='', classes='') %}
     {% set qtitle, qclasses = parse_qa_errors(fields, row, qa_errors) %}
-    title="{{ title }} {{ qtitle }}" class="{{ classes }} {{ qclasses }}"
+    {% set letitle = title + ' ' + qtitle %}
+    title="{{ letitle|trim }}" class="{{ classes }} {{ qclasses }}"
 {% endmacro %}
