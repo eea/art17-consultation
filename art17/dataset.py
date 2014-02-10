@@ -43,9 +43,11 @@ class ImportCommand(Command):
             Option('-s', '--schema', required=True),
             Option('-d', '--dataset_name', required=True),
             Option('-n', '--no_commit', action='store_true'),
+            Option('-f', '--fallback_dataset', type=int),
         ]
 
-    def handle(self, app, input_db, schema, dataset_name, no_commit):
+    def handle(self, app, input_db, schema,
+               dataset_name, no_commit, fallback_dataset):
         if schema not in IMPORT_SCHEMA:
             stdout_write('Unknown schema: %s\n' % schema)
             return
@@ -55,6 +57,8 @@ class ImportCommand(Command):
             models.db.session.add(dataset)
             models.db.session.flush()
 
+            output_conn = models.db.session.connection()
+
             for table_name, columns in IMPORT_SCHEMA[schema]:
                 stdout_write(table_name + ' ... ')
                 out_columns = columns + ['ext_dataset_id']
@@ -62,19 +66,40 @@ class ImportCommand(Command):
                 out_columns_sql = ", ".join('`%s`' % c for c in out_columns)
                 out_values_sql = ", ".join('%s' for c in out_columns)
                 query = "SELECT " + columns_sql + " FROM `%s`" % table_name
+                loaded_from_fallback = False
 
                 values = [
                     list(row) + [dataset.id]
                     for row in input_conn.execute(query)
                 ]
                 if values:
-                    rv = models.db.session.connection().execute(
+                    rv = output_conn.execute(
                         "INSERT INTO `%s` (%s) VALUES (%s)"
                         % (table_name, out_columns_sql, out_values_sql),
                         values,
                     )
 
-                stdout_write("%d\n" % len(values))
+                elif fallback_dataset and table_name in FALLBACK_TABLES:
+                    values = [
+                        list(row) + [dataset.id]
+                        for row in output_conn.execute(
+                            query +
+                            " WHERE ext_dataset_id = %d" % fallback_dataset
+                        )
+                    ]
+                    if values:
+                        rv = output_conn.execute(
+                            "INSERT INTO `%s` (%s) VALUES (%s)"
+                            % (table_name, out_columns_sql, out_values_sql),
+                            values,
+                        )
+                        loaded_from_fallback = True
+
+                stdout_write(str(len(values)))
+                if loaded_from_fallback:
+                    stdout_write(" (copied from dataset %d)"
+                                 % fallback_dataset)
+                stdout_write("\n")
 
                 models.db.session.flush()
 
@@ -453,3 +478,16 @@ CONVERTER_URLS = {
                    '#{subject}{region}',
     },
 }
+
+
+FALLBACK_TABLES = set([
+    'dic_country_codes',
+    'etc_dic_biogeoreg',
+    'etc_dic_conclusion',
+    'etc_dic_decision',
+    'etc_dic_hd_habitats',
+    'etc_dic_method',
+    'etc_dic_population_units',
+    'etc_dic_species_type',
+    'etc_dic_trend',
+])
