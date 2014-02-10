@@ -2,5 +2,5 @@
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_target1, '') %}
 
 <td class="{{ classes }}" colspan="2" title="{{ title }}">
-    {{ row.method_target1 or '' }}
+    <span>{{ row.method_target1 or '' }}</span>
 </td>
