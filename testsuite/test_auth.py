@@ -5,6 +5,14 @@ from mock import patch
 from art17 import models
 
 
+def _set_config(**kwargs):
+    from art17.common import get_config
+    from art17.models import db
+    for key in kwargs:
+        setattr(get_config(), key, kwargs[key])
+    db.session.commit()
+
+
 @pytest.fixture
 def zope_auth(app, request):
     from art17.auth import auth
@@ -57,11 +65,10 @@ def test_identity_is_set_from_zope_whoami(app, zope_auth, client):
 
 
 def test_self_registration_flow(app, zope_auth, client, outbox):
-    from art17.models import RegisteredUser, Role, db
+    from art17.models import RegisteredUser
     from art17.auth.providers import set_user
 
-    app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
-
+    _set_config(admin_email='admin@example.com')
     _create_user('ze_admin', ['admin'])
 
     register_page = client.get(flask.url_for('auth.register'))
@@ -122,7 +129,7 @@ def test_ldap_account_activation_flow(
         ldap_user_info,
     ):
     from art17.auth.providers import set_user
-    app.config['AUTH_ADMIN_EMAIL'] = 'admin@example.com'
+    _set_config(admin_email='admin@example.com')
     ldap_user_info['foo'] = {'email': 'foo@example.com'}
     _create_user('ze_admin', ['admin'])
 

@@ -1,32 +1,41 @@
+import logging
 from functools import wraps
 import flask
 from flask.ext.security import signals as security_signals
 from flask.ext.mail import Message
 from art17 import models
-from art17.common import admin_perm, HOMEPAGE_VIEW_NAME
+from art17.common import admin_perm, HOMEPAGE_VIEW_NAME, get_config
 from art17.auth import zope_acl_manager
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 @security_signals.user_confirmed.connect
 def put_in_activation_queue(app, user, **extra):
     user.waiting_for_activation = True
     models.db.session.commit()
+    admin_email = get_config().admin_email
 
-    msg = Message(
-        subject="User has registered",
-        sender=app.extensions['security'].email_sender,
-        recipients=[app.config['AUTH_ADMIN_EMAIL']],
-    )
-    msg.body = flask.render_template(
-        'auth/email_admin_new_user.txt',
-        user=user,
-        activation_link=flask.url_for(
-            'auth.admin_user',
-            user_id=user.id,
-            _external=True,
-        ),
-    )
-    app.extensions['mail'].send(msg)
+    if not admin_email:
+        logger.warn("No admin_email is configured; not sending email")
+
+    else:
+        msg = Message(
+            subject="User has registered",
+            sender=app.extensions['security'].email_sender,
+            recipients=admin_email.split(),
+        )
+        msg.body = flask.render_template(
+            'auth/email_admin_new_user.txt',
+            user=user,
+            activation_link=flask.url_for(
+                'auth.admin_user',
+                user_id=user.id,
+                _external=True,
+            ),
+        )
+        app.extensions['mail'].send(msg)
 
 
 def require_admin(view):
