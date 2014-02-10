@@ -1027,7 +1027,7 @@ class Wiki(Base):
     __tablename__ = 'wiki'
 
     id = Column(Integer, primary_key=True, unique=True)
-    region = Column(String(4), nullable=False)
+    region_code = Column('region', String(4), nullable=False)
     assesment_speciesname = Column(String(60))
     habitatcode = Column(String(4))
 
@@ -1049,7 +1049,7 @@ class WikiChange(Base):
                      server_default=u'CURRENT_TIMESTAMP')
     active = Column(Integer, server_default=u"'0'")
 
-    wiki = relationship(u'Wiki')
+    wiki = relationship(u'Wiki', backref='changes')
 
 
 t_wiki_comments_read = Table(
@@ -1088,9 +1088,15 @@ class WikiTrail(Base):
     __tablename__ = 'wiki_trail'
 
     id = Column(Integer, primary_key=True, unique=True)
-    region = Column(String(4), nullable=False)
+    region_code = Column('region', String(4), nullable=False)
     assesment_speciesname = Column(String(60))
     habitatcode = Column(String(4))
+
+    region = relationship(
+        'EtcDicBiogeoreg',
+        primaryjoin="WikiTrail.region_code==EtcDicBiogeoreg.reg_code",
+        foreign_keys=region_code,
+    )
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -1110,7 +1116,7 @@ class WikiTrailChange(Base):
                      server_default=u'CURRENT_TIMESTAMP')
     active = Column(Integer, server_default=u"'0'")
 
-    wiki = relationship(u'WikiTrail')
+    wiki = relationship(u'WikiTrail', backref='changes')
 
 
 class WikiTrailComment(Base):

@@ -1,0 +1,23 @@
+<div id="history" class="hidden">
+    <div class="history-header clearfix">
+        <strong class="pull-left">{{ revisions | length }} revisions</strong>
+        <button onclick="$('#history').toggleClass('hidden')"
+                                class="button_text pull-right">Close</button>
+    </div>
+    <ul class="history-list">
+
+    {% for revision in revisions %}
+        <li id="{{ revision.id }}" href="{{ url_for(get_rvs_endpoint, page=page, 
+                                        revision_id=revision.id, section=section)}}"> 
+        {{ revision.changed | format_date_cmnt }}
+        <br/>by {{ revision.editor }}{% if revision.active %} (active) {% endif %}
+
+        <form method="post" action="{{ page_history_url }}">
+            <input type="hidden" name="revision_id" value="{{ revision.id }}"/>
+            <button class="button_text" type="submit">Restore version</button>
+        </form>
+
+        </li>
+    {% endfor %}
+    </ul>
+</div>

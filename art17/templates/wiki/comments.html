@@ -1,0 +1,75 @@
+<div class="comment-section">
+  <h3>Comments</h3>
+
+  {% if can_add_comment(comments) %}
+    <button class='edit-btn' href="{{ add_comment_url }}">Add comment</button>
+    {% if add_cmnt_form %}
+        {% include 'wiki/addcomment.html'%}
+    {% endif %}
+  {% endif %}
+
+  <ul class="cmnt-list no-list">
+    {% for comment in comments %}
+      {% set edit_cmnt_url = url_for('.ds-edit-comment', page=page,
+             comment_id=comment.id, period=request.args['period'],
+             subject=request.args['subject'], region=request.args['region']) %}
+      {% if g.identity.id == comment.author_id %}
+        {% set href = url_for('.ds-manage-comment', comment_id=comment.id,
+                              toggle='del', page=page) %}
+        {% if comment.deleted %}
+          {% set comment_type = 'Deleted' %}
+          {% set button_text  = 'Undo' %}
+        {% else %}
+          {% set comment_type = 'Your comment'%}
+          {% set button_text  = 'Delete'%}
+        {% endif %}
+      {% else %}
+        {% set href = url_for('.ds-manage-comment', comment_id=comment.id,
+                              toggle='read', page=page) %}
+        {% if is_read(comment) %}
+          {% set comment_type = 'Read'%}
+          {% set button_text  = 'Mark as not read'%}
+        {% else %}
+          {% set comment_type = 'Not read'%}
+          {% set button_text  = 'Mark as read'%}
+        {% endif %}
+      {% endif %}
+
+        <li class="{{ get_css_class(comment) }}" id="{{comment.id}}">
+        {% if can_manage_comment() %}
+	  <div class="clearfix">
+            <span class="cmnt-type">{{ comment_type }}</span>
+            <button class="button_text" href="{{ href }}">{{ button_text }}</button>
+
+            <button class="button_text edit-btn" href="{{ edit_cmnt_url ~ '#' ~ comment.id }}"
+            {% if not can_edit_comment(comment) or edit_comment_form %}
+            style="display: none;"{% endif %}>Edit</button>
+
+            <button class="button_text edit-btn cancel-edit" href="{{ home_url ~ '#' ~ comment.id }}"
+                {% if not edit_comment_form %}style="display: none;"{% endif %}>Cancel</button>
+
+          {% if edit_comment_form and can_edit_comment(comment) %}
+            {% include 'wiki/editcomment.html' %}
+          {% else %}
+	    <div class="cmnt-body">{{ comment.comment | safe }}</div>
+          {% endif %}
+
+      {% if edit_comment_form and can_edit_cmnt(comment) %}
+        {% include 'wiki/datasheetinfo/editcomment.html' %}
+      {% else %}
+        <div class="cmnt-body">{{ comment.comment | safe }}</div>
+      {% endif %}
+
+      <div class="small clearfix">
+        <div class="pull-left">
+          <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>
+          from {{ comment.author.institution }}
+        </div>
+        <span class="muted pull-right" title="{{ comment.posted | format_time_cmnt }}">
+          {{ comment.posted | format_date_cmnt }}
+        </span>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

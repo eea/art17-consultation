@@ -366,7 +366,7 @@ class ProgressFilterForm(Form):
         self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
 
 
-class DataSheetInfoForm(Form):
+class WikiEditForm(Form):
 
     text = TextAreaField()
 

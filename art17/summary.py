@@ -68,6 +68,7 @@ summary = Blueprint('summary', __name__)
 DATE_FORMAT = '%d/%m/%Y %H:%M'
 DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 
+
 @summary.route('/')
 def homepage():
     return render_template('homepage.html')
@@ -332,7 +333,7 @@ class Summary(views.View):
         summary_filter_form = SummaryFilterForm(
             MultiDict(dict(period=period, group=group, subject=subject,
                            region=region)
-            )
+                      )
         )
         summary_filter_form.group.choices = self.get_groups(period)
         summary_filter_form.subject.choices = self.get_subjects(period, group)
@@ -491,11 +492,22 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'comments_endpoint': 'comments.species-comments',
             'delete_endpoint': '.species-delete',
             'update_endpoint': '.species-update',
-            'wiki_url': url_for('wiki.data-sheet-info',
-                                page='species',
-                                subject=request.args.get('subject'),
-                                region=request.args.get('region'),
-                                period=request.args.get('period')),
+            'datasheet_url': url_for('wiki.datasheet',
+                                     page='species',
+                                     subject=request.args.get('subject'),
+                                     region=request.args.get('region'),
+                                     period=request.args.get('period')),
+            'audittrail_url': url_for('wiki.audittrail',
+                                      page='species',
+                                      subject=request.args.get('subject'),
+                                      region=request.args.get('region'),
+                                      period=request.args.get('period')),
+            'audittrail_merged_url': url_for(
+                'wiki.audittrail-merged',
+                page='species',
+                subject=request.args.get('subject'),
+                region=request.args.get('region'),
+                period=request.args.get('period')),
             'progress_endpoint': 'progress.species-progress',
         }
 
@@ -534,12 +546,22 @@ class HabitatSummary(HabitatMixin, Summary):
             'comments_endpoint': 'comments.habitat-comments',
             'delete_endpoint': '.habitat-delete',
             'update_endpoint': '.habitat-update',
-            'wiki_url': url_for('wiki.data-sheet-info',
-                                page='habitat',
-                                subject=request.args['subject'].split(' ')[0]
-                                if request.args.get('subject') else None,
-                                region=request.args.get('region'),
-                                period=request.args.get('period')),
+            'datasheet_url': url_for('wiki.datasheet',
+                                     page='species',
+                                     subject=request.args.get('subject'),
+                                     region=request.args.get('region'),
+                                     period=request.args.get('period')),
+            'audittrail_url': url_for('wiki.audittrail',
+                                      page='species',
+                                      subject=request.args.get('subject'),
+                                      region=request.args.get('region'),
+                                      period=request.args.get('period')),
+            'audittrail_merged_url': url_for(
+                'wiki.audittrail-merged',
+                page='species',
+                subject=request.args.get('subject'),
+                region=request.args.get('region'),
+                period=request.args.get('period')),
             'progress_endpoint': 'progress.habitat-progress',
         }
 

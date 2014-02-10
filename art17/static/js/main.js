@@ -109,14 +109,15 @@ $(function() {
                         comment.find('.cmnt-type').html('Deleted');
                         clicked_button.html('Undo');
                         clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=del');
-                        comment.find('#edit-btn').hide()
+                        comment.find('.edit-btn').hide()
                         break;
                     case 'cmnt-deleted':
                         comment.attr('class', 'cmnt-owned');
                         comment.find('.cmnt-type').html('Your comment');
                         clicked_button.html('Delete');
                         clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=del');
-                        comment.find('#edit-btn').show()
+                        comment.find('.edit-btn').show()
+                        comment.find('.cancel-edit').hide()
                         break;
                     case 'cmnt-notread':
                         comment.attr('class', 'cmnt-read');

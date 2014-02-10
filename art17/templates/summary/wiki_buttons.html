@@ -1,0 +1,11 @@
+<div>
+    <button type="button" id="wikibutton" url="{{ datasheet_url }}">
+        View data sheet info</button>
+
+    <button type="button" id="wikibutton" url="{% if region == '' %}
+                                                 {{ audittrail_merged_url }}
+                                               {% else %}
+                                                 {{ audittrail_url }}
+                                               {% endif %}">
+        Audit trail</button>
+</div>

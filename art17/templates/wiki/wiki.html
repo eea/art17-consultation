@@ -3,15 +3,15 @@
 {% block content %}
 
 <div class="title-section clearfix">
-  <h2 class="pull-left">Data Sheet Info</h2>
+    <h2 class="pull-left">{{ page_title }}</h2>
   <div class="pull-right">
-      {% if can_edit_wiki() %}
+      {% if can_edit_page() and not merged %}
       <button class="edit-btn" href="{{ edit_page_url }}"
           {% if edit_page_form %}style="display: none;"{% endif %}>Edit</button>
       <button class="edit-btn" href="{{ home_url }}"
           {% if not edit_page_form %}style="display: none;"{% endif %}>Cancel</button>
       {% endif %}
-{% if can_manage_wiki() %}
+{% if can_manage_revisions() and revisions %}
     <button onclick="$('#history').toggleClass('hidden')">Page history</button>
 {% endif %}
   </div>
@@ -21,26 +21,25 @@
 
     <div id="active-wiki">
         {% if edit_page_form %}
-            {% include 'wiki/datasheetinfo/editpage.html' %}
+            {% include 'wiki/editpage.html' %}
          {% else %}
-             {{ wiki_body|safe}}
+            {% for region, region_url, body in wiki_body %}
+                <h3><a href="{{ region_url }}">{{ region }}</a></h3>
+                {{ body | safe }}
+            {% endfor %}
          {% endif %}
     </div>
     <div id="preview-wiki" style="display: none;">
     </div>
 
-{% if can_manage_wiki() %}
-  {% include 'wiki/datasheetinfo/pagehistory.html' %}
+{% if can_manage_revisions() %}
+  {% include 'wiki/pagehistory.html' %}
 {% endif %}
 
 </div>
 
-{% if g.identity %}
-
-  {% if comments %}
-    {% include 'wiki/datasheetinfo/comments.html' %}
-  {% endif %}
-
+{% if comments is defined %}
+    {% include 'wiki/comments.html' %}
 {% endif %}
 
 </div>
