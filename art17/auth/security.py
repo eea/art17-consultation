@@ -3,11 +3,13 @@ import hashlib
 import base64
 from datetime import datetime
 from werkzeug.local import LocalProxy
-from wtforms import TextField
+from wtforms import TextField, ValidationError
 import flask
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
 import flask.ext.security.script
 import flask.ext.security as flask_security
+from art17.auth.common import get_ldap_user_info
+
 from flask.ext.security.forms import (
     ConfirmRegisterForm,
     password_length,
@@ -60,6 +62,13 @@ class UserDatastore(SQLAlchemyUserDatastore):
         return (self.find_user(id=user), self.find_role(role))
 
 
+def check_duplicate_with_ldap(form, field):
+    user = get_ldap_user_info(field.data)
+    if user:
+        raise ValidationError("User ID already exists in LDAP database.")
+
+
 class Art17ConfirmRegisterForm(ConfirmRegisterForm):
 
-    id = TextField('id', validators=[Required("User ID is required")])
+    id = TextField('id', validators=[Required("User ID is required"),
+                                     check_duplicate_with_ldap])
