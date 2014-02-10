@@ -11,6 +11,7 @@ from art17.models import (
     EtcDicPopulationUnit,
 )
 from art17.utils import validate_field
+from art17.auth import current_user
 
 EMPTY_FORM = "Please fill at least one field"
 NOT_NUMERIC_VALUES = (
@@ -71,7 +72,42 @@ class ReportFilterForm(CommonFilterForm):
     country = SelectField('Country...')
 
 
-class SummaryManualFormSpecies(Form):
+class OptionsBase(object):
+
+    def get_method_options(self, methods):
+        return [
+            (a, b)
+            for (a, b) in methods
+            if not a or a.startswith('1') or (a.startswith('2') and a != '2XA')
+        ]
+
+    def get_sf_options(self, methods):
+        return [
+            (a, b)
+            for (a, b) in methods
+            if not a or (a.startswith('2') and a != '2XA')
+        ]
+
+    def get_assesm_options(self, methods):
+        return [
+            (a, b)
+            for (a, b) in methods
+            if not a or (a.startswith('3') and a != '3XA') or a == 'MTX'
+        ]
+
+    def filter_conclusions(self, conclusions):
+        output = []
+        for conclusion, value in conclusions:
+            if conclusion.strip() == 'XU':
+                if (current_user.has_role('etc') or
+                        current_user.has_role('admin')):
+                    output.append((conclusion, value))
+            elif not conclusion.endswith('?'):
+                output.append((conclusion, value))
+        return output
+
+
+class SummaryManualFormSpecies(Form, OptionsBase):
 
     region = SelectField(default='')
 
@@ -111,17 +147,21 @@ class SummaryManualFormSpecies(Form):
         methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
         methods = empty + zip(methods, methods)
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
-        conclusions = empty + zip(conclusions, conclusions)  # TODO filter acl
+        conclusions = empty + zip(conclusions, conclusions)
+        conclusions = self.filter_conclusions(conclusions)
         trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
         trends = empty + zip(trends, trends)
         units = [a[0] for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
         units = empty + zip(units, units)
 
         self.region.choices = empty
-        for f in (self.method_range, self.method_population,
-                  self.method_habitat, self.method_future,
-                  self.method_assessment, self.method_target1):
-            f.choices = methods
+
+        self.method_range.choices = self.get_method_options(methods)
+        self.method_population.choices = self.get_method_options(methods)
+        self.method_habitat.choices = self.get_sf_options(methods)
+        self.method_future.choices = self.get_sf_options(methods)
+        self.method_assessment.choices = self.get_assesm_options(methods)
+        self.method_target1.choices = self.get_assesm_options(methods)
 
         for f in (self.conclusion_range, self.conclusion_population,
                   self.conclusion_habitat, self.conclusion_future,

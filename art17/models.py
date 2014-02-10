@@ -542,9 +542,8 @@ class EtcDicMethod(Base):
     @classmethod
     def all(cls, dataset_id):
         return (
-            cls.query.filter(
-                (cls.method.startswith('1') | cls.method.startswith('2')))
-            .filter(cls.method != '2XA')
+            cls.query
+            .filter(cls.method != '')
             .filter_by(dataset_id=dataset_id)
             .with_entities(cls.method)
             .order_by(cls.method)
