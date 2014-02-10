@@ -110,8 +110,6 @@ abbr {
 
 .complex_datatable .form_row td {
 	white-space: normal;
-	padding-left: 0;
-	padding-right: 0;
 	border: 1px solid #7cadcc;
 	background: #7cadcc;
 }
