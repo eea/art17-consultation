@@ -69,6 +69,11 @@ def register_ldap():
     })
 
 
+@auth.route('/auth/me')
+def me():
+    return flask.render_template('auth/me.html')
+
+
 @auth.route('/auth/change_password', methods=['GET', 'POST'])
 def change_password():
     if current_user.is_anonymous():

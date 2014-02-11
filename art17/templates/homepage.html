@@ -24,6 +24,8 @@
       Change password ({{ g.user.id }})
     </a>
 
+    <a href="{{ url_for('auth.me') }}">My account</a>
+
   {% else %}
     {% if AUTH_BLUEPRINT_INSTALLED %}
       <a href="{{ url_for('auth.register') }}">Register for an account</a>
