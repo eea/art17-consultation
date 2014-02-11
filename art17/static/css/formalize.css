@@ -68,11 +68,11 @@ input[type="reset"],
 input[type="submit"],
 input[type="button"] {
   -webkit-appearance: none;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
   -webkit-background-clip: padding;
   -moz-background-clip: padding;
   background-clip: padding-box;
@@ -83,7 +83,7 @@ input[type="button"] {
   background-image: -o-linear-gradient(#ffffff, #dddddd);
   background-image: linear-gradient(#ffffff, #dddddd);
   border: 1px solid;
-  border-color: #dddddd #bbbbbb #999999;
+  border-color: #bbbbbb;
   cursor: pointer;
   color: #333333;
   display: inline-block;
@@ -119,7 +119,7 @@ input[type="button"]:active {
   background-image: -moz-linear-gradient(#dddddd, #eeeeee);
   background-image: -o-linear-gradient(#dddddd, #eeeeee);
   background-image: linear-gradient(#dddddd, #eeeeee);
-  border-color: #999999 #bbbbbb #dddddd;
+  border-color: #bbbbbb;
 }
 button::-moz-focus-inner,
 a.button::-moz-focus-inner,
@@ -168,7 +168,7 @@ input[type="week"] {
   -webkit-appearance: none;
   background-color: white;
   border: 1px solid;
-  border-color: #848484 #c1c1c1 #e1e1e1;
+  border-color: #c1c1c1;
   color: black;
   margin: 0;
   padding: 2px 3px;
@@ -306,7 +306,7 @@ optgroup::-moz-focus-inner {
 * html a.button {
   background: #dddddd url('../images/button.png?1298351022') repeat-x;
   border: 1px solid;
-  border-color: #dddddd #bbbbbb #999999;
+  border-color: #bbbbbb;
   cursor: pointer;
   color: #333333;
   font: bold 12px/1.2 Arial, sans-serif;
@@ -333,7 +333,7 @@ optgroup::-moz-focus-inner {
 * html select {
   background: white;
   border: 1px solid;
-  border-color: #848484 #c1c1c1 #e1e1e1;
+  border-color: #c1c1c1;
   color: black;
   padding: 2px 3px 1px;
   font-size: 13px;
