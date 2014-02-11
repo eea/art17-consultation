@@ -471,6 +471,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             t_restricted_species.c.eu_country_code).
             filter(t_restricted_species.c.assesment_speciesname ==
                    subject.lower()).
+            filter(t_restricted_species.c.ext_dataset_id == period).
             filter(t_restricted_species.c.show_data == 0).all()]
         if region:
             filter_args['region'] = region
