@@ -9,8 +9,8 @@
 
   <td>{{ row.conclusion_assessment_trend|str2num }}</td>
 
-  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
-  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') + ' conclusion' %}
+  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_prev, '') %}
   <td title="{{ title }}" class="{{ classes }}">
     <span>{{ row.conclusion_assessment_prev|str1num }}</span>
   </td>
