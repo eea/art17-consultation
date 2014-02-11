@@ -1,4 +1,4 @@
-<td class="number">
+<td class="number border_left">
   {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
@@ -12,6 +12,6 @@
   {{ row.range_trend|parse_semicolon or '' }}
 </td>
 
-<td class="center">
+<td class="center border_right">
   {{ row.complementary_favourable_range|parse_semicolon|str2num('')|safe }}
 </td>

@@ -1,7 +1,6 @@
 {% from '_macros.html' import parse_errors with context %}
 
-    <td {{ parse_errors('coverage_surface_area', row, qa_errors,
-            title=row.coverage_change_reason, classes='number') }}>
+    <td {{ parse_errors('coverage_surface_area', row, qa_errors, classes='number border_left', title=row.coverage_change_reason) }}>
         {{ row.coverage_surface_area|str2num }}
     </td>
 
@@ -26,7 +25,7 @@
 
   <td {{ parse_errors(['complementary_favourable_area_q',
                        'complementary_favourable_area'],
-                       row, qa_errors, '', 'number section-border') }}>
+                       row, qa_errors, '', 'number border_right') }}>
       {% set range_q = row.complementary_favourable_area_q or '' %}
       {% set range = row.complementary_favourable_area %}
       {% if range_q or range %}

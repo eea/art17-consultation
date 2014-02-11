@@ -1,7 +1,7 @@
 {% from '_macros.html' import parse_errors with context %}
 
 <td {{ parse_errors('range_surface_area', row, qa_errors,
-        title=row.range_change_reason, classes='number') }}>
+        title=row.range_change_reason, classes='number border_left') }}>
   {{ row.range_surface_area|str2num }}
 </td>
 
@@ -21,7 +21,7 @@
   {{ row.range_trend or 'N/A' }}
 </td>
 
-<td {{ parse_errors(['complementary_favourable_range_q',
+<td class="border_right" {{ parse_errors(['complementary_favourable_range_q',
                      'complementary_favourable_range'],
                      row, qa_errors, '', 'text-right') }}>
   {% set range_q = row.complementary_favourable_range_q or '' %}

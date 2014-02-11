@@ -1,4 +1,4 @@
-<td class="number">
+<td class="number border_left">
   {{ row.habitat_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
@@ -12,6 +12,6 @@
   {{ row.habitat_trend|parse_semicolon or '' }}
 </td>
 
-<td class="number section-border">
+<td class="number border_right">
   {{ row.complementary_suitable_habitat|parse_semicolon|str2num('')|safe }}
 </td>

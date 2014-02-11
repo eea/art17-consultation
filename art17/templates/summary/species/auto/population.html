@@ -1,4 +1,4 @@
-<td class="number">
+<td class="number border_left">
   {{ row.population_size|default('', true)|parse_semicolon|safe }}
 </td>
 
@@ -11,6 +11,6 @@
   {{ row.population_trend|default('', true)|parse_semicolon }}
 </td>
 
-<td class="number">
+<td class="number border_right">
   {{ row.complementary_favourable_population|parse_semicolon|str2num('')|safe }}
 </td>

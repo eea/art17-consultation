@@ -41,21 +41,6 @@
       <a href="{{ show_all_url }}">Show all {{ group }}</a>
       </caption>
 
-      <colgroup>
-        <col span="1" class="col_border">
-        {% if not region %}<col span="1" class="col_border">{% endif %}
-
-        <col span="4" class="col_border_left">
-        <col span="4" class="col_border_left">
-        <col span="1" class="col_border">
-        <col span="1" class="col_border">
-        <col span="1" class="col_border">
-        <col span="4" class="col_border_left">
-        <col span="2" class="col_border_left">
-
-        <col span="5" class="col_border">
-      </colgroup>
-
       {% include 'common/habitat_table_header.html' with context %}
 
       <tbody>
@@ -152,9 +137,15 @@
       <tbody>
       {% for row in manual_objects %}
         {% if row != manual_assessment %}
-        <tr {% if row.deleted %}class="deleted"{% endif %}>
+        <tr class="{% if row.deleted %}deleted{% endif %} stripe_row">
           {# MS and region #}
           {% include 'summary/common/manual/ms.html' %}
+
+          {# Range #}
+          {% include 'summary/common/manual/range.html' %}
+
+          {# Area #}
+          {% include 'summary/habitat/manual/area.html' %}
 
           {# Range #}
           {% include 'summary/common/manual/range.html' %}

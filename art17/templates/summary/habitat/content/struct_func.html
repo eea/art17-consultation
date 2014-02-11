@@ -1,7 +1,7 @@
 {% from '_macros.html' import parse_errors with context %}
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_structure, '') +
-               ' conclusion' %}
+               ' conclusion border' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_structure, '') %}
 
 <td {{ parse_errors(['conclusion_structure'], row, qa_errors,

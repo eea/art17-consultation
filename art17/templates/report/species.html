@@ -34,38 +34,6 @@
         {{ current_selection|join(', ') }}.
       </caption>
 
-      <colgroup>
-        <col span="1" class="col_border_right">{% if not region %}
-        <col span="1" class="col_border_right">{% endif %}
-        {# Range #}
-        <col span="1" class="col_border_left">
-        <col span="2">
-        <col span="1" class="col_border_right">
-
-        {# Population #}
-        <col span="1" class="col_border_left">
-        <col span="2">
-        <col span="1" class="col_border_right">
-        {# Habitat #}
-        <col span="1" class="col_border_left">
-        <col span="3">
-        <col span="1" class="col_border_right">
-        {# FP #}
-        <col span="1" class="col_border">
-        {# Overall ass. #}
-        <col span="1" class="col_border_left">
-        <col span="2">
-        <col span="1" class="col_border_right">
-        {# Grided maps #}
-        <col span="1" class="col_border_left">
-        <col span="2">
-        <col span="1" class="col_border_right">
-        {# Comments #}
-        <col span="1" class="col_border_left">
-        <col span="3">
-        <col span="1" class="col_border_right">
-      </colgroup>
-
       {% include "common/species_table_header.html" with context %}
 
       <tbody>
@@ -74,21 +42,21 @@
           {% set visible = can_view(row, restricted_countries) %}
           {% set qa_errors = record_errors(row) %}
           <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-            <td>
+            <td class="border">
               {% set original_url=get_original_record_url(row) %}
               <a class="popup-btn" data-title="Factsheet" href="{{ original_url }}">
                 {{ row.subject }}
               </a>
             </td>
 
-            {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
+            {% if not country %}<td class="border">{{ row.eu_country_code }}</td>{% endif %}
 
             {% if not region %}
-              <td><a href="#map">{{ row.region }}</a></td>
+              <td class="border"><a href="#map">{{ row.region }}</a></td>
             {% endif %}
 
             {% if not visible %}
-            <td colspan="2">
+            <td class="border" colspan="2">
               {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
             </td>
             {% else %}
@@ -100,7 +68,7 @@
               {% include 'summary/common/content/overall_assessment.html' with context %}
               {% include 'summary/species/content/grided_maps.html' with context %}
 
-              <td colspan="5">{# Padding #}</td>
+              <td class="border" colspan="5">{# Padding #}</td>
             {% endif %}
           </tr>
         {% endfor %}

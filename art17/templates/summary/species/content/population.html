@@ -1,6 +1,6 @@
 {% from '_macros.html' import parse_errors with context %}
 
-    <td class="number"
+    <td class="number border_left"
       {% set title=population_size_unit_title(row) %}
       {% if title %}title="{{ title }}"{% endif %}>
       {{ population_size_unit(row) }}
@@ -29,6 +29,6 @@
                          'complementary_favourable_population',
                          'filled_complementary_favourable_population'],
                           row, qa_errors,
-                          classes='number') }}>
+                          classes='number border_right') }}>
       {{ population_ref(row) }}
     </td>

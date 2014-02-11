@@ -167,7 +167,6 @@ $(function () {
   });
 });
 
-
 $(function () {
     $('body').on('change', '.decision-select', function (event) {
         event.stopPropagation();
@@ -189,3 +188,16 @@ $(function () {
         });
     });
 });
+
+// Table column hover
+/*$(function () {
+    $(".complex_datatable").on('mouseenter mouseleave', "td", function (event) {
+        event.stopPropagation();
+        index = this.cellIndex;
+        if (index) {
+            $(this).parent().siblings().each ( function () {
+                $(this.cells[index]).toggleClass("hover");
+            });
+        }
+    });
+});*/

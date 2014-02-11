@@ -26,7 +26,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
   {% include 'summary/wiki_buttons.html' %}
   {% include 'common/table_legend.html' %}
 
-  <table class="complex_datatable datatable">
+  <table class="complex_datatable">
     <caption>
       <b>Current selection</b>:
       {{ current_selection|join(', ') }}.
@@ -39,37 +39,6 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
           conclusion='overall assessment') %}
       <a href="{{ show_all_url }}">Show all {{ group }}</a>
     </caption>
-    <colgroup>
-      <col span="1" class="col_border_right">{% if not region %}
-      <col span="1" class="col_border_right">{% endif %}
-      {# Range #}
-      <col span="1" class="col_border_left">
-      <col span="2">
-      <col span="1" class="col_border_right">
-
-      {# Population #}
-      <col span="1" class="col_border_left">
-      <col span="2">
-      <col span="1" class="col_border_right">
-      {# Habitat #}
-      <col span="1" class="col_border_left">
-      <col span="3">
-      <col span="1" class="col_border_right">
-      {# FP #}
-      <col span="1" class="col_border">
-      {# Overall ass. #}
-      <col span="1" class="col_border_left">
-      <col span="2">
-      <col span="1" class="col_border_right">
-      {# Grided maps #}
-      <col span="1" class="col_border_left">
-      <col span="2">
-      <col span="1" class="col_border_right">
-      {# Comments #}
-      <col span="1" class="col_border_left">
-      <col span="3">
-      <col span="1" class="col_border_right">
-    </colgroup>
 
     {% include "common/species_table_header.html" with context %}
 
@@ -78,17 +47,17 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       {% set visible = can_view(row, restricted_countries) %}
       {% set qa_errors = record_errors(row) %}
       <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-        <td>
+        <td class="border">
           {% set original_url=get_original_record_url(row) %}
           {% set country_title = get_title_for_species_country(row) %}
           <a class="popup-btn" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
             {{ row.eu_country_code }}
           </a>
         </td>
-        {% if not region %}<td>{{ row.region }}</td>{% endif %}
+        {% if not region %}<td class="border">{{ row.region }}</td>{% endif %}
 
         {% if not visible %}
-          <td colspan="2">
+          <td class="border" colspan="2">
             {{ row.eu_country_code }} has provided a report to the European
             Commission under Article 17
           </td>
@@ -100,6 +69,9 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
           {% include 'summary/common/content/overall_assessment.html' with context %}
           {% include 'summary/species/content/grided_maps.html' with context %}
           {% include 'summary/species/content/quality.html' with context %}
+          
+          {# Padding #}
+          <td class="border" colspan="5"></td>
         {% endif %}
       </tr>
     {% endfor %}
@@ -115,10 +87,10 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     <tbody id="automatic_body" class="hidden">
     {% for row in auto_objects %}
     <tr>
-      <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+      <td class="border" title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
         {{ row.assessment_method or 'N/A' }}
       </td>
-      {% if not region %}<td>{{ row.region or 'N/A' }}</td>{% endif %}
+      {% if not region %}<td class="border">{{ row.region or 'N/A' }}</td>{% endif %}
 
       {# Range #}
       {% include 'summary/species/auto/range.html' %}
@@ -139,7 +111,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       {% include 'summary/species/auto/grided_maps.html' %}
 
       {# Padding #}
-      <td colspan="5"></td>
+      <td class="border" colspan="5"></td>
     </tr>
     {% endfor %}
     </tbody>
@@ -185,8 +157,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     </tbody>
     <tbody>
     {% for row in manual_objects %}
-      {% if row != manual_assessment %}
-      <tr {% if row.deleted %}class="deleted"{% endif %}>
+      <tr class="{% if row.deleted %}deleted{% endif %} stripe_row">
         {% include 'summary/common/manual/ms.html' %}
         {% include 'summary/common/manual/range.html' %}
         {% include 'summary/species/manual/population.html' %}
@@ -198,7 +169,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
 
         {% include 'summary/common/manual/conclusion_details.html' %}
       </tr>
-      {% else %}
+      {% if row == manual_assessment %}
         {% include 'summary/species/manual_form.html' %}
       {% endif %}
     {% endfor %}

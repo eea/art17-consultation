@@ -37,39 +37,25 @@
       {% endif %}
       </caption>
 
-      <colgroup>
-        <col span="1" class="col_border">
-        {% if not region %}<col span="1" class="col_border">{% endif %}
-
-        <col span="4" class="col_border_left">
-        <col span="4" class="col_border_left">
-        <col span="1" class="col_border">
-        <col span="1" class="col_border">
-        <col span="1" class="col_border">
-        <col span="4" class="col_border_left">
-        <col span="2" class="col_border_left">
-
-        <col span="5" class="col_border">
-      </colgroup>
-
       {% include 'common/habitat_table_header.html' with context %}
+
       <tbody>
       {% for row in objects %}
         {% set visible = can_view(row, restricted_countries) %}
         {% set qa_errors = record_errors(row) %}
         <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-          <td>
+          <td class="border">
             {% set original_url=get_original_record_url(row) %}
             <a class="popup-btn" data-title="Factsheet" href="{{ original_url }}">
               {{ row.subject }} - {{ row.habitat.name }}
             </a>
           </td>
 
-          {% if not country %}<td>{{ row.eu_country_code }}</td>{% endif %}
-          {% if not region %}<td><a href="#map">{{ row.region }}</a></td>{% endif %}
+          {% if not country %}<td class="border">{{ row.eu_country_code }}</td>{% endif %}
+          {% if not region %}<td class="border"><a href="#map">{{ row.region }}</a></td>{% endif %}
 
           {% if not visible %}
-          <td colspan="4">
+          <td class="border" colspan="4">
             {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
           </td>
           {% else %}
@@ -81,7 +67,7 @@
             {% include 'summary/common/content/overall_assessment.html' with context %}
             {% include 'summary/habitat/content/grided_maps.html' with context %}
 
-            <td colspan="7">{# padding #}</td>
+            <td class="border" colspan="7">{# padding #}</td>
           {% endif %}
         </tr>
       {% endfor %}
