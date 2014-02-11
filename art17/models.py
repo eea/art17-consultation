@@ -142,6 +142,10 @@ class EtcDataHabitattypeAutomaticAssessment(Base):
         primary_key=True,
     )
 
+    @hybrid_property
+    def subject(self):
+        return self.habitatcode
+
 
 class EtcDataHabitattypeRegion(Base):
     __tablename__ = 'etc_data_habitattype_regions'
@@ -302,6 +306,10 @@ class EtcDataSpeciesAutomaticAssessment(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+    @hybrid_property
+    def subject(self):
+        return self.assesment_speciesname
 
 
 class EtcDataSpeciesRegion(Base):

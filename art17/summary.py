@@ -281,7 +281,7 @@ class Summary(views.View):
 
     def get_manual_form(self, data=None, period=None):
         manual_assessment = None
-        data = data or MultiDict({})
+        data = data or MultiDict(self.get_default_values())
         if data.get('submit') != 'add':
             subject = data.get('subject')
             region = data.get('region')
@@ -297,9 +297,11 @@ class Summary(views.View):
         if data.get('submit') == 'edit':
             if manual_assessment:
                 if not self.must_edit_ref(manual_assessment):
-                    form = self.manual_form_cls(formdata=None, obj=manual_assessment)
+                    form = self.manual_form_cls(formdata=None,
+                                                obj=manual_assessment)
                 else:
-                    form = self.manual_form_ref_cls(formdata=None, obj=manual_assessment)
+                    form = self.manual_form_ref_cls(formdata=None,
+                                                    obj=manual_assessment)
                 form.setup_choices(dataset_id=period)
                 return form, manual_assessment
             else:
@@ -507,6 +509,22 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'progress_endpoint': 'progress.species-progress',
         }
 
+    def get_default_values(self):
+        period = request.args.get('period') or get_default_period()
+        subject = request.args.get('subject')
+        region = request.args.get('region')
+        best = self.model_auto_cls.query.filter_by(
+            dataset_id=period, subject=subject, region=region,
+        ).order_by(self.model_auto_cls.assessment_method).first()
+        if not best:
+            return {}
+        return dict(
+            range_surface_area=best.range_surface_area,
+            complementary_favourable_range=best.complementary_favourable_range,
+            habitat_surface_area=best.habitat_surface_area,
+            complementary_suitable_habitat=best.complementary_suitable_habitat,
+        )
+
 
 class HabitatSummary(HabitatMixin, Summary):
 
@@ -561,6 +579,21 @@ class HabitatSummary(HabitatMixin, Summary):
             'progress_endpoint': 'progress.habitat-progress',
         }
 
+    def get_default_values(self):
+        period = request.args.get('period') or get_default_period()
+        subject = request.args.get('subject')
+        region = request.args.get('region')
+        best = self.model_auto_cls.query.filter_by(
+            dataset_id=period, subject=subject, region=region,
+        ).order_by(self.model_auto_cls.assessment_method).first()
+        if not best:
+            return {}
+        return dict(
+            range_surface_area=best.range_surface_area,
+            complementary_favourable_range=best.complementary_favourable_range,
+            coverage_surface_area=best.coverage_surface_area,
+            complementary_favourable_area=best.complementary_favourable_area,
+        )
 
 summary.add_url_rule('/species/summary/',
                      view_func=SpeciesSummary.as_view('species-summary'))
