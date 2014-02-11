@@ -1,6 +1,7 @@
 {% from '_macros.html' import parse_errors with context %}
 
-    <td class="number" title="{{ row.population_change_reason }}">
+    <td class="number"
+      {% if row.population_change_reason %}title="{{ row.population_change_reason }}"{% endif %}>
       {{ population_size_unit(row) }}
     </td>
 

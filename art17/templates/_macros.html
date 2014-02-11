@@ -1,13 +1,17 @@
 {% macro parse_errors(fields, row, qa_errors, title='', classes='') %}
     {% set qtitle, qclasses = parse_qa_errors(fields, row, qa_errors) %}
-    {% set letitle = title + ' ' + qtitle %}
-    title="{{ letitle|trim }}" class="{{ classes }} {{ qclasses }}"
+    {% set letitle = (title or '') + ' ' + qtitle %}
+    {% set letitle = letitle|trim %}
+    {% if letitile -%}
+    title="{{ letitle }}"
+    {% endif %}
+    class="{{ classes }} {{ qclasses }}"
 {% endmacro %}
 
 {% macro conclusion_td(color, content, colspan=1) %}
   {% set title=COUNTRY_ASSESSMENTS.get(content, '') %}
   <td class="{{ CONCLUSION_CLASSES.get(color, '') }} conclusion"
-      title="{{ title }}" colspan="{{ colspan }}">
+      {% if title %}title="{{ title }}"{% endif %} colspan="{{ colspan }}">
       <span>{{ content }}</span>
   </td>
 {% endmacro %}
