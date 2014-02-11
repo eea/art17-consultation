@@ -12,15 +12,27 @@
 
 
 {% block content %}
-  <!-- <h1>Register</h1> -->
-<div class="clearfix">
-  <div class="register-choice">
-    <p>Register with your EIONET account</p>
-    <button class="btn-eionet btn-bigger block">Eionet Account</button>
+<h1>Register</h1>
+
+<div class="box inline-block clearfix">
+  <div class="register-option">
+    <p class="h4">EIONET Account</p>
+
+    <form class="form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password">
+      </div>
+      <button type="submit" class="block">Register with EIONET</button>
+    </form>
   </div>
-  <div class="register-choice">
-    <p>Register for an Article 17 account</p>
-    <button class="btn-bigger block">New Account</button>
+  <div class="register-option">
+    <p class="text-center no-top"><em>Don't have an EIONET Account?</em></p>
+    <p class="text-center"><a href="">Request a new Article 17 consultation account</a></p>
   </div>
 </div>
 

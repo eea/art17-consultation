@@ -354,14 +354,6 @@ abbr {
 }
 
 /* added */
-.inline-form {
-	display: inline-block;
-	border: 1px solid #b6b6b6;
-  background-color: #fafafa;
-  padding: 12px;
-	margin-bottom: 12px;
-}
-
 .form_group:before,
 .form_group:after {
 	display:table;
@@ -426,13 +418,6 @@ abbr {
 	background: #fff;
 }
 
-.popout hr {
-	height: 1px;
-	margin: 12px 0;
-	border: 0;
-	background: #ddd;
-}
-
 .popout.details {
 	right:-1px;
 }
@@ -461,37 +446,23 @@ abbr {
 }
 
 /* User registration */
-#registration {
-
-}
-
-.register-choice {
+.register-option {
 	float: left;
-	max-width: 400px;
-	min-height: 250px;
-	padding: 12px;
-	border: 1px solid #ddd;
+	max-width: 200px;
+	padding: 0 24px;
+	margin-left: -1px;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
 }
 
-/*.register-choice:hover {
-	border-color: #ccc;
-	background: #fafafa;
-}*/
-
-.register-choice:first-child {
-	margin-right: 18px;
+.register-option:first-child {
+	margin-left: -24px;
+	border-left: 0;
 }
 
-.register-choice > small,
-.register-choice > strong {
-	display: block;
-}
-
-.register-choice > hr {
-	margin: 12px -12px;
-	border: 0;
-	height: 1px;
-	background: #ddd;
+.register-option:last-child {
+	margin-right: -24px;
+	border-right: 0;
 }
 
 .wizard {
@@ -534,22 +505,22 @@ abbr {
 }
 
 
-.wizard label,
-.wizard input[type="text"],
-.wizard input[type="password"],
-.wizard select,
-.wizard textarea {
+.form label,
+.form input[type="text"],
+.form input[type="password"],
+.form select,
+.form textarea {
 	display: block;
 	width: 100%;
 }
 
 
-.wizard label {
-	font-weight: bold;
+.form label {
+	/*font-weight: bold;*/
 	margin-bottom: 3px;
 }
 
-.wizard label[for] {
+.form label[for] {
 	cursor: pointer;
 }
 
@@ -867,6 +838,25 @@ abbr {
 	padding: 4px 8px;
 }
 
+/* Box (Equivalent to Bootstrap's well) */
+.box {
+	padding: 24px;
+	margin-bottom: 12px;
+	border: 1px solid #b6b6b6;
+	background: #fafafa;
+}
+
+.box-small {
+	padding: 12px;
+}
+
+hr {
+	margin: 12px 0;
+	border: 0;
+	height: 1px;
+	background: #ddd;
+}
+
 /* Helpers */
 .clearfix:before,
 .clearfix:after {
@@ -888,9 +878,27 @@ abbr {
 	white-space: nowrap;
 }
 
+.no-top {
+	margin-top: 0;
+}
+
+.no-bottom {
+	margin-bottom: 0;
+}
+
 .regular {
 	font-family: "Nimbus sans L", Helvetica, Arial, Verdana, sans-serif;
 	font-size: 14px;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.h4 {
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0 0 12px;
 }
 
 .muted {
@@ -907,6 +915,10 @@ abbr {
 
 .pull-right {
 	float: right;
+}
+
+.inline-block {
+	display: inline-block;
 }
 
 .block {
