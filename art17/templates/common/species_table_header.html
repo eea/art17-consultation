@@ -21,8 +21,12 @@
     <th colspan="4">Overall assessment</th>
     <th colspan="4">Grided maps(km<sup>2</sup>)</th>
 
-    {# Padding #}
+    {% if dataset.schema == '2012' %}
     <td colspan="5" rowspan="2"></td>
+    {% else %}
+    <td colspan="3">Quality</td>
+    <td colspan="2" rowspan="2"></td>
+    {% endif %}
   </tr>
 
   <tr>
@@ -39,7 +43,7 @@
 
     <th>Area</th>
     <th>%MS</th>
-    <th>Qual.</th>
+    <th>{% if dataset.schema == '2012' %}Qual.{% endif %}</th>
     <th><abbr title="Trend">T</abbr></th>
     <th>Suitable</th>
 
@@ -52,6 +56,12 @@
     <th title="%GR">%MS</th>
     <th>Distrib.</th>
     <th title="%GD">%MS</th>
+
+    {% if dataset.schema == '2006' %}
+    <th>Range</th>
+    <th>Population</th>
+    <th>Habitat</th>
+    {% endif %}
   </tr>
 
 </tbody>

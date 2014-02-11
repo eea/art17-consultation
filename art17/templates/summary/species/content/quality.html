@@ -1,0 +1,13 @@
+{% if dataset.schema == '2012' %}
+  <td colspan="3"></td>
+{% else %}
+  <td>
+    {{ row.range_quality }}
+  </td>
+  <td>
+    {{ row.population_quality }}
+  </td>
+  <td>
+    {{ row.habitat_quality }}
+  </td>
+{% endif %}
