@@ -87,21 +87,6 @@ class SpeciesMixin(MixinsCommon):
             .order_by(self.model_cls.speciesname)
         return [(row[0], row[0]) for row in qs]
 
-    def flatten_form(self, form, subject):
-        data = dict(form.data)
-        for k, v in data.iteritems():
-            if hasattr(subject, k):
-                setattr(subject, k, v)
-        return subject
-
-    def parse_object(self, subject, form):
-        data = {}
-        for field in form:
-            name = field.name
-            if hasattr(subject, name):
-                data[name] = getattr(subject, name)
-        return data
-
     @classmethod
     def get_groups(cls, period):
         group_field = cls.model_cls.group

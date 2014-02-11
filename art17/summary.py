@@ -271,12 +271,6 @@ class Summary(views.View):
     def get_context(self):
         return {}
 
-    def flatten_form(self, form, subject):
-        raise NotImplementedError()
-
-    def parse_object(self, subject, form):
-        raise NotImplementedError()
-
     def must_edit_ref(self, assessment):
         if not current_user.is_authenticated() or not assessment:
             return False
