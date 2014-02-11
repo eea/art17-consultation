@@ -157,6 +157,9 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     </tbody>
     <tbody>
     {% for row in manual_objects %}
+      {% if row == manual_assessment %}
+        {% include 'summary/species/manual_form.html' %}
+      {% else %}
       <tr class="{% if row.deleted %}deleted{% endif %} stripe_row">
         {% include 'summary/common/manual/ms.html' %}
         {% include 'summary/common/manual/range.html' %}
@@ -169,8 +172,6 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
 
         {% include 'summary/common/manual/conclusion_details.html' %}
       </tr>
-      {% if row == manual_assessment %}
-        {% include 'summary/species/manual_form.html' %}
       {% endif %}
     {% endfor %}
     </tbody>
