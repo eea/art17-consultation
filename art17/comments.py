@@ -242,7 +242,7 @@ class HabitatUserSummary(HabitatMixin, UserSummary):
     summary_endpoint = 'summary.habitat-summary'
 
 
-comments.add_url_rule('/usersummary/species/',
+comments.add_url_rule('/history/species/',
                       view_func=SpeciesUserSummary.as_view('species-history'))
-comments.add_url_rule('/usersummary/habitat/',
+comments.add_url_rule('/history/habitat/',
                       view_func=HabitatUserSummary.as_view('habitat-history'))

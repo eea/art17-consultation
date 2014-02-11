@@ -1,5 +1,15 @@
 {% extends layout_template %}
 
+
+{% block breadcrumbs %}
+  {% from '_macros.html' import breadcrumbs %}
+  {{ breadcrumbs([
+      ('art17', url_for(HOMEPAGE_VIEW_NAME)),
+      ('history', None),
+    ]) }}
+{% endblock %}
+
+
 {% block content %}
     <h1>User summary</h1>
 
