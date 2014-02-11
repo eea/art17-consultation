@@ -7,6 +7,7 @@ from flask import (
     url_for,
     abort,
     redirect)
+from flask.ext.principal import PermissionDenied
 from datetime import datetime
 
 from models import (
@@ -191,15 +192,14 @@ class DataSheetSection(CommonSection):
 
     def get_context(self):
         context = super(DataSheetSection, self).get_context()
+
         wiki = self.get_wiki()
-        request_args = {arg: request.args.get(arg) for arg in
-                        ['subject', 'region', 'period']}
+        request_args = self.get_req_args()
         context.update({'comments': wiki.comments if wiki else [],
                         'add_comment_url': url_for(self.addcmnt_endpoint,
                                                    page=self.page,
                                                    **request_args)
                         })
-
         return context
 
 
@@ -269,6 +269,7 @@ class MergedRegionsView(views.View):
                     (wiki.region.reg_name, region_change_url, change.body))
 
         return render_template(self.template_name,
+                               page_title=self.section.page_title,
                                wiki_body=wiki_body,
                                merged=True)
 
@@ -277,7 +278,7 @@ class PageHistory(WikiView):
 
     def process_post_request(self):
         if not can_manage_revisions():
-            abort(403)
+            raise PermissionDenied
 
         wiki_changes = self.section.get_wiki_changes()
         active_change = self.section.get_active_change()
@@ -303,7 +304,7 @@ class AddComment(WikiView):
         comments = wiki.comments if wiki else []
 
         if not can_add_comment(comments):
-            abort(403)
+            raise PermissionDenied
 
         if self.section.insert_inexistent_wiki():
             wiki = self.section.get_wiki()
@@ -325,7 +326,7 @@ class EditPage(WikiView):
 
     def process_post_request(self):
         if not can_edit_page():
-            abort(403)
+            raise PermissionDenied
 
         active_change = self.section.get_active_change()
         if active_change:
@@ -358,7 +359,7 @@ class EditComment(WikiView):
                    .filter_by(id=comment_id).first_or_404())
 
         if not can_edit_comment(comment):
-            abort(403)
+            raise PermissionDenied
 
         comment.comment = request.form.get('text'),
         db.session.commit()
@@ -386,7 +387,7 @@ class ManageComment(views.View):
 
     def dispatch_request(self, page):
         if not can_manage_comment():
-            abort(403)
+            raise PermissionDenied
 
         comment_id = request.args.get('comment_id')
         comment = (self.section.wiki_comment_cls.query
@@ -394,11 +395,16 @@ class ManageComment(views.View):
 
         toggle = request.args.get('toggle')
         if toggle == 'del':
+            if comment.author != current_user:
+                raise PermissionDenied
             if comment.deleted is None:
                 comment.deleted = 0
             comment.deleted = 1 - comment.deleted
             db.session.commit()
+
         elif toggle == 'read':
+            if comment.author == current_user:
+                raise PermissionDenied
             if is_read(comment):
                 comment.readers.remove(current_user)
             else:
@@ -418,7 +424,7 @@ class GetRevision(views.View):
 
     def dispatch_request(self, page):
         if not can_manage_revisions():
-            abort(403)
+            raise PermissionDenied
 
         revision_id = request.args.get('revision_id')
         revision = (self.section.wiki_change_cls.query
@@ -431,27 +437,27 @@ wiki.add_url_rule('/<page>/summary/datasheet/',
                   view_func=WikiView
                   .as_view('datasheet', section=DataSheetSection))
 
-wiki.add_url_rule('/<page>/summary/datasheet/page_history',
+wiki.add_url_rule('/<page>/summary/datasheet/page_history/',
                   view_func=PageHistory
                   .as_view('ds-page-history', section=DataSheetSection))
 
-wiki.add_url_rule('/<page>/summary/datasheet/add_comment',
+wiki.add_url_rule('/<page>/summary/datasheet/add_comment/',
                   view_func=AddComment
                   .as_view('ds-add-comment', section=DataSheetSection))
 
-wiki.add_url_rule('/<page>/summary/datasheet/edit_page',
+wiki.add_url_rule('/<page>/summary/datasheet/edit_page/',
                   view_func=EditPage
                   .as_view('ds-edit-page', section=DataSheetSection))
 
-wiki.add_url_rule('/<page>/summary/datasheet/edit_cmnt',
+wiki.add_url_rule('/<page>/summary/datasheet/edit_comment/',
                   view_func=EditComment
                   .as_view('ds-edit-comment', section=DataSheetSection))
 
-wiki.add_url_rule('/<page>/summary/datasheet/comment/',
+wiki.add_url_rule('/<page>/summary/datasheet/manage_comment/',
                   view_func=ManageComment
                   .as_view('ds-manage-comment', section=DataSheetSection))
 
-wiki.add_url_rule('/<page>/summary/datasheet/history/',
+wiki.add_url_rule('/<page>/summary/datasheet/get_revision/',
                   view_func=GetRevision
                   .as_view('ds-get-revision', section=DataSheetSection))
 
@@ -463,14 +469,14 @@ wiki.add_url_rule('/<page>/summary/audittrail-merged/',
                   view_func=MergedRegionsView
                   .as_view('audittrail-merged', section=AuditTrailSection))
 
-wiki.add_url_rule('/<page>/summary/audittrail/page_history',
+wiki.add_url_rule('/<page>/summary/audittrail/page_history/',
                   view_func=PageHistory
                   .as_view('at-page-history', section=AuditTrailSection))
 
-wiki.add_url_rule('/<page>/summary/audittrail/edit_page',
+wiki.add_url_rule('/<page>/summary/audittrail/edit_page/',
                   view_func=EditPage
                   .as_view('at-edit-page', section=AuditTrailSection))
 
-wiki.add_url_rule('/<page>/summary/audittrail/history/',
+wiki.add_url_rule('/<page>/summary/audittrail/get_revision/',
                   view_func=GetRevision
                   .as_view('at-get-revision', section=AuditTrailSection))
