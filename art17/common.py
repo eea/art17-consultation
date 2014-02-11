@@ -93,6 +93,17 @@ def population_size_unit(row):
     return '%s %s' % (str2num(size_unit_value), size_unit)
 
 
+def population_size_unit_title(row):
+    titles = []
+    if row.population_change_reason:
+        titles.append(row.population_change_reason)
+    titles.append("Agreed: " + (row.population_units_agreed or 'N/A'))
+    titles.append("Other: " + (row.population_units_other or 'N/A'))
+    if not titles:
+        return ''
+    return '\n'.join(titles)
+
+
 def population_ref(row):
 
     population_q = row.complementary_favourable_population_q or ''

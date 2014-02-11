@@ -52,7 +52,7 @@ from art17.common import (
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
-)
+    population_size_unit_title)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
@@ -135,6 +135,7 @@ def inject_fuctions():
         'record_errors': record_errors,
         'parse_qa_errors': parse_qa_errors,
         'population_size_unit': population_size_unit,
+        'population_size_unit_title': population_size_unit_title,
         'population_ref': population_ref,
         'get_range_conclusion_value': get_range_conclusion_value,
         'get_population_conclusion_value': get_population_conclusion_value,
