@@ -2,40 +2,62 @@
 
 
 {% block content %}
-  {% if g.identity.id is not none %}
   <div style="float: right">
+    {% if g.identity.id is not none %}
     <a href="{{ url_for('auth.me') }}">My account</a> |
     <a href="{{ url_for('comments.species-history') }}">Activity log</a>
-  </div>
-  {% endif %}
-  <h1>Art 17</h1>
-
-  <a href="{{ url_for('.species-summary') }}">Species summary</a>
-  <a href="{{ url_for('progress.species-progress') }}">Species progress</a>
-  <a href="{{ url_for('report.species-report') }}">Species report</a>
-
-  <br/>
-
-  <a href="{{ url_for('.habitat-summary') }}">Habitat summary</a>
-  <a href="{{ url_for('progress.habitat-progress') }}">Habitat progress</a>
-  <a href="{{ url_for('report.habitat-report') }}">Habitat report</a>
-
-  <br/>
-
-  {% if g.identity.id is not none %}
-  {% else %}
+    {% else %}
     {% if AUTH_BLUEPRINT_INSTALLED %}
       <a href="{{ url_for('auth.register') }}">Register for an account</a>
     {% endif %}
   {% endif %}
+  </div>
 
+  <h1>Online report on Article 17 of the Habitats Directive:<br/>
+  <em>conservation status of habitats and species of Community interest (2007-2012)</em>
+  </h1>
+
+  <p>These pages give access to assessments of conservation status of habitats
+    and species as well as other information reported by the Member States.</p>
+
+  <h2>Acknowledgements</h2>
+
+  <p>The reporting format was developed by the ETC/BD and DG Environment
+    together with the Member States. Technical support was provided by the
+    EEA.</p>
+  <p>The assessments rely on data collected by hundreds, if not thousands of
+    individuals, many of them volunteers. This report would not have been
+    possible without their work.</p>
+
+  <h2>Quick links for the impatient</h2>
+
+  <p><strong>Biogeographical assessments at Member State level:</strong></p>
+  <ul>
+    <li><a href="{{ url_for('report.species-report') }}">Species assessments</a></li>
+    <li><a href="{{ url_for('report.habitat-report') }}">Habitats assessments</a></li>
+  </ul>
+
+  <p><strong>Biogeographical assessments at EU 27 level:</strong></p>
+  <ul>
+    <li><a href="{{ url_for('progress.species-progress') }}">Species asssessments</a></li>
+    <li><a href="{{ url_for('progress.habitat-progress') }}">Habitats assessments</a></li>
+  </ul>
+  <br/>
+  <ul>
+    <li><a href="{{ url_for('.species-summary') }}">Species summary</a></li>
+    <li><a href="{{ url_for('.habitat-summary') }}">Habitat summary</a></li>
+  </ul>
+
+  <br/>
 
   {% if admin_perm.can() %}
   <h2>Administrator</h2>
+    <ul>
     {% if AUTH_BLUEPRINT_INSTALLED %}
-    <a href="{{ url_for('auth.users') }}">User list</a><br/>
+      <li><a href="{{ url_for('auth.users') }}">User list</a></li>
     {% endif %}
-    <a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a><br/>
-    <a href="{{ url_for('common.config') }}">Configuration</a><br/>
+      <li><a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a></li>
+      <li><a href="{{ url_for('common.config') }}">Configuration</a></li>
+    </ul>
   {% endif %}
 {% endblock content %}
