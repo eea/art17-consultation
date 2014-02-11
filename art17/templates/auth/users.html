@@ -60,7 +60,7 @@
             inactive
           {% endif %}
         </td>
-        <td>{{user.confirmed_at}}</td>
+        <td>{{user.confirmed_at or ''}}</td>
         <td>
           <a href="{{ url_for('.admin_user', user_id=user.id) }}">
             edit
