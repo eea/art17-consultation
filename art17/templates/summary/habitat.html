@@ -123,10 +123,14 @@
           <th>Struct.<br/>func.</th>
           <th><abbr title="Future prospects">FP</abbr></th>
 
-          <th>Curr CS<br/>Concl.</th>
-          <th><abbr title="Trend">T</abbr></th>
-          <th>Prev CS<br/>Concl.</th>
-          <th>Nat of ch</th>
+          {% if dataset.schema == '2006' %}
+            <th colspan="4">Overall<br/>asses.</th>
+          {% else %}
+            <th>Curr CS<br/>Concl.</th>
+            <th><abbr title="Trend">T</abbr></th>
+            <th>Prev CS<br/>Concl.</th>
+            <th>Nat of ch</th>
+          {% endif %}
 
           <th colspan="2">Contrib.<br/>target 1</th>
           <th colspan="2"></th>

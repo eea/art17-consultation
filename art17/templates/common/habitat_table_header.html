@@ -15,7 +15,11 @@
     <th colspan="4">Area</th>
     <th rowspan="2">Struct &amp; func.</th>
     <th rowspan="2">Future prosp.</th>
+    {% if dataset.schema == '2012' %}
     <th colspan="4">Overall asses.</th>
+    {% else %}
+    <th colspan="4" rowspan="2">Overall<br/>asses.</th>
+    {% endif %}
     <th colspan="4">Grided maps(km<sup>2</sup>)</th>
 
     <th rowspan="2" colspan="7"></th>
@@ -31,10 +35,12 @@
     <th><abbr title="Trend">T</abbr></th>
     <th>Ref.</th>
 
+    {% if dataset.schema == '2012' %}
     <th>Curr CS</th>
     <th><abbr title="Trend">T</abbr></th>
     <th>Prev CS</th>
     <th>Nat of ch</th>
+    {% endif %}
 
     <th>Range</th>
     <th>%MS</th>

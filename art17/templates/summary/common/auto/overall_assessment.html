@@ -1,20 +1,29 @@
 {% from '_macros.html' import parse_errors with context %}
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
-{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
-<td class="{{ classes }}" title="{{ title }}">
-  <span>{{ row.percentage_assessment|default('', true)|parse_semicolon|safe}}</span>
-</td>
+{% if dataset.schema == '2006' %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
+  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
+  <td colspan="4" class="{{ classes }}" title="{{ title }}">
+    <span>{{ row.percentage_assessment|default('', true)|parse_semicolon|safe}}</span>
+  </td>
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_trend, '') + ' conclusion' %}
-{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_trend, '') %}
-<td class="{{ classes }}" title="{{ title }}">
-  <span>{{ row.percentage_assessment_trend|default('', true)|parse_semicolon|safe}}</span>
-</td>
+{% else %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
+  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
+  <td class="{{ classes }}" title="{{ title }}">
+    <span>{{ row.percentage_assessment|default('', true)|parse_semicolon|safe}}</span>
+  </td>
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_change, '') + ' conclusion' %}
-{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_change, '') %}
-<td class="{{ classes }}" title="{{ title }}">
-  <span>{{ row.percentage_assessment_change|default('', true)|parse_semicolon|safe}}</span>
-</td>
-<td></td>
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_trend, '') + ' conclusion' %}
+  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_trend, '') %}
+  <td class="{{ classes }}" title="{{ title }}">
+    <span>{{ row.percentage_assessment_trend|default('', true)|parse_semicolon|safe}}</span>
+  </td>
+
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_change, '') + ' conclusion' %}
+  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_change, '') %}
+  <td class="{{ classes }}" title="{{ title }}">
+    <span>{{ row.percentage_assessment_change|default('', true)|parse_semicolon|safe}}</span>
+  </td>
+  <td></td>
+{% endif %}
