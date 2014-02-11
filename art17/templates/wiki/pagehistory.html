@@ -2,7 +2,7 @@
     <div class="history-header clearfix">
         <strong class="pull-left">{{ revisions | length }} revisions</strong>
         <button onclick="$('#history').toggleClass('hidden')"
-                                class="button_text pull-right">Close</button>
+                                class="btn-text pull-right">Close</button>
     </div>
     <ul class="history-list">
 
@@ -14,7 +14,7 @@
 
         <form method="post" action="{{ page_history_url }}">
             <input type="hidden" name="revision_id" value="{{ revision.id }}"/>
-            <button class="button_text" type="submit">Restore version</button>
+            <button class="btn-text" type="submit">Restore version</button>
         </form>
 
         </li>

@@ -92,7 +92,7 @@ $(function() {
 });
 
 $(function() {
-    $('.comment-section').on('click', '.button_text', function(evt) {
+    $('.comment-section').on('click', '.btn-text', function(evt) {
         evt.preventDefault();
         var clicked_button = $(this);
         var comment = clicked_button.parent().parent();

@@ -400,20 +400,7 @@ abbr {
     display: none!important;
 }
 
-.button_text {
-	display: inline;
-	background: none;
-	padding: 0;
-	border: 0;
-	color: blue;
-	font-size: inherit;
-	font-weight: normal;
-}
 
-.button_text:hover {
-	background: none;
-	text-decoration: underline;
-}
 
 
 /* popout-wrapper */
@@ -471,48 +458,6 @@ abbr {
 
 .close:hover {
 	background: transparent;
-}
-
-/* Helpers */
-.clearfix:before,
-.clearfix:after {
-	display:table;
-	content:" ";
-}
-
-.clearfix:after{
-	clear:both;
-}
-
-.no-list {
-	list-style-type: none!important;
-	padding-left: 0!important;
-	margin: 0!important;
-}
-
-.no-break {
-	white-space: nowrap;
-}
-
-.regular {
-	font-family: "Nimbus sans L", Helvetica, Arial, Verdana, sans-serif;
-	font-size: 14px;
-}
-
-.muted {
-	color: #888;
-}
-
-.small {
-	font-size: smaller;
-}
-
-.pull-left {
-	float: left;
-}
-
-.pull-right {
-	float: right;
 }
 
 /* User registration */
@@ -749,11 +694,11 @@ abbr {
 	border-right: 0;
 }
 
-.cmnt-list .button_text {
+.cmnt-list .btn-text {
 	color: #888;
 }
 
-.cmnt-list .button_text:hover {
+.cmnt-list .btn-text:hover {
 	color: blue;
 }
 
@@ -787,7 +732,7 @@ abbr {
 	border-color: #2ca0d2;
 }
 
-.cmnt-list li.cmnt-notread .button_text {
+.cmnt-list li.cmnt-notread .btn-text {
 	color: blue;
 }
 
@@ -825,4 +770,69 @@ abbr {
 	color: #888;
 	border-color: #ccc;
 	background: #f6f6f6;
+}
+
+
+/* Buttons */
+.btn-text {
+	display: inline;
+	background: none;
+	padding: 0;
+	border: 0;
+	color: blue;
+	font-size: inherit;
+	font-weight: normal;
+}
+
+.btn-text:hover {
+	background: none;
+	text-decoration: underline;
+}
+
+
+/* Helpers */
+.clearfix:before,
+.clearfix:after {
+	display:table;
+	content:" ";
+}
+
+.clearfix:after{
+	clear:both;
+}
+
+.no-list {
+	list-style-type: none!important;
+	padding-left: 0!important;
+	margin: 0!important;
+}
+
+.no-break {
+	white-space: nowrap;
+}
+
+.regular {
+	font-family: "Nimbus sans L", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 14px;
+}
+
+.muted {
+	color: #888;
+}
+
+.small {
+	font-size: smaller;
+}
+
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+.block {
+	width: 100%;
+	display: block;
 }

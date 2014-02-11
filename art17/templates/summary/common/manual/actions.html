@@ -1,7 +1,7 @@
   <td>
     {% if can_delete(row) %}
       {% set url = url_for(delete_endpoint, subject=subject, region=row.region, user=row.user_id, ms=row.MS) %}
-      <a class="button_text delete-btn" href="{{ url }}">{% if row.deleted %}undelete{% else %}delete{% endif %}</a>
+      <a class="btn-text delete-btn" href="{{ url }}">{% if row.deleted %}undelete{% else %}delete{% endif %}</a>
     {% endif %}
   </td>
   <td>
@@ -10,7 +10,7 @@
         <input type="hidden" name="subject" value="{{ subject }}" />
         <input type="hidden" name="region" value="{{ row.region }}" />
         <input type="hidden" name="user" value="{{ row.user_id }}" />
-        <button class="button_text" type="submit" name="submit" value="edit">edit</button>
+        <button class="btn-text" type="submit" name="submit" value="edit">edit</button>
       </form>
     {% endif %}
   </td>
