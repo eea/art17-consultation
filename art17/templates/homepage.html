@@ -20,11 +20,9 @@
     <br/>
     <a href="{{ url_for('comments.species-history') }}">User summary</a>
 
-    {% if not g.user.is_ldap %}
-      <a href="{{ url_for('auth.change_password') }}">
-        Change password ({{ g.user.id }})
-      </a>
-    {% endif %}
+    <a href="{{ url_for('auth.change_password') }}">
+      Change password ({{ g.user.id }})
+    </a>
 
   {% else %}
     {% if AUTH_BLUEPRINT_INSTALLED %}

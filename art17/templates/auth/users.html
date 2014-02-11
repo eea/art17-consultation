@@ -1,6 +1,16 @@
 {% extends layout_template %}
 
 
+{% block breadcrumbs %}
+  {% from '_macros.html' import breadcrumbs %}
+  {{ breadcrumbs([
+      ('art17', url_for(HOMEPAGE_VIEW_NAME)),
+      ('auth', None),
+      ('users list', None),
+    ]) }}
+{% endblock %}
+
+
 {% block content %}
   <h1>Users</h1>
 
