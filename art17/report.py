@@ -52,6 +52,7 @@ class Report(views.View):
             'region': region,
             'country': country,
             'show_report_headers': True,
+            'dataset': period_query,
         })
 
         return render_template(self.template_name, **context)
