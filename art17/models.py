@@ -27,6 +27,35 @@ class Dataset(Base):
     def is_readonly(self):
         return self.schema == '2006'
 
+    @property
+    def stats(self):
+        return {
+            'species_content': (
+                EtcDataSpeciesRegion.query
+                .filter_by(dataset_id=self.id).count()
+            ),
+            'species_auto': (
+                EtcDataSpeciesAutomaticAssessment.query
+                .filter_by(dataset_id=self.id).count()
+            ),
+            'species_manual': (
+                SpeciesManualAssessment.query
+                .filter_by(dataset_id=self.id).count()
+            ),
+            'habitat_content': (
+                EtcDataHabitattypeRegion.query
+                .filter_by(dataset_id=self.id).count()
+            ),
+            'habitat_auto': (
+                EtcDataSpeciesAutomaticAssessment.query
+                .filter_by(dataset_id=self.id).count()
+            ),
+            'habitat_manual': (
+                HabitattypesManualAssessment.query
+                .filter_by(dataset_id=self.id).count()
+            ),
+        }
+
 
 t_comments_read = Table(
     'comments_read', metadata,

@@ -9,6 +9,7 @@
       <th>ID</th>
       <th>name</th>
       <th>schema</th>
+      <th>details</th>
       <th></th>
     </thead>
 
@@ -17,6 +18,13 @@
         <td>{{ dataset.id }}</td>
         <td>{{ dataset.name }}</td>
         <td>{{ dataset.schema }}</td>
+        <td>
+          Species:<br/>content: {{ dataset.stats.species_content }},
+        auto: {{ dataset.stats.species_auto }}, manual: {{ dataset.stats.species_manual }}
+          <br/>
+          Habitat:<br/>content: {{ dataset.stats.habitat_content }},
+        auto: {{ dataset.stats.habitat_auto }}, manual: {{ dataset.stats.habitat_manual }}
+        </td>
         <td>
           <a href="{{ url_for('.dataset_edit', dataset_id=dataset.id) }}">
             edit
