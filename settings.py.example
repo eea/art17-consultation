@@ -4,5 +4,8 @@ ASSETS_DEBUG = True
 
 EEA_LDAP_SERVER = ''
 
+# Set this for correct links in emails.
+# SERVER_NAME = ''
+
 # Testing setup - prefix 'TESTING_' to any config, example:
 #TESTING_SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17test'

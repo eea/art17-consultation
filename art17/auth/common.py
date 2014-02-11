@@ -67,7 +67,7 @@ def notify_user_account_activated(user):
     msg.body = flask.render_template(
         'auth/email_user_activated.txt',
         user=user,
-        home_url=flask.url_for(HOMEPAGE_VIEW_NAME),
+        home_url=flask.url_for(HOMEPAGE_VIEW_NAME, _external=True),
     )
     app.extensions['mail'].send(msg)
 
