@@ -1,6 +1,7 @@
 {% from '_macros.html' import parse_errors with context %}
 
-    <td {{ parse_errors('coverage_surface_area', row, qa_errors, classes='number') }}>
+    <td {{ parse_errors('coverage_surface_area', row, qa_errors,
+            title=row.coverage_change_reason, classes='number') }}>
         {{ row.coverage_surface_area|str2num }}
     </td>
 
