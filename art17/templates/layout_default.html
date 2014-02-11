@@ -9,18 +9,26 @@
   <body class="fullscreen">
   <a href="{{ url_for('summary.homepage') }}">Home</a>
   {% if art17_auth_debug %}
-      <a href="{{ url_for('auth.debug') }}">Auth debug</a>
-    {% endif %}
+    <a href="{{ url_for('auth.debug') }}">Auth debug</a>
+  {% endif %}
 
-    {% if config['AUTH_ZOPE'] %}
-      Auth zope: <a href="/loggedin">login</a>, <a href="/loggedout">logout</a>
-    {% endif %}
+  {% if config['AUTH_ZOPE'] %}
+    Auth zope: <a href="/loggedin">login</a>, <a href="/loggedout">logout</a>
+  {% endif %}
 
-    {% if g.identity.id is none %}
-      anonymous
-    {% else %}
-      {{ g.identity.id }}
-    {% endif %}
+  {% if g.identity.id is none %}
+    anonymous
+  {% else %}
+    {{ g.identity.id }}
+  {% endif %}
+
+  <div>
+    {% block breadcrumbs %}
+      <div class="breadcrumbitemlast">
+        <a href="{{ url_for(HOMEPAGE_VIEW_NAME) }}">art17</a>
+      </div>
+    {% endblock %}
+  </div>
 
   <div id="container">
     <div id="workarea">

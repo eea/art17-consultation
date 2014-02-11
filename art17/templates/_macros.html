@@ -15,3 +15,16 @@
       <span>{{ content }}</span>
   </td>
 {% endmacro %}
+
+{% macro breadcrumbs(page_list) %}
+  {%- for label, url in page_list %}
+    {%- set cls = 'breadcrumbitemlast' if loop.last else 'breadcrumbitem' %}
+    <div class="{{ cls }}">
+      {%- if url %}
+        <a href="{{ url }}">{{ label }}</a>
+      {%- else %}
+        {{ label }}
+      {%- endif %}
+    </div>
+  {%- endfor %}
+{%- endmacro %}

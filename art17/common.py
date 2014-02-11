@@ -71,6 +71,7 @@ def register_permissions_in_template_globals(state):
 
     app.jinja_env.globals['admin_perm'] = admin_perm
     app.jinja_env.globals['expert_perm'] = expert_perm
+    app.jinja_env.globals['HOMEPAGE_VIEW_NAME'] = HOMEPAGE_VIEW_NAME
 
 
 def population_size_unit(row):
