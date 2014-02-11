@@ -21,6 +21,12 @@ METH_CONCL_MANDATORY = "At least one method and conclusion must be filled!"
 METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
     "nor a method without a conclusion"
 
+NATURE_CHOICES = [('yes', 'yes'), ('no', 'no'), ('nc', 'nc')]
+CONTRIB_METHODS = [
+    ('A', 'A (favorable)'), ('B', 'B (improvement)'),
+    ('C', 'C (deterioration)'), ('D', 'D (same)'), ('E', 'E (unknown)'),
+]
+
 
 def all_fields(form):
     for field in form:
@@ -102,7 +108,7 @@ class OptionsBase(object):
                 if (current_user.has_role('etc') or
                         current_user.has_role('admin')):
                     output.append((conclusion, value))
-            elif not conclusion.endswith('?'):
+            elif not conclusion.endswith('?') and not conclusion == 'NA':
                 output.append((conclusion, value))
         return output
 
@@ -161,19 +167,17 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         self.method_habitat.choices = self.get_sf_options(methods)
         self.method_future.choices = self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
-        self.method_target1.choices = self.get_assesm_options(methods)
-
-        for f in (self.conclusion_range, self.conclusion_population,
-                  self.conclusion_habitat, self.conclusion_future,
-                  self.conclusion_assessment, self.conclusion_assessment_prev,
-                  self.conclusion_target1):
-            f.choices = conclusions
+        self.method_target1.choices = empty + CONTRIB_METHODS
 
         for f in (self.range_trend, self.population_trend, self.habitat_trend,
                   self.conclusion_assessment_trend,
-                  self.conclusion_assessment_change):
+                  self.conclusion_target1):
             f.choices = trends
-
+        for f in (self.conclusion_range, self.conclusion_population,
+                  self.conclusion_habitat, self.conclusion_future,
+                  self.conclusion_assessment, self.conclusion_assessment_prev):
+            f.choices = conclusions
+        self.conclusion_assessment_change.choices = empty + NATURE_CHOICES
         self.population_size_unit.choices = units
 
     def custom_validate(self):
@@ -275,17 +279,17 @@ class SummaryManualFormHabitat(Form, OptionsBase):
         self.method_structure.choices = self.get_sf_options(methods)
         self.method_future.choices = self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
-        self.method_target1.choices = self.get_assesm_options(methods)
+        self.method_target1.choices = empty + CONTRIB_METHODS
 
         for f in (self.range_trend, self.coverage_trend,
-                  self.conclusion_assessment_trend):
+                  self.conclusion_assessment_trend, self.conclusion_target1):
             f.choices = trends
         for f in (self.conclusion_range, self.conclusion_area,
                   self.conclusion_structure, self.conclusion_future,
-                  self.conclusion_assessment, self.conclusion_target1,
-                  self.conclusion_assessment_prev,
-                  self.conclusion_assessment_change):
+                  self.conclusion_assessment,
+                  self.conclusion_assessment_prev):
             f.choices = conclusions
+        self.conclusion_assessment_change.choices = empty + NATURE_CHOICES
 
     def custom_validate(self):
         fields = [f for f in all_fields(self) if f != self.region]
