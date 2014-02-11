@@ -6,6 +6,15 @@
   <span>{{ row.percentage_assessment|default('', true)|parse_semicolon|safe}}</span>
 </td>
 
-<td></td>
-<td></td>
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_trend, '') + ' conclusion' %}
+{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_trend, '') %}
+<td class="{{ classes }}" title="{{ title }}">
+  <span>{{ row.percentage_assessment_trend|default('', true)|parse_semicolon|safe}}</span>
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_change, '') + ' conclusion' %}
+{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_change, '') %}
+<td class="{{ classes }}" title="{{ title }}">
+  <span>{{ row.percentage_assessment_change|default('', true)|parse_semicolon|safe}}</span>
+</td>
 <td></td>
