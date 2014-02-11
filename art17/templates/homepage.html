@@ -2,6 +2,12 @@
 
 
 {% block content %}
+  {% if g.identity.id is not none %}
+  <div style="float: right">
+    <a href="{{ url_for('auth.me') }}">My account</a> |
+    <a href="{{ url_for('comments.species-history') }}">Activity log</a>
+  </div>
+  {% endif %}
   <h1>Art 17</h1>
 
   <a href="{{ url_for('.species-summary') }}">Species summary</a>
@@ -17,27 +23,19 @@
   <br/>
 
   {% if g.identity.id is not none %}
-    <br/>
-    <a href="{{ url_for('comments.species-history') }}">User summary</a>
-
-    <a href="{{ url_for('auth.change_password') }}">
-      Change password ({{ g.user.id }})
-    </a>
-
-    <a href="{{ url_for('auth.me') }}">My account</a>
-
   {% else %}
     {% if AUTH_BLUEPRINT_INSTALLED %}
       <a href="{{ url_for('auth.register') }}">Register for an account</a>
     {% endif %}
   {% endif %}
 
-  {% if AUTH_BLUEPRINT_INSTALLED and admin_perm.can() %}
-    <a href="{{ url_for('auth.users') }}">User list</a>
-  {% endif %}
 
   {% if admin_perm.can() %}
-    <a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a>
-    <a href="{{ url_for('common.config') }}">Configuration</a>
+  <h2>Administrator</h2>
+    {% if AUTH_BLUEPRINT_INSTALLED %}
+    <a href="{{ url_for('auth.users') }}">User list</a><br/>
+    {% endif %}
+    <a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a><br/>
+    <a href="{{ url_for('common.config') }}">Configuration</a><br/>
   {% endif %}
 {% endblock content %}

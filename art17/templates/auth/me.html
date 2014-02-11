@@ -17,7 +17,6 @@
 
     {% set role_list = g.user.roles %}
     {% if role_list %}
-
       <p>
         Roles:
         {% for role in role_list %}
@@ -28,6 +27,10 @@
     {% else %}
       <p>no roles</p>
     {% endif %}
+
+    <a href="{{ url_for('auth.change_password') }}">
+      Change password ({{ g.user.id }})
+    </a>
 
   {%- else %}
     <h1>Not logged in</h1>
