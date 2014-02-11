@@ -44,8 +44,9 @@
           </th>
           {% for region in regions %}
             {% set data = objects.get(subject_name, {}).get(region.reg_code, '') %}
-            {% set url = url_for(summary_endpoint, subject=subject_name, region=region.reg_code) %}
-
+            {% set url = url_for(summary_endpoint,
+                          period=dataset.id, subject=subject_name,
+                          region=region.reg_code) %}
             {% if data %}
               <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} conclusion"
                   title="{{ data['title'] }}">

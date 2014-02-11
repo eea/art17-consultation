@@ -245,6 +245,7 @@ class Progress(views.View):
             'subjects': self.subjects_by_group(period, group),
             'regions': regions.all(),
             'objects': ret_dict,
+            'dataset': period_query,
         })
 
         return render_template(self.template_name, **context)
