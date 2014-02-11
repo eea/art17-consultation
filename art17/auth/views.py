@@ -103,7 +103,7 @@ def get_roles_for_all_users():
     roles_query = (
         models.db.session.query(
             models.roles_users.c.registered_users_user,
-            models.Role.description,
+            models.Role.name,
         )
         .join(
             models.Role,
