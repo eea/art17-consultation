@@ -14,6 +14,7 @@ TEST_CONFIG = {
     'SECRET_KEY': 'test',
     'ASSETS_DEBUG': True,
     'SQLALCHEMY_DATABASE_URI': 'mysql://root@localhost/art17test',
+    'EEA_LDAP_SERVER': 'test_ldap_server'
 }
 
 
@@ -94,8 +95,8 @@ def outbox(app, request):
 @fixture
 def ldap_user_info(request):
     library = {}
-    ldap_patch = patch('art17.auth.views.get_ldap_user_info')
+    ldap_patch = patch('art17.auth.common.UsersDB')
     mock = ldap_patch.start()
+    mock.return_value.user_info.side_effect = library.get
     request.addfinalizer(ldap_patch.stop)
-    mock.side_effect = library.get
     return library

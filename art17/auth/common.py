@@ -4,6 +4,7 @@ from functools import wraps
 import flask
 from flask.ext.security import signals as security_signals
 from flask.ext.mail import Message
+from eea.usersdb import UsersDB, UserNotFound
 from art17 import models
 from art17.common import admin_perm, HOMEPAGE_VIEW_NAME, get_config
 from art17.auth import zope_acl_manager
@@ -48,10 +49,12 @@ def require_admin(view):
 
 
 def get_ldap_user_info(user_id):
-    from eea.usersdb import UsersDB
     ldap_server = flask.current_app.config['EEA_LDAP_SERVER']
     users_db = UsersDB(ldap_server=ldap_server)
-    return users_db.user_info(user_id)
+    try:
+        return users_db.user_info(user_id)
+    except UserNotFound:
+        return None
 
 
 def notify_user_account_activated(user):

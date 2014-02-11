@@ -64,7 +64,7 @@ def test_identity_is_set_from_zope_whoami(app, zope_auth, client):
     assert identity['provides'] == [['id', 'ze_admin'], ['role', 'admin']]
 
 
-def test_self_registration_flow(app, zope_auth, client, outbox):
+def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     from art17.models import RegisteredUser
     from art17.auth.providers import set_user
 
