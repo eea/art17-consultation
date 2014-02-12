@@ -1073,6 +1073,6 @@ a.active {
     display: block;
 }
 
-.warning strong {
+.note strong {
     color: #f0ad4e;
 }
