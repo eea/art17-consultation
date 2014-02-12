@@ -42,9 +42,7 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     models.db.session.commit()
 
     register_page = client.get(flask.url_for('auth.register'))
-    print register_page
     register_page = register_page.click('Request a new Article 17 consultation account')
-    print register_page
     register_page.form['id'] = 'foo'
     register_page.form['email'] = 'foo@example.com'
     register_page.form['password'] = 'p455w4rd'
@@ -65,11 +63,14 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     assert 'Welcome foo@example.com!' in confirm_message.body
     url = confirm_message.body.split()[-1]
     assert url.startswith("http://localhost/confirm/")
-    client.get(url)
+
+    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+        client.get(url)
+        assert create_in_zope.call_count == 1
 
     foo_user = models.RegisteredUser.query.get('foo')
     assert foo_user.confirmed_at is not None
-    assert not foo_user.active
+    assert foo_user.active
 
     assert len(outbox) == 1
     admin_message = outbox.pop()
@@ -78,20 +79,15 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     url = admin_message.body.split()[-1]
     assert url == 'http://localhost/auth/users/foo'
 
-    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+    with patch('art17.auth.zope_acl_manager.delete') as delete_in_zope:
         zope_auth['user_id'] = 'ze_admin'
         activation_page = client.get(url)
-        activation_page.form['active'] = True
+        activation_page.form['active'] = False
         activation_page.form.submit()
-        assert create_in_zope.call_count == 1
+        assert delete_in_zope.call_count == 1
 
     foo_user = models.RegisteredUser.query.get('foo')
-    assert foo_user.active
-
-    assert len(outbox) == 1
-    user_message = outbox.pop()
-    assert user_message.recipients == ['foo@example.com']
-    assert 'has been activated' in user_message.body
+    assert not foo_user.active
 
 
 def test_ldap_account_activation_flow(
@@ -111,13 +107,17 @@ def test_ldap_account_activation_flow(
         set_user('foo', is_ldap_user=True)
 
     register_page = client.get(flask.url_for('auth.register_ldap'))
-    result_page = register_page.form.submit()
+
+    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+        result_page = register_page.form.submit()
+        assert create_in_zope.call_count == 0
+
     assert "has been registered" in result_page.text
 
     foo_user = models.RegisteredUser.query.get('foo')
     assert foo_user.email == 'foo@example.com'
     assert foo_user.confirmed_at is not None
-    assert not foo_user.active
+    assert foo_user.active
     assert foo_user.is_ldap
 
     assert len(outbox) == 1
@@ -127,20 +127,15 @@ def test_ldap_account_activation_flow(
     url = admin_message.body.split()[-1]
     assert url == 'http://localhost/auth/users/foo'
 
-    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+    with patch('art17.auth.zope_acl_manager.delete') as delete_in_zope:
         zope_auth['user_id'] = 'ze_admin'
         activation_page = client.get(url)
-        activation_page.form['active'] = True
+        activation_page.form['active'] = False
         activation_page.form.submit()
-        assert create_in_zope.call_count == 0
+        assert delete_in_zope.call_count == 0
 
     foo_user = models.RegisteredUser.query.get('foo')
-    assert foo_user.active
-
-    assert len(outbox) == 1
-    user_message = outbox.pop()
-    assert user_message.recipients == ['foo@example.com']
-    assert 'has been activated' in user_message.body
+    assert not foo_user.active
 
 
 def test_view_requires_admin(app, zope_auth, client):

@@ -14,8 +14,8 @@ logger.setLevel(logging.INFO)
 
 
 @security_signals.user_confirmed.connect
-def put_in_activation_queue(app, user, **extra):
-    user.waiting_for_activation = True
+def activate_and_notify_admin(app, user, **extra):
+    set_user_active(user, True)
     models.db.session.commit()
     admin_email = get_config().admin_email
 
