@@ -1184,6 +1184,7 @@ class Config(Base):
     start_date = Column(db.Date)
     end_date = Column(db.Date)
     admin_email = Column(db.String(255))
+    default_dataset_id = Column(Integer, server_default='1')
 
 
 db_manager = Manager()
