@@ -8,7 +8,7 @@ from flask.ext.security.registerable import register_user
 from werkzeug.datastructures import MultiDict
 from art17 import models
 from art17.auth.forms import DatasetForm
-from art17.common import HOMEPAGE_VIEW_NAME
+from art17.common import HOMEPAGE_VIEW_NAME, get_config
 from art17.auth import zope_acl_manager, current_user, auth
 from art17.auth.security import Art17ConfirmRegisterForm
 from art17.auth.common import (
@@ -56,6 +56,14 @@ def register_ldap():
                 'at the top of the page.'
             )
             return flask.render_template('message.html', message=message)
+
+    if user_id:
+        message = (
+            'There is no need to create a new account since you can '
+            'use the current one. If you need additional roles please '
+            'send an email to %s.' % get_config().admin_email
+        )
+        return flask.render_template('message.html', message=message)
 
     if flask.request.method == 'POST':
         datastore = flask.current_app.extensions['security'].datastore
