@@ -37,7 +37,8 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     create_user('ze_admin', ['admin'])
 
     register_page = client.get(flask.url_for('auth.register'))
-    register_page = register_page.click('new art17 consultation account')
+    print register_page
+    register_page = register_page.click('Request a new Article 17 consultation account')
     print register_page
     register_page.form['id'] = 'foo'
     register_page.form['email'] = 'foo@example.com'
