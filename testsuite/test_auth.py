@@ -41,8 +41,7 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     DatasetFactory()
     models.db.session.commit()
 
-    register_page = client.get(flask.url_for('auth.register'))
-    register_page = register_page.click('Request a new Article 17 consultation account')
+    register_page = client.get(flask.url_for('security.register'))
     register_page.form['id'] = 'foo'
     register_page.form['email'] = 'foo@example.com'
     register_page.form['password'] = 'p455w4rd'
@@ -194,12 +193,12 @@ def test_dates(app, zope_auth, client):
         start_date=today + timedelta(days=2),
         end_date=today + timedelta(days=4),
     )
-    page = client.get(flask.url_for('auth.register'))
+    page = client.get(flask.url_for('auth.register_ldap'))
     assert "Registration has not started yet" in page
 
     _set_config(
         start_date=today - timedelta(days=4),
         end_date=today - timedelta(days=2),
     )
-    page = client.get(flask.url_for('auth.register'))
+    page = client.get(flask.url_for('auth.register_ldap'))
     assert "Registration has finished" in page
