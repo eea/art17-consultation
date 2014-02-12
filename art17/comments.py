@@ -12,7 +12,7 @@ from art17.auth import current_user
 from art17.common import get_default_period, admin_perm
 from art17.forms import CommentForm
 from art17.mixins import SpeciesMixin, HabitatMixin
-from art17.models import Dataset, Comment, db
+from art17.models import Dataset, db
 
 
 DATE_FORMAT = '%Y-%m-%d'
@@ -226,8 +226,8 @@ class UserSummary(views.View):
         comments_qs = (
             self.model_comment_cls.query
             .join(self.model_comment_cls.record)
-            .filter(self.model_manual_cls.dataset_id==period)
-            .order_by('-post_date')
+            .filter(self.model_manual_cls.dataset_id == period)
+            .order_by('-post_date').all()
         )
         return {'conclusions': conclusions, 'comments': comments_qs}
 
