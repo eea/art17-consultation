@@ -25,8 +25,19 @@
 			<hr>
 
 			<div>
-				<button class="btn-green">Edit assesment</button>
-				<button>Delete</button>
+         {% if can_edit(row) %}
+          <form method="post" action="">
+            <input type="hidden" name="subject" value="{{ subject }}" />
+            <input type="hidden" name="region" value="{{ row.region }}" />
+            <input type="hidden" name="user" value="{{ row.user_id }}" />
+            <button class="btn-green" type="submit" name="submit" value="edit">Edit assessment</button>
+          </form>
+        {% endif %}
+
+        {% if can_delete(row) %}
+        {% set url = url_for(delete_endpoint, subject=subject, region=row.region, user=row.user_id, ms=row.MS) %}
+        <a class="button delete-btn" href="{{ url }}">{% if row.deleted %}undelete{% else %}delete{% endif %}</a>
+        {% endif %}
 			</div>
 
 		</div>
@@ -35,7 +46,3 @@
 
 	</div>
 </td>
-<!-- <td>{{ row.last_update|format_date }}</td>
-<td>{{ row.user.name or row.user_id}}</td>
-<td>{{ row.user.institution }}</td>
-<td>{{ row.MS }}</td> -->
