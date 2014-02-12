@@ -38,6 +38,11 @@ def setup_auth_handlers(state):
             "Please confirm your email address for "
             "the Biological Diversity website"
         ),
+        'SECURITY_MSG_EMAIL_CONFIRMED': (
+            ("Your email has been confirmed. You can now log in by "
+             "clicking the link at the top."),
+            'success',
+        ),
     })
 
     app.jinja_env.globals['AUTH_BLUEPRINT_INSTALLED'] = True
