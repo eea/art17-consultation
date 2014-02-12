@@ -2,32 +2,52 @@
 
 
 {% block content %}
-  <div style="float: right">
-    {% if g.identity.id is not none %}
-    <a href="{{ url_for('auth.me') }}">My account</a> |
-    <a href="{{ url_for('comments.species-history') }}">Activity log</a>
-    {% else %}
-    {% if AUTH_BLUEPRINT_INSTALLED %}
-      <a href="{{ url_for('auth.register') }}">Register for an account</a>
-    {% endif %}
-  {% endif %}
-  </div>
 
-  <h1>Online report on Article 17 of the Habitats Directive:<br/>
-  <em>conservation status of habitats and species of Community interest (2007-2012)</em>
-  </h1>
+  <h1>Online report on Article 17 of the Habitats Directive</h1>
 
-  <p>These pages give access to assessments of conservation status of habitats
-    and species as well as other information reported by the Member States.</p>
+  <p class="documentDescription">
+    Welcome to the Article 17 Web Tool on biogeographical assessments
+    of conservation status for species and habitats, as reported by
+    Member States according to the provisions of Article 17 of the
+    Habitats Directive.
+  </p>
 
-  <h2>Acknowledgements</h2>
+  <p>
+    The MS assessments as well as the biogeographical assessments performed
+    by the ETC/BD are now available for public view.
+  </p>
 
-  <p>The reporting format was developed by the ETC/BD and DG Environment
-    together with the Member States. Technical support was provided by the
-    EEA.</p>
-  <p>The assessments rely on data collected by hundreds, if not thousands of
-    individuals, many of them volunteers. This report would not have been
-    possible without their work.</p>
+  <p class="documentDescription">
+    <span class="warning">UNDER CONSTRUCTION:</span>
+    this site is currently being adapted to become the web-based
+    Technical Report of Article 17.
+  </p>
+
+  <h2>
+    The consultation is open only for users that will register. To register:
+  </h2>
+
+  <ul>
+    <li>
+      If you have an Eionet account please
+      <a href="auth/register/ldap">register here</a>.
+    </li>
+    <li>
+      If you don't have an Eionet account please
+      <a href="auth/register/local">register here</a>.
+    </li>
+    <li>
+      If you are a National Data Coordinator for Article 17,
+      you are already registered.
+    </li>
+  </ul>
+
+  <p>
+    There is no need to register if you just want to view the data.
+    You just click on one of the links below. If you want as well to
+    indicate how the assessments should be changed, than you will need
+    to register.
+  </p>
 
   <h2>Quick links for the impatient</h2>
 
@@ -41,23 +61,31 @@
   <ul>
     <li><a href="{{ url_for('progress.species-progress') }}">Species asssessments</a></li>
     <li><a href="{{ url_for('progress.habitat-progress') }}">Habitats assessments</a></li>
-  </ul>
-  <br/>
-  <ul>
-    <li><a href="{{ url_for('.species-summary') }}">Species summary</a></li>
-    <li><a href="{{ url_for('.habitat-summary') }}">Habitat summary</a></li>
+    <li><a href="{{ url_for('.species-summary') }}">Species data summaries</a></li>
+    <li><a href="{{ url_for('.habitat-summary') }}">Habitat data summaries</a></li>
   </ul>
 
   <br/>
+
+  <h2>Activity logs</h2>
+  <ul>
+    <li>
+      <a href="{{ url_for('comments.species-history') }}">Species</a>
+    </li>
+    <li>
+      <a href="{{ url_for('comments.habitat-history') }}">Habitats</a>
+    </li>
+  </ul>
+
 
   {% if admin_perm.can() %}
   <h2>Administrator</h2>
     <ul>
     {% if AUTH_BLUEPRINT_INSTALLED %}
-      <li><a href="{{ url_for('auth.users') }}">User list</a></li>
+      <li><a href="{{ url_for('auth.users') }}">Users</a></li>
     {% endif %}
       <li><a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a></li>
-      <li><a href="{{ url_for('common.config') }}">Configuration</a></li>
+      <li><a href="{{ url_for('common.config') }}">Settings</a></li>
     </ul>
   {% endif %}
 {% endblock content %}
