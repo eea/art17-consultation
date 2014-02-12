@@ -80,7 +80,7 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
     institution = TextField('Institution',
         validators=[Required("Institution name is required")])
     abbrev = TextField('Institution(abbrev)')
-    MS = SelectField('MS')
+    country_options = None
 
     def __init__(self, *args, **kwargs):
         super(Art17ConfirmRegisterForm, self).__init__(*args, **kwargs)
@@ -92,4 +92,4 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
             .order_by(DicCountryCode.name)
             .all())
 
-        self.MS.choices = [('', '-')] + countries
+        self.country_options = countries + [('', 'Other country')]

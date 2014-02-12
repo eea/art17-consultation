@@ -18,5 +18,6 @@
   <script>$('body').addClass('fullscreen')</script>
   {% include 'flash_messages.html' %}
   {% block content %}{% endblock %}
+  {% block scripts %}{% endblock %}
 
 {{ g.zope_layout.content_to_end }}
