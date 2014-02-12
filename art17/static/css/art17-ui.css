@@ -1065,10 +1065,14 @@ a.active {
 }
 
 .note {
-    background-color: #f0ad4e;
+    background-color: #fcf8f2;
     margin: 20px 0;
     padding: 8px;
     border-left: 3px solid #d9534f;
     font-size: 14px;
     display: block;
+}
+
+.warning strong {
+    color: #f0ad4e;
 }
