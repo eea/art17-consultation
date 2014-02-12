@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask_wtf import Form as Form_base
-from wtforms import SelectField, TextField, TextAreaField
+from wtforms import SelectField, TextField, TextAreaField, DateField
 from wtforms.validators import Optional
 from art17.models import (
     Dataset,
@@ -378,3 +378,20 @@ class WikiEditForm(Form):
 class CommentForm(Form):
 
     comment = TextAreaField()
+
+
+class ConfigForm(Form):
+    start_date = DateField(label="Start date (YYYY-MM-DD)",
+                           validators=[Optional()])
+    end_date = DateField(label="End date (YYYY-MM-DD)",
+                         validators=[Optional()])
+    admin_email = TextField(label="Administrator email (space separated list)",
+                            validators=[Optional()])
+    default_dataset_id = SelectField(label="Default period")
+
+    def __init__(self, *args, **kwargs):
+        super(ConfigForm, self).__init__(*args, **kwargs)
+        dataset_qs = Dataset.query.with_entities(Dataset.id, Dataset.name).all()
+        self.default_dataset_id.choices = [
+            (str(ds_id), name) for ds_id, name in dataset_qs
+        ]

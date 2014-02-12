@@ -1,9 +1,6 @@
 from urlparse import urlparse
 import flask
 from flask_principal import Permission, RoleNeed
-from flask.ext.wtf import Form
-from wtforms import DateField, TextField, SelectField
-from wtforms.ext.sqlalchemy.orm import model_form, ModelConverter
 from art17.dataset import CONVERTER_URLS
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
@@ -13,7 +10,7 @@ from art17.models import (
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion,
     Config,
-    Dataset)
+)
 from .utils import str2num
 
 QUALITIES = {
@@ -307,22 +304,9 @@ def get_config():
     return rows[0]
 
 
-class ConfigForm(Form):
-    start_date = DateField(label="Start date (YYYY-MM-DD)")
-    end_date = DateField(label="End date (YYYY-MM-DD)")
-    admin_email = TextField(label="Administrator email (space separated list)")
-    default_dataset_id = SelectField(label="Default period")
-
-    def __init__(self, *args, **kwargs):
-        super(ConfigForm, self).__init__(*args, **kwargs)
-        dataset_qs = Dataset.query.with_entities(Dataset.id, Dataset.name).all()
-        self.default_dataset_id.choices = [
-            (str(ds_id), name) for ds_id, name in dataset_qs
-        ]
-
-
 @common.route('/config', methods=['GET', 'POST'])
 def config():
+    from art17.forms import ConfigForm
     admin_perm.test()
     row = get_config()
     form = ConfigForm(flask.request.form, row)
