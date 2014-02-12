@@ -21,6 +21,10 @@
         method="POST" name="register_user_form">
     {{ register_user_form.hidden_tag() }}
     {{ render_field_with_errors(register_user_form.id) }}
+    {{ render_field_with_errors(register_user_form.name) }}
+    {{ render_field_with_errors(register_user_form.institution) }}
+    {{ render_field_with_errors(register_user_form.abbrev) }}
+    {{ render_field_with_errors(register_user_form.MS) }}
     {{ render_field_with_errors(register_user_form.email) }}
     {{ render_field_with_errors(register_user_form.password) }}
     {% if register_user_form.password_confirm %}

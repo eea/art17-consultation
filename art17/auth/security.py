@@ -3,18 +3,20 @@ import hashlib
 import base64
 from datetime import datetime
 from werkzeug.local import LocalProxy
-from wtforms import TextField, ValidationError
+from wtforms import TextField, ValidationError, SelectField
 import flask
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
 import flask.ext.security.script
 import flask.ext.security as flask_security
-from art17.auth.common import get_ldap_user_info
 
 from flask.ext.security.forms import (
     ConfirmRegisterForm,
     password_length,
     Required,
 )
+
+from art17.auth.common import get_ldap_user_info
+from art17.models import DicCountryCode, Dataset
 from art17.auth.common import check_dates
 
 
@@ -71,5 +73,23 @@ def check_duplicate_with_ldap(form, field):
 
 class Art17ConfirmRegisterForm(ConfirmRegisterForm):
 
-    id = TextField('id', validators=[Required("User ID is required"),
+    id = TextField('Username', validators=[Required("User ID is required"),
                                      check_duplicate_with_ldap])
+    name = TextField('Full name',
+        validators=[Required("Full name is required")])
+    institution = TextField('Institution',
+        validators=[Required("Institution name is required")])
+    abbrev = TextField('Institution(abbrev)')
+    MS = SelectField('MS')
+
+    def __init__(self, *args, **kwargs):
+        super(Art17ConfirmRegisterForm, self).__init__(*args, **kwargs)
+        dataset = (Dataset.query.order_by(Dataset.id.desc()).first())
+        countries = (DicCountryCode.query
+            .with_entities(DicCountryCode.codeEU,DicCountryCode.name)
+            .filter(DicCountryCode.dataset_id == dataset.id)
+            .distinct()
+            .order_by(DicCountryCode.name)
+            .all())
+
+        self.MS.choices = [('', '-')] + countries

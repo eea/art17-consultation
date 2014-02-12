@@ -8,6 +8,7 @@ from flask.ext.security.script import (
     ActivateUserCommand,
 )
 from art17.auth import zope_acl_manager
+from art17.auth.common import get_ldap_user_info
 from art17 import models
 
 
@@ -15,7 +16,26 @@ class CreateUserCommand(BaseCreateUserCommand):
 
     option_list = BaseCreateUserCommand.option_list + (
         Option('-i', '--id', dest='id', default=None),
+        Option('-l', '--ldap', dest='is_ldap', action='store_true'),
     )
+
+    def run(self, **kwargs):
+        user_id = kwargs['id']
+        is_ldap_user = kwargs['is_ldap']
+
+        if is_ldap_user:
+            ldap_user_info = get_ldap_user_info(user_id)
+            if ldap_user_info is None:
+                print "No such LDAP user: %r" % user_id
+                return
+            kwargs['password'] = 'password is ignored'
+            kwargs['email'] = ldap_user_info['email']
+
+        super(CreateUserCommand, self).run(**kwargs)
+
+        if is_ldap_user:
+            models.RegisteredUser.query.get(user_id).password = None
+            models.db.session.commit()
 
 
 user_manager = Manager()

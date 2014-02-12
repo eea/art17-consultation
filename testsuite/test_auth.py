@@ -32,16 +32,24 @@ def test_identity_is_set_from_zope_whoami(app, zope_auth, client):
 
 
 def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
+    from art17.models import RegisteredUser
+    from art17.auth.providers import set_user
+    from .factories import DatasetFactory
 
     _set_config(admin_email='admin@example.com')
     create_user('ze_admin', ['admin'])
+    DatasetFactory()
+    models.db.session.commit()
 
     register_page = client.get(flask.url_for('auth.register'))
-    register_page = register_page.click('new art17 consultation account')
+    print register_page
+    register_page = register_page.click('Request a new Article 17 consultation account')
     print register_page
     register_page.form['id'] = 'foo'
     register_page.form['email'] = 'foo@example.com'
     register_page.form['password'] = 'p455w4rd'
+    register_page.form['name'] = 'foo me'
+    register_page.form['institution'] = 'foo institution'
     result_page = register_page.form.submit().follow()
     assert "Confirmation instructions have been sent" in result_page.text
 
