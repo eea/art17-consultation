@@ -9,7 +9,7 @@ from .factories import (
     EtcDataHabitattypeRegionFactory,
     EtcDataHabitattypeAutomaticAssessmentFactory,
     HabitattypesManualAssessmentsFactory,
-    EtcDicHdHabitat)
+    EtcDicHdHabitat, EtcDicMethodFactory)
 
 
 @pytest.fixture(autouse=True)
@@ -27,6 +27,7 @@ def setup(app):
         decision='OK')
     EtcDataSpeciesAutomaticAssessmentFactory(
         assesment_speciesname='Capra ibex',
+        assessment_method='1',
         range_surface_area=19850)
     EtcDicBiogeoregFactory()
     EtcDataHabitattypeRegionFactory(
@@ -34,6 +35,7 @@ def setup(app):
         habitatcode=1110)
     EtcDataHabitattypeAutomaticAssessmentFactory(
         range_surface_area=1283,
+        assessment_method='1',
         habitatcode=1110)
     HabitattypesManualAssessmentsFactory(
         range_surface_area=1283,
@@ -43,6 +45,7 @@ def setup(app):
         decision='OK',
         region='ALP')
     EtcDicHdHabitat()
+    EtcDicMethodFactory()
     db.session.commit()
 
 

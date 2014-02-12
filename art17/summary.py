@@ -268,8 +268,22 @@ class Summary(views.View):
 
     methods = ['GET', 'POST']
 
-    def get_context(self):
-        return {}
+    def get_best_automatic(self):
+        period = request.args.get('period') or get_default_period()
+        subject = request.args.get('subject')
+        region = request.args.get('region')
+        best_qs = (
+            self.model_auto_cls.query
+            .filter_by(dataset_id=period, subject=subject, region=region)
+        )
+        best = best_qs.filter_by(assessment_method='00').first()
+        if best:
+            return best
+        else:
+            return best_qs.join(
+                EtcDicMethod,
+                self.model_auto_cls.assessment_method == EtcDicMethod.method
+            ).order_by(EtcDicMethod.order).first()
 
     def must_edit_ref(self, assessment):
         if not current_user.is_authenticated() or not assessment:
@@ -476,9 +490,14 @@ class SpeciesSummary(SpeciesMixin, Summary):
             self.objects = self.model_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_cls.region, self.model_cls.country)
-            self.auto_objects = self.model_auto_cls.query.filter_by(
-                **filter_args
-            )
+            self.auto_objects = (
+                self.model_auto_cls.query
+                .filter_by(**filter_args)
+                .join(
+                    EtcDicMethod,
+                    self.model_auto_cls.assessment_method == EtcDicMethod.method
+                )
+            ).order_by(EtcDicMethod.order)
             self.manual_objects = self.model_manual_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_manual_cls.decision.desc())
@@ -512,20 +531,13 @@ class SpeciesSummary(SpeciesMixin, Summary):
         }
 
     def get_default_values(self):
-        period = request.args.get('period') or get_default_period()
-        subject = request.args.get('subject')
-        region = request.args.get('region')
-        best = self.model_auto_cls.query.filter_by(
-            dataset_id=period, subject=subject, region=region,
-        ).order_by(self.model_auto_cls.assessment_method).first()
-        if not best:
-            return {}
+        best = self.get_best_automatic()
         return dict(
             range_surface_area=best.range_surface_area,
             complementary_favourable_range=best.complementary_favourable_range,
             habitat_surface_area=best.habitat_surface_area,
             complementary_suitable_habitat=best.complementary_suitable_habitat,
-        )
+        ) if best else {}
 
 
 class HabitatSummary(HabitatMixin, Summary):
@@ -584,20 +596,13 @@ class HabitatSummary(HabitatMixin, Summary):
         }
 
     def get_default_values(self):
-        period = request.args.get('period') or get_default_period()
-        subject = request.args.get('subject')
-        region = request.args.get('region')
-        best = self.model_auto_cls.query.filter_by(
-            dataset_id=period, subject=subject, region=region,
-        ).order_by(self.model_auto_cls.assessment_method).first()
-        if not best:
-            return {}
+        best = self.get_best_automatic()
         return dict(
             range_surface_area=best.range_surface_area,
             complementary_favourable_range=best.complementary_favourable_range,
             coverage_surface_area=best.coverage_surface_area,
             complementary_favourable_area=best.complementary_favourable_area,
-        )
+        ) if best else {}
 
 summary.add_url_rule('/species/summary/',
                      view_func=SpeciesSummary.as_view('species-summary'))
