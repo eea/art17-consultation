@@ -13,7 +13,7 @@
 {% block content %}
   <h1>Configuration</h1>
 
-  <form id="config-form" class="inline-form" name="config" method="post">
+  <form id="config-form" class="box box-small inline-block" name="config" method="post">
 
     {% for field in form %}
       {% if field.name == 'csrf_token' %}
