@@ -4,7 +4,7 @@
   <div class="btn-toolbar">
     <button class='edit-btn' href="{{ add_comment_url }}">Add comment</button>
   </div>
-  {% if add_cmnt_form and if can_add_comment(comments) %}
+  {% if add_cmnt_form and can_add_comment(comments) %}
       {% include 'wiki/addcomment.html'%}
   {% endif %}
 
