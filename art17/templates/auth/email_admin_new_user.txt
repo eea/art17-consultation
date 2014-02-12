@@ -1,5 +1,5 @@
-{%- if user.is_ldap %}Eionet user{% else %}New user{% endif %} has registered.
+{%- if user.is_ldap %}Eionet user{% else %}Local user{% endif %} has registered.
 
-You can activate the account through the link below:
+You can assign roles through the link below:
 
 {{ activation_link }}

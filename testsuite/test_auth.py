@@ -59,8 +59,9 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
 
     assert len(outbox) == 1
     confirm_message = outbox.pop()
-    assert 'Welcome foo@example.com!' in confirm_message.body
-    url = confirm_message.body.split()[-1]
+    assert 'Dear foo me,' in confirm_message.body
+    assert 'foo@example.com' in confirm_message.body
+    url = confirm_message.body.splitlines()[4].strip()
     assert url.startswith("http://localhost/confirm/")
 
     with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
@@ -74,7 +75,7 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     assert len(outbox) == 1
     admin_message = outbox.pop()
     assert admin_message.recipients == ['admin@example.com']
-    assert "New user has registered" in admin_message.body
+    assert "Local user has registered" in admin_message.body
     url = admin_message.body.split()[-1]
     assert url == 'http://localhost/auth/users/foo'
 

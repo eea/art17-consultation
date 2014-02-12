@@ -1,0 +1,20 @@
+Dear {{ user.name }},
+
+<p>
+  Your email address {{ user.email }} has been associated with a
+  Biological Diversity website account. If you authorized this, click
+  the following link or copy and paste it into your browser to confirm.
+</p>
+
+<p><a href="{{ confirmation_link }}">Confirm my account</a></p>
+
+<p>
+  After the verification is complete, you can login with username
+  <tt>{{ user.id }}</tt>.
+</p>
+
+
+<p>
+  Best regards,<br>
+  The Eionet team
+</p>

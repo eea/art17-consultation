@@ -34,6 +34,10 @@ def setup_auth_handlers(state):
         'SECURITY_POST_CONFIRM_VIEW': HOMEPAGE_VIEW_NAME,
         'SECURITY_PASSWORD_HASH': 'ldap_salted_sha1',
         'SECURITY_SEND_PASSWORD_CHANGE_EMAIL': False,
+        'SECURITY_EMAIL_SUBJECT_REGISTER': (
+            "Please confirm your email address for "
+            "the Biological Diversity website"
+        ),
     })
 
     app.jinja_env.globals['AUTH_BLUEPRINT_INSTALLED'] = True
