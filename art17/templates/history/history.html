@@ -19,7 +19,7 @@
     <a class="btn btn-default {% if subject_name == 'habitat' %}active{% endif %}"
       href="{{ url_for('.habitat-history') }}">Habitats</a>
 
-    <table class="complex_datatable datatable">
+    <!-- <table class="complex_datatable datatable">
       <caption>Recent conclusions</caption>
       <tr>
         <th>Date</th>
@@ -37,7 +37,36 @@
         <td><a href="{{ url_for(summary_endpoint, subject=c.subject, region=c.region) }}">view</a></td>
       </tr>
       {% endfor %}
-    </table>
+    </table> -->
+
+    <div class="table-list-wrap">
+      <div class="scroll">
+        <div class="f-test">
+          Position
+        </div>
+        <table class="table-list">
+          <tr class="fixed-table-header">
+            <th><div>Date</div></th>
+            <th><div>User</div></th>
+            <th><div>{{ subject_name|capitalize }}</div></th>
+            <th><div>Region</div></th>
+          </tr>
+          {% for c in history.conclusions %}
+            <tr>
+              <td>
+                {{ c.user.name or c.user_id }}
+              </td>
+              <td>
+                <a href="{{ url_for(summary_endpoint, subject=c.subject, region=c.region) }}">{{ c.last_update }}</a>
+              </td>
+              <td>{{ c.subject }}</td>
+              <td>{{ c.region }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    <div class="table-list-wrap">
+
 
     <table class="complex_datatable datatable">
       <caption>Recent comments</caption>
