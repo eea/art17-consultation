@@ -13,6 +13,8 @@
 
 {% block content %}
 
+  <h1>Habitat asssessments at Member State level</h1>
+
   <p>Choose a group and then a country. Optionally, further refine your query
   by selecting one of the available biogeographical regions for that
   country.</p>
@@ -27,7 +29,7 @@
     {% if current_selection %}
 
     {% include 'common/table_legend.html' %}
-    
+
     <table class="complex_datatable datatable">
       <caption>
       <b>Current selection</b>:
