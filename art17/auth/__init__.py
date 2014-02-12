@@ -2,7 +2,6 @@ import flask
 from flask.ext.security import Security
 from art17.auth.security import (
     UserDatastore,
-    Art17ConfirmRegisterForm,
     current_user,
 )
 from art17.auth.providers import DebugAuthProvider, ZopeAuthProvider
@@ -39,10 +38,7 @@ def setup_auth_handlers(state):
 
     app.jinja_env.globals['AUTH_BLUEPRINT_INSTALLED'] = True
 
-    security_ext.init_app(
-        app,
-        confirm_register_form=Art17ConfirmRegisterForm,
-    )
+    security_ext.init_app(app)
 
     pwd_context = app.extensions['security'].pwd_context
     pwd_context.update(ldap_salted_sha1__salt_size=7)
