@@ -21,11 +21,10 @@
     <th colspan="4">Overall assessment</th>
     <th colspan="4">Grided maps(km<sup>2</sup>)</th>
 
-    {% if dataset.schema == '2012' %}
-    <td colspan="5" rowspan="2"></td>
-    {% else %}
+    {% if dataset.schema == '2006' %}
     <td colspan="3">Quality</td>
-    <td colspan="2" rowspan="2"></td>
+    {% else %}
+    <td colspan="3" rowspan="2"></td>
     {% endif %}
   </tr>
 

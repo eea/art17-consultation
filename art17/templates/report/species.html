@@ -67,8 +67,7 @@
               {% include 'summary/species/content/future_prospects.html' with context %}
               {% include 'summary/common/content/overall_assessment.html' with context %}
               {% include 'summary/species/content/grided_maps.html' with context %}
-
-              <td class="border" colspan="5">{# Padding #}</td>
+              {% include 'summary/species/content/quality.html' with context %}
             {% endif %}
           </tr>
         {% endfor %}

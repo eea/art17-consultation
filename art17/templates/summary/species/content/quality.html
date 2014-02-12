@@ -1,6 +1,4 @@
-{% if dataset.schema == '2012' %}
-  <td colspan="3"></td>
-{% else %}
+{% if dataset.schema == '2006' %}
   <td>
     {{ row.range_quality }}
   </td>
@@ -10,4 +8,6 @@
   <td>
     {{ row.habitat_quality }}
   </td>
+{% else %}
+   <td colspan="3"></td>
 {% endif %}

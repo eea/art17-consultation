@@ -66,8 +66,7 @@
             {% include 'summary/habitat/content/future_prosp.html' with context %}
             {% include 'summary/common/content/overall_assessment.html' with context %}
             {% include 'summary/habitat/content/grided_maps.html' with context %}
-
-            <td class="border" colspan="7">{# padding #}</td>
+            {% include 'summary/habitat/content/quality.html' with context %}
           {% endif %}
         </tr>
       {% endfor %}
