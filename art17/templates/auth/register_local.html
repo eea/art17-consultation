@@ -1,44 +1,52 @@
 {% extends layout_template %}
 
 {% block breadcrumbs %}
+
   {% from '_macros.html' import breadcrumbs %}
   {{ breadcrumbs(APP_BREADCRUMBS + [
       ('registration (local account)', None),
     ]) }}
+
 {% endblock %}
 
 
 {% block content %}
+
   {%- from "security/_macros.html" import
         render_field_with_errors, render_field %}
   <h1>Register</h1>
 
-  <form method="POST" name="register_user_form">
+  <form action="{{ url_for_security('register') }}" method="POST"
+        name="register_user_form">
+
     {{ register_user_form.hidden_tag() }}
+    {{ register_user_form.MS }}
+
     {{ render_field_with_errors(register_user_form.id) }}
     {{ render_field_with_errors(register_user_form.name) }}
     {{ render_field_with_errors(register_user_form.institution) }}
     {{ render_field_with_errors(register_user_form.abbrev) }}
-    <p>
-        <input type="hidden" name="MS" id="MS" value="" />
-        <label for="select_country">MS</label>
-        <select id="select_country" name="">
-            {% for code, country in register_user_form.country_options %}
-                <option value={{ code }}>{{ country }}</option>
-            {% endfor %}
-        </select>
-        <label for="other_country">Other country</label>
-        <input type="text" name="" id="other_country"></input>
-    </p>
+    {{ render_field_with_errors(register_user_form.country_options) }}
+
+    <div id="other_country_container">
+      {{ render_field_with_errors(register_user_form.other_country) }}
+    </div>
+
     {{ render_field_with_errors(register_user_form.email) }}
     {{ render_field_with_errors(register_user_form.password) }}
     {% if register_user_form.password_confirm %}
       {{ render_field_with_errors(register_user_form.password_confirm) }}
     {% endif %}
+
     {{ render_field(register_user_form.submit) }}
+
   </form>
+
 {% endblock %}
 
+
 {% block scripts %}
-<script type=text/javascript src="{{ url_for('static', filename='js/auth_register.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/auth_register.js') }}"></script>
+
 {% endblock %}

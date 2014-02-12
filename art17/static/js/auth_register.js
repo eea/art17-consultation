@@ -1,25 +1,22 @@
 $(function () {
-    var country_select = $(".select_country");
-    var other_country = $(".other_country");
-    var ms = $(".MS");
 
-    $('form').on("submit", function(e) {
-        if (country_select.val() == '') {
-            ms.val(other_country.val());
-        } else {
-            ms.val(country_select.val());
-        }
-        $(this).submit();
-    });
+    var country_select = $("#country_options");
+    var other_country = $("#other_country");
+    var other_country_container = $("#other_country_container");
+    var ms = $("#MS");
+
+    other_country.on("blur", function () {
+        ms.val(other_country.val());
+    })
 
     country_select.on("change", function() {
-        alert($(this).val());
         if($(this).val() == '') {
-            other_country.show();
+            other_country_container.show();
         } else {
-            other_country.hide();
+            other_country_container.hide();
+            ms.val(country_select.val());
         }
-    });
+    }).change();
 
 });
 

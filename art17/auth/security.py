@@ -4,6 +4,7 @@ import base64
 from datetime import datetime
 from werkzeug.local import LocalProxy
 from wtforms import TextField, ValidationError, SelectField
+from wtforms.widgets import HiddenInput
 import flask
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
 import flask.ext.security.script
@@ -80,16 +81,23 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
     institution = TextField('Institution',
         validators=[Required("Institution name is required")])
     abbrev = TextField('Institution(abbrev)')
-    country_options = None
+    MS = TextField(widget=HiddenInput(), validators=[Required()])
+    country_options = SelectField('MS', validators=[Required()])
+    other_country = TextField('Other country')
 
     def __init__(self, *args, **kwargs):
         super(Art17ConfirmRegisterForm, self).__init__(*args, **kwargs)
         dataset = (Dataset.query.order_by(Dataset.id.desc()).first())
         countries = (DicCountryCode.query
-            .with_entities(DicCountryCode.codeEU,DicCountryCode.name)
+            .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
             .filter(DicCountryCode.dataset_id == dataset.id)
             .distinct()
             .order_by(DicCountryCode.name)
             .all())
+        self.country_options.choices = countries + [('', 'Other country')]
 
-        self.country_options = countries + [('', 'Other country')]
+    def to_dict(self):
+        data = super(Art17ConfirmRegisterForm, self).to_dict()
+        data.pop('country_options', None)
+        data.pop('other_country', None)
+        return data
