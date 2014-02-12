@@ -1,20 +1,11 @@
 <div class="comment-section">
   <h3>Comments</h3>
 
-  {% if can_add_comment(comments) %}
-    <button class='edit-btn' href="{{ add_comment_url }}"
-        {% if add_cmnt_form %}
-            style="display: none;"
-        {% endif %}
-        >Add comment</button>
-    <button class='edit-btn' href="{{ home_url }}"
-        {% if not add_cmnt_form %}
-            style="display: none;"
-        {% endif %}
-        >Cancel</button>
-    {% if add_cmnt_form %}
-        {% include 'wiki/addcomment.html'%}
-    {% endif %}
+  <div class="btn-toolbar">
+    <button class='edit-btn' href="{{ add_comment_url }}">Add comment</button>
+  </div>
+  {% if add_cmnt_form and if can_add_comment(comments) %}
+      {% include 'wiki/addcomment.html'%}
   {% endif %}
 
   <ul class="cmnt-list no-list">
@@ -58,22 +49,25 @@
             {% if not can_edit_comment(comment) or edit_comment_form %}
             style="display: none;"{% endif %}>Edit</button>
 
-            <button class="btn-text edit-btn cancel-edit" href="{{ home_url ~ '#' ~ comment.id }}"
-                {% if not edit_comment_form %}style="display: none;"{% endif %}>Cancel</button>
+            
          </div>
         {% endif %}
 
+        <div class="cmnt-body">
           {% if edit_comment_form and can_edit_comment(comment) %}
             {% include 'wiki/editcomment.html' %}
           {% else %}
-	    <div class="cmnt-body">{{ comment.comment | safe }}</div>
+            {{ comment.comment | safe }}
           {% endif %}
+        </div>
 
       <div class="small clearfix">
+        {% if g.identity.id != comment.author_id %}
         <div class="pull-left">
           <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>
           from {{ comment.author.institution }}
         </div>
+        {% endif %}
         <span class="muted pull-right" title="{{ comment.posted | format_time_cmnt }}">
           {{ comment.posted | format_date_cmnt }}
         </span>

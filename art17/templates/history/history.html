@@ -19,7 +19,7 @@
       href="{{ url_for('.habitat-history') }}">Habitats</a>
 
     <p class="h2">Recent comments</p>
-    <!-- NEED IF HERE -->
+    {% if history.comments %}
     <table class="table-list">
       <thead>
         <tr>
@@ -44,9 +44,9 @@
         {% endfor %}
       </tbody>
     </table>
-
-    <!-- <p class="muted">No comments left unread</p> -->
-
+    {% else %}
+    <p class="muted">No comments left unread.</p>
+    {% endif %}
 
 
     <p class="h2">Recent conclusions</p>

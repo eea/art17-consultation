@@ -185,31 +185,27 @@ input[type="week"] {
   *padding-bottom: 1px;
   *height: auto;
 }
+
+.disabled,
+.disabled:hover,
 textarea[disabled],
+textarea[disabled]:hover,
 select[disabled],
-input[type="date"][disabled],
-input[type="datetime"][disabled],
-input[type="datetime-local"][disabled],
-input[type="email"][disabled],
-input[type="month"][disabled],
-input[type="number"][disabled],
-input[type="password"][disabled],
-input[type="search"][disabled],
-input[type="tel"][disabled],
-input[type="text"][disabled],
-input[type="time"][disabled],
-input[type="url"][disabled],
-input[type="week"][disabled] {
+select[disabled]:hover,
+input[disabled],
+input[disabled]:hover {
   background-color: #eeeeee;
+  background-image: none;
 }
 
+.disabled,
 button[disabled],
 input[disabled],
 select[disabled],
 select[disabled] option,
 select[disabled] optgroup,
 textarea[disabled],
-a.button_disabled {
+a.button {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;

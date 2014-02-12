@@ -1,7 +1,9 @@
     <form name="edit_wiki_form" method="post">
       {{ edit_page_form.text(class='ckeditor') }}
-
-      <button type="submit" name="submit" value="edit_wiki" >Submit</button>
+			<div class="btn-toolbar no-bottom">
+	      <button class="btn-green" type="submit" name="submit" value="edit_wiki" >Submit</button>
+	      <button class="edit-btn" href="{{ home_url }}">Cancel</button>
+	    </div>
     </form>
 
 <script type=text/javascript src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>

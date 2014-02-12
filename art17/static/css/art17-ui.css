@@ -536,17 +536,13 @@ abbr {
 
 
 
-
-
-
-
-
-
+/* Wiki */
 .wiki {
     position: relative;
 
     min-height: 180px;
-    padding: 24px 0;
+    padding: 12px 1em;
+    margin: 0 -1em;
 }
 
 .title-section {
@@ -564,9 +560,9 @@ abbr {
 /* Wiki history */
 #history {
     position: absolute;
-    top: 0;
+    top: -1px;
     right: 0;
-    bottom: 0;
+    bottom: -1px;
     overflow: hidden;
 
     max-width: 360px;
@@ -822,6 +818,10 @@ abbr {
 }
 
 /* Buttons */
+.btn-toolbar {
+	margin: 12px 0;
+}
+
 .btn-eionet {
   background: #85b3bc;
   background-image: none;
@@ -967,6 +967,10 @@ hr {
 
 .no-bottom {
     margin-bottom: 0;
+}
+
+.no-margins {
+	margin: 0;
 }
 
 .regular {
