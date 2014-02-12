@@ -52,13 +52,7 @@
         <td align=center>{% if 'stakeholder' in each_roles %}<strong>*</strong>{% endif %}</td>
 
         <td>
-          {% if user.active %}
-            active
-          {% elif user.waiting_for_activation %}
-            new
-          {% else %}
-            inactive
-          {% endif %}
+          {% if not user.active %}inactive{% endif %}
         </td>
         <td>{{user.confirmed_at or ''}}</td>
         <td>
