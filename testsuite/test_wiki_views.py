@@ -49,6 +49,9 @@ def setup(app):
         body='Method 1 was used to evaluate the subconclusion'
     )
     WikiCommentFactory()
+    WikiCommentFactory(
+        id=2,
+        author_id='iulia')
     db.session.commit()
 
 
@@ -96,15 +99,17 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
 
 @pytest.mark.parametrize("request_type, request_args, post_params", [
     ('post', ['/species/summary/datasheet/page_history/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': '',
-        'revision_id': 1}], {}),
+        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        {'revision_id': 1}),
     ('post', ['/species/summary/datasheet/add_comment/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}], {}),
+        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        {'text': 'Test add comment.'}),
     ('post', ['/species/summary/datasheet/edit_page/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}], {}),
+        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        {'text': 'Test edit page.'}),
     ('post', ['/species/summary/datasheet/edit_comment/', {
         'period': '1', 'subject': 'Canis lupus', 'region': '',
-        'comment_id': 1}], {}),
+        'comment_id': 1}], {'text': 'Test edit comment.'}),
     ('get', ['/species/summary/datasheet/manage_comment/', {
         'comment_id': 1, 'toggle': 'read'}], {}),
     ('get', ['/species/summary/datasheet/get_revision/', {
@@ -123,9 +128,35 @@ def test_perms(app, setup, zope_auth, client, request_type, request_args,
 @pytest.mark.parametrize("request_args", [
     (['/species/summary/datasheet/manage_comment/', {
         'comment_id': 1, 'toggle': 'del'}]),
+    (['/species/summary/datasheet/manage_comment/', {
+        'comment_id': 2, 'toggle': 'read'}]),
 ])
 def test_perms_auth_user(app, setup, zope_auth, client, request_args):
     create_user('iulia')
     set_user('iulia')
     resp = client.get(*request_args, expect_errors=True)
     assert resp.status_code == 403
+
+
+@pytest.mark.parametrize("request_type, request_args, post_params", [
+    ('post', ['/species/summary/datasheet/page_history/', {
+        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        {'revision_id': 999}),
+    ('post', ['/species/summary/datasheet/edit_comment/', {
+        'period': '1', 'subject': 'Canis lupus', 'region': '',
+        'comment_id': 999}], {'text': 'Test edit comment.'}),
+    ('get', ['/species/summary/datasheet/manage_comment/', {
+        'comment_id': 999, 'toggle': 'read'}], {}),
+    ('get', ['/species/summary/datasheet/get_revision/', {
+        'revision_id': 999}], {})
+])
+def test_404_error(app, setup, zope_auth, client, request_type, request_args,
+                   post_params):
+    create_user('iulia')
+    set_user('iulia')
+    if request_type == 'post':
+        query_string = urlencode(request_args[1])
+        final_url = '?'.join((request_args[0], query_string))
+        request_args = [final_url, post_params]
+    resp = getattr(client, request_type)(*request_args, expect_errors=True)
+    assert resp.status_code == 404
