@@ -46,9 +46,9 @@ $(function() {
       evt.preventDefault();
       var link = $(this);
       var url = link.attr('href');
-      var title = "Comments";
+      var name = "Comments";
       var params = 'height=600,width=600,screenX=300,screenY=100,scrollbars=1';
-      var popup = window.open(url, title, params);
+      var popup = window.open(url, name, params);
       popup.focus();
     });
 
@@ -71,9 +71,9 @@ $(function() {
       evt.preventDefault();
       var link = $(this);
       var url = link.attr('href');
-      var title = link.data('title');
+      var name = "Comments";
       var params = 'height=600,width=600,screenX=300,screenY=100,scrollbars=1';
-      var popup = window.open(url, title, params);
+      var popup = window.open(url, name, params);
       popup.focus();
     });
 
@@ -84,9 +84,9 @@ $(function() {
         evt.preventDefault();
         var btn = $(this);
         var url = btn.attr('url');
-        var title = 'Data Sheet Info';
+        var name = 'DataSheetInfo';
         var params = 'scrollbars=1, resizable=1, height=600, width=600';
-        var popup = window.open(url, title, params);
+        var popup = window.open(url, name, params);
         popup.focus();
     });
 });

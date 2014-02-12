@@ -13,7 +13,7 @@ from art17.auth.common import (
     require_admin,
     set_user_active,
     get_ldap_user_info,
-    put_in_activation_queue,
+    activate_and_notify_admin,
     check_dates,
 )
 
@@ -60,7 +60,7 @@ def register_ldap():
             % user_credentials['user_id'],
             'success',
         )
-        put_in_activation_queue(flask._app_ctx_stack.top.app, user)
+        activate_and_notify_admin(flask._app_ctx_stack.top.app, user)
         return flask.render_template('auth/register_ldap_done.html')
 
     return flask.render_template('auth/register_ldap.html', **{

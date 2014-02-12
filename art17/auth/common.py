@@ -14,8 +14,8 @@ logger.setLevel(logging.INFO)
 
 
 @security_signals.user_confirmed.connect
-def put_in_activation_queue(app, user, **extra):
-    user.waiting_for_activation = True
+def activate_and_notify_admin(app, user, **extra):
+    set_user_active(user, True)
     models.db.session.commit()
     admin_email = get_config().admin_email
 
@@ -57,27 +57,9 @@ def get_ldap_user_info(user_id):
         return None
 
 
-def notify_user_account_activated(user):
-    app = flask.current_app
-    msg = Message(
-        subject="Account has been activated",
-        sender=app.extensions['security'].email_sender,
-        recipients=[user.email],
-    )
-    msg.body = flask.render_template(
-        'auth/email_user_activated.txt',
-        user=user,
-        home_url=flask.url_for(HOMEPAGE_VIEW_NAME, _external=True),
-    )
-    app.extensions['mail'].send(msg)
-
-
 def set_user_active(user, new_active):
     was_active = user.active
     user.active = new_active
-    if user.waiting_for_activation and not was_active and new_active:
-        user.waiting_for_activation = False
-        notify_user_account_activated(user)
     models.db.session.commit()
     if not user.is_ldap:
         if was_active and not new_active:
