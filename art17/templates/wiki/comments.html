@@ -27,32 +27,32 @@
                               toggle='del', page=page) %}
         {% if comment.deleted %}
           {% set comment_type = 'Deleted' %}
-          {% set btn-text  = 'Undo' %}
+          {% set btn_text = 'Undo' %}
         {% else %}
           {% set comment_type = 'Your comment'%}
-          {% set btn-text  = 'Delete'%}
+          {% set btn_text = 'Delete'%}
         {% endif %}
       {% else %}
         {% set href = url_for('.ds-manage-comment', comment_id=comment.id,
                               toggle='read', page=page) %}
         {% if is_read(comment) %}
           {% set comment_type = 'Read'%}
-          {% set btn-text  = 'Mark as not read'%}
+          {% set btn_text = 'Mark as not read'%}
         {% else %}
           {% set comment_type = 'Not read'%}
-          {% set btn-text  = 'Mark as read'%}
+          {% set btn_text = 'Mark as read'%}
         {% endif %}
       {% endif %}
 
         <li class="{{ get_css_class(comment) }}" id="{{comment.id}}">
         {% if can_manage_comment() %}
-	  <div class="clearfix">
+	      <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
             <button class="btn-text" href="{{ href }}"
                 {% if edit_comment_form %}
                     style="display: none;"
                 {% endif %}
-                >{{ btn-text }}</button>
+                >{{ btn_text }}</button>
 
             <button class="btn-text edit-btn" href="{{ edit_cmnt_url ~ '#' ~ comment.id }}"
             {% if not can_edit_comment(comment) or edit_comment_form %}
