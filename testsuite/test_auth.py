@@ -37,7 +37,7 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     from .factories import DatasetFactory
 
     _set_config(admin_email='admin@example.com')
-    _create_user('ze_admin', ['admin'])
+    create_user('ze_admin', ['admin'])
     DatasetFactory()
     models.db.session.commit()
 
