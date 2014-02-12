@@ -24,28 +24,28 @@ def handle_permission_denied(error):
     return flask.Response(html, status=403)
 
 
-@auth.route('/auth/register')
-@check_dates
-def register():
-    user_credentials = flask.g.get('user_credentials', {})
-    if user_credentials.get('is_ldap_user'):
-        return flask.redirect(flask.url_for('.register_ldap'))
-
-    return flask.render_template('auth/register_choices.html')
-
-
 @auth.route('/auth/register/ldap', methods=['GET', 'POST'])
 @check_dates
 def register_ldap():
     user_credentials = flask.g.get('user_credentials', {})
+    user_id = user_credentials.get('user_id')
     if not user_credentials.get('is_ldap_user'):
-        return flask.redirect(flask.url_for('.register'))
+        if user_id:
+            message = "You are already logged in."
+            return flask.render_template('message.html', message=message)
+
+        else:
+            message = (
+                'First log into your EIONET account by clicking "login" '
+                'at the top of the page.'
+            )
+            return flask.render_template('message.html', message=message)
 
     if flask.request.method == 'POST':
         datastore = flask.current_app.extensions['security'].datastore
-        ldap_user_info = get_ldap_user_info(user_credentials['user_id'])
+        ldap_user_info = get_ldap_user_info(user_id)
         user = datastore.create_user(
-            id=user_credentials['user_id'],
+            id=user_id,
             is_ldap=True,
             password='',
             confirmed_at=datetime.utcnow(),
@@ -57,7 +57,7 @@ def register_ldap():
         datastore.commit()
         flask.flash(
             "Eionet account %s has been activated"
-            % user_credentials['user_id'],
+            % user_id,
             'success',
         )
         activate_and_notify_admin(flask._app_ctx_stack.top.app, user)
@@ -65,7 +65,7 @@ def register_ldap():
 
     return flask.render_template('auth/register_ldap.html', **{
         'already_registered': flask.g.get('user') is not None,
-        'user_id': user_credentials['user_id'],
+        'user_id': user_id,
     })
 
 

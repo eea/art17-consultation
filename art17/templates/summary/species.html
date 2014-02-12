@@ -139,14 +139,20 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <th><abbr title="Trend">T</abbr></th>
       <th>Suitable</th>
 
-      <th><abbr title="Future prospects">FP</abbr></th>
+      <th>Future<br/>prosp.</th>
 
+      {% if dataset.schema == '2006' %}
+      <th colspan="4">
+        Overall<br/>asses.
+      </th>
+      {% else %}
       <th>Curr CS<br/>Concl.</th>
       <th><abbr title="Trend">T</abbr></th>
       <th>Prev CS<br/>Concl.</th>
       <th>Nat of ch</th>
+      {% endif %}
 
-      <th colspan="2">Contrib.<br/>target 1</th>
+      <th colspan="2">{% if dataset.schema != '2006' %}Contrib.<br/>target 1{% endif %}</th>
       <th colspan="2"></th>
 
       <th colspan="5">{# padding #}</th>
