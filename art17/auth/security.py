@@ -81,8 +81,8 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
     institution = TextField('Institution',
         validators=[Required("Institution name is required")])
     abbrev = TextField('Institution(abbrev)')
-    MS = TextField(widget=HiddenInput(), validators=[Required()])
-    country_options = SelectField('MS', validators=[Required()])
+    MS = TextField(widget=HiddenInput())
+    country_options = SelectField('MS')
     other_country = TextField('Other country')
 
     def __init__(self, *args, **kwargs):

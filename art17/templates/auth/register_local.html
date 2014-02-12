@@ -20,7 +20,7 @@
         name="register_user_form">
 
     {{ register_user_form.hidden_tag() }}
-    {{ register_user_form.MS }}
+    {{ register_user_form.MS() }}
 
     {{ render_field_with_errors(register_user_form.id) }}
     {{ render_field_with_errors(register_user_form.name) }}

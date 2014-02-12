@@ -12,6 +12,7 @@ $(function () {
     country_select.on("change", function() {
         if($(this).val() == '') {
             other_country_container.show();
+            ms.val(other_country.val());
         } else {
             other_country_container.hide();
             ms.val(country_select.val());
