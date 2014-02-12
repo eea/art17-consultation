@@ -13,14 +13,14 @@
 {% block content %}
   <h1>Configuration</h1>
 
-  <form id="config-form" class="box box-small inline-block" name="config" method="post">
+  <form id="config-form" class="form box box-small inline-block" name="config" method="post">
 
     {% for field in form %}
       {% if field.name == 'csrf_token' %}
         <input type="hidden" name="{{ field.name }}" value="{{ field.value }}">
       {% else %}
-        <div>
-          <label for="{{ field.name }}">{{ field.label }}</label>:
+        <div class="form-group">
+          <label for="{{ field.name }}">{{ field.label }}</label>
           {{ field(class="css_class") }}
         </div>
         {% if field.errors %}
@@ -34,7 +34,7 @@
     {% endfor %}
 
     <div>
-      <button type="submit">Save</button>
+      <button class="btn-blue" type="submit">Save</button>
     </div>
 
   </form>
