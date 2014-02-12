@@ -945,3 +945,21 @@ tr.deleted td {
 a.active {
     font-weight: bold;
 }
+
+.warning {
+    background-color: #fdf7f7;
+    margin: 20px 0;
+    padding: 8px;
+    border-left: 3px solid #d9534f;
+    font-size: 14px;
+    display: block;
+}
+
+.warning strong {
+    color: #d9534f;
+}
+
+.warning a {
+    color: #2a6496;
+    text-decoration: none;
+}

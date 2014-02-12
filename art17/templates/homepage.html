@@ -17,11 +17,16 @@
     by the ETC/BD are now available for public view.
   </p>
 
-  <p class="caution-msg">
-    UNDER CONSTRUCTION:
-    this site is currently being adapted to become the web-based
-    Technical Report of Article 17.
-  </p>
+  <div class="warning">
+    <p>
+      <strong>DEMO:</strong>
+      You can use this site as playground, testing various functionalities and modify the data as you like.
+    </p>
+
+    <small>
+      <a href="http://eea.europa.eu" rel="external">EEA</a> is not responsible or liable for information on this site. Content does not necessarily reflect the official opinion of <a href="http://eea.europa.eu" rel="external">EEA</a> or other European Communities bodies and institutions.
+    </small>
+  </div>
 
   <h2>
     The consultation is open only for users that will register. To register:
@@ -30,11 +35,11 @@
   <ul>
     <li>
       If you have an Eionet account please
-      <a href="auth/register/ldap">register here</a>.
+      <a href="{{ url_for('auth.register_ldap') }}">register here</a>.
     </li>
     <li>
       If you don't have an Eionet account please
-      <a href="auth/register/local">register here</a>.
+      <a href="{{ url_for('security.register') }}">register here</a>.
     </li>
     <li>
       If you are a National Data Coordinator for Article 17,
