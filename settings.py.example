@@ -9,3 +9,5 @@ EEA_LDAP_SERVER = ''
 
 # Testing setup - prefix 'TESTING_' to any config, example:
 #TESTING_SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17test'
+
+# SECURITY_POST_REGISTER_VIEW = '/article17'
