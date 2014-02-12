@@ -27,20 +27,20 @@
                               toggle='del', page=page) %}
         {% if comment.deleted %}
           {% set comment_type = 'Deleted' %}
-          {% set btn_text = 'Undo' %}
+          {% set btn_text  = 'Undo' %}
         {% else %}
           {% set comment_type = 'Your comment'%}
-          {% set btn_text = 'Delete'%}
+          {% set btn_text  = 'Delete'%}
         {% endif %}
       {% else %}
         {% set href = url_for('.ds-manage-comment', comment_id=comment.id,
                               toggle='read', page=page) %}
         {% if is_read(comment) %}
           {% set comment_type = 'Read'%}
-          {% set btn_text = 'Mark as not read'%}
+          {% set btn_text  = 'Mark as not read'%}
         {% else %}
           {% set comment_type = 'Not read'%}
-          {% set btn_text = 'Mark as read'%}
+          {% set btn_text  = 'Mark as read'%}
         {% endif %}
       {% endif %}
 
