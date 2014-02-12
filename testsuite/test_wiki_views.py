@@ -1,7 +1,7 @@
 import pytest
 from urllib import urlencode
 
-from art17.models import db
+from art17.models import db, WikiChange, Wiki, WikiComment, RegisteredUser
 from .factories import (
     WikiFactory,
     WikiChangeFactory,
@@ -51,8 +51,26 @@ def setup(app):
     WikiCommentFactory()
     WikiCommentFactory(
         id=2,
-        author_id='iulia')
+        author_id='otheruser')
+    WikiChangeFactory(
+        id=3,
+        wiki_id=1,
+        body="New revision.",
+        active=0
+    )
     db.session.commit()
+
+
+def get_request_params(request_type, request_args, post_params=None):
+    if request_type == 'post':
+        query_string = urlencode(request_args[1])
+        final_url = '?'.join((request_args[0], query_string))
+        request_args = [final_url, post_params]
+    return request_args
+
+
+def get_instance(models_cls, **kwargs):
+    return models_cls.query.filter_by(**kwargs).first()
 
 
 @pytest.mark.parametrize("request_args", [
@@ -117,24 +135,33 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
 ])
 def test_perms(app, setup, zope_auth, client, request_type, request_args,
                post_params):
-    if request_type == 'post':
-        query_string = urlencode(request_args[1])
-        final_url = '?'.join((request_args[0], query_string))
-        request_args = [final_url, post_params]
-    resp = getattr(client, request_type)(*request_args, expect_errors=True)
+    resp = getattr(client, request_type)(*get_request_params(
+        request_type, request_args, post_params), expect_errors=True)
     assert resp.status_code == 403
 
 
-@pytest.mark.parametrize("request_args", [
-    (['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'del'}]),
-    (['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 2, 'toggle': 'read'}]),
+@pytest.mark.parametrize("request_type, request_args, post_params", [
+    # Test (un-)deleting someone else's comment
+    ('get', ['/species/summary/datasheet/manage_comment/', {
+        'comment_id': 1, 'toggle': 'del'}], {}),
+    # Test marking as (un-)read current user's comment
+    ('get', ['/species/summary/datasheet/manage_comment/', {
+        'comment_id': 2, 'toggle': 'read'}], {}),
+    # Test editing someone else's comment
+    ('post', ['/species/summary/datasheet/edit_comment/', {
+        'period': '1', 'subject': 'Canis lupus', 'region': '',
+        'comment_id': 1}], {'text': 'Test edit comment.'}),
+    # Test adding more a second comment
+    ('post', ['/species/summary/datasheet/add_comment/', {
+        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        {'text': 'Test add comment.'}),
 ])
-def test_perms_auth_user(app, setup, zope_auth, client, request_args):
-    create_user('iulia')
-    set_user('iulia')
-    resp = client.get(*request_args, expect_errors=True)
+def test_perms_auth_user(app, setup, zope_auth, client, request_type,
+                         request_args, post_params):
+    create_user('otheruser')
+    set_user('otheruser')
+    resp = getattr(client, request_type)(*get_request_params(
+        request_type, request_args, post_params), expect_errors=True)
     assert resp.status_code == 403
 
 
@@ -152,11 +179,86 @@ def test_perms_auth_user(app, setup, zope_auth, client, request_args):
 ])
 def test_404_error(app, setup, zope_auth, client, request_type, request_args,
                    post_params):
-    create_user('iulia')
-    set_user('iulia')
-    if request_type == 'post':
-        query_string = urlencode(request_args[1])
-        final_url = '?'.join((request_args[0], query_string))
-        request_args = [final_url, post_params]
-    resp = getattr(client, request_type)(*request_args, expect_errors=True)
+    create_user('otheruser')
+    set_user('otheruser')
+    resp = getattr(client, request_type)(*get_request_params(
+        request_type, request_args, post_params), expect_errors=True)
     assert resp.status_code == 404
+
+
+def test_change_active_revision(app, setup, zope_auth, client):
+    create_user('otheruser')
+    set_user('otheruser')
+    client.post(*get_request_params(
+        'post', ['/species/summary/datasheet/page_history/', {
+            'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        {'revision_id': 3}))
+    assert get_instance(WikiChange, id=1).active == 0
+    assert get_instance(WikiChange, id=3).active == 1
+
+
+def test_add_comment(app, setup, zope_auth, client):
+    create_user('newuser')
+    set_user('newuser')
+    request_data = ('post', ['/species/summary/datasheet/add_comment/', {
+        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        {'text': 'Test add comment.'})
+    client.post(*get_request_params(*request_data))
+    request_args = request_data[1][1]
+    wiki = get_instance(Wiki, dataset_id=request_args['period'],
+                        assesment_speciesname=request_args['subject'],
+                        region_code=request_args['region'])
+    assert request_data[2]['text'] in [c.comment for c in wiki.comments]
+
+
+def test_edit_page(app, setup, zope_auth, client):
+    create_user('testuser')
+    set_user('testuser')
+    client.post(*get_request_params(
+        'post', ['/species/summary/datasheet/edit_page/', {
+            'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        {'text': 'Test edit page.'}))
+    assert get_instance(WikiChange, id=1).active == 0
+    assert get_instance(WikiChange, body='Test edit page.').active == 1
+
+
+def test_edit_comment(app, setup, zope_auth, client):
+    create_user('testuser')
+    set_user('testuser')
+    client.post(*get_request_params(
+        'post', ['/species/summary/datasheet/edit_comment/', {
+            'period': '1', 'subject': 'Canis lupus', 'region': '',
+            'comment_id': 1}], {'text': 'Test edit comment.'}))
+    assert get_instance(WikiComment, id=1).comment == 'Test edit comment.'
+
+
+def test_toggle_del(app, setup, zope_auth, client):
+    create_user('testuser')
+    set_user('testuser')
+    initial_value = get_instance(WikiComment, id=1).deleted or 0
+    client.get('/species/summary/datasheet/manage_comment/', {
+        'comment_id': 1, 'toggle': 'del'})
+    assert get_instance(WikiComment, id=1).deleted == 1 - initial_value
+
+
+def test_toggle_read(app, setup, zope_auth, client):
+    create_user('otheruser')
+    set_user('otheruser')
+
+    def get_value():
+        return get_instance(WikiComment, id=1) in get_instance(
+            RegisteredUser, id='otheruser').read_comments
+    initial_value = get_value()
+    client.get('/species/summary/datasheet/manage_comment/', {
+        'comment_id': 1, 'toggle': 'read'})
+    assert get_value() is not initial_value
+
+
+def test_get_revision(app, setup, zope_auth, client):
+    create_user('testuser')
+    set_user('testuser')
+
+    resp = client.get('/species/summary/datasheet/get_revision/', {
+        'revision_id': 1})
+    assert (resp.html.text == "The wolf was the world's most widely "
+            "distributed mammal.")
