@@ -47,7 +47,7 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     register_page.form['password'] = 'p455w4rd'
     register_page.form['name'] = 'foo me'
     register_page.form['institution'] = 'foo institution'
-    result_page = register_page.form.submit().follow()
+    result_page = register_page.form.submit()
     assert "Confirmation instructions have been sent" in result_page.text
 
     foo_user = models.RegisteredUser.query.get('foo')

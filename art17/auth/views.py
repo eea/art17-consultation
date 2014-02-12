@@ -32,7 +32,7 @@ def register_local():
 
     if form.validate_on_submit():
         register_user(**form.to_dict())
-        return flask.redirect('/')
+        return flask.render_template('message.html', message="")
 
     return flask.render_template('auth/register_local.html', **{
         'register_user_form': form,
