@@ -33,6 +33,7 @@
   </h2>
 
   <ul>
+  {% if AUTH_BLUEPRINT_INSTALLED %}
     <li>
       If you have an Eionet account please
       <a href="{{ url_for('auth.register_ldap') }}">register here</a>.
@@ -45,6 +46,7 @@
       If you are a National Data Coordinator for Article 17,
       you are already registered.
     </li>
+  {% endif %}
   </ul>
 
   <p>
