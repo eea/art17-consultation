@@ -11,82 +11,65 @@
 
 
 {% block content %}
-    <h1>User summary</h1>
+    <h1>User summary <small>for {{ period.name }}</small></h1>
 
-    <p>Showing data for period: {{ period.name }}.</p>
-    <a class="btn btn-default {% if subject_name == 'species' %}active{% endif %}"
+    <a class="button btn-bigger {% if subject_name == 'species' %}active{% endif %}"
        href="{{ url_for('.species-history') }}">Species</a>
-    <a class="btn btn-default {% if subject_name == 'habitat' %}active{% endif %}"
+    <a class="button btn-bigger {% if subject_name == 'habitat' %}active{% endif %}"
       href="{{ url_for('.habitat-history') }}">Habitats</a>
 
-    <!-- <table class="complex_datatable datatable">
-      <caption>Recent conclusions</caption>
-      <tr>
-        <th>Date</th>
-        <th>User</th>
-        <th>{{ subject_name|capitalize }}</th>
-        <th>Region</th>
-        <th></th>
-      </tr>
-      {% for c in history.conclusions %}
-      <tr>
-        <td>{{ c.last_update }}</td>
-        <td>{{ c.user.name or c.user_id }}</td>
-        <td>{{ c.subject }}</td>
-        <td>{{ c.region }}</td>
-        <td><a href="{{ url_for(summary_endpoint, subject=c.subject, region=c.region) }}">view</a></td>
-      </tr>
-      {% endfor %}
-    </table> -->
-
-    <div class="table-list-wrap">
-      <div class="scroll">
-        <div class="f-test">
-          Position
-        </div>
-        <table class="table-list">
-          <tr class="fixed-table-header">
-            <th><div>Date</div></th>
-            <th><div>User</div></th>
-            <th><div>{{ subject_name|capitalize }}</div></th>
-            <th><div>Region</div></th>
-          </tr>
-          {% for c in history.conclusions %}
-            <tr>
-              <td>
-                {{ c.user.name or c.user_id }}
-              </td>
-              <td>
-                <a href="{{ url_for(summary_endpoint, subject=c.subject, region=c.region) }}">{{ c.last_update }}</a>
-              </td>
-              <td>{{ c.subject }}</td>
-              <td>{{ c.region }}</td>
-            </tr>
-          {% endfor %}
-        </table>
-      </div>
-    <div class="table-list-wrap">
-
-
-    <table class="complex_datatable datatable">
-      <caption>Recent comments</caption>
-      <tr>
-        <th>Date</th>
-        <th>Author</th>
-        <th>User</th>
-        <th>{{ subject_name|capitalize }}</th>
-        <th>Region</th>
-        <th>Read</th>
-      </tr>
-      {% for c in history.comments %}
-      <tr>
-        <td>{{ c.post_date }}</td>
-        <td>{{ c.author.name or c.author_id }}</td>
-        <td>{{ c.user.name or c.user_id }}</td>
-        <td>{{ c.subject }}</td>
-        <td>{{ c.region }}</td>
-        <td>{{ c.read_for(user) }}</td>
-      </tr>
-      {% endfor %}
+    <p class="h2">Recent comments</p>
+    <!-- NEED IF HERE -->
+    <table class="table-list">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Author</th>
+          <th>User</th>
+          <th>{{ subject_name|capitalize }}</th>
+          <th>Region</th>
+          <th>Read</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in history.comments %}
+        <tr>
+          <td>{{ c.post_date }}</td>
+          <td>{{ c.author.name or c.author_id }}</td>
+          <td>{{ c.user.name or c.user_id }}</td>
+          <td>{{ c.subject }}</td>
+          <td>{{ c.region }}</td>
+          <td>{{ c.read_for(user) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
+
+    <!-- <p class="muted">No comments left unread</p> -->
+
+
+
+    <p class="h2">Recent conclusions</p>
+    <table class="table-list">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>User</th>
+          <th>{{ subject_name|capitalize }}</th>
+          <th>Region</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in history.conclusions %}
+        <tr>
+          <td><a href="{{ url_for(summary_endpoint, subject=c.subject, region=c.region) }}">{{ c.last_update }}</a></td>
+          <td>{{ c.user.name or c.user_id }}</td>
+          <td>{{ c.subject }}</td>
+          <td>{{ c.region }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    
 {% endblock %}

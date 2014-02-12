@@ -64,6 +64,8 @@ input[type="checkbox"]:active {
 
 button,
 a.button,
+a.button:link,
+a.button:visited,
 input[type="reset"],
 input[type="submit"],
 input[type="button"] {
@@ -110,7 +112,9 @@ input[type="button"]:hover {
   text-decoration: none;
 }
 button:active,
+button.active,
 a.button:active,
+a.button.active,
 input[type="reset"]:active,
 input[type="submit"]:active,
 input[type="button"]:active {
