@@ -631,8 +631,92 @@ abbr {
     display: block;
 }
 
+/* table-list */
+.table-list {
+	margin: 12px 0;
+	border-collapse: collapse;
+}
+
+.table-list caption {
+	text-align: left;
+}
+
+.table-list a {
+	text-decoration: none;
+}
+
+.table-list th {
+	border-bottom: 2px solid #b6b6b6;
+	text-align: left;
+}
+
+.table-list td {
+	border-bottom: 1px solid #ddd;
+}
+
+.table-list th,
+.table-list td {
+	padding: 3px 3px;
+}
+
+.table-list th:first-child,
+.table-list td:first-child {
+	padding-left: 0;
+}
+
+.table-list th:last-child,
+.table-list td:last-child {
+	padding-right: 0;
+}
+
+.table-list tbody tr:last-child td {
+	border-bottom: 2px solid #b6b6b6;
+}
 
 
+/*.table-list-header {
+	padding: 6px 6px;
+	border-bottom: 2px solid #b6b6b6;
+	background: #f6f6f6;
+}
+
+.table-list {
+	border-bottom: 2px solid #b6b6b6;
+	max-height: 400px;
+	overflow: auto;
+	position: relative;
+}
+
+
+.table-list li {
+	padding: 6px 3px;
+	border-bottom: 1px solid #ddd;
+}
+
+.table-list li > div {
+
+}
+
+.table-list-header .username,
+.table-list .username {
+	width: 140px;
+}
+.table-list-header .region,
+.table-list .region {
+	width: 80px;
+	text-align: right;
+}
+
+.table-list-header .subject,
+.table-list .subject {
+	margin-right: 80px;
+}
+
+.table-list-header .long-date,
+.table-list .long-date {
+	width: 140px;
+}
+*/
 
 /* Comments */
 .comment-section {
@@ -737,7 +821,6 @@ abbr {
     background: #f6f6f6;
 }
 
-
 /* Buttons */
 .btn-eionet {
   background: #85b3bc;
@@ -834,8 +917,8 @@ abbr {
 }
 
 .btn-bigger {
-    font-size: 14px;
-    padding: 4px 8px;
+	font-size: 14px!important;
+	padding: 4px 8px!important;
 }
 
 /* Box (Equivalent to Bootstrap's well) */
@@ -895,6 +978,18 @@ hr {
     text-align: center;
 }
 
+.h2 {
+	font-size: 18px;
+	font-weight: bold;
+	margin: 24px 0 12px;
+}
+
+.h3 {
+	font-size: 16px;
+	font-weight: bold;
+	margin: 0 0 12px;
+}
+
 .h4 {
     font-size: 14px;
     font-weight: bold;
@@ -907,6 +1002,11 @@ hr {
 
 .small {
     font-size: smaller;
+}
+
+.scroll {
+	max-height: 400px;
+	overflow: auto;
 }
 
 .pull-left {

@@ -4,11 +4,13 @@ import flask
 from flask.ext.principal import PermissionDenied
 from flask.ext.security.forms import ChangePasswordForm
 from flask.ext.security.changeable import change_user_password
+from flask.ext.security.registerable import register_user
 from werkzeug.datastructures import MultiDict
 from art17 import models
 from art17.auth.forms import DatasetForm
 from art17.common import HOMEPAGE_VIEW_NAME
 from art17.auth import zope_acl_manager, current_user, auth
+from art17.auth.security import Art17ConfirmRegisterForm
 from art17.auth.common import (
     require_admin,
     set_user_active,
@@ -22,6 +24,20 @@ from art17.auth.common import (
 def handle_permission_denied(error):
     html = flask.render_template('auth/permission_denied.html')
     return flask.Response(html, status=403)
+
+
+@auth.route('/auth/register/local', methods=['GET', 'POST'])
+def register_local():
+    form = Art17ConfirmRegisterForm(flask.request.form)
+
+    if form.validate_on_submit():
+        register_user(**form.to_dict())
+        return flask.redirect('/')
+
+    return flask.render_template('auth/register_local.html', **{
+        'register_user_form': form,
+    })
+
 
 
 @auth.route('/auth/register/ldap', methods=['GET', 'POST'])

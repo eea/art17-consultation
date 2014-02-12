@@ -13,7 +13,7 @@
 		<div class="popout details">
 
 			<!-- Temp. Need .toggleClass() -->
-			<button class="close" onclick="this.parentElement.style.display='none';">x</button> <!-- Replace with icon later -->
+			<button class="close" onclick="$(this).parent().toggle();">x</button> <!-- Replace with icon later -->
 
 			<div>
 				<span class="muted">{{ row.last_update|format_date }}</span><br />
@@ -25,13 +25,13 @@
 			<hr>
 
 			<div>
-				<button>Edit assesment</button>
+				<button class="btn-green">Edit assesment</button>
 				<button>Delete</button>
 			</div>
 
 		</div>
 
-		<button class="btn-text" onclick="this.previousElementSibling.style.display='block';">Details</button>
+		<button class="btn-text" onclick="$(this).prev('.details').toggle();">Details</button>
 
 	</div>
 </td>

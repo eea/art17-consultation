@@ -41,7 +41,7 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     DatasetFactory()
     models.db.session.commit()
 
-    register_page = client.get(flask.url_for('security.register'))
+    register_page = client.get(flask.url_for('auth.register_local'))
     register_page.form['id'] = 'foo'
     register_page.form['email'] = 'foo@example.com'
     register_page.form['password'] = 'p455w4rd'
