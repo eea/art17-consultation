@@ -426,7 +426,6 @@ class EtcDataSpeciesRegion(Base):
     distribution_grid_area = Column(Float(asdecimal=True))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
 
-
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
@@ -436,7 +435,9 @@ class EtcDataSpeciesRegion(Base):
 
     species_type_details = relationship(
         'EtcDicSpeciesType',
-        primaryjoin="EtcDataSpeciesRegion.species_type==EtcDicSpeciesType.abbrev",
+        primaryjoin=(
+            "and_(EtcDataSpeciesRegion.species_type==EtcDicSpeciesType.abbrev,"
+            "EtcDataSpeciesRegion.dataset_id==EtcDicSpeciesType.dataset_id)"),
         foreign_keys=species_type,
     )
 
@@ -1127,17 +1128,17 @@ class WikiTrail(Base):
     region_code = Column('region', String(4), nullable=False)
     assesment_speciesname = Column(String(60))
     habitatcode = Column(String(4))
-
-    region = relationship(
-        'EtcDicBiogeoreg',
-        primaryjoin="WikiTrail.region_code==EtcDicBiogeoreg.reg_code",
-        foreign_keys=region_code,
-    )
-
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
         primary_key=True,
+    )
+
+    region = relationship(
+        'EtcDicBiogeoreg',
+        primaryjoin="and_(WikiTrail.region_code==EtcDicBiogeoreg.reg_code,"
+        "WikiTrail.dataset_id==EtcDicBiogeoreg.dataset_id)",
+        foreign_keys=[region_code, dataset_id],
     )
 
 
