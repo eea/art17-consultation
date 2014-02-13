@@ -95,6 +95,18 @@ def inject_globals():
     }
 
 
+@common.route('/_crashme', methods=['GET', 'POST'])
+def crashme():
+    if flask.request.method == 'POST':
+        raise RuntimeError("Crashing as requested")
+    return '<form method="post"><button type="submit">crash</button></form>'
+
+
+@common.route('/_ping')
+def ping():
+    return 'hello world: %d' % Config.query.count()
+
+
 def population_size_unit(row):
 
     min_size = row.population_minimum_size or ''

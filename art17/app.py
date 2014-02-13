@@ -50,6 +50,10 @@ def create_app(config={}, testing=False):
     if url_prefix:
         app.wsgi_app = create_url_prefix_middleware(app.wsgi_app, url_prefix)
 
+    if app.config.get('SENTRY_DSN'):
+        from raven.contrib.flask import Sentry
+        Sentry(app)
+
     return app
 
 
