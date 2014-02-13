@@ -1029,18 +1029,17 @@ class SpeciesManualAssessment(Base):
     )
     dataset = relationship(Dataset)
 
-    def comments_count_unread(self, user):
+    def comments_count_read(self, user):
         if not self.comments:
             return 0
-        return len(
-            db.session.query(Comment.id)
+        return (db.session.query(Comment.id)
             .join(t_comments_read)
             .filter(Comment.assesment_speciesname == self.assesment_speciesname)
             .filter(Comment.region == self.region)
             .filter(Comment.MS == self.MS)
             .filter(Comment.user == self.user_id)
             .filter('comments_read.reader_user_id="%s"' % user)
-            .all()
+            .count()
         )
 
     @hybrid_property

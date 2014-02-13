@@ -1,8 +1,8 @@
 
 <td>
   {% set url=url_for(comments_endpoint, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
-  <a href="{{ url }}" class="comments-btn">
-  {{ row.comments_count_unread(g.identity.id) }}/{{ row.comments|count }}
+  <a href="{{ url }}" class="comments-btn" title="Comments: Read/Total">
+  {{ row.comments_count_read(g.identity.id) }}/{{ row.comments|count }}
   </a>
 </td>
 
