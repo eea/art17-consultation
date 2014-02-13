@@ -1,14 +1,16 @@
 import os
 import hashlib
 import base64
+import inspect
 from datetime import datetime
 from werkzeug.local import LocalProxy
-from wtforms import TextField, ValidationError, SelectField
+from wtforms import TextField, ValidationError, SelectField, Field
 from wtforms.widgets import HiddenInput
 import flask
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
 import flask.ext.security.script
 import flask.ext.security as flask_security
+from flask_wtf import Form as BaseForm
 
 from flask.ext.security.forms import (
     ConfirmRegisterForm,
@@ -102,3 +104,39 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
         data.pop('country_options', None)
         data.pop('other_country', None)
         return data
+
+
+class Art17ConfirmRegisterLDAPForm(BaseForm):
+
+    name = TextField('Full name',
+        validators=[Required("Full name is required")])
+    email = TextField('Email',
+        validators=[Required("Email is required")])
+    institution = TextField('Institution',
+        validators=[Required("Institution name is required")])
+    abbrev = TextField('Institution(abbrev)')
+    qualification = TextField('Qualification')
+    MS = TextField(widget=HiddenInput())
+    country_options = SelectField('MS')
+    other_country = TextField('Other country')
+
+    def __init__(self, *args, **kwargs):
+        super(Art17ConfirmRegisterLDAPForm, self).__init__(*args, **kwargs)
+        dataset = (Dataset.query.order_by(Dataset.id.desc()).first())
+        countries = (DicCountryCode.query
+            .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
+            .filter(DicCountryCode.dataset_id == dataset.id)
+            .distinct()
+            .order_by(DicCountryCode.name)
+            .all())
+        self.country_options.choices = countries + [('', 'Other country')]
+
+
+    def to_dict(form):
+        def is_field_and_user_attr(member):
+            _datastore = flask.current_app.extensions['security'].datastore
+            return isinstance(member, Field) and \
+                hasattr(_datastore.user_model, member.name)
+
+        fields = inspect.getmembers(form, is_field_and_user_attr)
+        return dict((key, value.data) for key, value in fields)

@@ -6,12 +6,15 @@ from flask.ext.security.forms import ChangePasswordForm
 from flask.ext.security.changeable import change_user_password
 from flask.ext.security.registerable import register_user
 from flask.ext.mail import Message
-from werkzeug.datastructures import MultiDict
+from werkzeug.datastructures import MultiDict, ImmutableMultiDict
 from art17 import models
 from art17.auth.forms import DatasetForm
 from art17.common import HOMEPAGE_VIEW_NAME, get_config
 from art17.auth import zope_acl_manager, current_user, auth
-from art17.auth.security import Art17ConfirmRegisterForm
+from art17.auth.security import (
+    Art17ConfirmRegisterForm,
+    Art17ConfirmRegisterLDAPForm,
+)
 from art17.auth.common import (
     require_admin,
     set_user_active,
@@ -46,6 +49,7 @@ def register_local():
 def register_ldap():
     user_credentials = flask.g.get('user_credentials', {})
     user_id = user_credentials.get('user_id')
+
     if not user_credentials.get('is_ldap_user'):
         if user_id:
             message = "You are already logged in."
@@ -63,31 +67,38 @@ def register_ldap():
             'admin_email': get_config().admin_email,
         })
 
+    ldap_user_info = get_ldap_user_info(user_id)
+    form = Art17ConfirmRegisterLDAPForm(ImmutableMultiDict([
+        ('name', ldap_user_info.get('full_name')),
+        ('institution', ldap_user_info.get('organisation')),
+        ('qualification', ldap_user_info.get('job_title')),
+        ('email',ldap_user_info.get('email')),
+    ]))
+
     if flask.request.method == 'POST':
-        datastore = flask.current_app.extensions['security'].datastore
-        ldap_user_info = get_ldap_user_info(user_id)
-        user = datastore.create_user(
-            id=user_id,
-            is_ldap=True,
-            password='',
-            confirmed_at=datetime.utcnow(),
-            email=ldap_user_info.get('email'),
-            name=ldap_user_info.get('full_name'),
-            institution=ldap_user_info.get('organisation'),
-            qualification=ldap_user_info.get('job_title'),
-        )
-        datastore.commit()
-        flask.flash(
-            "Eionet account %s has been activated"
-            % user_id,
-            'success',
-        )
-        activate_and_notify_admin(flask._app_ctx_stack.top.app, user)
-        return flask.render_template('auth/register_ldap_done.html')
+        form = Art17ConfirmRegisterLDAPForm(flask.request.form)
+        if form.validate():
+            datastore = flask.current_app.extensions['security'].datastore
+            user = datastore.create_user(
+                id=user_id,
+                is_ldap=True,
+                password='',
+                confirmed_at=datetime.utcnow(),
+                **form.to_dict()
+            )
+            datastore.commit()
+            flask.flash(
+                "Eionet account %s has been activated"
+                % user_id,
+                'success',
+            )
+            activate_and_notify_admin(flask._app_ctx_stack.top.app, user)
+            return flask.render_template('auth/register_ldap_done.html')
 
     return flask.render_template('auth/register_ldap.html', **{
         'already_registered': flask.g.get('user') is not None,
         'user_id': user_id,
+        'register_user_form': form,
     })
 
 
