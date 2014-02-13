@@ -105,9 +105,7 @@ class OptionsBase(object):
         output = []
         for conclusion, value in conclusions:
             if conclusion.strip() == 'XU':
-                if (current_user.has_role('etc') or
-                        current_user.has_role('admin')):
-                    output.append((conclusion, value))
+                continue
             elif not conclusion.endswith('?') and not conclusion == 'NA':
                 output.append((conclusion, value))
         return output
