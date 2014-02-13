@@ -194,8 +194,10 @@ class DataSheetSection(CommonSection):
         context = super(DataSheetSection, self).get_context()
 
         wiki = self.get_wiki()
+        comments = [c for c in wiki.comments if not
+                    (c.deleted and c.author != current_user)] if wiki else []
         request_args = self.get_req_args()
-        context.update({'comments': wiki.comments if wiki else [],
+        context.update({'comments': comments,
                         'add_comment_url': url_for(self.addcmnt_endpoint,
                                                    page=self.page,
                                                    **request_args)
