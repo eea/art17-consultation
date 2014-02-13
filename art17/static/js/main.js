@@ -107,7 +107,7 @@ $(function() {
                     case 'cmnt-owned':
                         comment.attr('class', 'cmnt-deleted');
                         comment.find('.cmnt-type').html('Deleted');
-                        clicked_button.html('Undo');
+                        clicked_button.html('Undelete');
                         clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=del');
                         comment.find('.edit-btn').hide()
                         break;
@@ -122,12 +122,12 @@ $(function() {
                     case 'cmnt-notread':
                         comment.attr('class', 'cmnt-read');
                         comment.find('.cmnt-type').html('Read');
-                        clicked_button.html('Mark as not read');
+                        clicked_button.html('Mark as unread');
                         clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=read');
                         break;
                     case 'cmnt-read':
                         comment.attr('class', 'cmnt-notread');
-                        comment.find('.cmnt-type').html('Not read');
+                        comment.find('.cmnt-type').html('Unread');
                         clicked_button.html('Mark as read');
                         clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=read');
                         break;
@@ -137,7 +137,9 @@ $(function() {
     });
 
     $('body').on('click', '.edit-btn', function(evt) {
-        window.location = $(this).attr('href');
+        if (! $(this).hasClass('disabled')) {
+            window.location = $(this).attr('href');
+        }
     });
 
 });
