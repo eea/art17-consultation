@@ -1,5 +1,20 @@
 {% extends layout_template %}
 
+{% macro render_field_with_errors(field) %}
+    {% set cls = 'form-error' if field.errors else '' %}
+    {{ field.label }} {{ field(class=cls, **kwargs)|safe }}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <p class="form-error-msg">{{ error }}</p>
+      {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro render_field(field) %}
+    {{ field(**kwargs)|safe }}
+{% endmacro %}
+
+
 {% block breadcrumbs %}
 
   {% from '_macros.html' import breadcrumbs %}
@@ -12,36 +27,73 @@
 
 {% block content %}
 
-  {%- from "security/_macros.html" import
-        render_field_with_errors, render_field %}
-  <h1>Register</h1>
+<h1>Register</h1>
 
-  <form method="POST" name="register_user_form">
+<form class="box inline-block form" method="POST" name="register_user_form">
 
+<div class="clearfix">
+  <div class="box-col width-300">
     {{ register_user_form.hidden_tag() }}
     {{ register_user_form.MS() }}
 
-    {{ render_field_with_errors(register_user_form.id) }}
-    {{ render_field_with_errors(register_user_form.name) }}
-    {{ render_field_with_errors(register_user_form.institution) }}
-    {{ render_field_with_errors(register_user_form.abbrev) }}
-    {{ render_field_with_errors(register_user_form.qualification) }}
-    {{ render_field_with_errors(register_user_form.country_options) }}
+    <!-- NAME -->
+    <div class="form-group">
+      {{ render_field_with_errors(register_user_form.name) }}
+    </div>
+    <!-- INSTITUTION -->
+    <div class="form-group clearfix">
+      <div class="pull-left" style="width: 75%;">
+        {{ render_field_with_errors(register_user_form.institution) }}
+      </div>
+      <div class="pull-left" style="width: 25%;">
+        {{ render_field_with_errors(register_user_form.abbrev, maxlength='4') }}
+      </div>
+    </div>
+    <!-- MEMBER STATE -->
+    <div class="form-group">
+      {{ render_field_with_errors(register_user_form.country_options) }}
+    </div>
+    <!-- QUALIFICATION -->
+    <div class="form-group">
+      {{ render_field_with_errors(register_user_form.qualification) }}
+    </div>
+  </div>
+  <div class="box-col width-300">
+    <!-- USERNAME -->
+    <div class="form-group">
+      {{ render_field_with_errors(register_user_form.id) }}
+    </div>
 
+    <!-- ??? -->
     <div id="other_country_container">
       {{ render_field_with_errors(register_user_form.other_country) }}
     </div>
 
-    {{ render_field_with_errors(register_user_form.email) }}
-    {{ render_field_with_errors(register_user_form.password) }}
+    <!-- EMAIL -->
+    <div class="form-group">
+      {{ render_field_with_errors(register_user_form.email) }}
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="form-group">
+      {{ render_field_with_errors(register_user_form.password) }}
+    </div>
+
+    <!-- CONFIRM -->
     {% if register_user_form.password_confirm %}
+    <div class="form-group">
       {{ render_field_with_errors(register_user_form.password_confirm) }}
+    </div>
     {% endif %}
+  </div>
+</div>
 
-    {{ render_field(register_user_form.submit) }}
+<hr>
+<div class="text-right">
+  {{ render_field(register_user_form.submit, class='btn-blue') }}
+</div>
 
-  </form>
-
+</form>
 {% endblock %}
 
 

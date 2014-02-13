@@ -20,7 +20,6 @@
         <th rowspan="2">For</th>
         <th rowspan="2">Qualified as</th>
         <th colspan="4" class="text-center">Roles</th>
-        <th rowspan="2" class="text-right">Status</th>
       </tr>
       <tr>
         <th class="text-center"><abbr title="Administrator">Adm.</abbr></th>
@@ -34,7 +33,12 @@
       {% set each_roles = role_map.get(user.id, []) %}
       <tr>
         <td>
-          <a href="{{ url_for('.admin_user', user_id=user.id) }}">{{ user.id }}</a>
+          <a href="{{ url_for('.admin_user', user_id=user.id) }}">
+            {{ user.id }}
+          </a>
+          <p class="muted no-margins">
+            {% if not user.active %}Inactive{% endif %}
+          </p>
         </td>
         <td>{{user.confirmed_at or ''}}2010-04-22 08:06<br>
         via {{ 'Eionet' if user.is_ldap else 'local' }}</td>
@@ -44,28 +48,25 @@
           <div><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
         </td>
         <td>{{ user.qualification or '' }}Qualification</td>
-          <td class="text-center">
-            {% if 'admin' in each_roles %}
-            <i class="fa fa-check"></i>
-            {% endif %}
-          </td>
-          <td class="text-center">
-            {% if 'etc' in each_roles %}
-            <i class="fa fa-check"></i>
-            {% endif %}
-          </td>
-          <td class="text-center">
-            {% if 'nat' in each_roles %}
-            <i class="fa fa-check"></i>
-            {% endif %}
-          </td>
-          <td class="text-center">
-            {% if 'stakeholder' in each_roles %}
-            <i class="fa fa-check"></i>
-            {% endif %}
-          </td>
-        <td class="text-right">
-          {% if not user.active %}inactive{% endif %}Active
+        <td class="text-center">
+          {% if 'admin' in each_roles %}
+          <i class="fa fa-check"></i>
+          {% endif %}
+        </td>
+        <td class="text-center">
+          {% if 'etc' in each_roles %}
+          <i class="fa fa-check"></i>
+          {% endif %}
+        </td>
+        <td class="text-center">
+          {% if 'nat' in each_roles %}
+          <i class="fa fa-check"></i>
+          {% endif %}
+        </td>
+        <td class="text-center">
+          {% if 'stakeholder' in each_roles %}
+          <i class="fa fa-check"></i>
+          {% endif %}
         </td>
       </tr>
     {% endfor %}

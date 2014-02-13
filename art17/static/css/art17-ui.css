@@ -446,24 +446,7 @@ abbr {
 }
 
 /* User registration */
-.register-option {
-    float: left;
-    max-width: 200px;
-    padding: 0 24px;
-    margin-left: -1px;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-}
 
-.register-option:first-child {
-    margin-left: -24px;
-    border-left: 0;
-}
-
-.register-option:last-child {
-    margin-right: -24px;
-    border-right: 0;
-}
 
 .wizard {
     list-style-type: none;
@@ -495,8 +478,6 @@ abbr {
     background: #fafafa;
     border: 1px solid #ddd;
 }
-
-
 
 .notification .close {
     position: absolute;
@@ -533,8 +514,13 @@ abbr {
     color: red!important;
 }
 
-
-
+.form-error-msg {
+    color: red;
+    font-size: smaller;
+    font-style: italic;
+    margin-top:3px;
+    margin-bottom: 0;
+}
 
 /* Wiki */
 .wiki {
@@ -951,6 +937,46 @@ abbr {
     padding: 12px;
 }
 
+.box-col {
+    float: left;
+    padding: 0 24px;
+    margin-left: -1px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.box-col:first-child {
+    margin-left: -24px;
+    border-left: 0;
+}
+
+.box-col:last-child {
+    margin-right: -24px;
+    border-right: 0;
+}
+
+.box,
+.box-col {
+    min-width: 180px;
+}
+
+/* Widths */
+.width-420 {
+    min-width: 420px;
+}
+
+.width-360 {
+    min-width: 360px;
+}
+
+.width-300 {
+    min-width: 300px;
+}
+
+.width-240 {
+    min-width: 240px;
+}
+
 hr {
     margin: 12px 0;
     border: 0;
@@ -971,6 +997,7 @@ hr {
 
 .no-list {
     list-style-type: none!important;
+    list-style-image: none!important;
     padding-left: 0!important;
     margin: 0!important;
 }

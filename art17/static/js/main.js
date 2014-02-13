@@ -191,6 +191,21 @@ $(function () {
     });
 });
 
+// Handle error display in form registration
+$(function () {
+    $('.form').delegate('.form-error', 'focus', function (e) {
+        $(this).removeClass('form-error');
+    });
+
+    $('.form-error').delegate('', 'blur', function (e) {
+        if (this.value) {
+            $(this).siblings('.form-error-msg').addClass('hidden');
+        } else {
+            $(this).addClass('form-error');
+        }
+    });
+});
+
 // Table column hover
 /*$(function () {
     $(".complex_datatable").on('mouseenter mouseleave', "td", function (event) {

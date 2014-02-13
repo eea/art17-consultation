@@ -80,9 +80,9 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
         validators=[Required("Full name is required")])
     institution = TextField('Institution',
         validators=[Required("Institution name is required")])
-    abbrev = TextField('Institution(abbrev)')
+    abbrev = TextField('Abbrev.')
     MS = TextField(widget=HiddenInput())
-    country_options = SelectField('MS')
+    country_options = SelectField('Member State')
     other_country = TextField('Other country')
     qualification = TextField('Qualification')
 
