@@ -1080,7 +1080,7 @@ class WikiChange(Base):
 
     id = Column(Integer, primary_key=True)
     wiki_id = Column(ForeignKey('wiki.id'), nullable=False)
-    body = Column(String(6000))
+    body = Column(String(6000), nullable=False)
     editor = Column(String(60), nullable=False)
     changed = Column(DateTime, nullable=False,
                      server_default=u'CURRENT_TIMESTAMP')
@@ -1147,7 +1147,7 @@ class WikiTrailChange(Base):
 
     id = Column(Integer, primary_key=True)
     wiki_id = Column(ForeignKey('wiki_trail.id'), nullable=False)
-    body = Column(String(6000))
+    body = Column(String(6000), nullable=False)
     editor = Column(String(60), nullable=False)
     changed = Column(DateTime, nullable=False,
                      server_default=u'CURRENT_TIMESTAMP')

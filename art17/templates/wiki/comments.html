@@ -49,7 +49,6 @@
             {% if not can_edit_comment(comment) or edit_comment_form %}
             style="display: none;"{% endif %}>Edit</button>
 
-            
          </div>
         {% endif %}
 
@@ -65,7 +64,9 @@
         {% if g.identity.id != comment.author_id %}
         <div class="pull-left">
           <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>
-          from {{ comment.author.institution }}
+          {% if comment.author.institution %}
+            from {{ comment.author.institution }}
+          {% endif %}
         </div>
         {% endif %}
         <span class="muted pull-right" title="{{ comment.posted | format_time_cmnt }}">

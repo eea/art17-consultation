@@ -55,7 +55,7 @@ def hide_adm_etc_username(name):
             current_user.has_role('etc') or current_user.has_role('admin')):
         return 'Someone'
     else:
-        return name
+        return name or ''
 
 
 @wiki.app_template_global('is_read')
