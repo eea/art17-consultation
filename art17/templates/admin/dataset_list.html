@@ -4,15 +4,17 @@
 {% block content %}
   <h1>Datasets</h1>
 
-  <table class="datatable">
+  <table class="table-list">
     <thead>
-      <th>ID</th>
-      <th>name</th>
-      <th>schema</th>
-      <th>details</th>
-      <th></th>
+      <tr class="table-list-header">
+        <th>ID</th>
+        <th>name</th>
+        <th>schema</th>
+        <th>details</th>
+        <th></th>
+      </tr>
     </thead>
-
+    <tbody>
     {% for dataset in datasets %}
       <tr>
         <td>{{ dataset.id }}</td>
@@ -32,5 +34,6 @@
         </td>
       </tr>
     {% endfor %}
+    </tbody>
   </table>
 {% endblock content %}

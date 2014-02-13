@@ -13,10 +13,16 @@
 {% block content %}
     <h1>User summary <small>for {{ period.name }}</small></h1>
 
-    <a class="button btn-bigger {% if subject_name == 'species' %}active{% endif %}"
-       href="{{ url_for('.species-history') }}">Species</a>
-    <a class="button btn-bigger {% if subject_name == 'habitat' %}active{% endif %}"
-      href="{{ url_for('.habitat-history') }}">Habitats</a>
+    <div class="tabbed">
+      <ul class="tabs">
+        <li class="{% if subject_name == 'species' %}active{% endif %}">
+          <a href="{{ url_for('.species-history') }}">Species</a>
+        </li>
+        <li class="{% if subject_name == 'habitat' %}active{% endif %}">
+          <a href="{{ url_for('.habitat-history') }}">Habitats</a>
+        </li>
+      </ul>
+    </div>
 
     <p class="h2">Recent comments</p>
     {% if history.comments %}

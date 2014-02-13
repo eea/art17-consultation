@@ -12,54 +12,47 @@
 
 {% block content %}
   <h1>Users</h1>
-
-  <table class="datatable">
+ 
+  <table class="table-list">
     <thead>
       <tr>
         <th rowspan="2">Username</th>
-        <th rowspan="2">Name</th>
-        <th rowspan="2">Email</th>
-        <th rowspan="2">Institution</th>
-        <th rowspan="2">MS</th>
-        <th rowspan="2">Qualification</th>
-        <th rowspan="2">Source</th>
+        <th rowspan="2">Created</th>
+        <th rowspan="2">For</th>
+        <th rowspan="2">Qualified as</th>
         <th colspan="4">Roles</th>
         <th rowspan="2">Status</th>
-        <th rowspan="2">Created</th>
       </tr>
       <tr>
-        <th>Administrator</th>
-        <th>ETC Expert</th>
-        <th>NAT Expert</th>
-        <th>Stakeholder</th>
-      <tr>
+        <th><abbr title="Administrator">Adm.</abbr></th>
+        <th><abbr title="ETC Expert">ETC</abbr></th>
+        <th><abbr title="NAT Expert">NAT</abbr></th>
+        <th><abbr title="Stakeholder">Stk.</abbr></th>
+      </tr>
     </thead>
-
+    <tbody>
     {% for user in user_list %}
       {% set each_roles = role_map.get(user.id, []) %}
       <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.name or '' }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.institution or '' }}</td>
-        <td></td>
-        <td>{{ user.qualification or '' }}</td>
-        <td>{{ 'Eionet' if user.is_ldap else 'local' }}</td>
-        <td align=center>{% if 'admin' in each_roles %}<strong>*<strong/>{% endif %}</td>
-        <td align=center>{% if 'etc' in each_roles %}<strong>*</strong>{% endif %}</td>
-        <td align=center>{% if 'nat' in each_roles %}<strong>*</strong>{% endif %}</td>
-        <td align=center>{% if 'stakeholder' in each_roles %}<strong>*</strong>{% endif %}</td>
-
         <td>
-          {% if not user.active %}inactive{% endif %}
+          <a href="{{ url_for('.admin_user', user_id=user.id) }}">{{ user.id }}</a>
         </td>
-        <td>{{user.confirmed_at or ''}}</td>
+        <td>{{user.confirmed_at or ''}}2010-04-22 08:06<br>
+        via {{ 'Eionet' if user.is_ldap else 'local' }}</td>
         <td>
-          <a href="{{ url_for('.admin_user', user_id=user.id) }}">
-            edit
-          </a>
+          {{ user.name or '' }}First-Last Name<br>
+          {{ user.institution or '' }}Institution<br>
+          <a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+        <td>{{ user.qualification or '' }}Qualification</td>
+          <td>{% if 'admin' in each_roles %}*{% endif %}</td>
+          <td>{% if 'etc' in each_roles %}*{% endif %}</td>
+          <td>{% if 'nat' in each_roles %}*{% endif %}</td>
+          <td>{% if 'stakeholder' in each_roles %}*{% endif %}</td>
+        <td>
+          {% if not user.active %}inactive{% endif %}Active
         </td>
       </tr>
     {% endfor %}
+    </tbody>
   </table>
 {% endblock content %}

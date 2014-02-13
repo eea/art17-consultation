@@ -648,11 +648,12 @@ abbr {
 
 .table-list td {
 	border-bottom: 1px solid #ddd;
+	vertical-align: top;
 }
 
 .table-list th,
 .table-list td {
-	padding: 3px 3px;
+	padding: 3px 6px;
 }
 
 .table-list th:first-child,
@@ -669,50 +670,10 @@ abbr {
 	border-bottom: 2px solid #b6b6b6;
 }
 
-
-/*.table-list-header {
-	padding: 6px 6px;
-	border-bottom: 2px solid #b6b6b6;
-	background: #f6f6f6;
+.table-list abbr {
+	border-bottom: 0;
 }
 
-.table-list {
-	border-bottom: 2px solid #b6b6b6;
-	max-height: 400px;
-	overflow: auto;
-	position: relative;
-}
-
-
-.table-list li {
-	padding: 6px 3px;
-	border-bottom: 1px solid #ddd;
-}
-
-.table-list li > div {
-
-}
-
-.table-list-header .username,
-.table-list .username {
-	width: 140px;
-}
-.table-list-header .region,
-.table-list .region {
-	width: 80px;
-	text-align: right;
-}
-
-.table-list-header .subject,
-.table-list .subject {
-	margin-right: 80px;
-}
-
-.table-list-header .long-date,
-.table-list .long-date {
-	width: 140px;
-}
-*/
 
 /* Comments */
 .comment-section {
@@ -815,6 +776,63 @@ abbr {
     color: #888;
     border-color: #ccc;
     background: #f6f6f6;
+}
+
+/* Tabs */
+.tabs {
+    list-style-type: none!important;
+    padding: 0!important;
+    margin: 12px -1em!important;
+    border-bottom: 1px solid #666;
+}
+
+.tabs:before,
+.tabs:after {
+    display: table;
+    content: " ";
+}
+
+.tabs:after {
+    clear: both;
+}
+
+.tabs > li:first-child {
+    margin-left: 1em;
+}
+
+.tabs > li {
+    float: left;
+    display: block;
+    margin: 0 3px -1px;
+    font-weight: bold;
+    border-width: 1px 1px 0;
+    border-style: solid;
+    border-color: #ddd #ddd transparent;
+    border-radius: 3px 3px 0 0;
+}
+
+.tabs > li > a,
+.tabs > li > a:link,
+.tabs > li > a:visited {
+    color: black;
+    text-decoration: none;
+    display: block;
+    padding: 6px 12px;
+}
+
+.tabs > li > a:hover {
+    background: #f6f6f6;
+}
+
+.tabs > li.active > a,
+.tabs > li.active > a:hover {
+    cursor: default;
+    background: white;
+}
+
+.tabs > li.active {
+    border-width: 1px;
+    border-color: #666 #666 white;
 }
 
 /* Buttons */
