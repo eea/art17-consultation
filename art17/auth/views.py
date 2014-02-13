@@ -58,12 +58,9 @@ def register_ldap():
             return flask.render_template('message.html', message=message)
 
     if user_id and flask.g.identity.id:
-        message = (
-            'There is no need to create a new account since you can '
-            'use the current one. If you need additional roles please '
-            'send an email to %s.' % get_config().admin_email
-        )
-        return flask.render_template('message.html', message=message)
+        return flask.render_template('auth/register_ldap_exists.html', **{
+            'admin_email': get_config().admin_email,
+        })
 
     if flask.request.method == 'POST':
         datastore = flask.current_app.extensions['security'].datastore
