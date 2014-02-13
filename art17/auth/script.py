@@ -17,6 +17,7 @@ class CreateUserCommand(BaseCreateUserCommand):
     option_list = BaseCreateUserCommand.option_list + (
         Option('-i', '--id', dest='id', default=None),
         Option('-l', '--ldap', dest='is_ldap', action='store_true'),
+        Option('-n', '--name', dest='name'),
     )
 
     def run(self, **kwargs):
