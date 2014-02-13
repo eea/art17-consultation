@@ -57,7 +57,7 @@ def register_ldap():
             )
             return flask.render_template('message.html', message=message)
 
-    if user_id:
+    if user_id and flask.g.identity.id:
         message = (
             'There is no need to create a new account since you can '
             'use the current one. If you need additional roles please '
