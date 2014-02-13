@@ -23,8 +23,10 @@ METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
 
 NATURE_CHOICES = [('yes', 'yes'), ('no', 'no'), ('nc', 'nc')]
 CONTRIB_METHODS = [
-    ('A', 'A (favorable)'), ('B', 'B (improvement)'),
-    ('C', 'C (deterioration)'), ('D', 'D (same)'), ('E', 'E (unknown)'),
+    ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
+]
+CONTRIB_TYPE = [
+    ('+', '+'), ('-', '-'), ('0', '0'), ('x', 'x')
 ]
 
 
@@ -168,8 +170,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         self.method_target1.choices = empty + CONTRIB_METHODS
 
         for f in (self.range_trend, self.population_trend, self.habitat_trend,
-                  self.conclusion_assessment_trend,
-                  self.conclusion_target1):
+                  self.conclusion_assessment_trend):
             f.choices = trends
         for f in (self.conclusion_range, self.conclusion_population,
                   self.conclusion_habitat, self.conclusion_future,
@@ -177,6 +178,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
             f.choices = conclusions
         self.conclusion_assessment_change.choices = empty + NATURE_CHOICES
         self.population_size_unit.choices = units
+        self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self):
         fields = [f for f in all_fields(self) if f != self.region]
@@ -280,7 +282,7 @@ class SummaryManualFormHabitat(Form, OptionsBase):
         self.method_target1.choices = empty + CONTRIB_METHODS
 
         for f in (self.range_trend, self.coverage_trend,
-                  self.conclusion_assessment_trend, self.conclusion_target1):
+                  self.conclusion_assessment_trend):
             f.choices = trends
         for f in (self.conclusion_range, self.conclusion_area,
                   self.conclusion_structure, self.conclusion_future,
@@ -288,6 +290,7 @@ class SummaryManualFormHabitat(Form, OptionsBase):
                   self.conclusion_assessment_prev):
             f.choices = conclusions
         self.conclusion_assessment_change.choices = empty + NATURE_CHOICES
+        self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self):
         fields = [f for f in all_fields(self) if f != self.region]

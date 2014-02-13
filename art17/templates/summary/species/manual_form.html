@@ -78,10 +78,11 @@
       </td>
 
       {# Contrib target 1 #}
-      <td {% if form.method_target1.errors or form.conclusion_target1.errors %}class="errors"{% endif %}
-      colspan="2">
-      {{ form.method_target1() }}
-      {{ form.conclusion_target1() }}
+      <td {% if form.method_target1.errors %}class="errors"{% endif %}>
+      {{ form.method_target1(title="A (favorable), B (improvement), C (deterioration), D (same), E (unknown)") }}
+      </td>
+      <td {% if form.conclusion_target1.errors %}class="errors"{% endif %}>
+      {{ form.conclusion_target1(title="+ (improvement), - (deterioration), 0 (no change), x (not known)") }}
       </td>
     {% else %}
       {# Edit reference values form #}

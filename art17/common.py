@@ -49,6 +49,21 @@ COUNTRY_ASSESSMENTS = {
     'NA':  'Imposible to be assesed',
 }
 
+CONTRIB_METHOD = {
+    'A': 'favorable',
+    'B': 'improvement',
+    'C': 'deterioration',
+    'D': 'same',
+    'E': 'unknown',
+}
+
+CONTRIB_CONCLUSION = {
+    '+': 'improvement',
+    '-': 'deterioration',
+    '0': 'no change',
+    'x': 'not known',
+}
+
 HOMEPAGE_VIEW_NAME = 'summary.homepage'
 
 common = flask.Blueprint('common', __name__)

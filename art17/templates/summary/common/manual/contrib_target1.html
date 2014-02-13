@@ -1,6 +1,10 @@
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_target1, '') + ' conclusion' %}
-{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_target1, '') %}
-
-<td class="{{ classes }}" colspan="2" title="{{ title }}">
-    <span>{{ row.method_target1 or '' }}</span>
+<td>
+    {% set title=CONTRIB_METHOD.get(row.method_target1, '') %}
+    <span title="{{ title }}">{{ row.method_target1 or '' }}</span>
+</td>
+<td>
+    {% set title=CONTRIB_CONCLUSION.get(row.conclusion_target1, '') %}
+    <span title="{{ title }}">
+    {{ row.conclusion_target1 or '' }}
+    </span>
 </td>

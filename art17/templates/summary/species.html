@@ -155,7 +155,12 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <th>Nat of ch</th>
       {% endif %}
 
-      <th colspan="2">{% if dataset.schema != '2006' %}Contrib.<br/>target 1{% endif %}</th>
+      {% if dataset.schema == '2006' %}
+      <th colspan="2"></th>
+      {% else %}
+      <th>Contrib.</th>
+      <th>Type</th>
+      {% endif %}
       <th colspan="2"></th>
 
       <th colspan="5">{# padding #}</th>

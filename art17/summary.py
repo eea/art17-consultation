@@ -52,7 +52,10 @@ from art17.common import (
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
-    population_size_unit_title)
+    population_size_unit_title,
+    CONTRIB_METHOD,
+    CONTRIB_CONCLUSION,
+)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
@@ -158,6 +161,8 @@ def inject_static():
         'expert_perm': expert_perm,
         'CONCLUSION_CLASSES': CONCLUSION_CLASSES,
         'COUNTRY_ASSESSMENTS': COUNTRY_ASSESSMENTS,
+        'CONTRIB_METHOD': CONTRIB_METHOD,
+        'CONTRIB_CONCLUSION': CONTRIB_CONCLUSION,
         'QUALITIES': QUALITIES,
         'ASSESSMENT_DETAILS': dict(
             db.session.query(EtcDicMethod.method, EtcDicMethod.details)
