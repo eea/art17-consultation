@@ -91,7 +91,7 @@ def register_permissions_in_template_globals(state):
 @common.app_context_processor
 def inject_globals():
     return {
-        'APP_BREADCRUMBS': [('art17', flask.url_for(HOMEPAGE_VIEW_NAME))],
+        'APP_BREADCRUMBS': [('Article 17', flask.url_for(HOMEPAGE_VIEW_NAME))],
     }
 
 
