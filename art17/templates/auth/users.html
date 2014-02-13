@@ -19,14 +19,14 @@
         <th rowspan="2">Created</th>
         <th rowspan="2">For</th>
         <th rowspan="2">Qualified as</th>
-        <th colspan="4">Roles</th>
-        <th rowspan="2">Status</th>
+        <th colspan="4" class="text-center">Roles</th>
+        <th rowspan="2" class="text-right">Status</th>
       </tr>
       <tr>
-        <th><abbr title="Administrator">Adm.</abbr></th>
-        <th><abbr title="ETC Expert">ETC</abbr></th>
-        <th><abbr title="NAT Expert">NAT</abbr></th>
-        <th><abbr title="Stakeholder">Stk.</abbr></th>
+        <th class="text-center"><abbr title="Administrator">Adm.</abbr></th>
+        <th class="text-center"><abbr title="ETC Expert">ETC</abbr></th>
+        <th class="text-center"><abbr title="NAT Expert">NAT</abbr></th>
+        <th class="text-center"><abbr title="Stakeholder">Stk.</abbr></th>
       </tr>
     </thead>
     <tbody>
@@ -39,15 +39,32 @@
         <td>{{user.confirmed_at or ''}}2010-04-22 08:06<br>
         via {{ 'Eionet' if user.is_ldap else 'local' }}</td>
         <td>
-          {{ user.name or '' }}First-Last Name<br>
-          {{ user.institution or '' }}Institution<br>
-          <a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+          <div>{{ user.name or '' }}First-Last Name</div>
+          <div>{{ user.institution or '' }}Institution</div>
+          <div><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
+        </td>
         <td>{{ user.qualification or '' }}Qualification</td>
-          <td>{% if 'admin' in each_roles %}*{% endif %}</td>
-          <td>{% if 'etc' in each_roles %}*{% endif %}</td>
-          <td>{% if 'nat' in each_roles %}*{% endif %}</td>
-          <td>{% if 'stakeholder' in each_roles %}*{% endif %}</td>
-        <td>
+          <td class="text-center">
+            {% if 'admin' in each_roles %}
+            <i class="fa fa-check"></i>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            {% if 'etc' in each_roles %}
+            <i class="fa fa-check"></i>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            {% if 'nat' in each_roles %}
+            <i class="fa fa-check"></i>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            {% if 'stakeholder' in each_roles %}
+            <i class="fa fa-check"></i>
+            {% endif %}
+          </td>
+        <td class="text-right">
           {% if not user.active %}inactive{% endif %}Active
         </td>
       </tr>

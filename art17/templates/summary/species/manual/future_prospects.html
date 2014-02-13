@@ -1,4 +1,4 @@
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' conclusion' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' conclusion border' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_future, '') %}
 
 {% set concl_value = get_future_conclusion_value_for_species(row.assesment_speciesname,
