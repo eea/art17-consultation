@@ -37,7 +37,7 @@ def can_post_comment(record):
         return False
     can_add = False
     if current_user.has_role('stakeholder') or current_user.has_role('nat'):
-        if record.user.has_role('stakeholder') or \
+        if not record.user or record.user.has_role('stakeholder') or \
             (record.user.has_role('nat')
              and record.user_id == current_user.id):
                 can_add = True
