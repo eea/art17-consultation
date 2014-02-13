@@ -121,11 +121,13 @@ def zope_auth(app, request):
     return whoami_data
 
 
-def create_user(user_id, role_names=[]):
+def create_user(user_id, role_names=[], name='', institution=''):
     user = models.RegisteredUser(
         id=user_id,
         account_date=datetime.utcnow(),
         active=True,
+        name=name,
+        institution=institution
     )
     models.db.session.add(user)
     for name in role_names:

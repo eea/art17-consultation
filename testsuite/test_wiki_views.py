@@ -262,3 +262,17 @@ def test_get_revision(app, setup, zope_auth, client):
         'revision_id': 1})
     assert (resp.html.text == "The wolf was the world's most widely "
             "distributed mammal.")
+
+
+@pytest.mark.parametrize("roles", [
+    (['etc']),
+    (['admin'])
+])
+def test_hide_adm_etc_username(app, setup, zope_auth, client, roles):
+    create_user('testuser', roles, 'Secret Name', 'Test Insitution')
+    create_user('otheruser')
+    set_user('otheruser')
+
+    resp = client.get('/species/summary/datasheet/', {
+        'period': '1', 'subject': 'Canis lupus', 'region': ''})
+    assert 'Secret Name' not in resp.html.name
