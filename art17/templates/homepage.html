@@ -33,26 +33,45 @@
     </small>
   </div>
 
-  <h2>
-    The consultation is open only for users that will register. To register:
-  </h2>
-
-  <ul>
   {% if AUTH_BLUEPRINT_INSTALLED %}
-    <li>
-      If you have an Eionet account please
-      <a href="{{ url_for('auth.register_ldap') }}">register here</a>.
-    </li>
-    <li>
-      If you don't have an Eionet account please
-      <a href="{{ url_for('auth.register_local') }}">register here</a>.
-    </li>
-    <li>
-      If you are a National Data Coordinator for Article 17,
-      you are already registered.
-    </li>
+    {% if start_date and start_date > today %}
+      <h2>The consultation has not started yet.</h2>
+
+      <p>
+        You cannot sign-up for a new account because the registration
+        process will start on on {{ start_date }}.
+      </p>
+
+    {% elif end_date and end_date < today %}
+      <h2>The deadline for this consultation has passed.</h2>
+
+      <p>
+        You cannot sign-up for a new account because the registration
+        process ended on {{ end_date }}.
+      </p>
+
+    {% else %}
+      <h2>
+        The consultation is open only for users that will register.
+        To register:
+      </h2>
+
+      <ul>
+        <li>
+          If you have an Eionet account please
+          <a href="{{ url_for('auth.register_ldap') }}">register here</a>.
+        </li>
+        <li>
+          If you don't have an Eionet account please
+          <a href="{{ url_for('auth.register_local') }}">register here</a>.
+        </li>
+        <li>
+          If you are a National Data Coordinator for Article 17,
+          you are already registered.
+        </li>
+      </ul>
+    {% endif %}
   {% endif %}
-  </ul>
 
   <p>
     There is no need to register if you just want to view the data.

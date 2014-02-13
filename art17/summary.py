@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from flask import (
     Blueprint,
     views,
@@ -55,6 +55,7 @@ from art17.common import (
     population_size_unit_title,
     CONTRIB_METHOD,
     CONTRIB_CONCLUSION,
+    get_config,
 )
 from art17.forms import (
     SummaryFilterForm,
@@ -74,7 +75,12 @@ DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 
 @summary.route('/')
 def homepage():
-    return render_template('homepage.html')
+    config = get_config()
+    return render_template('homepage.html', **{
+        'start_date': config.start_date,
+        'end_date': config.end_date,
+        'today': date.today(),
+    })
 
 
 @summary.app_template_global('can_view')
