@@ -84,6 +84,7 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
     MS = TextField(widget=HiddenInput())
     country_options = SelectField('MS')
     other_country = TextField('Other country')
+    qualification = TextField('Qualification')
 
     def __init__(self, *args, **kwargs):
         super(Art17ConfirmRegisterForm, self).__init__(*args, **kwargs)
