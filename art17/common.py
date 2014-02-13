@@ -88,6 +88,13 @@ def register_permissions_in_template_globals(state):
     app.jinja_env.globals['HOMEPAGE_VIEW_NAME'] = HOMEPAGE_VIEW_NAME
 
 
+@common.app_context_processor
+def inject_globals():
+    return {
+        'APP_BREADCRUMBS': [('art17', flask.url_for(HOMEPAGE_VIEW_NAME))],
+    }
+
+
 def population_size_unit(row):
 
     min_size = row.population_minimum_size or ''

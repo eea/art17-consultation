@@ -9,7 +9,8 @@
 {{ g.zope_layout.endofhead_to_breadcrumbs }}
 
   {% block breadcrumbs %}
-    <a href="{{ url_for(HOMEPAGE_VIEW_NAME) }}">art17</a>
+    {% from '_macros.html' import breadcrumbs %}
+    {{ breadcrumbs(APP_BREADCRUMBS) }}
   {% endblock %}
 
 {{ g.zope_layout.breadcrumbs_to_content }}

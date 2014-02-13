@@ -24,9 +24,8 @@
 
   <div>
     {% block breadcrumbs %}
-      <div class="breadcrumbitemlast">
-        <a href="{{ url_for(HOMEPAGE_VIEW_NAME) }}">art17</a>
-      </div>
+      {% from '_macros.html' import breadcrumbs %}
+      {{ breadcrumbs(APP_BREADCRUMBS) }}
     {% endblock %}
   </div>
 
