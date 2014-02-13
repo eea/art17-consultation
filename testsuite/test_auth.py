@@ -203,3 +203,23 @@ def test_dates(app, zope_auth, client):
     )
     page = client.get(flask.url_for('auth.register_ldap'))
     assert "Registration has finished" in page
+
+
+def test_email_notification_for_role_changes(app, zope_auth, client, outbox):
+    create_user('ze_admin', ['admin'])
+    foo = create_user('foo', ['etc', 'stakeholder'], name="Foo Person")
+    zope_auth.update({'user_id': 'ze_admin'})
+    page = client.get(flask.url_for('auth.admin_user', user_id='foo'))
+    page.form['roles'] = ['stakeholder', 'nat']
+    page.form.submit()
+    assert len(outbox) == 0
+
+    page.form['roles'] = ['etc', 'stakeholder']
+    page.form['notify_user'] = True
+    page.form.submit()
+
+    assert len(outbox) == 1
+    [msg] = outbox
+    assert msg.recipients == ['foo@example.com']
+    assert "* European topic center" in msg.body
+    assert "* Stakeholder" in msg.body

@@ -15,21 +15,28 @@
 
   <form method="post">
     <div>
-      <input type="checkbox" id="user-active" name="active"
+      <input type="checkbox" id="admin_user-active" name="active"
              {%- if user.active %} checked{% endif %}>
-      <label for="user-active">Active</label>
+      <label for="admin_user-active">Active</label>
     </div>
-    <label>Roles</label>
-    <select name="roles" multiple>
-      {% for role, role_name in all_roles.items() %}
-        <option value="{{ role }}"
-            {%- if role in current_user_roles %}selected{% endif %}>
-            {{ role_name }}
-        </option>
-      {% endfor %}
-    </select>
+
+    <div>
+      <label for="admin_user-roles">Roles</label><br>
+      <select name="roles" multiple id="admin_user-roles">
+        {% for role, role_name in all_roles.items() %}
+          <option value="{{ role }}"
+              {%- if role in current_user_roles %}selected{% endif %}>
+              {{ role_name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
     <div>
       <button type="submit">Save</button>
+
+      <input type="checkbox" name="notify_user" id="admin_user-notify_user">
+      <label for="admin_user-notify_user">Notify user about role changes</label>
     </div>
   </form>
 {% endblock content %}

@@ -127,7 +127,8 @@ def create_user(user_id, role_names=[], name='', institution=''):
         account_date=datetime.utcnow(),
         active=True,
         name=name,
-        institution=institution
+        email='%s@example.com' % user_id,
+        institution=institution,
     )
     models.db.session.add(user)
     for name in role_names:

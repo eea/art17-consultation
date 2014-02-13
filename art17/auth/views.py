@@ -5,6 +5,7 @@ from flask.ext.principal import PermissionDenied
 from flask.ext.security.forms import ChangePasswordForm
 from flask.ext.security.changeable import change_user_password
 from flask.ext.security.registerable import register_user
+from flask.ext.mail import Message
 from werkzeug.datastructures import MultiDict
 from art17 import models
 from art17.auth.forms import DatasetForm
@@ -138,6 +139,21 @@ def get_roles_for_all_users():
     return dict(rv)
 
 
+def send_role_change_notification(user, new_roles):
+    app = flask.current_app
+    role_description = {row.name: row.description for row in models.Role.query}
+    msg = Message(
+        subject="Role update on the Biological Diversity website",
+        sender=app.extensions['security'].email_sender,
+        recipients=[user.email],
+    )
+    msg.body = flask.render_template('auth/email_user_role_change.txt', **{
+        'user': user,
+        'new_roles': [role_description[r] for r in new_roles],
+    })
+    app.extensions['mail'].send(msg)
+
+
 @auth.route('/auth/users')
 @require_admin
 def users():
@@ -173,6 +189,10 @@ def admin_user(user_id):
             datastore.remove_role_from_user(user_id, role)
 
         datastore.commit()
+
+        if flask.request.form.get('notify_user', type=bool):
+            send_role_change_notification(user, new_roles)
+
         flask.flash("User information updated for %s" % user_id, 'success')
         return flask.redirect(flask.url_for('.users', user_id=user_id))
 
