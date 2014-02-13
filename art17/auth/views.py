@@ -4,7 +4,7 @@ import flask
 from flask.ext.principal import PermissionDenied
 from flask.ext.security.forms import ChangePasswordForm
 from flask.ext.security.changeable import change_user_password
-from flask.ext.security.registerable import register_user
+from flask.ext.security.registerable import register_user, encrypt_password
 from flask.ext.mail import Message
 from werkzeug.datastructures import MultiDict, ImmutableMultiDict
 from art17 import models
@@ -37,6 +37,26 @@ def register_local():
     if form.validate_on_submit():
         register_user(**form.to_dict())
         return flask.render_template('message.html', message="")
+
+    return flask.render_template('auth/register_local.html', **{
+        'register_user_form': form,
+    })
+
+
+@auth.route('/auth/create_local', methods=['GET', 'POST'])
+def admin_create_local():
+    form = Art17ConfirmRegisterForm(flask.request.form)
+
+    if form.validate_on_submit():
+        kwargs = form.to_dict()
+        kwargs['password'] = encrypt_password(kwargs['password'])
+        datastore = flask.current_app.extensions['security'].datastore
+        user = datastore.create_user(**kwargs)
+        user.confirmed_at = datetime.utcnow()
+        set_user_active(user, True)
+        datastore.commit()
+        flask.flash("User %s created successfully." % kwargs['id'], 'success')
+        return flask.redirect(flask.url_for('.admin_create_local'))
 
     return flask.render_template('auth/register_local.html', **{
         'register_user_form': form,

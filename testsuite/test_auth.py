@@ -90,6 +90,36 @@ def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
     assert not foo_user.active
 
 
+def test_admin_creates_local(app, zope_auth, client, outbox, ldap_user_info):
+    from .factories import DatasetFactory
+
+    _set_config(admin_email='admin@example.com')
+    create_user('ze_admin', ['admin'])
+    zope_auth['user_id'] = 'ze_admin'
+    DatasetFactory()
+    models.db.session.commit()
+
+    register_page = client.get(flask.url_for('auth.admin_create_local'))
+    register_page.form['id'] = 'foo'
+    register_page.form['email'] = 'foo@example.com'
+    register_page.form['password'] = 'p455w4rd'
+    register_page.form['name'] = 'foo me'
+    register_page.form['institution'] = 'foo institution'
+
+    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+        result_page = register_page.form.submit().follow()
+        assert create_in_zope.call_count == 1
+
+    assert "User foo created successfully." in result_page
+
+    foo_user = models.RegisteredUser.query.get('foo')
+    assert foo_user.email == 'foo@example.com'
+    assert foo_user.confirmed_at is not None
+    assert foo_user.active
+    assert not foo_user.is_ldap
+    assert foo_user.password.startswith('{SSHA}')
+
+
 def test_ldap_account_activation_flow(
         app,
         zope_auth,
