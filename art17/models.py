@@ -5,6 +5,7 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer,\
 from sqlalchemy.dialects.mysql.base import MEDIUMBLOB
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import or_
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
 from flask.ext.security import UserMixin, RoleMixin
@@ -826,7 +827,8 @@ class HabitattypesManualAssessment(Base):
                 .filter(HabitatComment.MS == self.MS)
                 .filter(HabitatComment.user == self.user_id)
                 .filter('habitat_comments_read.reader_user_id="%s"' % user)
-                .filter(HabitatComment.deleted.in_((0, None)))
+                .filter(or_(HabitatComment.deleted == 0,
+                            HabitatComment.deleted == None))
                 .count())
 
     @hybrid_property
@@ -1043,7 +1045,7 @@ class SpeciesManualAssessment(Base):
                 .filter(Comment.MS == self.MS)
                 .filter(Comment.user == self.user_id)
                 .filter('comments_read.reader_user_id="%s"' % user)
-                .filter(Comment.deleted.in_((0, None)))
+                .filter(or_(Comment.deleted == 0, Comment.deleted == None))
                 .count())
 
     @hybrid_property
