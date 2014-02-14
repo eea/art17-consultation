@@ -72,13 +72,13 @@ def check_duplicate_with_ldap(form, field):
         raise ValidationError("User ID already exists in LDAP database.")
 
 
-class Art17ConfirmRegisterForm(Art17RegisterFormMixin, ConfirmRegisterForm):
+class Art17LocalRegisterForm(Art17RegisterFormMixin, ConfirmRegisterForm):
 
     id = TextField('Username', validators=[Required("User ID is required"),
                                      check_duplicate_with_ldap])
 
 
-class Art17ConfirmRegisterLDAPForm(Art17RegisterFormMixin, RegisterFormMixin, Form):
+class Art17LDAPRegisterForm(Art17RegisterFormMixin, RegisterFormMixin, Form):
 
     email = TextField('Email',
         validators=[Required("Email is required"), email_validator])

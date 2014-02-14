@@ -12,8 +12,8 @@ from art17.auth.forms import DatasetForm
 from art17.common import HOMEPAGE_VIEW_NAME, get_config
 from art17.auth import zope_acl_manager, current_user, auth
 from art17.auth.security import (
-    Art17ConfirmRegisterForm,
-    Art17ConfirmRegisterLDAPForm,
+    Art17LocalRegisterForm,
+    Art17LDAPRegisterForm,
 )
 from art17.auth.common import (
     require_admin,
@@ -32,7 +32,7 @@ def handle_permission_denied(error):
 
 @auth.route('/auth/register/local', methods=['GET', 'POST'])
 def register_local():
-    form = Art17ConfirmRegisterForm(flask.request.form)
+    form = Art17LocalRegisterForm(flask.request.form)
 
     if form.validate_on_submit():
         register_user(**form.to_dict())
@@ -68,7 +68,7 @@ def register_ldap():
         })
 
     ldap_user_info = get_ldap_user_info(user_id)
-    form = Art17ConfirmRegisterLDAPForm(ImmutableMultiDict([
+    form = Art17LDAPRegisterForm(ImmutableMultiDict([
         ('name', ldap_user_info.get('full_name')),
         ('institution', ldap_user_info.get('organisation')),
         ('qualification', ldap_user_info.get('job_title')),
@@ -76,7 +76,7 @@ def register_ldap():
     ]))
 
     if flask.request.method == 'POST':
-        form = Art17ConfirmRegisterLDAPForm(flask.request.form)
+        form = Art17LDAPRegisterForm(flask.request.form)
         if form.validate():
             datastore = flask.current_app.extensions['security'].datastore
             user = datastore.create_user(
