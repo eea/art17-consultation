@@ -93,21 +93,6 @@ abbr {
     background-color: #f1f0f7;
 }
 
-/*FORM ROW*/
-.complex_datatable .form_row:first-child {
-    border-top: 3px solid #366888;
-}
-
-.complex_datatable .form_row:hover {
-    background-color: transparent;
-}
-
-.complex_datatable .form_row td {
-    white-space: normal;
-    border: 1px solid #7cadcc;
-    background: #7cadcc;
-}
-
 .stripe_row {
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
@@ -121,6 +106,20 @@ abbr {
 .complex_datatable .form_row,
 .complex_datatable .form_row:hover {
     background: #FFC;
+}
+
+.complex_datatable .form_row td,
+.complex_datatable .form_row th {
+    white-space: normal;
+    border: 1px solid #7cadcc;
+    background: #7cadcc;
+    font-weight: normal;
+}
+
+.complex_datatable .form_row th {
+    text-align: left;
+    color: black;
+    vertical-align: bottom;
 }
 
 .complex_datatable .form_row select,

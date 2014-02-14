@@ -3,37 +3,39 @@
 {% set form=manual_form %}
 <form method="post" action="">
   <tr class="form_row">
-    <td></td>
+    <th></th>
     {% if not region %}
-    <td>Region</td>
+    <th>Region</th>
     {% endif %}
 
-    <td>Area</td>
-    <td>Range Concl.</td>
-    <td>Trend</td>
-    <td>Ref.</td>
+    <th>Area</th>
+    <th>Range Concl.</th>
+    <th>Trend</th>
+    <th>Ref.</th>
     
-    <td>Size&amp;Unit</td>
-    <td>Pop. Concl.</td>
-    <td>Trend</td>
-    <td>Ref.</td>
+    <th>Size&amp;Unit</th>
+    <th>Pop. Concl.</th>
+    <th>Trend</th>
+    <th>Ref.</th>
     
-    <td>Area</td>
-    <td>Habitat Concl.</td>
-    <td></td>
-    <td>Trend</td>
-    <td>Suitable</td>
+    <th>Area</th>
+    <th>Habitat Concl.</th>
+    <th></th>
+    <th>Trend</th>
+    <th>Suitable</th>
 
-    <td>Future prosp.</td>
+    <th>Future prosp.</th>
 
-    <td>Curr CS Concl.</td>
-    <td>Trend CS</td>
-    <td>Prev CS Concl.</td>
-    <td>Nat of ch</td>
+    <th>Curr CS Concl.</th>
+    <th>Trend CS</th>
+    <th>Prev CS Concl.</th>
+    <th>Nat of ch</th>
 
-    <td>Contrib.</td>
-    <td>Type</td>
+    <th>Contrib.</th>
+    <th>Type</th>
 
+    <th colspan="9">
+    </th>
   </tr>
   <tr class="form_row">
     <td></td>
@@ -46,9 +48,20 @@
       <td {% if form.range_surface_area.errors %}class="errors"{% endif %}>
       {{ form.range_surface_area(size=5) }}
       </td>
-      <td {% if form.method_range.errors or form.conclusion_range.errors %}class="errors"{% endif %}>
-      {{ form.method_range() }}
-      {{ form.conclusion_range() }}
+      <td class="{% if form.method_range.errors or form.conclusion_range.errors %}
+                  errors
+                  {% endif %}
+                  conclusion FV">
+        <div onclick="$(this).children('.popout').toggle()" class="popout-wrapper">
+          <div class="popout concl-select">
+            <div class="form-group">
+              <label>Method
+              {{ form.method_range() }}
+            </div>
+            {{ form.conclusion_range() }}
+          </div>
+          <span>?</span>
+        </div>
       </td>
       <td {% if form.range_trend.errors %}class="errors"{% endif %}>
       {{ form.range_trend() }}
