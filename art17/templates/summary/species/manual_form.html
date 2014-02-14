@@ -5,6 +5,39 @@
   <tr class="form_row">
     <td></td>
     {% if not region %}
+    <td>Region</td>
+    {% endif %}
+
+    <td>Area</td>
+    <td>Range Concl.</td>
+    <td>Trend</td>
+    <td>Ref.</td>
+    
+    <td>Size&amp;Unit</td>
+    <td>Pop. Concl.</td>
+    <td>Trend</td>
+    <td>Ref.</td>
+    
+    <td>Area</td>
+    <td>Habitat Concl.</td>
+    <td></td>
+    <td>Trend</td>
+    <td>Suitable</td>
+
+    <td>Future prosp.</td>
+
+    <td>Curr CS Concl.</td>
+    <td>Trend CS</td>
+    <td>Prev CS Concl.</td>
+    <td>Nat of ch</td>
+
+    <td>Contrib.</td>
+    <td>Type</td>
+
+  </tr>
+  <tr class="form_row">
+    <td></td>
+    {% if not region %}
     <td>{{ form.region() }}</td>
     {% endif %}
 
@@ -122,7 +155,7 @@
 
     {% if not manual_assessment %}
     <td colspan="9">
-      <button type="submit" name="submit" value="add">Add assesment</button>
+      <button class="btn-green" type="submit" name="submit" value="add">Add assesment</button>
     </td>
     {% else %}
     {% set row=manual_assessment %}
