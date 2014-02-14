@@ -25,6 +25,8 @@
     <div id="active-wiki">
         {% if edit_page_form %}
             {% include 'wiki/editpage.html' %}
+         {% elif merged and not wiki_body %}
+            <p>Please select a region in order to add an Audit Trail record.</p>
          {% else %}
             {% for region, region_url, body in wiki_body %}
                 <h3><a href="{{ region_url }}">{{ region }}</a></h3>

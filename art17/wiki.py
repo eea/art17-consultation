@@ -363,7 +363,8 @@ class EditComment(WikiView):
         if not can_edit_comment(comment):
             raise PermissionDenied
 
-        comment.comment = request.form.get('text'),
+        comment.comment = request.form.get('text')
+        comment.readers = []
         db.session.commit()
 
         flash("Comment successfully modified.")
