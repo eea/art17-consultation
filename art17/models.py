@@ -816,19 +816,18 @@ class HabitattypesManualAssessment(Base):
     )
     dataset = relationship(Dataset)
 
-    def comments_count_unread(self, user):
+    def comments_count_read(self, user):
         if not self.comments:
             return 0
-        return len(
-            db.session.query(HabitatComment.id)
-            .join(t_habitat_comments_read)
-            .filter(HabitatComment.habitat == self.habitatcode)
-            .filter(HabitatComment.region == self.region)
-            .filter(HabitatComment.MS == self.MS)
-            .filter(HabitatComment.user == self.user_id)
-            .filter('habitat_comments_read.reader_user_id="%s"' % user)
-            .all()
-        )
+        return (db.session.query(HabitatComment.id)
+                .join(t_habitat_comments_read)
+                .filter(HabitatComment.habitat == self.habitatcode)
+                .filter(HabitatComment.region == self.region)
+                .filter(HabitatComment.MS == self.MS)
+                .filter(HabitatComment.user == self.user_id)
+                .filter('habitat_comments_read.reader_user_id="%s"' % user)
+                .filter(HabitatComment.deleted in [0, None])
+                .count())
 
     @hybrid_property
     def subject(self):
@@ -837,6 +836,10 @@ class HabitattypesManualAssessment(Base):
     @subject.setter
     def subject(self, value):
         self.habitatcode = value
+
+    def undeleted_comments(self, user):
+        return [c for c in self.comments if not c.deleted or c.author == user
+                or user.has_role('admin')]
 
 
 class LuHdHabitat(Base):
@@ -1005,7 +1008,7 @@ class SpeciesManualAssessment(Base):
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     user_id = Column('user', String(25), primary_key=True, nullable=False,
-                  server_default=u"''")
+                     server_default=u"''")
     last_update = Column(String(16))
     deleted = Column('deleted_record', Integer)
     decision = Column(String(3))
@@ -1033,14 +1036,14 @@ class SpeciesManualAssessment(Base):
         if not self.comments:
             return 0
         return (db.session.query(Comment.id)
-            .join(t_comments_read)
-            .filter(Comment.assesment_speciesname == self.assesment_speciesname)
-            .filter(Comment.region == self.region)
-            .filter(Comment.MS == self.MS)
-            .filter(Comment.user == self.user_id)
-            .filter('comments_read.reader_user_id="%s"' % user)
-            .count()
-        )
+                .join(t_comments_read)
+                .filter(Comment.assesment_speciesname == self.assesment_speciesname)
+                .filter(Comment.region == self.region)
+                .filter(Comment.MS == self.MS)
+                .filter(Comment.user == self.user_id)
+                .filter('comments_read.reader_user_id="%s"' % user)
+                .filter(Comment.deleted in [0, None])
+                .count())
 
     @hybrid_property
     def subject(self):
@@ -1049,6 +1052,10 @@ class SpeciesManualAssessment(Base):
     @subject.setter
     def subject(self, value):
         self.assesment_speciesname = value
+
+    def undeleted_comments(self, user):
+        return [c for c in self.comments if not c.deleted or c.author == user
+                or user.has_role('admin')]
 
 
 t_species_name = Table(

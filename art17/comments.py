@@ -114,6 +114,7 @@ class CommentsList(views.View):
                     flash('You are not allowed here', 'error')
                     return False
                 edited_comment.comment = form.comment.data
+                edited_comment.readers = []
                 edited_comment.post_date = datetime.now().strftime(DATE_FORMAT)
             else:
                 if not can_post_comment(self.record):
@@ -177,6 +178,7 @@ class CommentsList(views.View):
         return render_template(
             'comments/list.html',
             record=self.record,
+            comments=self.record.undeleted_comments(current_user),
             form=form,
             edited_comment=edited_comment,
         )
@@ -223,13 +225,13 @@ class UserSummary(views.View):
             .filter_by(dataset_id=period)
             .order_by('-last_update').limit(100)
         )
-        comments_qs = (
+        comments = (
             self.model_comment_cls.query
             .join(self.model_comment_cls.record)
             .filter(self.model_manual_cls.dataset_id == period)
             .order_by('-post_date').all()
         )
-        return {'conclusions': conclusions, 'comments': comments_qs}
+        return {'conclusions': conclusions, 'comments': comments}
 
 
 class SpeciesUserSummary(SpeciesMixin, UserSummary):

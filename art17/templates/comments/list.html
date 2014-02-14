@@ -12,7 +12,6 @@
 </div>
 
 <div class="comment-section">
-  {% set comments = record.comments %}
   {% if not comments %}
     <p>No comments were added</p>
   {% else %}
@@ -53,7 +52,7 @@
               <a class="btn-text2"
                  href="?toggle={{ comment.id }}&read={{ read }}#comment-{{ comment.id }}">
                 {% if read %}Mark as unread{% else %}Mark as read{% endif %}
-              </a>
+              </a>&ensp;
             {% endif %}
             {% if can_delete_comment(comment) %}
               <a class="btn-text2"
