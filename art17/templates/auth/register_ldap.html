@@ -1,9 +1,5 @@
 {% extends layout_template %}
 
-{% macro render_field(field) %}
-    {{ field(**kwargs)|safe }}
-{% endmacro %}
-
 {% block breadcrumbs %}
   {% from '_macros.html' import breadcrumbs %}
   {{ breadcrumbs(APP_BREADCRUMBS + [
