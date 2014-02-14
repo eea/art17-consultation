@@ -1,11 +1,7 @@
-import os
-import hashlib
-import base64
 import inspect
 from datetime import datetime
 from werkzeug.local import LocalProxy
-from wtforms import TextField, ValidationError, SelectField, Field
-from wtforms.widgets import HiddenInput
+from wtforms import TextField, ValidationError, Field
 import flask
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
 import flask.ext.security.script
@@ -19,8 +15,8 @@ from flask.ext.security.forms import (
 )
 
 from art17.auth.common import get_ldap_user_info
-from art17.models import DicCountryCode, Dataset
 from art17.auth.common import check_dates
+from art17.auth.forms import Art17RegisterFormMixin
 
 
 current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
@@ -74,30 +70,10 @@ def check_duplicate_with_ldap(form, field):
         raise ValidationError("User ID already exists in LDAP database.")
 
 
-class Art17ConfirmRegisterForm(ConfirmRegisterForm):
+class Art17ConfirmRegisterForm(Art17RegisterFormMixin, ConfirmRegisterForm):
 
     id = TextField('Username', validators=[Required("User ID is required"),
                                      check_duplicate_with_ldap])
-    name = TextField('Full name',
-        validators=[Required("Full name is required")])
-    institution = TextField('Institution',
-        validators=[Required("Institution name is required")])
-    abbrev = TextField('Abbrev.')
-    MS = TextField(widget=HiddenInput())
-    country_options = SelectField('Member State')
-    other_country = TextField('Other country')
-    qualification = TextField('Qualification')
-
-    def __init__(self, *args, **kwargs):
-        super(Art17ConfirmRegisterForm, self).__init__(*args, **kwargs)
-        dataset = (Dataset.query.order_by(Dataset.id.desc()).first())
-        countries = (DicCountryCode.query
-            .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
-            .filter(DicCountryCode.dataset_id == dataset.id)
-            .distinct()
-            .order_by(DicCountryCode.name)
-            .all())
-        self.country_options.choices = countries + [('', 'Other country')]
 
     def to_dict(self):
         data = super(Art17ConfirmRegisterForm, self).to_dict()
@@ -106,31 +82,10 @@ class Art17ConfirmRegisterForm(ConfirmRegisterForm):
         return data
 
 
-class Art17ConfirmRegisterLDAPForm(BaseForm):
+class Art17ConfirmRegisterLDAPForm(Art17RegisterFormMixin, BaseForm):
 
-    name = TextField('Full name',
-        validators=[Required("Full name is required")])
     email = TextField('Email',
         validators=[Required("Email is required")])
-    institution = TextField('Institution',
-        validators=[Required("Institution name is required")])
-    abbrev = TextField('Abbrev.')
-    qualification = TextField('Qualification')
-    MS = TextField(widget=HiddenInput())
-    country_options = SelectField('MS')
-    other_country = TextField('Other country')
-
-    def __init__(self, *args, **kwargs):
-        super(Art17ConfirmRegisterLDAPForm, self).__init__(*args, **kwargs)
-        dataset = (Dataset.query.order_by(Dataset.id.desc()).first())
-        countries = (DicCountryCode.query
-            .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
-            .filter(DicCountryCode.dataset_id == dataset.id)
-            .distinct()
-            .order_by(DicCountryCode.name)
-            .all())
-        self.country_options.choices = countries + [('', 'Other country')]
-
 
     def to_dict(form):
         def is_field_and_user_attr(member):
