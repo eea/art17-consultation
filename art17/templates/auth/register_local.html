@@ -1,15 +1,5 @@
 {% extends layout_template %}
 
-{% macro render_field_with_errors(field) %}
-    {% set cls = 'form-error' if field.errors else '' %}
-    {{ field.label }} {{ field(class=cls, **kwargs)|safe }}
-    {% if field.errors %}
-      {% for error in field.errors %}
-        <p class="form-error-msg">{{ error }}</p>
-      {% endfor %}
-    {% endif %}
-{% endmacro %}
-
 {% macro render_field(field) %}
     {{ field(**kwargs)|safe }}
 {% endmacro %}
@@ -26,7 +16,7 @@
 
 
 {% block content %}
-
+{% from '_macros.html' import render_field_with_errors %}
 <h1>Register</h1>
 
 <form class="box inline-block form" method="POST" name="register_user_form">

@@ -193,11 +193,11 @@ $(function () {
 
 // Handle error display in form registration
 $(function () {
-    $('.form').delegate('.form-error', 'focus', function (e) {
+    $('.form-error').delegate('', 'focus', function () {
         $(this).removeClass('form-error');
     });
 
-    $('.form-error').delegate('', 'blur', function (e) {
+    $('.form-error').delegate('', 'blur', function () {
         if (this.value) {
             $(this).siblings('.form-error-msg').addClass('hidden');
         } else {
@@ -205,6 +205,17 @@ $(function () {
         }
     });
 });
+
+// Modal window
+var openModal = function () {
+    $('.modal-bg').removeClass('hidden');
+    $('body').addClass('stop_scroll');
+};
+
+var closeModal = function () {
+    $('.modal-bg').addClass('hidden');
+    $('body').removeClass('stop_scroll');
+};
 
 // Table column hover
 /*$(function () {

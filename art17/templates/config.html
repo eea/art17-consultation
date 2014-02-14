@@ -10,25 +10,22 @@
 
 
 {% block content %}
+{% from '_macros.html' import render_field_with_errors %}
   <h1>Configuration</h1>
 
   <form id="config-form" class="form box box-small inline-block" name="config" method="post">
+
+    <div class="form-group">
+      {{ render_field_with_errors(form.start_date) }}
+    </div>
 
     {% for field in form %}
       {% if field.name == 'csrf_token' %}
         <input type="hidden" name="{{ field.name }}" value="{{ field.value }}">
       {% else %}
         <div class="form-group">
-          <label for="{{ field.name }}">{{ field.label }}</label>
-          {{ field(class="css_class") }}
+          {{ render_field_with_errors(field) }}
         </div>
-        {% if field.errors %}
-          <ul class="errors">
-            {% for error in field.errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
       {% endif %}
     {% endfor %}
 

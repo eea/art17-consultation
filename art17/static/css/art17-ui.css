@@ -425,6 +425,8 @@ abbr {
 .popout.details .close {
     display: block;
     float: right;
+    height: 16px;
+    width: 16px;
 }
 
 .popout.select {
@@ -435,8 +437,6 @@ abbr {
 
 .close {
     padding: 0;
-    height: 16px;
-    width: 16px;
     border: 0;
     background: transparent;
 }
@@ -923,6 +923,59 @@ abbr {
 .btn-bigger {
 	font-size: 14px!important;
 	padding: 4px 8px!important;
+}
+
+/* Modal */
+.modal-bg {
+    z-index: 1000;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #444;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal {
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 50%;
+    margin-left: -300px;
+    width: 600px;
+    overflow: auto;
+    /*border-radius: 6px;*/
+    padding: 24px;
+    background: white;
+}
+
+.stop_scroll {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+
+}
+
+.modal-bg .close {
+    position: absolute;
+    bottom: 90%;
+    right: 50%;
+    margin-right: -348px;
+    margin-top: -24px;
+    display: block;
+    padding: 6px;
+    text-align: center;
+    /*padding: 6px;*/
+    font-weight: normal;
+    border-radius: 0;
+    color: white;
+}
+
+.modal-bg .close:hover {
+    background: #222;
 }
 
 /* Box (Equivalent to Bootstrap's well) */
