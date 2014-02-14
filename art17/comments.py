@@ -178,7 +178,6 @@ class CommentsList(views.View):
         return render_template(
             'comments/list.html',
             record=self.record,
-            comments=self.record.undeleted_comments(current_user),
             form=form,
             edited_comment=edited_comment,
         )

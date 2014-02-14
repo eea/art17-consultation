@@ -12,6 +12,7 @@
 </div>
 
 <div class="comment-section">
+  {% set comments = record.undeleted_comments(g.identity.id)%}
   {% if not comments %}
     <p>No comments were added</p>
   {% else %}

@@ -826,7 +826,7 @@ class HabitattypesManualAssessment(Base):
                 .filter(HabitatComment.MS == self.MS)
                 .filter(HabitatComment.user == self.user_id)
                 .filter('habitat_comments_read.reader_user_id="%s"' % user)
-                .filter(HabitatComment.deleted in [0, None])
+                .filter(HabitatComment.deleted.in_((0, None)))
                 .count())
 
     @hybrid_property
@@ -837,9 +837,10 @@ class HabitattypesManualAssessment(Base):
     def subject(self, value):
         self.habitatcode = value
 
-    def undeleted_comments(self, user):
-        return [c for c in self.comments if not c.deleted or c.author == user
-                or user.has_role('admin')]
+    def undeleted_comments(self, user_id):
+        user = RegisteredUser.query.filter_by(id=user_id).first()
+        return [c for c in self.comments if not c.deleted or
+                c.author_id == user_id or (user and user.has_role('admin'))]
 
 
 class LuHdHabitat(Base):
@@ -1042,7 +1043,7 @@ class SpeciesManualAssessment(Base):
                 .filter(Comment.MS == self.MS)
                 .filter(Comment.user == self.user_id)
                 .filter('comments_read.reader_user_id="%s"' % user)
-                .filter(Comment.deleted in [0, None])
+                .filter(Comment.deleted.in_((0, None)))
                 .count())
 
     @hybrid_property
@@ -1053,9 +1054,10 @@ class SpeciesManualAssessment(Base):
     def subject(self, value):
         self.assesment_speciesname = value
 
-    def undeleted_comments(self, user):
-        return [c for c in self.comments if not c.deleted or c.author == user
-                or user.has_role('admin')]
+    def undeleted_comments(self, user_id):
+        user = RegisteredUser.query.filter_by(id=user_id).first()
+        return [c for c in self.comments if not c.deleted or
+                c.author_id == user_id or (user and user.has_role('admin'))]
 
 
 t_species_name = Table(
