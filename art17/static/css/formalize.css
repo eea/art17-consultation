@@ -188,6 +188,8 @@ select,
 
 .disabled,
 .disabled:hover,
+.disabled:active,
+.disabled:focus,
 textarea[disabled],
 textarea[disabled]:hover,
 select[disabled],
@@ -196,6 +198,7 @@ input[disabled],
 input[disabled]:hover {
   background-color: #eeeeee;
   background-image: none;
+  outline: none;
 }
 
 .disabled,

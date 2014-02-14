@@ -123,7 +123,7 @@ $(function() {
 });
 
 $(function () {
-  $('#history').on('click', 'li', function (event) {
+  $('#history').on('click', 'li:not(.active)', function (event) {
     event.stopPropagation();
     $(this).addClass('selected')
     .siblings('.selected').removeClass('selected');
@@ -192,9 +192,35 @@ var openModal = function (iframe_url) {
 };
 
 var closeModal = function () {
+    $('iframe').attr('src', '');
     $('.modal-bg').addClass('hidden');
     $('body').removeClass('stop_scroll');
 };
+
+// Flash Messages
+$(function () {
+
+    var msg = $('.message');
+
+    var show_flash = function () {
+        $(msg).addClass('show');
+    }
+
+    var hide_flash = function () {
+        $(msg).removeClass('show');
+    }
+
+    window.setTimeout(show_flash, 600);
+    window.setTimeout(hide_flash, 3600);
+
+    $(msg).on('mouseenter', show_flash)//function () {
+//        window.clearTimeout(hide_flash);
+  //  });
+
+    $(msg).on('mouseleave', function () {
+        window.setTimeout(hide_flash, 600);
+    });
+});
 
 // Table column hover
 /*$(function () {

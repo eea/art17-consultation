@@ -6,7 +6,7 @@
   <h2 class="no-margins pull-left">{{ page_title }}</h2>
   <div class="pull-right">
       {% if can_edit_page() and not merged %}
-      <button class="edit-btn {% if edit_page_form %}disabled{% endif %}"
+      <button class="edit-btn btn-green {% if edit_page_form %}disabled{% endif %}"
           href="{{ edit_page_url }}">Edit {{ page_title }}</button>
 
       {% endif %}

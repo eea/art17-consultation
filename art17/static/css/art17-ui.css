@@ -1,3 +1,9 @@
+.popout-body {
+    padding: 0 1em;
+    margin: 0;
+    background: #f6f6f6;
+}
+
 /*GENERAL TABLE STYLES*/
 .complex_datatable {
     border-collapse: collapse;
@@ -387,11 +393,6 @@ abbr {
 
 
 
-.hidden {
-    display: none!important;
-}
-
-
 
 
 /* popout-wrapper */
@@ -433,7 +434,7 @@ abbr {
 }
 
 
-
+/* REVIEW */
 .close {
     padding: 0;
     border: 0;
@@ -445,24 +446,6 @@ abbr {
 }
 
 /* User registration */
-
-
-.wizard {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.wizard-step {
-    float: left;
-    /*display: none;*/
-    width: 200px;
-    margin: 0 18px;
-}
-
-.wizard-step:first-child {
-    display: block;
-}
-
 .input-message {
     color: red;
     font-size: smaller;
@@ -525,14 +508,15 @@ abbr {
 .wiki {
     position: relative;
 
+    border-top: 1px solid #b6b6b6;
+    border-bottom: 1px solid #b6b6b6;
     min-height: 180px;
     padding: 12px 1em;
     margin: 0 -1em;
+    background: #fff;
 }
 
 .title-section {
-    border-bottom: 1px solid #ddd;
-    background: #f6f6f6;
     margin: 0 -1em;
     padding: 1em;
 }
@@ -604,6 +588,15 @@ abbr {
     cursor: auto;
 }
 
+.history-list li.active,
+.history-list li.active:hover {
+    background: #b0cae9;
+    border: 1px solid #4172ac;
+    margin: 1px 0 0;
+    color: #0e417d;
+    cursor: default;
+}
+
 .history-list li button {
     display: none;
 }
@@ -660,15 +653,87 @@ abbr {
 }
 
 
+
+
+
+
+
+
+
+
+/* Flash messages */
+.flashes {
+    margin: 0;
+    padding: 0;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+}
+
+.flashes > li {
+    -webkit-transition: all 360ms ease-in-out;
+    -moz-transition: all 360ms ease-in-out;
+    -ms-transition: all 360ms ease-in-out;
+    -o-transition: all 360ms ease-in-out;
+    transition: all 360ms ease-in-out;
+
+    -webkit-box-shadow: 0 8px 4px -6px rgba(0,0,0,0.25);
+    box-shadow: 0 8px 4px -6px rgba(0,0,0,0.25);
+
+    opacity: 0;
+    margin-top: -50px;
+}
+
+.flashes > li.show {
+    opacity: 1;
+    margin-top: 12px;
+}
+
+.message {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #f9de62;
+    border: #eebb20;
+    border-radius: 3px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Comments */
 .comment-section {
-    border-top: 1px solid #ddd;
-    background: #f6f6f6;
     margin: 0 -1em;
     padding: 1em;
 }
 
-.cmnt-list li {
+.cmnt-list > li {
     margin-bottom: -1px;
     padding: 1em;
     border: 1px solid #ccc;
@@ -676,7 +741,7 @@ abbr {
 }
 
 /* Comment type - comment */
-.cmnt-list li.cmnt-owned {
+.cmnt-list > li.cmnt-owned {
     margin-left: -1em;
     margin-right: -1em;
     padding-left: 2em;
@@ -697,7 +762,7 @@ abbr {
 .cmnt-type {
     float: left;
     text-decoration: none;
-    margin: -3px 0.5em -4px -1em;
+    margin: -4px 0.5em -4px -1em;
     padding: 3px 8px;
     border-width: 1px 1px 1px 0;
     border-radius: 0 2px 2px 0;
@@ -710,20 +775,20 @@ abbr {
 .cmnt-owned .cmnt-type {
     position: static;
     padding: 0;
-    margin: 0 0.5em 0 0;
+    margin: -1px 0.5em 0 0;
     font-style: italic;
     float: left;
 }
 
 /* Not read comment */
-.cmnt-list li.cmnt-notread {
+.cmnt-list > li.cmnt-notread {
     margin-top: 1em;
     margin-bottom: 1em;
     z-index: 100;
     border-color: #2ca0d2;
 }
 
-.cmnt-list li.cmnt-notread .btn-text {
+.cmnt-list > li.cmnt-notread .btn-text {
     color: blue;
 }
 
@@ -734,7 +799,7 @@ abbr {
 }
 
 /* Read comment */
-.cmnt-list li.cmnt-read {
+.cmnt-list > li.cmnt-read {
     /*background: transparent;*/
 }
 
@@ -745,15 +810,15 @@ abbr {
 }
 
 /* Deleted comment */
-.cmnt-list li.cmnt-deleted {
+.cmnt-list > li.cmnt-deleted {
     color: #888;
     background: none;
 }
-.cmnt-list li.cmnt-deleted > .cmnt-body {
+.cmnt-list > li.cmnt-deleted > .cmnt-body {
     text-decoration: line-through;
 }
 
-.cmnt-list li.cmnt-deleted:hover > .cmnt-body {
+.cmnt-list > li.cmnt-deleted:hover > .cmnt-body {
     text-decoration: none;
 }
 
@@ -859,6 +924,15 @@ abbr {
     background: #5c993e;
 }
 
+.btn-green.disabled,
+.btn-green.disabled:hover,
+.btn-green.disabled:active {
+    background: #7ecf54;
+    border-color: #6db449;
+    color: #5c993e;
+    text-shadow: none;
+}
+
 .btn-blue {
   background: #3065a6;
   background-image: none;
@@ -876,6 +950,16 @@ abbr {
     background: #3065a6;
 }
 
+.btn-blue.disabled,
+.btn-blue.disabled:hover,
+.btn-blue.disabled:active {
+    background: #428be1;
+    border-color: #3065a6;
+    color: #3065a6;
+    text-shadow: none;
+}
+
+
 .btn-red {
   background: #c3393e;
   background-image: none;
@@ -889,8 +973,17 @@ abbr {
   text-shadow: 0 -1px 0 #a63034;
 }
 
-.btn-blue:active {
+.btn-red:active {
     background: #a63034;
+}
+
+.btn-red.disabled,
+.btn-red.disabled:hover,
+.btn-red.disabled:active {
+    background: #e14249;
+    border-color: #c3393e;
+    color: #a63034;
+    text-shadow: none;
 }
 
 .btn-eionet:hover,
@@ -943,11 +1036,14 @@ abbr {
     bottom: 10%;
     left: 50%;
     margin-left: -300px;
-    width: 600px;
-    overflow: auto;
+    width: 648px;
+    overflow: hidden;
+    /*overflow: auto;*/
     /*border-radius: 6px;*/
-    padding: 24px;
+    /*padding: 24px;*/
     background: white;
+    -webkit-box-shadow: 0 0 6px 1px rgba(0,0,0,0.9);
+    box-shadow: 0 0 6px 1px rgba(0,0,0,0.9);
 }
 
 .stop_scroll {
@@ -955,7 +1051,6 @@ abbr {
     height: 100%;
     width: 100%;
     position: fixed;
-
 }
 
 .modal-bg .close {
@@ -1012,6 +1107,13 @@ abbr {
     min-width: 180px;
 }
 
+hr {
+    margin: 12px 0;
+    border: 0;
+    height: 1px;
+    background: #ddd;
+}
+
 /* Widths */
 .width-420 {
     min-width: 420px;
@@ -1027,13 +1129,6 @@ abbr {
 
 .width-240 {
     min-width: 240px;
-}
-
-hr {
-    margin: 12px 0;
-    border: 0;
-    height: 1px;
-    background: #ddd;
 }
 
 /* Helpers */
@@ -1109,6 +1204,14 @@ hr {
     color: #888;
 }
 
+.white {
+    color: white;
+}
+
+.bold {
+    font-weight: bolder;
+}
+
 .small {
     font-size: smaller;
 }
@@ -1133,6 +1236,10 @@ hr {
 .block {
     width: 100%;
     display: block;
+}
+
+.hidden {
+    display: none!important;
 }
 
 /* Valentin, change me!! */
