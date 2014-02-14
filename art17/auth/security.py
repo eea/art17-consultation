@@ -6,12 +6,14 @@ import flask
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
 import flask.ext.security.script
 import flask.ext.security as flask_security
-from flask_wtf import Form as BaseForm
+from flask_wtf import Form
 
 from flask.ext.security.forms import (
     ConfirmRegisterForm,
+    RegisterFormMixin,
     password_length,
     Required,
+    email_validator,
 )
 
 from art17.auth.common import get_ldap_user_info
@@ -75,23 +77,8 @@ class Art17ConfirmRegisterForm(Art17RegisterFormMixin, ConfirmRegisterForm):
     id = TextField('Username', validators=[Required("User ID is required"),
                                      check_duplicate_with_ldap])
 
-    def to_dict(self):
-        data = super(Art17ConfirmRegisterForm, self).to_dict()
-        data.pop('country_options', None)
-        data.pop('other_country', None)
-        return data
 
-
-class Art17ConfirmRegisterLDAPForm(Art17RegisterFormMixin, BaseForm):
+class Art17ConfirmRegisterLDAPForm(Art17RegisterFormMixin, RegisterFormMixin, Form):
 
     email = TextField('Email',
-        validators=[Required("Email is required")])
-
-    def to_dict(form):
-        def is_field_and_user_attr(member):
-            _datastore = flask.current_app.extensions['security'].datastore
-            return isinstance(member, Field) and \
-                hasattr(_datastore.user_model, member.name)
-
-        fields = inspect.getmembers(form, is_field_and_user_attr)
-        return dict((key, value.data) for key, value in fields)
+        validators=[Required("Email is required"), email_validator])
