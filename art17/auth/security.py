@@ -114,7 +114,7 @@ class Art17ConfirmRegisterLDAPForm(BaseForm):
         validators=[Required("Email is required")])
     institution = TextField('Institution',
         validators=[Required("Institution name is required")])
-    abbrev = TextField('Institution(abbrev)')
+    abbrev = TextField('Abbrev.')
     qualification = TextField('Qualification')
     MS = TextField(widget=HiddenInput())
     country_options = SelectField('MS')

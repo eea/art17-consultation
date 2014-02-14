@@ -1,5 +1,8 @@
 {% extends layout_template %}
 
+{% macro render_field(field) %}
+    {{ field(**kwargs)|safe }}
+{% endmacro %}
 
 {% block breadcrumbs %}
   {% from '_macros.html' import breadcrumbs %}
@@ -11,8 +14,7 @@
 
 {% block content %}
 
-  {%- from "security/_macros.html" import
-        render_field_with_errors, render_field %}
+  {% from '_macros.html' import render_field_with_errors %}
   <h1>Register with Eionet account</h1>
 
   {%- if user %}
@@ -21,37 +23,64 @@
       <tt>{{ user_id }}</tt>.
     </p>
   {%- else %}
-    <form method="post" name="user">
-      <p>
-        Register the account named
-        <tt>{{ user_id }}</tt>.
-      </p>
+    <form class="box inline-block form" method="POST" name="user">
 
-      {{ register_user_form.hidden_tag() }}
-      {{ register_user_form.MS() }}
+    <div class="clearfix">
+      <div class="box-col width-300">
+          <p>
+            Register the account named
+            <tt>{{ user_id }}</tt>.
+          </p>
 
-      {{ render_field_with_errors(register_user_form.name) }}
-      {{ render_field_with_errors(register_user_form.email) }}
-      {{ render_field_with_errors(register_user_form.institution) }}
-      {{ render_field_with_errors(register_user_form.abbrev) }}
-      {{ render_field_with_errors(register_user_form.qualification) }}
-      {{ render_field_with_errors(register_user_form.country_options) }}
+          {{ register_user_form.hidden_tag() }}
+          {{ register_user_form.MS() }}
 
-      <div id="other_country_container">
-        {{ render_field_with_errors(register_user_form.other_country) }}
+          <!-- NAME -->
+          <div class="form-group">
+            {{ render_field_with_errors(register_user_form.name) }}
+          </div>
+          <!-- INSTITUTION -->
+          <div class="form-group clearfix">
+            <div class="pull-left" style="width: 75%;">
+              {{ render_field_with_errors(register_user_form.institution) }}
+            </div>
+            <div class="pull-left" style="width: 25%;">
+              {{ render_field_with_errors(register_user_form.abbrev, maxlength='4') }}
+            </div>
+          </div>
+          <!-- MEMBER STATE -->
+          <div class="form-group">
+            {{ render_field_with_errors(register_user_form.country_options) }}
+          </div>
+          <!-- ??? -->
+          <div class="form-group" id="other_country_container">
+            {{ render_field_with_errors(register_user_form.other_country) }}
+          </div>
       </div>
 
-      <div>
-        <button type="submit">Register</button>
+      <div class="box-col width-300">
+        <!-- EMAIL -->
+        <div class="form-group">
+          {{ render_field_with_errors(register_user_form.email) }}
+        </div>
+
+        <!-- QUALIFICATION -->
+        <div class="form-group">
+          {{ render_field_with_errors(register_user_form.qualification) }}
+        </div>
       </div>
-      </form>
+    </div>
+
+    <hr>
+    <div class="text-right">
+      <input id="submit" class="btn-blue" type="submit" value="Register" name="submit"></input>
+    </div>
+
+    </form>
   {%- endif %}
-
 {% endblock content %}
 
 
 {% block scripts %}
-
   <script src="{{ url_for('static', filename='js/auth_register.js') }}"></script>
-
 {% endblock %}
