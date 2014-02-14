@@ -1,7 +1,7 @@
 
 <td>
   {% set url=url_for(comments_endpoint, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
-  <a href="{{ url }}" class="comments-btn" title="Comments: Read/Total">
+  <a href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
   {{ row.comments_count_read(g.identity.id) }}/{{ row.undeleted_comments(g.identity.id)|count }}
   </a>
 </td>

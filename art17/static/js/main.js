@@ -42,16 +42,6 @@ $(function () {
 });
 
 $(function() {
-    $('body').on('click', '.comments-btn', function(evt) {
-      evt.preventDefault();
-      var link = $(this);
-      var url = link.attr('href');
-      var name = "Comments";
-      var params = 'height=600,width=600,screenX=300,screenY=100,scrollbars=1';
-      var popup = window.open(url, name, params);
-      popup.focus();
-    });
-
     $('.close-popup').on('click', function (evt) {
       evt.preventDefault();
       window.close();
@@ -77,18 +67,6 @@ $(function() {
       popup.focus();
     });
 
-});
-
-$(function() {
-    $('body').on('click', '#wikibutton', function(evt) {
-        evt.preventDefault();
-        var btn = $(this);
-        var url = btn.attr('url');
-        var name = 'DataSheetInfo';
-        var params = 'scrollbars=1, resizable=1, height=600, width=600';
-        var popup = window.open(url, name, params);
-        popup.focus();
-    });
 });
 
 $(function() {
@@ -207,7 +185,8 @@ $(function () {
 });
 
 // Modal window
-var openModal = function () {
+var openModal = function (iframe_url) {
+    $('iframe').attr('src', iframe_url)
     $('.modal-bg').removeClass('hidden');
     $('body').addClass('stop_scroll');
 };
