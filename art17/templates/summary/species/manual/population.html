@@ -7,9 +7,9 @@
 {% set concl_value = get_population_conclusion_value(row.assesment_speciesname,
                                                 row.region,
                                                 row.method_range) %}
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }} conclusion"
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}"
     title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
-    <span>{{ row.method_population or '' }}</span>
+    <span class="conclusion">{{ row.method_population or '' }}</span>
 </td>
 
 <td class="center">

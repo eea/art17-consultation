@@ -7,9 +7,9 @@
                                                 row.region,
                                                 row.method_range) %}
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }} conclusion"
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}"
     title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
-    <span>{{ row.method_range }}</span>
+    <span class="conclusion">{{ row.method_range }}</span>
 </td>
 
 <td class="center">

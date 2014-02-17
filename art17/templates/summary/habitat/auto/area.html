@@ -2,9 +2,9 @@
   {{ row.coverage_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_coverage] }} conclusion"
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_coverage] }}"
     title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_coverage, '') }}">
-  <span>{{ row.percentage_coverage_surface_area|parse_semicolon|str2num('')|safe }}</span>
+  <span class="conclusion">{{ row.percentage_coverage_surface_area|parse_semicolon|str2num('')|safe }}</span>
 </td>
 
 <td class="center">

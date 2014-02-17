@@ -185,130 +185,146 @@ abbr {
 }
 
 /* Conclusion */
-.conclusion > * {
+.conclusion,
+.conclusion:hover {
     display: inline-block;
     *zoom: 1;
     padding: 1px 2px;
     margin: -2px -3px;
     text-align: center;
+    text-decoration: none;
     border-color: transparent;
     border-width: 1px;
     border-style: solid;
     border-radius: 2px;
-    min-width: 100%;
     min-height: 16px;
     vertical-align: top;
 }
 
-.conclusion > * > a {
-    color: inherit;
-    padding: 1px 2px;
-    margin: -2px -3px;
-    border-radius: 2px;
-    border: 1px solid transparent;
-    text-decoration: none;
-    display: block;
+td > .conclusion {
+    min-width: 100%;
 }
 
-.conclusion > * > a:hover {
+a.conclusion:hover {
     color: inherit;
     text-decoration: none;
-    background: rgba(255, 255, 255, 0.25);
+    /*background: rgba(255, 255, 255, 0.25);*/
     border-color: blue;
 }
 
-.conclusion.select > * {
+/*.conclusion .popout-wrapper {
+    cursor: pointer;
+    border-radius: 0;
+    padding: 1px 2px!important;
+    margin: -2px -3px!important;
     color: #000;
     border-color: #ccc;
     background: #fff;
-}
+}*/
+
+
 
 /* Conclusion Types */
-.FV > * {
+.FV .conclusion,
+.FV.conclusion {
     color: #000;
     border-color: #639500;
     background-color: #9aca3b;
 }
 
-.FVU > * {
+.FVU .conclusion,
+.FVU.conclusion {
     color: #000;
     border-color: #639500;
     background-color: #9aca3b;
 }
 
-.U1 > * {
+.U1 .conclusion,
+.U1.conclusion {
     color: #000;
     border-color: #b05f00;
     background-color: #e69800;
 }
 
-.U1U > * {
+.U1U .conclusion,
+.U1U.conclusion {
     color: #000;
     border-color: #b05f00;
     background-color: #e69800;
 }
 
-.U1M > * {
+.U1M .conclusion,
+.U1M.conclusion {
     color: #000;
     border-color: #b05f00;
     background-color: #e69800;
 }
 
-.U1P > * {
+.U1P .conclusion,
+.U1P.conclusion {
     color: #000;
     border-color: #b05f00;
     background-color: #e69800;
 }
 
-.U2 > * {
+.U2 .conclusion,
+.U2.conclusion {
     color: #000;
     border-color: #742c2c;
     background-color: #eb6847;
 }
 
-.U2U > * {
+.U2U .conclusion,
+.U2U.conclusion {
     color: #000;
     border-color: #742c2c;
     background-color: #eb6847;
 }
 
-.U2M > * {
+.U2M .conclusion,
+.U2M.conclusion {
     color: #000;
     border-color: #742c2c;
     background-color: #eb6847;
 }
 
-.U2P > * {
+.U2P .conclusion,
+.U2P.conclusion {
     color: #000;
     border-color: #742c2c;
     background-color: #eb6847;
 }
 
-.XX > * {
+.XX .conclusion,
+.XX.conclusion {
     color: #000;
     border-color: #888;
     background-color: #b4b4b4;
 }
 
-.XXU > * {
+.XXU .conclusion,
+.XXU.conclusion {
     color: #000;
     border-color: #888;
     background-color: #b4b4b4;
 }
 
-.XU > * {
+.XU .conclusion,
+.XU.conclusion {
     color: #000;
     border-color: #888;
     background-color: #b4b4b4;
 }
 
-.XUU > * {
+.XUU .conclusion,
+.XUU.conclusion {
     color: #000;
     border-color: #888;
     background-color: #b4b4b4;
 }
 
-.NA > * {
+.NA .conclusion,
+.NA.conclusion {
     color: #000;
     border-color: #4774c7;
     background-color: #78bbee;

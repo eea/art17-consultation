@@ -4,23 +4,23 @@
         {{ row.coverage_surface_area|str2num }}
     </td>
 
-    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_area, '') + ' conclusion' %}
+    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_area, '') %}
     {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_area, '') %}
     <td {{ parse_errors(['conclusion_area',
                          'percentage_coverage_surface_area'],
                           row, qa_errors,
                           title=title,
                           classes=classes) }}>
-      <span>{{ row.percentage_coverage_surface_area|str1num }}</span>
+      <span class="conclusion">{{ row.percentage_coverage_surface_area|str1num }}</span>
     </td>
 
    {% set qtitle, qclasses = parse_qa_errors('coverage_yearly_magnitude', row, qa_errors) %}
-   <td class="{{ qclasses }} conclusion"
+   <td class="{{ qclasses }}"
        title="{%- if qtitle -%}{{ qtitle }}
               {%- elif row.coverage_yearly_magnitude -%}
               Yearly magnitude = {{ row.coverage_yearly_magnitude}}
               {%- endif -%}">
-     <span>{{ row.coverage_trend or 'N/A' }}</span>
+     <span class="conclusion">{{ row.coverage_trend or 'N/A' }}</span>
    </td>
 
   <td {{ parse_errors(['complementary_favourable_area_q',

@@ -1,5 +1,5 @@
 {% if dataset.schema == '2006' %}
-  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
   {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
 
   {% set concl_value = get_assesm_conclusion_value_for_species(row.assesment_speciesname,
@@ -8,10 +8,10 @@
 
   <td colspan="4" class="{{ classes }} border_left"
       title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
-      <span>{{ row.method_assessment or '' }}</span>
+      <span class="conclusion">{{ row.method_assessment or '' }}</span>
   </td>
 {% else %}
-  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
   {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
 
   {% set concl_value = get_assesm_conclusion_value_for_species(row.assesment_speciesname,
@@ -20,7 +20,7 @@
 
   <td class="{{ classes }} border_left"
       title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
-      <span>{{ row.method_assessment or '' }}</span>
+      <span class="conclusion">{{ row.method_assessment or '' }}</span>
   </td>
   <td>{{ row.conclusion_assessment_trend or 'N/A' }}</td>
   <td>{{ row.conclusion_assessment_prev or 'N/A' }}</td>

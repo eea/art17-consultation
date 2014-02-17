@@ -3,6 +3,6 @@
 {% set concl_value = get_range_conclusion_value(row.habitat,
                                                 row.region,
                                                 row.method_structure) %}
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} conclusion border" title="{{ title }}{% if concl_value %}: {{ concl_value }}{% endif %}">
-  <span>{{ row.method_structure }}</span>
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} border" title="{{ title }}{% if concl_value %}: {{ concl_value }}{% endif %}">
+  <span class="conclusion">{{ row.method_structure }}</span>
 </td>

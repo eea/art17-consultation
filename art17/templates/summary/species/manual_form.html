@@ -51,16 +51,34 @@
       <td class="{% if form.method_range.errors or form.conclusion_range.errors %}
                   errors
                   {% endif %}
-                  conclusion FV">
-        <div onclick="$(this).children('.popout').toggle()" class="popout-wrapper">
-          <div class="popout concl-select">
+                  select"
+          >
+        <div class="conclusion popout-wrapper">
+
+          <div class="popout width-300">
+            <a onclick="$(this).parent().toggle()"><i class="fa fa-times"></i></a>
             <div class="form-group">
-              <label>Method
-              {{ form.method_range() }}
+              <label>Method</label>
             </div>
-            {{ form.conclusion_range() }}
+            <div class="form-group">
+              <label>Conclusion</label>
+              <ul class="no-list">
+                <li class="FV">
+                  <span class="conclusion">FV</span></li>
+                <li class="U1">
+                  <span class="conclusion">U1</span></li>
+                <li class="U2">
+                  <span class="conclusion">U2</span></li>
+                <li class="XX">
+                  <span class="conclusion">XX</span></li>
+              </ul>
+            </div>
+            {# {{ form.method_range() }}
+            {{ form.conclusion_range() }} #}
+
           </div>
-          <span>?</span>
+
+          <i onclick="$(this).prev('.popout').toggle()" class="block fa fa-pencil"></i>
         </div>
       </td>
       <td {% if form.range_trend.errors %}class="errors"{% endif %}>

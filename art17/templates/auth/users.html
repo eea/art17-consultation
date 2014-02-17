@@ -40,14 +40,14 @@
             {% if not user.active %}Inactive{% endif %}
           </p>
         </td>
-        <td>{{user.confirmed_at or ''}}2010-04-22 08:06<br>
+        <td><div>{{user.confirmed_at or ''}}</div>
         via {{ 'Eionet' if user.is_ldap else 'local' }}</td>
         <td>
-          <div>{{ user.name or '' }}First-Last Name</div>
-          <div>{{ user.institution or '' }}Institution</div>
+          <div>{{ user.name or '' }}</div>
+          <div>{{ user.institution or '' }}</div>
           <div><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
         </td>
-        <td>{{ user.qualification or '' }}Qualification</td>
+        <td>{{ user.qualification or '' }}</td>
         <td class="text-center">
           {% if 'admin' in each_roles %}
           <i class="fa fa-check"></i>

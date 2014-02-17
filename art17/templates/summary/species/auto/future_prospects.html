@@ -1,8 +1,8 @@
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' conclusion border' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' border' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_future, '') %}
 
 <td class="{{ classes }}" title="{{ title }}">
-  <span>{{ row.percentage_future|default('', true)|parse_semicolon|safe  }}</span>
+  <span class="conclusion">{{ row.percentage_future|default('', true)|parse_semicolon|safe  }}</span>
 </td>
 

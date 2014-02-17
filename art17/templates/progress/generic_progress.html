@@ -48,10 +48,9 @@
                           period=dataset.id, subject=subject_name,
                           region=region.reg_code) %}
             {% if data %}
-              <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }} conclusion"
+              <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }}"
                   title="{{ data['title'] }}">
-                  <span>
-                    <a href="{{ url }}">
+                    <a href="{{ url }}" class="conclusion">
                     {% if can_view_details() %}
                       {{ data['main_decision'] }}
                       {{ ' '.join(data['other_decisions']) }}
@@ -65,7 +64,6 @@
                       {{ data['method']|methodify }}
                     {% endif %}
                     </a>
-                  </span>
               </td>
             {% else %}
               <td></td>

@@ -1,4 +1,4 @@
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
 
 {% set concl_value = get_assesm_conclusion_value_for_habitat(row.habitat,
@@ -6,5 +6,5 @@
                                                              row.method_future) %}
 
 <td class="{{ classes }} border" title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
-    <span>{{ row.method_assessment or '' }}</span>
+    <span class="conclusion">{{ row.method_assessment or '' }}</span>
 </td>

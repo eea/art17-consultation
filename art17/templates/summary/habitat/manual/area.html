@@ -5,9 +5,9 @@
 {% set title = COUNTRY_ASSESSMENTS.get(row.conclusion_area, '') %}
 {% set concl_value = get_range_conclusion_value(row.habitat, row.region,
                                                 row.method_area) %}
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }} conclusion"
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}"
     title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
-  <span>{{ row.method_area or '' }}</span>
+  <span class="conclusion">{{ row.method_area or '' }}</span>
 </td>
 
 <td class="center">

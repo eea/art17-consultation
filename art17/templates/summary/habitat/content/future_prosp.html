@@ -1,10 +1,9 @@
 {% from '_macros.html' import parse_errors with context %}
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') +
-               ' conclusion border' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' border' %}
 {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_future, '') %}
 
 <td {{ parse_errors(['conclusion_future'], row, qa_errors,
                     title=title, classes=classes) }}>
-  <span>{{ row.conclusion_future|str2num }}</span>
+  <span class="conclusion">{{ row.conclusion_future|str2num }}</span>
 </td>

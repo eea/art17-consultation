@@ -1,27 +1,27 @@
 {% from '_macros.html' import parse_errors with context %}
 
 {% if dataset.schema == '2006' %}
-  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '')  %}
   {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
   <td colspan="4" {{ parse_errors('conclusion_assessment',
                       row, qa_errors, title=title, classes=classes) }}>
-    <span>{{ row.conclusion_assessment|str1num }}</span>
+    <span class="conclusion">{{ row.conclusion_assessment|str1num }}</span>
   </td>
 
 {% else %}
-  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') + ' conclusion' %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
   {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
   <td {{ parse_errors('conclusion_assessment',
                       row, qa_errors, title=title, classes=classes) }}>
-    <span>{{ row.conclusion_assessment|str1num }}</span>
+    <span class="conclusion">{{ row.conclusion_assessment|str1num }}</span>
   </td>
 
   <td>{{ row.conclusion_assessment_trend|str2num }}</td>
 
-  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') + ' conclusion' %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') %}
   {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_prev, '') %}
   <td title="{{ title }}" class="{{ classes }}">
-    <span>{{ row.conclusion_assessment_prev|str1num }}</span>
+    <span class="conclusion">{{ row.conclusion_assessment_prev|str1num }}</span>
   </td>
   <td>{{ row.conclusion_assessment_change|str2num }}</td>
 {% endif %}
