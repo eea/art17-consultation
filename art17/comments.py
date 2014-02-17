@@ -8,6 +8,8 @@ from flask import (
 )
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
+from flask.ext.principal import PermissionDenied
+
 from art17.auth import current_user
 from art17.common import get_default_period, admin_perm
 from art17.forms import CommentForm
@@ -56,10 +58,8 @@ def can_post_comment(record):
 def can_edit_comment(comment):
     if not comment or not current_user.is_authenticated():
         return False
-    return (
-        not comment.record.deleted and not comment.deleted
-        and (comment.author_id == current_user.id or admin_perm.can())
-    )
+    return (not comment.record.deleted and not comment.deleted
+            and comment.author_id == current_user.id)
 
 
 @comments.app_template_global('can_toggle_read')
@@ -90,8 +90,7 @@ class CommentsList(views.View):
 
     def toggle_delete(self, comment):
         if not can_delete_comment(comment):
-            flash('You are not allowed here', 'error')
-            return False
+            raise PermissionDenied
 
         if comment.deleted is None:
             comment.deleted = 0
@@ -100,8 +99,7 @@ class CommentsList(views.View):
 
     def toggle_read(self, comment):
         if not can_toggle_read(comment):
-            flash('You are not allowed here', 'error')
-            return False
+            raise PermissionDenied
         if comment.read_for(current_user):
             mark_unread(comment, current_user)
         else:
@@ -111,15 +109,13 @@ class CommentsList(views.View):
         if form.validate():
             if edited_comment:
                 if not can_edit_comment(edited_comment):
-                    flash('You are not allowed here', 'error')
-                    return False
+                    raise PermissionDenied
                 edited_comment.comment = form.comment.data
                 edited_comment.readers = []
                 edited_comment.post_date = datetime.now().strftime(DATE_FORMAT)
             else:
                 if not can_post_comment(self.record):
-                    flash('You are not allowed here', 'error')
-                    return False
+                    raise PermissionDenied
                 comment = self.model_comment_cls(
                     subject=self.record.subject,
                     region=self.record.region,
@@ -136,8 +132,7 @@ class CommentsList(views.View):
                 mark_read(comment, current_user)
             return True
         else:
-            flash('The form has errors', 'error')
-            return False
+            raise PermissionDenied
 
     def dispatch_request(self, subject, region, user, MS):
         self.record = self.get_manual_record(subject, region, user, MS)
@@ -147,8 +142,7 @@ class CommentsList(views.View):
             edited_comment = self.model_comment_cls.query.get(
                 (edit_id, self.record.dataset_id))
             if not can_edit_comment(edited_comment):
-                flash('You are not allowed to edit this comment', 'error')
-                edited_comment = None
+                raise PermissionDenied
         if request.args.get('toggle'):
             comment = self.model_comment_cls.query.get(
                 (request.args['toggle'], self.record.dataset_id)
