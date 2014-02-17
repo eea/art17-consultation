@@ -51,7 +51,7 @@ class EtcDicHdHabitat(SQLAlchemyModelFactory):
     shortname = 'Sandbanks slightly covered by sea water all time'
 
 
-class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
+class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):,
 
     FACTORY_FOR = models.EtcDataHabitattypeRegion
     FACTORY_SESSION = models.db.session
@@ -205,4 +205,14 @@ class HabitatCommentFactory(SQLAlchemyModelFactory):
     user = 'someuser'
     MS = 'EU25'
     post_date = datetime.now().strftime(DATE_FORMAT)
+    dataset_id = 1
+
+
+class EtcDicConclusionFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDicConclusion
+    FACTORY_SESSION = models.db.session
+
+    order = 1
+    conclusion = 'FV'
     dataset_id = 1
