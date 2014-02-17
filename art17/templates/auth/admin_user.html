@@ -11,25 +11,64 @@
 
 
 {% block content %}
+  {% from '_macros.html' import render_field_with_errors %}
   <h1>User administration: <tt>{{ user.id }}</tt></h1>
 
-  <form method="post">
-    <div>
+  <form class="box inline-block form" method="post">
+    <div class="form-group">
       <input type="checkbox" id="admin_user-active" name="active"
              {%- if user.active %} checked{% endif %}>
       <label for="admin_user-active">Active</label>
     </div>
 
-    <div>
-      <label for="admin_user-roles">Roles</label><br>
-      <select name="roles" multiple id="admin_user-roles">
-        {% for role, role_name in all_roles.items() %}
-          <option value="{{ role }}"
-              {%- if role in current_user_roles %}selected{% endif %}>
-              {{ role_name }}
-          </option>
-        {% endfor %}
-      </select>
+    <div class="clearfix">
+        <div class="form-group">
+            <label for="admin_user-roles">Assigned Roles</label><br>
+            <select name="roles" multiple id="admin_user-roles">
+            {% for role, role_name in all_roles.items() %}
+              <option value="{{ role }}"
+                  {%- if role in current_user_roles %}selected{% endif %}>
+                  {{ role_name }}
+              </option>
+            {% endfor %}
+            </select>
+      </div>
+    </div>
+
+    <div class="clearfix">
+
+          {{ user_form.hidden_tag() }}
+          {{ user_form.MS() }}
+
+          <!-- NAME -->
+          <div class="form-group">
+            {{ render_field_with_errors(user_form.name) }}
+          </div>
+          <!-- EMAIL -->
+          <div class="form-group">
+            {{ render_field_with_errors(user_form.email) }}
+          </div>
+          <!-- INSTITUTION -->
+          <div class="form-group clearfix">
+            <div class="pull-left" style="width: 75%;">
+              {{ render_field_with_errors(user_form.institution) }}
+            </div>
+            <div class="pull-left" style="width: 25%;">
+              {{ render_field_with_errors(user_form.abbrev, maxlength='4') }}
+            </div>
+          </div>
+          <!-- MEMBER STATE -->
+          <div class="form-group">
+            {{ render_field_with_errors(user_form.country_options) }}
+          </div>
+          <!-- ??? -->
+          <div class="form-group" id="other_country_container">
+            {{ render_field_with_errors(user_form.other_country) }}
+          </div>
+          <!-- QUALIFICATION -->
+          <div class="form-group">
+            {{ render_field_with_errors(user_form.qualification) }}
+          </div>
     </div>
 
     <div>
@@ -40,3 +79,7 @@
     </div>
   </form>
 {% endblock content %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/auth_register.js') }}"></script>
+{% endblock %}

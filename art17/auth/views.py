@@ -21,6 +21,8 @@ from art17.auth.common import (
     get_ldap_user_info,
     activate_and_notify_admin,
     check_dates,
+    alter_user_info,
+    COMMON_USER_INFO_FIELDS,
 )
 
 
@@ -261,19 +263,28 @@ def admin_user(user_id):
         .all()
     )
 
+    # we use LDAP reg form as it is the closest to what an admin should edit
+    user_form = Art17LDAPRegisterForm(
+        ImmutableMultiDict([(field, getattr(user, field))
+            for field in COMMON_USER_INFO_FIELDS])
+    )
+
     if flask.request.method == 'POST':
+        # manage status
         set_user_active(user, flask.request.form.get('active', type=bool))
 
+        # manage roles
         datastore = flask.current_app.extensions['security'].datastore
         new_roles = flask.request.form.getlist('roles')
         expandable_roles = filter(lambda k: k not in new_roles, current_user_roles)
-
         for role in new_roles:
             datastore.add_role_to_user(user_id, role)
         for role in expandable_roles:
             datastore.remove_role_from_user(user_id, role)
-
         datastore.commit()
+
+        # manage user info
+        alter_user_info(user, **flask.request.form.to_dict())
 
         if flask.request.form.get('notify_user', type=bool):
             send_role_change_notification(user, new_roles)
@@ -283,6 +294,7 @@ def admin_user(user_id):
 
     return flask.render_template('auth/admin_user.html', **{
         'user': user,
+        'user_form': user_form,
         'current_user_roles': current_user_roles,
         'all_roles': dict(all_roles),
     })
