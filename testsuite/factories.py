@@ -3,6 +3,8 @@ from factory.alchemy import SQLAlchemyModelFactory
 
 from art17 import models
 
+DATE_FORMAT = '%Y-%m-%d'
+
 
 class DatasetFactory(SQLAlchemyModelFactory):
 
@@ -80,6 +82,10 @@ class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
     FACTORY_SESSION = models.db.session
 
     dataset_id = 1
+    assesment_speciesname = 'Canis lupus'
+    region = 'BOR'
+    user_id = 'someuser'
+    MS = 'EU25'
 
 
 class EtcDataSpeciesAutomaticAssessmentFactory(SQLAlchemyModelFactory):
@@ -104,6 +110,10 @@ class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
     FACTORY_SESSION = models.db.session
 
     dataset_id = 1
+    habitatcode = '1110'
+    region = 'MATL'
+    user_id = 'someuser'
+    MS = 'EU25'
 
 
 class WikiFactory(SQLAlchemyModelFactory):
@@ -150,7 +160,7 @@ class WikiTrailChangeFactory(SQLAlchemyModelFactory):
     wiki_id = 1
     body = 'For Poland: present range, population and habitat'
     editor = 'testuser'
-    changed = datetime.strptime('10-02-2014 14:22:23', '%d-%m-%Y %H:%M:%S')
+    changed = datetime.now()
     active = 1
 
 
@@ -164,3 +174,35 @@ class WikiCommentFactory(SQLAlchemyModelFactory):
     comment = 'This is a comment'
     author_id = 'testuser'
     posted = datetime.now()
+
+
+class CommentFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.Comment
+    FACTORY_SESSION = models.db.session
+
+    id = 1
+    comment = 'This is a comment'
+    author_id = 'testuser'
+    assesment_speciesname = 'Canis lupus'
+    region = 'BOR'
+    user = 'someuser'
+    MS = 'EU25'
+    post_date = datetime.now().strftime(DATE_FORMAT)
+    dataset_id = 1
+
+
+class HabitatCommentFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.HabitatComment
+    FACTORY_SESSION = models.db.session
+
+    id = 1
+    comment = 'This is a comment'
+    author_id = 'testuser'
+    habitat = '1110'
+    region = 'MATL'
+    user = 'someuser'
+    MS = 'EU25'
+    post_date = datetime.now().strftime(DATE_FORMAT)
+    dataset_id = 1

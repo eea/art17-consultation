@@ -1,5 +1,4 @@
 import pytest
-from urllib import urlencode
 
 from art17.models import db, WikiChange, Wiki, WikiComment, RegisteredUser
 from .factories import (
@@ -11,7 +10,7 @@ from .factories import (
     WikiCommentFactory,
 )
 from art17.auth.providers import set_user
-from conftest import create_user
+from conftest import create_user, get_request_params
 
 
 @pytest.fixture
@@ -59,14 +58,6 @@ def setup(app):
         active=0
     )
     db.session.commit()
-
-
-def get_request_params(request_type, request_args, post_params=None):
-    if request_type == 'post':
-        query_string = urlencode(request_args[1])
-        final_url = '?'.join((request_args[0], query_string))
-        request_args = [final_url, post_params]
-    return request_args
 
 
 def get_instance(models_cls, **kwargs):

@@ -5,6 +5,7 @@ from alembic import command, config
 from path import path
 from mock import patch
 from datetime import datetime
+import urllib
 
 from art17.app import create_app
 from art17 import models
@@ -137,3 +138,12 @@ def create_user(user_id, role_names=[], name='', institution=''):
     models.db.session.commit()
 
     return user
+
+
+def get_request_params(request_type, request_args, post_params=None):
+    request_args[0] = urllib.quote(request_args[0])
+    if request_type == 'post':
+        query_string = urllib.urlencode(request_args[1])
+        final_url = '?'.join((request_args[0], query_string))
+        request_args = [final_url, post_params]
+    return request_args
