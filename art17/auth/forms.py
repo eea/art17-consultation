@@ -37,5 +37,5 @@ class Art17RegisterFormMixin(object):
             .distinct()
             .order_by(DicCountryCode.name)
             .all())
-        self.country_options.choices = countries + [('', 'Other country')]
+        self.country_options.choices = countries + [('', 'Choose another country ...')]
 
