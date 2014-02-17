@@ -51,7 +51,7 @@ class EtcDicHdHabitat(SQLAlchemyModelFactory):
     shortname = 'Sandbanks slightly covered by sea water all time'
 
 
-class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):,
+class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
 
     FACTORY_FOR = models.EtcDataHabitattypeRegion
     FACTORY_SESSION = models.db.session
