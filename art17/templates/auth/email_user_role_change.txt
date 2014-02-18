@@ -5,3 +5,7 @@ Your roles have been updated. You now have the following roles:
 {% for role in new_roles %}
 * {{ role }}
 {%- endfor %}
+
+
+Best regards,
+The Eionet team
