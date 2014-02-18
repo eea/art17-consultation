@@ -82,3 +82,9 @@ class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
 
     email = TextField('Email',
         validators=[Required("Email is required"), email_validator])
+
+
+class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
+
+    email = TextField('Email',
+        validators=[Required("Email is required"), email_validator])

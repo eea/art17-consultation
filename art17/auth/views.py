@@ -14,6 +14,7 @@ from art17.auth import zope_acl_manager, current_user, auth
 from art17.auth.security import (
     Art17LocalRegisterForm,
     Art17LDAPRegisterForm,
+    Art17AdminEditUserForm,
 )
 from art17.auth.common import (
     require_admin,
@@ -21,8 +22,6 @@ from art17.auth.common import (
     get_ldap_user_info,
     activate_and_notify_admin,
     check_dates,
-    alter_user_info,
-    COMMON_USER_INFO_FIELDS,
 )
 
 
@@ -274,11 +273,7 @@ def admin_user(user_id):
         .all()
     )
 
-    # we use LDAP reg form as it is the closest to what an admin should edit
-    user_form = Art17LDAPRegisterForm(
-        ImmutableMultiDict([(field, getattr(user, field))
-            for field in COMMON_USER_INFO_FIELDS])
-    )
+    user_form = Art17AdminEditUserForm(obj=user)
 
     if flask.request.method == 'POST':
         # manage status
@@ -295,8 +290,11 @@ def admin_user(user_id):
         datastore.commit()
 
         # manage user info
-        alter_user_info(user, **flask.request.form.to_dict())
+        if user_form.validate():
+            user_form.populate_obj(user)
+            models.db.session.commit()
 
+        # manage role notifications
         if flask.request.form.get('notify_user', type=bool):
             send_role_change_notification(user, new_roles)
 

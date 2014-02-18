@@ -12,7 +12,6 @@ from art17.auth import zope_acl_manager
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-COMMON_USER_INFO_FIELDS = ('name', 'email', 'institution', 'abbrev', 'MS', 'qualification')
 
 @security_signals.user_confirmed.connect
 def activate_and_notify_admin(app, user, **extra):
@@ -67,16 +66,6 @@ def set_user_active(user, new_active):
             zope_acl_manager.delete(user)
         if new_active and not was_active:
             zope_acl_manager.create(user)
-
-
-def alter_user_info(user, **kwargs):
-    for field in COMMON_USER_INFO_FIELDS:
-        if hasattr(user, field):
-            old_value = getattr(user, field)
-            new_value = kwargs.get(field, '')
-            if new_value != old_value:
-                setattr(user, field, new_value)
-    models.db.session.commit()
 
 
 def check_dates(view):
