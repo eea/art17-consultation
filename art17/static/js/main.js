@@ -222,12 +222,39 @@ $(function () {
     });
 });
 
+$('html').click(function() {
+
+});
+
+$('#menucontainer').click(function(event){
+    event.stopPropagation();
+});
+
 // Popout
 $(function () {
+    var popouts = $(".popout");
+    var popoutButtons = $("[data-popout]");
+
+    // Open popout
+    $(popoutButtons).on('click', function () {
+        event.stopPropagation();
+        var similar = $(this).data('popout');
+        var intendedTarget = $(this).closest('.popout-wrapper').find(".popout");
+        if ( $(intendedTarget).hasClass('open') ) {
+            $(intendedTarget).removeClass('open');    
+        } else {
+            $(".popout." + similar).removeClass('open');
+            $(intendedTarget).addClass('open');
+        }
+    });
+
     // Close popout
     $('.popout').delegate('.close', 'click', function () {
-        $(this).closest('.popout').toggle();
+        $(this).closest('.popout').toggleClass('open');
     });
+    $('html').click( function() {
+        $(popouts).removeClass('open');
+    });    
 
     // Assesment
     $('.popout.assesment').each(function () {
@@ -240,10 +267,10 @@ $(function () {
         // Select
         $(method).delegate('', 'change', function (event) {
             if (this.value) {
-                $(assesmentPreview).children('.selected-method').removeClass('hidden').html(this.value);
+                $(assesmentPreview).children('.selected-method').removeClass('hidden').html( $(this).val() );
                 $(assesmentPreview).children('.fa').addClass('hidden');
             } else {
-                $(assesmentPreview).children('.selected-method').addClass('hidden').html(this.value);
+                $(assesmentPreview).children('.selected-method').addClass('hidden').html( $(this).val() );
                 $(assesmentPreview).children('.fa').removeClass('hidden');
             }
         });
@@ -251,11 +278,11 @@ $(function () {
         // Radios
         $(radios).delegate('', 'click', function (event) {
             event.stopPropagation();
-
+            conclusionClass = $(this).data('class');
             // Match selected conclusion
             $(assesmentPreview).removeClass(currentClass);
-            if (currentClass != this.value) {
-                currentClass = this.value;
+            if (currentClass != conclusionClass) {
+                currentClass = conclusionClass;
                 $(assesmentPreview).addClass(currentClass);
             } else {
                 currentClass = false;

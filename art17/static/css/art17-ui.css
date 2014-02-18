@@ -33,7 +33,10 @@
     padding: 6px 12px;
     border: 1px solid #ddd;
     background: #fff;
+}
 
+.popout.open {
+    display: block;
 }
 
 .popout-title {
@@ -51,13 +54,6 @@
 
 .popout.details {
     right:-1px;
-}
-
-.popout.details .close {
-    display: block;
-    float: right;
-    height: 16px;
-    width: 16px;
 }
 
 .popout.assesment {
@@ -103,7 +99,7 @@
 
 .close:hover {
     background: transparent;
-    color: black!important;
+    color: black;
 }
 
 /*GENERAL TABLE STYLES*/
@@ -313,6 +309,7 @@ a.conclusion:hover {
     border-radius: 0;
     border: 1px solid #bbbbbb;
     background: #fff;
+    cursor: pointer;
 }
 
 .conclusion.inline {
@@ -856,6 +853,12 @@ li.select-list {
     line-height: 1!important;
 }
 
+.form input[type="radio"],
+.form input[type="checkbox"],
+.form select {
+    cursor: pointer;
+}
+
 .form input:hover,
 .form input:focus,
 .form select:hover,
@@ -1104,11 +1107,12 @@ li.select-list {
     position: absolute;
     bottom: 90%;
     right: 50%;
+    border: 0;
     margin-right: -348px;
     margin-top: -24px;
     display: block;
     padding: 6px;
-    text-align: center;
+    text-align: center;     
     /*padding: 6px;*/
     font-weight: normal;
     border-radius: 0;
@@ -1117,6 +1121,7 @@ li.select-list {
 
 .modal-bg .close:hover {
     background: #222;
+    color: white;
 }
 
 /* Box (Equivalent to Bootstrap's well) */

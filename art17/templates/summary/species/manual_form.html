@@ -72,7 +72,8 @@
                           <input  id="radio-range-fv"
                                   type="radio" 
                                   name="range_conclusion" 
-                                  value="FV"> 
+                                  value="FV"
+                                  data-class="FV"> 
                   </label> Favourable
                 </li>
                 <!--/Sablon-Template-Macro -->
@@ -110,9 +111,9 @@
             </div>
             {# {{ form.conclusion_range() }} #}
           </div>
-          <a class="conclusion select block" onclick="$(this).prev('.popout').toggle()">
+          <a class="conclusion select block" data-popout="assesment">
             <span class="selected-method hidden"></span>
-            <i class="fa fa-pencil"></i>
+            <i class="fa fa-hand-o-up"></i>
           </a>
         </div>
       </td>

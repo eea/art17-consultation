@@ -11,19 +11,15 @@
 	<div class="popout-wrapper">
 
 		<div class="popout details">
-
-			<!-- Temp. Need .toggleClass() -->
-			<button class="close" onclick="$(this).parent().toggle();">x</button> <!-- Replace with icon later -->
-
+			<a class="close pull-right"><i class="fa fa-times"></i></a>
 			<div>
 				<span class="muted">{{ row.last_update|format_date }}</span><br />
 				<strong>{{ row.user.name or row.user_id}}</strong><br />
 				Institution: {{ row.user.institution }}<br />
 				Member State: {{ row.MS }}
 			</div>
-
+			{% if can_edit(row) or can_delete(row) %}
 			<hr>
-
 			<div>
          {% if can_edit(row) %}
           <form method="post" action="">
@@ -39,10 +35,11 @@
         <a class="button delete-btn" href="{{ url }}">{% if row.deleted %}undelete{% else %}delete{% endif %}</a>
         {% endif %}
 			</div>
+			{% endif %}
 
 		</div>
 
-		<button class="btn-text" onclick="$(this).prev('.details').toggle();">Details</button>
+		<button class="btn-text" data-popout="details">Details</button>
 
 	</div>
 </td>
