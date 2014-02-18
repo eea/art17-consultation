@@ -12,36 +12,41 @@
     <th rowspan="2" title="Member states">MS</th>
     {% if not region %}<th rowspan="2">Reg</th>{% endif %}
 
-    <th>Surface</th>
-    <th><abbr title="Range conclusion">Range<br/>Concl.</abbr></th>
-    <th>Trend</th>
-    <th title="Favourable reference value">Ref.</th>
+    <th rowspan="2">Surface</th>
+    <th rowspan="2"><abbr title="Range conclusion">Range<br/>Concl.</abbr></th>
+    <th rowspan="2">Trend</th>
+    <th rowspan="2" Favourable reference value">Ref.</th>
 
-    <th>Surface</th>
-    <th><abbr title="Habitat conclusion">Area<br/>Concl.</abbr></th>
-    <th>Trend</th>
-    <th>Suitable</th>
+    <th rowspan="2">Surface</th>
+    <th rowspan="2"><abbr title="Habitat conclusion">Area<br/>Concl.</abbr></th>
+    <th rowspan="2">Trend</th>
+    <th rowspan="2">Suitable</th>
 
-    <th title="Structure and Functions">Struct.<br/>func.</th>
-    <th><abbr title="Future prospects">FP</abbr></th>
+    <th rowspan="2" title="Structure and Functions">Struct.<br/>func.</th>
+    <th rowspan="2"><abbr title="Future prospects">FP</abbr></th>
 
     {% if dataset.schema == '2006' %}
-      <th colspan="4">Overall<br/>asses.</th>
+      <th rowspan="2" colspan="4">Overall<br/>asses.</th>
     {% else %}
-      <th title="Current conservation status">Curr. CS<br/>Concl.</th>
-      <th title="Overall trend in conservation status">Trend CS</th>
-      <th title="Previous conservation status">Prev. CS<br/>Concl.</th>
-      <th title="Nature of change">Nat. of ch.</th>
+      <th rowspan="2" title="Current conservation status">Curr. CS<br/>Concl.</th>
+      <th rowspan="2" title="Overall trend in conservation status">Trend CS</th>
+      <th rowspan="2" title="Previous conservation status">Prev. CS<br/>Concl.</th>
+      <th rowspan="2" title="Nature of change">Nat. of ch.</th>
     {% endif %}
 
     {% if dataset.schema == '2006' %}
-    <th colspan="2"></th>
+    <th rowspan="2" colspan="2"></th>
     {% else %}
+    <th colspan="2">Target 1</th>
+    {% endif %}
+    <th rowspan="2" colspan="2"></th>
+
+    <th rowspan="2" colspan="5">{# padding #}</th>
+  </tr>
+  {% if dataset.schema != '2006' %}
+  <tr>
     <th title="Contribution to target ">Contrib.</th>
     <th>Type</th>
-    {% endif %}
-    <th colspan="2"></th>
-
-    <th colspan="5">{# padding #}</th>
   </tr>
+  {% endif %}
 </tbody>
