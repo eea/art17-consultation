@@ -706,7 +706,7 @@ a.conclusion:hover {
     margin-top: 12px;
 }
 
-.message {
+.flashmessage {
     display: inline-block;
     padding: 3px 8px;
     background: #f9de62;

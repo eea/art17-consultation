@@ -200,7 +200,7 @@ var closeModal = function () {
 // Flash Messages
 $(function () {
 
-    var msg = $('.message');
+    var msg = $('.flashmessage');
 
     var show_flash = function () {
         $(msg).addClass('show');
