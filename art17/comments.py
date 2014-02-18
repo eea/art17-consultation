@@ -200,7 +200,7 @@ class UserSummary(views.View):
 
     def dispatch_request(self):
         if not current_user.is_authenticated():
-            return redirect('/')
+            raise PermissionDenied
         period = request.args.get('period') or get_default_period()
         period_obj = Dataset.query.get(period)
         history = self.get_history(period)
