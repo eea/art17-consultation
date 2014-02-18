@@ -82,7 +82,9 @@
       <tbody class="thead">
         <tr class="section-header">
           <th colspan="{{ colspan_all }}">
-            <button onclick="$('#automatic_body').toggleClass('hidden')">Show/Hide Automatic assessments</button>
+            <button onclick="$('#automatic_body').toggleClass('hidden')">
+              Show/Hide automatic assessments
+            </button>
           </th>
         </tr>
       </tbody>
@@ -106,7 +108,11 @@
       <tbody class="thead">
         <tr class="section-header">
           <th colspan="{{ colspan_all }}">
-           ETC/BD biogeographical assessment &amp; users proposed corrections
+            {% if dataset.schema == '2006' %}
+            ETC/BD biogeographical assessment &amp; users proposed corrections
+            {% else %}
+            EU Biogeographical assessment and proposed corrections
+            {% endif %}
           </th>
         </tr>
         <tr>
