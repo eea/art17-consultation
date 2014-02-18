@@ -7,4 +7,8 @@
                      'future_prospects'],
                       row, qa_errors,
                       title=title,
-                      classes=classes) }}><span class="conclusion"></span></td>
+                      classes=classes) }}>
+  <span class="conclusion">
+    {%- if dataset.schema == '2006' %}{{ row.future_prospects }}{% endif -%}
+  </span>
+</td>

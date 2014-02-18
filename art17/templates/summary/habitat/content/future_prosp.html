@@ -5,5 +5,9 @@
 
 <td {{ parse_errors(['conclusion_future'], row, qa_errors,
                     title=title, classes=classes) }}>
-  <span class="conclusion">{{ row.conclusion_future|str2num }}</span>
+  <span class="conclusion">
+    {% if dataset.schema == '2006' %}
+      {{ row.conclusion_future|str2num }}
+    {% endif %}
+  </span>
 </td>
