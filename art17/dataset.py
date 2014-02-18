@@ -295,6 +295,7 @@ IMPORT_SCHEMA = {
             'assessment_needed',
             'percentage_assessment_trend', 'conclusion_assessment_trend',
             'percentage_assessment_change', 'conclusion_assessment_change',
+            'conclusion_assessment_prev',
             ]),
         ('etc_data_habitattype_regions', [
             'country', 'eu_country_code', 'delivery', 'envelope', 'filename',
@@ -340,6 +341,7 @@ IMPORT_SCHEMA = {
             'percentage_distribution_grid_area', 'assessment_needed',
             'percentage_assessment_trend', 'conclusion_assessment_trend',
             'percentage_assessment_change', 'conclusion_assessment_change',
+            'conclusion_assessment_prev',
             ]),
         ('etc_data_species_regions', [
             'country', 'eu_country_code', 'delivery', 'envelope', 'filename',
