@@ -4,7 +4,11 @@ A new account has been created for you on the Biological Diversity website:
 
 {{ home_url }}
 
-The username is "{{ user.id }}" with password "{{ plaintext_password }}".
+{% if user.is_ldap -%}
+  You can log in with your Eionet credentials "{{ user.id }}".
+{%- else -%}
+  The username is "{{ user.id }}" with password "{{ plaintext_password }}".
+{%- endif %}
 
 
 Best regards,

@@ -43,7 +43,7 @@ def register_local():
     })
 
 
-def send_welcome_email(user, plaintext_password):
+def send_welcome_email(user, plaintext_password=None):
     app = flask.current_app
     msg = Message(
         subject="Role update on the Biological Diversity website",
@@ -80,6 +80,15 @@ def admin_create_local():
     })
 
 
+def _get_initial_ldap_data(user_id):
+    ldap_user_info = get_ldap_user_info(user_id)
+    return {
+        'name': ldap_user_info.get('full_name'),
+        'institution': ldap_user_info.get('organisation'),
+        'qualification': ldap_user_info.get('job_title'),
+        'email': ldap_user_info.get('email'),
+    }
+
 
 @auth.route('/auth/register/ldap', methods=['GET', 'POST'])
 @check_dates
@@ -104,13 +113,8 @@ def register_ldap():
             'admin_email': get_config().admin_email,
         })
 
-    ldap_user_info = get_ldap_user_info(user_id)
-    form = Art17LDAPRegisterForm(ImmutableMultiDict([
-        ('name', ldap_user_info.get('full_name')),
-        ('institution', ldap_user_info.get('organisation')),
-        ('qualification', ldap_user_info.get('job_title')),
-        ('email',ldap_user_info.get('email')),
-    ]))
+    initial_data = _get_initial_ldap_data(user_id)
+    form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
 
     if flask.request.method == 'POST':
         form = Art17LDAPRegisterForm(flask.request.form)
@@ -135,6 +139,39 @@ def register_ldap():
     return flask.render_template('auth/register_ldap.html', **{
         'already_registered': flask.g.get('user') is not None,
         'user_id': user_id,
+        'register_user_form': form,
+    })
+
+
+@auth.route('/auth/create_ldap', methods=['GET', 'POST'])
+def admin_create_ldap():
+    user_id = flask.request.args.get('user_id')
+    if user_id is None:
+        return flask.render_template('auth/register_ldap_enter_user_id.html')
+
+    if flask.request.method == 'GET':
+        initial_data = _get_initial_ldap_data(user_id)
+        form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
+
+    else:
+        form = Art17LDAPRegisterForm(flask.request.form)
+        if form.validate():
+            kwargs = form.to_dict()
+            kwargs['id'] = user_id
+            kwargs['is_ldap'] = True
+            datastore = flask.current_app.extensions['security'].datastore
+            user = datastore.create_user(**kwargs)
+            user.confirmed_at = datetime.utcnow()
+            set_user_active(user, True)
+            datastore.commit()
+            send_welcome_email(user)
+            flask.flash(
+                "User %s created successfully." % kwargs['id'],
+                'success',
+            )
+            return flask.redirect(flask.url_for('.admin_create_ldap'))
+
+    return flask.render_template('auth/register_ldap.html', **{
         'register_user_form': form,
     })
 

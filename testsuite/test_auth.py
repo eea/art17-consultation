@@ -126,6 +126,44 @@ def test_admin_creates_local(app, zope_auth, client, outbox, ldap_user_info):
     assert '"p455w4rd"' in message.body
 
 
+def test_admin_creates_ldap(app, zope_auth, client, outbox, ldap_user_info):
+    from .factories import DatasetFactory
+
+    _set_config(admin_email='admin@example.com')
+    create_user('ze_admin', ['admin'])
+    zope_auth['user_id'] = 'ze_admin'
+    DatasetFactory()
+    models.db.session.commit()
+
+    ldap_user_info['foo'] = {
+        'full_name': 'foo me',
+        'email': 'foo@example.com',
+    }
+
+    enter_user_id_page = client.get(flask.url_for('auth.admin_create_ldap'))
+    enter_user_id_page.form['user_id'] = 'foo'
+    register_page = enter_user_id_page.form.submit()
+
+    register_page.form['institution'] = 'foo institution'
+
+    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+        result_page = register_page.form.submit().follow()
+        assert create_in_zope.call_count == 0
+
+    assert "User foo created successfully." in result_page
+
+    foo_user = models.RegisteredUser.query.get('foo')
+    assert foo_user.email == 'foo@example.com'
+    assert foo_user.confirmed_at is not None
+    assert foo_user.active
+    assert foo_user.is_ldap
+
+    assert len(outbox) == 1
+    message = outbox.pop()
+    assert 'Dear foo me,' in message.body
+    assert '"foo"' in message.body
+
+
 def test_ldap_account_activation_flow(
         app,
         zope_auth,
