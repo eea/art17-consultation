@@ -31,6 +31,7 @@ CONTRIB_TYPE = [
 CONCL_TYPE = [
     ('+', '+'), ('-', '-'), ('0', '0'), ('x', 'x')
 ]
+ZERO_METHODS = [('00', '00'), ('0', '0')]
 
 
 def all_fields(form):
@@ -166,9 +167,16 @@ class SummaryManualFormSpecies(Form, OptionsBase):
 
         self.region.choices = empty
 
-        self.method_range.choices = self.get_method_options(methods)
-        self.method_population.choices = self.get_method_options(methods)
-        self.method_habitat.choices = self.get_sf_options(methods)
+        self.method_range.choices = (
+            ZERO_METHODS + self.get_method_options(methods)
+        )
+        self.method_population.choices = (
+            ZERO_METHODS + self.get_method_options(methods)
+        )
+        self.method_habitat.choices = (
+            ZERO_METHODS + self.get_sf_options(methods)
+        )
+
         self.method_future.choices = self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
@@ -279,8 +287,13 @@ class SummaryManualFormHabitat(Form, OptionsBase):
 
         self.region.choices = empty
 
-        self.method_range.choices = self.get_method_options(methods)
-        self.method_area.choices = self.get_method_options(methods)
+        self.method_range.choices = (
+            ZERO_METHODS + self.get_method_options(methods)
+        )
+        self.method_area.choices = (
+            ZERO_METHODS + self.get_method_options(methods)
+        )
+
         self.method_structure.choices = self.get_sf_options(methods)
         self.method_future.choices = self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
