@@ -60,6 +60,7 @@ def send_welcome_email(user, plaintext_password=None):
 
 
 @auth.route('/auth/create_local', methods=['GET', 'POST'])
+@require_admin
 def admin_create_local():
     form = Art17LocalRegisterForm(flask.request.form)
 
@@ -147,6 +148,7 @@ def register_ldap():
 
 
 @auth.route('/auth/create_ldap', methods=['GET', 'POST'])
+@require_admin
 def admin_create_ldap():
     user_id = flask.request.form.get('user_id')
     if user_id is None:
