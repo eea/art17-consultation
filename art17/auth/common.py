@@ -40,6 +40,12 @@ def activate_and_notify_admin(app, user, **extra):
         app.extensions['mail'].send(msg)
 
 
+@security_signals.password_reset.connect
+def save_reset_password_in_zope(app, user, **extra):
+    if user.is_active:
+        zope_acl_manager.create(user)
+
+
 def require_admin(view):
     @wraps(view)
     def wrapper(*args, **kwargs):

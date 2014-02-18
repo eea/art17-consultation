@@ -2,6 +2,7 @@ import flask
 from flask.ext.security import Security
 from art17.auth.security import (
     UserDatastore,
+    Art17ForgotPasswordForm,
     current_user,
 )
 from art17.auth.providers import DebugAuthProvider, ZopeAuthProvider
@@ -43,14 +44,24 @@ def setup_auth_handlers(state):
              "clicking the link at the top."),
             'success',
         ),
+        'SECURITY_RECOVERABLE': True,
+        'SECURITY_RESET_URL': '/auth/recover_password',
+        'SECURITY_POST_LOGIN_VIEW': HOMEPAGE_VIEW_NAME,
+        'SECURITY_MSG_PASSWORD_RESET': (
+            "You have successfully reset your password.",
+            'success',
+        ),
+        'SECURITY_FORGOT_PASSWORD_TEMPLATE': 'auth/forgot_password.html',
+        'SECURITY_RESET_PASSWORD_TEMPLATE': 'auth/reset_password.html',
     })
 
     app.jinja_env.globals['AUTH_BLUEPRINT_INSTALLED'] = True
 
     security_ext.init_app(app)
 
-    pwd_context = app.extensions['security'].pwd_context
-    pwd_context.update(ldap_salted_sha1__salt_size=7)
+    security_state = app.extensions['security']
+    security_state.pwd_context.update(ldap_salted_sha1__salt_size=7)
+    security_state.forgot_password_form = Art17ForgotPasswordForm
 
 
 import art17.auth.views  # make sure views get registered on the blueprint

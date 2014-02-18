@@ -11,6 +11,7 @@ from flask_wtf import Form
 from flask.ext.security.forms import (
     ConfirmRegisterForm,
     RegisterFormMixin,
+    ForgotPasswordForm,
     password_length,
     Required,
     email_validator,
@@ -24,6 +25,7 @@ from art17.auth.forms import Art17RegisterFormBase
 current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
 flask_security.core.current_user = current_user
 flask_security.forms.current_user = current_user
+flask_security.decorators.current_user = current_user
 flask_security.views.current_user = current_user
 flask_security.views.logout_user = lambda: None
 flask_security.views.login_user = lambda new_user: None
@@ -88,3 +90,18 @@ class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
 
     email = TextField('Email',
         validators=[Required("Email is required"), email_validator])
+
+
+def no_ldap_user(form, field):
+    if form.user is not None:
+        if form.user.is_ldap:
+            raise ValidationError("Please use the password recovery "
+                                  "system for Eionet accounts")
+
+
+class Art17ForgotPasswordForm(ForgotPasswordForm):
+    email = TextField(
+        label=ForgotPasswordForm.email.args[0],
+        validators=ForgotPasswordForm.email.kwargs['validators']
+                   + [no_ldap_user],
+    )
