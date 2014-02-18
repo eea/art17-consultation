@@ -1,3 +1,4 @@
+import logging, logging.handlers
 import flask
 from flask.ext.script import Manager
 from flask.ext.mail import Mail
@@ -19,6 +20,22 @@ from assets import assets_env
 DEFAULT_CONFIG = {
     'WTF_CSRF_ENABLED': False,
 }
+
+
+def configure_auth_log_hander(log_path):
+    auth_logger = logging.getLogger('art17.auth')
+    for handler in list(auth_logger.handlers):
+        auth_logger.removeHandler(handler)
+    handler = logging.handlers.RotatingFileHandler(
+        log_path,
+        maxBytes=1024*1024,  # 1 MB
+        backupCount=4,
+    )
+    handler.setFormatter(logging.Formatter(
+        '[%(asctime)s] %(module)s %(levelname)s %(message)s',
+    ))
+    handler.setLevel(logging.INFO)
+    auth_logger.addHandler(handler)
 
 
 def create_app(config={}, testing=False):
@@ -53,6 +70,9 @@ def create_app(config={}, testing=False):
     if app.config.get('SENTRY_DSN'):
         from raven.contrib.flask import Sentry
         Sentry(app)
+
+    if app.config.get('AUTH_LOG_FILE'):
+        configure_auth_log_hander(app.config.get('AUTH_LOG_FILE'))
 
     return app
 
