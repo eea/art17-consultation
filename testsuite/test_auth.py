@@ -119,6 +119,12 @@ def test_admin_creates_local(app, zope_auth, client, outbox, ldap_user_info):
     assert not foo_user.is_ldap
     assert foo_user.password.startswith('{SSHA}')
 
+    assert len(outbox) == 1
+    message = outbox.pop()
+    assert 'Dear foo me,' in message.body
+    assert '"foo"' in message.body
+    assert '"p455w4rd"' in message.body
+
 
 def test_ldap_account_activation_flow(
         app,

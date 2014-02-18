@@ -43,18 +43,35 @@ def register_local():
     })
 
 
+def send_welcome_email(user, plaintext_password):
+    app = flask.current_app
+    msg = Message(
+        subject="Role update on the Biological Diversity website",
+        sender=app.extensions['security'].email_sender,
+        recipients=[user.email],
+    )
+    msg.body = flask.render_template('auth/email_user_welcome.txt', **{
+        'user': user,
+        'plaintext_password': plaintext_password,
+        'home_url': flask.url_for(HOMEPAGE_VIEW_NAME, _external=True),
+    })
+    app.extensions['mail'].send(msg)
+
+
 @auth.route('/auth/create_local', methods=['GET', 'POST'])
 def admin_create_local():
     form = Art17ConfirmRegisterForm(flask.request.form)
 
     if form.validate_on_submit():
         kwargs = form.to_dict()
-        kwargs['password'] = encrypt_password(kwargs['password'])
+        plaintext_password = kwargs['password']
+        kwargs['password'] = encrypt_password(plaintext_password)
         datastore = flask.current_app.extensions['security'].datastore
         user = datastore.create_user(**kwargs)
         user.confirmed_at = datetime.utcnow()
         set_user_active(user, True)
         datastore.commit()
+        send_welcome_email(user, plaintext_password)
         flask.flash("User %s created successfully." % kwargs['id'], 'success')
         return flask.redirect(flask.url_for('.admin_create_local'))
 

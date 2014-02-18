@@ -1,0 +1,11 @@
+Dear {{ user.name }},
+
+A new account has been created for you on the Biological Diversity website:
+
+{{ home_url }}
+
+The username is "{{ user.id }}" with password "{{ plaintext_password }}".
+
+
+Best regards,
+The Eionet team
