@@ -22,7 +22,7 @@
 <form class="box inline-block form" method="POST" name="register_user_form">
 
 <div class="clearfix">
-  <div class="box-col width-300">
+  <div class="box-col separated width-300">
     {{ register_user_form.hidden_tag() }}
     {{ register_user_form.MS() }}
 
@@ -52,7 +52,7 @@
       {{ render_field_with_errors(register_user_form.qualification) }}
     </div>
   </div>
-  <div class="box-col width-300">
+  <div class="box-col separated width-300">
     <!-- USERNAME -->
     <div class="form-group">
       {{ render_field_with_errors(register_user_form.id) }}

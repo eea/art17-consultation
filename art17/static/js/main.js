@@ -222,6 +222,29 @@ $(function () {
     });
 });
 
+// Popout
+$(function () {
+    // Close popout
+    $('.popout').delegate('.close', 'click', function () {
+        $(this).closest('.popout').toggle();
+    });
+
+    // Uncheck radio button in popout
+    $('.conclusion').delegate("input[type='radio']", 'click', function (event) {
+        event.stopPropagation();
+        var secondClick = $(this).attr('secondClick');
+
+        if (secondClick == "false" || secondClick == undefined) {
+            $(this).closest('.popout').find("input[type='radio']").attr('secondClick', false);
+            $(this).attr('secondClick', true);
+
+        } else {
+            $(this).attr('secondClick', false);
+            this.checked = false;
+        }
+    });
+});
+
 // Table column hover
 /*$(function () {
     $(".complex_datatable").on('mouseenter mouseleave', "td", function (event) {

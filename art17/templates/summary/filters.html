@@ -1,21 +1,21 @@
-<form id="filterform" class="box box-small inline-block" name="filterform" method="get">
+<form id="filterform" class="form box box-small inline-block" name="filterform" method="get">
 
-  <div class="form_group">
+  <div class="box-col">
     <label>{{ summary_filter_form.period.label }}</label>
     {{ summary_filter_form.period }}
   </div>
 
-  <div class="form_group">
+  <div class="box-col">
     <label>{{ summary_filter_form.group.label }}</label>
     {{ summary_filter_form.group(**{'data-href': groups_url}) }}
   </div>
 
-  <div class="form_group">
+  <div class="box-col">
     <label>{{ summary_filter_form.subject.label }}</label>
     {{ summary_filter_form.subject(**{'data-href': subjects_url}) }}
   </div>
 
-  <div class="form_group">
+  <div class="box-col">
     <label>{{ summary_filter_form.region.label }}</label>
     {{ summary_filter_form.region(**{'data-href': regions_url}) }}
   </div>

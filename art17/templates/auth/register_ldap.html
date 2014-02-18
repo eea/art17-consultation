@@ -22,7 +22,7 @@
     <form class="box inline-block form" method="POST" name="user">
 
     <div class="clearfix">
-      <div class="box-col width-300">
+      <div class="box-col separated width-300">
           <p>
             Register the account named
             <b><tt>{{ user_id }}</tt></b>.
@@ -54,7 +54,7 @@
           </div>
       </div>
 
-      <div class="box-col width-300">
+      <div class="box-col separated width-300">
         <!-- EMAIL -->
         <div class="form-group">
           {{ render_field_with_errors(register_user_form.email) }}

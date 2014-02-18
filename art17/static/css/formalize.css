@@ -37,7 +37,7 @@ input[type="search"]::-webkit-search-decoration {
 
 input:invalid,
 button:invalid,
-a.button:invalid,
+.button:invalid,
 select:invalid,
 textarea:invalid {
   -webkit-box-shadow: none;
@@ -46,7 +46,7 @@ textarea:invalid {
 }
 input:focus,
 button:focus,
-a.button:focus,
+.button:focus,
 select:focus,
 textarea:focus {
   z-index: 1;
@@ -63,9 +63,9 @@ input[type="checkbox"]:active {
 }
 
 button,
-a.button,
-a.button:link,
-a.button:visited,
+.button,
+.button:link,
+.button:visited,
 [type="reset"],
 [type="submit"],
 [type="button"] {
@@ -100,33 +100,29 @@ a.button:visited,
   *padding-bottom: 0;
 }
 button:hover,
-a.button:hover,
+.button:hover,
 [type="reset"]:hover,
 [type="submit"]:hover,
 [type="button"]:hover {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(1px, #eeeeee), color-stop(100%, #cccccc));
-  background-image: -webkit-linear-gradient(#ffffff, #eeeeee 1px, #cccccc);
-  background-image: -moz-linear-gradient(#ffffff, #eeeeee 1px, #cccccc);
-  background-image: -o-linear-gradient(#ffffff, #eeeeee 1px, #cccccc);
-  background-image: linear-gradient(#ffffff, #eeeeee 1px, #cccccc);
+  background-image: none;
   text-decoration: none;
 }
+
+a.button:hover {
+  color: #333333;
+}
+
 button:active,
 button.active,
-a.button:active,
-a.button.active,
+.button:active,
+.button.active,
 [type="reset"]:active,
 [type="submit"]:active,
 [type="button"]:active {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dddddd), color-stop(100%, #eeeeee));
-  background-image: -webkit-linear-gradient(#dddddd, #eeeeee);
-  background-image: -moz-linear-gradient(#dddddd, #eeeeee);
-  background-image: -o-linear-gradient(#dddddd, #eeeeee);
-  background-image: linear-gradient(#dddddd, #eeeeee);
   border-color: #bbbbbb;
 }
 button::-moz-focus-inner,
-a.button::-moz-focus-inner,
+.button::-moz-focus-inner,
 [type="reset"]::-moz-focus-inner,
 [type="submit"]::-moz-focus-inner,
 [type="button"]::-moz-focus-inner {
@@ -134,7 +130,7 @@ a.button::-moz-focus-inner,
   padding: 0;
 }
 
-a.button {
+.button {
   *padding-bottom: 3px;
 }
 
@@ -207,8 +203,7 @@ input[disabled],
 select[disabled],
 select[disabled] option,
 select[disabled] optgroup,
-textarea[disabled],
-a.button {
+textarea[disabled] {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -306,7 +301,7 @@ optgroup::-moz-focus-inner {
 
 .ie6_button,
 * html button,
-* html a.button {
+* html .button {
   background: #dddddd url('../images/button.png?1298351022') repeat-x;
   border: 1px solid;
   border-color: #bbbbbb;

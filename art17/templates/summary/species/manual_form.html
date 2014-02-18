@@ -1,7 +1,7 @@
 {% from '_macros.html' import conclusion_td with context %}
 
 {% set form=manual_form %}
-<form method="post" action="">
+<form class="form" method="post" action="">
   <tr class="form_row">
     <th></th>
     {% if not region %}
@@ -55,30 +55,68 @@
           >
         <div class="conclusion popout-wrapper">
 
-          <div class="popout width-300">
-            <a onclick="$(this).parent().toggle()"><i class="fa fa-times"></i></a>
-            <div class="form-group">
-              <label>Method</label>
+          <div class="popout assesment">
+            <div class="popout-title">
+              <a class="close pull-right"><i class="fa fa-times"></i></a>
+              Range Conclusion
             </div>
-            <div class="form-group">
-              <label>Conclusion</label>
-              <ul class="no-list">
-                <li class="FV">
-                  <span class="conclusion">FV</span></li>
-                <li class="U1">
-                  <span class="conclusion">U1</span></li>
-                <li class="U2">
-                  <span class="conclusion">U2</span></li>
-                <li class="XX">
-                  <span class="conclusion">XX</span></li>
+            <div class="form-group clearfix no-bottom">
+              <label class="pull-left no-bottom">Method</label>
+              <div class="width-third pull-right">{{ form.method_range() }}</div>
+            </div>
+            <hr>
+            <div class="form-group no-bottom">
+              <label class="no-bottom">Conclusion</label>
+              <ul class="select-list no-list">
+                <!-- Sablon-Template-Macro -->
+                <li class="clearfix">
+                  <label  class="radio-label FV conclusion inline width-third pull-right"
+                          for="radio-range-fv">
+                          FV
+                          <input  id="radio-range-fv"
+                                  type="radio" 
+                                  name="range_conclusion" 
+                                  value="FV"> 
+                  </label> Favourable
+                </li>
+                <!--/Sablon-Template-Macro -->
+                <li class="clearfix">
+                  <label  class="radio-label U1 conclusion inline width-third pull-right"
+                          for="radio-range-u1">
+                          U1
+                          <input  id="radio-range-u1"
+                                  type="radio" 
+                                  name="range_conclusion" 
+                                  value="U1"> 
+                  </label> Inadequate
+                </li>
+                <li class="clearfix">
+                  <label  class="radio-label U2 conclusion inline width-third pull-right"
+                          for="radio-range-U2">
+                          U2
+                          <input  id="radio-range-U2"
+                                  type="radio" 
+                                  name="range_conclusion" 
+                                  value="U2"> 
+                  </label> Unfavorable
+                </li>
+                <li class="clearfix">
+                  <label  class="radio-label XX conclusion inline width-third pull-right"
+                          for="radio-range-xx">
+                          XX
+                          <input  id="radio-range-xx"
+                                  type="radio" 
+                                  name="range_conclusion" 
+                                  value="xx"> 
+                  </label> Unknown
+                </li>
               </ul>
             </div>
-            {# {{ form.method_range() }}
-            {{ form.conclusion_range() }} #}
-
+            {# {{ form.conclusion_range() }} #}
           </div>
-
-          <i onclick="$(this).prev('.popout').toggle()" class="block fa fa-pencil"></i>
+          <a class="conclusion select block" onclick="$(this).prev('.popout').toggle()">
+            <i  class="fa fa-pencil"></i>
+          </a>
         </div>
       </td>
       <td {% if form.range_trend.errors %}class="errors"{% endif %}>

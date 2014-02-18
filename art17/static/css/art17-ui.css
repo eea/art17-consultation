@@ -1,7 +1,109 @@
+/* OVERIDES style.css */
+#workarea ul {
+    line-height: 1;
+}
+
+
 .popout-body {
     padding: 0 1em;
     margin: 0;
     background: #f6f6f6;
+}
+
+/* popout-wrapper */
+.popout-wrapper {
+    display: block;
+    position: relative;
+}
+
+.complex_datatable td .popout-wrapper {
+    margin: -5px -4px;
+    padding: 5px 4px;
+}
+
+.popout {
+    display:none;
+    min-width: 180px;
+    position: absolute;
+    bottom: 100%;
+    font-family: "Nimbus sans L", Helvetica, Arial, Verdana, sans-serif;
+    line-height: 24px;
+    text-align: left;
+    color: #333;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+
+}
+
+.popout-title {
+    margin: -6px -12px 6px;
+    color: #666;
+    font-weight: bold;
+    padding: 6px 12px;
+    background: #f6f6f6;
+    border-bottom: 1px solid #ddd;
+}
+
+.popout hr {
+    margin: 6px 0;
+}
+
+.popout.details {
+    right:-1px;
+}
+
+.popout.details .close {
+    display: block;
+    float: right;
+    height: 16px;
+    width: 16px;
+}
+
+.popout.assesment {
+    left: 50%;
+    margin-left: -102px;
+    margin-bottom: 3px;
+    -webkit-box-shadow: 0 5px 5px -2px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 5px -2px rgba(0,0,0,0.2);
+}
+
+.popout.assesment:before,
+.popout.assesment:after {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    height: 0px;
+    width: 0px;
+    line-height: 0;
+    font-size: 0;
+    display: block;
+    content: " ";
+    border-style: solid;
+    border-color: transparent;
+}
+.popout.assesment:before {
+    margin-top: 1px;
+    margin-left: -6px;
+    border-width: 6px;
+    border-top-color: #ddd;
+}
+
+.popout.assesment:after {
+    margin-left: -5px;
+    border-width: 5px;
+    border-top-color: #fff;
+}
+
+/* REVIEW */
+.close {
+    background: transparent;
+    color: #999;
+}
+
+.close:hover {
+    background: transparent;
+    color: black!important;
 }
 
 /*GENERAL TABLE STYLES*/
@@ -30,18 +132,12 @@
 
 /*LINKS*/
 .complex_datatable a {
-    color: blue;
     text-decoration: none;
 }
 
-.complex_datatable a:hover {
-    color: blue;
-    text-decoration: underline;
-}
-
-.complex_datatable tbody a {
+/*.complex_datatable tbody a {
     display: block;
-}
+}*/ /* REVIEW */
 
 /*ABBR*/
 abbr {
@@ -129,12 +225,9 @@ abbr {
 }
 
 .complex_datatable .form_row select,
-.complex_datatable .form_row input {
-    /*box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;*/
-    display: block;
-    min-width: 100%;
+.complex_datatable .form_row input[type="text"] {
+    /*display: block;
+    min-width: 100%;*/ /*Review*/
     font: inherit;
 }
 
@@ -192,13 +285,20 @@ abbr {
     padding: 1px 2px;
     margin: -2px -3px;
     text-align: center;
-    text-decoration: none;
     border-color: transparent;
     border-width: 1px;
     border-style: solid;
     border-radius: 2px;
-    min-height: 16px;
+    min-height: 18px;
     vertical-align: top;
+}
+
+.conclusion,
+.conclusion:hover,
+a.conclusion,
+a.conclusion:hover {
+    text-decoration: none;
+    color: #000;
 }
 
 td > .conclusion {
@@ -206,10 +306,35 @@ td > .conclusion {
 }
 
 a.conclusion:hover {
-    color: inherit;
-    text-decoration: none;
-    /*background: rgba(255, 255, 255, 0.25);*/
     border-color: blue;
+}
+
+.conclusion.select {
+    border-radius: 0;
+    border: 1px solid #bbbbbb;
+    background: #fff;
+}
+
+.conclusion.inline {
+    margin: 0;
+    vertical-align: top;
+    min-width: 42px;
+    min-height: initial;
+    text-align: left;
+}
+
+.conclusion.inline input[type="radio"] {
+    float: right;
+}
+
+.conclusion.checked {
+    font-weight: bold;
+}
+
+.select-list li,
+li.select-list {
+    line-height: 1.2;
+    margin: 6px 0;
 }
 
 /*.conclusion .popout-wrapper {
@@ -374,152 +499,6 @@ a.conclusion:hover {
     content: ":";
 }
 
-/* added */
-.form_group:before,
-.form_group:after {
-    display:table;
-    content:" ";
-}
-
-.form_group:after{
-    clear:both;
-}
-
-.form_group {
-    float: left;
-    margin-right: 6px;
-}
-
-.form_group label {
-    display: block;
-    margin-bottom: 6px;
-    white-space: nowrap;
-}
-
-.offset_top_label {
-    float: left;
-    margin-top: 22px;
-}
-
-.form_group input,
-.form_group select {
-    width: 100%;
-    max-width: 200px;
-}
-
-
-
-
-
-/* popout-wrapper */
-.popout-wrapper {
-    display: block;
-    position: relative;
-}
-
-.complex_datatable td .popout-wrapper {
-    margin: -5px -4px;
-    padding: 5px 4px;
-}
-
-.popout {
-    display:none;
-    position: absolute;
-    bottom: 100%;
-    font-family: "Nimbus sans L", Helvetica, Arial, Verdana, sans-serif;
-    line-height: 24px;
-    color: #333;
-    padding: 12px;
-    border: 1px solid #ddd;
-    background: #fff;
-}
-
-.popout.details {
-    right:-1px;
-}
-
-.popout.details .close {
-    display: block;
-    float: right;
-    height: 16px;
-    width: 16px;
-}
-
-.popout.select {
-
-}
-
-
-/* REVIEW */
-.close {
-    padding: 0;
-    border: 0;
-    background: transparent;
-}
-
-.close:hover {
-    background: transparent;
-}
-
-/* User registration */
-.input-message {
-    color: red;
-    font-size: smaller;
-    font-style: italic;
-    margin-top:3px;
-    margin-bottom: 0;
-}
-
-.notification {
-    position: relative;
-    padding: 6px 18px 6px 6px;
-    background: #fafafa;
-    border: 1px solid #ddd;
-}
-
-.notification .close {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-}
-
-
-.form label,
-.form input[type="text"],
-.form input[type="password"],
-.form select,
-.form textarea {
-    display: block;
-    width: 100%;
-}
-
-
-.form label {
-    /*font-weight: bold;*/
-    margin-bottom: 3px;
-}
-
-.form label[for] {
-    cursor: pointer;
-}
-
-.form-group {
-    margin-bottom: 12px;
-}
-
-.form-error {
-    border: 1px solid red!important;
-    color: red!important;
-}
-
-.form-error-msg {
-    color: red;
-    font-size: smaller;
-    font-style: italic;
-    margin-top:3px;
-    margin-bottom: 0;
-}
-
 /* Wiki */
 .wiki {
     position: relative;
@@ -668,15 +647,6 @@ a.conclusion:hover {
 	border-bottom: 0;
 }
 
-
-
-
-
-
-
-
-
-
 /* Flash messages */
 .flashes {
     margin: 0;
@@ -713,35 +683,6 @@ a.conclusion:hover {
     border: #eebb20;
     border-radius: 3px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* Comments */
 .comment-section {
@@ -901,6 +842,92 @@ a.conclusion:hover {
     border-color: #666 #666 white;
 }
 
+/* FORMS */
+.form input[type="text"],
+.form input[type="password"],
+.form select,
+.form textarea {
+    display: block;
+    width: 100%;
+}
+
+.form input,
+.form select {
+    line-height: 1!important;
+}
+
+.form input:hover,
+.form input:focus,
+.form select:hover,
+.form select:focus,
+.form textarea:hover,
+.form textarea:focus {
+    border-color: blue;
+}
+
+.form input[type="radio"],
+.form input[type="checkbox"] {
+    margin: 0;
+    vertical-align: middle;
+    display: inline;
+}
+
+.form label {
+    display: block;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-bottom: 6px;
+}
+
+.form label[for] {
+    cursor: pointer;
+}
+
+.form .radio-label {
+    display: block;
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+/*.form-group-inline {
+    margin-bottom: 12px;   
+}
+
+.form-group-inline label {
+    margin-bottom: 0;
+    float: left;
+    display: 
+}
+
+.form-group-inline input,
+.form-group-inline select {
+    float: right;
+    width: auto;
+    min-width: initial;
+}*/ /* Review */
+
+.form-error {
+    border: 1px solid red!important;
+    color: red!important;
+}
+
+.form-error-msg {
+    color: red;
+    font-size: smaller;
+    font-style: italic;
+    margin-top:3px;
+    margin-bottom: 0;
+}
+
+.offset_top_label {
+    float: left;
+    margin-top: 22px;
+}
+
 /* Buttons */
 .btn-toolbar {
 	margin: 12px 0;
@@ -919,7 +946,8 @@ a.conclusion:hover {
   text-shadow: 0 -1px 0 #679da6;
 }
 
-.btn-blue:active {
+.btn-eionet:active {
+    border-color: #679da6;
     background: #679da6;
 }
 
@@ -937,6 +965,7 @@ a.conclusion:hover {
 }
 
 .btn-green:active {
+    border-color: #5c993e;
     background: #5c993e;
 }
 
@@ -963,6 +992,7 @@ a.conclusion:hover {
 }
 
 .btn-blue:active {
+    border-color: #3065a6;
     background: #3065a6;
 }
 
@@ -990,6 +1020,7 @@ a.conclusion:hover {
 }
 
 .btn-red:active {
+    border-color: #a63034;
     background: #a63034;
 }
 
@@ -1010,7 +1041,7 @@ a.conclusion:hover {
 .btn-blue:active,
 .btn-red:hover,
 .btn-red:active {
-  background-image: none;
+    color: #fff!important;
 }
 
 .btn-text {
@@ -1096,25 +1127,42 @@ a.conclusion:hover {
     background: #fafafa;
 }
 
+.box-col {
+    float: left;
+    padding: 0 24px;
+}
+
+/* Box Small */
 .box-small {
     padding: 12px;
 }
 
-.box-col {
-    float: left;
-    padding: 0 24px;
+.box-small .box-col {
+    padding: 0 6px;
+}
+
+.box-col:first-child {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.box-col:last-child {
+    padding-right: 0;
+}
+
+/* Box Separated */
+.box-col.separated {
     margin-left: -1px;
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
 }
 
-.box-col:first-child {
-    margin-left: -24px;
+.box-col.separated:first-child {
+    margin-left: 0;
     border-left: 0;
 }
 
-.box-col:last-child {
-    margin-right: -24px;
+.box-col.separated:last-child {
     border-right: 0;
 }
 
@@ -1131,6 +1179,12 @@ hr {
 }
 
 /* Widths */
+[class*="width-"] {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
 .width-420 {
     min-width: 420px;
 }
@@ -1145,6 +1199,18 @@ hr {
 
 .width-240 {
     min-width: 240px;
+}
+
+.width-180 {
+    min-width: 180px;
+}
+
+.width-half {
+    width: 50%;
+}
+
+.width-third {
+    width: 33.333333%;
 }
 
 /* Helpers */
@@ -1166,19 +1232,19 @@ hr {
 }
 
 .no-break {
-    white-space: nowrap;
+    white-space: nowrap!important;
 }
 
 .no-top {
-    margin-top: 0;
+    margin-top: 0!important;
 }
 
 .no-bottom {
-    margin-bottom: 0;
+    margin-bottom: 0!important;
 }
 
 .no-margins {
-	margin: 0;
+	margin: 0!important;
 }
 
 .regular {
@@ -1247,6 +1313,8 @@ hr {
 
 .inline-block {
     display: inline-block;
+    *display: inline;
+    *zoom: 1;
 }
 
 .block {
