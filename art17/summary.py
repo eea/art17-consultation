@@ -229,6 +229,7 @@ def record_errors(record):
         subject=record.subject,
         region=record.region,
         eu_country_code=record.eu_country_code,
+        dataset_id=record.dataset_id,
     )
     return {
         e.field: {'text': e.text, 'suspect_value': e.suspect_value}
