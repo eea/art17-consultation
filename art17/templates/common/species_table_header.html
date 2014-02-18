@@ -12,20 +12,24 @@
       <th rowspan="2">Species</th>
     {% endif %}
 
-    {% if not country %}<th rowspan="2">MS</th>{% endif %}
+    {% if not country %}
+    <th rowspan="2" title="Member states">MS</th>
+    {% endif %}
     {% if not region %}<th rowspan="2">Reg</th>{% endif %}
     <th colspan="4">Range</th>
     <th colspan="4">Population</th>
     <th colspan="5">Habitat for the species (km<sup>2</sup>)</th>
-    <th rowspan="2">Future<br/>prosp.</th>
+    <th rowspan="2" title="Future prospects">Future<br/>prosp.</th>
     {% if dataset.schema == '2006' %}
-    <th colspan="4" rowspan="2">
+    <th colspan="4" rowspan="2" title="Overall assessment">
       Overall<br/>Assess.
     </th>
     {% else %}
     <th colspan="4">Overall assessment</th>
     {% endif %}
-    <th colspan="4">Grided maps(km<sup>2</sup>)</th>
+    <th colspan="4" title="The area was computed in km2 by degrading
+    the spatial data to 10x10 or equivalent grid cells
+    in order to homogenise the data across Europe">Grided maps(km<sup>2</sup>)</th>
 
     {% if dataset.schema == '2006' %}
     <td colspan="3">Quality</td>
@@ -37,32 +41,37 @@
   <tr>
 
     <th>Area</th>
-    <th>%MS</th>
-    <th>Trend</th>
-    <th>Ref.</th>
+    <th title="Percentage of area of the Range per MS per region">%MS</th>
+    <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
+    <th title="Favourable reference value">Ref.</th>
 
     <th>Size&amp;Unit</th>
-    <th>%MS</th>
-    <th>Trend</th>
-    <th>Ref.</th>
+    <th title="Percentage of Population per MS per region">%MS</th>
+    <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
+    <th title="Favourable reference value">Ref.</th>
 
-    <th>Area</th>
-    <th>%MS</th>
-    <th>{% if dataset.schema == '2012' %}Qual.{% endif %}</th>
-    <th>Trend</th>
-    <th>Suitable</th>
+    <th >Area</th>
+    <th title="Percentage of area of the Habitat per MS per region">%MS</th>
+    {% if dataset.schema == '2006' %}
+    <th></th>
+    {% else %}
+    <th title="Habitat quality {{ HABITAT_TOOLTIP }}">Qual.</th>
+    {% endif %}
+    <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
+    <th title="Area of suitable habitat for the species">Suitable</th>
 
     {% if dataset.schema != '2006' %}
-    <th>Curr CS</th>
-    <th>Trend CS</th>
-    <th>Prev CS</th>
-    <th>Nat of ch</th>
+    <th title="Current conservation status">Curr CS</th>
+    <th title="Overall trend in conservation status {{ TREND_ALL_TOOLTIP }}">Trend CS</th>
+    <th title="Previous conservation status">Prev CS</th>
+    <th title="Nature of change
+    {{ NATURE_TOOLTIP }}">Nat of ch</th>
     {% endif %}
 
-    <th>Range</th>
-    <th title="%GR">%MS</th>
-    <th>Distrib.</th>
-    <th title="%GD">%MS</th>
+    <th title="Range">Range</th>
+    <th title="Percentage of the surface of the Range Map, which has been gridded, per MS, per region">%MS</th>
+    <th title="Distribution">Distrib.</th>
+    <th title="Percentage of the surface of the Distribution Map, which has been gridded, per MS, per region">%MS</th>
 
     {% if dataset.schema == '2006' %}
     <th>Range</th>

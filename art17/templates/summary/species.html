@@ -128,12 +128,12 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <th>Area</th>
       <th><abbr title="Range conclusion">Range<br/>Concl.</abbr></th>
       <th>Trend</th>
-      <th>Ref.</th>
+      <th title="Favourable reference value">Ref.</th>
 
       <th>Size&amp;Unit</th>
       <th><abbr title="Population conclusion">Pop.<br/>Concl.</abbr></th>
       <th>Trend</th>
-      <th>Ref.</th>
+      <th title="Favourable reference value">Ref.</th>
 
       <th>Area</th>
       <th><abbr title="Habitat conclusion">Habitat<br/>Concl.</abbr></th>
@@ -141,23 +141,23 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <th>Trend</th>
       <th>Suitable</th>
 
-      <th>Future<br/>prosp.</th>
+      <th title="Future prospects">Future<br/>prosp.</th>
 
       {% if dataset.schema == '2006' %}
       <th colspan="4">
         Overall<br/>asses.
       </th>
       {% else %}
-      <th>Curr CS<br/>Concl.</th>
-      <th>Trend CS</th>
-      <th>Prev CS<br/>Concl.</th>
-      <th>Nat of ch</th>
+      <th title="Current conservation status">Curr CS<br/>Concl.</th>
+      <th title="Overall trend in conservation status">Trend CS</th>
+      <th title="Previous conservation status">Prev CS<br/>Concl.</th>
+      <th title="Nature of change">Nat of ch</th>
       {% endif %}
 
       {% if dataset.schema == '2006' %}
       <th colspan="2"></th>
       {% else %}
-      <th>Contrib.</th>
+      <th title="Contribution to target 1">Contrib.</th>
       <th>Type</th>
       {% endif %}
       <th colspan="2"></th>

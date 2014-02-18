@@ -56,7 +56,8 @@ from art17.common import (
     CONTRIB_METHOD,
     CONTRIB_CONCLUSION,
     get_config,
-)
+    TREND_OPTIONS, TREND_OPTIONS_OVERALL, NATURE_OF_CHANGE_OPTIONS,
+    HABITAT_OPTIONS)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
@@ -163,6 +164,7 @@ def inject_fuctions():
 
 @summary.app_context_processor
 def inject_static():
+    make_tooltip = lambda d: '\n' + '\n'.join(['%s: %s' % (k, v) for k, v in d])
     return {
         'expert_perm': expert_perm,
         'CONCLUSION_CLASSES': CONCLUSION_CLASSES,
@@ -175,7 +177,11 @@ def inject_static():
         ),
         'DECISION_DETAILS': dict(
             db.session.query(EtcDicDecision.decision, EtcDicDecision.details)
-        )
+        ),
+        'TREND_TOOLTIP': make_tooltip(TREND_OPTIONS),
+        'TREND_ALL_TOOLTIP': make_tooltip(TREND_OPTIONS_OVERALL),
+        'NATURE_TOOLTIP': make_tooltip(NATURE_OF_CHANGE_OPTIONS),
+        'HABITAT_TOOLTIP': make_tooltip(HABITAT_OPTIONS),
     }
 
 

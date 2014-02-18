@@ -64,6 +64,44 @@ CONTRIB_CONCLUSION = {
     'x': 'not known',
 }
 
+TREND_OPTIONS = [
+    ('N/A', 'not reported'),
+    ('x', 'unknown'),
+    ('0', 'stable'),
+    ('+', 'increase'),
+    ('-', 'decrease'),
+]
+
+TREND_OPTIONS_OVERALL = [
+    ('N/A', 'not reported'),
+    ('x', 'unknown'),
+    ('=', 'stable'),
+    ('+', 'imporving'),
+    ('-', 'declining'),
+]
+
+NATURE_OF_CHANGE_OPTIONS = [
+    ('N/A', 'not reported'),
+    ('a', 'genuine change'),
+    ('b1', 'more accurate'),
+    ('b2', 'taxonomic review'),
+    ('c1', 'use of different methods to measure or evaluate individual '+
+           'parameters in overall conservation status'),
+    ('c2', 'use of different thresholds'),
+    ('d', 'no information about the nature of change'),
+    ('e', 'less accurate data than those used in the previous reporting ' +
+          'or absent data'),
+    ('nc', 'no change'),
+]
+
+HABITAT_OPTIONS = [
+    ('N/A', 'not reported'),
+    ('g', 'good'),
+    ('m', 'moderate'),
+    ('b', 'bad'),
+    ('u', 'unknown'),
+]
+
 HOMEPAGE_VIEW_NAME = 'summary.homepage'
 
 common = flask.Blueprint('common', __name__)
