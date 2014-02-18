@@ -28,6 +28,9 @@ CONTRIB_METHODS = [
 CONTRIB_TYPE = [
     ('+', '+'), ('-', '-'), ('=', '='), ('x', 'x')
 ]
+CONCL_TYPE = [
+    ('+', '+'), ('-', '-'), ('0', '0'), ('x', 'x')
+]
 
 
 def all_fields(form):
@@ -155,8 +158,9 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + zip(conclusions, conclusions)
         conclusions = self.filter_conclusions(conclusions)
-        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
-        trends = empty + zip(trends, trends)
+        #trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        #trends = empty + zip(trends, trends)
+        trends = empty + CONCL_TYPE
         units = [a[0] for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
         units = empty + zip(units, units)
 
@@ -169,8 +173,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
 
-        for f in (self.range_trend, self.population_trend, self.habitat_trend,
-                  self.conclusion_assessment_trend):
+        for f in (self.range_trend, self.population_trend, self.habitat_trend):
             f.choices = trends
         for f in (self.conclusion_range, self.conclusion_population,
                   self.conclusion_habitat, self.conclusion_future,
@@ -178,6 +181,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
             f.choices = conclusions
         self.conclusion_assessment_change.choices = empty + NATURE_CHOICES
         self.population_size_unit.choices = units
+        self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self):
@@ -269,8 +273,9 @@ class SummaryManualFormHabitat(Form, OptionsBase):
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + zip(conclusions, conclusions)
         conclusions = self.filter_conclusions(conclusions)
-        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
-        trends = empty + zip(trends, trends)
+        #trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        #trends = empty + zip(trends, trends)
+        trends = empty + CONCL_TYPE
 
         self.region.choices = empty
 
@@ -290,6 +295,7 @@ class SummaryManualFormHabitat(Form, OptionsBase):
                   self.conclusion_assessment_prev):
             f.choices = conclusions
         self.conclusion_assessment_change.choices = empty + NATURE_CHOICES
+        self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self):
