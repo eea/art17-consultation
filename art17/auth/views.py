@@ -84,6 +84,8 @@ def admin_create_local():
 
 def _get_initial_ldap_data(user_id):
     ldap_user_info = get_ldap_user_info(user_id)
+    if ldap_user_info is None:
+        return None
     return {
         'name': ldap_user_info.get('full_name'),
         'institution': ldap_user_info.get('organisation'),
@@ -147,12 +149,20 @@ def register_ldap():
 
 @auth.route('/auth/create_ldap', methods=['GET', 'POST'])
 def admin_create_ldap():
-    user_id = flask.request.args.get('user_id')
+    user_id = flask.request.form.get('user_id')
     if user_id is None:
         return flask.render_template('auth/register_ldap_enter_user_id.html')
 
-    if flask.request.method == 'GET':
+    if models.RegisteredUser.query.get(user_id) is not None:
+        flask.flash('User "%s" already registered.' % user_id, 'error')
+        return flask.redirect(flask.url_for('.admin_create_ldap'))
+
+    if '_fields_from_ldap' in flask.request.form:
         initial_data = _get_initial_ldap_data(user_id)
+        if initial_data is None:
+            flask.flash('User "%s" not found in Eionet.' % user_id, 'error')
+            return flask.redirect(flask.url_for('.admin_create_ldap'))
+
         form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
 
     else:
@@ -174,6 +184,7 @@ def admin_create_ldap():
             return flask.redirect(flask.url_for('.admin_create_ldap'))
 
     return flask.render_template('auth/register_ldap.html', **{
+        'user_id': user_id,
         'register_user_form': form,
     })
 

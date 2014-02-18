@@ -11,12 +11,13 @@
 {% block content %}
   <h1>Register an Eionet account</h1>
 
-  <form>
+  <form method="post">
     <label>
       Eionet account ID:
       <input name="user_id">
     </label>
     <br>
+    <input type="hidden" name="_fields_from_ldap" value="on">
     <button type="submit">create accont</button>
   </form>
 {% endblock content %}

@@ -11,7 +11,15 @@
 
 {% block content %}
   <h1>Users</h1>
- 
+
+  <p>
+    {%- set ldap_url = url_for('.admin_create_ldap') %}
+    {%- set local_url = url_for('.admin_create_local') %}
+    Create user:
+    <a href="{{ ldap_url }}">use existing Eionet account</a> or
+    <a href="{{ local_url }}">create local account</a>
+  </p>
+
   <table class="table-list">
     <thead>
       <tr>
