@@ -175,7 +175,7 @@ def test_ldap_account_activation_flow(
     from .factories import DatasetFactory
 
     _set_config(admin_email='admin@example.com')
-    ldap_user_info['foo'] = {'email': 'foo@example.com'}
+    ldap_user_info['foo'] = {'email': 'foo@example.com', 'full_name': 'foo'}
     create_user('ze_admin', ['admin'])
     DatasetFactory()
     models.db.session.commit()
@@ -185,8 +185,6 @@ def test_ldap_account_activation_flow(
         set_user('foo', is_ldap_user=True)
 
     register_page = client.get(flask.url_for('auth.register_ldap'))
-    register_page.form['name'] = 'foo full name'
-    register_page.form['email'] = 'foo@example.com'
     register_page.form['institution'] = 'foo institution'
 
     with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
