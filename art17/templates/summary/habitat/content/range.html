@@ -1,6 +1,9 @@
 {% from '_macros.html' import parse_errors with context %}
 
-<td {{ parse_errors('range_surface_area', row, qa_errors, classes='number border_left', title=row.range_change_reason,) }}>
+{% set reason='Reason for change: ' + (row.range_change_reason or 'N/A') %}
+<td {{ parse_errors('range_surface_area', row, qa_errors,
+                    classes='number border_left',
+                    title=reason) }}>
   {{ row.range_surface_area|str2num }}
 </td>
 

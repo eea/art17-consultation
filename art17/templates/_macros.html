@@ -2,7 +2,7 @@
     {% set qtitle, qclasses = parse_qa_errors(fields, row, qa_errors) %}
     {% set letitle = (title or '') + ' ' + qtitle %}
     {% set letitle = letitle|trim %}
-    {% if letitile -%}
+    {% if letitle -%}
     title="{{ letitle }}"
     {% endif %}
     class="{{ classes }} {{ qclasses }}"

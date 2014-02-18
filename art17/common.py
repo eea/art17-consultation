@@ -167,8 +167,8 @@ def population_size_unit(row):
 
 def population_size_unit_title(row):
     titles = []
-    if row.population_change_reason:
-        titles.append(row.population_change_reason)
+    titles.append('Reason for change: ' +
+                  (row.population_change_reason or 'N/A'))
     titles.append("Agreed: " + (row.population_units_agreed or 'N/A'))
     titles.append("Other: " + (row.population_units_other or 'N/A'))
     if not titles:
