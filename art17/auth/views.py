@@ -60,7 +60,7 @@ def send_welcome_email(user, plaintext_password):
 
 @auth.route('/auth/create_local', methods=['GET', 'POST'])
 def admin_create_local():
-    form = Art17ConfirmRegisterForm(flask.request.form)
+    form = Art17LocalRegisterForm(flask.request.form)
 
     if form.validate_on_submit():
         kwargs = form.to_dict()
