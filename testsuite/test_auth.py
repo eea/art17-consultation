@@ -220,8 +220,12 @@ def test_ldap_account_activation_flow(
 
 
 def test_view_requires_admin(app, zope_auth, client):
+    from .factories import DatasetFactory
+
     create_user('ze_admin', ['admin'])
     create_user('foo')
+    DatasetFactory()
+    models.db.session.commit()
     admin_user_url = flask.url_for('auth.admin_user', user_id='foo')
 
     assert client.get(admin_user_url, expect_errors=True).status_code == 403
@@ -287,8 +291,12 @@ def test_dates(app, zope_auth, client):
 
 
 def test_email_notification_for_role_changes(app, zope_auth, client, outbox):
+    from .factories import DatasetFactory
+
     create_user('ze_admin', ['admin'])
     foo = create_user('foo', ['etc', 'stakeholder'], name="Foo Person")
+    DatasetFactory()
+    models.db.session.commit()
     zope_auth.update({'user_id': 'ze_admin'})
     page = client.get(flask.url_for('auth.admin_user', user_id='foo'))
     page.form['roles'] = ['stakeholder', 'nat']
