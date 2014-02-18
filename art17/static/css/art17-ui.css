@@ -310,6 +310,16 @@ a.conclusion:hover {
     border: 1px solid #bbbbbb;
     background: #fff;
     cursor: pointer;
+    position: relative;
+}
+
+.conclusion.select:before {
+    content: " ";
+    font-size: 0;
+    line-height: 0;
+    height: 0;
+    width: 0;
+    border-width: 2px;
 }
 
 .conclusion.inline {

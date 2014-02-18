@@ -243,7 +243,8 @@ $(function () {
         if ( $(intendedTarget).hasClass('open') ) {
             $(intendedTarget).removeClass('open');    
         } else {
-            $(".popout." + similar).removeClass('open');
+            // $(".popout." + similar).removeClass('open'); // to close similar
+            $(".popout").removeClass('open');
             $(intendedTarget).addClass('open');
         }
     });
@@ -251,6 +252,9 @@ $(function () {
     // Close popout
     $('.popout').delegate('.close', 'click', function () {
         $(this).closest('.popout').toggleClass('open');
+    });
+    $('.popout').click ( function (event) {
+        event.stopPropagation();
     });
     $('html').click( function() {
         $(popouts).removeClass('open');
