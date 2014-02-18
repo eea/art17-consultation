@@ -1,9 +1,17 @@
 {% from '_macros.html' import conclusion_td with context %}
 
+{% if not manual_assesment %}
+    {% set operation = 'add' %}
+{% else %}
+    {% set operation = 'update' %}
+{% endif %}
+
+{% set can_select_MS = can_select_MS_country_code(operation) %}
+
 {% set form=manual_form %}
 <form method="post" action="">
   <tr class="form_row">
-    <td></td>
+    <td>{% if can_select_MS %}{{ form.MS() }}{% endif %}</td>
     {% if not region %}
     <td>{{ form.region() }}</td>
     {% endif %}

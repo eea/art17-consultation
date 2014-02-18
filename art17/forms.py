@@ -9,6 +9,7 @@ from art17.models import (
     EtcDicConclusion,
     EtcDicTrend,
     EtcDicPopulationUnit,
+    EtcDataSpeciesRegion,
 )
 from art17.utils import validate_field
 from art17.auth import current_user
@@ -20,6 +21,8 @@ NOT_NUMERIC_VALUES = (
 METH_CONCL_MANDATORY = "At least one method and conclusion must be filled!"
 METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
     "nor a method without a conclusion"
+INVALID_MS_REGION_PAIR = "Please select an MS country code that is available "\
+    "for the selected region"
 
 NATURE_CHOICES = [('yes', 'yes'), ('no', 'no'), ('nc', 'nc')]
 CONTRIB_METHODS = [
@@ -53,11 +56,11 @@ class OptionalSelectField(SelectField):
 
 
 class Form(Form_base):
-    def validate(self):
+    def validate(self, **kwargs):
         if not super(Form, self).validate():
             return False
 
-        return self.custom_validate()
+        return self.custom_validate(**kwargs)
 
     def custom_validate(self):
         return True
@@ -120,6 +123,7 @@ class OptionsBase(object):
 class SummaryManualFormSpecies(Form, OptionsBase):
 
     region = SelectField(default='')
+    MS = SelectField(default='')
 
     range_surface_area = TextField(default=None)
     method_range = OptionalSelectField()
@@ -192,7 +196,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
-    def custom_validate(self):
+    def custom_validate(self, **kwargs):
         fields = [f for f in all_fields(self) if f != self.region]
         empty = [f for f in fields if not f.data]
 
@@ -218,7 +222,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
             elif mc and cc:
                 one = True
         if not one:
-            fields[1].errors.append(METH_CONCL_MANDATORY)
+            fields[2].errors.append(METH_CONCL_MANDATORY)
 
         numeric_values = [
             self.range_surface_area, self.complementary_favourable_range,
@@ -230,6 +234,17 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         for f in numeric_values:
             if not validate_field(f.data):
                 f.errors.append(NOT_NUMERIC_VALUES)
+
+        if self.MS.data and self.region.data:
+            species_record = (
+                EtcDataSpeciesRegion.query
+                .filter_by(
+                    eu_country_code=self.MS.data, region=self.region.data,
+                    assesment_speciesname=kwargs['subject'],
+                    dataset_id=kwargs['period'])
+                .all())
+            if not species_record:
+                self.MS.errors.append(INVALID_MS_REGION_PAIR)
 
         return not self.errors
 
@@ -244,6 +259,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
 class SummaryManualFormHabitat(Form, OptionsBase):
 
     region = SelectField()
+    MS = SelectField(default='')
 
     range_surface_area = TextField()
     method_range = OptionalSelectField()
@@ -347,6 +363,17 @@ class SummaryManualFormHabitat(Form, OptionsBase):
             if not validate_field(f.data):
                 f.errors.append(NOT_NUMERIC_VALUES)
 
+        if self.MS.data and self.region.data:
+            species_record = (
+                EtcDataHabitattypeRegion.query
+                .filter_by(
+                    eu_country_code=self.MS.data, region=self.region.data,
+                    habitatcode=kwargs['subject'],
+                    dataset_id=kwargs['period'])
+                .all())
+            if not species_record:
+                self.MS.errors.append(INVALID_MS_REGION_PAIR)
+
         return not self.errors
 
     def all_errors(self):
@@ -371,7 +398,7 @@ class SummaryManualFormSpeciesRef(Form):
 class SummaryManualFormHabitatRef(Form):
 
     region = SelectField()
-    
+
     complementary_favourable_range = TextField()
     complementary_favourable_area = TextField()
 
