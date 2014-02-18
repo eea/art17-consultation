@@ -122,6 +122,8 @@ def register_ldap():
 
     if flask.request.method == 'POST':
         form = Art17LDAPRegisterForm(flask.request.form)
+        form.name.data = initial_data.get('name', '')
+        form.email.data = initial_data.get('email', '')
         if form.validate():
             datastore = flask.current_app.extensions['security'].datastore
             user = datastore.create_user(
@@ -158,16 +160,17 @@ def admin_create_ldap():
         flask.flash('User "%s" already registered.' % user_id, 'error')
         return flask.redirect(flask.url_for('.admin_create_ldap'))
 
+    initial_data = _get_initial_ldap_data(user_id)
+
     if '_fields_from_ldap' in flask.request.form:
-        initial_data = _get_initial_ldap_data(user_id)
         if initial_data is None:
             flask.flash('User "%s" not found in Eionet.' % user_id, 'error')
             return flask.redirect(flask.url_for('.admin_create_ldap'))
-
         form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
-
     else:
         form = Art17LDAPRegisterForm(flask.request.form)
+        form.name.data = initial_data.get('name', '')
+        form.email.data = initial_data.get('email', '')
         if form.validate():
             kwargs = form.to_dict()
             kwargs['id'] = user_id
@@ -182,7 +185,7 @@ def admin_create_ldap():
                 "User %s created successfully." % kwargs['id'],
                 'success',
             )
-            return flask.redirect(flask.url_for('.admin_create_ldap'))
+            return flask.redirect(flask.url_for('.users'))
 
     return flask.render_template('auth/register_ldap.html', **{
         'user_id': user_id,
@@ -292,6 +295,7 @@ def admin_user(user_id):
         datastore.commit()
 
         # manage user info
+        user_form = Art17AdminEditUserForm(flask.request.form)
         if user_form.validate():
             user_form.populate_obj(user)
             models.db.session.commit()

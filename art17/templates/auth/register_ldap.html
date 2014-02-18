@@ -10,7 +10,7 @@
 
 {% block content %}
 
-  {% from '_macros.html' import render_field_with_errors %}
+  {% from '_macros.html' import render_field_with_errors, render_disabled_field %}
   <h1>Register with Eionet account</h1>
 
   {%- if already_registered %}
@@ -24,17 +24,22 @@
     <div class="clearfix">
       <div class="box-col separated width-300">
           <p>
-            Register the account named
-            <b><tt>{{ user_id }}</tt></b>.
+            Register the account named:
+            <b><tt>{{ user_id }}</tt></b>
           </p>
+          <p>
+            Name:
+            <b>{{ register_user_form.name.data }}</b>
+          </p>
+          <p>
+            Email:
+            <a href="mailto:{{ register_user_form.email.data }}">{{ register_user_form.email.data }}</a>
+          </p>
+
 
           {{ register_user_form.hidden_tag() }}
           {{ register_user_form.MS() }}
 
-          <!-- NAME -->
-          <div class="form-group">
-            {{ render_field_with_errors(register_user_form.name) }}
-          </div>
           <!-- INSTITUTION -->
           <div class="form-group clearfix">
             <div class="pull-left" style="width: 75%;">
@@ -52,18 +57,11 @@
           <div class="form-group" id="other_country_container">
             {{ render_field_with_errors(register_user_form.other_country) }}
           </div>
-      </div>
 
-      <div class="box-col separated width-300">
-        <!-- EMAIL -->
-        <div class="form-group">
-          {{ render_field_with_errors(register_user_form.email) }}
-        </div>
-
-        <!-- QUALIFICATION -->
-        <div class="form-group">
-          {{ render_field_with_errors(register_user_form.qualification) }}
-        </div>
+          <!-- QUALIFICATION -->
+          <div class="form-group">
+            {{ render_field_with_errors(register_user_form.qualification) }}
+          </div>
       </div>
     </div>
 

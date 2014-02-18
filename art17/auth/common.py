@@ -1,4 +1,5 @@
 import logging
+import ldap
 from datetime import date
 from functools import wraps
 import flask
@@ -60,6 +61,8 @@ def get_ldap_user_info(user_id):
     try:
         return users_db.user_info(user_id)
     except UserNotFound:
+        return None
+    except ldap.INVALID_DN_SYNTAX:
         return None
 
 
