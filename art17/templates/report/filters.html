@@ -1,22 +1,22 @@
-<form id="report-filterform" class="box box-small inline-block" name="filterform" method="get">
+<form id="report-filterform" class="form box box-small inline-block" name="filterform" method="get">
 
-  <div class="form_group">
-    <label>{{ report_filter_form.period.label }}</label>
+  <div class="box-col">
+    {{ report_filter_form.period.label }}
     {{ report_filter_form.period }}
   </div>
 
-  <div class="form_group">
-    <label>{{ report_filter_form.group.label }}</label>
+  <div class="box-col">
+    {{ report_filter_form.group.label }}
     {{ report_filter_form.group(**{'data-href': groups_url }) }}
   </div>
 
-  <div class="form_group">
-    <label>{{ report_filter_form.country.label }}</label>
+  <div class="box-col">
+    {{ report_filter_form.country.label }}
     {{ report_filter_form.country }}
   </div>
 
-  <div class="form_group">
-    <label>{{ report_filter_form.region.label }}</label>
+  <div class="box-col">
+    {{ report_filter_form.region.label }}
     {{ report_filter_form.region(**{'data-href': regions_url}) }}
   </div>
 
