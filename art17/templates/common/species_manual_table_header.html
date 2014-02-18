@@ -1,0 +1,53 @@
+<tbody class="thead">
+  <tr class="section-header">
+    <th colspan="{{ colspan_all }}">
+      {% if dataset.schema == '2006' %}
+      ETC/BD biogeographical assessment &amp; users proposed corrections
+      {% else %}
+      EU Biogeographical assessment and proposed corrections
+      {% endif %}
+    </th>
+  </tr>
+  <tr>
+    <th><abbr title="Decision">Dec.</abbr></th>
+    {% if not region %}<th>Reg</th>{% endif %}
+    <th>Area</th>
+    <th><abbr title="Range conclusion">Range<br/>Concl.</abbr></th>
+    <th>Trend</th>
+    <th title="Favourable reference value">Ref.</th>
+
+    <th>Size&amp;Unit</th>
+    <th><abbr title="Population conclusion">Pop.<br/>Concl.</abbr></th>
+    <th>Trend</th>
+    <th title="Favourable reference value">Ref.</th>
+
+    <th>Area</th>
+    <th><abbr title="Habitat conclusion">Habitat<br/>Concl.</abbr></th>
+    <th></th>
+    <th>Trend</th>
+    <th>Suitable</th>
+
+    <th title="Future prospects">Future<br/>prosp.</th>
+
+    {% if dataset.schema == '2006' %}
+    <th colspan="4">
+      Overall<br/>asses.
+    </th>
+    {% else %}
+    <th title="Current conservation status">Curr. CS<br/>Concl.</th>
+    <th title="Overall trend in conservation status">Trend CS</th>
+    <th title="Previous conservation status">Prev. CS<br/>Concl.</th>
+    <th title="Nature of change">Nat. of ch.</th>
+    {% endif %}
+
+    {% if dataset.schema == '2006' %}
+    <th colspan="2"></th>
+    {% else %}
+    <th title="Contribution to target 1">Contrib.</th>
+    <th>Type</th>
+    {% endif %}
+    <th colspan="2"></th>
+
+    <th colspan="5">{# padding #}</th>
+  </tr>
+</tbody>
