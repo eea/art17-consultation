@@ -229,19 +229,51 @@ $(function () {
         $(this).closest('.popout').toggle();
     });
 
-    // Uncheck radio button in popout
-    $('.conclusion').delegate("input[type='radio']", 'click', function (event) {
-        event.stopPropagation();
-        var secondClick = $(this).attr('secondClick');
+    // Assesment
+    $('.popout.assesment').each(function () {
+        var method = $(this).find("select");
+        var radios = $(this).find("input[type='radio']");
+        var assesmentPreview = $(this).closest('.popout-wrapper').find(".conclusion.select");
+        var prevSecondClick;
+        var currentClass;
 
-        if (secondClick == "false" || secondClick == undefined) {
-            $(this).closest('.popout').find("input[type='radio']").attr('secondClick', false);
-            $(this).attr('secondClick', true);
+        // Select
+        $(method).delegate('', 'change', function (event) {
+            if (this.value) {
+                $(assesmentPreview).children('.selected-method').removeClass('hidden').html(this.value);
+                $(assesmentPreview).children('.fa').addClass('hidden');
+            } else {
+                $(assesmentPreview).children('.selected-method').addClass('hidden').html(this.value);
+                $(assesmentPreview).children('.fa').removeClass('hidden');
+            }
+        });
 
-        } else {
-            $(this).attr('secondClick', false);
-            this.checked = false;
-        }
+        // Radios
+        $(radios).delegate('', 'click', function (event) {
+            event.stopPropagation();
+
+            // Match selected conclusion
+            $(assesmentPreview).removeClass(currentClass);
+            if (currentClass != this.value) {
+                currentClass = this.value;
+                $(assesmentPreview).addClass(currentClass);
+            } else {
+                currentClass = false;
+                $(assesmentPreview).removeClass(currentClass);
+            }
+
+            // Uncheck radio button
+            var secondClick = $(this).attr('secondClick');
+            if (secondClick == "false" || secondClick == undefined) {
+                $(prevSecondClick).attr('secondClick', false);
+                $(this).attr('secondClick', true);
+            } else {
+                console.log('ceva');
+                $(this).attr('secondClick', false);
+                this.checked = false;
+            }
+            prevSecondClick = this;
+        });
     });
 });
 

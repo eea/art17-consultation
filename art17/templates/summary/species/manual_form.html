@@ -48,13 +48,9 @@
       <td {% if form.range_surface_area.errors %}class="errors"{% endif %}>
       {{ form.range_surface_area(size=5) }}
       </td>
-      <td class="{% if form.method_range.errors or form.conclusion_range.errors %}
-                  errors
-                  {% endif %}
-                  select"
-          >
-        <div class="conclusion popout-wrapper">
+      <td class="{% if form.method_range.errors or form.conclusion_range.errors %}errors{% endif %}">
 
+        <div class="conclusion popout-wrapper">
           <div class="popout assesment">
             <div class="popout-title">
               <a class="close pull-right"><i class="fa fa-times"></i></a>
@@ -107,7 +103,7 @@
                           <input  id="radio-range-xx"
                                   type="radio" 
                                   name="range_conclusion" 
-                                  value="xx"> 
+                                  value="XX"> 
                   </label> Unknown
                 </li>
               </ul>
@@ -115,7 +111,8 @@
             {# {{ form.conclusion_range() }} #}
           </div>
           <a class="conclusion select block" onclick="$(this).prev('.popout').toggle()">
-            <i  class="fa fa-pencil"></i>
+            <span class="selected-method hidden"></span>
+            <i class="fa fa-pencil"></i>
           </a>
         </div>
       </td>
