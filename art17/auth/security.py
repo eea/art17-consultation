@@ -18,7 +18,7 @@ from flask.ext.security.forms import (
 
 from art17.auth.common import get_ldap_user_info
 from art17.auth.common import check_dates
-from art17.auth.forms import Art17RegisterFormMixin
+from art17.auth.forms import Art17RegisterFormBase
 
 
 current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
@@ -72,13 +72,13 @@ def check_duplicate_with_ldap(form, field):
         raise ValidationError("User ID already exists in LDAP database.")
 
 
-class Art17LocalRegisterForm(Art17RegisterFormMixin, ConfirmRegisterForm):
+class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
 
     id = TextField('Username', validators=[Required("User ID is required"),
                                      check_duplicate_with_ldap])
 
 
-class Art17LDAPRegisterForm(Art17RegisterFormMixin, RegisterFormMixin, Form):
+class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
 
     email = TextField('Email',
         validators=[Required("Email is required"), email_validator])

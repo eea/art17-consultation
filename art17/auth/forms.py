@@ -16,7 +16,7 @@ class DatasetForm(Form_base):
     schema = SelectField(choices=zip(SCHEMAS, SCHEMAS))
 
 
-class Art17RegisterFormMixin(object):
+class Art17RegisterFormBase(object):
 
     name = TextField('Full name',
         validators=[Required("Full name is required")])
@@ -29,7 +29,7 @@ class Art17RegisterFormMixin(object):
     qualification = TextField('Qualification')
 
     def __init__(self, *args, **kwargs):
-        super(Art17RegisterFormMixin, self).__init__(*args, **kwargs)
+        super(Art17RegisterFormBase, self).__init__(*args, **kwargs)
         dataset = (Dataset.query.order_by(Dataset.id.desc()).first())
         countries = (DicCountryCode.query
             .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
