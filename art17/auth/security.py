@@ -15,6 +15,7 @@ from flask.ext.security.forms import (
     password_length,
     Required,
     email_validator,
+    unique_user_email,
 )
 
 from art17.auth.common import get_ldap_user_info
@@ -95,7 +96,9 @@ class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
 class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
 
     email = TextField('Email',
-        validators=[Required("Email is required"), email_validator])
+        validators=[Required("Email is required"),
+                    email_validator,
+                    unique_user_email])
 
 
 def no_ldap_user(form, field):
