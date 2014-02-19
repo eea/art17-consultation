@@ -30,7 +30,7 @@
 
     {% include 'common/table_legend.html' %}
 
-    <table class="complex_datatable datatable">
+    <table class="complex_datatable">
       <caption>
       <b>Current selection</b>:
       {{ current_selection|join(', ') }}.
@@ -41,7 +41,7 @@
 
       {% include 'common/habitat_table_header.html' with context %}
 
-      <tbody>
+      <tbody class="stripe_3rd">
       {% for row in objects %}
         {% set visible = can_view(row, restricted_countries) %}
         {% set qa_errors = record_errors(row) %}

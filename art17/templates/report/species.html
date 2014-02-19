@@ -33,7 +33,7 @@
 
     {% set colspan_all=35 if region else 36 %}
 
-    <table class="complex_datatable datatable">
+    <table class="complex_datatable">
       <caption>
         <b>Current selection</b>:
         {{ current_selection|join(', ') }}.
@@ -41,7 +41,7 @@
 
       {% include "common/species_table_header.html" with context %}
 
-      <tbody>
+      <tbody class="stripe_3rd">
 
         {% for row in objects %}
           {% set visible = can_view(row, restricted_countries) %}
