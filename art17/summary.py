@@ -612,6 +612,18 @@ class HabitatSummary(HabitatMixin, Summary):
         values = self.get_best_automatic()
         return values
 
+    def get_current_selection(self, period_name, group, subject, region):
+        selection = super(HabitatSummary, self).get_current_selection(
+            period_name, group, subject, region
+        )
+        if not selection:
+            return selection
+        details = self.get_subject_details(subject)
+        if details:
+            selection[2] = details.habcode + ' ' + details.name
+        return selection
+
+
 
 summary.add_url_rule('/species/summary/',
                      view_func=SpeciesSummary.as_view('species-summary'))

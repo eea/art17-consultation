@@ -214,3 +214,7 @@ class HabitatMixin(MixinsCommon):
             .all()
         )
         return blank_option + regions
+
+    @classmethod
+    def get_subject_details(cls, subject):
+        return EtcDicHdHabitat.query.filter_by(habcode=subject).first()
