@@ -236,7 +236,7 @@ $(function () {
     var popoutButtons = $("[data-popout]");
 
     // Open popout
-    $(popoutButtons).on('click', function () {
+    $(popoutButtons).on('click', function (event) {
         event.stopPropagation();
         var similar = $(this).data('popout');
         var intendedTarget = $(this).closest('.popout-wrapper').find(".popout");
