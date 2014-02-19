@@ -37,3 +37,68 @@
       {% endfor %}
     {% endif %}
 {% endmacro %}
+
+{% macro conclusion_li(conclusion, name) %}
+    {% set css_class = CONCLUSION_CLASSES.get(conclusion, '') %}
+    <li class="clearfix">
+        <label  class="radio-label {{ css_class }} conclusion inline width-third pull-right"
+                for="radio-{{ name }}-{{ css_class|lower }}">
+                <input  id="radio-{{ name }}-{{ css_class|lower }}"
+                        type="radio"
+                        name="{{ name }}_conclusion"
+                        value="{{ css_class }}"
+                        data-class="{{ css_class }}">
+                {{ css_class }}
+            </label> {{ COUNTRY_ASSESSMENTS.get(conclusion, '') }}
+    </li>
+{% endmacro %}
+
+{% macro method_conclusion_popout(name, title, method_field, conclusion_field) %}
+  <div class="popout-wrapper">
+      <div class="popout assesment caret">
+      <div class="popout-title">
+          <span class="close pull-right"><i class="fa fa-times"></i></span>
+          {{ title }}
+      </div>
+      <div class="form-group clearfix no-bottom">
+          <label class="pull-left no-bottom">Method</label>
+          <div class="width-third pull-right">{{ method_field() }}</div>
+      </div>
+      <hr>
+      <div class="form-group no-bottom">
+          <label class="no-bottom">Conclusion</label>
+          <ul class="select-list no-list">
+              {% for conclusion, c in conclusion_field.choices %}
+                {% if conclusion %}
+                  {{ conclusion_li(conclusion, name) }}
+                {% endif %}
+              {% endfor %}
+          </ul>
+      </div>
+  </div>
+      <a class="conclusion select block" tab-index data-popout="assesment">
+      <span class="selected-value hidden"></span>
+      <i class="fa fa-hand-o-up"></i>
+      </a>
+  </div>
+{% endmacro %}
+
+{% macro size_unit(pop_size_field, size, pop_size_unit_field) %}
+  <div class="conclusion popout-wrapper">
+      <div class="popout size_unit caret width-120">
+      <a class="close pull-right"><i class="fa fa-times"></i></a>
+      <div class="form-group clearfix no-bottom">
+          <label class="pull-left no-bottom">Size</label>
+          <div class="width-2third pull-right">{{ pop_size_field(size=size) }}</div>
+      </div>
+      <div class="form-group clearfix no-bottom">
+          <label class="pull-left no-bottom">Unit</label>
+          <div class="width-2third pull-right">{{ pop_size_unit_field() }}</div>
+      </div>
+      </div>
+      <a class="select block" tab-index data-popout="size_unit">
+      <span class="selected-value hidden"></span>
+      <i class="fa fa-hand-o-up"></i>
+      </a>
+  </div>
+{% endmacro %}
