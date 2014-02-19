@@ -18,16 +18,13 @@
   Choose a period, a group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat.
   </p>
 
-  <p class="note">
-    Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc)
-  </p>
-
   {% include 'summary/filters.html' %}
 
     {% set colspan_all=26 if region else 27 %}
     {% if current_selection %}
 
     {% include 'summary/wiki_buttons.html' %}
+    {% include 'common/note.html' %}
     {% include 'common/table_legend.html' %}
 
     <table class="complex_datatable">
