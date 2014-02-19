@@ -75,4 +75,4 @@ def test_summary_range_value(app, client, request_args, search_dict):
 ])
 def test_progress_range_value(app, client, request_args, search_text):
     resp = client.get(*request_args)
-    assert search_text in resp.html.find('td').text
+    assert search_text in resp.html.find('a', {'class': 'conclusion'}).text
