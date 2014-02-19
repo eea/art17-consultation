@@ -107,7 +107,7 @@ abbr {
 /*CELLS*/
 .complex_datatable td,
 .complex_datatable th {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 
 .complex_datatable tbody th a,
