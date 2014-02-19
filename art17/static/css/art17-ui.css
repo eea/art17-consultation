@@ -271,6 +271,7 @@ abbr {
     border-radius: 2px;
     min-height: 18px;
     vertical-align: top;
+    position: relative;
 }
 
 .conclusion,
@@ -1031,7 +1032,8 @@ li.select-list {
     color: black;
 }
 
-.select:before {
+.select:before,
+.corner-arrow:before {
     content: " ";
     font-size: 0;
     line-height: 0;
@@ -1041,8 +1043,8 @@ li.select-list {
     border-style: solid;
     border-color: black black transparent transparent;
     position: absolute;
-    top: 3px;
-    right: 3px;
+    top: 2px;
+    right: 2px;
 }
 
 .form-error {
