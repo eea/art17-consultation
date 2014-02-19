@@ -75,10 +75,13 @@ def check_duplicate_with_ldap(form, field):
     if user is not None:
         raise ValidationError("User ID already exists in LDAP database.")
 
+
 def check_duplicate_with_local_db(form, field):
+
     user = models.RegisteredUser.query.get(field.data)
     if user is not None:
         raise ValidationError("User ID is already taken in database.")
+
 
 class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
 
@@ -109,6 +112,7 @@ def no_ldap_user(form, field):
 
 
 class Art17ForgotPasswordForm(ForgotPasswordForm):
+
     email = TextField(
         label=ForgotPasswordForm.email.args[0],
         validators=ForgotPasswordForm.email.kwargs['validators']
