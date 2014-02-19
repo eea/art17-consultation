@@ -1,17 +1,17 @@
-<form id="progress-filterform" class="box box-small inline-block" name="filterform" method="get">
+<form id="progress-filterform" class="form box box-small inline-block" name="filterform" method="get">
 
-  <div class="form_group">
-    <label>{{ progress_filter_form.period.label }}</label>
+  <div class="box-col">
+    {{ progress_filter_form.period.label }}
     {{ progress_filter_form.period() }}
   </div>
 
-  <div class="form_group">
-    <label>{{ progress_filter_form.group.label }}</label>
+  <div class="box-col">
+    {{ progress_filter_form.group.label }}
     {{ progress_filter_form.group(**{'data-href': groups_url}) }}
   </div>
 
-  <div class="form_group">
-    <label>{{ progress_filter_form.conclusion.label }}</label>
+  <div class="box-col">
+    {{ progress_filter_form.conclusion.label }}
     {{ progress_filter_form.conclusion() }}
   </div>
 
