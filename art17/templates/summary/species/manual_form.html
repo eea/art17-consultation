@@ -99,7 +99,7 @@
     {% else %}
       {# Edit reference values form #}
       {% set ass = manual_assessment %}
-      <td class="border_left">{{ ass.range_surface_area }}</td>
+      <td>{{ ass.range_surface_area }}</td>
       {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
       <td>{{ ass.range_trend }}</td>
       <td {% if form.complementary_favourable_range.errors %}class="errors"{% endif %}>
