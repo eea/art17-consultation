@@ -6,16 +6,15 @@ from flask import (
     url_for,
     g,
 )
-from sqlalchemy import or_, func
 from art17.auth import current_user
 from art17.common import get_default_period, COUNTRY_ASSESSMENTS
 from art17.forms import ProgressFilterForm
 from art17.models import (
     Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db,
     EtcDicDecision, EtcDicMethod,
-    Comment, t_comments_read, HabitatComment, t_habitat_comments_read,
 )
 from art17.summary import SpeciesMixin, HabitatMixin
+from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
 
 progress = Blueprint('progress', __name__)
 
@@ -252,38 +251,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
         return zip(conclusions, conclusions)
 
     def get_comment_counts(self, period):
-        comments_query = (
-            db.session.query(
-                Comment.assesment_speciesname,
-                Comment.region,
-                func.count('*'),
-            )
-            .filter(Comment.MS == 'EU25')
-            .filter(Comment.dataset_id == period)
-            .filter(or_(Comment.deleted == 0, Comment.deleted == None))
-            .group_by(
-                Comment.assesment_speciesname,
-                Comment.region,
-            )
-        )
-        all_comment_count = {
-            (row.assesment_speciesname, row.region): row[2]
-            for row in comments_query
-        }
-
-        read_comments_query = (
-            comments_query
-            .join(t_comments_read)
-            .filter(t_comments_read.c.reader_user_id == g.identity.id)
-        )
-        for row in read_comments_query:
-            all_comment_count[row.assesment_speciesname, row.region] -= row[2]
-
-        return {
-            'user': {},
-            'all': all_comment_count,
-            'wiki': {},
-        }
+        return SpeciesCommentCounter(period, g.identity.id).get_counts()
 
     def setup_objects_and_data(self, period, group, conclusion_type):
         if conclusion_type == 'range':
@@ -349,39 +317,7 @@ class HabitatProgress(Progress, HabitatMixin):
         return zip(conclusions, conclusions)
 
     def get_comment_counts(self, period):
-        comments_query = (
-            db.session.query(
-                HabitatComment.assesment_speciesname,
-                HabitatComment.region,
-                func.count('*'),
-            )
-            .filter(HabitatComment.MS == 'EU25')
-            .filter(HabitatComment.dataset_id == period)
-            .filter(or_(HabitatComment.deleted == 0,
-                        HabitatComment.deleted == None))
-            .group_by(
-                HabitatComment.assesment_speciesname,
-                HabitatComment.region,
-            )
-        )
-        all_comment_count = {
-            (row.assesment_speciesname, row.region): row[2]
-            for row in comments_query
-        }
-
-        read_comments_query = (
-            comments_query
-            .join(t_habitat_comments_read)
-            .filter(t_habitat_comments_read.c.reader_user_id == g.identity.id)
-        )
-        for row in read_comments_query:
-            all_comment_count[row.assesment_speciesname, row.region] -= row[2]
-
-        return {
-            'user': {},
-            'all': all_comment_count,
-            'wiki': {},
-        }
+        return HabitatCommentCounter(period, g.identity.id).get_counts()
 
     def setup_objects_and_data(self, period, group, conclusion_type):
         if conclusion_type == 'range':

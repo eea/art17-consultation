@@ -9,12 +9,16 @@ from flask import (
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
 from flask.ext.principal import PermissionDenied
+from sqlalchemy import or_, func
 
 from art17.auth import current_user
 from art17.common import get_default_period, admin_perm
 from art17.forms import CommentForm
 from art17.mixins import SpeciesMixin, HabitatMixin
-from art17.models import Dataset, db
+from art17.models import (
+    Dataset, db,
+    Comment, t_comments_read, HabitatComment, t_habitat_comments_read,
+)
 
 
 DATE_FORMAT = '%Y-%m-%d'
@@ -241,3 +245,63 @@ comments.add_url_rule('/history/species/',
                       view_func=SpeciesUserSummary.as_view('species-history'))
 comments.add_url_rule('/history/habitat/',
                       view_func=HabitatUserSummary.as_view('habitat-history'))
+
+
+class _CommentCounterBase(object):
+
+    def __init__(self, period, user_id):
+        self.period = period
+        self.user_id = user_id
+
+    def count_all(self):
+        comments_query = (
+            db.session.query(
+                self.subject_column,
+                self.comment_cls.region,
+                func.count('*'),
+            )
+            .filter(self.comment_cls.dataset_id == self.period)
+            .filter(or_(
+                self.comment_cls.deleted == 0,
+                self.comment_cls.deleted == None,
+            ))
+            .group_by(
+                self.subject_column,
+                self.comment_cls.region,
+            )
+        )
+        rv = {
+            (row[0], row[1]): row[2]
+            for row in comments_query
+        }
+
+        read_comments_query = (
+            comments_query
+            .join(self.read_table)
+            .filter(self.read_table.c.reader_user_id == self.user_id)
+        )
+        for row in read_comments_query:
+            rv[row[0], row[1]] -= row[2]
+
+        return rv
+
+    def get_counts(self):
+        return {
+            'user': {},
+            'all': self.count_all(),
+            'wiki': {},
+        }
+
+
+class SpeciesCommentCounter(_CommentCounterBase):
+
+    comment_cls = Comment
+    subject_column = property(lambda self: Comment.assesment_speciesname)
+    read_table = t_comments_read
+
+
+class HabitatCommentCounter(_CommentCounterBase):
+
+    comment_cls = HabitatComment
+    subject_column = property(lambda self: HabitatComment.habitat)
+    read_table = t_habitat_comments_read
