@@ -207,7 +207,8 @@ abbr {
 .complex_datatable thead th,
 .complex_datatable thead td,
 .complex_datatable .thead th,
-.complex_datatable .thead td {
+.complex_datatable .thead td,
+.complex_datatable .th {
     font-weight: normal;
     color: black;
     border: 1px solid #b6b6b6;
