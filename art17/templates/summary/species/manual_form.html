@@ -10,41 +10,8 @@
 
 {% set form=manual_form %}
 <form class="form" method="post" action="">
-  <tr class="form_row">
-    <th>{% if can_select_MS %}MS{% endif %}</th>
-    {% if not region %}
-    <th>Region</th>
-    {% endif %}
-
-    <th>Area</th>
-    <th>Range Concl.</th>
-    <th>Trend</th>
-    <th>Ref.</th>
-    
-    <th>Size&amp;Unit</th>
-    <th>Pop. Concl.</th>
-    <th>Trend</th>
-    <th>Ref.</th>
-    
-    <th>Area</th>
-    <th>Habitat Concl.</th>
-    <th></th>
-    <th>Trend</th>
-    <th>Suitable</th>
-
-    <th>Future prosp.</th>
-
-    <th>Curr. CS Concl.</th>
-    <th>Trend CS</th>
-    <th>Prev. CS Concl.</th>
-    <th>Nat. of ch.</th>
-
-    <th>Contrib.</th>
-    <th>Type</th>
-
-    <th colspan="9">
-    </th>
-  </tr>
+  {% set is_form=true %}
+  {% include 'common/species_manual_table_header.html' %}
   <tr class="form_row">
     <td>{% if can_select_MS %}{{ form.MS() }}{% endif %}</td>
     {% if not region %}

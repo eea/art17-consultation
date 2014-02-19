@@ -1,16 +1,9 @@
-<tbody class="thead">
-  <tr class="section-header">
-    <th class="table-title" colspan="{{ colspan_all }}">
-      <div class="table-separator"></div>
-      {% if dataset.schema == '2006' %}
-      ETC/BD biogeographical assessment &amp; users proposed corrections
-      {% else %}
-      EU Biogeographical assessment and proposed corrections
+  <tr {% if is_form %}class="form_row"{% endif %}>
+    <th rowspan="2">
+      {% if not is_form %}
+       <abbr title="Decision">Dec.</abbr>
       {% endif %}
     </th>
-  </tr>
-  <tr>
-    <th rowspan="2" title="Member states">MS</th>
     {% if not region %}<th rowspan="2">Reg</th>{% endif %}
 
     <th rowspan="2">Surface</th>
@@ -45,9 +38,8 @@
     <th rowspan="2" colspan="5">{# padding #}</th>
   </tr>
   {% if dataset.schema != '2006' %}
-  <tr>
+  <tr {% if is_form %}class="form_row"{% endif %}>
     <th title="Contribution to target ">Contrib.</th>
     <th>Type</th>
   </tr>
   {% endif %}
-</tbody>

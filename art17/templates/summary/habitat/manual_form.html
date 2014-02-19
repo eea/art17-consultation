@@ -10,6 +10,8 @@
 
 {% set form=manual_form %}
 <form method="post" action="">
+  {% set is_form=true %}
+  {% include 'common/habitat_manual_table_header.html' %}
   <tr class="form_row">
     <td>{% if can_select_MS %}{{ form.MS() }}{% endif %}</td>
     {% if not region %}
