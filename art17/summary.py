@@ -399,6 +399,8 @@ class Summary(views.View):
                 else:
                     manual_form.populate_obj(manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
+                    if not can_select_MS_country_code('add'):
+                        manual_assessment.MS = get_default_ms() # mega hack, change me, TODO
                     db.session.add(manual_assessment)
                     db.session.commit()
             else:
