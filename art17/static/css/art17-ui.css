@@ -1008,6 +1008,10 @@ li.select-list {
     margin-bottom: 0;
 }
 
+.complex_datatable .form_row td.errors, tr.errors td {
+    background-color: red;
+}
+
 .offset_top_label {
     float: left;
     margin-top: 22px;
