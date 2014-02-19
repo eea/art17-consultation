@@ -97,14 +97,14 @@ class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
 
 class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
 
-    email = TextField('Email',
+    email = TextField('Email address',
         validators=[Required("Email is required"),
                     email_validator])
 
 
 class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
 
-    email = TextField('Email',
+    email = TextField('Email address',
         validators=[Required("Email is required"),
                     email_validator,
                     unique_user_email])
