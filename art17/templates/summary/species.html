@@ -52,7 +52,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
         <td class="border">
           {% set original_url=get_original_record_url(row) %}
           {% set country_title = get_title_for_species_country(row) %}
-          <a class="popup-btn" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
+          <a class="popup-btn block" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
             {{ row.eu_country_code }}
           </a>
         </td>
@@ -81,8 +81,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       <th class="table-title" colspan="{{ colspan_all }}">
         <div class="table-separator"></div>
         Automatic Assessments
-        <button onclick="$('#automatic_body').toggleClass('hidden')">
-          Show/Hide
+        <button data-toggle onclick="$('#automatic_body').toggleClass('hidden')">
+          Show,Hide
         </button>
       </th>
     </tr>

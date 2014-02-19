@@ -1,7 +1,7 @@
 
 <td class="border_left">
   {% set url=url_for(comments_endpoint, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
-  <a href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
+  <a class="label" href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
   {{ row.comments_count_read(g.identity.id) }}/{{ row.undeleted_comments(g.identity.id)|count }}
   </a>
 </td>
@@ -11,7 +11,7 @@
 	<div class="popout-wrapper">
 
 		<div class="popout details">
-			<a class="close pull-right"><i class="fa fa-times"></i></a>
+			<span class="close pull-right"><i class="fa fa-times"></i></span>
 			<div>
 				<span class="muted">{{ row.last_update|format_date }}</span><br />
 				<strong>{{ row.user.name or row.user_id}}</strong><br />

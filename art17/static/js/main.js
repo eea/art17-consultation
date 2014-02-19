@@ -160,11 +160,21 @@ $(function () {
             data: { decision : decision},
             dataType: "json"
         }).done(function (msg) {
+            var row = $(select).closest('tr');
             if (!msg.success) {
+                $(row).addClass('highlight-error');
                 alert(msg.error);
             }
             else {
-                $(select).closest('tr').addClass('highlight-success')
+                $(row).addClass('highlight-success')
+                      .removeClass('highlight-error');
+
+                setTimeout( function () {
+                    $(row).addClass('fade')
+                          .removeClass('highlight-success');
+                }, 500);
+
+                $(row).removeClass('fade');
             }
         }).fail(function (msg) {
 
@@ -231,6 +241,24 @@ $('html').click(function() {
 
 $('#menucontainer').click(function(event){
     event.stopPropagation();
+});
+
+// Toggle button message
+$(document).ready( function () {
+    $('[data-toggle]').each( function () {
+        var text = $(this).text();
+        var comma = text.indexOf(',');
+        var msg_1 = text.substring(0, comma);
+        var msg_2 = text.substring(comma + 1, text.length);
+        $(this).text(msg_1);
+        $(this).click( function () {
+            if ( $(this).text() == msg_1 ) {
+                $(this).text(msg_2);
+            } else {
+                $(this).text(msg_1);
+            }
+        });
+    });
 });
 
 // Popout
