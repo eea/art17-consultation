@@ -64,6 +64,7 @@ from art17.forms import (
     SummaryManualFormHabitat,
     SummaryManualFormHabitatRef,
     SummaryManualFormSpeciesRef,
+    all_fields,
 )
 from art17.utils import str2num, parse_semicolon, str1num
 
@@ -253,18 +254,27 @@ class Summary(views.View):
         period = request.args.get('period') or get_default_period()
         subject = request.args.get('subject')
         region = request.args.get('region')
-        best_qs = (
+        best = (
             self.model_auto_cls.query
             .filter_by(dataset_id=period, subject=subject, region=region)
-        )
-        best = best_qs.filter_by(assessment_method='00').first()
-        if best:
-            return best
-        else:
-            return best_qs.join(
+            .join(
                 EtcDicMethod,
                 self.model_auto_cls.assessment_method == EtcDicMethod.method
-            ).order_by(EtcDicMethod.order).first()
+            )
+        ).all()
+        cmpf = (
+            lambda x, y:
+            -1 if x.assessment_method == '00' else cmp(x.order, y.order)
+        )
+        best.sort(cmp=cmpf)
+        values = {}
+        for f in all_fields(self.manual_form_cls()):
+            attr = f.name
+            for ass in best:
+                if getattr(ass, attr, ''):
+                    values[attr] = getattr(ass, attr)
+                    break
+        return values
 
     def must_edit_ref(self, assessment):
         if not current_user.is_authenticated() or not assessment:
@@ -512,13 +522,8 @@ class SpeciesSummary(SpeciesMixin, Summary):
         }
 
     def get_default_values(self):
-        best = self.get_best_automatic()
-        return dict(
-            range_surface_area=best.range_surface_area,
-            complementary_favourable_range=best.complementary_favourable_range,
-            habitat_surface_area=best.habitat_surface_area,
-            complementary_suitable_habitat=best.complementary_suitable_habitat,
-        ) if best else {}
+        values = self.get_best_automatic()
+        return values
 
 
 class HabitatSummary(HabitatMixin, Summary):
@@ -577,13 +582,9 @@ class HabitatSummary(HabitatMixin, Summary):
         }
 
     def get_default_values(self):
-        best = self.get_best_automatic()
-        return dict(
-            range_surface_area=best.range_surface_area,
-            complementary_favourable_range=best.complementary_favourable_range,
-            coverage_surface_area=best.coverage_surface_area,
-            complementary_favourable_area=best.complementary_favourable_area,
-        ) if best else {}
+        values = self.get_best_automatic()
+        return values
+
 
 summary.add_url_rule('/species/summary/',
                      view_func=SpeciesSummary.as_view('species-summary'))
