@@ -171,7 +171,7 @@ select,
   border-color: #c1c1c1;
   color: black;
   margin: 0;
-  padding: 2px 3px;
+  padding: 2px 1px;
   text-align: left;
   font-size: 13px;
   font-family: Arial, "Liberation Sans", FreeSans, sans-serif;
@@ -256,7 +256,7 @@ select[size="1"] {
     background-image: url(data:image/png;base64,R0lGODlhDQAEAIAAAAAAAP8A/yH5BAEHAAEALAAAAAANAAQAAAILhA+hG5jMDpxvhgIAOw==);
     background-repeat: no-repeat;
     background-position: right center;
-    padding-right: 20px;
+    padding-right: 18px;
   }
 
   ::-webkit-validation-bubble-message {

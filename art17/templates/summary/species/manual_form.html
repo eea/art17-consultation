@@ -51,7 +51,7 @@
       <td class="{% if form.method_range.errors or form.conclusion_range.errors %}errors{% endif %}">
 
         <div class="conclusion popout-wrapper">
-          <div class="popout assesment">
+          <div class="popout assesment caret">
             <div class="popout-title">
               <a class="close pull-right"><i class="fa fa-times"></i></a>
               Range Conclusion
@@ -111,8 +111,8 @@
             </div>
             {# {{ form.conclusion_range() }} #}
           </div>
-          <a class="conclusion select block" data-popout="assesment">
-            <span class="selected-method hidden"></span>
+          <a class="conclusion select block" tab-index data-popout="assesment">
+            <span class="selected-value hidden"></span>
             <i class="fa fa-hand-o-up"></i>
           </a>
         </div>
@@ -126,8 +126,25 @@
 
       {# Population #}
       <td {% if form.population_size.errors or form.population_size_unit.errors %}class="errors"{% endif %}>
-      {{ form.population_size(size=5) }}
-      {{ form.population_size_unit() }}
+        <!--Sablon Size-unit -->
+        <div class="conclusion popout-wrapper">
+          <div class="popout size_unit caret width-120">
+            <a class="close pull-right"><i class="fa fa-times"></i></a>
+            <div class="form-group clearfix no-bottom">
+              <label class="pull-left no-bottom">Size</label>
+              <div class="width-2third pull-right">{{ form.population_size(size=5) }}</div>
+            </div>
+            <div class="form-group clearfix no-bottom">
+              <label class="pull-left no-bottom">Unit</label>
+              <div class="width-2third pull-right">{{ form.population_size_unit() }}</div>
+            </div>
+          </div>
+          <a class="select block" tab-index data-popout="size_unit">
+            <span class="selected-value hidden"></span>
+            <i class="fa fa-hand-o-up"></i>
+          </a>
+        </div>
+        <!--/Sablon Size-unit -->
       </td>
       <td {% if form.method_population.errors or form.conclusion_population.errors %}class="errors"{% endif %}>
       {{ form.method_population() }}
