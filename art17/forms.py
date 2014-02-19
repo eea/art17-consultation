@@ -147,7 +147,7 @@ class OptionsBaseHabitat(OptionsBase):
 class SummaryManualFormSpecies(Form, OptionsBaseSpecies):
 
     region = SelectField(default='')
-    MS = SelectField(default='')
+    MS = SelectField(default='', validators=[Optional()])
 
     range_surface_area = TextField(default=None,
                                    validators=[numeric_validation])
@@ -274,7 +274,7 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies):
 class SummaryManualFormHabitat(Form, OptionsBaseHabitat):
 
     region = SelectField()
-    MS = SelectField(default='')
+    MS = SelectField(default='', validators=[Optional()])
 
     range_surface_area = TextField(validators=[numeric_validation])
     method_range = OptionalSelectField()
