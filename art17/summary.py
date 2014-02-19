@@ -130,6 +130,11 @@ def can_add_conclusion(dataset, zone, subject, region=None):
     return not dataset.is_readonly and (sta_perm.can() or admin_perm.can())
 
 
+@summary.app_template_global('can_select_MS_country_code')
+def can_select_MS_country_code(operation):
+    return operation == 'add' and sta_perm.can()
+
+
 @summary.app_context_processor
 def inject_fuctions():
     return {
@@ -347,11 +352,16 @@ class Summary(views.View):
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
             manual_form.region.process_data(region)
+        manual_form.MS.choices = self.get_MS(subject, region, period)
 
         if request.method == 'POST' and request.form.get('submit') != 'edit':
-            if manual_form.validate():
+            if manual_form.validate(subject=subject, period=period):
                 if not sta_perm.can() and not admin_perm.can():
                     raise PermissionDenied()
+                if manual_form.MS.data and not \
+                        can_select_MS_country_code(request.form.get('submit')):
+                    raise PermissionDenied()
+
                 if not manual_assessment:
                     manual_assessment = self.model_manual_cls(subject=subject)
                     manual_form.populate_obj(manual_assessment)

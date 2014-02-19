@@ -163,6 +163,9 @@ $(function () {
             if (!msg.success) {
                 alert(msg.error);
             }
+            else {
+                $(select).closest('tr').addClass('highlight-success')
+            }
         }).fail(function (msg) {
 
         });
@@ -236,7 +239,7 @@ $(function () {
     var popoutButtons = $("[data-popout]");
 
     // Open popout
-    $(popoutButtons).on('click', function () {
+    $(popoutButtons).on('click', function (event) {
         event.stopPropagation();
         var similar = $(this).data('popout');
         var intendedTarget = $(this).closest('.popout-wrapper').find(".popout");
@@ -264,18 +267,18 @@ $(function () {
     $('.popout.assesment').each(function () {
         var method = $(this).find("select");
         var radios = $(this).find("input[type='radio']");
-        var assesmentPreview = $(this).closest('.popout-wrapper').find(".conclusion.select");
+        var preview = $(this).closest('.popout-wrapper').find(".conclusion.select");
         var prevSecondClick;
         var currentClass;
 
         // Select
         $(method).delegate('', 'change', function (event) {
-            if (this.value) {
-                $(assesmentPreview).children('.selected-method').removeClass('hidden').html( $(this).val() );
-                $(assesmentPreview).children('.fa').addClass('hidden');
+            if ($(this).val()) {
+                $(preview).children('.selected-value').removeClass('hidden').html( $(this).val() );
+                $(preview).children('.fa').addClass('hidden');
             } else {
-                $(assesmentPreview).children('.selected-method').addClass('hidden').html( $(this).val() );
-                $(assesmentPreview).children('.fa').removeClass('hidden');
+                $(preview).children('.selected-value').addClass('hidden').html( $(this).val() );
+                $(preview).children('.fa').removeClass('hidden');
             }
         });
 
@@ -284,13 +287,13 @@ $(function () {
             event.stopPropagation();
             conclusionClass = $(this).data('class');
             // Match selected conclusion
-            $(assesmentPreview).removeClass(currentClass);
+            $(preview).removeClass(currentClass);
             if (currentClass != conclusionClass) {
                 currentClass = conclusionClass;
-                $(assesmentPreview).addClass(currentClass);
+                $(preview).addClass(currentClass);
             } else {
                 currentClass = false;
-                $(assesmentPreview).removeClass(currentClass);
+                $(preview).removeClass(currentClass);
             }
 
             // Uncheck radio button
@@ -304,6 +307,24 @@ $(function () {
                 this.checked = false;
             }
             prevSecondClick = this;
+        });
+    });
+
+    // Size and unit
+    $('.popout.size_unit').each(function () {
+        var size = "#population_size";
+        var unit = "#population_size_unit";
+        var preview = $(this).closest('.popout-wrapper').find(".select");
+        
+        $(this).delegate(size + ", " + unit, 'change', function (event) {
+            if ($(size).val() || $(unit).val()) {
+                var concat = $(size).val() + " " + $(unit).val();
+                $(preview).children('.selected-value').removeClass('hidden').html( concat );
+                $(preview).children('.fa').addClass('hidden');
+            } else {
+                $(preview).children('.selected-value').addClass('hidden').html("");
+                $(preview).children('.fa').removeClass('hidden');
+            }
         });
     });
 });

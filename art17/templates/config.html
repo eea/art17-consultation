@@ -15,19 +15,23 @@
 
   <form id="config-form" class="form box box-small inline-block" name="config" method="post">
 
+    <input type="hidden" name="csrf_token" value="">
     <div class="form-group">
       {{ render_field_with_errors(form.start_date) }}
     </div>
 
-    {% for field in form %}
-      {% if field.name == 'csrf_token' %}
-        <input type="hidden" name="{{ field.name }}" value="{{ field.value }}">
-      {% else %}
-        <div class="form-group">
-          {{ render_field_with_errors(field) }}
-        </div>
-      {% endif %}
-    {% endfor %}
+
+    <div class="form-group">
+      {{ render_field_with_errors(form.end_date) }}
+    </div>
+
+    <div class="form-group">
+      {{ render_field_with_errors(form.admin_email) }}
+    </div>
+
+    <div class="form-group">
+      {{ render_field_with_errors(form.default_dataset_id) }}
+    </div>
 
     <div>
       <button class="btn-blue" type="submit">Save</button>

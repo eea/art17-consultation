@@ -14,7 +14,7 @@
     {{ row.decision }}
   {% else %}
   {% set update_url = url_for(update_endpoint, subject=row.subject,
-                              region=row.region, user=row.user.id, ms=row.MS) %}
+                              region=row.region, user=row.user_id, ms=row.MS) %}
   <select name="decision" data-href="{{ update_url }}" class="decision-select">
     {% for decision in DECISION_DETAILS %}
     <option {% if decision == row.decision %}selected="selected"{% endif %}>

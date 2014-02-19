@@ -15,7 +15,7 @@
 
     {% include 'common/table_legend.html' %}
 
-    <table class="complex_datatable datatable">
+    <table class="complex_datatable">
       <caption>
         <b>Current selection</b>:
         {{ current_selection|join(', ') }}.
@@ -35,13 +35,13 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody class="stripe_3rd">
         {% for subject in subjects %}
         {% set subject_name, subject_title = subject %}
         <tr>
-          <th>
+          <td class="th">
             {{ subject_title }}
-          </th>
+          </td>
           {% for region in regions %}
             {% set data = objects.get(subject_name, {}).get(region.reg_code, '') %}
             {% set url = url_for(summary_endpoint,

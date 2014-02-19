@@ -30,7 +30,7 @@
     {% include 'summary/wiki_buttons.html' %}
     {% include 'common/table_legend.html' %}
 
-    <table class="complex_datatable datatable">
+    <table class="complex_datatable">
       <caption>
       <b>Current selection</b>:
       {{ current_selection|join(', ') }}.
@@ -81,9 +81,11 @@
 
       <tbody class="thead">
         <tr class="section-header">
-          <th colspan="{{ colspan_all }}">
+          <th class="table-title" colspan="{{ colspan_all }}">
+            <div class="table-separator"></div>
+            Automatic Assessments
             <button onclick="$('#automatic_body').toggleClass('hidden')">
-              Show/Hide automatic assessments
+              Show/Hide
             </button>
           </th>
         </tr>

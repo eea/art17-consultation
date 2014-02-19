@@ -69,6 +69,20 @@ class MixinsCommon(object):
         )
         return record.group if record else ''
 
+    @classmethod
+    def get_MS(cls, subject, region, period):
+        ms_qs = cls.model_cls.query.filter_by(subject=subject,
+                                              dataset_id=period)
+        if region:
+            ms_qs = ms_qs.filter_by(region=region)
+        ms_qs = ms_qs.with_entities(cls.model_cls.eu_country_code,
+                                    cls.model_cls.eu_country_code)
+        if not region:
+            ms_qs = ms_qs.distinct(cls.model_cls.eu_country_code)
+
+        return ms_qs.order_by(cls.model_cls.presence,
+                              cls.model_cls.eu_country_code).all()
+
 
 class SpeciesMixin(MixinsCommon):
 
