@@ -44,28 +44,27 @@
       <li class="{{ get_css_class(comment) }}"
           id="comment-{{ comment.id }}">
           <div class="clearfix">
-            <span class="cmnt-type">{{ comment_type }}</span>
-            {% if can_edit_comment(comment) %}
-              <a class="btn-text2"
-                 href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>
-            {% endif %}
-            {% if can_toggle_read(comment) %}
-              <a class="btn-text2"
-                 href="?toggle={{ comment.id }}&read={{ read }}#comment-{{ comment.id }}">
-                {% if read %}Mark as unread{% else %}Mark as read{% endif %}
-              </a>&ensp;
-            {% endif %}
-            {% if can_delete_comment(comment) %}
-              <a class="btn-text2"
-                 href="?delete={{ comment.id }}&deleted={{ deleted }}#comment-{{ comment.id }}">
-                {% if deleted %}Undelete{% else %}Delete{% endif %}
-              </a>
-            {% endif %}
-          </div>
-
-          {% if edited_comment == comment %}
-            {% include 'comments/edit.html' with context %}
-          {% else %}
+            {% if edited_comment == comment %}
+              {% include 'comments/edit.html' with context %}
+            {% else %}
+              <span class="cmnt-type">{{ comment_type }}</span>
+              {% if can_edit_comment(comment) %}
+                <a class="btn-text2"
+                   href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>
+              {% endif %}
+              {% if can_toggle_read(comment) %}
+                <a class="btn-text2"
+                   href="?toggle={{ comment.id }}&read={{ read }}#comment-{{ comment.id }}">
+                  {% if read %}Mark as unread{% else %}Mark as read{% endif %}
+                </a>&ensp;
+              {% endif %}
+              {% if can_delete_comment(comment) %}
+                <a class="btn-text2"
+                   href="?delete={{ comment.id }}&deleted={{ deleted }}#comment-{{ comment.id }}">
+                  {% if deleted %}Undelete{% else %}Delete{% endif %}
+                </a>
+              {% endif %}
+            </div>
             <div class="cmnt-body">{{ comment.comment | safe }}</div>
           {% endif %}
 
@@ -83,7 +82,10 @@
     </ul>
     </div>
 
-    <p class="jump"><a href="#comments" title="Jump up to the start of the comments &#8593;">Start of the comments</a> &#8593;</p>
+    <p class="jump">
+      <a href="#comments" title="Jump up to the start of the comments &#8593;">Jump to Top</a>
+      <i class="fa fa-long-arrow-up"></i>
+    </p>
   {% endif %}
 
   {% if not edited_comment and can_post_comment(record) %}

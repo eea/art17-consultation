@@ -25,7 +25,7 @@
       </td>
       <td class="{% if form.method_range.errors or form.conclusion_range.errors %}errors{% endif %}">
 
-        <div class="conclusion popout-wrapper">
+        <div class="popout-wrapper">
           <div class="popout assesment caret">
             <div class="popout-title">
               <span class="close pull-right"><i class="fa fa-times"></i></span>
@@ -179,7 +179,7 @@
     {% else %}
       {# Edit reference values form #}
       {% set ass = manual_assessment %}
-      <td>{{ ass.range_surface_area }}</td>
+      <td class="border_left">{{ ass.range_surface_area }}</td>
       {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
       <td>{{ ass.range_trend }}</td>
       <td {% if form.complementary_favourable_range.errors %}class="errors"{% endif %}>
@@ -222,8 +222,8 @@
       <input type="hidden" name="subject" value="{{ subject }}" />
       <input type="hidden" name="region" value="{{ row.region }}" />
       <input type="hidden" name="user" value="{{ row.user_id }}" />
-      <button type="submit" name="submit" value="update">update</button>
-      <a href="" class="btn-text">cancel</a>
+      <button class="btn-green" type="submit" name="submit" value="update">Update</button>
+      <button class="btn-red" title="cancel"><i class="fa fa-times"></i></button>
     </td>
     {% include 'summary/common/manual/conclusion_details.html' %}
     {% endif %}

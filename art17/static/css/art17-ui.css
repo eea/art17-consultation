@@ -168,21 +168,26 @@ abbr {
 /*FORM ROW*/
 .complex_datatable .form_row,
 .complex_datatable .form_row:hover {
-    background: #FFC;
+    background: #efe9bb;
 }
 
 .complex_datatable .form_row td,
 .complex_datatable .form_row th {
     white-space: normal;
-    border: 1px solid #7cadcc;
-    background: #7cadcc;
+    border-color: transparent;
+    background: #efe9bb;
     font-weight: normal;
 }
 
 .complex_datatable .form_row th {
-    text-align: left;
+    /*text-align: left;*/ /* Review */
+    padding-bottom: 0;
     color: black;
     vertical-align: bottom;
+}
+
+.complex_datatable .form_row td {
+    padding-top: 2px;
 }
 
 .complex_datatable .form_row select,
@@ -853,6 +858,33 @@ a.conclusion:hover {
     border-radius: 50%;
     background: black;
     margin: -8px;*/
+}
+
+/* Label */
+.label {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    color: #fff;
+    background: #999;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    margin: -1px -3px;
+    padding: 0px 2px;
+}
+
+a.label {
+    /*background: #428be1;*/
+ /*   color: #fff;*/
+    border-color: blue;
+    background: transparent; 
+}
+
+a.label:hover {
+    /*background: #3065a6;*/
+    color: #fff;
+    text-decoration: none;
+    background: #428be1;
 }
 
 /* Tabs */

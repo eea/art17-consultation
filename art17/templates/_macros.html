@@ -10,9 +10,8 @@
 
 {% macro conclusion_td(color, content, colspan=1) %}
   {% set title=COUNTRY_ASSESSMENTS.get(content, '') %}
-  <td class="{{ CONCLUSION_CLASSES.get(color, '') }} conclusion"
-      {% if title %}title="{{ title }}"{% endif %} colspan="{{ colspan }}">
-      <span>{{ content }}</span>
+  <td class="{{ CONCLUSION_CLASSES.get(color, '') }}" {% if title %}title="{{ title }}"{% endif %} colspan="{{ colspan }}">
+      <span class="conclusion">{{ content }}</span>
   </td>
 {% endmacro %}
 
