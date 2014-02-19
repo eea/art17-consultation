@@ -238,34 +238,7 @@ def record_errors(record):
 
 
 def format_error(error, record, field):
-    if field in ('range_surface_area',
-                 'complementary_favourable_range',
-                 'complementary_favourable_range_q',
-                 'range_yearly_magnitude',
-                 'conclusion_range',
-                 'percentage_range_surface_area',
-                 'population_minimum_size',
-                 'population_maximum_size',
-                 'filled_population',
-                 'population_size_unit',
-                 'conclusion_population',
-                 'percentage_population_mean_size',
-                 'population_yearly_magnitude',
-                 'complementary_favourable_population_q',
-                 'complementary_favourable_population',
-                 'filled_complementary_favourable_population',
-                 'habitat_surface_area',
-                 'conclusion_habitat',
-                 'percentage_habitat_surface_area',
-                 'habitat_trend',
-                 'complementary_suitable_habitat',
-                 'coverage_surface_area',
-                 'conclusion_area',
-                 'percentage_coverage_surface_area',
-                 'coverage_yearly_magnitude',
-                 'complementary_favourable_area',
-                 'complementary_favourable_area_q',
-                 ):
+    if error.get('suspect_value', ''):
         return '%s: %s' % (error['text'], error['suspect_value'])
     return error['text']
 
