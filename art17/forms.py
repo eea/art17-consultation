@@ -179,6 +179,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         units = empty + zip(units, units)
 
         self.region.choices = empty
+        self.MS.choices = empty
 
         self.method_range.choices = (
             ZERO_METHODS + self.get_method_options(methods)
@@ -206,7 +207,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self, **kwargs):
-        fields = [f for f in all_fields(self) if f != self.region]
+        fields = [f for f in all_fields(self) if f not in (self.region, self.MS)]
         empty = [f for f in fields if not f.data]
 
         if empty and len(empty) == len(fields):
@@ -231,7 +232,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
             elif mc and cc:
                 one = True
         if not one:
-            fields[2].errors.append(METH_CONCL_MANDATORY)
+            fields[1].errors.append(METH_CONCL_MANDATORY)
 
         if self.MS.data and self.region.data:
             species_record = (
@@ -300,6 +301,7 @@ class SummaryManualFormHabitat(Form, OptionsBase):
         trends = empty + CONCL_TYPE
 
         self.region.choices = empty
+        self.MS.choices = empty
 
         self.method_range.choices = (
             ZERO_METHODS + self.get_method_options(methods)
@@ -326,7 +328,7 @@ class SummaryManualFormHabitat(Form, OptionsBase):
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self, **kwargs):
-        fields = [f for f in all_fields(self) if f != self.region]
+        fields = [f for f in all_fields(self) if f not in (self.region, self.MS)]
         empty = [f for f in fields if not f.data]
 
         if empty and len(empty) == len(fields):
