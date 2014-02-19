@@ -8,6 +8,7 @@ from flask import (
     url_for,
     flash,
     abort,
+    g,
 )
 from flask.ext.principal import PermissionDenied
 from sqlalchemy.exc import IntegrityError
@@ -25,6 +26,7 @@ from art17.models import (
     EtcQaErrorsHabitattypeManualChecked,
     EtcDicMethod,
     EtcDicDecision,
+    RegisteredUser,
 )
 
 from art17.mixins import SpeciesMixin, HabitatMixin
@@ -73,6 +75,21 @@ summary = Blueprint('summary', __name__)
 
 DATE_FORMAT = '%d/%m/%Y %H:%M'
 DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
+
+
+@summary.route('/')
+def homepage():
+    config = get_config()
+    user_credentials = g.get('user_credentials', {})
+    user_id = user_credentials.get('user_id')
+    user_authenticated = RegisteredUser.query.get(user_id) if user_id else None
+
+    return render_template('homepage.html', **{
+        'start_date': config.start_date,
+        'end_date': config.end_date,
+        'today': date.today(),
+        'user_authenticated': user_authenticated,
+    })
 
 
 @summary.app_template_global('can_view')

@@ -57,14 +57,20 @@
       </h2>
 
       <ul>
-        <li>
-          If you have an Eionet account please
-          <a href="{{ url_for('auth.register_ldap') }}">register here</a>.
-        </li>
-        <li>
-          If you don't have an Eionet account please
-          <a href="{{ url_for('auth.register_local') }}">register here</a>.
-        </li>
+        {% if user_authenticated %}
+            <li>
+                You have logged in and already registered for this consultation.
+            </li>
+        {% else %}
+            <li>
+              If you have an Eionet account please
+              <a href="{{ url_for('auth.register_ldap') }}">register here</a>.
+            </li>
+            <li>
+              If you don't have an Eionet account please
+              <a href="{{ url_for('auth.register_local') }}">register here</a>.
+            </li>
+        {% endif %}
         <li>
           If you are a National Data Coordinator for Article 17,
           you are already registered.
