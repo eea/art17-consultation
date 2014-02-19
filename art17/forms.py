@@ -2,7 +2,7 @@
 
 from flask_wtf import Form as Form_base
 from wtforms import SelectField, TextField, TextAreaField, DateField
-from wtforms.validators import Optional
+from wtforms.validators import Optional, ValidationError
 from art17.models import (
     Dataset,
     EtcDicMethod,
@@ -45,6 +45,13 @@ def all_fields(form):
                 yield subfield
         else:
             yield field
+
+
+def numeric_validation(form, field):
+    """ Default validation in previous app
+    """
+    if not validate_field(field.data):
+        raise ValidationError(NOT_NUMERIC_VALUES)
 
 
 class OptionalSelectField(SelectField):
@@ -126,20 +133,21 @@ class SummaryManualFormSpecies(Form, OptionsBase):
     region = SelectField(default='')
     MS = SelectField(default='')
 
-    range_surface_area = TextField(default=None)
+    range_surface_area = TextField(default=None,
+                                   validators=[numeric_validation])
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
     complementary_favourable_range = TextField()
 
-    population_size = TextField()
+    population_size = TextField(validators=[numeric_validation])
     population_size_unit = OptionalSelectField()
     method_population = OptionalSelectField()
     conclusion_population = OptionalSelectField()
     population_trend = OptionalSelectField()
     complementary_favourable_population = TextField()
 
-    habitat_surface_area = TextField()
+    habitat_surface_area = TextField(validators=[numeric_validation])
     method_habitat = OptionalSelectField()
     conclusion_habitat = OptionalSelectField()
     habitat_trend = OptionalSelectField()
@@ -225,17 +233,6 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         if not one:
             fields[2].errors.append(METH_CONCL_MANDATORY)
 
-        numeric_values = [
-            self.range_surface_area, self.complementary_favourable_range,
-            # self.range_yearly_magnitude
-            self.population_size, self.complementary_favourable_population,
-            # self.population_yearly_magnitude
-            self.habitat_surface_area, self.complementary_suitable_habitat
-        ]
-        for f in numeric_values:
-            if not validate_field(f.data):
-                f.errors.append(NOT_NUMERIC_VALUES)
-
         if self.MS.data and self.region.data:
             species_record = (
                 EtcDataSpeciesRegion.query
@@ -262,14 +259,14 @@ class SummaryManualFormHabitat(Form, OptionsBase):
     region = SelectField()
     MS = SelectField(default='')
 
-    range_surface_area = TextField()
+    range_surface_area = TextField(validators=[numeric_validation])
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
     range_yearly_magnitude = TextField()
     complementary_favourable_range = TextField()
 
-    coverage_surface_area = TextField()
+    coverage_surface_area = TextField(validators=[numeric_validation])
     method_area = OptionalSelectField()
     conclusion_area = OptionalSelectField()
     coverage_trend = OptionalSelectField()
@@ -355,14 +352,6 @@ class SummaryManualFormHabitat(Form, OptionsBase):
                 one = True
         if not one:
             fields[1].errors.append(METH_CONCL_MANDATORY)
-
-        numeric_values = [
-            self.range_surface_area, self.complementary_favourable_range,
-            self.coverage_surface_area, self.complementary_favourable_area,
-        ]
-        for f in numeric_values:
-            if not validate_field(f.data):
-                f.errors.append(NOT_NUMERIC_VALUES)
 
         if self.MS.data and self.region.data:
             species_record = (
