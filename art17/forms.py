@@ -379,6 +379,7 @@ class SummaryManualFormHabitat(Form, OptionsBase):
 class SummaryManualFormSpeciesRef(Form):
 
     region = SelectField()
+    MS = SelectField()
 
     complementary_favourable_range = TextField()
     complementary_favourable_population = TextField()
@@ -390,6 +391,7 @@ class SummaryManualFormSpeciesRef(Form):
 class SummaryManualFormHabitatRef(Form):
 
     region = SelectField()
+    MS = SelectField()
 
     complementary_favourable_range = TextField()
     complementary_favourable_area = TextField()

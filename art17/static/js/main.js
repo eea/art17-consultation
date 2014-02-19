@@ -199,7 +199,7 @@ $(function () {
 
 // Modal window
 var openModal = function (iframe_url) {
-    $('iframe').attr('src', iframe_url)
+    $('iframe').attr('src', iframe_url);
     $('.modal-bg').removeClass('hidden');
     $('body').addClass('stop_scroll');
 };

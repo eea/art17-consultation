@@ -2,6 +2,10 @@
 
 {% block content %}
 
+{% if back_url %}
+<a href="{{ back_url }}">Back</a>
+{% endif %}
+
 <div class="title-section clearfix">
   <h2 class="no-margins pull-left">{{ page_title }}</h2>
   <div class="pull-right">
@@ -28,8 +32,9 @@
          {% elif merged and not wiki_body %}
             <p>Please select a region in order to add an Audit Trail record.</p>
          {% else %}
+            <p>Please select a region in order to edit.</p>
             {% for region, region_url, body in wiki_body %}
-                <h3><a href="{{ region_url }}">{{ region }}</a></h3>
+                <h3><a href="{{ region_url }}&merged=merged">{{ region }}</a></h3>
                 {{ body | safe }}
             {% endfor %}
          {% endif %}

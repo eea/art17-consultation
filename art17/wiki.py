@@ -214,6 +214,17 @@ class AuditTrailSection(CommonSection):
     editpage_endpoint = '.at-edit-page'
     getrevision_endpoint = '.at-get-revision'
 
+    def get_context(self):
+        context = super(AuditTrailSection, self).get_context()
+
+        if request.args.get('merged') == 'merged':
+            request_args = self.get_req_args()
+            request_args['region'] = ''
+            context.update({'back_url': url_for('.audittrail-merged',
+                                                page=self.page,
+                                                **request_args)})
+        return context
+
 
 class WikiView(views.View):
     methods = ['GET', 'POST']

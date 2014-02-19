@@ -33,7 +33,6 @@ def setup(app):
     models.db.session.commit()
 
 
-"""
 @pytest.mark.parametrize(
     "request_type, request_args, post_params, user, expect_errors, "
     "status_code, assert_condition",
@@ -131,7 +130,6 @@ def test_comments(app, client, setup, zope_auth, request_type, request_args,
 
     if assert_condition:
         assert eval(assert_condition)
-"""
 
 
 @pytest.mark.parametrize(
