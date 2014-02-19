@@ -97,25 +97,29 @@ class ReportFilterForm(CommonFilterForm):
 
 class OptionsBase(object):
 
+    EXCLUDE2 = '2XA'
+    EXCLUDE3 = '3XA'
+
     def get_method_options(self, methods):
         return [
             (a, b)
             for (a, b) in methods
-            if not a or a.startswith('1') or (a.startswith('2') and a != '2XA')
+            if not a or a.startswith('1') or (a.startswith('2') and a !=
+                                              self.EXCLUDE2)
         ]
 
     def get_sf_options(self, methods):
         return [
             (a, b)
             for (a, b) in methods
-            if not a or (a.startswith('2') and a != '2XA')
+            if not a or (a.startswith('2') and a != self.EXCLUDE2)
         ]
 
     def get_assesm_options(self, methods):
         return [
             (a, b)
             for (a, b) in methods
-            if not a or (a.startswith('3') and a != '3XA') or a == 'MTX'
+            if not a or (a.startswith('3') and a != self.EXCLUDE3) or a == 'MTX'
         ]
 
     def filter_conclusions(self, conclusions):
@@ -128,7 +132,19 @@ class OptionsBase(object):
         return output
 
 
-class SummaryManualFormSpecies(Form, OptionsBase):
+class OptionsBaseSpecies(OptionsBase):
+
+    EXCLUDE2 = '2XA'
+    EXCLUDE3 = '3XA'
+
+
+class OptionsBaseHabitat(OptionsBase):
+
+    EXCLUDE2 = '2XP'
+    EXCLUDE3 = '3XP'
+
+
+class SummaryManualFormSpecies(Form, OptionsBaseSpecies):
 
     region = SelectField(default='')
     MS = SelectField(default='')
@@ -255,7 +271,7 @@ class SummaryManualFormSpecies(Form, OptionsBase):
         return text
 
 
-class SummaryManualFormHabitat(Form, OptionsBase):
+class SummaryManualFormHabitat(Form, OptionsBaseHabitat):
 
     region = SelectField()
     MS = SelectField(default='')
