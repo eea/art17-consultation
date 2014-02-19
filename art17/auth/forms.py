@@ -16,6 +16,14 @@ class DatasetForm(Form_base):
     schema = SelectField(choices=zip(SCHEMAS, SCHEMAS))
 
 
+class CustomEmailTextField(TextField):
+
+    def process_formdata(self, valuelist):
+        super(CustomEmailTextField, self).process_formdata(valuelist)
+        # if comma or semicolon addresses are provided, consider the first one
+        self.data = self.data.replace(',', ' ').replace(';', ' ').split()[0]
+
+
 class Art17RegisterFormBase(object):
 
     name = TextField('Full name',
