@@ -59,7 +59,7 @@ from art17.common import (
     CONTRIB_CONCLUSION,
     get_config,
     TREND_OPTIONS, TREND_OPTIONS_OVERALL, NATURE_OF_CHANGE_OPTIONS,
-    HABITAT_OPTIONS)
+    HABITAT_OPTIONS, get_default_ms)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
@@ -385,6 +385,8 @@ class Summary(views.View):
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
+                    if not can_select_MS_country_code('add'):
+                        manual_assessment.MS = get_default_ms()
                     db.session.flush()
                     db.session.add(manual_assessment)
                     try:
