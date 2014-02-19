@@ -1,12 +1,12 @@
 import inspect
+import flask
+import flask.ext.security.script
+import flask.ext.security as flask_security
+from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
+from flask_wtf import Form
 from datetime import datetime
 from werkzeug.local import LocalProxy
 from wtforms import TextField, ValidationError, Field
-import flask
-from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
-import flask.ext.security.script
-import flask.ext.security as flask_security
-from flask_wtf import Form
 
 from flask.ext.security.forms import (
     ConfirmRegisterForm,
@@ -20,6 +20,7 @@ from flask.ext.security.forms import (
 from art17.auth.common import get_ldap_user_info
 from art17.auth.common import check_dates
 from art17.auth.forms import Art17RegisterFormBase
+from art17 import models
 
 
 current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
@@ -73,11 +74,16 @@ def check_duplicate_with_ldap(form, field):
     if user is not None:
         raise ValidationError("User ID already exists in LDAP database.")
 
+def check_duplicate_with_local_db(form, field):
+    user = models.RegisteredUser.query.get(field.data)
+    if user is not None:
+        raise ValidationError("User ID is already taken in database.")
 
 class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
 
     id = TextField('Username', validators=[Required("User ID is required"),
-                                     check_duplicate_with_ldap])
+                                           check_duplicate_with_local_db,
+                                           check_duplicate_with_ldap])
 
 
 class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
