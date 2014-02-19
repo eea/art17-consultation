@@ -4,13 +4,16 @@ from flask import (
     render_template,
     Blueprint,
     url_for,
+    g,
 )
+from sqlalchemy import or_, func
 from art17.auth import current_user
 from art17.common import get_default_period, COUNTRY_ASSESSMENTS
 from art17.forms import ProgressFilterForm
 from art17.models import (
     Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db,
     EtcDicDecision, EtcDicMethod,
+    Comment, t_comments_read, HabitatComment, t_habitat_comments_read,
 )
 from art17.summary import SpeciesMixin, HabitatMixin
 
@@ -31,21 +34,6 @@ def can_view_details():
         return False
 
     return current_user.has_role('etc') or current_user.has_role('admin')
-
-
-def unread_for_my(user, subject, region):
-    #return user.read_habitat_comments.filter_by(subject=subject, region=region).count()
-    return 0
-
-
-def unread_for_all(user, subject, region):
-    #return user.read_habitat_comments.filter_by(subject=subject, region=region).count()
-    return 0
-
-
-def unread_for_wiki(user, subject, region):
-    #return user.read_habitat_comments.filter_by(subject=subject, region=region).count()
-    return 0
 
 
 def user_is_expert(user):
@@ -229,11 +217,8 @@ class Progress(views.View):
                     ret_dict[subject][region]['title'] = self.process_title(
                         subject, region, conclusion, cell, presence_info
                     )
-                    ret_dict[subject][region]['comments'] = {
-                        'user': unread_for_my(current_user, subject, region),
-                        'all': unread_for_all(current_user, subject, region),
-                        'wiki': unread_for_wiki(current_user, subject, region),
-                    }
+
+        comment_counts = self.get_comment_counts(period)
 
         context = self.get_context()
         context.update({
@@ -246,6 +231,7 @@ class Progress(views.View):
             'regions': regions.all(),
             'objects': ret_dict,
             'dataset': period_query,
+            'comment_counts': comment_counts,
         })
 
         return render_template(self.template_name, **context)
@@ -264,6 +250,40 @@ class SpeciesProgress(Progress, SpeciesMixin):
         conclusions = ['range', 'population', 'habitat',
                        'future prospects', 'overall assessment']
         return zip(conclusions, conclusions)
+
+    def get_comment_counts(self, period):
+        comments_query = (
+            db.session.query(
+                Comment.assesment_speciesname,
+                Comment.region,
+                func.count('*'),
+            )
+            .filter(Comment.MS == 'EU25')
+            .filter(Comment.dataset_id == period)
+            .filter(or_(Comment.deleted == 0, Comment.deleted == None))
+            .group_by(
+                Comment.assesment_speciesname,
+                Comment.region,
+            )
+        )
+        all_comment_count = {
+            (row.assesment_speciesname, row.region): row[2]
+            for row in comments_query
+        }
+
+        read_comments_query = (
+            comments_query
+            .join(t_comments_read)
+            .filter(t_comments_read.c.reader_user_id == g.identity.id)
+        )
+        for row in read_comments_query:
+            all_comment_count[row.assesment_speciesname, row.region] -= row[2]
+
+        return {
+            'user': {},
+            'all': all_comment_count,
+            'wiki': {},
+        }
 
     def setup_objects_and_data(self, period, group, conclusion_type):
         if conclusion_type == 'range':
@@ -327,6 +347,41 @@ class HabitatProgress(Progress, HabitatMixin):
         conclusions = ['range', 'area', 'future prospects',
                        'structure', 'overall assessment']
         return zip(conclusions, conclusions)
+
+    def get_comment_counts(self, period):
+        comments_query = (
+            db.session.query(
+                HabitatComment.assesment_speciesname,
+                HabitatComment.region,
+                func.count('*'),
+            )
+            .filter(HabitatComment.MS == 'EU25')
+            .filter(HabitatComment.dataset_id == period)
+            .filter(or_(HabitatComment.deleted == 0,
+                        HabitatComment.deleted == None))
+            .group_by(
+                HabitatComment.assesment_speciesname,
+                HabitatComment.region,
+            )
+        )
+        all_comment_count = {
+            (row.assesment_speciesname, row.region): row[2]
+            for row in comments_query
+        }
+
+        read_comments_query = (
+            comments_query
+            .join(t_habitat_comments_read)
+            .filter(t_habitat_comments_read.c.reader_user_id == g.identity.id)
+        )
+        for row in read_comments_query:
+            all_comment_count[row.assesment_speciesname, row.region] -= row[2]
+
+        return {
+            'user': {},
+            'all': all_comment_count,
+            'wiki': {},
+        }
 
     def setup_objects_and_data(self, period, group, conclusion_type):
         if conclusion_type == 'range':

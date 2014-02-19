@@ -55,11 +55,11 @@
                       {{ data['main_decision'] }}
                       {{ ' '.join(data['other_decisions']) }}
                       {{ data['method']|methodify }}
-                      {% if data.get('comments') %}<br/>
-                        {{ data['comments']['user'] }}
-                        {{ data['comments']['all'] }}
-                        {{ data['comments']['wiki'] }}
-                      {% endif %}
+                      <br/>
+                      {% set key = (subject_name, region.reg_code) %}
+                      {{ comment_counts['user'].get(key, 0) }}
+                      {{ comment_counts['all'].get(key, 0) }}
+                      {{ comment_counts['wiki'].get(key, 0) }}
                     {% else %}
                       {{ data['method']|methodify }}
                     {% endif %}
