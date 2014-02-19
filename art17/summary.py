@@ -74,16 +74,6 @@ DATE_FORMAT = '%d/%m/%Y %H:%M'
 DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 
 
-@summary.route('/')
-def homepage():
-    config = get_config()
-    return render_template('homepage.html', **{
-        'start_date': config.start_date,
-        'end_date': config.end_date,
-        'today': date.today(),
-    })
-
-
 @summary.app_template_global('can_view')
 def can_view(record, countries):
     return (admin_perm.can() or expert_perm.can() or

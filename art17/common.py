@@ -1,4 +1,5 @@
 from urlparse import urlparse
+from datetime import date
 import flask
 from flask_principal import Permission, RoleNeed
 from art17.dataset import CONVERTER_URLS
@@ -102,7 +103,7 @@ HABITAT_OPTIONS = [
     ('u', 'unknown'),
 ]
 
-HOMEPAGE_VIEW_NAME = 'summary.homepage'
+HOMEPAGE_VIEW_NAME = 'common.homepage'
 
 common = flask.Blueprint('common', __name__)
 
@@ -131,6 +132,16 @@ def inject_globals():
     return {
         'APP_BREADCRUMBS': [('Article 17', flask.url_for(HOMEPAGE_VIEW_NAME))],
     }
+
+
+@common.route('/')
+def homepage():
+    cfg = get_config()
+    return flask.render_template('homepage.html', **{
+        'start_date': cfg.start_date,
+        'end_date': cfg.end_date,
+        'today': date.today(),
+    })
 
 
 @common.route('/_crashme', methods=['GET', 'POST'])

@@ -7,7 +7,7 @@ from flask.ext.security import signals as security_signals
 from flask.ext.mail import Message
 from eea.usersdb import UsersDB, UserNotFound
 from art17 import models
-from art17.common import admin_perm, HOMEPAGE_VIEW_NAME, get_config
+from art17.common import admin_perm, get_config
 from art17.auth import zope_acl_manager
 
 logger = logging.getLogger(__name__)
