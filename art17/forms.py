@@ -10,6 +10,7 @@ from art17.models import (
     EtcDicTrend,
     EtcDicPopulationUnit,
     EtcDataSpeciesRegion,
+    EtcDataHabitattypeRegion
 )
 from art17.utils import validate_field
 from art17.auth import current_user
@@ -327,7 +328,7 @@ class SummaryManualFormHabitat(Form, OptionsBase):
         self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
-    def custom_validate(self):
+    def custom_validate(self, **kwargs):
         fields = [f for f in all_fields(self) if f != self.region]
         empty = [f for f in fields if not f.data]
 
