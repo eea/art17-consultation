@@ -163,6 +163,9 @@ $(function () {
             if (!msg.success) {
                 alert(msg.error);
             }
+            else {
+                $(select).closest('tr').addClass('highlight-success')
+            }
         }).fail(function (msg) {
 
         });

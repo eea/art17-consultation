@@ -1,4 +1,8 @@
 /* OVERIDES style.css */
+.highlight-success td {
+    background: green!important;
+}
+
 #workarea ul {
     line-height: 1;
 }
