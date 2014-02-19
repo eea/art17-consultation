@@ -32,7 +32,9 @@
          {% elif merged and not wiki_body %}
             <p>Please select a region in order to add an Audit Trail record.</p>
          {% else %}
-            <p>Please select a region in order to edit.</p>
+            {% if merged %}
+                <p>Please select a region in order to edit.</p>
+            {% endif %}
             {% for region, region_url, body in wiki_body %}
                 <h3><a href="{{ region_url }}&merged=merged">{{ region }}</a></h3>
                 {{ body | safe }}
