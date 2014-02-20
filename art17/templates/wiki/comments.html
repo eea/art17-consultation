@@ -1,7 +1,7 @@
 <div class="comment-section">
   <h3>Comments</h3>
 
-  {% if can_add_comment(comments) %}
+  {% if can_add_comment(comments, revisions) %}
     <div class="btn-toolbar">
         <button class='edit-btn {% if add_cmnt_form %}disabled{% endif %}'
             href="{{ add_comment_url }}">Add comment</button>

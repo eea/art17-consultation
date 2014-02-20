@@ -86,9 +86,9 @@ def can_manage_revisions():
 
 
 @wiki.app_template_global('can_add_comment')
-def can_add_comment(comments):
+def can_add_comment(comments, revisions):
     is_author = current_user in [cmnt.author for cmnt in comments]
-    return not (current_user.is_anonymous() or is_author)
+    return not (current_user.is_anonymous() or is_author) and revisions
 
 
 @wiki.app_template_global('can_edit_comment')
@@ -314,13 +314,11 @@ class AddComment(WikiView):
 
     def process_post_request(self):
         wiki = self.section.get_wiki()
+        wiki_changes = self.section.get_wiki_changes().all()
         comments = wiki.comments if wiki else []
 
-        if not can_add_comment(comments):
+        if not can_add_comment(comments, wiki_changes):
             raise PermissionDenied
-
-        if self.section.insert_inexistent_wiki():
-            wiki = self.section.get_wiki()
 
         comment = self.section.wiki_comment_cls(
             wiki_id=wiki.id, comment=request.form.get('text'),
