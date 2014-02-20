@@ -15,8 +15,8 @@ from art17.models import (
 class MixinsCommon(object):
 
     @classmethod
-    def get_manual_record(cls, subject, region, user, MS=None):
-        filters = {'subject': subject, 'region': region,
+    def get_manual_record(cls, period, subject, region, user, MS=None):
+        filters = {'dataset_id': period, 'subject': subject, 'region': region,
                    'user_id': user, 'MS': MS}
         if not MS:
             del filters['MS']

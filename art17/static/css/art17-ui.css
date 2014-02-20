@@ -639,6 +639,9 @@ a.conclusion:hover {
 .popout hr {
     margin: 6px 0;
 }
+.popout .btn-toolbar:last-child {
+    margin-bottom: 6px;
+}
 /* POPOUT RIGHT */
 .popout.right {
     left: 100%;
@@ -880,7 +883,11 @@ li.select-list {
 }
 /* BUTTONS */
 .btn-toolbar {
-	margin: 12px 0;
+	margin: 12px -6px;
+}
+.btn-toolbar button,
+.btn-toolbar .button {
+    margin: 0 6px;
 }
 /* BTN EIONET */
 .btn-eionet {
