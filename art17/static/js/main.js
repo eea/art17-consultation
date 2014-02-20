@@ -47,7 +47,7 @@ $(function() {
       window.close();
     });
 
-    $('body').on('click', '.delete-btn', function (evt) {
+    $('body').delegate('.delete-btn', 'click', function (evt) {
         evt.preventDefault();
         var url = $(this).attr('href');
         var request = $.ajax({
@@ -122,7 +122,7 @@ $(function() {
 
 });
 
-$(function () {
+$(document).ready(function () {
   $('#history').on('click', 'li:not(.active)', function (event) {
     event.stopPropagation();
     $(this).addClass('selected')
@@ -147,7 +147,7 @@ $(function () {
   });
 });
 
-$(function () {
+$(document).ready(function () {
     $('body').on('change', '.decision-select', function (event) {
         event.stopPropagation();
         var select = $(this);
@@ -183,14 +183,12 @@ $(function () {
 });
 
 // Handle error display in form registration
-$(function () {
-
-
-    $('.form-error').delegate('', 'focus', function () {
+$(document).ready(function () {
+    $('.form-error').on('focus', function () {
         $(this).removeClass('form-error');
     });
 
-    $('.form-error').delegate('', 'change', function () {
+    $('.form-error').on('blur', function () {
         if (this.value) {
             $(this).siblings('.form-error-msg').addClass('hidden');
         } else {
@@ -205,7 +203,6 @@ var openModal = function (iframe_url) {
     $('.modal-bg').removeClass('hidden');
     $('body').addClass('stop_scroll');
 };
-
 var closeModal = function () {
     $('iframe').attr('src', '');
     $('.modal-bg').addClass('hidden');
@@ -213,7 +210,7 @@ var closeModal = function () {
 };
 
 // Flash Messages
-$(function () {
+$(document).ready( function () {
 
     var msg = $('.flashmessage');
 
@@ -228,17 +225,11 @@ $(function () {
     window.setTimeout(show_flash, 600);
     window.setTimeout(hide_flash, 3600);
 
-    $(msg).on('mouseenter', show_flash)//function () {
-//        window.clearTimeout(hide_flash);
-  //  });
+    $(msg).on('mouseenter', show_flash);
 
     $(msg).on('mouseleave', function () {
         window.setTimeout(hide_flash, 600);
     });
-});
-
-$('html').click(function() {
-
 });
 
 $('#menucontainer').click(function(event){
@@ -264,7 +255,7 @@ $(document).ready( function () {
 });
 
 // Popout
-$(function () {
+$(document).ready(function () {
     var popouts = $(".popout");
     var popoutButtons = $("[data-popout]");
 
@@ -283,13 +274,13 @@ $(function () {
     });
 
     // Close popout
-    $('.popout').delegate('.close', 'click', function () {
+    $('.popout').on('click', '.close', function () {
         $(this).closest('.popout').toggleClass('open');
     });
-    $('.popout').click ( function (event) {
+    $('.popout').on('click', function (event) {
         event.stopPropagation();
     });
-    $('html').click( function() {
+    $('html').on('click', function() {
         $(popouts).removeClass('open');
     });    
 
@@ -301,8 +292,7 @@ $(function () {
         var prevSecondClick;
         var currentClass;
 
-        // Select
-        $(method).delegate('', 'change', function (event) {
+        var updateSelect = function () {
             if ($(this).val()) {
                 $(preview).children('.selected-value').removeClass('hidden').html( $(this).val() );
                 $(preview).children('.fa').addClass('hidden');
@@ -310,10 +300,9 @@ $(function () {
                 $(preview).children('.selected-value').addClass('hidden').html( $(this).val() );
                 $(preview).children('.fa').removeClass('hidden');
             }
-        });
+        };
 
-        // Radios
-        $(radios).delegate('', 'click', function (event) {
+        var updateRadio = function () {
             event.stopPropagation();
             conclusionClass = $(this).data('class');
             // Match selected conclusion
@@ -325,19 +314,25 @@ $(function () {
                 currentClass = false;
                 $(preview).removeClass(currentClass);
             }
-
             // Uncheck radio button
             var secondClick = $(this).attr('secondClick');
             if (secondClick == "false" || secondClick == undefined) {
                 $(prevSecondClick).attr('secondClick', false);
                 $(this).attr('secondClick', true);
             } else {
-                console.log('ceva');
                 $(this).attr('secondClick', false);
                 this.checked = false;
             }
             prevSecondClick = this;
-        });
+        };
+
+        // Select
+        //updateSelect(); // Initialize
+        $(method).on('change', updateSelect);
+
+        // Radios
+        updateRadio(); // Initialize
+        $(radios).on('click', updateRadio);
     });
 
     // Size and unit
@@ -346,7 +341,7 @@ $(function () {
         var unit = "#population_size_unit";
         var preview = $(this).closest('.popout-wrapper').find(".select");
         
-        $(this).delegate(size + ", " + unit, 'change', function (event) {
+        var update = function () {
             if ($(size).val() || $(unit).val()) {
                 var concat = $(size).val() + " " + $(unit).val();
                 $(preview).children('.selected-value').removeClass('hidden').html( concat );
@@ -355,7 +350,10 @@ $(function () {
                 $(preview).children('.selected-value').addClass('hidden').html("");
                 $(preview).children('.fa').removeClass('hidden');
             }
-        });
+        };
+        update(); // Initialize
+        $(this).on('change', size, update);
+        $(this).on('change', unit, update);
     });
 });
 
