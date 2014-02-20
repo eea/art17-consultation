@@ -147,7 +147,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
     if not dataset:
         return False
     record_exists = False
-    if region:
+    if region and not current_user.is_anonymous():
         record_exists = (zone_cls_mapping[zone]
                          .get_manual_record(subject, region, current_user.id))
     return not dataset.is_readonly and (sta_perm.can() or admin_perm.can()) \
