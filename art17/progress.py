@@ -6,6 +6,7 @@ from flask import (
     url_for,
     g,
 )
+from werkzeug.datastructures import MultiDict
 from art17.auth import current_user
 from art17.common import get_default_period, COUNTRY_ASSESSMENTS
 from art17.forms import ProgressFilterForm
@@ -184,7 +185,9 @@ class Progress(views.View):
         group = request.args.get('group')
         conclusion = request.args.get('conclusion')
 
-        progress_filter_form = ProgressFilterForm(request.args)
+        progress_filter_form = ProgressFilterForm(
+            MultiDict(dict(period=period, group=group, conclusion=conclusion))
+        )
         progress_filter_form.group.choices = self.get_groups(period)
         progress_filter_form.conclusion.choices = self.get_conclusions()
 
