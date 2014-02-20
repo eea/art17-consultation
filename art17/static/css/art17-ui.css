@@ -57,6 +57,7 @@ abbr {
     left: -1px;
     right: -1px;
     height: 10px;
+    z-index: 500;
     border-bottom: 1px solid #bbb;
     background: white;
 }
@@ -89,12 +90,11 @@ abbr {
     /*white-space: nowrap;*/
 }
 
-.complex_datatable tbody th a,
-.complex_datatable tbody td:first-child a {
+.complex_datatable a.clipped {
     font-weight: 300;
     text-align: left;
     background: none;
-    max-width: 100px;
+    max-width: 180px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -587,6 +587,7 @@ a.conclusion:hover {
 }
 /* POPOUT */
 .popout {
+    z-index: 550;
     display:none;
     min-width: 180px;
     position: absolute;
@@ -676,7 +677,7 @@ a.conclusion:hover {
 /* POPOUT SIZE UNIT (TABLE HEADER) */
 .popout.size_unit_th {
     border-color: #aaa!important;
-    min-width: initial;
+    min-width: inherit;
     padding: 0;
     -webkit-box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
     box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
@@ -981,7 +982,7 @@ li.select-list {
 .btn-blue:active,
 .btn-red:hover,
 .btn-red:active {
-    color: #fff!important;
+    color: #fff;
 }
 /* BTN TEXT */
 .btn-text {

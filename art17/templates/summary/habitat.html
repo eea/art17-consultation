@@ -50,7 +50,7 @@
           <td>
             {% set original_url=get_original_record_url(row) %}
             {% set country_title = get_title_for_habitat_country(row) %}
-            <a class="popup-btn block" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
+            <a class="clipped popup-btn block" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
               {{ row.eu_country_code }}
             </a>
           </td>

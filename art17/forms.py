@@ -172,9 +172,13 @@ class SummaryFormMixin(object):
         pass
 
     def all_errors(self):
-        text = '<ul>'
+        errors = []
         for field_name, field_errors in self.errors.iteritems():
-            text += '<li>' + ', '.join(field_errors) + '</li>'
+            errors.extend(field_errors)
+        errors = set(errors)
+        text = '<ul>'
+        for error in errors:
+            text += '<li>' + error + '</li>'
         text += '</ul>'
         return text
 

@@ -46,7 +46,7 @@
         <tr {% if row.is_assesm %}class="assesm"{% endif %}>
           <td class="border">
             {% set original_url=get_original_record_url(row) %}
-            <a class="popup-btn block" data-title="Factsheet" href="{{ original_url }}">
+            <a class="clipped popup-btn block" data-title="Factsheet" href="{{ original_url }}" title="{{ row.subject }} - {{ row.habitat.name }}">
               {{ row.subject }} - {{ row.habitat.name }}
             </a>
           </td>
