@@ -38,14 +38,17 @@ def setup(app):
     EtcDataHabitattypeAutomaticAssessmentFactory(
         range_surface_area=1283,
         assessment_method='1',
-        habitatcode=1110)
+        habitatcode=1110,
+        region='ALP',
+    )
     HabitattypesManualAssessmentsFactory(
         range_surface_area=1283,
         habitatcode=1110,
         method_range='2XA',
         conclusion_range='FV',
         decision='OK',
-        region='ALP')
+        region='ALP',
+    )
     EtcDicHdHabitat()
     EtcDicMethodFactory()
     db.session.commit()
