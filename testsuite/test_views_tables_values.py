@@ -28,7 +28,9 @@ def setup(app):
     EtcDataSpeciesAutomaticAssessmentFactory(
         assesment_speciesname='Capra ibex',
         assessment_method='1',
-        range_surface_area=19850)
+        range_surface_area=19850,
+        region='ALP',
+    )
     EtcDicBiogeoregFactory()
     EtcDataHabitattypeRegionFactory(
         range_surface_area=1283,
