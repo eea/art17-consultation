@@ -298,10 +298,16 @@ def test_email_notification_for_role_changes(app, zope_auth, client, outbox):
     zope_auth.update({'user_id': 'ze_admin'})
     page = client.get(flask.url_for('auth.admin_user', user_id='foo'))
     page.form['roles'] = ['stakeholder', 'nat']
+    page.form['name'] = "Foo Person"
+    page.form['email'] = "foo@example.com"
+    page.form['institution'] = "Foo Institution"
     page.form.submit()
     assert len(outbox) == 0
 
     page.form['roles'] = ['etc', 'stakeholder']
+    page.form['name'] = "Foo Person"
+    page.form['email'] = "foo@example.com"
+    page.form['institution'] = "Foo Institution"
     page.form['notify_user'] = True
     page.form.submit()
 
