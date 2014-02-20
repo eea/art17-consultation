@@ -8,9 +8,13 @@
   {% set is_form=true %}
   {% include 'common/habitat_manual_table_header.html' %}
   <tr class="form_row">
+    {% if can_select_MS() %}
     <td {% if form.MS.errors %}class="errors"{% endif %}>
-      {% if can_select_MS %}{{ form.MS() }}{% endif %}
+      {{ form.MS() }}
     </td>
+    {% else %}
+    <td></td>
+    {% endif %}
     {% if not region %}
     <td>{{ form.region() }}</td>
     {% endif %}
