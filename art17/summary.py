@@ -750,7 +750,8 @@ class UpdateDecision(MixinView, views.View):
     def get_sister_records(self, record):
         return (
             self.mixin.model_manual_cls.query
-            .filter_by(subject=record.subject, region=record.region)
+            .filter_by(subject=record.subject, region=record.region,
+                       dataset_id=record.dataset_id)
             .filter(~(self.mixin.model_manual_cls.user == record.user))
         )
 
