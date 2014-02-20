@@ -6,6 +6,7 @@ from flask import (
     render_template,
     jsonify,
 )
+from werkzeug.datastructures import MultiDict
 
 from art17.common import get_default_period
 from art17.mixins import SpeciesMixin, HabitatMixin
@@ -28,7 +29,10 @@ class Report(views.View):
 
         countries = self.get_countries(period)
         regions = self.get_regions_by_country(period, country)
-        report_filter_form = ReportFilterForm(request.args)
+        report_filter_form = ReportFilterForm(
+            MultiDict(dict(period=period, group=group, country=country,
+                           region=region))
+        )
         report_filter_form.group.choices = self.get_groups(period)
         report_filter_form.country.choices = countries
         report_filter_form.region.choices = regions
