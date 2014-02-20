@@ -293,31 +293,41 @@ def admin_user(user_id):
     )
 
     if flask.request.method == 'POST':
-        user_form = Art17AdminEditUserForm(flask.request.form, obj=user)
-        if user_form.validate():
-            # manage user info
-            user_form.populate_obj(user)
+        if flask.request.form.get('btn') == u'delete':
+            # delete from Zope
+            zope_acl_manager.delete(user)
+            # delete from local database
+            user = models.RegisteredUser.query.get(user_id)
+            models.db.session.delete(user)
             models.db.session.commit()
+            flask.flash("User %s has been deleted" % user_id, 'success')
+            return flask.redirect(flask.url_for('.users'))
+        else:
+            user_form = Art17AdminEditUserForm(flask.request.form, obj=user)
+            if user_form.validate():
+                # manage user info
+                user_form.populate_obj(user)
+                models.db.session.commit()
 
-            # manage status
-            set_user_active(user, flask.request.form.get('active', type=bool))
+                # manage status
+                set_user_active(user, flask.request.form.get('active', type=bool))
 
-            # manage roles
-            datastore = flask.current_app.extensions['security'].datastore
-            new_roles = flask.request.form.getlist('roles')
-            expandable_roles = filter(lambda k: k not in new_roles, current_user_roles)
-            for role in new_roles:
-                datastore.add_role_to_user(user_id, role)
-            for role in expandable_roles:
-                datastore.remove_role_from_user(user_id, role)
-            datastore.commit()
+                # manage roles
+                datastore = flask.current_app.extensions['security'].datastore
+                new_roles = flask.request.form.getlist('roles')
+                expandable_roles = filter(lambda k: k not in new_roles, current_user_roles)
+                for role in new_roles:
+                    datastore.add_role_to_user(user_id, role)
+                for role in expandable_roles:
+                    datastore.remove_role_from_user(user_id, role)
+                datastore.commit()
 
-            # manage role notifications
-            if flask.request.form.get('notify_user', type=bool):
-                send_role_change_notification(user, new_roles)
+                # manage role notifications
+                if flask.request.form.get('notify_user', type=bool):
+                    send_role_change_notification(user, new_roles)
 
-            flask.flash("User information updated for %s" % user_id, 'success')
-            return flask.redirect(flask.url_for('.users', user_id=user_id))
+                flask.flash("User information updated for %s" % user_id, 'success')
+                return flask.redirect(flask.url_for('.users', user_id=user_id))
     else:
         user_form = Art17AdminEditUserForm(obj=user)
 
