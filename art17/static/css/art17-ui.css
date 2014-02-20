@@ -978,6 +978,9 @@ li.select-list {
     width: 100%;
     position: fixed;
 }
+.back {
+    margin-right: 1em!important;
+}
 .modal-bg .close {
     position: absolute;
     bottom: 90%;

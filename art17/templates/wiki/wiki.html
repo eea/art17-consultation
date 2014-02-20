@@ -2,11 +2,12 @@
 
 {% block content %}
 
-{% if back_url %}
-<a href="{{ back_url }}">Back</a>
-{% endif %}
-
 <div class="title-section clearfix">
+  {% if back_url %}
+    <a class="button pull-left back" href="{{ back_url }}">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+  {% endif %}
   <h2 class="no-margins pull-left">{{ page_title }}</h2>
   <div class="pull-right">
       {% if can_edit_page() and not merged %}
