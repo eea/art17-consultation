@@ -12,18 +12,19 @@
 
 {% block content %}
   {% from '_macros.html' import render_field_with_errors %}
-  <h1>User administration: <tt>{{ user.id }}</tt></h1>
+  <h1>User administration: <em>{{ user.id }}</em></h1>
 
   <form class="box inline-block form" method="post">
     <div class="form-group">
-      <input type="checkbox" id="admin_user-active" name="active"
-             {%- if user.active %} checked{% endif %}>
-      <label for="admin_user-active">Active</label>
+      <label class="" for="admin_user-active">
+        <input type="checkbox" id="admin_user-active" name="active"
+               {%- if user.active %} checked{% endif %}>
+        Active
+      </label>
     </div>
-
     <div class="clearfix">
         <div class="form-group">
-            <label for="admin_user-roles">Assigned Roles</label><br>
+            <label for="admin_user-roles">Assigned Roles</label>
             <select name="roles" multiple id="admin_user-roles">
             {% for role, role_name in all_roles.items() %}
               <option value="{{ role }}"
@@ -70,13 +71,15 @@
             {{ render_field_with_errors(user_form.qualification) }}
           </div>
     </div>
-
-    <div>
-      <button class="btn-blue" type="submit">Save</button>
-
-      <label for="admin_user-notify_user">Notify user about role changes
+    <div class="form-group">
+      <label for="admin_user-notify_user">
         <input type="checkbox" name="notify_user" id="admin_user-notify_user">
+        Notify user about role changes
       </label>
+    </div>
+    <hr />
+    <div class="btn-toolbar no-bottom">
+      <button class="btn-blue" type="submit">Save</button>
     </div>
   </form>
 {% endblock content %}

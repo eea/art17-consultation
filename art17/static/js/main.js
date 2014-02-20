@@ -226,17 +226,11 @@ $(function () {
     window.setTimeout(show_flash, 600);
     window.setTimeout(hide_flash, 3600);
 
-    $(msg).on('mouseenter', show_flash)//function () {
-//        window.clearTimeout(hide_flash);
-  //  });
+    $(msg).on('mouseenter', show_flash);
 
     $(msg).on('mouseleave', function () {
         window.setTimeout(hide_flash, 600);
     });
-});
-
-$('html').click(function() {
-
 });
 
 $('#menucontainer').click(function(event){
@@ -247,6 +241,7 @@ $('#menucontainer').click(function(event){
 $(document).ready( function () {
     $('[data-toggle]').each( function () {
         var text = $(this).text();
+        console.log(text);
         var comma = text.indexOf(',');
         var msg_1 = text.substring(0, comma);
         var msg_2 = text.substring(comma + 1, text.length);
