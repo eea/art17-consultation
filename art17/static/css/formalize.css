@@ -105,7 +105,7 @@ button:hover,
 [type="submit"]:hover,
 [type="button"]:hover {
   background-image: none;
-  text-decoration: none;
+  text-decoration: none!important;
 }
 
 a.button:hover {

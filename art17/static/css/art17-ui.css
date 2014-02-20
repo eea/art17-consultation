@@ -889,6 +889,9 @@ li.select-list {
 .btn-toolbar .button {
     margin: 0 6px;
 }
+.btn-toolbar form {
+    display: inline;
+}
 /* BTN EIONET */
 .btn-eionet {
   background: #85b3bc;
