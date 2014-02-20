@@ -17,7 +17,7 @@
 
 {% block content %}
 {% from '_macros.html' import render_field_with_errors %}
-<h1>Register</h1>
+<h1>Register a new account</h1>
 
 <form class="box inline-block form" method="POST" name="register_user_form">
 
@@ -83,7 +83,7 @@
 <div class="text-right">
   {{ render_field(register_user_form.submit, class='btn-blue') }}
 </div>
-
+<span>fields marked with asterisk (*) are required</span>
 </form>
 {% endblock %}
 

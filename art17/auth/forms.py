@@ -27,9 +27,9 @@ class CustomEmailTextField(TextField):
 
 class Art17RegisterFormBase(object):
 
-    name = TextField('Full name *',
+    name = TextField('Full name',
         validators=[Required("Full name is required")])
-    institution = TextField('Institution *',
+    institution = TextField('Institution',
         validators=[Required("Institution name is required")])
     abbrev = TextField('Abbrev.')
     MS = TextField(widget=HiddenInput())

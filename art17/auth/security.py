@@ -96,12 +96,12 @@ def custom_unique_user_email(form, field):
 
 class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
 
-    id = TextField('Username *',
+    id = TextField('Username',
         validators=[Required("User ID is required"),
                     check_duplicate_with_local_db,
                     check_duplicate_with_ldap])
 
-    email = CustomEmailTextField('Email address *',
+    email = CustomEmailTextField('Email address',
         validators=[Required("Email is required"),
                     email_validator,
                     unique_user_email])
@@ -109,14 +109,14 @@ class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
 
 class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
 
-    email = TextField('Email address *',
+    email = TextField('Email address',
         validators=[Required("Email is required"),
                     email_validator])
 
 
 class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
 
-    email = TextField('Email address *',
+    email = TextField('Email address',
         validators=[Required("Email is required"),
                     email_validator,
                     custom_unique_user_email])
