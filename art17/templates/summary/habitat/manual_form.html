@@ -15,7 +15,9 @@
   {% set is_form=true %}
   {% include 'common/habitat_manual_table_header.html' %}
   <tr class="form_row">
-    <td>{% if can_select_MS %}{{ form.MS() }}{% endif %}</td>
+    <td {% if form.MS.errors %}class="errors"{% endif %}>
+      {% if can_select_MS %}{{ form.MS() }}{% endif %}
+    </td>
     {% if not region %}
     <td>{{ form.region() }}</td>
     {% endif %}
@@ -25,7 +27,7 @@
       {{ form.range_surface_area(size=5) }}
       </td>
       <td {% if form.method_range.errors or form.conclusion_range.errors %}class="errors"{% endif %}>
-          {{ method_conclusion_popout('range', 'Range Conclusions',
+          {{ method_conclusion_popout('Range Conclusions',
                                 form.method_range, form.conclusion_range) }}
       </td>
       <td {% if form.range_trend.errors %}class="errors"{% endif %}>
@@ -39,7 +41,7 @@
       {{ form.coverage_surface_area(size=5) }}
       </td>
       <td {% if form.method_area.errors or form.conclusion_area.errors %}class="errors"{% endif %}>
-          {{ method_conclusion_popout('area', 'Area Conclusions',
+          {{ method_conclusion_popout('Area Conclusions',
                                 form.method_area, form.conclusion_area) }}
       </td>
       <td {% if form.coverage_trend.errors %}class="errors"{% endif %}>
@@ -50,17 +52,17 @@
       </td>
 
       <td {% if form.method_structure.errors or form.conclusion_structure.errors %}class="errors"{% endif %}>
-          {{ method_conclusion_popout('structure', 'Structure and Functions',
+          {{ method_conclusion_popout('Structure and Functions',
                             form.method_structure, form.conclusion_structure) }}
       </td>
 
       <td {% if form.method_future.errors or form.conclusion_future.errors %}class="errors"{% endif %}>
-          {{ method_conclusion_popout('future', 'Future Prospects',
+          {{ method_conclusion_popout('Future Prospects',
                         form.method_future, form.conclusion_future) }}
       </td>
 
       <td {% if form.method_assessment.errors or form.conclusion_assessment.errors %}class="errors"{% endif %}>
-          {{ method_conclusion_popout('current', 'Current CS Conclusions',
+          {{ method_conclusion_popout('Current CS Conclusions',
                         form.method_assessment, form.conclusion_assessment) }}
       </td>
       <td {% if form.conclusion_assessment_trend.errors %}class="errors"{% endif %}>
@@ -129,7 +131,7 @@
       <input type="hidden" name="region" value="{{ row.region }}" />
       <input type="hidden" name="user" value="{{ row.user_id }}" />
       <button type="submit" name="submit" value="update">update</button>
-      <a href="" class="btn-text">cancel</a>
+      <a href="" class="button btn-red"><i class="fa fa-times"></i></a>
     </td>
     {% include 'summary/common/manual/conclusion_details.html' %}
     {% endif %}

@@ -158,7 +158,8 @@ $(document).ready(function () {
             type: "POST",
             url: url,
             data: { decision : decision},
-            dataType: "json"
+            dataType: "json",
+            noCache: true
         }).done(function (msg) {
             var row = $(select).closest('tr');
             if (!msg.success) {

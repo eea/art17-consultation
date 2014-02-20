@@ -17,12 +17,12 @@
     </td>
 
     {% if dataset.schema == '2012' %}
-    {% set title=QUALITIES.get(row.habitat_quality|get_quality, '') %}
-    <td {{ parse_errors('habitat_quality', row, qa_errors, title=title, classes='center') }}>
-        {{ row.habitat_quality|get_quality }}
-    </td>
+        {% set title=QUALITIES.get(row.habitat_quality|get_quality, '') %}
+        <td {{ parse_errors('habitat_quality', row, qa_errors, title=title, classes='center') }}>
+            {{ row.habitat_quality|get_quality }}
+        </td>
     {% else %}
-    <td></td>
+        <td></td>
     {% endif %}
 
     <td {{ parse_errors('habitat_trend', row, qa_errors, classes='center') }}>

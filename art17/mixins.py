@@ -15,9 +15,11 @@ from art17.models import (
 class MixinsCommon(object):
 
     @classmethod
-    def get_manual_record(cls, subject, region, user, MS):
+    def get_manual_record(cls, subject, region, user, MS=None):
         filters = {'subject': subject, 'region': region,
                    'user_id': user, 'MS': MS}
+        if not MS:
+            del filters['MS']
         return cls.model_manual_cls.query.filter_by(**filters).first()
 
     @classmethod
@@ -91,6 +93,7 @@ class SpeciesMixin(MixinsCommon):
     model_manual_cls = SpeciesManualAssessment
     model_comment_cls = Comment
     subject_name = 'species'
+    summary_endpoint = 'summary.species-summary'
 
     def objects_by_group(self, period, group):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
@@ -99,7 +102,7 @@ class SpeciesMixin(MixinsCommon):
         qs = db.session.query(self.model_cls.speciesname)\
             .filter_by(group=group, dataset_id=period).distinct()\
             .order_by(self.model_cls.speciesname)
-        return [(row[0], row[0]) for row in qs]
+        return [(row[0], row[0]) for row in qs if row[0]]
 
     @classmethod
     def get_groups(cls, period):
@@ -153,12 +156,13 @@ class HabitatMixin(MixinsCommon):
     model_manual_cls = HabitattypesManualAssessment
     model_comment_cls = HabitatComment
     subject_name = 'habitat'
+    summary_endpoint = 'summary.habitat-summary'
 
     def subjects_by_group(self, period, group):
         qs = db.session.query(EtcDicHdHabitat)\
             .with_entities(EtcDicHdHabitat.habcode, EtcDicHdHabitat.shortname)\
             .filter_by(group=group, dataset_id=period).distinct()
-        return [(row[0], ' - '.join(row)) for row in qs]
+        return [(row[0], ' - '.join(row)) for row in qs if row[0]]
 
     @classmethod
     def get_groups(cls, period):

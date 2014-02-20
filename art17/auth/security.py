@@ -83,6 +83,17 @@ def check_duplicate_with_local_db(form, field):
         raise ValidationError("User ID is already taken in database.")
 
 
+def custom_unique_user_email(form, field):
+    obj = getattr(form, 'obj', None)
+    datastore = flask.current_app.extensions['security'].datastore
+    check = datastore.find_user(email=field.data)
+
+    # check for editing existing objects
+    if check and getattr(obj, 'id', None) != check.id:
+        raise ValidationError("%s is already associated with an account" %
+                                field.data)
+
+
 class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
 
     id = TextField('Username *',
@@ -94,6 +105,7 @@ class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
         validators=[Required("Email is required"),
                     email_validator,
                     unique_user_email])
+
 
 class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
 
@@ -107,7 +119,7 @@ class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
     email = TextField('Email address *',
         validators=[Required("Email is required"),
                     email_validator,
-                    unique_user_email])
+                    custom_unique_user_email])
 
 
 def no_ldap_user(form, field):

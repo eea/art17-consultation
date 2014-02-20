@@ -19,14 +19,13 @@
     country.
   </p>
 
-  <p class="note">
-    Rows in italic shows data not taken into account when performing the assessments (marginal presence, occasional, extinct prior HD, information, etc)</p>
 
   {% include 'report/filters.html' %}
 
     {% set colspan_all=22 if region else 23 %}
     {% if current_selection %}
 
+    {% include 'common/note_report.html' %}
     {% include 'common/table_legend.html' %}
 
     <table class="complex_datatable">

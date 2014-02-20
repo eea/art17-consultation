@@ -5,7 +5,7 @@ from flask import (
     render_template,
     request,
     flash,
-)
+    url_for)
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
 from flask.ext.principal import PermissionDenied
@@ -178,17 +178,21 @@ class CommentsList(views.View):
             record=self.record,
             form=form,
             edited_comment=edited_comment,
+            home_url=self.get_home_url(subject=subject, region=region,
+                                       user=user, MS=MS)
         )
 
 
 class SpeciesCommentsList(SpeciesMixin, CommentsList):
 
-    pass
+    def get_home_url(self, **kwargs):
+        return url_for('.species-comments', **kwargs)
 
 
 class HabitatCommentsList(HabitatMixin, CommentsList):
 
-    pass
+    def get_home_url(self, **kwargs):
+        return url_for('.habitat-comments', **kwargs)
 
 
 comments.add_url_rule('/species/comments/<subject>/<region>/<user>/<MS>/',

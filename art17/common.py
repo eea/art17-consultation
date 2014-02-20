@@ -113,6 +113,9 @@ def get_default_period():
     return conf.default_dataset_id
 
 
+def get_default_ms():
+    return 'EU27'
+
 admin_perm = Permission(RoleNeed('admin'))
 expert_perm = Permission(RoleNeed('expert'))
 sta_perm = Permission(RoleNeed('stakeholder'))

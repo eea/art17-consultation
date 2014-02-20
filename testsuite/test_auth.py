@@ -288,6 +288,50 @@ def test_dates(app, zope_auth, client):
     assert "Registration has finished" in page
 
 
+def test_admin_edit_user_info(app, zope_auth, client, outbox):
+    from art17.models import RegisteredUser
+    from art17.auth.providers import set_user
+    from .factories import DatasetFactory
+
+    _set_config(admin_email='admin@example.com')
+    create_user('ze_admin', ['admin'])
+    foo = create_user('foo', ['etc', 'stakeholder'], name="Foo Person")
+    DatasetFactory()
+    models.db.session.commit()
+    zope_auth.update({'user_id': 'ze_admin'})
+
+    page = client.get(flask.url_for('auth.admin_user', user_id='foo'))
+    page.form['name'] = "Foo Person"
+    page.form['email'] = "foo@example.com"
+    page.form['institution'] = "Foo Institution"
+    page.form['qualification'] = "Foo is web developer"
+    result_page = page.form.submit()
+
+    assert "User information updated" in result_page.follow().text
+    assert not result_page.status_code == 200
+    assert not 'already associated with an account' in result_page.text
+
+    foo_user = models.RegisteredUser.query.get('foo')
+    assert foo_user.email == 'foo@example.com'
+    assert foo_user.name == 'Foo Person'
+    assert foo_user.institution == 'Foo Institution'
+    assert foo_user.qualification == 'Foo is web developer'
+    assert not foo_user.is_ldap
+
+    bar = create_user('bar', ['etc'], name="Bar Person")
+    models.db.session.commit()
+
+    page = client.get(flask.url_for('auth.admin_user', user_id='bar'))
+    page.form['name'] = "Bar Person"
+    page.form['email'] = "foo@example.com"
+    page.form['institution'] = "Bar Institution"
+    page.form['qualification'] = "Bar is web developer"
+    result_page = page.form.submit()
+
+    assert result_page.status_code == 200
+    assert 'already associated with an account' in result_page.text
+
+
 def test_email_notification_for_role_changes(app, zope_auth, client, outbox):
     from .factories import DatasetFactory
 
@@ -298,10 +342,16 @@ def test_email_notification_for_role_changes(app, zope_auth, client, outbox):
     zope_auth.update({'user_id': 'ze_admin'})
     page = client.get(flask.url_for('auth.admin_user', user_id='foo'))
     page.form['roles'] = ['stakeholder', 'nat']
+    page.form['name'] = "Foo Person"
+    page.form['email'] = "foo@example.com"
+    page.form['institution'] = "Foo Institution"
     page.form.submit()
     assert len(outbox) == 0
 
     page.form['roles'] = ['etc', 'stakeholder']
+    page.form['name'] = "Foo Person"
+    page.form['email'] = "foo@example.com"
+    page.form['institution'] = "Foo Institution"
     page.form['notify_user'] = True
     page.form.submit()
 

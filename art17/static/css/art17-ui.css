@@ -86,7 +86,7 @@ abbr {
 /* CELLS */
 .complex_datatable td,
 .complex_datatable th {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 
 .complex_datatable tbody th a,
@@ -132,7 +132,7 @@ abbr {
 }
 .complex_datatable .form_row td,
 .complex_datatable .form_row th {
-    white-space: normal;
+    /*white-space: normal;*/
     border-color: transparent;
     background: #efe9bb;
     font-weight: normal;
@@ -200,6 +200,7 @@ abbr {
     border-radius: 2px;
     min-height: 18px;
     vertical-align: top;
+    position: relative;
 }
 .conclusion,
 .conclusion:hover,
@@ -807,6 +808,7 @@ li.select-list {
 .select:hover {
     border-color: blue;
     color: black;
+    text-decoration: none!important;
 }
 .select:before {
     content: " ";
@@ -818,8 +820,8 @@ li.select-list {
     border-style: solid;
     border-color: black black transparent transparent;
     position: absolute;
-    top: 3px;
-    right: 3px;
+    top: 2px;
+    right: 2px;
 }
 /* BUTTONS */
 .btn-toolbar {
