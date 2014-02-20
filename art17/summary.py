@@ -387,7 +387,7 @@ class Summary(views.View):
                     manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
                     if not can_select_MS_country_code('add'):
-                        manual_assessment.MS = get_default_ms()
+                        manual_assessment.MS = get_default_ms() # change me
                     db.session.flush()
                     db.session.add(manual_assessment)
                     try:
@@ -398,10 +398,11 @@ class Summary(views.View):
                               'error')
                     manual_assessment = None
                 else:
+                    original_ms = manual_assessment.MS
                     manual_form.populate_obj(manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     if not can_select_MS_country_code('add'):
-                        manual_assessment.MS = get_default_ms() # mega hack, change me, TODO
+                        manual_assessment.MS = original_ms # mega hack, change me, TODO
                     db.session.add(manual_assessment)
                     db.session.commit()
             else:
