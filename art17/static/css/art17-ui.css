@@ -982,7 +982,7 @@ li.select-list {
 .btn-blue:active,
 .btn-red:hover,
 .btn-red:active {
-    color: #fff!important;
+    color: #fff;
 }
 /* BTN TEXT */
 .btn-text {
