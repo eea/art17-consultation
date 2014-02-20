@@ -1,5 +1,11 @@
 {% extends layout_template %}
 
+{% block breadcrumbs %}
+  {% from '_macros.html' import breadcrumbs %}
+  {{ breadcrumbs(APP_BREADCRUMBS + [
+      ('Manage datasets', None),
+    ]) }}
+{% endblock %}
 
 {% block content %}
   <h1>Datasets</h1>
