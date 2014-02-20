@@ -278,12 +278,8 @@ def admin_user(user_id):
         .all()
     )
 
-    user_form = Art17AdminEditUserForm(obj=user)
-
     if flask.request.method == 'POST':
-        user_form = Art17AdminEditUserForm(flask.request.form)
-        setattr(user_form, 'obj', user)
-
+        user_form = Art17AdminEditUserForm(flask.request.form, obj=user)
         if user_form.validate():
             # manage user info
             user_form.populate_obj(user)
@@ -308,6 +304,8 @@ def admin_user(user_id):
 
             flask.flash("User information updated for %s" % user_id, 'success')
             return flask.redirect(flask.url_for('.users', user_id=user_id))
+    else:
+        user_form = Art17AdminEditUserForm(obj=user)
 
     return flask.render_template('auth/admin_user.html', **{
         'user': user,
