@@ -15,7 +15,9 @@
   {% set is_form=true %}
   {% include 'common/habitat_manual_table_header.html' %}
   <tr class="form_row">
-    <td>{% if can_select_MS %}{{ form.MS() }}{% endif %}</td>
+    <td {% if form.MS.errors %}class="errors"{% endif %}>
+      {% if can_select_MS %}{{ form.MS() }}{% endif %}
+    </td>
     {% if not region %}
     <td>{{ form.region() }}</td>
     {% endif %}
@@ -129,7 +131,7 @@
       <input type="hidden" name="region" value="{{ row.region }}" />
       <input type="hidden" name="user" value="{{ row.user_id }}" />
       <button type="submit" name="submit" value="update">update</button>
-      <a href="" class="btn-text">cancel</a>
+      <a href="" class="button btn-red"><i class="fa fa-times"></i></a>
     </td>
     {% include 'summary/common/manual/conclusion_details.html' %}
     {% endif %}

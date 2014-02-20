@@ -98,7 +98,7 @@
         {% include 'summary/habitat/auto/future_prosp.html' with context %}
         {% include 'summary/common/auto/overall_assessment.html' with context %}
         {% include 'summary/habitat/auto/grided_maps.html' with context %}
-        <td colspan="7">{# padding #}</td>
+        <td class="border" colspan="7">{# padding #}</td>
       </tr>
       {% endfor %}
       </tbody>
@@ -144,8 +144,14 @@
       {# Add manual assessment form #}
       {% if not manual_assessment and can_add_conclusion(dataset, 'habitat', subject) %}
       <tbody class="form">
-        {% include 'summary/habitat/manual_form.html' %}
-      </tbody class="form">
+        {% if region %}
+          {% include 'summary/habitat/manual_form.html' %}
+        {% else %}
+        <tr class="form_row">
+          <td colspan="{{ colspan_all }}">Please select a Bioregion in order to add a conclusion.</td>
+        </tr>
+        {% endif %}
+      </tbody>
       {% endif %}
     </table>
     {% else %}

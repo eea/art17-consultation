@@ -125,7 +125,7 @@ def zope_auth(app, request):
 def create_user(user_id, role_names=[], name='', institution=''):
     user = models.RegisteredUser(
         id=user_id,
-        account_date=datetime.utcnow(),
+        account_date=datetime.utcnow().strftime('%Y-%m-%d %H:%M'),
         active=True,
         name=name,
         email='%s@example.com' % user_id,

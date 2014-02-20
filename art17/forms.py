@@ -70,7 +70,7 @@ class Form(Form_base):
 
         return self.custom_validate(**kwargs)
 
-    def custom_validate(self):
+    def custom_validate(self, **kwargs):
         return True
 
 
@@ -144,10 +144,20 @@ class OptionsBaseHabitat(OptionsBase):
     EXCLUDE3 = '3XP'
 
 
-class SummaryManualFormSpecies(Form, OptionsBaseSpecies):
+class SummaryFormMixin(object):
+
+    def all_errors(self):
+        text = '<ul>'
+        for field_name, field_errors in self.errors.iteritems():
+            text += '<li>' + ', '.join(field_errors) + '</li>'
+        text += '</ul>'
+        return text
+
+
+class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
     region = SelectField(default='')
-    MS = SelectField(default='')
+    MS = SelectField(default='', validators=[Optional()])
 
     range_surface_area = TextField(default=None,
                                    validators=[numeric_validation])
@@ -263,18 +273,11 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies):
 
         return not self.errors
 
-    def all_errors(self):
-        text = '<ul>'
-        for field_name, field_errors in self.errors.iteritems():
-            text += '<li>' + ', '.join(field_errors) + '</li>'
-        text += '</ul>'
-        return text
 
-
-class SummaryManualFormHabitat(Form, OptionsBaseHabitat):
+class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
     region = SelectField()
-    MS = SelectField(default='')
+    MS = SelectField(default='', validators=[Optional()])
 
     range_surface_area = TextField(validators=[numeric_validation])
     method_range = OptionalSelectField()
@@ -384,18 +387,11 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat):
 
         return not self.errors
 
-    def all_errors(self):
-        text = '<ul>'
-        for field_name, field_errors in self.errors.iteritems():
-            text += '<li>' + ', '.join(field_errors) + '</li>'
-        text += '</ul>'
-        return text
 
-
-class SummaryManualFormSpeciesRef(Form):
+class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 
     region = SelectField()
-    MS = SelectField()
+    MS = SelectField(default='', validators=[Optional()])
 
     complementary_favourable_range = TextField()
     complementary_favourable_population = TextField()
@@ -404,10 +400,10 @@ class SummaryManualFormSpeciesRef(Form):
         pass
 
 
-class SummaryManualFormHabitatRef(Form):
+class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
 
     region = SelectField()
-    MS = SelectField()
+    MS = SelectField(default='', validators=[Optional()])
 
     complementary_favourable_range = TextField()
     complementary_favourable_area = TextField()

@@ -107,7 +107,7 @@ abbr {
 /*CELLS*/
 .complex_datatable td,
 .complex_datatable th {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 
 .complex_datatable tbody th a,
@@ -173,10 +173,20 @@ abbr {
 
 .complex_datatable .form_row td,
 .complex_datatable .form_row th {
-    white-space: normal;
+    /*white-space: normal;*/
     border-color: transparent;
     background: #efe9bb;
     font-weight: normal;
+}
+
+.complex_datatable .form_row td:first-child,
+.complex_datatable .form_row th:first-child {
+    border-left-color: #b6b6b6;
+}
+
+.complex_datatable .form_row td:last-child,
+.complex_datatable .form_row th:last-child {
+    border-right-color: #b6b6b6;
 }
 
 .complex_datatable .form_row th {
@@ -271,6 +281,7 @@ abbr {
     border-radius: 2px;
     min-height: 18px;
     vertical-align: top;
+    position: relative;
 }
 
 .conclusion,
@@ -1029,9 +1040,11 @@ li.select-list {
 .select:hover {
     border-color: blue;
     color: black;
+    text-decoration: none!important;
 }
 
-.select:before {
+.select:before,
+.corner-arrow:before {
     content: " ";
     font-size: 0;
     line-height: 0;
@@ -1041,12 +1054,13 @@ li.select-list {
     border-style: solid;
     border-color: black black transparent transparent;
     position: absolute;
-    top: 3px;
-    right: 3px;
+    top: 2px;
+    right: 2px;
 }
 
 .form-error {
     border: 1px solid red!important;
+    outline: 1px auto red!important;
     color: red!important;
 }
 
@@ -1058,8 +1072,15 @@ li.select-list {
     margin-bottom: 0;
 }
 
-.complex_datatable .form_row td.errors, tr.errors td {
-    background-color: red;
+.complex_datatable .form_row td.errors input,
+.complex_datatable .form_row td.errors select,
+.complex_datatable .form_row td.errors .select,
+.complex_datatable .form_row.errors td input,
+.complex_datatable .form_row.errors td select,
+.complex_datatable .form_row.errors td .select {
+    border-color: red!important;
+    outline: 1px auto red!important;
+    color: red!important;
 }
 
 .offset_top_label {

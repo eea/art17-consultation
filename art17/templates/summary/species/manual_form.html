@@ -15,7 +15,9 @@
   {% set is_form=true %}
   {% include 'common/species_manual_table_header.html' %}
   <tr class="form_row">
-    <td>{% if can_select_MS %}{{ form.MS() }}{% endif %}</td>
+    <td {% if form.MS.errors %}class="errors"{% endif %}>
+      {% if can_select_MS %}{{ form.MS() }}{% endif %}
+    </td>
     {% if not region %}
     <td>{{ form.region() }}</td>
     {% endif %}
@@ -98,7 +100,7 @@
     {% else %}
       {# Edit reference values form #}
       {% set ass = manual_assessment %}
-      <td class="border_left">{{ ass.range_surface_area }}</td>
+      <td>{{ ass.range_surface_area }}</td>
       {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
       <td>{{ ass.range_trend }}</td>
       <td {% if form.complementary_favourable_range.errors %}class="errors"{% endif %}>
@@ -142,7 +144,7 @@
       <input type="hidden" name="region" value="{{ row.region }}" />
       <input type="hidden" name="user" value="{{ row.user_id }}" />
       <button class="btn-green" type="submit" name="submit" value="update">Update</button>
-      <button class="btn-red" title="cancel"><i class="fa fa-times"></i></button>
+      <a class="button btn-red" href="" title="cancel"><i class="fa fa-times"></i></a>
     </td>
     {% include 'summary/common/manual/conclusion_details.html' %}
     {% endif %}

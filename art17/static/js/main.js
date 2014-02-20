@@ -184,11 +184,13 @@ $(function () {
 
 // Handle error display in form registration
 $(function () {
+
+
     $('.form-error').delegate('', 'focus', function () {
         $(this).removeClass('form-error');
     });
 
-    $('.form-error').delegate('', 'blur', function () {
+    $('.form-error').delegate('', 'change', function () {
         if (this.value) {
             $(this).siblings('.form-error-msg').addClass('hidden');
         } else {

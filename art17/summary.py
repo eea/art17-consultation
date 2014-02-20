@@ -13,6 +13,7 @@ from flask import (
 from flask.ext.principal import PermissionDenied
 from sqlalchemy.exc import IntegrityError
 from werkzeug.datastructures import MultiDict
+from werkzeug.utils import redirect
 from art17.auth import current_user
 
 from art17.models import (
@@ -59,7 +60,7 @@ from art17.common import (
     CONTRIB_CONCLUSION,
     get_config,
     TREND_OPTIONS, TREND_OPTIONS_OVERALL, NATURE_OF_CHANGE_OPTIONS,
-    HABITAT_OPTIONS)
+    HABITAT_OPTIONS, get_default_ms)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
@@ -215,7 +216,7 @@ def _parse_semicolon(value, sep='<br/>'):
 
 @summary.app_template_filter('get_quality')
 def get_quality(value, default='N/A'):
-    if value and value[0] in QUALITIES:
+    if value and value[0].upper() in QUALITIES:
         return value[0]
     return default
 
@@ -385,6 +386,8 @@ class Summary(views.View):
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
+                    if not can_select_MS_country_code('add'):
+                        manual_assessment.MS = get_default_ms() # change me
                     db.session.flush()
                     db.session.add(manual_assessment)
                     try:
@@ -395,8 +398,11 @@ class Summary(views.View):
                               'error')
                     manual_assessment = None
                 else:
+                    original_ms = manual_assessment.MS
                     manual_form.populate_obj(manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
+                    if not can_select_MS_country_code('add'):
+                        manual_assessment.MS = original_ms # mega hack, change me, TODO
                     db.session.add(manual_assessment)
                     db.session.commit()
             else:
@@ -687,7 +693,9 @@ class ConclusionDelete(MixinView, views.View):
             record.deleted = 1
         db.session.add(record)
         db.session.commit()
-        return ''
+        return redirect(
+            url_for(self.mixin.summary_endpoint, subject=subject, region=region)
+        )
 
 
 summary.add_url_rule('/species/conc/delete/<subject>/<region>/<user>/<ms>/',
@@ -742,7 +750,8 @@ class UpdateDecision(MixinView, views.View):
     def get_sister_records(self, record):
         return (
             self.mixin.model_manual_cls.query
-            .filter_by(subject=record.subject, region=record.region)
+            .filter_by(subject=record.subject, region=record.region,
+                       dataset_id=record.dataset_id)
             .filter(~(self.mixin.model_manual_cls.user == record.user))
         )
 
