@@ -46,5 +46,7 @@ class Art17RegisterFormBase(object):
             .distinct()
             .order_by(DicCountryCode.name)
             .all())
-        self.country_options.choices = countries + [('', 'Choose another country ...')]
+        self.country_options.choices = (
+            [('', '')] + countries + [('--', 'Choose another country ...')]
+        )
         self.obj = kwargs.get('obj', None)

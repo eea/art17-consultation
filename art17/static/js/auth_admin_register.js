@@ -15,7 +15,7 @@ $(function () {
        country_select.val(ms.val());
     }
     else {
-        country_select.val('');
+        country_select.val('--');
         other_country.val(ms.val());
     }
 
@@ -24,7 +24,7 @@ $(function () {
     })
 
     country_select.on("change", function() {
-        if($(this).val() == '') {
+        if($(this).val() == '--') {
             other_country_container.show();
             ms.val(other_country.val());
         } else {
