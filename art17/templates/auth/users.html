@@ -45,7 +45,7 @@
             <i class="fa fa-user" title="EIONET account"></i>
           {% endif %}
           {% if user.active %}
-            <i class="fa fa-check-circle"></i>
+            <i class="fa fa-check-circle" title="Active account"></i>
           {% endif %}
           <a href="{{ url_for('.admin_user', user_id=user.id) }}">
             {{ user.id }}
