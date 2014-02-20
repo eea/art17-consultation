@@ -70,7 +70,7 @@ class Form(Form_base):
 
         return self.custom_validate(**kwargs)
 
-    def custom_validate(self):
+    def custom_validate(self, **kwargs):
         return True
 
 
@@ -391,7 +391,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 
     region = SelectField()
-    MS = SelectField()
+    MS = SelectField(default='', validators=[Optional()])
 
     complementary_favourable_range = TextField()
     complementary_favourable_population = TextField()
@@ -403,7 +403,7 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
 
     region = SelectField()
-    MS = SelectField()
+    MS = SelectField(default='', validators=[Optional()])
 
     complementary_favourable_range = TextField()
     complementary_favourable_area = TextField()
