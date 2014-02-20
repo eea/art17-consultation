@@ -38,22 +38,23 @@
     {% endif %}
 {% endmacro %}
 
-{% macro conclusion_li(conclusion, name) %}
+{% macro conclusion_li(conclusion, name, checked) %}
     {% set css_class = CONCLUSION_CLASSES.get(conclusion, '') %}
     <li class="clearfix">
         <label  class="radio-label {{ css_class }} conclusion inline width-third pull-right"
                 for="radio-{{ name }}-{{ css_class|lower }}">
                 <input  id="radio-{{ name }}-{{ css_class|lower }}"
                         type="radio"
-                        name="{{ name }}_conclusion"
+                        name="{{ name }}"
                         value="{{ css_class }}"
-                        data-class="{{ css_class }}">
+                        data-class="{{ css_class }}"
+                        {% if checked %}checked{% endif %}>
                 {{ css_class }}
             </label> {{ COUNTRY_ASSESSMENTS.get(conclusion, '') }}
     </li>
 {% endmacro %}
 
-{% macro method_conclusion_popout(name, title, method_field, conclusion_field) %}
+{% macro method_conclusion_popout(title, method_field, conclusion_field) %}
   <div class="popout-wrapper">
       <div class="popout assesment caret">
       <div class="popout-title">
@@ -70,7 +71,8 @@
           <ul class="select-list no-list">
               {% for conclusion, c in conclusion_field.choices %}
                 {% if conclusion %}
-                  {{ conclusion_li(conclusion, name) }}
+                  {{ conclusion_li(conclusion, conclusion_field.name,
+                                   conclusion_field.data == conclusion) }}
                 {% endif %}
               {% endfor %}
           </ul>
