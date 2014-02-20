@@ -136,12 +136,14 @@
     </td>
     {% else %}
     {% set row=manual_assessment %}
+    {% set cancel_url=url_for(edit_endpoint, action='cancel', period=row.dataset_id,
+                              subject=subject, region=region) %}
     <td colspan="2">
       <input type="hidden" name="subject" value="{{ subject }}" />
       <input type="hidden" name="region" value="{{ row.region }}" />
       <input type="hidden" name="user" value="{{ row.user_id }}" />
       <button class="btn-green" type="submit" name="submit" value="update">Update</button>
-      <a class="button btn-red" href="" title="cancel"><i class="fa fa-times"></i></a>
+      <a href="{{ cancel_url }}" title="cancel" class="button btn-red"><i class="fa fa-times"></i></a>
     </td>
     {% include 'summary/common/manual/conclusion_details.html' %}
     {% endif %}
