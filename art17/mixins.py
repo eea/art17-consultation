@@ -91,6 +91,7 @@ class SpeciesMixin(MixinsCommon):
     model_manual_cls = SpeciesManualAssessment
     model_comment_cls = Comment
     subject_name = 'species'
+    summary_endpoint = 'summary.species-summary'
 
     def objects_by_group(self, period, group):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
@@ -153,6 +154,7 @@ class HabitatMixin(MixinsCommon):
     model_manual_cls = HabitattypesManualAssessment
     model_comment_cls = HabitatComment
     subject_name = 'habitat'
+    summary_endpoint = 'summary.habitat-summary'
 
     def subjects_by_group(self, period, group):
         qs = db.session.query(EtcDicHdHabitat)\

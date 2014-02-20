@@ -13,6 +13,7 @@ from flask import (
 from flask.ext.principal import PermissionDenied
 from sqlalchemy.exc import IntegrityError
 from werkzeug.datastructures import MultiDict
+from werkzeug.utils import redirect
 from art17.auth import current_user
 
 from art17.models import (
@@ -691,7 +692,9 @@ class ConclusionDelete(MixinView, views.View):
             record.deleted = 1
         db.session.add(record)
         db.session.commit()
-        return ''
+        return redirect(
+            url_for(self.mixin.summary_endpoint, subject=subject, region=region)
+        )
 
 
 summary.add_url_rule('/species/conc/delete/<subject>/<region>/<user>/<ms>/',
