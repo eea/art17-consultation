@@ -132,11 +132,7 @@ abbr {
 }
 .complex_datatable .form_row td,
 .complex_datatable .form_row th {
-<<<<<<< HEAD
-    /*white-space: normal;*/
-=======
     /* white-space: normal; */ /* REVIEW */
->>>>>>> Center form-row values
     border-color: transparent;
     background: #efe9bb;
     font-weight: normal;
