@@ -5,6 +5,7 @@ from functools import wraps
 import flask
 from flask.ext.security import signals as security_signals
 from flask.ext.mail import Message
+from smtplib import SMTPException
 from eea.usersdb import UsersDB, UserNotFound
 from art17 import models
 from art17.common import admin_perm, get_config
@@ -12,6 +13,14 @@ from art17.auth import zope_acl_manager
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+
+def safe_send_mail(app, msg):
+    try:
+        app.extensions['mail'].send(msg)
+    except SMTPException:
+        flask.flash("The mail could not be sent to the specified email address."
+                    "Please contact the administrator.")
 
 
 @security_signals.user_confirmed.connect
@@ -38,7 +47,7 @@ def activate_and_notify_admin(app, user, **extra):
                 _external=True,
             ),
         )
-        app.extensions['mail'].send(msg)
+        safe_send_mail(app, msg)
 
 
 @security_signals.password_reset.connect

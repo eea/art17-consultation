@@ -22,6 +22,7 @@ from art17.auth.common import (
     get_ldap_user_info,
     activate_and_notify_admin,
     check_dates,
+    safe_send_mail,
 )
 
 
@@ -56,7 +57,7 @@ def send_welcome_email(user, plaintext_password=None):
         'plaintext_password': plaintext_password,
         'home_url': flask.url_for(HOMEPAGE_VIEW_NAME, _external=True),
     })
-    app.extensions['mail'].send(msg)
+    safe_send_mail(app, msg)
 
 
 @auth.route('/auth/create_local', methods=['GET', 'POST'])
@@ -253,7 +254,7 @@ def send_role_change_notification(user, new_roles):
         'user': user,
         'new_roles': [role_description[r] for r in new_roles],
     })
-    app.extensions['mail'].send(msg)
+    safe_send_mail(app, msg)
 
 
 @auth.route('/auth/users')
