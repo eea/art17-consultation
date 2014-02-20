@@ -21,6 +21,7 @@ class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
     FACTORY_SESSION = models.db.session
 
     dataset_id = 1
+    country_code = 'AT'
     eu_country_code = 'AT'
     delivery = 2
     envelope = 'http://'
