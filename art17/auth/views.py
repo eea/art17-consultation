@@ -260,9 +260,22 @@ def send_role_change_notification(user, new_roles):
 @require_admin
 def users():
     user_query = models.RegisteredUser.query.order_by(models.RegisteredUser.id)
+    dataset = (models.Dataset.query.order_by(models.Dataset.id.desc()).first())
+    countries = (
+        models.DicCountryCode.query
+        .with_entities(
+            models.DicCountryCode.codeEU,
+            models.DicCountryCode.name
+        )
+        .filter(models.DicCountryCode.dataset_id == dataset.id)
+        .distinct()
+        .order_by(models.DicCountryCode.name)
+        .all()
+    )
     return flask.render_template('auth/users.html', **{
         'user_list': user_query.all(),
         'role_map': get_roles_for_all_users(),
+        'countries': dict(countries),
     })
 
 

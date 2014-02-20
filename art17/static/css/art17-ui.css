@@ -115,7 +115,7 @@ abbr {
     opacity: 0.5;
 }
 .complex_datatable tr.deleted:hover td {
-    text-decoration: none;   
+    text-decoration: none;
 }
 .stripe_row {
     border-top: 1px solid #bbb;
@@ -468,6 +468,9 @@ a.conclusion:hover {
 	border-bottom: 1px solid #bbb;
 	vertical-align: top;
 }
+.table-list td.text-center {
+    vertical-align: middle;
+}
 .table-list th,
 .table-list td {
 	padding: 3px 12px;
@@ -641,7 +644,7 @@ a.conclusion:hover {
     top: -1px;
     bottom: auto;
 }
-.popout.right.caret:before, 
+.popout.right.caret:before,
 .popout.right.caret:after {
     border-top-color: transparent;
     top: 12px;
@@ -660,7 +663,7 @@ a.conclusion:hover {
 .popout.details {
     right:-1px;
     -webkit-box-shadow: 0 -1px 2px 0px rgba(0,0,0,0.2);
-    box-shadow: 0 -1px 2px 0px rgba(0,0,0,0.2);   
+    box-shadow: 0 -1px 2px 0px rgba(0,0,0,0.2);
 }
 /* POPOUT ASSESMENT */
 .popout.assesment {
@@ -730,7 +733,7 @@ a.conclusion:hover {
 }
 a.label {
     border-color: blue;
-    background: transparent; 
+    background: transparent;
 }
 a.label:hover {
     color: #fff;
@@ -1353,7 +1356,7 @@ a.active {
     -moz-transition: background 300ms ease-out;
     -ms-transition: background 300ms ease-out;
     -o-transition: background 300ms ease-out;
-    transition: background 300ms ease-out;   
+    transition: background 300ms ease-out;
 }
 .highlight-error {
     outline: 1px auto #FF0000;

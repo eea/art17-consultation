@@ -24,16 +24,16 @@
     <thead>
       <tr>
         <th rowspan="2">Username</th>
-        <th rowspan="2">Created</th>
-        <th rowspan="2">For</th>
-        <th rowspan="2">Qualified as</th>
+        <th rowspan="2">Credentials</th>
+        <th rowspan="2">Qualification</th>
+        <th rowspan="2">Country</th>
         <th colspan="4" class="text-center">Roles</th>
       </tr>
       <tr>
-        <th class="text-center"><abbr title="Administrator">Adm.</abbr></th>
-        <th class="text-center"><abbr title="ETC Expert">ETC</abbr></th>
-        <th class="text-center"><abbr title="NAT Expert">NAT</abbr></th>
-        <th class="text-center"><abbr title="Stakeholder">Stk.</abbr></th>
+        <th class="text-center">Administrator</th>
+        <th class="text-center">ETC Expert</th>
+        <th class="text-center">NAT Expert</th>
+        <th class="text-center">Stakeholder</th>
       </tr>
     </thead>
     <tbody>
@@ -41,21 +41,23 @@
       {% set each_roles = role_map.get(user.id, []) %}
       <tr>
         <td>
+          {% if user.is_ldap %}
+            <i class="fa fa-user" title="EIONET account"></i>
+          {% endif %}
+          {% if user.active %}
+            <i class="fa fa-check-circle"></i>
+          {% endif %}
           <a href="{{ url_for('.admin_user', user_id=user.id) }}">
             {{ user.id }}
           </a>
-          <p class="muted no-margins">
-            {% if not user.active %}Inactive{% endif %}
-          </p>
         </td>
-        <td><div>{{user.confirmed_at or ''}}</div>
-        via {{ 'Eionet' if user.is_ldap else 'local' }}</td>
         <td>
           <div>{{ user.name or '' }}</div>
           <div>{{ user.institution or '' }}</div>
           <div><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
         </td>
         <td>{{ user.qualification or '' }}</td>
+        <td>{{ countries[user.MS] or user.MS }}</td>
         <td class="text-center">
           {% if 'admin' in each_roles %}
           <i class="fa fa-check"></i>
