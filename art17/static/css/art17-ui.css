@@ -90,12 +90,11 @@ abbr {
     /*white-space: nowrap;*/
 }
 
-.complex_datatable tbody th a,
-.complex_datatable tbody td:first-child a {
+.complex_datatable a.clipped {
     font-weight: 300;
     text-align: left;
     background: none;
-    max-width: 100px;
+    max-width: 180px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

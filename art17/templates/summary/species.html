@@ -51,7 +51,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
         <td class="border">
           {% set original_url=get_original_record_url(row) %}
           {% set country_title = get_title_for_species_country(row) %}
-          <a class="popup-btn block" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
+          <a class="clipped popup-btn block" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
             {{ row.eu_country_code }}
           </a>
         </td>
