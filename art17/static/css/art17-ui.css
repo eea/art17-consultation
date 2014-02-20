@@ -132,7 +132,11 @@ abbr {
 }
 .complex_datatable .form_row td,
 .complex_datatable .form_row th {
+<<<<<<< HEAD
     /*white-space: normal;*/
+=======
+    /* white-space: normal; */ /* REVIEW */
+>>>>>>> Center form-row values
     border-color: transparent;
     background: #efe9bb;
     font-weight: normal;
@@ -144,6 +148,7 @@ abbr {
 }
 .complex_datatable .form_row td {
     padding-top: 2px;
+    text-align: center;
 }
 .complex_datatable .form_row select,
 .complex_datatable .form_row input[type="text"] {
