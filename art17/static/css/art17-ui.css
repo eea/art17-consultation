@@ -1297,18 +1297,31 @@ a.active {
     margin: 0;
     background: #f6f6f6;
 }
-
 .form-error {
     border: 1px solid red!important;
     color: red!important;
 }
-
 .form-error-msg {
     color: red;
     font-size: smaller;
     font-style: italic;
     margin-top:3px;
     margin-bottom: 0;
+}
+.form_row .form-error-msg {
+    text-align: left!important;
+    font-size: inherit;
+    font-style: normal;
+    margin: 0;
+}
+
+.form_row .form-error-msg ul {
+    list-style-image: none!important;
+    list-style-type: square!important;
+}
+
+.form_row .form-error-msg ul li {
+    margin-bottom: 3px;
 }
 
 .complex_datatable .form_row td.errors, tr.errors td {
