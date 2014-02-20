@@ -15,9 +15,11 @@ from art17.models import (
 class MixinsCommon(object):
 
     @classmethod
-    def get_manual_record(cls, subject, region, user, MS):
+    def get_manual_record(cls, subject, region, user, MS=None):
         filters = {'subject': subject, 'region': region,
                    'user_id': user, 'MS': MS}
+        if not MS:
+            del filters['MS']
         return cls.model_manual_cls.query.filter_by(**filters).first()
 
     @classmethod

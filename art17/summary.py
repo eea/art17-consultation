@@ -143,9 +143,15 @@ def can_add_conclusion(dataset, zone, subject, region=None):
     """
     Zone: one of 'species', 'habitat'
     """
+    zone_cls_mapping = {'species': SpeciesSummary, 'habitat': HabitatSummary}
     if not dataset:
         return False
-    return not dataset.is_readonly and (sta_perm.can() or admin_perm.can())
+    record_exists = False
+    if region:
+        record_exists = (zone_cls_mapping[zone]
+                         .get_manual_record(subject, region, current_user.id))
+    return not dataset.is_readonly and (sta_perm.can() or admin_perm.can()) \
+        and not record_exists
 
 
 @summary.app_template_global('can_select_MS_country_code')

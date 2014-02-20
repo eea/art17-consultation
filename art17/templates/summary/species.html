@@ -156,7 +156,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     </tbody>
 
     {# Add manual assessment form #}
-    {% if not manual_assessment and can_add_conclusion(dataset, 'species', subject) %}
+    {% if not manual_assessment and can_add_conclusion(dataset, 'species',
+    subject, region) %}
     <tbody class="form">
       {% if region %}
         {% include 'summary/species/manual_form.html' %}

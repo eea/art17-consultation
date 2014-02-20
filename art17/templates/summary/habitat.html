@@ -142,7 +142,8 @@
       {% endfor %}
       </tbody>
       {# Add manual assessment form #}
-      {% if not manual_assessment and can_add_conclusion(dataset, 'habitat', subject) %}
+      {% if not manual_assessment and can_add_conclusion(dataset, 'habitat',
+      subject, region) %}
       <tbody class="form">
         {% if region %}
           {% include 'summary/habitat/manual_form.html' %}
