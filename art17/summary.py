@@ -322,39 +322,25 @@ class Summary(views.View):
             return self.manual_form_cls, self.manual_form_ref_cls
         return self.manual_form_sta_cls, self.manual_form_ref_sta_cls
 
-    def get_manual_form(self, data=None, period=None):
+    def get_manual_form(self, data=None, period=None, action=None):
         manual_form_cls, manual_form_ref_cls = self.get_form_cls()
-        manual_assessment = None
-        data = data or MultiDict(self.get_default_values())
-        if data.get('submit') != 'add':
-            subject = data.get('subject')
-            region = data.get('region')
-            user_id = data.get('user')
+        if action == 'edit':
             filters = {
-                'region': region,
-                'user_id': user_id,
-                'subject': subject,
+                'region': request.args.get('edit_region'),
+                'user_id': request.args.get('edit_user'),
+                'subject': request.args.get('subject')
             }
             manual_assessment = self.model_manual_cls.query.filter_by(
                 **filters
             ).first()
-        if data.get('submit') == 'edit':
-            if manual_assessment:
-                if not self.must_edit_ref(manual_assessment):
-                    form = manual_form_cls(formdata=None,
-                                                obj=manual_assessment)
-                else:
-                    form = manual_form_ref_cls(formdata=None,
-                                                    obj=manual_assessment)
-                form.setup_choices(dataset_id=period)
-                return form, manual_assessment
-            else:
-                raise ValueError('No data found.')
-        # Add or update
-        if not self.must_edit_ref(manual_assessment):
-            form = manual_form_cls(data)
         else:
-            form = manual_form_ref_cls(data)
+            manual_assessment = None
+            data = data or MultiDict(self.get_default_values())
+
+        if not self.must_edit_ref(manual_assessment):
+            form = manual_form_cls(formdata=data, obj=manual_assessment)
+        else:
+            form = manual_form_ref_cls(formdata=data, obj=manual_assessment)
         form.setup_choices(dataset_id=period)
         return form, manual_assessment
 
@@ -363,6 +349,7 @@ class Summary(views.View):
         subject = request.args.get('subject')
         group = request.args.get('group')
         region = request.args.get('region')
+        action = request.args.get('action')
         self.objects = []
         self.restricted_countries = []
         self.auto_objects = []
@@ -381,7 +368,7 @@ class Summary(views.View):
         summary_filter_form.region.choices = regions
 
         manual_form, manual_assessment = self.get_manual_form(
-            request.form, period=period,
+            request.form, period=period, action=action,
         )
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
@@ -390,7 +377,7 @@ class Summary(views.View):
             manual_form.kwargs = dict(subject=subject, period=period)
             manual_form.MS.choices = self.get_MS(subject, region, period)
 
-        if request.method == 'POST' and request.form.get('submit') != 'edit':
+        if request.method == 'POST':
             if manual_form.validate(subject=subject, period=period):
                 if not sta_perm.can() and not admin_perm.can():
                     raise PermissionDenied()
@@ -409,12 +396,15 @@ class Summary(views.View):
                         db.session.rollback()
                         flash('A record with the same keys exist. Cannot add',
                               'error')
+                    else:
+                        flash('Conclusion added successfully')
                     manual_assessment = None
                 else:
                     manual_form.populate_obj(manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     db.session.add(manual_assessment)
                     db.session.commit()
+                    flash('Conclusion edited successfully')
             else:
                 flash('The form is invalid.')
 
@@ -545,6 +535,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'subjects_url': url_for('.species-summary-species'),
             'regions_url': url_for('.species-summary-regions'),
             'comments_endpoint': 'comments.species-comments',
+            'edit_endpoint': '.species-summary',
             'delete_endpoint': '.species-delete',
             'update_endpoint': '.species-update',
             'datasheet_url': url_for('wiki.datasheet',
@@ -607,6 +598,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'subjects_url': url_for('.habitat-summary-species'),
             'regions_url': url_for('.habitat-summary-regions'),
             'comments_endpoint': 'comments.habitat-comments',
+            'edit_endpoint': '.habitat-summary',
             'delete_endpoint': '.habitat-delete',
             'update_endpoint': '.habitat-update',
             'datasheet_url': url_for('wiki.datasheet',

@@ -7,7 +7,7 @@
 <form class="form" method="post" action="">
   {% set is_form=true %}
   {% include 'common/species_manual_table_header.html' %}
-  <tr class="form_row">
+  <tr class="form_row" id="theform">
     {% if can_select_MS() %}
     <td {% if form.MS.errors %}class="errors"{% endif %}>
       {{ form.MS() }}
