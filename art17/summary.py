@@ -152,8 +152,8 @@ def can_add_conclusion(dataset, zone, subject, region=None):
         return False
     record_exists = False
     if region and not current_user.is_anonymous():
-        record_exists = (zone_cls_mapping[zone]
-                         .get_manual_record(subject, region, current_user.id))
+        record_exists = zone_cls_mapping[zone].get_manual_record(
+            dataset.id, subject, region, current_user.id)
     return not dataset.is_readonly and (sta_perm.can() or admin_perm.can()) \
         and not record_exists
 
@@ -695,8 +695,8 @@ class MixinView(object):
 
 class ConclusionDelete(MixinView, views.View):
 
-    def dispatch_request(self, subject, region, user, ms):
-        record = self.mixin.get_manual_record(subject, region, user, ms)
+    def dispatch_request(self, period, subject, region, user, ms):
+        record = self.mixin.get_manual_record(period, subject, region, user, ms)
         if not record:
             abort(404)
         if not can_delete(record):
@@ -708,14 +708,15 @@ class ConclusionDelete(MixinView, views.View):
         db.session.add(record)
         db.session.commit()
         return redirect(
-            url_for(self.mixin.summary_endpoint, subject=subject, region=region)
+            url_for(self.mixin.summary_endpoint, period=period,
+                    subject=subject, region=region)
         )
 
 
-summary.add_url_rule('/species/conc/delete/<subject>/<region>/<user>/<ms>/',
+summary.add_url_rule('/species/conc/delete/<period>/<subject>/<region>/<user>/<ms>/',
                      view_func=ConclusionDelete
                      .as_view('species-delete', mixin=SpeciesMixin))
-summary.add_url_rule('/habitat/conc/delete/<subject>/<region>/<user>/<ms>/',
+summary.add_url_rule('/habitat/conc/delete/<period>/<subject>/<region>/<user>/<ms>/',
                      view_func=ConclusionDelete
                      .as_view('habitat-delete', mixin=HabitatMixin))
 
@@ -724,8 +725,9 @@ class UpdateDecision(MixinView, views.View):
 
     methods = ['GET', 'POST']
 
-    def dispatch_request(self, subject, region, user, ms):
-        self.record = self.mixin.get_manual_record(subject, region, user, ms)
+    def dispatch_request(self, period, subject, region, user, ms):
+        self.record = self.mixin.get_manual_record(period, subject, region,
+                                                   user, ms)
         if not self.record:
             abort(404)
 
@@ -770,9 +772,9 @@ class UpdateDecision(MixinView, views.View):
         )
 
 
-summary.add_url_rule('/species/conc/update/<subject>/<region>/<user>/<ms>/',
+summary.add_url_rule('/species/conc/update/<period>/<subject>/<region>/<user>/<ms>/',
                      view_func=UpdateDecision
                      .as_view('species-update', mixin=SpeciesMixin))
-summary.add_url_rule('/habitat/conc/update/<subject>/<region>/<user>/<ms>/',
+summary.add_url_rule('/habitat/conc/update/<period>/<subject>/<region>/<user>/<ms>/',
                      view_func=UpdateDecision
                      .as_view('habitat-update', mixin=HabitatMixin))

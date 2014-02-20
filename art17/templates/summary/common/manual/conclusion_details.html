@@ -1,6 +1,6 @@
 
 <td class="border_left">
-  {% set url=url_for(comments_endpoint, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
+  {% set url=url_for(comments_endpoint, period=row.dataset_id, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
   <a class="label" href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
   {{ row.comments_count_read(g.identity.id) }}/{{ row.undeleted_comments(g.identity.id)|count }}
   </a>
@@ -31,7 +31,7 @@
         {% endif %}
 
         {% if can_delete(row) %}
-        {% set url = url_for(delete_endpoint, subject=subject, region=row.region, user=row.user_id, ms=row.MS) %}
+        {% set url = url_for(delete_endpoint, period=row.dataset_id, subject=subject, region=row.region, user=row.user_id, ms=row.MS) %}
         <a class="button delete-btn" href="{{ url }}">{% if row.deleted %}undelete{% else %}delete{% endif %}</a>
         {% endif %}
 			</div>
