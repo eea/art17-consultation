@@ -100,7 +100,7 @@ class SpeciesMixin(MixinsCommon):
         qs = db.session.query(self.model_cls.speciesname)\
             .filter_by(group=group, dataset_id=period).distinct()\
             .order_by(self.model_cls.speciesname)
-        return [(row[0], row[0]) for row in qs]
+        return [(row[0], row[0]) for row in qs if row[0]]
 
     @classmethod
     def get_groups(cls, period):
@@ -160,7 +160,7 @@ class HabitatMixin(MixinsCommon):
         qs = db.session.query(EtcDicHdHabitat)\
             .with_entities(EtcDicHdHabitat.habcode, EtcDicHdHabitat.shortname)\
             .filter_by(group=group, dataset_id=period).distinct()
-        return [(row[0], ' - '.join(row)) for row in qs]
+        return [(row[0], ' - '.join(row)) for row in qs if row[0]]
 
     @classmethod
     def get_groups(cls, period):
