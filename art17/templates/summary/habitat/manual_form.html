@@ -1,4 +1,6 @@
 {% from '_macros.html' import conclusion_td with context %}
+{% from '_macros.html' import method_conclusion_popout with context %}
+{% from '_macros.html' import size_unit %}
 
 {% if not manual_assesment %}
     {% set operation = 'add' %}
@@ -23,8 +25,8 @@
       {{ form.range_surface_area(size=5) }}
       </td>
       <td {% if form.method_range.errors or form.conclusion_range.errors %}class="errors"{% endif %}>
-      {{ form.method_range() }}
-      {{ form.conclusion_range() }}
+          {{ method_conclusion_popout('range', 'Range Conclusions',
+                                form.method_range, form.conclusion_range) }}
       </td>
       <td {% if form.range_trend.errors %}class="errors"{% endif %}>
       {{ form.range_trend() }}
@@ -37,8 +39,8 @@
       {{ form.coverage_surface_area(size=5) }}
       </td>
       <td {% if form.method_area.errors or form.conclusion_area.errors %}class="errors"{% endif %}>
-      {{ form.method_area() }}
-      {{ form.conclusion_area() }}
+          {{ method_conclusion_popout('area', 'Area Conclusions',
+                                form.method_area, form.conclusion_area) }}
       </td>
       <td {% if form.coverage_trend.errors %}class="errors"{% endif %}>
       {{ form.coverage_trend() }}
@@ -48,18 +50,18 @@
       </td>
 
       <td {% if form.method_structure.errors or form.conclusion_structure.errors %}class="errors"{% endif %}>
-      {{ form.method_structure() }}
-      {{ form.conclusion_structure() }}
+          {{ method_conclusion_popout('structure', 'Structure and Functions',
+                            form.method_structure, form.conclusion_structure) }}
       </td>
-    
+
       <td {% if form.method_future.errors or form.conclusion_future.errors %}class="errors"{% endif %}>
-      {{ form.method_future() }}
-      {{ form.conclusion_future() }}
-      </td>   
-    
+          {{ method_conclusion_popout('future', 'Future Prospects',
+                        form.method_future, form.conclusion_future) }}
+      </td>
+
       <td {% if form.method_assessment.errors or form.conclusion_assessment.errors %}class="errors"{% endif %}>
-      {{ form.method_assessment() }}
-      {{ form.conclusion_assessment() }}
+          {{ method_conclusion_popout('current', 'Current CS Conclusions',
+                        form.method_assessment, form.conclusion_assessment) }}
       </td>
       <td {% if form.conclusion_assessment_trend.errors %}class="errors"{% endif %}>
         {{ form.conclusion_assessment_trend() }}
