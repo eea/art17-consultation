@@ -20,7 +20,7 @@
 			</div>
 			{% if can_edit(row) or can_delete(row) %}
 			<hr>
-			<div class="no-break">
+			<div class="btn-toolbar no-break">
          {% if can_edit(row) %}
           <form method="post" action="">
             <input type="hidden" name="subject" value="{{ subject }}" />

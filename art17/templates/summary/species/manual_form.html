@@ -147,7 +147,7 @@
     {% endif %}
   </tr>
   {% if form.errors %}
-  <tr>
+  <tr class="form_row">
     <td colspan="{{ colspan_all }}">
       Errors:
         {{ form.all_errors()|safe }}
