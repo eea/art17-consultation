@@ -303,7 +303,7 @@ $(document).ready(function () {
             }
         };
 
-        var updateRadio = function () {
+        var updateRadio = function (event) {
             event.stopPropagation();
             conclusionClass = $(this).data('class');
             // Match selected conclusion
@@ -332,7 +332,7 @@ $(document).ready(function () {
         $(method).on('change', updateSelect);
 
         // Radios
-        updateRadio(); // Initialize
+        //updateRadio(); // Initialize
         $(radios).on('click', updateRadio);
     });
 
@@ -352,7 +352,7 @@ $(document).ready(function () {
                 $(preview).children('.fa').removeClass('hidden');
             }
         };
-        update(); // Initialize
+        //update(); // Initialize
         $(this).on('change', size, update);
         $(this).on('change', unit, update);
     });

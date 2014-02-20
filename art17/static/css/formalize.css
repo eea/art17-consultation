@@ -104,7 +104,7 @@ button:hover,
 [type="reset"]:hover,
 [type="submit"]:hover,
 [type="button"]:hover {
-  background-image: none;
+  background-image: none!important;
   text-decoration: none!important;
 }
 

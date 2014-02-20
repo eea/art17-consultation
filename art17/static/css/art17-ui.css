@@ -910,6 +910,7 @@ li.select-list {
     background: #679da6;
 }
 /* BTN GREEN */
+.button.btn-green,
 .btn-green {
   background: #6db449;
   background-image: none;
@@ -922,10 +923,14 @@ li.select-list {
   color: #fff;
   text-shadow: 0 -1px 0 #5c993e;
 }
+.button.btn-green:active,
 .btn-green:active {
     border-color: #5c993e;
     background: #5c993e;
 }
+.button.btn-green.disabled,
+.button.btn-green.disabled:hover,
+.button.btn-green.disabled:active,
 .btn-green.disabled,
 .btn-green.disabled:hover,
 .btn-green.disabled:active {
@@ -935,6 +940,7 @@ li.select-list {
     text-shadow: none;
 }
 /* BTN BLUE */
+.button.btn-blue,
 .btn-blue {
   background: #3065a6;
   background-image: none;
@@ -947,10 +953,14 @@ li.select-list {
   color: #fff;
   text-shadow: 0 -1px 0 #3065a6;
 }
+.button.btn-blue:active,
 .btn-blue:active {
     border-color: #3065a6;
     background: #3065a6;
 }
+.button.btn-blue.disabled,
+.button.btn-blue.disabled:hover,
+.button.btn-blue.disabled:active,
 .btn-blue.disabled,
 .btn-blue.disabled:hover,
 .btn-blue.disabled:active {
@@ -960,6 +970,7 @@ li.select-list {
     text-shadow: none;
 }
 /* BTN RED */
+.button.btn-red,
 .btn-red {
   background: #c3393e;
   background-image: none;
@@ -972,10 +983,14 @@ li.select-list {
   color: #fff;
   text-shadow: 0 -1px 0 #a63034;
 }
+.button.btn-red:active,
 .btn-red:active {
     border-color: #a63034;
     background: #a63034;
 }
+.button.btn-red.disabled,
+.button.btn-red.disabled:hover,
+.button.btn-red.disabled:active,
 .btn-red.disabled,
 .btn-red.disabled:hover,
 .btn-red.disabled:active {
@@ -985,17 +1000,26 @@ li.select-list {
     text-shadow: none;
 }
 .btn-eionet:hover,
+.button.btn-eionet:hover,
 .btn-eionet:active,
+.button.btn-eionet:active,
 .btn-green:hover,
+.button.btn-green:hover,
 .btn-green:active,
+.button.btn-green:active,
 .btn-blue:hover,
+.button.btn-blue:hover,
 .btn-blue:active,
+.button.btn-blue:active,
 .btn-red:hover,
-.btn-red:active {
+.button.btn-red:hover,
+.btn-red:active, 
+.button.btn-red:active {
     color: #fff;
 }
 /* BTN TEXT */
 .btn-text {
+    cursor: pointer;
     display: inline;
     background: none;
     padding: 0;
