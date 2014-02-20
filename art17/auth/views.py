@@ -282,6 +282,8 @@ def admin_user(user_id):
 
     if flask.request.method == 'POST':
         user_form = Art17AdminEditUserForm(flask.request.form)
+        setattr(user_form, 'obj', user)
+
         if user_form.validate():
             # manage user info
             user_form.populate_obj(user)
