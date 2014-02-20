@@ -2,13 +2,12 @@
   {{ row.range_surface_area }}
 </td>
 
-{% set title = COUNTRY_ASSESSMENTS.get(row.conclusion_range, '') %}
 {% set concl_value = get_range_conclusion_value(row.subject,
                                                 row.region,
                                                 row.method_range) %}
 
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}"
-    title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
+    title="{% if concl_value %}: {{concl_value}}{% endif %}">
     <span class="conclusion">{{ row.method_range }}</span>
 </td>
 

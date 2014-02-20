@@ -3,13 +3,11 @@
 </td>
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
-{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_habitat, '') %}
 
 {% set concl_value = get_habitat_conclusion_value(row.assesment_speciesname,
-                                                  row.region,
-                                                  row.method_future) %}
+                                row.region, row.method_future) %}
 
-<td class="{{ classes }}" title="{{ title }}{% if concl_value %}: {{concl_value}}{% endif %}">
+<td class="{{ classes }}" title="{% if concl_value %}: {{concl_value}}{% endif %}">
     <span class="conclusion">{{ row.method_habitat or '' }}</span>
 </td>
 

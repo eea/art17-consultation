@@ -8,11 +8,9 @@
     </td>
 
     {% set classes=CONCLUSION_CLASSES.get(row.conclusion_area, '') %}
-    {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_area, '') %}
     <td {{ parse_errors(['conclusion_area',
                          'percentage_coverage_surface_area'],
                           row, qa_errors,
-                          title=title,
                           classes=classes) }}>
       <span class="conclusion">{{ row.percentage_coverage_surface_area|str1num }}</span>
     </td>

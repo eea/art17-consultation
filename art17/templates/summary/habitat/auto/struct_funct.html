@@ -1,4 +1,3 @@
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} border"
-    title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_structure, '') }}">
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} border">
   <span class="conclusion">{{ row.percentage_structure|parse_semicolon|str2num('')|safe or '' }}</span>
 </td>

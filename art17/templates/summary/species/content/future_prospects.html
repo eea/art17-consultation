@@ -1,12 +1,10 @@
 {% from '_macros.html' import parse_errors with context %}
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' border' %}
-{% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_future, '') %}
 
 <td {{ parse_errors(['conclusion_future',
                      'future_prospects'],
                       row, qa_errors,
-                      title=title,
                       classes=classes) }}>
   <span class="conclusion">
     {%- if dataset.schema == '2006' %}{{ row.future_prospects }}{% endif -%}

@@ -2,8 +2,7 @@
   {{ row.population_size|default('', true)|parse_semicolon|safe }}
 </td>
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}"
-    title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_population, '') }}">
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}">
   <span class="conclusion">{{ row.percentage_population_mean_size|parse_semicolon|str2num('')|safe }}</span>
 </td>
 

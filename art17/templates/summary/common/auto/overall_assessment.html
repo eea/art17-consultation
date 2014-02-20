@@ -2,33 +2,28 @@
 
 {% if dataset.schema == '2006' %}
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
-  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
-  <td colspan="4" class="{{ classes }}" title="{{ title }}">
+  <td colspan="4" class="{{ classes }}">
     <span class="conclusion">{{ row.percentage_assessment|default('', true)|parse_semicolon|safe}}</span>
   </td>
 
 {% else %}
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
-  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment, '') %}
-  <td class="{{ classes }}" title="{{ title }}">
+  <td class="{{ classes }}">
     <span class="conclusion">{{ row.percentage_assessment|default('', true)|parse_semicolon|safe}}</span>
   </td>
 
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_trend, '') %}
-  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_trend, '') %}
-  <td class="{{ classes }}" title="{{ title }}">
+  <td class="{{ classes }}">
     <span class="conclusion">{{ row.percentage_assessment_trend|default('', true)|parse_semicolon|safe}}</span>
   </td>
 
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') %}
-  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_prev, '') %}
-  <td class="{{ classes }}" title="{{ title }}">
+  <td class="{{ classes }}">
     <span class="conclusion">{{ row.conclusion_assessment_prev|default('', true)|parse_semicolon|safe}}</span>
   </td>
 
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_change, '') %}
-  {% set title=COUNTRY_ASSESSMENTS.get(row.conclusion_assessment_change, '') %}
-  <td class="{{ classes }}" title="{{ title }}">
+  <td class="{{ classes }}">
     <span class="conclusion">{{ row.percentage_assessment_change|default('', true)|parse_semicolon|safe}}</span>
   </td>
 {% endif %}

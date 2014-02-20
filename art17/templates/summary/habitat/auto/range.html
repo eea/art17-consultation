@@ -2,8 +2,7 @@
   {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}"
-    title="{{ COUNTRY_ASSESSMENTS.get(row.conclusion_range, '') }}">
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
   <span class="conclusion">{{ row.percentage_range_surface_area|parse_semicolon|str2num('')|safe }}</span>
 </td>
 
