@@ -144,7 +144,17 @@ class OptionsBaseHabitat(OptionsBase):
     EXCLUDE3 = '3XP'
 
 
-class SummaryManualFormSpecies(Form, OptionsBaseSpecies):
+class SummaryFormMixin(object):
+
+    def all_errors(self):
+        text = '<ul>'
+        for field_name, field_errors in self.errors.iteritems():
+            text += '<li>' + ', '.join(field_errors) + '</li>'
+        text += '</ul>'
+        return text
+
+
+class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
     region = SelectField(default='')
     MS = SelectField(default='', validators=[Optional()])
@@ -263,15 +273,8 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies):
 
         return not self.errors
 
-    def all_errors(self):
-        text = '<ul>'
-        for field_name, field_errors in self.errors.iteritems():
-            text += '<li>' + ', '.join(field_errors) + '</li>'
-        text += '</ul>'
-        return text
 
-
-class SummaryManualFormHabitat(Form, OptionsBaseHabitat):
+class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
     region = SelectField()
     MS = SelectField(default='', validators=[Optional()])
@@ -384,15 +387,8 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat):
 
         return not self.errors
 
-    def all_errors(self):
-        text = '<ul>'
-        for field_name, field_errors in self.errors.iteritems():
-            text += '<li>' + ', '.join(field_errors) + '</li>'
-        text += '</ul>'
-        return text
 
-
-class SummaryManualFormSpeciesRef(Form):
+class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 
     region = SelectField()
     MS = SelectField()
@@ -404,7 +400,7 @@ class SummaryManualFormSpeciesRef(Form):
         pass
 
 
-class SummaryManualFormHabitatRef(Form):
+class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
 
     region = SelectField()
     MS = SelectField()
