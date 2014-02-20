@@ -2,6 +2,9 @@ var ajax_cache = {};
 
 $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
 
+    if(options.noCache) {
+        return;
+    }
 
     var cacheKey = options.cacheKey ||
                    options.url.replace( /jQuery.*/,'' ) + options.type + options.data;
