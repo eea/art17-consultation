@@ -106,8 +106,7 @@ class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
 
     email = TextField('Email address *',
         validators=[Required("Email is required"),
-                    email_validator,
-                    unique_user_email])
+                    email_validator])
 
 
 def no_ldap_user(form, field):
