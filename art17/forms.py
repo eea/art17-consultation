@@ -7,13 +7,11 @@ from art17.models import (
     Dataset,
     EtcDicMethod,
     EtcDicConclusion,
-    EtcDicTrend,
     EtcDicPopulationUnit,
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion
 )
 from art17.utils import validate_field
-from art17.auth import current_user
 
 EMPTY_FORM = "Please fill at least one field"
 NOT_NUMERIC_VALUES = (
@@ -52,6 +50,30 @@ def numeric_validation(form, field):
     """
     if not validate_field(field.data):
         raise ValidationError(NOT_NUMERIC_VALUES)
+
+
+def species_ms_validator(form, field):
+    species_record = (
+        EtcDataSpeciesRegion.query
+        .filter_by(
+            eu_country_code=field.data, region=form.region.data,
+            subject=form.kwargs['subject'],
+            dataset_id=form.kwargs['period'])
+        .all())
+    if not species_record:
+        raise ValidationError(INVALID_MS_REGION_PAIR)
+
+
+def habitat_ms_validator(form, field):
+    habitat_record = (
+        EtcDataHabitattypeRegion.query
+        .filter_by(
+            eu_country_code=field.data, region=form.region.data,
+            subject=form.kwargs['subject'],
+            dataset_id=form.kwargs['period'])
+        .all())
+    if not habitat_record:
+        raise ValidationError(INVALID_MS_REGION_PAIR)
 
 
 class OptionalSelectField(SelectField):
@@ -146,6 +168,9 @@ class OptionsBaseHabitat(OptionsBase):
 
 class SummaryFormMixin(object):
 
+    def setup_choices(self, dataset_id):
+        pass
+
     def all_errors(self):
         text = '<ul>'
         for field_name, field_errors in self.errors.iteritems():
@@ -157,7 +182,6 @@ class SummaryFormMixin(object):
 class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
     region = SelectField(default='')
-    MS = SelectField(default='', validators=[Optional()])
 
     range_surface_area = TextField(default=None,
                                    validators=[numeric_validation])
@@ -205,7 +229,6 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         units = empty + zip(units, units)
 
         self.region.choices = empty
-        self.MS.choices = empty
 
         self.method_range.choices = (
             ZERO_METHODS + self.get_method_options(methods)
@@ -233,7 +256,10 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self, **kwargs):
-        fields = [f for f in all_fields(self) if f not in (self.region, self.MS)]
+        excluded = [self.region]
+        if hasattr(self, 'MS'):
+            excluded.append(self.MS)
+        fields = [f for f in all_fields(self) if f not in excluded]
         empty = [f for f in fields if not f.data]
 
         if empty and len(empty) == len(fields):
@@ -260,24 +286,17 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         if not one:
             fields[1].errors.append(METH_CONCL_MANDATORY)
 
-        if self.MS.data and self.region.data:
-            species_record = (
-                EtcDataSpeciesRegion.query
-                .filter_by(
-                    eu_country_code=self.MS.data, region=self.region.data,
-                    assesment_speciesname=kwargs['subject'],
-                    dataset_id=kwargs['period'])
-                .all())
-            if not species_record:
-                self.MS.errors.append(INVALID_MS_REGION_PAIR)
-
         return not self.errors
+
+
+class SummaryManualFormSpeciesSTA(SummaryManualFormSpecies):
+
+    MS = SelectField(default='', validators=[Optional(), species_ms_validator])
 
 
 class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
     region = SelectField()
-    MS = SelectField(default='', validators=[Optional()])
 
     range_surface_area = TextField(validators=[numeric_validation])
     method_range = OptionalSelectField()
@@ -320,7 +339,6 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
         trends = empty + CONCL_TYPE
 
         self.region.choices = empty
-        self.MS.choices = empty
 
         self.method_range.choices = (
             ZERO_METHODS + self.get_method_options(methods)
@@ -347,7 +365,10 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self, **kwargs):
-        fields = [f for f in all_fields(self) if f not in (self.region, self.MS)]
+        excluded = [self.region]
+        if hasattr(self, 'MS'):
+            excluded.append(self.MS)
+        fields = [f for f in all_fields(self) if f not in excluded]
         empty = [f for f in fields if not f.data]
 
         if empty and len(empty) == len(fields):
@@ -374,42 +395,38 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
         if not one:
             fields[1].errors.append(METH_CONCL_MANDATORY)
 
-        if self.MS.data and self.region.data:
-            species_record = (
-                EtcDataHabitattypeRegion.query
-                .filter_by(
-                    eu_country_code=self.MS.data, region=self.region.data,
-                    habitatcode=kwargs['subject'],
-                    dataset_id=kwargs['period'])
-                .all())
-            if not species_record:
-                self.MS.errors.append(INVALID_MS_REGION_PAIR)
-
         return not self.errors
+
+
+class SummaryManualFormHabitatSTA(SummaryManualFormHabitat):
+
+    MS = SelectField(default='', validators=[Optional(), habitat_ms_validator])
 
 
 class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 
     region = SelectField()
-    MS = SelectField(default='', validators=[Optional()])
 
     complementary_favourable_range = TextField()
     complementary_favourable_population = TextField()
 
-    def setup_choices(self, dataset_id):
-        pass
+
+class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
+
+    MS = SelectField(default='', validators=[Optional(), species_ms_validator])
 
 
 class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
 
     region = SelectField()
-    MS = SelectField(default='', validators=[Optional()])
 
     complementary_favourable_range = TextField()
     complementary_favourable_area = TextField()
 
-    def setup_choices(self, dataset_id):
-        pass
+
+class SummaryManualFormHabitatRefSTA(SummaryManualFormHabitatRef):
+
+    MS = SelectField(default='', validators=[Optional(), habitat_ms_validator])
 
 
 class ProgressFilterForm(Form):

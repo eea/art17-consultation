@@ -339,8 +339,14 @@ class EditPage(WikiView):
         if not can_edit_page():
             raise PermissionDenied
 
+        new_body = request.form.get('text')
         active_change = self.section.get_active_change()
         if active_change:
+
+            if active_change.body == new_body:
+                flash('No changes were made.')
+                return False
+
             active_change.active = 0
         else:
             self.section.insert_inexistent_wiki()
@@ -351,7 +357,7 @@ class EditPage(WikiView):
         db.session.add(new_change)
         db.session.commit()
 
-        flash("New entry saved.")
+        flash("Saved changes.")
         return True
 
     def get_context(self):

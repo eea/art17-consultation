@@ -68,6 +68,10 @@ from art17.forms import (
     SummaryManualFormHabitatRef,
     SummaryManualFormSpeciesRef,
     all_fields,
+    SummaryManualFormSpeciesSTA,
+    SummaryManualFormSpeciesRefSTA,
+    SummaryManualFormHabitatRefSTA,
+    SummaryManualFormHabitatSTA,
 )
 from art17.utils import str2num, parse_semicolon, str1num
 
@@ -154,9 +158,9 @@ def can_add_conclusion(dataset, zone, subject, region=None):
         and not record_exists
 
 
-@summary.app_template_global('can_select_MS_country_code')
-def can_select_MS_country_code(operation):
-    return operation == 'add' and sta_perm.can()
+@summary.app_template_global('can_select_MS')
+def can_select_MS():
+    return sta_perm.can()
 
 
 @summary.app_context_processor
@@ -313,7 +317,13 @@ class Summary(views.View):
 
         return etc_perm.can() or admin_perm.can()
 
+    def get_form_cls(self):
+        if not can_select_MS():
+            return self.manual_form_cls, self.manual_form_ref_cls
+        return self.manual_form_sta_cls, self.manual_form_ref_sta_cls
+
     def get_manual_form(self, data=None, period=None):
+        manual_form_cls, manual_form_ref_cls = self.get_form_cls()
         manual_assessment = None
         data = data or MultiDict(self.get_default_values())
         if data.get('submit') != 'add':
@@ -331,10 +341,10 @@ class Summary(views.View):
         if data.get('submit') == 'edit':
             if manual_assessment:
                 if not self.must_edit_ref(manual_assessment):
-                    form = self.manual_form_cls(formdata=None,
+                    form = manual_form_cls(formdata=None,
                                                 obj=manual_assessment)
                 else:
-                    form = self.manual_form_ref_cls(formdata=None,
+                    form = manual_form_ref_cls(formdata=None,
                                                     obj=manual_assessment)
                 form.setup_choices(dataset_id=period)
                 return form, manual_assessment
@@ -342,9 +352,9 @@ class Summary(views.View):
                 raise ValueError('No data found.')
         # Add or update
         if not self.must_edit_ref(manual_assessment):
-            form = self.manual_form_cls(data)
+            form = manual_form_cls(data)
         else:
-            form = self.manual_form_ref_cls(data)
+            form = manual_form_ref_cls(data)
         form.setup_choices(dataset_id=period)
         return form, manual_assessment
 
@@ -376,14 +386,13 @@ class Summary(views.View):
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
             manual_form.region.process_data(region)
-        manual_form.MS.choices = self.get_MS(subject, region, period)
+        if hasattr(manual_form, 'MS'):
+            manual_form.kwargs = dict(subject=subject, period=period)
+            manual_form.MS.choices = self.get_MS(subject, region, period)
 
         if request.method == 'POST' and request.form.get('submit') != 'edit':
             if manual_form.validate(subject=subject, period=period):
                 if not sta_perm.can() and not admin_perm.can():
-                    raise PermissionDenied()
-                if manual_form.MS.data and not \
-                        can_select_MS_country_code(request.form.get('submit')):
                     raise PermissionDenied()
 
                 if not manual_assessment:
@@ -392,8 +401,6 @@ class Summary(views.View):
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
-                    if not can_select_MS_country_code('add'):
-                        manual_assessment.MS = get_default_ms() # change me
                     db.session.flush()
                     db.session.add(manual_assessment)
                     try:
@@ -404,11 +411,8 @@ class Summary(views.View):
                               'error')
                     manual_assessment = None
                 else:
-                    original_ms = manual_assessment.MS
                     manual_form.populate_obj(manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
-                    if not can_select_MS_country_code('add'):
-                        manual_assessment.MS = original_ms # mega hack, change me, TODO
                     db.session.add(manual_assessment)
                     db.session.commit()
             else:
@@ -499,7 +503,9 @@ class SpeciesSummary(SpeciesMixin, Summary):
 
     template_name = 'summary/species.html'
     manual_form_cls = SummaryManualFormSpecies
+    manual_form_sta_cls = SummaryManualFormSpeciesSTA
     manual_form_ref_cls = SummaryManualFormSpeciesRef
+    manual_form_ref_sta_cls = SummaryManualFormSpeciesRefSTA
 
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}
@@ -569,7 +575,9 @@ class HabitatSummary(HabitatMixin, Summary):
 
     template_name = 'summary/habitat.html'
     manual_form_cls = SummaryManualFormHabitat
+    manual_form_sta_cls = SummaryManualFormHabitatSTA
     manual_form_ref_cls = SummaryManualFormHabitatRef
+    manual_form_ref_sta_cls = SummaryManualFormHabitatRefSTA
 
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}

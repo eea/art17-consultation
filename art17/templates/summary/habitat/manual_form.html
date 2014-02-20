@@ -2,13 +2,6 @@
 {% from '_macros.html' import method_conclusion_popout with context %}
 {% from '_macros.html' import size_unit %}
 
-{% if not manual_assesment %}
-    {% set operation = 'add' %}
-{% else %}
-    {% set operation = 'update' %}
-{% endif %}
-
-{% set can_select_MS = can_select_MS_country_code(operation) %}
 
 {% set form=manual_form %}
 <form method="post" action="">
