@@ -24,6 +24,7 @@ def create(user):
     if resp.status_code != 200:
         raise RuntimeError("Failed to add user: %s" % resp)
 
+
 def delete(user):
     url, key = _get_config()
     resp = requests.post(
@@ -36,3 +37,18 @@ def delete(user):
 
     if resp.status_code != 200:
         raise RuntimeError("Failed to delete user: %s" % resp)
+
+
+def edit(user):
+    url, key = _get_config()
+    resp = requests.post(
+        url + '/edit_user',
+        data = {
+            'username': user.id,
+            'password': user.password,
+            'api_key': key,
+        },
+    )
+
+    if resp.status_code != 200:
+        raise RuntimeError("Failed to edit user: %s" % resp)

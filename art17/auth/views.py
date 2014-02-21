@@ -206,7 +206,7 @@ def change_password():
         return flask.render_template('message.html', message=message)
 
     if current_user.is_ldap:
-        message = "Please go to the EIONET account change password page."
+        message = 'Your password can be changed only from the EIONET website '  '(http://www.eionet.europa.eu/profile).'
         return flask.render_template('message.html', message=message)
 
     form = ChangePasswordForm()
@@ -216,7 +216,7 @@ def change_password():
         models.db.session.commit()
         msg = "Your password has been changed. Please log in again."
         flask.flash(msg, 'success')
-        zope_acl_manager.create(current_user)
+        zope_acl_manager.edit(current_user)
         return flask.redirect(flask.url_for(HOMEPAGE_VIEW_NAME))
 
     return flask.render_template('auth/change_password.html', **{

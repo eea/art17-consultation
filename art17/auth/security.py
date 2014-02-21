@@ -73,14 +73,14 @@ def check_duplicate_with_ldap(form, field):
 
     user = get_ldap_user_info(field.data)
     if user is not None:
-        raise ValidationError("User ID already exists in LDAP database.")
+        raise ValidationError("Username already exists in the EIONET database.")
 
 
 def check_duplicate_with_local_db(form, field):
 
     user = models.RegisteredUser.query.get(field.data)
     if user is not None:
-        raise ValidationError("User ID is already taken in database.")
+        raise ValidationError("Username already exists")
 
 
 def custom_unique_user_email(form, field):

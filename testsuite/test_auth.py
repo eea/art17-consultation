@@ -244,11 +244,11 @@ def test_change_local_password(app, zope_auth, client):
     page.form['password'] = 'my old pw'
     page.form['new_password'] = 'the new pw'
     page.form['new_password_confirm'] = 'the new pw'
-    with patch('art17.auth.zope_acl_manager.create') as create_in_zope:
+    with patch('art17.auth.zope_acl_manager.edit') as edit_user_in_zope:
         confirmation_page = page.form.submit().follow()
 
     assert "password has been changed" in confirmation_page.text
-    assert create_in_zope.call_count == 1
+    assert edit_user_in_zope.call_count == 1
 
     foo = models.RegisteredUser.query.filter_by(id='foo').first()
     assert foo.password != old_enc_password
@@ -265,7 +265,7 @@ def test_change_ldap_password(app, zope_auth, client):
     models.db.session.commit()
     zope_auth.update({'user_id': 'foo', 'is_ldap_user': True})
     page = client.get(flask.url_for('auth.change_password'))
-    assert "Please go to the EIONET account change password page" in page
+    assert "Your password can be changed only from the EIONET website (http://www.eionet.europa.eu/profile)." in page
 
 
 def test_dates(app, zope_auth, client):

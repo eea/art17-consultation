@@ -93,15 +93,15 @@ def reset_password(user_id):
     from flask.ext.security.utils import encrypt_password
     user = models.RegisteredUser.query.get(user_id)
     if user.is_ldap:
-        print "Can't reset password for LDAP users"
+        print "Can't change password for EIONET users"
         return
     plaintext_password = raw_input("new password: ").decode('utf-8')
     user.password = encrypt_password(plaintext_password)
     models.db.session.commit()
-    print "password for %s has been reset" % user_id
+    print "password for %s has been changed" % user_id
     if user.active:
-        zope_acl_manager.create(user)
-        print "Zope password has been updated"
+        zope_acl_manager.edit(user)
+        print "The Zope password has been changed"
 
 
 role_manager = Manager()
