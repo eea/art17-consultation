@@ -109,6 +109,25 @@ abbr {
 .complex_datatable tbody tr:hover td.th {
   background-color: #e6e6e6;
 }
+/* Table repeat header */
+/*.complex_datatable tbody.repeat-header .popout-wrapper .th {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  width: 100%;
+  left: 0;
+  right: 0;
+  margin: 0 -1px 0 -2px;
+  padding: 5px 1px;
+  text-align: center;
+  border-top: 3px solid #bbb;
+}
+.complex_datatable tbody.repeat-header tr:hover {
+    outline: 1px auto blue;
+}
+.complex_datatable tbody.repeat-header tr:hover .popout-wrapper .th {
+  display: block;
+}*/
 /* DELETED ROW */
 .complex_datatable tr.deleted td {
   background-color: #F5DFDF;
@@ -135,13 +154,19 @@ abbr {
   opacity: 1;
 }
 /* ROW STRIPES */
+.complex_datatable tbody tr:last-child th,
+.complex_datatable tbody tr:last-child td {
+    border-bottom: 1px solid #bbb;
+}
 .stripe_row {
   border-top: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
 }
-.stripe_3rd tr:nth-child(3n+0) td,
-.stripe_3rd tr:nth-child(3n+0) td.th {
+.stripe_3rd tr:nth-child(3n+0) td {
   border-bottom: 1px solid #eee;
+}
+.stripe_3rd tr:nth-child(3n+0) td.th {
+  border-bottom: 1px solid #bbb;
 }
 /* FORM ROW */
 .complex_datatable .form_row,
@@ -232,7 +257,7 @@ a.conclusion:hover {
   text-decoration: none;
   color: #000;
 }
-td > .conclusion {
+td .conclusion {
   min-width: 100%;
 }
 a.conclusion:hover {
