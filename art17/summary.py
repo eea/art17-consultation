@@ -642,7 +642,6 @@ class HabitatSummary(HabitatMixin, Summary):
         return selection
 
 
-
 summary.add_url_rule('/species/summary/',
                      view_func=SpeciesSummary.as_view('species-summary'))
 
@@ -693,8 +692,15 @@ class MixinView(object):
 
 class ConclusionDelete(MixinView, views.View):
 
-    def dispatch_request(self, period, subject, region, user, ms):
-        record = self.mixin.get_manual_record(period, subject, region, user, ms)
+    def dispatch_request(self):
+        period = request.args.get('period')
+        subject = request.args.get('subject')
+        region = request.args.get('region')
+        delete_region = request.args.get('delete_region')
+        delete_user = request.args.get('delete_user')
+        delete_ms = request.args.get('delete_ms')
+        record = self.mixin.get_manual_record(period, subject, delete_region,
+                                              delete_user, delete_ms)
         if not record:
             abort(404)
         if not can_delete(record):
@@ -707,14 +713,14 @@ class ConclusionDelete(MixinView, views.View):
         db.session.commit()
         return redirect(
             url_for(self.mixin.summary_endpoint, period=period,
-                    subject=subject, region=request.args.get('redirect_region'))
+                    subject=subject, region=region)
         )
 
 
-summary.add_url_rule('/species/conc/delete/<period>/<subject>/<region>/<user>/<ms>/',
+summary.add_url_rule('/species/conc/delete/',
                      view_func=ConclusionDelete
                      .as_view('species-delete', mixin=SpeciesMixin))
-summary.add_url_rule('/habitat/conc/delete/<period>/<subject>/<region>/<user>/<ms>/',
+summary.add_url_rule('/habitat/conc/delete/',
                      view_func=ConclusionDelete
                      .as_view('habitat-delete', mixin=HabitatMixin))
 
