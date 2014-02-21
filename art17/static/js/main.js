@@ -377,3 +377,10 @@ $(document).ready(function () {
         }
     });
 });*/
+
+$(function() {
+     $('#filterform').on('submit', function(e) {
+         window.location.hash = '';
+         history.pushState('', document.title, window.location.pathname);
+     });
+ });

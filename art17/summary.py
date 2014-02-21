@@ -350,6 +350,8 @@ class Summary(views.View):
         group = request.args.get('group')
         region = request.args.get('region')
         action = request.args.get('action')
+        rowid = request.args.get('rowid')
+
         self.objects = []
         self.restricted_countries = []
         self.auto_objects = []
@@ -405,6 +407,10 @@ class Summary(views.View):
                     db.session.add(manual_assessment)
                     db.session.commit()
                     flash('Conclusion edited successfully')
+                    return redirect(url_for(
+                        self.summary_endpoint, period=period, subject=subject,
+                        region=region) + '#man-row-' + rowid
+                    )
             else:
                 flash('The form is invalid.')
 
@@ -701,7 +707,7 @@ class ConclusionDelete(MixinView, views.View):
         db.session.commit()
         return redirect(
             url_for(self.mixin.summary_endpoint, period=period,
-                    subject=subject, region=region)
+                    subject=subject, region=request.args.get('redirect_region'))
         )
 
 

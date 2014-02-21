@@ -121,7 +121,7 @@
       <tbody>
       {% for row in manual_objects %}
         {% if row != manual_assessment %}
-        <tr class="{% if row.deleted %}deleted{% endif %} stripe_row">
+        <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row">
           {# MS and region #}
           {% include 'summary/common/manual/ms.html' %}
 

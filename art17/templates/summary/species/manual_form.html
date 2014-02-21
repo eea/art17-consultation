@@ -143,7 +143,7 @@
       <input type="hidden" name="region" value="{{ row.region }}" />
       <input type="hidden" name="user" value="{{ row.user_id }}" />
       <button class="btn-green" type="submit" name="submit" value="update">Save</button>
-      <a href="{{ cancel_url }}" title="Cancel" class="button"><i class="fa fa-times"></i></a>
+      <a href="{{ cancel_url }}#man-row-{{ loop.index }}" title="Cancel" class="button"><i class="fa fa-times"></i></a>
     </td>
     {% include 'summary/common/manual/conclusion_details.html' %}
     {% endif %}
