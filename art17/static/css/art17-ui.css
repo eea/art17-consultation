@@ -1373,12 +1373,25 @@ a.active {
   background: #f6f6f6;
 }
 .form-error {
-  border: 1px solid red!important;
-  color: red!important;
+  outline: 2px auto red!important;
 }
+.form-error:hover {
+  border-color: red!important;
+}
+td.form-error-td > select,
+td.form-error-td > input,
+td.form-error-td .select {
+  outline: 2px auto red!important;
+}
+td.form-error-td > select:hover,
+td.form-error-td > input:hover,
+td.form-error-td .select:hover {
+  border-color: red!important;
+}
+
 .form-error-msg {
   color: red;
-  font-size: smaller;
+  font-size: 12px;
   font-style: italic;
   margin-top:3px;
   margin-bottom: 0;
@@ -1416,6 +1429,7 @@ a.active {
   width: 100%;
   text-align: center;
   position: fixed;
+  z-index: 5000;
 }
 .flashes > li {
   -webkit-transition: all 360ms ease-in-out;
