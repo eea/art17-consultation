@@ -39,13 +39,13 @@ def delete(user):
         raise RuntimeError("Failed to delete user: %s" % resp)
 
 
-def edit(user):
+def edit(user_id, passwd):
     url, key = _get_config()
     resp = requests.post(
         url + '/edit_user',
         data = {
-            'username': user.id,
-            'password': user.password,
+            'username': user_id,
+            'password': passwd,
             'api_key': key,
         },
     )

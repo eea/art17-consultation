@@ -68,15 +68,16 @@ def admin_create_local():
     if form.validate_on_submit():
         kwargs = form.to_dict()
         plaintext_password = kwargs['password']
-        kwargs['password'] = encrypt_password(plaintext_password)
+        encrypted_password = encrypt_password(plaintext_password)
         datastore = flask.current_app.extensions['security'].datastore
         user = datastore.create_user(**kwargs)
         user.confirmed_at = datetime.utcnow()
         set_user_active(user, True)
+        user.password = encrypted_password
         datastore.commit()
         send_welcome_email(user, plaintext_password)
         flask.flash("User %s created successfully." % kwargs['id'], 'success')
-        return flask.redirect(flask.url_for('.admin_create_local'))
+        return flask.redirect(flask.url_for('.users'))
 
     return flask.render_template('auth/register_local.html', **{
         'register_user_form': form,
@@ -216,7 +217,7 @@ def change_password():
         models.db.session.commit()
         msg = "Your password has been changed. Please log in again."
         flask.flash(msg, 'success')
-        zope_acl_manager.edit(current_user)
+        zope_acl_manager.edit(current_user.id, form.new_password.data)
         return flask.redirect(flask.url_for(HOMEPAGE_VIEW_NAME))
 
     return flask.render_template('auth/change_password.html', **{
