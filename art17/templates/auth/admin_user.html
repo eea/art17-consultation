@@ -22,20 +22,19 @@
         Active
       </label>
     </div>
-    <div class="clearfix">
-        <div class="form-group">
-            <label for="admin_user-roles">Assigned Roles</label>
-            <select name="roles" multiple id="admin_user-roles">
-            {% for role, role_name in all_roles.items() %}
-              <option value="{{ role }}"
-                  {%- if role in current_user_roles %}selected{% endif %}>
-                  {{ role_name }}
-              </option>
-            {% endfor %}
-            </select>
-      </div>
+    <div class="form-group">
+        <label for="admin_user-roles">Assigned Roles</label>
+        <select name="roles" multiple id="admin_user-roles">
+        {% for role, role_name in all_roles.items() %}
+          <option value="{{ role }}"
+              {%- if role in current_user_roles %}selected{% endif %}>
+              {{ role_name }}
+          </option>
+        {% endfor %}
+        </select>
     </div>
 
+    
     <div class="clearfix">
 
           {{ user_form.hidden_tag() }}

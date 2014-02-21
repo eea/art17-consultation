@@ -3,7 +3,48 @@
 
 {% block content %}
   <h1>Temporary page to integrate design stuff</h1>
-
+<div class="box-col separated width-300">
+      <div class="form-add-remove">
+        <label for="">Administrator email addresses</label>
+        <ul class="add-remove no-list">
+          <li class="clearfix">
+            <a class="close pull-right" title="Remove">
+              <i class="fa fa-times"></i>
+            </a>
+            cineva@adress.com
+          </li>
+          <li class="clearfix">
+            <a class="close pull-right" title="Remove">
+              <i class="fa fa-times"></i>
+            </a>
+            mister.amabil@terogfrumos.ro
+          </li>
+          <li class="clearfix">
+            <a class="close pull-right" title="Remove">
+              <i class="fa fa-times"></i>
+            </a>
+            valentin.popescu@edw.ro
+          </li>
+          <li template="addressItem" class="clearfix">
+            <a class="close pull-right" title="Remove">
+              <i class="fa fa-times"></i>
+            </a>
+            <span template-insert="address"></span>
+          </li>
+        </ul><br />
+        <div class="no-bottom clearfix">
+          <input  id="add-remove-input"
+                  data-add=".add-remove" 
+                  class="pull-left" 
+                  style="width: auto;" type="text">
+          <a data-input="#add-remove-input" class="button pull-right">Add</a>
+        </div>
+        <input type="hidden">
+      </div>
+      <p class="muted">
+        Each of the email addresses above will receive notifications.
+      </p>
+    </div>
 <!-- <div class="register-option">
       <stron>Request account</strong>
       <form class="wizard">
