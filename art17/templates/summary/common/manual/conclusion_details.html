@@ -26,14 +26,15 @@
 			<div class="btn-toolbar no-break">
         {% if can_edit(row) %}
           {% set edit_url=url_for(edit_endpoint, action='edit', period=row.dataset_id,
-                              subject=subject, region=region,
+                              subject=subject, region=region, rowid=loop.index,
                               edit_region=row.region, edit_user=row.user_id) + '#theform' %}
           <a 	class="button btn-green" href="{{ edit_url }}">Edit assessment</a>
         {% endif %}
 
         {% if can_delete(row) %}
-          {% set url = url_for(delete_endpoint, period=row.dataset_id, subject=subject, region=row.region, user=row.user_id, ms=row.MS) %}
-          <a class="button delete-btn" href="{{ url }}">{% if row.deleted %}Undelete{% else %}Delete{% endif %}</a>
+          {% set url = url_for(delete_endpoint, period=row.dataset_id, subject=subject, 
+          region=row.region, user=row.user_id, ms=row.MS, redirect_region=region) %}
+          <a class="button delete-btn" href="{{ url }}#man-row-{{ loop.index }}">{% if row.deleted %}Undelete{% else %}Delete{% endif %}</a>
         {% endif %}
 			</div>
 			{% endif %}

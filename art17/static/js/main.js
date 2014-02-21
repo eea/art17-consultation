@@ -201,6 +201,7 @@ $(document).ready(function () {
             $(this).siblings('.form-error-msg').addClass('hidden');
         } else {
             $(this).addClass('form-error');
+            $(this).siblings('.form-error-msg').removeClass('hidden');
         }
     });
 });
@@ -377,3 +378,10 @@ $(document).ready(function () {
         }
     });
 });*/
+
+$(function() {
+     $('#filterform').on('submit', function(e) {
+         window.location.hash = '';
+         history.pushState('', document.title, window.location.pathname);
+     });
+ });
