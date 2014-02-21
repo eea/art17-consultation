@@ -122,6 +122,13 @@ $(function() {
 
 });
 
+// Disable buttons
+$(document).ready(function () {
+    $('.disabled').on('click', function (event) {
+        event.preventDefault();
+    })
+}); // Please review
+
 $(document).ready(function () {
   $('#history').on('click', 'li:not(.active)', function (event) {
     event.stopPropagation();

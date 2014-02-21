@@ -758,7 +758,7 @@ a.badge-o {
 a.badge-o:hover {
   color: #fff;
   text-decoration: none;
-  background: #428be1;
+  background: blue;
 }
 .badge-o-red,
 a.badge-o-red {

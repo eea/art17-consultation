@@ -21,14 +21,14 @@
 			<p class="muted italic no-margins">This assesment was deleted.</p>
 			{% endif %}
 
-			{% if can_edit(row) or can_delete(row) %}
+			{% if (can_edit(row) or can_delete(row)) and not manual_assessment %}
 			<hr>
 			<div class="btn-toolbar no-break">
         {% if can_edit(row) %}
           {% set edit_url=url_for(edit_endpoint, action='edit', period=row.dataset_id,
                               subject=subject, region=region,
                               edit_region=row.region, edit_user=row.user_id) + '#theform' %}
-          <a class="button btn-green" href="{{ edit_url }}">Edit assessment</a>
+          <a 	class="button btn-green" href="{{ edit_url }}">Edit assessment</a>
         {% endif %}
 
         {% if can_delete(row) %}
