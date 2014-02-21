@@ -5,13 +5,6 @@ from .factories import (
     CommentFactory,
     HabitattypesManualAssessmentsFactory,
     HabitatCommentFactory,
-    EtcDicBiogeoregFactory,
-    EtcDataSpeciesRegionFactory,
-    EtcDicMethodFactory,
-    EtcDicConclusionFactory,
-    DatasetFactory,
-    EtcDataHabitattypeRegionFactory,
-    EtcDicHdHabitat
 )
 from art17 import models
 from conftest import get_request_params, create_user
@@ -23,13 +16,6 @@ def setup(app):
     CommentFactory()
     HabitattypesManualAssessmentsFactory()
     HabitatCommentFactory()
-    EtcDicBiogeoregFactory()
-    EtcDataSpeciesRegionFactory(assesment_speciesname='Canis lupus')
-    EtcDicMethodFactory(order=4, method='2GD')
-    EtcDicConclusionFactory()
-    DatasetFactory()
-    EtcDataHabitattypeRegionFactory(habitatcode=1110)
-    EtcDicHdHabitat()
     models.db.session.commit()
 
 
@@ -130,47 +116,3 @@ def test_comments(app, client, setup, zope_auth, request_type, request_args,
 
     if assert_condition:
         assert eval(assert_condition)
-
-
-@pytest.mark.parametrize(
-    "request_args, post_params, roles, expect_errors, status_code, model_cls",
-    # Species
-    [(['/species/summary/', {'period': 1, 'group': 'Mammals',
-                             'subject': 'Canis lupus', 'region': 'ALP'}],
-     {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
-      'conclusion_population': 'FV', 'submit': 'add'},
-     ['stakeholder'], False, 200, models.SpeciesManualAssessment),
-
-     (['/species/summary/', {'period': 1, 'group': 'Mammals',
-                             'subject': 'Canis lupus', 'region': 'ALP'}],
-      {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
-       'conclusion_population': 'FV', 'submit': 'add'},
-      ['etc'], True, 403, None),
-
-     # Habitat
-     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
-                             'subject': '1110', 'region': 'ALP'}],
-      {'region': 'ALP', 'MS': 'AT', 'method_range': '2GD',
-       'conclusion_range': 'FV', 'submit': 'add'},
-      ['stakeholder'], False, 200, models.HabitattypesManualAssessment),
-
-     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
-                             'subject': '1110', 'region': 'ALP'}],
-      {'region': 'ALP', 'MS': 'AT', 'method_range': '2GD',
-       'conclusion_range': 'FV', 'submit': 'add'},
-      ['etc'], True, 403, None)
-     ])
-def test_add_conclusion(app, client, zope_auth, setup, request_args,
-                        post_params, roles, expect_errors, status_code,
-                        model_cls):
-    create_user('concladd', roles)
-    zope_auth.update({'user_id': 'concladd'})
-
-    resp = client.post(*get_request_params('post', request_args, post_params),
-                       expect_errors=expect_errors)
-
-    assert resp.status_code == status_code
-
-    if not expect_errors:
-        post_params.pop('submit', None)
-        assert model_cls.query.filter_by(**post_params).one()

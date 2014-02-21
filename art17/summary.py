@@ -309,6 +309,15 @@ class Summary(views.View):
                     break
         return values
 
+    def can_touch(self, assessment):
+        if current_user.is_anonymous():
+            return False
+        if not assessment:
+            return admin_perm.can() or sta_perm.can()
+        else:
+            return admin_perm.can() or etc_perm.can() or (
+                sta_perm.can() and assessment.user == current_user)
+
     def must_edit_ref(self, assessment):
         if not current_user.is_authenticated() or not assessment:
             return False
@@ -332,7 +341,7 @@ class Summary(views.View):
             }
             manual_assessment = self.model_manual_cls.query.filter_by(
                 **filters
-            ).first()
+            ).first_or_404()
         else:
             manual_assessment = None
             data = data or MultiDict(self.get_default_values())
@@ -381,7 +390,7 @@ class Summary(views.View):
 
         if request.method == 'POST':
             if manual_form.validate(subject=subject, period=period):
-                if not sta_perm.can() and not admin_perm.can():
+                if not self.can_touch(manual_assessment):
                     raise PermissionDenied()
 
                 if not manual_assessment:
@@ -407,10 +416,11 @@ class Summary(views.View):
                     db.session.add(manual_assessment)
                     db.session.commit()
                     flash('Conclusion edited successfully')
-                    return redirect(url_for(
-                        self.summary_endpoint, period=period, subject=subject,
-                        region=region) + '#man-row-' + rowid
-                    )
+                    home_url = url_for(self.summary_endpoint, period=period,
+                                       subject=subject, region=region)
+                    if rowid:
+                        home_url += '#man-row-' + rowid
+                    return redirect(home_url)
             else:
                 flash('The form is invalid.')
 
