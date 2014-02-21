@@ -1,15 +1,13 @@
 
 <td class="border_left">
   {% set url=url_for(comments_endpoint, period=row.dataset_id, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
-  <a class="label" href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
+  <a class="badge-o" href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
   {{ row.comments_count_read(g.identity.id) }}/{{ row.undeleted_comments(g.identity.id)|count }}
   </a>
 </td>
 
 <td class="border_right" colspan="4">
-
 	<div class="popout-wrapper">
-
 		<div class="popout details">
 			<span class="close pull-right"><i class="fa fa-times"></i></span>
 			<div>
@@ -18,6 +16,11 @@
 				Institution: {{ row.user.institution }}<br />
 				Member State: {{ row.MS }}
 			</div>
+			{% if row.deleted and not can_delete(row) %}
+			<hr>
+			<p class="muted italic no-margins">This assesment was deleted.</p>
+			{% endif %}
+
 			{% if can_edit(row) or can_delete(row) %}
 			<hr>
 			<div class="btn-toolbar no-break">
@@ -34,12 +37,17 @@
         {% endif %}
 			</div>
 			{% endif %}
-
 		</div>
 
-		<a class="btn-text" data-popout="details" title="Details">
+		{% if row.deleted %}
+		<a data-popout="details" class="badge-red" title="This assesment was deleted. View details.">
+			Deleted
+		</a>
+		{% else %}
+		<a class="btn-text" data-popout="details" title="View details">
       {{ row.user.name or row.user_id or 'Details'}}
     </a>
+    {% endif %}
 
 	</div>
 </td>
