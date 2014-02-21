@@ -46,7 +46,7 @@ abbr {
 }
 /* TABLE SEPARATOR */
 .complex_datatable .table-separator {
-  margin: -5px -5px 16px;
+  margin: -5px -5px 21px;
   height: 100%;
   position: relative;
 }
@@ -56,7 +56,7 @@ abbr {
   position: absolute;
   left: -1px;
   right: -1px;
-  height: 10px;
+  height: 15px;
   z-index: 500;
   border-bottom: 1px solid #bbb;
   background: white;
