@@ -85,9 +85,7 @@ DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 @summary.route('/')
 def homepage():
     config = get_config()
-    user_credentials = g.get('user_credentials', {})
-    user_id = user_credentials.get('user_id')
-    user_authenticated = RegisteredUser.query.get(user_id) if user_id else None
+    user_authenticated= g.get('user')
 
     return render_template('homepage.html', **{
         'start_date': config.start_date,
