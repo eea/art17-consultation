@@ -19,7 +19,7 @@
     <button {% if edit_page_form %}
               class="disabled"
             {% else %}
-              onclick="$('#history').toggleClass('hidden')"
+              onclick="toggleHistory()"
             {% endif %}>Page history</button>
 {% endif %}
   </div>

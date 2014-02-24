@@ -129,6 +129,13 @@ $(document).ready(function () {
     })
 }); // Please review
 
+
+// Wiki History
+var toggleHistory = function () {
+    $('#history').toggleClass('hidden');
+    $('.wiki').toggleClass('history-visible');
+}
+
 $(document).ready(function () {
   $('#history').on('click', 'li:not(.active)', function (event) {
     event.stopPropagation();

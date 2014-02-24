@@ -406,10 +406,12 @@ a.conclusion:hover {
   position: relative;
   border-top: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
-  min-height: 180px;
   padding: 12px 1em;
   margin: 0 -1em;
   background: #fff;
+}
+.history-visible {
+  min-height: 180px;
 }
 .title-section {
   margin: 0 -1em;
