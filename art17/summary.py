@@ -389,6 +389,9 @@ class Summary(views.View):
             manual_form.MS.choices = self.get_MS(subject, region, period)
 
         if request.method == 'POST':
+            home_url = url_for(self.summary_endpoint, period=period,
+                               subject=subject, region=region)
+
             if manual_form.validate(subject=subject, period=period):
                 if not self.can_touch(manual_assessment):
                     raise PermissionDenied()
@@ -416,13 +419,13 @@ class Summary(views.View):
                     db.session.add(manual_assessment)
                     db.session.commit()
                     flash('Conclusion edited successfully')
-                    home_url = url_for(self.summary_endpoint, period=period,
-                                       subject=subject, region=region)
                     if rowid:
                         home_url += '#man-row-' + rowid
                     return redirect(home_url)
             else:
                 flash('Please correct the errors below and try again.')
+                home_url += '#theform'
+                return redirect(home_url)
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
