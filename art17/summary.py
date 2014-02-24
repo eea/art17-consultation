@@ -422,7 +422,7 @@ class Summary(views.View):
                         home_url += '#man-row-' + rowid
                     return redirect(home_url)
             else:
-                flash('The form is invalid.')
+                flash('Please correct the errors below and try again.')
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
