@@ -28,7 +28,9 @@
           {% set edit_url=url_for(edit_endpoint, action='edit', period=row.dataset_id,
                               subject=subject, region=region, rowid=loop.index,
                               edit_region=row.region, edit_user=row.user_id) + '#theform' %}
-          <a 	class="button btn-green" href="{{ edit_url }}">Edit assessment</a>
+          <a 	class="button btn-green" href="{{ edit_url }}"
+              title="{{ button_properties['edit']['title'] }}">{{
+              button_properties['edit']['text'] }}</a>
         {% endif %}
 
         {% if can_delete(row) %}

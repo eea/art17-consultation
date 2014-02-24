@@ -427,6 +427,17 @@ class Summary(views.View):
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
 
+        sta_properties = {
+            'text': 'Propose correction',
+            'title': 'Comment on biogeographical assessment at EU or MS level'
+            ' by proposing a correction'}
+        if sta_perm.can():
+            button_properties = {'add': sta_properties, 'edit': sta_properties}
+        else:
+            button_properties = {
+                'add': {'text': 'Add assessment', 'title': ''},
+                'edit': {'text': 'Edit assessment', 'title': ''}}
+
         current_selection = self.get_current_selection(
             period_name, group, subject, region)
         annexes = self.get_annexes(subject)
@@ -448,6 +459,7 @@ class Summary(views.View):
             'region': region,
             'period_name': period_name,
             'dataset': period_query,
+            'button_properties': button_properties
         })
 
         return render_template(self.template_name, **context)

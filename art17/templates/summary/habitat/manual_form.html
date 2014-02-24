@@ -119,7 +119,9 @@
 
     {% if not manual_assessment %}
     <td colspan="9">
-      <button type="submit" name="submit" value="add">Add assesment</button>
+      <button class="btn-green" type="submit" name="submit" value="add"
+          title="{{ button_properties['add']['title'] }}">{{
+          button_properties['add']['title'] }}</button>
     </td>
     {% else %}
     {% set row=manual_assessment %}
