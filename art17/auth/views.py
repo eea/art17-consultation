@@ -306,12 +306,8 @@ def admin_user(user_id):
         else:
             user_form = Art17AdminEditUserForm(flask.request.form, obj=user)
             if user_form.validate():
-                # manage user info
-                user_form.populate_obj(user)
-                models.db.session.commit()
-
                 # manage status
-                set_user_active(user, flask.request.form.get('active', type=bool))
+                set_user_active(user, user_form.active.data)
 
                 # manage roles
                 datastore = flask.current_app.extensions['security'].datastore
@@ -322,6 +318,10 @@ def admin_user(user_id):
                 for role in expandable_roles:
                     datastore.remove_role_from_user(user_id, role)
                 datastore.commit()
+
+                # manage user info
+                user_form.populate_obj(user)
+                models.db.session.commit()
 
                 # manage role notifications
                 if flask.request.form.get('notify_user', type=bool):

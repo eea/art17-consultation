@@ -16,10 +16,10 @@
 
   <form class="box inline-block form" method="post">
     <div class="form-group">
-      <label class="" for="admin_user-active">
-        <input type="checkbox" id="admin_user-active" name="active"
-               {%- if user.active %} checked{% endif %}>
-        Active
+      <label>
+        {{ user_form.active }}
+        {{ user_form.active.label.text }}
+        {{ user_form.active.description }}
       </label>
     </div>
     <div class="form-group">

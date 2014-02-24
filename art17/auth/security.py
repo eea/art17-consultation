@@ -6,7 +6,7 @@ from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
 from flask_wtf import Form
 from datetime import datetime
 from werkzeug.local import LocalProxy
-from wtforms import TextField, ValidationError, Field
+from wtforms import TextField, BooleanField, ValidationError, Field
 
 from flask.ext.security.forms import (
     ConfirmRegisterForm,
@@ -116,10 +116,12 @@ class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
 
 class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
 
+    active = BooleanField('Active',
+                          description='*(allow user to login and gain roles)')
     email = TextField('Email address',
-        validators=[Required("Email is required"),
-                    email_validator,
-                    custom_unique_user_email])
+                      validators=[Required("Email is required"),
+                                  email_validator,
+                                  custom_unique_user_email])
 
 
 def no_ldap_user(form, field):
