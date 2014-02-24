@@ -340,7 +340,8 @@ def get_title_for_species_country(row):
     title = []
     if (row.speciesname != row.assesment_speciesname or
         row.complementary_other_information != ''):
-        title.append('\"%s\"\n%s' % (row.speciesname, row.complementary_other_information))
+        title.append('\"%s\"\n%s' % (row.speciesname or row.assesment_speciesname or '',
+                                     row.complementary_other_information))
         if row.species_type_asses == 0:
             title.append('\n\n%s' % (row.species_type_details.SpeciesType
                          if row.species_type_details else row.species_type))
