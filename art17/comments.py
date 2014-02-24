@@ -1,15 +1,15 @@
 from datetime import datetime
+from werkzeug.datastructures import MultiDict
+from werkzeug.utils import redirect
+from sqlalchemy import or_, func
 from flask import (
     Blueprint,
     views,
     render_template,
     request,
-    flash,
-    url_for)
-from werkzeug.datastructures import MultiDict
-from werkzeug.utils import redirect
+    url_for,
+)
 from flask.ext.principal import PermissionDenied
-from sqlalchemy import or_, func
 
 from art17.auth import current_user
 from art17.common import get_default_period, admin_perm
@@ -29,12 +29,10 @@ comments = Blueprint('comments', __name__)
 
 def mark_read(comment, user):
     comment.readers.append(user)
-    db.session.commit()
 
 
 def mark_unread(comment, user):
     comment.readers.remove(user)
-    db.session.commit()
 
 
 @comments.app_template_global('can_post_comment')
@@ -108,6 +106,7 @@ class CommentsList(views.View):
             mark_unread(comment, current_user)
         else:
             mark_read(comment, current_user)
+        db.session.commit()
 
     def process_form(self, form, edited_comment):
         if form.validate():
@@ -134,6 +133,7 @@ class CommentsList(views.View):
             db.session.commit()
             if not edited_comment:
                 mark_read(comment, current_user)
+                db.session.commit()
             return True
         else:
             raise PermissionDenied
@@ -195,11 +195,14 @@ class HabitatCommentsList(HabitatMixin, CommentsList):
         return url_for('.habitat-comments', **kwargs)
 
 
-comments.add_url_rule('/species/comments/<period>/<subject>/<region>/<user>/<MS>/',
-                      view_func=SpeciesCommentsList.as_view('species-comments'))
-
-comments.add_url_rule('/habitat/comments/<period>/<subject>/<region>/<user>/<MS>/',
-                      view_func=HabitatCommentsList.as_view('habitat-comments'))
+comments.add_url_rule(
+    '/species/comments/<period>/<subject>/<region>/<user>/<MS>/',
+    view_func=SpeciesCommentsList.as_view('species-comments')
+)
+comments.add_url_rule(
+    '/habitat/comments/<period>/<subject>/<region>/<user>/<MS>/',
+    view_func=HabitatCommentsList.as_view('habitat-comments')
+)
 
 
 class UserSummary(views.View):
@@ -226,23 +229,21 @@ class UserSummary(views.View):
             .filter_by(dataset_id=period)
             .order_by('-last_update').limit(100)
         )
-        comments = (
+        comments_list = (
             self.model_comment_cls.query
             .join(self.model_comment_cls.record)
             .filter(self.model_manual_cls.dataset_id == period)
             .order_by('-post_date').all()
         )
-        return {'conclusions': conclusions, 'comments': comments}
+        return {'conclusions': conclusions, 'comments': comments_list}
 
 
 class SpeciesUserSummary(SpeciesMixin, UserSummary):
-
-    summary_endpoint = 'summary.species-summary'
+    pass
 
 
 class HabitatUserSummary(HabitatMixin, UserSummary):
-
-    summary_endpoint = 'summary.habitat-summary'
+    pass
 
 
 comments.add_url_rule('/history/species/',

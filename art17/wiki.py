@@ -10,16 +10,17 @@ from flask import (
 from flask.ext.principal import PermissionDenied
 from datetime import datetime
 
-from models import (
+from art17.models import (
     Wiki,
     WikiChange,
     WikiComment,
     WikiTrail,
     WikiTrailChange,
     RegisteredUser,
-    db)
-from forms import WikiEditForm
-from auth import current_user
+    db,
+)
+from art17.forms import WikiEditForm
+from art17.auth import current_user
 
 
 wiki = Blueprint('wiki', __name__)
@@ -397,11 +398,8 @@ class EditComment(WikiView):
         return {'edit_comment_form': wiki_edit_cmnt_form}
 
 
-class ManageComment(views.View):
+class ManageComment(WikiView):
     methods = ['GET']
-
-    def __init__(self, section):
-        self.section = section()
 
     def dispatch_request(self, page):
         if not can_manage_comment():
@@ -434,11 +432,8 @@ class ManageComment(views.View):
         return ''
 
 
-class GetRevision(views.View):
+class GetRevision(WikiView):
     methods = ['GET']
-
-    def __init__(self, section):
-        self.section = section()
 
     def dispatch_request(self, page):
         if not can_manage_revisions():

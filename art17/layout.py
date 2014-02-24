@@ -1,7 +1,7 @@
 import re
 import logging
-import flask
 import requests
+import flask
 from jinja2 import Markup
 
 logger = logging.getLogger(__name__)

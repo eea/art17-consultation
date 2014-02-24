@@ -108,18 +108,23 @@ HOMEPAGE_VIEW_NAME = 'common.homepage'
 common = flask.Blueprint('common', __name__)
 
 
+def get_config():
+    rows = Config.query.all()
+    if len(rows) != 1:
+        raise RuntimeError("There should be exactly one config row")
+    return rows[0]
+
+
 def get_default_period():
     conf = get_config()
     return conf.default_dataset_id
 
 
-def get_default_ms():
-    return 'EU27'
-
 admin_perm = Permission(RoleNeed('admin'))
 expert_perm = Permission(RoleNeed('expert'))
 sta_perm = Permission(RoleNeed('stakeholder'))
 etc_perm = Permission(RoleNeed('etc'))
+
 
 @common.record
 def register_permissions_in_template_globals(state):
@@ -135,28 +140,6 @@ def inject_globals():
     return {
         'APP_BREADCRUMBS': [('Article 17', flask.url_for(HOMEPAGE_VIEW_NAME))],
     }
-
-
-@common.route('/')
-def homepage():
-    cfg = get_config()
-    return flask.render_template('homepage.html', **{
-        'start_date': cfg.start_date,
-        'end_date': cfg.end_date,
-        'today': date.today(),
-    })
-
-
-@common.route('/_crashme', methods=['GET', 'POST'])
-def crashme():
-    if flask.request.method == 'POST':
-        raise RuntimeError("Crashing as requested")
-    return '<form method="post"><button type="submit">crash</button></form>'
-
-
-@common.route('/_ping')
-def ping():
-    return 'hello world: %d' % Config.query.count()
 
 
 def population_size_unit(row):
@@ -207,7 +190,8 @@ def get_range_conclusion_value(assesment_speciesname, region,
                                assessment_method):
     query = (
         EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_range_surface_area)
+        .with_entities(
+            EtcDataSpeciesAutomaticAssessment.percentage_range_surface_area)
         .filter_by(assesment_speciesname=assesment_speciesname, region=region,
                    assessment_method=assessment_method)
         .first()
@@ -219,7 +203,8 @@ def get_population_conclusion_value(assesment_speciesname, region,
                                     assessment_method):
     query = (
         EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_population_mean_size)
+        .with_entities(
+            EtcDataSpeciesAutomaticAssessment.percentage_population_mean_size)
         .filter_by(assesment_speciesname=assesment_speciesname, region=region,
                    assessment_method=assessment_method)
         .first()
@@ -231,7 +216,8 @@ def get_future_conclusion_value_for_species(assesment_speciesname, region,
                                             assessment_method):
     query = (
         EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_future)
+        .with_entities(
+            EtcDataSpeciesAutomaticAssessment.percentage_future)
         .filter_by(assesment_speciesname=assesment_speciesname,
                    region=region,
                    assessment_method=assessment_method)
@@ -245,7 +231,8 @@ def get_habitat_conclusion_value(assesment_speciesname, region,
                                  assessment_method):
     query = (
         EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_habitat_surface_area)
+        .with_entities(
+            EtcDataSpeciesAutomaticAssessment.percentage_habitat_surface_area)
         .filter_by(assesment_speciesname=assesment_speciesname,
                    region=region,
                    assessment_method=assessment_method)
@@ -287,7 +274,8 @@ def get_assesm_conclusion_value_for_habitat(habitatcode, region,
                                             assessment_method):
     query = (
         EtcDataHabitattypeAutomaticAssessment.query
-        .with_entities(EtcDataHabitattypeAutomaticAssessment.percentage_assessment)
+        .with_entities(
+            EtcDataHabitattypeAutomaticAssessment.percentage_assessment)
         .filter_by(habitatcode=habitatcode,
                    region=region,
                    assessment_method=assessment_method)
@@ -310,7 +298,8 @@ def get_coverage_conclusion_value(habitatcode, region, assessment_method):
 def get_struct_conclusion_value(habitatcode, region, assessment_method):
     query = (
         EtcDataHabitattypeAutomaticAssessment.query
-        .with_entities(EtcDataHabitattypeAutomaticAssessment.percentage_structure)
+        .with_entities(
+            EtcDataHabitattypeAutomaticAssessment.percentage_structure)
         .filter_by(habitatcode=habitatcode, region=region,
                    assessment_method=assessment_method)
         .first()
@@ -372,6 +361,28 @@ def get_title_for_habitat_country(row):
     return title
 
 
+@common.route('/')
+def homepage():
+    cfg = get_config()
+    return flask.render_template('homepage.html', **{
+        'start_date': cfg.start_date,
+        'end_date': cfg.end_date,
+        'today': date.today(),
+    })
+
+
+@common.route('/_crashme', methods=['GET', 'POST'])
+def crashme():
+    if flask.request.method == 'POST':
+        raise RuntimeError("Crashing as requested")
+    return '<form method="post"><button type="submit">crash</button></form>'
+
+
+@common.route('/_ping')
+def ping():
+    return 'hello world: %d' % Config.query.count()
+
+
 @common.route('/common/species/groups', endpoint='species-groups')
 def species_groups():
     data = SpeciesMixin.get_groups(flask.request.args['period'])
@@ -382,13 +393,6 @@ def species_groups():
 def habitat_groups():
     data = HabitatMixin.get_groups(flask.request.args['period'])
     return flask.jsonify(data)
-
-
-def get_config():
-    rows = Config.query.all()
-    if len(rows) != 1:
-        raise RuntimeError("There should be exactly one config row")
-    return rows[0]
 
 
 @common.route('/config', methods=['GET', 'POST'])

@@ -69,14 +69,12 @@ class Report(views.View):
 
     def setup_objects_and_data(self, period, group, country):
         filter_args = {}
-        if group:
-            filter_args['group'] = group
-        else:
+        if not group:
             return
+        filter_args['group'] = group
+        filter_args['dataset_id'] = period
         if country:
             filter_args['eu_country_code'] = country
-
-        filter_args['dataset_id'] = period
         self.objects = (
             self.model_cls.query
             .filter_by(**filter_args)
@@ -122,6 +120,5 @@ def habitat_regions():
 
 report.add_url_rule('/species/report/',
                     view_func=SpeciesReport.as_view('species-report'))
-
 report.add_url_rule('/habitat/report/',
                     view_func=HabitatReport.as_view('habitat-report'))

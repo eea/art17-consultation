@@ -1,5 +1,4 @@
 # coding=utf-8
-
 from flask_wtf import Form as Form_base
 from wtforms import SelectField, TextField, TextAreaField, DateField
 from wtforms.validators import Optional, ValidationError
@@ -9,7 +8,7 @@ from art17.models import (
     EtcDicConclusion,
     EtcDicPopulationUnit,
     EtcDataSpeciesRegion,
-    EtcDataHabitattypeRegion
+    EtcDataHabitattypeRegion,
 )
 from art17.utils import validate_field
 
@@ -20,7 +19,7 @@ NOT_NUMERIC_VALUES = (
 METH_CONCL_MANDATORY = "At least one method and conclusion must be filled!"
 METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
     "nor a method without a conclusion"
-INVALID_MS_REGION_PAIR = "Please select an MS country code that is available "\
+INVALID_MS_REGION_PAIR = "Please select an MS country code that is available " \
     "for the selected region"
 
 NATURE_CHOICES = [('yes', 'yes'), ('no', 'no'), ('nc', 'nc')]
@@ -117,10 +116,7 @@ class ReportFilterForm(CommonFilterForm):
     country = SelectField('Country...')
 
 
-class OptionsBase(object):
-
-    EXCLUDE2 = '2XA'
-    EXCLUDE3 = '3XA'
+class _OptionsBase(object):
 
     def get_method_options(self, methods):
         return [
@@ -154,13 +150,13 @@ class OptionsBase(object):
         return output
 
 
-class OptionsBaseSpecies(OptionsBase):
+class OptionsBaseSpecies(_OptionsBase):
 
     EXCLUDE2 = '2XA'
     EXCLUDE3 = '3XA'
 
 
-class OptionsBaseHabitat(OptionsBase):
+class OptionsBaseHabitat(_OptionsBase):
 
     EXCLUDE2 = '2XP'
     EXCLUDE3 = '3XP'

@@ -51,7 +51,10 @@ def save_decision(output):
 
 def save_conclusion(output, decision, option, conclusion_type):
     if conclusion_type == 'overall assessment':
-        output['method'] = option['range'] if option['method'] == 'MTX' else option['method']
+        if option['method'] == 'MTX':
+            output['method'] = option['range']
+        else:
+            output['method'] = option['method']
     else:
         output['method'] = option['method']
 
@@ -67,12 +70,6 @@ def save_conclusion(output, decision, option, conclusion_type):
 class Progress(views.View):
 
     methods = ['GET']
-
-    def get_conclusions(self):
-        return {}
-
-    def get_context(self):
-        return {}
 
     def get_decision_details(self):
         d = dict((r.decision, r.details) for r in EtcDicDecision.query.all())
@@ -152,13 +149,13 @@ class Progress(views.View):
             user = option['user_id']
             # if current conclusion is acceptated
             if decision == 'OK':
-                 if output['main_decision'] == 'END':
-                     output['other_decisions'].append(decision)
-                 else:
-                     if output['main_decision'] != '':
-                         output = save_decision(output)
-                     output = save_conclusion(output, decision, option, conclusion_type)
-
+                if output['main_decision'] == 'END':
+                    output['other_decisions'].append(decision)
+                else:
+                    if output['main_decision'] != '':
+                        output = save_decision(output)
+                    output = save_conclusion(output, decision, option,
+                                             conclusion_type)
             # else current conclusion is not acceptated
             else:
                 if output['main_decision'] in ['OK', 'END']:
@@ -234,6 +231,7 @@ class Progress(views.View):
             'objects': ret_dict,
             'dataset': period_query,
             'comment_counts': comment_counts,
+            'summary_endpoint': self.summary_endpoint,
         })
 
         return render_template(self.template_name, **context)
@@ -307,7 +305,6 @@ class SpeciesProgress(Progress, SpeciesMixin):
     def get_context(self):
         return {
             'groups_url': url_for('common.species-groups'),
-            'summary_endpoint': 'summary.species-summary',
         }
 
 
@@ -374,12 +371,10 @@ class HabitatProgress(Progress, HabitatMixin):
     def get_context(self):
         return {
             'groups_url': url_for('common.habitat-groups'),
-            'summary_endpoint': 'summary.habitat-summary',
         }
 
 
 progress.add_url_rule('/species/progress/',
-                     view_func=SpeciesProgress.as_view('species-progress'))
-
+                      view_func=SpeciesProgress.as_view('species-progress'))
 progress.add_url_rule('/habitat/progress/',
-                     view_func=HabitatProgress.as_view('habitat-progress'))
+                      view_func=HabitatProgress.as_view('habitat-progress'))

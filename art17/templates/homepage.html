@@ -57,7 +57,7 @@
       </h2>
 
       <ul>
-        {% if user_authenticated %}
+        {% if g.identity.id %}
             <li>
                 You have logged in and already registered for this consultation.
             </li>

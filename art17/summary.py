@@ -8,14 +8,12 @@ from flask import (
     url_for,
     flash,
     abort,
-    g,
 )
 from flask.ext.principal import PermissionDenied
 from sqlalchemy.exc import IntegrityError
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
 from art17.auth import current_user
-
 from art17.models import (
     EtcDicBiogeoreg,
     EtcDataSpeciesRegion,
@@ -27,11 +25,8 @@ from art17.models import (
     EtcQaErrorsHabitattypeManualChecked,
     EtcDicMethod,
     EtcDicDecision,
-    RegisteredUser,
 )
-
 from art17.mixins import SpeciesMixin, HabitatMixin
-
 from art17.common import (
     get_default_period,
     admin_perm,
@@ -52,26 +47,26 @@ from art17.common import (
     get_original_record_url,
     get_title_for_species_country,
     get_title_for_habitat_country,
+    population_size_unit_title,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
-    population_size_unit_title,
     CONTRIB_METHOD,
     CONTRIB_CONCLUSION,
-    get_config,
     TREND_OPTIONS, TREND_OPTIONS_OVERALL, NATURE_OF_CHANGE_OPTIONS,
-    HABITAT_OPTIONS, get_default_ms)
+    HABITAT_OPTIONS,
+)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
     SummaryManualFormHabitat,
     SummaryManualFormHabitatRef,
     SummaryManualFormSpeciesRef,
-    all_fields,
     SummaryManualFormSpeciesSTA,
     SummaryManualFormSpeciesRefSTA,
     SummaryManualFormHabitatRefSTA,
     SummaryManualFormHabitatSTA,
+    all_fields,
 )
 from art17.utils import str2num, parse_semicolon, str1num
 
@@ -80,19 +75,6 @@ summary = Blueprint('summary', __name__)
 
 DATE_FORMAT = '%d/%m/%Y %H:%M'
 DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
-
-
-@summary.route('/')
-def homepage():
-    config = get_config()
-    user_authenticated= g.get('user')
-
-    return render_template('homepage.html', **{
-        'start_date': config.start_date,
-        'end_date': config.end_date,
-        'today': date.today(),
-        'user_authenticated': user_authenticated,
-    })
 
 
 @summary.app_template_global('can_view')
@@ -171,10 +153,14 @@ def inject_fuctions():
         'population_ref': population_ref,
         'get_range_conclusion_value': get_range_conclusion_value,
         'get_population_conclusion_value': get_population_conclusion_value,
-        'get_future_conclusion_value_for_species': get_future_conclusion_value_for_species,
-        'get_future_conclusion_value_for_habitat': get_future_conclusion_value_for_habitat,
-        'get_assesm_conclusion_value_for_species': get_assesm_conclusion_value_for_species,
-        'get_assesm_conclusion_value_for_habitat': get_assesm_conclusion_value_for_habitat,
+        'get_future_conclusion_value_for_species':
+            get_future_conclusion_value_for_species,
+        'get_future_conclusion_value_for_habitat':
+            get_future_conclusion_value_for_habitat,
+        'get_assesm_conclusion_value_for_species':
+            get_assesm_conclusion_value_for_species,
+        'get_assesm_conclusion_value_for_habitat':
+            get_assesm_conclusion_value_for_habitat,
         'get_habitat_conclusion_value': get_habitat_conclusion_value,
         'get_coverage_conclusion_value': get_coverage_conclusion_value,
         'get_struct_conclusion_value': get_struct_conclusion_value,
@@ -234,10 +220,10 @@ def format_date(value):
     if not value:
         return ''
     try:
-        date = datetime.strptime(value, DATE_FORMAT)
+        date_value = datetime.strptime(value, DATE_FORMAT)
     except ValueError:
         return value
-    return date.strftime('%m/%y')
+    return date_value.strftime('%m/%y')
 
 
 def record_errors(record):
@@ -281,7 +267,7 @@ class Summary(views.View):
 
     methods = ['GET', 'POST']
 
-    def get_best_automatic(self):
+    def get_default_values(self):
         period = request.args.get('period') or get_default_period()
         subject = request.args.get('subject')
         region = request.args.get('region')
@@ -586,10 +572,6 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'progress_endpoint': 'progress.species-progress',
         }
 
-    def get_default_values(self):
-        values = self.get_best_automatic()
-        return values
-
 
 class HabitatSummary(HabitatMixin, Summary):
 
@@ -649,10 +631,6 @@ class HabitatSummary(HabitatMixin, Summary):
             'progress_endpoint': 'progress.habitat-progress',
         }
 
-    def get_default_values(self):
-        values = self.get_best_automatic()
-        return values
-
     def get_current_selection(self, period_name, group, subject, region):
         selection = super(HabitatSummary, self).get_current_selection(
             period_name, group, subject, region
@@ -667,7 +645,6 @@ class HabitatSummary(HabitatMixin, Summary):
 
 summary.add_url_rule('/species/summary/',
                      view_func=SpeciesSummary.as_view('species-summary'))
-
 summary.add_url_rule('/habitat/summary/',
                      view_func=HabitatSummary.as_view('habitat-summary'))
 
@@ -799,9 +776,11 @@ class UpdateDecision(MixinView, views.View):
         )
 
 
-summary.add_url_rule('/species/conc/update/<period>/<subject>/<region>/<user>/<ms>/',
-                     view_func=UpdateDecision
-                     .as_view('species-update', mixin=SpeciesMixin))
-summary.add_url_rule('/habitat/conc/update/<period>/<subject>/<region>/<user>/<ms>/',
-                     view_func=UpdateDecision
-                     .as_view('habitat-update', mixin=HabitatMixin))
+summary.add_url_rule(
+    '/species/conc/update/<period>/<subject>/<region>/<user>/<ms>/',
+    view_func=UpdateDecision
+    .as_view('species-update', mixin=SpeciesMixin))
+summary.add_url_rule(
+    '/habitat/conc/update/<period>/<subject>/<region>/<user>/<ms>/',
+    view_func=UpdateDecision
+    .as_view('habitat-update', mixin=HabitatMixin))
