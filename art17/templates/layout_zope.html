@@ -6,7 +6,15 @@
 
   {% include 'header_styles.html' %}
 
-{{ g.zope_layout.endofhead_to_breadcrumbs }}
+{{ g.zope_layout.endofhead_to_startofbody }}
+  <div class="modal-bg hidden">
+    <div class="modal">
+      <iframe frameborder="0" width="100%" height="100%"></iframe>
+    </div>
+    <button onclick='closeModal()' class="close">Close <i class="fa fa-times"></i></button>
+  </div>
+
+{{ g.zope_layout.startofbody_to_breadcrumbs }}
 
   {% block breadcrumbs %}
     {% from '_macros.html' import breadcrumbs %}
@@ -14,12 +22,6 @@
   {% endblock %}
 
 {{ g.zope_layout.breadcrumbs_to_content }}
-  <div class="modal-bg hidden">
-    <div class="modal">
-      <iframe frameborder="0" width="100%" height="100%"></iframe>
-    </div>
-    <button onclick='closeModal()' class="close">Close <i class="fa fa-times"></i></button>
-  </div>
 
   <script>$('body').addClass('fullscreen')</script>
   {% include 'flash_messages.html' %}

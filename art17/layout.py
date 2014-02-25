@@ -15,6 +15,8 @@ header_pattern = (
     r'.*'
     r'(?P<endofhead>)</head>'
     r'.*'
+    r'<body>(?P<startofbody>)'
+    r'.*'
     r'(?P<breadcrumbs><div class="breadcrumbitemlast">[^<]*</div>)'
     r'.*$'
 )
@@ -34,6 +36,7 @@ def set_up_layout_template(state):
 
 
 def split_layout(header, footer):
+
     m = re.match(header_pattern, header, re.DOTALL)
     if m is None:
         logger.error("Could not match header: %r", header)
@@ -44,8 +47,10 @@ def split_layout(header, footer):
             Markup(header[:m.start('title')]),
         'title_to_endofhead':
             Markup(header[m.end('title'):m.start('endofhead')]),
-        'endofhead_to_breadcrumbs':
-            Markup(header[m.end('endofhead'):m.start('breadcrumbs')]),
+        'endofhead_to_startofbody':
+            Markup(header[m.end('endofhead'):m.start('startofbody')]),
+        'startofbody_to_breadcrumbs':
+            Markup(header[m.end('startofbody'):m.start('breadcrumbs')]),
         'breadcrumbs_to_content':
             Markup(header[m.end('breadcrumbs'):]),
         'content_to_end':
