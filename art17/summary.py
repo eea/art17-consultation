@@ -212,7 +212,7 @@ def _parse_semicolon(value, sep='<br/>'):
 def get_quality(value, default='N/A'):
     if value and value[0].upper() in QUALITIES:
         return value[0]
-    return default
+    return default if not value else value[0]
 
 
 @summary.app_template_filter('format_date')

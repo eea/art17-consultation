@@ -15,9 +15,11 @@ from art17.models import (
 from .utils import str2num
 
 QUALITIES = {
+    'B': 'Bad',
     'P': 'Poor',
     'G': 'Good',
     'M': 'Moderate',
+    'U': 'Unkown',
 }
 
 CONCLUSION_CLASSES = {
