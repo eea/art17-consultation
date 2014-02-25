@@ -25,12 +25,18 @@
 			<hr>
 			<div class="btn-toolbar no-break">
         {% if can_edit(row) %}
+          {% if sta_perm.can() %}
+              {% set title = 'Comment on biogeographical assessment at EU or MS level by proposing a correction' %}
+              {% set text = 'Propose correction' %}
+          {% else %}
+              {% set title = '' %}
+              {% set text = 'Edit assessment' %}
+          {% endif %}
+
           {% set edit_url=url_for(edit_endpoint, action='edit', period=row.dataset_id,
                               subject=subject, region=region, rowid=loop.index,
                               edit_region=row.region, edit_user=row.user_id) + '#theform' %}
-          <a 	class="button btn-green" href="{{ edit_url }}"
-              title="{{ button_properties['edit']['title'] }}">{{
-              button_properties['edit']['text'] }}</a>
+          <a class="button btn-green" href="{{ edit_url }}" title="{{ title }}">{{ text }}</a>
         {% endif %}
 
         {% if can_delete(row) %}

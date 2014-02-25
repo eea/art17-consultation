@@ -130,25 +130,7 @@
       {{ conclusion_td(ass.conclusion_target1, ass.method_target1, colspan=2) }}
     {% endif %}
 
-    {% if not manual_assessment %}
-    <td colspan="9">
-      <button class="btn-green" type="submit" name="submit" value="add"
-          title="{{ button_properties['add']['title'] }}">{{
-          button_properties['add']['text'] }}</button>
-    </td>
-    {% else %}
-    {% set row=manual_assessment %}
-    {% set cancel_url=url_for(edit_endpoint, action='cancel', period=row.dataset_id,
-                              subject=subject, region=region) %}
-    <td colspan="2">
-      <input type="hidden" name="subject" value="{{ subject }}" />
-      <input type="hidden" name="region" value="{{ row.region }}" />
-      <input type="hidden" name="user" value="{{ row.user_id }}" />
-      <button class="btn-green" type="submit" name="submit" value="update">Save</button>
-      <a href="{{ cancel_url }}#man-row-{{ loop.index }}" title="Cancel" class="button"><i class="fa fa-times"></i></a>
-    </td>
-    {% include 'summary/common/manual/conclusion_details.html' %}
-    {% endif %}
+    {% include 'summary/common/manual/edit_buttons.html' %}
   </tr>
   {% if form.errors %}
   <tr class="form_row">

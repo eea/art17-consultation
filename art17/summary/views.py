@@ -28,7 +28,6 @@ from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.common import (
     get_default_period,
     expert_perm,
-    sta_perm,
     population_size_unit,
     population_ref,
     get_range_conclusion_value,
@@ -275,6 +274,7 @@ class Summary(ConclusionView, views.View):
                         home_url += '#man-row-' + rowid
                     return redirect(home_url)
             else:
+                import pdb; pdb.set_trace()  # XXX BREAKPOINT
                 flash('Please correct the errors below and try again.')
                 if not manual_assessment:
                     home_url += '#theform'
@@ -282,17 +282,6 @@ class Summary(ConclusionView, views.View):
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
-
-        sta_properties = {
-            'text': 'Propose correction',
-            'title': 'Comment on biogeographical assessment at EU or MS level'
-            ' by proposing a correction'}
-        if sta_perm.can():
-            button_properties = {'add': sta_properties, 'edit': sta_properties}
-        else:
-            button_properties = {
-                'add': {'text': 'Add assessment', 'title': ''},
-                'edit': {'text': 'Edit assessment', 'title': ''}}
 
         current_selection = self.get_current_selection(
             period_name, group, subject, region)
@@ -315,7 +304,6 @@ class Summary(ConclusionView, views.View):
             'region': region,
             'period_name': period_name,
             'dataset': period_query,
-            'button_properties': button_properties
         })
 
         return render_template(self.template_name, **context)
