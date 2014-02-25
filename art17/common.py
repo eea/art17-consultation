@@ -12,6 +12,7 @@ from art17.models import (
     EtcDataHabitattypeRegion,
     Config,
 )
+
 from .utils import str2num
 
 QUALITIES = {
@@ -367,10 +368,13 @@ def get_title_for_habitat_country(row):
 @common.route('/')
 def homepage():
     cfg = get_config()
+    from art17.auth.security import current_user
+
     return flask.render_template('homepage.html', **{
         'start_date': cfg.start_date,
         'end_date': cfg.end_date,
         'today': date.today(),
+        'current_user': current_user,
     })
 
 

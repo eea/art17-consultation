@@ -125,13 +125,20 @@
 
 
   {% if admin_perm.can() %}
-  <h2>Administrator</h2>
-    <ul>
-    {% if AUTH_BLUEPRINT_INSTALLED %}
-      <li><a href="{{ url_for('auth.users') }}">Users</a></li>
-    {% endif %}
-      <li><a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a></li>
-      <li><a href="{{ url_for('common.config') }}">Settings</a></li>
-    </ul>
+      <h2>Administrator</h2>
+        <ul>
+        {% if AUTH_BLUEPRINT_INSTALLED %}
+          <li><a href="{{ url_for('auth.users') }}">Users</a></li>
+        {% endif %}
+          <li><a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a></li>
+          <li><a href="{{ url_for('common.config') }}">Settings</a></li>
+          <li><a href="{{ url_for('auth.change_password') }}">Change password</a></li>
+        </ul>
+  {% elif current_user.is_authenticated() %}
+      <h2>My account</h2>
+        <ul>
+          <li><a href="{{ url_for('auth.change_password') }}">Change password</a></li>
+        </ul>
   {% endif %}
+
 {% endblock content %}
