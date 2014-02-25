@@ -48,14 +48,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       {% set visible = can_view(row, restricted_countries) %}
       {% set qa_errors = record_errors(row) %}
       <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-        <td class="border">
-          {% set original_url=get_original_record_url(row) %}
-          {% set country_title = get_title_for_species_country(row) %}
-          <a class="clipped popup-btn block" title="{{ country_title|join('') }}" data-title="Factsheet" href="{{ original_url }}">
-            {{ row.eu_country_code }}
-          </a>
-        </td>
-        {% if not region %}<td class="border">{{ row.region }}</td>{% endif %}
+
+        {% include 'summary/common/content/ms_region.html' %}
 
         {% if not visible %}
           <td class="border" colspan="2">

@@ -97,8 +97,6 @@ def inject_fuctions():
         'get_coverage_conclusion_value': get_coverage_conclusion_value,
         'get_struct_conclusion_value': get_struct_conclusion_value,
         'get_original_record_url': get_original_record_url,
-        'get_title_for_species_country': get_title_for_species_country,
-        'get_title_for_habitat_country': get_title_for_habitat_country,
     }
 
 
@@ -402,6 +400,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
                 region=request.args.get('region'),
                 period=request.args.get('period')),
             'progress_endpoint': 'progress.species-progress',
+            'get_title_for_country': get_title_for_species_country,
         }
 
 
@@ -461,6 +460,7 @@ class HabitatSummary(HabitatMixin, Summary):
                 region=request.args.get('region'),
                 period=request.args.get('period')),
             'progress_endpoint': 'progress.habitat-progress',
+            'get_title_for_country': get_title_for_habitat_country,
         }
 
     def get_current_selection(self, period_name, group, subject, region):
