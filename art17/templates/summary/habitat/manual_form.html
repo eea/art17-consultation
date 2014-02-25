@@ -62,11 +62,13 @@
       </td>
 
       {# Contrib target 1 #}
-      <td {% if form.method_target1.errors %}class="form-error-td"{% endif %}>
-      {{ form.method_target1(title="A (favorable), B (improvement), C (deterioration), D (same), E (unknown)") }}
+      <td {% if form.method_target1.errors %}class="form-error-td"{% endif %}
+          title="A (favorable), B (improvement), C (deterioration), D (same), E (unknown)">
+      {{ form.method_target1() }}
       </td>
-      <td {% if form.conclusion_target1.errors %}class="form-error-td"{% endif %}>
-      {{ form.conclusion_target1(title="+ (improvement), - (deterioration), = (no change), x (not known)") }}
+      <td {% if form.conclusion_target1.errors %}class="form-error-td"{% endif %}
+          title="+ (improvement), - (deterioration), 0 (no change), x (not known)">
+      {{ form.conclusion_target1() }}
       </td>
 
       <td colspan="2"></td>
