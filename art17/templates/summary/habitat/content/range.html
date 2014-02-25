@@ -18,7 +18,7 @@
                                          qa_errors) %}
 {% if not qtitle %}
   {% if row.range_yearly_magnitude -%}
-    {% set qtitle = 'Yearly magnitude = ' + row.range_yearly_magnitude %}
+    {% set qtitle = 'Yearly magnitude = ' + row.range_yearly_magnitude|string %}
   {%- endif -%}
 {% endif %}
 <td class="{{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
