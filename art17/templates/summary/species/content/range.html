@@ -13,11 +13,12 @@
 </td>
 
 {% set qtitle, qclasses = parse_qa_errors('range_yearly_magnitude', row, qa_errors) %}
-<td class="{{ qclasses }}"
-    title="{%- if qtitle -%}{{ qtitle }}
-           {%- elif row.range_yearly_magnitude -%}
-           Yearly magnitude = {{ row.range_yearly_magnitude}}
-           {%- endif -%}">
+{% if not qtitle %}
+  {% if row.range_yearly_magnitude -%}
+    {% set qtitle = 'Yearly magnitude = ' + row.range_yearly_magnitude %}
+  {%- endif -%}
+{% endif %}
+<td class="{{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
   {{ row.range_trend or 'N/A' }}
 </td>
 

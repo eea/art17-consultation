@@ -16,11 +16,12 @@
 
     {% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude',
                                               row, qa_errors) %}
-    <td class="{{ qclasses }}"
-        title="{%- if qtitle -%}{{ qtitle }}
-               {%- elif row.population_yearly_magnitude -%}
-               Yearly magnitude = {{ row.population_yearly_magnitude}}
-               {%- endif -%}">
+    {% if not qtitle %}
+      {% if row.population_yearly_magnitude -%}
+        {% set qtitle = 'Yearly magnitude = ' + row.population_yearly_magnitude %}
+      {%- endif -%}
+    {% endif %}
+    <td class="{{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
       <span class="conclusion">{{ row.population_trend or 'N/A' }}</span></td>
 
     <td {{ parse_errors(['complementary_favourable_population_q',
