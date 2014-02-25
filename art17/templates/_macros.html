@@ -65,12 +65,12 @@
           {{ title }}
       </div>
       <div class="form-group clearfix no-bottom">
-          <label class="pull-left no-bottom">Method</label>
+          <label class="pull-left btn-align no-bottom">Method</label>
           <div class="width-third pull-right">{{ method_field() }}</div>
       </div>
       <hr>
       <div class="form-group no-bottom">
-          <label class="no-bottom">Conclusion</label>
+          <p class="bold btn-align">Conclusion</p>
           <ul class="select-list no-list">
               {% for conclusion, c in conclusion_field.choices %}
                 {% if conclusion %}
