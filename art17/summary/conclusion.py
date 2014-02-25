@@ -11,6 +11,17 @@ from art17.summary.permissions import can_delete, can_update_decision, \
 
 DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 
+CONC_METHODS = {
+    'conclusion_range': 'method_range',
+    'conclusion_population': 'method_population',
+    'conclusion_habitat': 'method_habitat',
+    'conclusion_future': 'method_future',
+    'conclusion_assessment': 'method_assessment',
+    'conclusion_target1': 'method_target1',
+    'conclusion_area': 'method_area',
+    'conclusion_structure': 'method_structure',
+}
+
 
 class ConclusionView(object):
 
@@ -34,10 +45,12 @@ class ConclusionView(object):
         values = {}
         for f in all_fields(self.manual_form_cls()):
             attr = f.name
-            for ass in best:
-                if getattr(ass, attr, ''):
-                    values[attr] = getattr(ass, attr)
-                    break
+            for ass in filter(lambda a: getattr(a, attr, None), best):
+                values[attr] = getattr(ass, attr)
+                if attr in CONC_METHODS:
+                    method = getattr(ass, 'assessment_method')
+                    values[CONC_METHODS[attr]] = method
+                break
         return values
 
     def get_form_cls(self):
