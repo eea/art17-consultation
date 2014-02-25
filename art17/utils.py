@@ -2,10 +2,10 @@ import re
 from decimal import Decimal
 
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
-valid_ref = re.compile(
-    '^\s*' + '(>|>>|~|<)?\s*(\d+)?(\.\d{0,2})?\s*' +
-    '(-\s*(>|>>|~|<)?(\d+)?(\.\d{0,2})?\s*)?' + '$'
-)
+valid_numeric = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
+                           "|(>|>>|~|<)?\s*((\d\.)?\d+)" + ")" + "\s*$")
+valid_ref = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
+                       "|(>|>>|~|<)?\s*((\d\.)?\d+)?" + ")" + "\s*$")
 
 
 def str2num(s, default='N/A', number_format='%.2f'):
@@ -36,6 +36,14 @@ def parse_semicolon(s, sep='<br />'):
 
 
 def validate_field(s):
+    """ Checks if a field is a valid numeric or progress value
+    """
+    if s:
+        return bool(valid_numeric.match(s))
+    return True
+
+
+def validate_ref(s):
     """ Checks if a field is a valid numeric or progress value
     """
     if s:

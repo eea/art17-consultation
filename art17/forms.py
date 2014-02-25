@@ -10,7 +10,7 @@ from art17.models import (
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion,
 )
-from art17.utils import validate_field
+from art17.utils import validate_field, validate_ref
 
 EMPTY_FORM = "Please fill at least one field"
 NOT_NUMERIC_VALUES = (
@@ -48,6 +48,11 @@ def numeric_validation(form, field):
     """ Default validation in previous app
     """
     if not validate_field(field.data):
+        raise ValidationError(NOT_NUMERIC_VALUES)
+
+
+def ref_validation(form, field):
+    if not validate_ref(field.data):
         raise ValidationError(NOT_NUMERIC_VALUES)
 
 
@@ -188,20 +193,20 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
-    complementary_favourable_range = TextField()
+    complementary_favourable_range = TextField(validators=[ref_validation])
 
     population_size = TextField(validators=[numeric_validation])
     population_size_unit = OptionalSelectField()
     method_population = OptionalSelectField()
     conclusion_population = OptionalSelectField()
     population_trend = OptionalSelectField()
-    complementary_favourable_population = TextField()
+    complementary_favourable_population = TextField(validators=[ref_validation])
 
     habitat_surface_area = TextField(validators=[numeric_validation])
     method_habitat = OptionalSelectField()
     conclusion_habitat = OptionalSelectField()
     habitat_trend = OptionalSelectField()
-    complementary_suitable_habitat = TextField()
+    complementary_suitable_habitat = TextField(validators=[numeric_validation])
 
     method_future = OptionalSelectField()
     conclusion_future = OptionalSelectField()
@@ -303,14 +308,14 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
     range_yearly_magnitude = TextField()
-    complementary_favourable_range = TextField()
+    complementary_favourable_range = TextField(validators=[ref_validation])
 
     coverage_surface_area = TextField(validators=[numeric_validation])
     method_area = OptionalSelectField()
     conclusion_area = OptionalSelectField()
     coverage_trend = OptionalSelectField()
     coverage_yearly_magnitude = TextField()
-    complementary_favourable_area = TextField()
+    complementary_favourable_area = TextField(validators=[ref_validation])
 
     method_structure = OptionalSelectField()
     conclusion_structure = OptionalSelectField()
@@ -407,8 +412,8 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 
     region = SelectField()
 
-    complementary_favourable_range = TextField()
-    complementary_favourable_population = TextField()
+    complementary_favourable_range = TextField(validators=[ref_validation])
+    complementary_favourable_population = TextField(validators=[ref_validation])
 
 
 class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
@@ -420,8 +425,8 @@ class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
 
     region = SelectField()
 
-    complementary_favourable_range = TextField()
-    complementary_favourable_area = TextField()
+    complementary_favourable_range = TextField(validators=[ref_validation])
+    complementary_favourable_area = TextField(validators=[ref_validation])
 
 
 class SummaryManualFormHabitatRefSTA(SummaryManualFormHabitatRef):
