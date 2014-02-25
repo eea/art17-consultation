@@ -67,6 +67,16 @@ $(function() {
       popup.focus();
     });
 
+    $('body').on('click', '#wikibutton', function(evt) {
+      evt.preventDefault();
+      var button = $(this);
+      var url = button.attr('href');
+      var name = ''
+      var params = 'height=600,width=600,screenX=300,screenY=100,scrollbars=1';
+      var popup = window.open(url, name, params);
+      popup.focus();
+    });
+
 });
 
 $(function() {

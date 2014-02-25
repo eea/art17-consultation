@@ -1,16 +1,13 @@
 <div>
-    <button type="button" 
-    				id="wikibutton" 
-                                onclick="openModal('{{ datasheet_url }}')">
+    <button type="button" id="wikibutton" href="{{ datasheet_url }}">
         View data sheet info</button>
 
-    <button type="button" 
-    				id="wikibutton"
-    				onclick="openModal(
-                                {% if region == '' %}
-                                    '{{ audittrail_merged_url }}'
-                                {% else %}
-                                    '{{ audittrail_url }}'
-                                {% endif %})">
+    <button type="button" id="wikibutton"
+        href=
+            {% if region == '' %}
+                "{{ audittrail_merged_url }}"
+            {% else %}
+                "{{ audittrail_url }}"
+            {% endif %}>
         Audit trail</button>
 </div>
