@@ -54,17 +54,15 @@
             <div class="popout size_unit_th right caret">
                 <table class="popout-table">
                     <tr>
-                        <th>Size</th>
-                        <th>Unit</th>
+                        <th>Agreed units</th>
+                        <th>Other units</th>
                     </tr>
+                    {% for row in objects %}
                     <tr>
-                        <td>Value</td>
-                        <td>Value</td>
+                        <td>{{ row.population_units_agreed|format_units }}</td>
+                        <td>{{ row.population_units_other|format_units }}</td>
                     </tr>
-                    <tr>
-                        <td>Value</td>
-                        <td>Value</td>
-                    </tr>
+                    {% endfor %}
                 </table>
             </div>
             Size&amp;Unit

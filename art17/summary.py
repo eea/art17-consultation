@@ -226,6 +226,13 @@ def format_date(value):
     return date_value.strftime('%m/%y')
 
 
+@summary.app_template_filter('format_units')
+def format_units(value):
+    if value and value[-2:] == ' i':
+        return value[:-2] + ' indiv.'
+    return value
+
+
 def record_errors(record):
     if isinstance(record, (EtcDataSpeciesRegion, EtcDataHabitattypeRegion)):
         error_cls = EtcQaErrorsSpeciesManualChecked
