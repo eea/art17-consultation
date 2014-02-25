@@ -347,7 +347,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
             ZERO_METHODS + self.get_method_options(methods)
         )
 
-        self.method_structure.choices = self.get_sf_options(methods)
+        self.method_structure.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
