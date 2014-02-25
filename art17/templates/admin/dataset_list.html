@@ -10,6 +10,50 @@
 {% block content %}
   <h1>Datasets</h1>
 
+
+  <ul class="no-list clearfix">
+    {% for dataset in datasets %}
+    <li class="box box-small pull-left width-300">
+      <div class="clearfix">
+        <div class="pull-left btn-align">
+          <strong class="large">{{ dataset.name }}</strong>
+        </div>
+        <a  class="button btn-gray pull-right"
+            href="{{ url_for('.dataset_edit', dataset_id=dataset.id) }}">
+          Edit
+        </a>
+      </div>
+      <p><strong>Data Schema:</strong> {{ dataset.schema }}</p>
+      <p><strong>ID:</strong> {{ dataset.id }}</p>
+      <hr>
+      <table class="simple_table no-border">
+        <thead>
+          <tr>
+            <td></td>
+            <td class="text-right">Content</td>
+            <td class="text-right">Auto.</td>
+            <td class="text-right">Manual</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Species</th>
+            <td class="text-right">{{ dataset.stats.species_content }}</td>
+            <td class="text-right">{{ dataset.stats.species_auto }}</td>
+            <td class="text-right">{{ dataset.stats.species_manual }}</td>
+          </tr>
+          <tr>
+            <th>Habitat</th>
+            <td class="text-right">{{ dataset.stats.habitat_content }}</td>
+            <td class="text-right">{{ dataset.stats.habitat_auto }}</td>
+            <td class="text-right">{{ dataset.stats.habitat_manual }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+    {% endfor %}
+  </ul>
+<!-- 
   <table class="table-list">
     <thead>
       <tr class="table-list-header">
@@ -41,5 +85,5 @@
       </tr>
     {% endfor %}
     </tbody>
-  </table>
+  </table> -->
 {% endblock content %}
