@@ -275,9 +275,6 @@ class Summary(ConclusionView, views.View):
                     return redirect(home_url)
             else:
                 flash('Please correct the errors below and try again.')
-                if not manual_assessment:
-                    home_url += '#theform'
-                    return redirect(home_url)
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
