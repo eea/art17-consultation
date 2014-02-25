@@ -32,39 +32,52 @@
 
       <tbody class="stripe_3rd">
         {% for subject in subjects %}
-        {% set subject_name, subject_title = subject %}
-        <tr>
-          <td class="th">
-            {{ subject_title }}
-          </td>
-          {% for region in regions %}
-            {% set data = objects.get(subject_name, {}).get(region.reg_code, '') %}
-            {% set url = url_for(summary_endpoint,
-                          period=dataset.id, subject=subject_name,
-                          region=region.reg_code) %}
-            {% if data %}
-              <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }}"
-                  title="{{ data['title'] }}">
-                    <a href="{{ url }}" class="conclusion">
-                    {% if can_view_details() %}
-                      {{ data['main_decision'] }}
-                      {{ ' '.join(data['other_decisions']) }}
-                      {{ data['method']|methodify }}
-                      <br/>
-                      {% set key = (subject_name, region.reg_code) %}
-                      {{ comment_counts['user'].get(key, 0) }}
-                      {{ comment_counts['all'].get(key, 0) }}
-                      {{ comment_counts['wiki'].get(key, 0) }}
-                    {% else %}
-                      {{ data['method']|methodify }}
-                    {% endif %}
-                    </a>
+            {% set subject_name, subject_title = subject %}
+            <tr>
+              <td class="th">
+                {{ subject_title }}
               </td>
-            {% else %}
-              <td></td>
+              {% for region in regions %}
+                {% set data = objects.get(subject_name, {}).get(region.reg_code, '') %}
+                {% set url = url_for(summary_endpoint,
+                              period=dataset.id, subject=subject_name,
+                              region=region.reg_code) %}
+                {% if data %}
+                  <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }}"
+                      title="{{ data['title'] }}">
+                        <a href="{{ url }}" class="conclusion">
+                        {% if can_view_details() %}
+                          {{ data['main_decision'] }}
+                          {{ ' '.join(data['other_decisions']) }}
+                          {{ data['method']|methodify }}
+                          <br/>
+                          {% set key = (subject_name, region.reg_code) %}
+                          {{ comment_counts['user'].get(key, 0) }}
+                          {{ comment_counts['all'].get(key, 0) }}
+                          {{ comment_counts['wiki'].get(key, 0) }}
+                        {% else %}
+                          {{ data['method']|methodify }}
+                        {% endif %}
+                        </a>
+                  </td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+            {% if loop.index % 25 == 0 %}
+                <tr>
+                  <th rowspan="2"></th>
+                  <th colspan="{{ regions|count }}">Regions</th>
+                </tr>
+                <tr>
+                  {% for region in regions %}
+                  <th>
+                    {{ region.reg_code }}
+                  </th>
+                  {% endfor %}
+                </tr>
             {% endif %}
-          {% endfor %}
-        </tr>
         {% endfor %}
       </tbody>
     </table>
