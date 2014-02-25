@@ -274,7 +274,6 @@ class Summary(ConclusionView, views.View):
                         home_url += '#man-row-' + rowid
                     return redirect(home_url)
             else:
-                import pdb; pdb.set_trace()  # XXX BREAKPOINT
                 flash('Please correct the errors below and try again.')
                 if not manual_assessment:
                     home_url += '#theform'
