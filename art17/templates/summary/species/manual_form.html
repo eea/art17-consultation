@@ -1,6 +1,6 @@
 {% from '_macros.html' import conclusion_td with context %}
-{% from '_macros.html' import method_conclusion_popout with context %}
-{% from '_macros.html' import size_unit %}
+{% from '_macros.html' import method_conclusion_td with context %}
+{% from '_macros.html' import size_unit, numeric_values_title %}
 
 
 {% set form=manual_form %}
@@ -21,17 +21,18 @@
 
     {% if not edit_ref %}
       {# Range #}
-      <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}>
+      <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}
+          {{ numeric_values_title() }}>
       {{ form.range_surface_area(size=5) }}
       </td>
-      <td class="{% if form.method_range.errors or form.conclusion_range.errors %}form-error-td{% endif %}">
-          {{ method_conclusion_popout('Range Conclusions',
-                                form.method_range, form.conclusion_range) }}
-      </td>
+
+      {{ method_conclusion_td('Range Conclusions', form.method_range, form.conclusion_range) }}
+
       <td {% if form.range_trend.errors %}class="form-error-td"{% endif %}>
       {{ form.range_trend() }}
       </td>
-      <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}>
+      <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
+          {{ numeric_values_title() }}>
       {{ form.complementary_favourable_range(size=5) }}
       </td>
 
@@ -39,43 +40,40 @@
       <td {% if form.population_size.errors or form.population_size_unit.errors %}class="form-error-td"{% endif %}>
         {{ size_unit(form.population_size, 5, form.population_size_unit) }}
       </td>
-      <td {% if form.method_population.errors or form.conclusion_population.errors %}class="form-error-td"{% endif %}>
-          {{ method_conclusion_popout('Population Conclusions',
-                    form.method_population, form.conclusion_population) }}
-      </td>
+
+      {{ method_conclusion_td('Population Conclusions', form.method_population, form.conclusion_population) }}
+
       <td {% if form.population_trend.errors %}class="form-error-td"{% endif %}>
       {{ form.population_trend() }}
       </td>
-      <td {% if form.complementary_favourable_population.errors %}class="form-error-td"{% endif %}>
+      <td {% if form.complementary_favourable_population.errors %}class="form-error-td"{% endif %}
+          {{ numeric_values_title() }}>
       {{ form.complementary_favourable_population(size=5) }}
       </td>
 
       {# Habitat #}
-      <td {% if form.habitat_surface_area.errors %}class="form-error-td"{% endif %}>
+      <td {% if form.habitat_surface_area.errors %}class="form-error-td"{% endif %}
+          {{ numeric_values_title() }}>
       {{ form.habitat_surface_area(size=5) }}
       </td>
-      <td {% if form.method_habitat.errors or form.conclusion_habitat.errors %}class="form-error-td"{% endif %}>
-          {{ method_conclusion_popout('Habitat Conclusions',
-                        form.method_habitat, form.conclusion_habitat) }}
-      </td>
+
+      {{ method_conclusion_td('Habitat Conclusions', form.method_habitat, form.conclusion_habitat) }}
+
       <td></td>
       <td {% if form.habitat_trend.errors %}class="form-error-td"{% endif %}>
       {{ form.habitat_trend() }}
       </td>
-      <td {% if form.complementary_suitable_habitat.errors %}class="form-error-td"{% endif %}>
+      <td {% if form.complementary_suitable_habitat.errors %}class="form-error-td"{% endif %}
+          {{ numeric_values_title() }}>
       {{ form.complementary_suitable_habitat(size=5) }}
       </td>
 
       {# FP #}
-      <td {% if form.method_future.errors or form.conclusion_future.errors %}class="form-error-td"{% endif %}>
-          {{ method_conclusion_popout('Future Prospects',
-                        form.method_future, form.conclusion_future) }}
+      {{ method_conclusion_td('Future Prospects', form.method_future, form.conclusion_future) }}
       </td>
 
       {# Overall #}
-      <td {% if form.method_assessment.errors or form.conclusion_assessment.errors %}class="form-error-td"{% endif %}>
-          {{ method_conclusion_popout('Current CS Conclusions',
-                        form.method_assessment, form.conclusion_assessment) }}
+      {{ method_conclusion_td('Current CS Conclusions', form.method_assessment, form.conclusion_assessment) }}
       </td>
       <td {% if form.conclusion_assessment_trend.errors %}class="form-error-td"{% endif %}>
       {{ form.conclusion_assessment_trend() }}
@@ -100,7 +98,8 @@
       <td>{{ ass.range_surface_area }}</td>
       {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
       <td>{{ ass.range_trend }}</td>
-      <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}>
+      <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
+          {{ numeric_values_title() }}>
         {{ form.complementary_favourable_range(size=5) }}
       </td>
 
@@ -108,7 +107,8 @@
           {{ ass.population_size_unit }}</td>
       {{ conclusion_td(ass.conclusion_population, ass.method_population) }}
       <td>{{ ass.population_trend }}</td>
-      <td {% if form.complementary_favourable_population.errors %}class="form-error-td"{% endif %}>
+      <td {% if form.complementary_favourable_population.errors %}class="form-error-td"{% endif %}
+          {{ numeric_values_title() }}>
         {{ form.complementary_favourable_population(size=5) }}
       </td>
 
