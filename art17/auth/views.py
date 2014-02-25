@@ -295,13 +295,18 @@ def admin_user(user_id):
 
     if flask.request.method == 'POST':
         if flask.request.form.get('btn') == u'delete':
-            # delete from Zope
-            zope_acl_manager.delete(user)
+            if user.is_ldap:
+                # delete from Zope
+                try:
+                    zope_acl_manager.delete(user)
+                except RuntimeError:
+                    flask.flash("Failed to delete user from Zope.", 'error')
+                    return flask.redirect(flask.url_ufor('.admin_user', user_id=user_id))
             # delete from local database
             user = models.RegisteredUser.query.get(user_id)
             models.db.session.delete(user)
             models.db.session.commit()
-            flask.flash("User %s has been deleted" % user_id, 'success')
+            flask.flash("User %s has successfully been deleted" % user_id, 'success')
             return flask.redirect(flask.url_for('.users'))
         else:
             user_form = Art17AdminEditUserForm(flask.request.form, obj=user)
@@ -328,7 +333,7 @@ def admin_user(user_id):
                     send_role_change_notification(user, new_roles)
 
                 flask.flash("User information updated for %s" % user_id, 'success')
-                return flask.redirect(flask.url_for('.users', user_id=user_id))
+                return flask.redirect(flask.url_for('.users'))
     else:
         user_form = Art17AdminEditUserForm(obj=user)
 
