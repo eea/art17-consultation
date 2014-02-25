@@ -1,13 +1,11 @@
-from datetime import datetime, date
+from datetime import datetime
 from flask import (
-    Blueprint,
     views,
     request,
     render_template,
     jsonify,
     url_for,
     flash,
-    abort,
 )
 from flask.ext.principal import PermissionDenied
 from sqlalchemy.exc import IntegrityError
@@ -29,10 +27,8 @@ from art17.models import (
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.common import (
     get_default_period,
-    admin_perm,
     expert_perm,
     sta_perm,
-    etc_perm,
     population_size_unit,
     population_ref,
     get_range_conclusion_value,
@@ -66,81 +62,18 @@ from art17.forms import (
     SummaryManualFormSpeciesRefSTA,
     SummaryManualFormHabitatRefSTA,
     SummaryManualFormHabitatSTA,
-    all_fields,
 )
 from art17.utils import str2num, parse_semicolon, str1num
+from art17.summary.permissions import can_touch, must_edit_ref
+from art17.summary import summary
+from art17.summary.conclusion import (
+    UpdateDecision,
+    ConclusionDelete,
+    ConclusionView,
+)
 
-
-summary = Blueprint('summary', __name__)
 
 DATE_FORMAT = '%d/%m/%Y %H:%M'
-DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
-
-
-@summary.app_template_global('can_view')
-def can_view(record, countries):
-    return (admin_perm.can() or expert_perm.can() or
-            record.eu_country_code not in countries)
-
-
-@summary.app_template_global('can_edit')
-def can_edit(record):
-    if current_user.is_anonymous():
-        return False
-
-    if record.deleted:
-        return False
-
-    if record.dataset.is_readonly:
-        return False
-
-    if record.user_id == current_user.id:
-        return True
-
-    return etc_perm.can() or admin_perm.can()
-
-
-@summary.app_template_global('can_delete')
-def can_delete(record):
-    if current_user.is_anonymous():
-        return False
-
-    if record.dataset.is_readonly:
-        return False
-
-    return record.user_id == current_user.id
-
-
-@summary.app_template_global('can_view_decision')
-def can_view_decision(record):
-    # TODO: check acl_manager code for checkPermissionViewDecision
-    return expert_perm.can() or admin_perm.can()
-
-
-@summary.app_template_global('can_update_decision')
-def can_update_decision(record):
-    return expert_perm.can() or admin_perm.can()
-
-
-@summary.app_template_global('can_add_conclusion')
-def can_add_conclusion(dataset, zone, subject, region=None):
-    """
-    Zone: one of 'species', 'habitat'
-    """
-    zone_cls_mapping = {'species': SpeciesSummary, 'habitat': HabitatSummary}
-    if not dataset:
-        return False
-    record_exists = False
-    if region and not current_user.is_anonymous():
-        record_exists = zone_cls_mapping[zone].get_manual_record(
-            dataset.id, subject, region, current_user.id)
-    return not dataset.is_readonly and (sta_perm.can() or admin_perm.can()) \
-        and not record_exists
-
-
-@summary.app_template_global('can_select_MS')
-def can_select_MS():
-    return sta_perm.can()
 
 
 @summary.app_context_processor
@@ -252,12 +185,6 @@ def record_errors(record):
     }
 
 
-def format_error(error, record, field):
-    if error.get('suspect_value', ''):
-        return '%s: %s' % (error['text'], error['suspect_value'])
-    return error['text']
-
-
 def parse_qa_errors(fields, record, qa_errors):
     title = []
     classes = []
@@ -265,84 +192,18 @@ def parse_qa_errors(fields, record, qa_errors):
         fields = [fields]
     for field in fields:
         if field in qa_errors:
-            title.append(format_error(qa_errors[field], record, field))
+            error = qa_errors[field]
+            if error.get('suspect_value', ''):
+                title.append('%s: %s' % (error['text'], error['suspect_value']))
+            else:
+                title.append(error['text'])
             classes.append('qa_error')
     return '<br/>'.join(title), ' '.join(classes)
 
 
-class Summary(views.View):
+class Summary(ConclusionView, views.View):
 
     methods = ['GET', 'POST']
-
-    def get_default_values(self):
-        period = request.args.get('period') or get_default_period()
-        subject = request.args.get('subject')
-        region = request.args.get('region')
-        best = (
-            self.model_auto_cls.query
-            .filter_by(dataset_id=period, subject=subject, region=region)
-            .join(
-                EtcDicMethod,
-                self.model_auto_cls.assessment_method == EtcDicMethod.method
-            )
-        ).all()
-        cmpf = (
-            lambda x, y:
-            -1 if x.assessment_method == '00' else cmp(x.order, y.order)
-        )
-        best.sort(cmp=cmpf)
-        values = {}
-        for f in all_fields(self.manual_form_cls()):
-            attr = f.name
-            for ass in best:
-                if getattr(ass, attr, ''):
-                    values[attr] = getattr(ass, attr)
-                    break
-        return values
-
-    def can_touch(self, assessment):
-        if current_user.is_anonymous():
-            return False
-        if not assessment:
-            return admin_perm.can() or sta_perm.can()
-        else:
-            return admin_perm.can() or etc_perm.can() or (
-                sta_perm.can() and assessment.user == current_user)
-
-    def must_edit_ref(self, assessment):
-        if not current_user.is_authenticated() or not assessment:
-            return False
-        if assessment.user_id == current_user.id:
-            return False
-
-        return etc_perm.can() or admin_perm.can()
-
-    def get_form_cls(self):
-        if not can_select_MS():
-            return self.manual_form_cls, self.manual_form_ref_cls
-        return self.manual_form_sta_cls, self.manual_form_ref_sta_cls
-
-    def get_manual_form(self, data=None, period=None, action=None):
-        manual_form_cls, manual_form_ref_cls = self.get_form_cls()
-        if action == 'edit':
-            filters = {
-                'region': request.args.get('edit_region'),
-                'user_id': request.args.get('edit_user'),
-                'subject': request.args.get('subject')
-            }
-            manual_assessment = self.model_manual_cls.query.filter_by(
-                **filters
-            ).first_or_404()
-        else:
-            manual_assessment = None
-            data = data or MultiDict(self.get_default_values())
-
-        if not self.must_edit_ref(manual_assessment):
-            form = manual_form_cls(formdata=data, obj=manual_assessment)
-        else:
-            form = manual_form_ref_cls(formdata=data, obj=manual_assessment)
-        form.setup_choices(dataset_id=period)
-        return form, manual_assessment
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
@@ -384,7 +245,7 @@ class Summary(views.View):
                                subject=subject, region=region)
 
             if manual_form.validate(subject=subject, period=period):
-                if not self.can_touch(manual_assessment):
+                if not can_touch(manual_assessment):
                     raise PermissionDenied()
 
                 if not manual_assessment:
@@ -439,13 +300,13 @@ class Summary(views.View):
         context.update({
             'objects': self.objects,
             'auto_objects': self.auto_objects,
-            'manual_objects': self.view_conclusions(self.manual_objects),
+            'manual_objects': self.filter_conclusions(self.manual_objects),
             'restricted_countries': self.restricted_countries,
             'regions': regions,
             'summary_filter_form': summary_filter_form,
             'manual_form': manual_form,
             'manual_assessment': manual_assessment,
-            'edit_ref': self.must_edit_ref(manual_assessment),
+            'edit_ref': must_edit_ref(manual_assessment),
             'current_selection': current_selection,
             'annexes': annexes,
             'group': group,
@@ -488,27 +349,6 @@ class Summary(views.View):
         if annexes[0] and priority:
             annexes[0] += '*'
         return filter(bool, annexes)
-
-    def view_conclusions(self, conclusions):
-        if admin_perm.can() or expert_perm.can():
-            return conclusions
-        conclusions = list(conclusions)
-        ok_conclusions = filter(lambda c: c.decision in ['OK', 'END'],
-                                conclusions)
-        user_or_expert = (
-            lambda c:
-            not c.user.has_role('admin') and not c.user.has_role('expert')
-            if c.user else False
-        )
-        user_iurmax = (
-            lambda c:
-            not c.user.has_role('expert')
-            if c.user else False
-        )
-        if ok_conclusions:
-            return ok_conclusions + filter(user_or_expert, conclusions)
-        else:
-            return filter(user_iurmax, conclusions)
 
 
 class SpeciesSummary(SpeciesMixin, Summary):
@@ -691,97 +531,12 @@ def _regions_habitat():
     return jsonify(data)
 
 
-class MixinView(object):
-
-    def __init__(self, mixin):
-        self.mixin = mixin
-
-
-class ConclusionDelete(MixinView, views.View):
-
-    def dispatch_request(self):
-        period = request.args.get('period')
-        subject = request.args.get('subject')
-        region = request.args.get('region')
-        delete_region = request.args.get('delete_region')
-        delete_user = request.args.get('delete_user')
-        delete_ms = request.args.get('delete_ms')
-        record = self.mixin.get_manual_record(period, subject, delete_region,
-                                              delete_user, delete_ms)
-        if not record:
-            abort(404)
-        if not can_delete(record):
-            abort(403)
-        if record.deleted:
-            record.deleted = 0
-        else:
-            record.deleted = 1
-        db.session.add(record)
-        db.session.commit()
-        return redirect(
-            url_for(self.mixin.summary_endpoint, period=period,
-                    subject=subject, region=region)
-        )
-
-
 summary.add_url_rule('/species/conc/delete/',
                      view_func=ConclusionDelete
                      .as_view('species-delete', mixin=SpeciesMixin))
 summary.add_url_rule('/habitat/conc/delete/',
                      view_func=ConclusionDelete
                      .as_view('habitat-delete', mixin=HabitatMixin))
-
-
-class UpdateDecision(MixinView, views.View):
-
-    methods = ['GET', 'POST']
-
-    def dispatch_request(self, period, subject, region, user, ms):
-        self.record = self.mixin.get_manual_record(period, subject, region,
-                                                   user, ms)
-        if not self.record:
-            abort(404)
-
-        if not can_update_decision(self.record):
-            abort(403)
-
-        if not request.form.get('decision'):
-            abort(401)
-
-        decision = request.form['decision']
-        result = self.validate(decision)
-        if result['success']:
-            self.record.decision = decision
-            self.record.last_update = datetime.now().strftime(DATE_FORMAT_PH)
-            db.session.commit()
-        return jsonify(result)
-
-    def validate(self, decision):
-        validation_values = ['OK', 'END']
-        if decision == 'OK?':
-            return {
-                'success': False,
-                'error': "You are not allowed to select 'OK?'" +
-                         "Please select another value."
-            }
-        elif decision in validation_values:
-            for r in self.get_sister_records(self.record):
-                if r.decision in validation_values:
-                    return {
-                        'success': False,
-                        'error': "Another final decision already exists",
-                    }
-
-        return {'success': True}
-
-    def get_sister_records(self, record):
-        return (
-            self.mixin.model_manual_cls.query
-            .filter_by(subject=record.subject, region=record.region,
-                       dataset_id=record.dataset_id)
-            .filter(~(self.mixin.model_manual_cls.user == record.user))
-        )
-
 
 summary.add_url_rule(
     '/species/conc/update/<period>/<subject>/<region>/<user>/<ms>/',

@@ -14,7 +14,7 @@ from art17.models import (
     Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db,
     EtcDicDecision, EtcDicMethod,
 )
-from art17.summary import SpeciesMixin, HabitatMixin
+from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
 
 progress = Blueprint('progress', __name__)
