@@ -1,7 +1,8 @@
-  <td class="border">
+
+  {% set country_title = get_title_for_country(row) %}
+  <td class="border" title="{{ country_title|join('') }}">
     {% set original_url = get_original_record_url(row) %}
-    {% set country_title = get_title_for_country(row) %}
-    <a class="clipped popup-btn block" title="{{ country_title|join('') }}"
+    <a class="clipped popup-btn block"
        data-title="Factsheet" href="{{ original_url }}">
       {{ row.eu_country_code }}
     </a>
