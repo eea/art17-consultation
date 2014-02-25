@@ -80,10 +80,21 @@
               {% endfor %}
           </ul>
       </div>
-  </div>
-      <a class="conclusion select block" tab-index data-popout="assesment">
-      <span class="selected-value hidden"></span>
-      <i class="fa fa-hand-o-up"></i>
+      </div>
+      <a class="conclusion select block {{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
+         tab-index
+         data-popout="assesment"
+         data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}">
+        {% if conclusion_field.data %}
+          <span class="selected-value"></span>
+        {% else %}
+          <span class="selected-value hidden"></span>
+        {% endif %}
+        {% if method_field.data %}
+          {{ method_field.data }}
+        {% else %}
+          <i class="fa fa-hand-o-up"></i>
+        {% endif %}
       </a>
   </div>
 {% endmacro %}

@@ -306,7 +306,7 @@ $(document).ready(function () {
         var radios = $(this).find("input[type='radio']");
         var preview = $(this).closest('.popout-wrapper').find(".conclusion.select");
         var prevSecondClick;
-        var currentClass;
+        var currentClass = $(preview).data('initial');
 
         var updateSelect = function () {
             if ($(this).val()) {
