@@ -121,7 +121,11 @@
       </div>
       <a class="select block" tab-index data-popout="size_unit">
           <span class="selected-value no-break hidden"></span>
+          {% if pop_size_field.data %}
+            {{ pop_size_field.data }}
+          {% else %}
           <i class="fa fa-hand-o-up"></i>
+          {% endif %}
       </a>
   </div>
 {% endmacro %}
