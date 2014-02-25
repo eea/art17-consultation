@@ -11,10 +11,10 @@
 		<div class="popout details">
 			<span class="close pull-right"><i class="fa fa-times"></i></span>
 			<div>
-				<span class="muted">{{ row.last_update|format_date }}</span><br />
-				<strong>{{ row.user.name or row.user_id}}</strong><br />
-				Institution: {{ row.user.institution }}<br />
-				Member State: {{ row.MS }}
+				<p class="muted">{{ row.last_update|format_date }}</p>
+				<p class="bold">{{ row.user.name or row.user_id}}</p>
+				<p>Institution: {{ row.user.institution }}</p>
+				<p>Member State: {{ row.MS }}</p>
 			</div>
 			{% if row.deleted and not can_delete(row) %}
 			<hr>

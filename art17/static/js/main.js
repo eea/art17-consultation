@@ -402,3 +402,15 @@ $(function() {
          history.pushState('', document.title, window.location.pathname);
      });
  });
+
+// Rap with popouts
+$(document).ready(function() {
+    $("td[title], th[title]").each(function() {
+        var content = $(this).attr('title');
+        content = content.replace(/\n/g, '<br />');
+        console.log(content);
+        $(this).removeAttr('title');
+        $(this).append("<div class='popout title right caret'>" + content + "</div>")
+               .wrapInner("<div class='popout-wrapper hover'></div>");
+    });
+});

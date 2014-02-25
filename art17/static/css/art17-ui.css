@@ -653,7 +653,6 @@ a.conclusion:hover {
   position: absolute;
   bottom: 100%;
   font-family: "Nimbus sans L", Helvetica, Arial, Verdana, sans-serif;
-  line-height: 24px;
   text-align: left;
   color: #333;
   padding: 6px 12px;
@@ -699,6 +698,10 @@ a.conclusion:hover {
 }
 .popout hr {
   margin: 6px 0;
+}
+.popout p {
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 .popout .btn-toolbar:last-child {
   margin-bottom: 6px;
@@ -773,6 +776,14 @@ a.conclusion:hover {
 }
 .popout.size_unit .close {
   display: none;
+}
+/* POPOUT TILE */
+.popout.title {
+  font-family: 'Roboto Condensed';
+  font-weight: 300;
+  font-size: 12px;
+  -webkit-box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
+  box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
 }
 /* CLOSE BUTTON */
 .close {
