@@ -1,6 +1,6 @@
 {% from '_macros.html' import conclusion_td with context %}
 {% from '_macros.html' import method_conclusion_td with context %}
-{% from '_macros.html' import size_unit, numeric_values_title %}
+{% from '_macros.html' import size_unit, numval_habitat_title %}
 
 
 {% set form=manual_form %}
@@ -21,7 +21,7 @@
 
     {% if not edit_ref %}
       <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}
-          {{ numeric_values_title() }}>
+          {{ numval_habitat_title() }}>
       {{ form.range_surface_area(size=5) }}
       </td>
       {{ method_conclusion_td('Range Conclusions', form.method_range, form.conclusion_range) }}
@@ -29,12 +29,12 @@
       {{ form.range_trend() }}
       </td>
       <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
-          {{ numeric_values_title() }}>
+          {{ numval_habitat_title() }}>
       {{ form.complementary_favourable_range(size=5) }}
       </td>
 
       <td {% if form.coverage_surface_area.errors %}class="form-error-td"{% endif %}
-          {{ numeric_values_title() }}>
+          {{ numval_habitat_title() }}>
       {{ form.coverage_surface_area(size=5) }}
       </td>
       {{ method_conclusion_td('Area Conclusions', form.method_area, form.conclusion_area) }}
@@ -42,7 +42,7 @@
       {{ form.coverage_trend() }}
       </td>
       <td {% if form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}
-          {{ numeric_values_title() }}>
+          {{ numval_habitat_title() }}>
       {{ form.complementary_favourable_area(size=5) }}
       </td>
 
@@ -79,7 +79,7 @@
       {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
       <td>{{ ass.range_trend }}</td>
       <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
-          {{ numeric_values_title() }}>
+          {{ numval_habitat_title() }}>
         {{ form.complementary_favourable_range(size=5) }}
       </td>
 
@@ -88,7 +88,7 @@
       {{ conclusion_td(ass.conclusion_population, ass.method_population) }}
       <td>{{ ass.population_trend }}</td>
       <td {% if form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}
-          {{ numeric_values_title() }}>
+          {{ numval_habitat_title() }}>
         {{ form.complementary_favourable_area(size=5) }}
       </td>
 

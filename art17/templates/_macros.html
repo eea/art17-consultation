@@ -112,7 +112,7 @@
       <a class="close pull-right"><i class="fa fa-times"></i></a>
       <div class="form-group clearfix no-bottom">
           <label class="pull-left no-bottom">Size</label>
-          <div {{ numeric_values_title() }} class="width-2third pull-right">{{ pop_size_field(size=size) }}</div>
+          <div {{ numval_species_title() }} class="width-2third pull-right">{{ pop_size_field(size=size) }}</div>
       </div>
       <div class="form-group clearfix no-bottom">
           <label class="pull-left no-bottom">Unit</label>
@@ -130,13 +130,18 @@
   </div>
 {% endmacro %}
 
-{% macro numeric_values_title() %}
+{% macro numval_species_title() %}
     title="Only numeric values or intervals are accepted.
 The numbers can be with decimals only if the numbers are smaller than 10.
-Full stop '.' should be used as decimal separator The numbers can be preceded by a qualifier: '~', '>', '>>', '<'.
+Full stop '.' should be used as decimal separator. The numbers can be preceded by a qualifier: '~', '>', '>>', '<'.
 Leave the cell blank only if it is not possible to calculate a value.
 Reference values should be indicated only by a qualifier if the numerical value is the same as the actual value.
 The automatic computation for the reference values is not able to calculate a value, unless the corresponding conclusion is favourable, therefore the reference values need to be computed manually."
+{% endmacro %}
+
+{% macro numval_habitat_title() %}
+    title="Only numeric values or intervals are accepted.
+The numbers can be float with '.' for decimals and 2 decimals."
 {% endmacro %}
 
 {% macro cm_pair_title() %}
