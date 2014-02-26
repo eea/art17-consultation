@@ -293,6 +293,11 @@ class _CommentCounterBase(object):
             )
             .join(Wiki.comments)
             .filter(Wiki.dataset_id == self.dataset_id)
+            .filter(self.wiki_subject_column != None)
+            .group_by(
+                self.wiki_subject_column,
+                Wiki.region_code,
+            )
         )
 
     def _count_unread(self, comments_query, read_table, reader_col):
@@ -305,8 +310,7 @@ class _CommentCounterBase(object):
         )
         for row in read_comments_query:
             count = row[2]
-            if count > 0:
-                rv[row[0], row[1]] -= count
+            rv[row[0], row[1]] -= count
 
         return rv
 
