@@ -296,16 +296,10 @@ class _CommentCounterBase(object):
 
         return rv
 
-    def count_all(self):
-        return self._count_for_query(self._get_comments_query())
-
-    def count_for_me(self):
-        return self._count_for_query(self._get_comments_for_me_query())
-
     def get_counts(self):
         return {
-            'user': self.count_for_me(),
-            'all': self.count_all(),
+            'user': self._count_for_query(self._get_comments_for_me_query()),
+            'all': self._count_for_query(self._get_comments_query()),
             'wiki': {},
         }
 
