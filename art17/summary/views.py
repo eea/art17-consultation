@@ -64,7 +64,7 @@ from art17.forms import (
     SummaryManualFormHabitatSTA,
 )
 from art17.utils import str2num, parse_semicolon, str1num
-from art17.summary.permissions import can_touch, must_edit_ref
+from art17.summary.permissions import can_touch, must_edit_ref, can_select_MS
 from art17.summary import summary
 from art17.summary.conclusion import (
     UpdateDecision,
@@ -253,6 +253,8 @@ class Summary(ConclusionView, views.View):
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
+                    if not can_select_MS():
+                        manual_assessment.MS = current_user.MS
                     db.session.flush()
                     db.session.add(manual_assessment)
                     try:
