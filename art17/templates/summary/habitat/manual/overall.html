@@ -1,6 +1,6 @@
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
 
-{% set concl_value = get_assesm_conclusion_value_for_habitat(row.habitat,
+{% set concl_value = get_assesm_conclusion_value_for_habitat(row.habitatcode,
                             row.region, row.method_future) %}
 
 <td class="{{ classes }} border"
