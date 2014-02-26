@@ -18,6 +18,7 @@ from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
     Dataset, db,
     Comment, t_comments_read, HabitatComment, t_habitat_comments_read,
+    Wiki, WikiComment, t_wiki_comments_read,
 )
 
 
@@ -283,24 +284,46 @@ class _CommentCounterBase(object):
             .filter_by(user_id=self.user_id)
         )
 
-    def _count_for_query(self, comments_query):
+    def _get_wiki_comments_query(self):
+        return (
+            db.session.query(
+                self.wiki_subject_column,
+                Wiki.region_code,
+                func.count(WikiComment.id),
+            )
+            .join(Wiki.comments)
+            .filter(Wiki.dataset_id == self.dataset_id)
+        )
+
+    def _count_unread(self, comments_query, read_table, reader_col):
         rv = {(row[0], row[1]): row[2] for row in comments_query}
 
         read_comments_query = (
             comments_query
-            .join(self.read_table)
-            .filter(self.read_table.c.reader_user_id == self.user_id)
+            .join(read_table)
+            .filter(getattr(read_table.c, reader_col) == self.user_id)
         )
         for row in read_comments_query:
-            rv[row[0], row[1]] -= row[2]
+            count = row[2]
+            if count > 0:
+                rv[row[0], row[1]] -= count
 
         return rv
 
     def get_counts(self):
         return {
-            'user': self._count_for_query(self._get_comments_for_me_query()),
-            'all': self._count_for_query(self._get_comments_query()),
-            'wiki': {},
+            'user': self._count_unread(
+                self._get_comments_for_me_query(),
+                self.read_table, 'reader_user_id',
+            ),
+            'all': self._count_unread(
+                self._get_comments_query(),
+                self.read_table, 'reader_user_id',
+            ),
+            'wiki': self._count_unread(
+                self._get_wiki_comments_query(),
+                t_wiki_comments_read, 'reader_id',
+            ),
         }
 
 
@@ -309,6 +332,7 @@ class SpeciesCommentCounter(_CommentCounterBase):
     comment_cls = Comment
     subject_column = property(lambda self: Comment.assesment_speciesname)
     read_table = t_comments_read
+    wiki_subject_column = property(lambda self: Wiki.assesment_speciesname)
 
 
 class HabitatCommentCounter(_CommentCounterBase):
@@ -316,3 +340,4 @@ class HabitatCommentCounter(_CommentCounterBase):
     comment_cls = HabitatComment
     subject_column = property(lambda self: HabitatComment.habitat)
     read_table = t_habitat_comments_read
+    wiki_subject_column = property(lambda self: Wiki.habitatcode)
