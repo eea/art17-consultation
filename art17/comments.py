@@ -258,8 +258,8 @@ class _CommentCounterBase(object):
         self.period = period
         self.user_id = user_id
 
-    def count_all(self):
-        comments_query = (
+    def _get_comments_query(self):
+        return (
             db.session.query(
                 self.subject_column,
                 self.comment_cls.region,
@@ -275,10 +275,16 @@ class _CommentCounterBase(object):
                 self.comment_cls.region,
             )
         )
-        rv = {
-            (row[0], row[1]): row[2]
-            for row in comments_query
-        }
+
+    def _get_comments_for_me_query(self):
+        return (
+            self._get_comments_query()
+            .join(self.comment_cls.record)
+            .filter_by(user_id=self.user_id)
+        )
+
+    def _count_for_query(self, comments_query):
+        rv = {(row[0], row[1]): row[2] for row in comments_query}
 
         read_comments_query = (
             comments_query
@@ -290,9 +296,15 @@ class _CommentCounterBase(object):
 
         return rv
 
+    def count_all(self):
+        return self._count_for_query(self._get_comments_query())
+
+    def count_for_me(self):
+        return self._count_for_query(self._get_comments_for_me_query())
+
     def get_counts(self):
         return {
-            'user': {},
+            'user': self.count_for_me(),
             'all': self.count_all(),
             'wiki': {},
         }
