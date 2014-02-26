@@ -727,6 +727,27 @@ a.conclusion:hover {
 .popout.right.caret:after {
   border-right-color: #fff;
 }
+/* POPOUT BOTTOM */
+.popout.bottom {
+  top: 100%;
+  left: -2px;
+  bottom: auto;
+}
+.popout.bottom.caret:before,
+.popout.bottom.caret:after {
+  border-top-color: transparent;
+  top: auto;
+  left: 12px;
+  bottom: 100%;
+  margin: 0;
+}
+.popout.bottom.caret:before {
+  margin-left: -1px;
+  border-bottom-color: #bbb;
+}
+.popout.bottom.caret:after {
+  border-bottom-color: #fff;
+}
 /* POPOUT DETAILS */
 .popout.details {
   right:-1px;
@@ -776,14 +797,6 @@ a.conclusion:hover {
 }
 .popout.size_unit .close {
   display: none;
-}
-/* POPOUT TILE */
-.popout.title {
-  font-family: 'Roboto Condensed';
-  font-weight: 300;
-  font-size: 12px;
-  -webkit-box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
-  box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
 }
 /* CLOSE BUTTON */
 .close {

@@ -403,14 +403,21 @@ $(function() {
      });
  });
 
-// Rap with popouts
+// jQuery Power Tip
 $(document).ready(function() {
-    $("td[title], th[title]").each(function() {
-        var content = $(this).attr('title');
-        content = content.replace(/\n/g, '<br />');
-        console.log(content);
-        $(this).removeAttr('title');
-        $(this).append("<div class='popout title right caret'>" + content + "</div>")
-               .wrapInner("<div class='popout-wrapper hover'></div>");
+    $(".complex_datatable td, .complex_datatable th").each(function() {
+        var tooltip = $(this).attr('title');
+        if (tooltip) {
+            $(this).removeAttr('title')
+            // Replace line break with <br />
+            tooltip = tooltip.replace(/\n/g, '<br />');
+
+            $(this).data('powertip', tooltip);
+            $(this).powerTip({
+                placement: 'sw-alt',
+                smartPlacement: true,
+                offset: 0,
+            });
+        }
     });
 });

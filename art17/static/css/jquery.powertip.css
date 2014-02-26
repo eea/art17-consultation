@@ -1,0 +1,165 @@
+/* PowerTip Plugin */
+#powerTip {
+	cursor: default;
+	background: #fff;
+	/*background-color: #333;*/
+	/*background-color: rgba(0, 0, 0, 0.8);*/
+  font-family: 'Roboto Condensed';
+  font-weight: 300;
+  font-size: 12px;
+	/*color: #fff;*/
+	display: none;
+	border: 1px solid #bbb;
+	padding: 3px 6px;
+	position: absolute;
+	white-space: nowrap;
+	z-index: 2147483647;
+  -webkit-box-shadow: 0 0px 3px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 0px 3px 0px rgba(0,0,0,0.2);
+}
+#powerTip:before {
+	content: "";
+	position: absolute;
+}
+#powerTip.n:before, #powerTip.s:before {
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
+	left: 50%;
+	margin-left: -5px;
+}
+#powerTip.e:before, #powerTip.w:before {
+	border-bottom: 5px solid transparent;
+	border-top: 5px solid transparent;
+	margin-top: -5px;
+	top: 50%;
+}
+#powerTip.n:before {
+	border-top: 5px solid #bbb;
+	bottom: -5px;
+}
+#powerTip.e:before {
+	border-right: 5px solid #bbb;
+	left: -5px;
+}
+#powerTip.s:before {
+	border-bottom: 5px solid #bbb;
+	top: -5px;
+}
+#powerTip.w:before {
+	border-left: 5px solid #bbb;
+	right: -5px;
+}
+#powerTip.ne:before, #powerTip.se:before {
+	border-right: 5px solid transparent;
+	border-left: 0;
+	left: 5px;
+}
+#powerTip.nw:before, #powerTip.sw:before {
+	border-left: 5px solid transparent;
+	border-right: 0;
+	right: 5px;
+}
+#powerTip.ne:before, #powerTip.nw:before {
+	border-top: 5px solid #bbb;
+	bottom: -5px;
+}
+#powerTip.se:before, #powerTip.sw:before {
+	border-bottom: 5px solid #bbb;
+	top: -5px;
+}
+#powerTip.nw-alt:before, #powerTip.ne-alt:before,
+#powerTip.sw-alt:before, #powerTip.se-alt:before {
+	border-top: 5px solid #bbb;
+	bottom: -5px;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	left: 5px;
+}
+#powerTip.ne-alt:before {
+	left: auto;
+	right: 5px;
+}
+#powerTip.sw-alt:before, #powerTip.se-alt:before {
+	border-top: none;
+	border-bottom: 5px solid #bbb;
+	bottom: auto;
+	top: -5px;
+}
+#powerTip.se-alt:before {
+	left: auto;
+	right: 5px;
+}
+
+
+#powerTip:after {
+	content: "";
+	position: absolute;
+}
+#powerTip.n:after, #powerTip.s:after {
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	left: 50%;
+	margin-left: -4px;
+}
+#powerTip.e:after, #powerTip.w:after {
+	border-bottom: 4px solid transparent;
+	border-top: 4px solid transparent;
+	margin-top: -4px;
+	top: 50%;
+}
+#powerTip.n:after {
+	border-top: 4px solid #fff;
+	bottom: -4px;
+}
+#powerTip.e:after {
+	border-right: 4px solid #fff;
+	left: -4px;
+}
+#powerTip.s:after {
+	border-bottom: 4px solid #fff;
+	top: -4px;
+}
+#powerTip.w:after {
+	border-left: 4px solid #fff;
+	right: -4px;
+}
+#powerTip.ne:after, #powerTip.se:after {
+	border-right: 4px solid transparent;
+	border-left: 0;
+	left: 4px;
+}
+#powerTip.nw:after, #powerTip.sw:after {
+	border-left: 4px solid transparent;
+	border-right: 0;
+	right: 4px;
+}
+#powerTip.ne:after, #powerTip.nw:after {
+	border-top: 4px solid #fff;
+	bottom: -4px;
+}
+#powerTip.se:after, #powerTip.sw:after {
+	border-bottom: 4px solid #fff;
+	top: -4px;
+}
+#powerTip.nw-alt:after, #powerTip.ne-alt:after,
+#powerTip.sw-alt:after, #powerTip.se-alt:after {
+	border-top: 4px solid #fff;
+	bottom: -4px;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	left: 6px;
+}
+#powerTip.ne-alt:after {
+	left: auto;
+	right: 4px;
+}
+#powerTip.sw-alt:after, #powerTip.se-alt:after {
+	border-top: none;
+	border-bottom: 4px solid #fff;
+	bottom: auto;
+	top: -4px;
+}
+#powerTip.se-alt:before {
+	left: auto;
+	right: 4px;
+}

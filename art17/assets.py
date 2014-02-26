@@ -5,6 +5,7 @@ BUNDLE_JS = (
     'js/lib/jquery.chained.remote.min.js',
     'js/lib/ajax_memory_cache.js',
     'js/lib/jquery.formalize.min.js',
+    'js/lib/jquery.powertip.min.js',
     'js/main.js',
 )
 
