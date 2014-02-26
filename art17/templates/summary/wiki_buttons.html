@@ -1,6 +1,8 @@
 <div>
     <button type="button" id="wikibutton" href="{{ datasheet_url }}">
-        View data sheet info</button>
+        View data sheet info
+        {% if wiki_unread %}({{ wiki_unread }} unread comments){% endif %}
+    </button>
 
     <button type="button" id="wikibutton"
         href=

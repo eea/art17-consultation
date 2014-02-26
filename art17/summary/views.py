@@ -6,6 +6,7 @@ from flask import (
     jsonify,
     url_for,
     flash,
+    g,
 )
 from flask.ext.principal import PermissionDenied
 from sqlalchemy.exc import IntegrityError
@@ -70,6 +71,7 @@ from art17.summary.conclusion import (
     ConclusionDelete,
     ConclusionView,
 )
+from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
 
 
 DATE_FORMAT = '%d/%m/%Y %H:%M'
@@ -372,6 +374,10 @@ class SpeciesSummary(SpeciesMixin, Summary):
             self.manual_objects = self.model_manual_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_manual_cls.decision.desc())
+        self.wiki_unread = (
+            SpeciesCommentCounter(period, g.identity.id)
+            .get_wiki_unread_count(subject, region)
+        )
         return True
 
     def get_context(self):
@@ -401,6 +407,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
                 period=request.args.get('period')),
             'progress_endpoint': 'progress.species-progress',
             'get_title_for_country': get_title_for_species_country,
+            'wiki_unread': self.wiki_unread,
         }
 
 
@@ -432,6 +439,10 @@ class HabitatSummary(HabitatMixin, Summary):
             self.manual_objects = self.model_manual_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_manual_cls.decision.desc())
+        self.wiki_unread = (
+            HabitatCommentCounter(period, g.identity.id)
+            .get_wiki_unread_count(subject, region)
+        )
         return True
 
     def get_context(self):
@@ -461,6 +472,7 @@ class HabitatSummary(HabitatMixin, Summary):
                 period=request.args.get('period')),
             'progress_endpoint': 'progress.habitat-progress',
             'get_title_for_country': get_title_for_habitat_country,
+            'wiki_unread': self.wiki_unread,
         }
 
     def get_current_selection(self, period_name, group, subject, region):

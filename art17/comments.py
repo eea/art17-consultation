@@ -326,6 +326,13 @@ class _CommentCounterBase(object):
             ),
         }
 
+    def get_wiki_unread_count(self, subject, region):
+        count_rv = self._count_unread(
+            self._get_wiki_comments_query(),
+            t_wiki_comments_read, 'reader_id',
+        )
+        return count_rv.get((subject, region), 0)
+
 
 class SpeciesCommentCounter(_CommentCounterBase):
 
