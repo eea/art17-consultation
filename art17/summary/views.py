@@ -346,6 +346,10 @@ class SpeciesSummary(SpeciesMixin, Summary):
 
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}
+        self.wiki_unread = (
+            SpeciesCommentCounter(period, g.identity.id)
+            .get_wiki_unread_count(subject, region)
+        )
         if subject:
             filter_args['assesment_speciesname'] = subject
         else:
@@ -374,10 +378,6 @@ class SpeciesSummary(SpeciesMixin, Summary):
             self.manual_objects = self.model_manual_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_manual_cls.decision.desc())
-        self.wiki_unread = (
-            SpeciesCommentCounter(period, g.identity.id)
-            .get_wiki_unread_count(subject, region)
-        )
         return True
 
     def get_context(self):
@@ -421,6 +421,10 @@ class HabitatSummary(HabitatMixin, Summary):
 
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}
+        self.wiki_unread = (
+            HabitatCommentCounter(period, g.identity.id)
+            .get_wiki_unread_count(subject, region)
+        )
 
         if subject:
             filter_args['habitatcode'] = subject
@@ -439,10 +443,6 @@ class HabitatSummary(HabitatMixin, Summary):
             self.manual_objects = self.model_manual_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_manual_cls.decision.desc())
-        self.wiki_unread = (
-            HabitatCommentCounter(period, g.identity.id)
-            .get_wiki_unread_count(subject, region)
-        )
         return True
 
     def get_context(self):
