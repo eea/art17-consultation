@@ -271,6 +271,7 @@ class _CommentCounterBase(object):
                 self.comment_cls.deleted == 0,
                 self.comment_cls.deleted == None,
             ))
+            .filter(WikiComment.author_id != self.user_id)
             .group_by(
                 self.subject_column,
                 self.comment_cls.region,
@@ -293,6 +294,11 @@ class _CommentCounterBase(object):
             )
             .join(Wiki.comments)
             .filter(Wiki.dataset_id == self.dataset_id)
+            .filter(or_(
+                WikiComment.deleted == 0,
+                WikiComment.deleted == None,
+            ))
+            .filter(WikiComment.author_id != self.user_id)
             .filter(self.wiki_subject_column != None)
             .group_by(
                 self.wiki_subject_column,
