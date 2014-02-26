@@ -86,13 +86,11 @@
          data-popout="assesment"
          data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}">
         {% if conclusion_field.data %}
-          <span class="selected-value"></span>
+          <span class="selected-value">
+            {{ method_field.data }}
+          </span>
         {% else %}
           <span class="selected-value hidden"></span>
-        {% endif %}
-        {% if method_field.data %}
-          {{ method_field.data }}
-        {% else %}
           <i class="fa fa-hand-o-up"></i>
         {% endif %}
       </a>
