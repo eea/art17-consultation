@@ -20,9 +20,9 @@ def setup(app):
 
 @pytest.mark.parametrize("data,error,field", [
     ({},
-     EMPTY_FORM, 'range_surface_area'),
+     EMPTY_FORM, 'form_errors'),
     ({'range_surface_area': '10'},
-     METH_CONCL_MANDATORY, 'range_surface_area'),
+     METH_CONCL_MANDATORY, 'form_errors'),
     ({'range_surface_area': '11', 'method_range': '1'},
      METH_CONCL_PAIR_MANDATORY, 'conclusion_range'),
     ({'range_surface_area': 'asdfasdpl;'},

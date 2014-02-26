@@ -80,6 +80,19 @@ def habitat_ms_validator(form, field):
         raise ValidationError(INVALID_MS_REGION_PAIR)
 
 
+def form_validation(form, field):
+    """ Validate form as a whole: no empty data, no data without conclusion etc
+    """
+    excluded = [form.region]
+    if hasattr(form, 'MS'):
+        excluded.append(form.MS)
+    fields = [f for f in all_fields(form) if f not in excluded]
+    empty = [f for f in fields if not f.data]
+
+    if empty and len(empty) == len(fields):
+        raise ValidationError(EMPTY_FORM)
+
+
 class OptionalSelectField(SelectField):
 
     def __init__(self, validators=None, default=None, **kwargs):
@@ -168,6 +181,8 @@ class OptionsBaseHabitat(_OptionsBase):
 
 
 class SummaryFormMixin(object):
+
+    form_errors = TextField(validators=[form_validation])
 
     def setup_choices(self, dataset_id):
         pass
@@ -261,16 +276,6 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self, **kwargs):
-        excluded = [self.region]
-        if hasattr(self, 'MS'):
-            excluded.append(self.MS)
-        fields = [f for f in all_fields(self) if f not in excluded]
-        empty = [f for f in fields if not f.data]
-
-        if empty and len(empty) == len(fields):
-            fields[1].errors.append(EMPTY_FORM)
-            return False
-
         method_conclusions = [
             (self.method_range, self.conclusion_range),
             (self.method_population, self.conclusion_population),
@@ -289,7 +294,7 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
             elif mc and cc:
                 one = True
         if not one:
-            fields[1].errors.append(METH_CONCL_MANDATORY)
+            self.form_errors.errors.append(METH_CONCL_MANDATORY)
 
         return not self.errors
 
@@ -370,16 +375,6 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self, **kwargs):
-        excluded = [self.region]
-        if hasattr(self, 'MS'):
-            excluded.append(self.MS)
-        fields = [f for f in all_fields(self) if f not in excluded]
-        empty = [f for f in fields if not f.data]
-
-        if empty and len(empty) == len(fields):
-            fields[1].errors.append(EMPTY_FORM)
-            return False
-
         method_conclusions = [
             (self.method_range, self.conclusion_range),
             (self.method_area, self.conclusion_area),
@@ -398,7 +393,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
             elif mc and cc:
                 one = True
         if not one:
-            fields[1].errors.append(METH_CONCL_MANDATORY)
+            self.form_errors.errors.append(METH_CONCL_MANDATORY)
 
         return not self.errors
 

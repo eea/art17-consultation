@@ -135,8 +135,7 @@
   </tr>
   {% if form.errors %}
   <tr class="form_row">
-    <td>
-    <td colspan="{{ colspan_all - 1 }}" class="form-error-msg regular">
+    <td colspan="{{ colspan_all }}" class="form-error-msg regular">
       Errors:
         {{ form.all_errors()|safe }}
     </td>
