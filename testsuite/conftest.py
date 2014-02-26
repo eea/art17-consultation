@@ -15,7 +15,6 @@ TEST_CONFIG = {
     'SERVER_NAME': 'localhost',
     'SECRET_KEY': 'test',
     'ASSETS_DEBUG': True,
-    'SQLALCHEMY_DATABASE_URI': 'mysql://root@localhost/art17test',
     'EEA_LDAP_SERVER': 'test_ldap_server'
 }
 
@@ -24,28 +23,10 @@ alembic_cfg_path = path(__file__).dirname() / '..' / 'alembic.ini'
 alembic_cfg = config.Config(alembic_cfg_path.abspath())
 
 
-def create_db(url, db_name):
-    conn = models.db.create_engine(url).connect()
-    conn.execute('drop schema if exists %s' % db_name)
-    conn.execute('create schema %s CHARACTER SET utf8 COLLATE utf8_general_ci'
-                 % db_name)
-    conn.close()
-
-
-def drop_db(url, db_name):
-    conn = models.db.create_engine(url).connect()
-    conn.execute('drop schema %s' % db_name)
-    conn.close()
-
-
 def create_testing_app():
     local_config = create_app().config
 
     test_config = dict(TEST_CONFIG)
-
-    for name, value in local_config.iteritems():
-        if name.startswith('TESTING_'):
-            test_config[name[len('TESTING_'):]] = value
 
     app = create_app(test_config, testing=True)
     return app
@@ -63,16 +44,20 @@ def app(request):
     app_context = app.app_context()
     app_context.push()
 
-    parts = app.config['SQLALCHEMY_DATABASE_URI'].rsplit('/')
-    url, db_name = '/'.join(parts[:-1]), parts[-1]
-
-    create_db(url, db_name)
-    command.upgrade(alembic_cfg, 'head')
+    models.db.create_all()
+    models.db.session.execute(
+        "insert into roles(name, description) values "
+        "('admin', 'Administrator'), "
+        "('etc', 'European topic center'), "
+        "('stakeholder', 'Stakeholder'), "
+        "('nat', 'National expert')"
+    )
+    models.db.session.execute(
+        "insert into config(default_dataset_id) values (1)")
 
     @request.addfinalizer
     def fin():
         models.db.session.rollback()
-        drop_db(url, db_name)
         app_context.pop()
     return app
 
