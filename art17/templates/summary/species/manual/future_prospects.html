@@ -3,6 +3,6 @@
 {% set concl_value = get_future_conclusion_value_for_species(row.assesment_speciesname, row.region, row.method_future) %}
 
 <td class="{{ classes }}"
-    title="{% if concl_value %}: {{concl_value}}{% endif %}">
+    {% if concl_value %}title=": {{concl_value}}"{% endif %}>
     <span class="conclusion">{{ row.method_future or '' }}</span>
 </td>

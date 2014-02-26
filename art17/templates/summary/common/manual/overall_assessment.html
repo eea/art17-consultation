@@ -4,7 +4,7 @@
   {% set concl_value = get_assesm_conclusion_value_for_species(row.assesment_speciesname, row.region, row.method_future) %}
 
   <td colspan="4" class="{{ classes }} border_left"
-      title="{% if concl_value %}: {{concl_value}}{% endif %}">
+      {% if concl_value %}title=": {{concl_value}}"{% endif %}>
       <span class="conclusion">{{ row.method_assessment or '' }}</span>
   </td>
 {% else %}
@@ -15,7 +15,7 @@
                                                                row.method_future) %}
 
   <td class="{{ classes }} border_left"
-      title="{% if concl_value %}: {{concl_value}}{% endif %}">
+      {% if concl_value %}title=": {{concl_value}}"{% endif %}>
       <span class="conclusion">{{ row.method_assessment or '' }}</span>
   </td>
   <td>{{ row.conclusion_assessment_trend or 'N/A' }}</td>
