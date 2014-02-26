@@ -407,27 +407,32 @@ $(function() {
 $(document).ready(function() {
     $(".complex_datatable td, .complex_datatable th").each(function() {
         var type = $(this).data('tooltip');
+        var place = $(this).data('tooltip-place');
+        if (place == undefined) {
+            place = "sw-alt";
+        }
+
         switch (type) {
-            case 'copy':
+            case 'mouseover':
                 var tooltip = $(this).attr('title');
                 if (tooltip) {
                     tooltip = tooltip.replace(/\n/g, '<br />'); // Replace line break with <br />
                     $(this).data('powertip', tooltip);
                     $(this).powerTip({
-                        placement: 'sw-alt',
+                        placement: place,
                         smartPlacement: true,
                         mouseOnToPopup: true,
                         offset: 0,
                     });
                 }
-                $(this).removeAttr('title')
+                $(this).removeAttr('title');
                 break;
                 
             case 'html':
                 var tooltip = $(this).find('.tooltip-html').html();
                 $(this).data('powertip', tooltip);
                 $(this).powerTip({
-                    placement: 'e',
+                    placement: place,
                     mouseOnToPopup: true,
                     offset: 0,
                 });
@@ -439,11 +444,11 @@ $(document).ready(function() {
                     tooltip = tooltip.replace(/\n/g, '<br />'); // Replace line break with <br />
                     $(this).data('powertip', tooltip);
                     $(this).powerTip({
-                        placement: 'sw-alt',
+                        placement: place,
                         smartPlacement: true,
                         offset: 0,
                     });
-                    $(this).removeAttr('title')
+                    $(this).removeAttr('title');
                 }
         }
     });

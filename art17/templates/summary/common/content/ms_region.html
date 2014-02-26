@@ -1,9 +1,16 @@
 
   {% set country_title = get_title_for_country(row) %}
-  <td class="border" 
-      data-tooltip="copy"
-      title="{{ country_title|join('') }}">
-    {% set original_url = get_original_record_url(row) %}
+  {% set original_url = get_original_record_url(row) %}
+  <td class="border" data-tooltip="html">
+    <div class="tooltip-html hidden">
+        <p class="narrow">{{ country_title|join('') }}</p>
+        <p class="regular">
+          <a href="{{ original_url }}">
+            Open original report 
+            <i class="fa fa-external-link"></i>
+          </a>
+        </p>
+    </div>
     <a class="clipped popup-btn block"
        data-title="Factsheet" href="{{ original_url }}">
       {{ row.eu_country_code }}
