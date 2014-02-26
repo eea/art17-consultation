@@ -26,6 +26,7 @@
     {% include 'common/note.html' %}
     {% include 'common/table_legend.html' %}
 
+    <form class="form" method="post" action="#theform">
     <table class="complex_datatable">
       <caption>
       <b>Current selection</b>:
@@ -148,6 +149,7 @@
       </tbody>
       {% endif %}
     </table>
+    </form>
     {% else %}
     <p><b>Please select a group and a species.</b></p>
     {% endif %}

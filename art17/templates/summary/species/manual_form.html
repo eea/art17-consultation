@@ -4,19 +4,18 @@
 
 
 {% set form=manual_form %}
-<form class="form" method="post" action="#theform">
   {% set is_form=true %}
   {% include 'common/species_manual_table_header.html' %}
   <tr class="form form_row" id="theform">
     {% if can_select_MS() %}
-    <td {% if form.MS.errors %}class="form-error-td"{% endif %}>
-      {{ form.MS() }}
-    </td>
+      <td {% if form.MS.errors %}class="form-error-td"{% endif %}>
+        {{ form.MS() }}
+      </td>
     {% else %}
-    <td></td>
+     <td></td>
     {% endif %}
     {% if not region %}
-    <td>{{ form.region() }}</td>
+      <td>{{ form.region() }}</td>
     {% endif %}
 
     {% if not edit_ref %}
@@ -143,4 +142,3 @@
     </td>
   </tr>
   {% endif %}
-</form>

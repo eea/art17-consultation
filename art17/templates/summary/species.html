@@ -27,6 +27,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
   {% include 'common/note.html' %}
   {% include 'common/table_legend.html' %}
 
+  <form class="form" method="post" action="#theform">
   <table class="complex_datatable">
     <caption>
       <b>Current selection</b>:
@@ -161,8 +162,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       {% endif %}
     </tbody>
     {% endif %}
-
   </table>
+  </form>
   {% else %}
   <p><b>Please select a group and a species.</b></p>
   {% endif %}
