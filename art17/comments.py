@@ -254,8 +254,8 @@ comments.add_url_rule('/history/habitat/',
 
 class _CommentCounterBase(object):
 
-    def __init__(self, period, user_id):
-        self.period = period
+    def __init__(self, dataset_id, user_id):
+        self.dataset_id = dataset_id
         self.user_id = user_id
 
     def _get_comments_query(self):
@@ -265,7 +265,7 @@ class _CommentCounterBase(object):
                 self.comment_cls.region,
                 func.count('*'),
             )
-            .filter(self.comment_cls.dataset_id == self.period)
+            .filter(self.comment_cls.dataset_id == self.dataset_id)
             .filter(or_(
                 self.comment_cls.deleted == 0,
                 self.comment_cls.deleted == None,
