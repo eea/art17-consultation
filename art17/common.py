@@ -338,12 +338,9 @@ def get_title_for_species_country(row):
         if row.species_type_asses == 0:
             title.append('\n\n%s' % (row.species_type_details.SpeciesType
                          if row.species_type_details else row.species_type))
-        title.append('\n\nClick to open original report in a new window')
     elif row.species_type_asses == 0:
             title.append(row.species_type_details.SpeciesType
                          if row.species_type_details else row.species_type)
-    else:
-        title.append('Click to open original report in a new window')
 
     return title
 
@@ -355,12 +352,9 @@ def get_title_for_habitat_country(row):
         if row.habitattype_type_asses == 0:
             title.append('\n\n%s' % (row.habitattype_type_details.SpeciesType
                          if row.habitattype_type_details else row.habitattype_type))
-        title.append('\n\nClick to open original report in a new window')
     elif row.habitattype_type_asses == 0:
             title.append('\n\n%s' % (row.habitattype_type_details.SpeciesType
                          if row.habitattype_type_details else row.habitattype_type))
-    else:
-        title.append('Click to open original report in a new window')
 
     return title
 

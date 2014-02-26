@@ -3,13 +3,20 @@
   {% set original_url = get_original_record_url(row) %}
   <td class="border" data-tooltip="html">
     <div class="tooltip-html hidden">
-        <p class="narrow">{{ country_title|join('') }}</p>
-        <p class="regular">
-          <a href="{{ original_url }}">
-            Open original report 
+      <div class="extra-padding">
+        {% if country_title %}
+          <p class="br width-600 margin-small">{{ country_title|join('') }}</p>
+        {% endif %}
+        {% if not row.is_assesm %}
+        <p class="margin-small">
+          <a href="{{ original_url }}">Open Original Report</a>
+          &nbsp;
+          <span class="muted large">
             <i class="fa fa-external-link"></i>
-          </a>
+          </span>
         </p>
+        {% endif %}
+      </div>
     </div>
     <a class="clipped popup-btn block"
        data-title="Factsheet" href="{{ original_url }}">

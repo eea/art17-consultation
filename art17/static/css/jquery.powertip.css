@@ -2,12 +2,9 @@
 #powerTip {
 	cursor: default;
 	background: #fff;
-	/*background-color: #333;*/
-	/*background-color: rgba(0, 0, 0, 0.8);*/
   font-family: 'Roboto Condensed';
   font-weight: 300;
   font-size: 12px;
-	/*color: #fff;*/
 	display: none;
 	border: 1px solid #bbb;
 	padding: 3px 6px;
@@ -162,4 +159,16 @@
 #powerTip.se-alt:before {
 	left: auto;
 	right: 4px;
+}
+
+/* OVERIDES */
+#powerTip [class*="width"] {
+	white-space: normal;
+}
+#powerTip a {
+	color: blue;
+	text-decoration: none;
+}
+#powerTip a:hover {
+	text-decoration: underline;
 }

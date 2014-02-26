@@ -429,6 +429,11 @@ $(document).ready(function() {
                 break;
                 
             case 'html':
+                var br = $(this).find('.br').text();
+                console.log(br);
+                if (br != undefined) {
+                    br = br.replace(/\n/g, '<br />'); // Replace line break with <br />
+                }
                 var tooltip = $(this).find('.tooltip-html').html();
                 $(this).data('powertip', tooltip);
                 $(this).powerTip({
