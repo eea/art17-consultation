@@ -26,7 +26,7 @@ def test_filter_groups_view(app, client):
     assert resp.status_code == 200
     assert resp.content_type == 'application/json'
     assert resp.json[''] == '-'
-    assert resp.json['coastal habitats'] == 'coastal habitats'
+    assert resp.json['Coastal habitats'] == 'Coastal habitats'
 
 
 def test_filter_species_view(app, client):
