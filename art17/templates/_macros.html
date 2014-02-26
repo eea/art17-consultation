@@ -120,10 +120,13 @@
       </div>
       </div>
       <a class="select block" tab-index data-popout="size_unit">
-          <span class="selected-value no-break hidden"></span>
           {% if pop_size_field.data %}
+          <span class="selected-value no-break">
             {{ pop_size_field.data }}
+            {{ pop_size_unit_field.data }}
+          </span>
           {% else %}
+          <span class="selected-value no-break hidden"></span>
           <i class="fa fa-hand-o-up"></i>
           {% endif %}
       </a>
