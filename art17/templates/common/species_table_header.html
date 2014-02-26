@@ -49,24 +49,22 @@
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
     <th title="Favourable reference value">Ref.</th>
 
-    <th>
-        <div class="popout-wrapper hover">
-            <div class="popout size_unit_th right caret">
-                <table class="popout-table">
-                    <tr>
-                        <th>Agreed units</th>
-                        <th>Other units</th>
-                    </tr>
-                    {% for row in objects %}
-                    <tr>
-                        <td>{{ row.population_units_agreed|format_units }}</td>
-                        <td>{{ row.population_units_other|format_units }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            Size&amp;Unit
+    <th data-tooltip="html">
+        <div class="tooltip-html hidden">
+            <table class="popout-table narrow">
+                <tr>
+                    <th>Agreed units</th>
+                    <th>Other units</th>
+                </tr>
+                {% for row in objects %}
+                <tr>
+                    <td>{{ row.population_units_agreed|format_units }}</td>
+                    <td>{{ row.population_units_other|format_units }}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
+        Size&amp;Unit
     </th>
     <th title="Percentage of Population per MS per region">% MS</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>

@@ -406,18 +406,45 @@ $(function() {
 // jQuery Power Tip
 $(document).ready(function() {
     $(".complex_datatable td, .complex_datatable th").each(function() {
-        var tooltip = $(this).attr('title');
-        if (tooltip) {
-            $(this).removeAttr('title')
-            // Replace line break with <br />
-            tooltip = tooltip.replace(/\n/g, '<br />');
+        var type = $(this).data('tooltip');
+        switch (type) {
+            case 'copy':
+                var tooltip = $(this).attr('title');
+                if (tooltip) {
+                    tooltip = tooltip.replace(/\n/g, '<br />'); // Replace line break with <br />
+                    $(this).data('powertip', tooltip);
+                    $(this).powerTip({
+                        placement: 'sw-alt',
+                        smartPlacement: true,
+                        mouseOnToPopup: true,
+                        offset: 0,
+                    });
+                }
+                $(this).removeAttr('title')
+                break;
+                
+            case 'html':
+                var tooltip = $(this).find('.tooltip-html').html();
+                $(this).data('powertip', tooltip);
+                $(this).powerTip({
+                    placement: 'e',
+                    mouseOnToPopup: true,
+                    offset: 0,
+                });
+                break;
 
-            $(this).data('powertip', tooltip);
-            $(this).powerTip({
-                placement: 'sw-alt',
-                smartPlacement: true,
-                offset: 0,
-            });
+            default:
+                var tooltip = $(this).attr('title');
+                if (tooltip) {
+                    tooltip = tooltip.replace(/\n/g, '<br />'); // Replace line break with <br />
+                    $(this).data('powertip', tooltip);
+                    $(this).powerTip({
+                        placement: 'sw-alt',
+                        smartPlacement: true,
+                        offset: 0,
+                    });
+                    $(this).removeAttr('title')
+                }
         }
     });
 });

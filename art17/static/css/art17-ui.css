@@ -50,7 +50,9 @@ table.no-border th {
   text-decoration: none;
   color: blue;
 }
-
+.complex_datatable a.button {
+  color: #333;
+}
 .complex_datatable a:hover {
   text-decoration: underline;
 }
@@ -782,7 +784,16 @@ a.conclusion:hover {
 }
 .popout-table {
   border-collapse: collapse!important;
-  margin: -1px;
+  margin: -4px -7px;
+}
+.popout-table td,
+.popout-table th {
+  padding: 2px 4px;
+  border: 1px solid #bbb;
+}
+.popout-table th {
+  font-weight: normal;
+  background: #f6f6f6!important;
 }
 .popout-table td {
   background: #fff!important;
@@ -1367,6 +1378,11 @@ hr {
 .regular {
   font-family: "Nimbus sans L", Helvetica, Arial, Verdana, sans-serif;
   font-size: 14px;
+}
+.narrow {
+  font-family: 'Roboto Condensed';
+  font-weight: 300;
+  font-size: 12px;
 }
 .bold {
   font-weight: bold;
