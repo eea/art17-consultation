@@ -247,6 +247,10 @@ class EtcDataHabitattypeRegion(Base):
         foreign_keys=habitattype_type,
     )
 
+    @property
+    def is_assesm(self):
+        return self.habitattype_type_asses == 0
+
     @hybrid_property
     def subject(self):
         return self.habitatcode
