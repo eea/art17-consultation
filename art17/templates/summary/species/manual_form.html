@@ -5,7 +5,6 @@
 
 {% set form=manual_form %}
   {% set is_form=true %}
-  {% include 'common/species_manual_table_header.html' %}
   <tr class="form form_row" id="theform">
     {% if can_select_MS() %}
       <td {% if form.MS.errors %}class="form-error-td"{% endif %}>
