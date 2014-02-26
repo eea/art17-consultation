@@ -50,7 +50,7 @@ table.no-border th {
   text-decoration: none;
   color: blue;
 }
-.complex_datatable a.button {
+.complex_datatable .button {
   color: #333;
 }
 .complex_datatable a:hover {
@@ -1310,23 +1310,26 @@ hr {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
+.width-480 {
+  width: 480px;
+}
 .width-420 {
-  min-width: 420px;
+  width: 420px;
 }
 .width-360 {
-  min-width: 360px;
+  width: 360px;
 }
 .width-300 {
-  min-width: 300px;
+  width: 300px;
 }
 .width-240 {
-  min-width: 240px;
+  width: 240px;
 }
 .width-180 {
-  min-width: 180px;
+  width: 180px;
 }
 .width-120 {
-  min-width: 120px;
+  width: 120px;
 }
 .width-half {
   width: 50%;
@@ -1498,7 +1501,7 @@ a.active {
 td.form-error-td > select,
 td.form-error-td > input,
 td.form-error-td .select {
-  outline: 2px auto red!important;
+  outline: 2px solid red!important;
 }
 td.form-error-td > select:hover,
 td.form-error-td > input:hover,
