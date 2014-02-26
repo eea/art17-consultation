@@ -182,6 +182,7 @@ class HabitatMixin(MixinsCommon):
             .order_by(group_field)
             .all()
         )
+        groups = [(a.capitalize(), b.capitalize()) for (a, b) in groups]
         return [('', '-')] + groups
 
     @classmethod
