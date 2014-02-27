@@ -394,7 +394,7 @@ class EtcDataSpeciesRegion(Base):
     population_maximum_size = Column(Float(asdecimal=True))
     percentage_population_maximum_size = Column(Float(asdecimal=True))
     filled_population = Column(String(3))
-    population_size_unit = Column(String(6))
+    population_size_unit = Column(String(10))
     population_units_agreed = Column(String(50))
     population_units_other = Column(String(50))
     population_change_reason = Column(String(150))
