@@ -32,7 +32,9 @@ def setup_add(app):
 @pytest.fixture
 def setup_edit(app):
     EtcDicBiogeoregFactory()
-    EtcDataSpeciesRegionFactory(assesment_speciesname='Canis lupus')
+    EtcDataSpeciesRegionFactory(
+        speciescode='1111',
+        assesment_speciesname='Canis lupus')
     EtcDicMethodFactory(order=4, method='2GD')
     EtcDicConclusionFactory()
     DatasetFactory()

@@ -20,6 +20,7 @@ class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDataSpeciesRegion
     FACTORY_SESSION = models.db.session
 
+    speciescode = 1110
     dataset_id = 1
     country = 'AT'
     eu_country_code = 'AT'
@@ -57,6 +58,7 @@ class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDataHabitattypeRegion
     FACTORY_SESSION = models.db.session
 
+    habitatcode = 1110
     dataset_id = 1
     country = 'AT2'
     eu_country_code = 'AT'

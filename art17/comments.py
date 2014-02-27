@@ -144,19 +144,14 @@ class CommentsList(views.View):
         edited_comment = None
         if request.args.get('edit'):
             edit_id = request.args.get('edit')
-            edited_comment = self.model_comment_cls.query.get(
-                (edit_id, self.record.dataset_id))
+            edited_comment = self.model_comment_cls.query.get(edit_id)
             if not can_edit_comment(edited_comment):
                 raise PermissionDenied
         if request.args.get('toggle'):
-            comment = self.model_comment_cls.query.get(
-                (request.args['toggle'], self.record.dataset_id)
-            )
+            comment = self.model_comment_cls.query.get(request.args['toggle'])
             self.toggle_read(comment)
         if request.args.get('delete'):
-            comment = self.model_comment_cls.query.get(
-                (request.args['delete'], self.record.dataset_id)
-            )
+            comment = self.model_comment_cls.query.get(request.args['delete'])
             self.toggle_delete(comment)
 
         if request.method == 'POST':
