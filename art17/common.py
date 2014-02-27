@@ -357,6 +357,7 @@ def get_title_for_habitat_country(row):
             title.append('\n\n%s' % (row.habitattype_type_details.SpeciesType
                          if row.habitattype_type_details else row.habitattype_type))
 
+    title = [t.replace('\n', '<br>') for t in title]
     return title
 
 
