@@ -40,7 +40,7 @@
     {% for user in user_list %}
       {% set each_roles = role_map.get(user.id, []) %}
       <tr>
-        <td>
+        <td class="no-break">
           {% if user.is_ldap %}
             <i class="fa fa-user" title="EIONET account"></i>
           {% endif %}
