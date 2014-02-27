@@ -11,7 +11,7 @@ from art17.models import (
     DicCountryCode,
     Comment,
     HabitatComment,
-)
+    LuSpeciesManual2007, LuHabitatManual2007)
 
 
 class MixinsCommon(object):
@@ -94,6 +94,7 @@ class SpeciesMixin(MixinsCommon):
     model_auto_cls = EtcDataSpeciesAutomaticAssessment
     model_manual_cls = SpeciesManualAssessment
     model_comment_cls = Comment
+    prev_lu_cls = LuSpeciesManual2007
     subject_name = 'species'
     summary_endpoint = 'summary.species-summary'
 
@@ -159,6 +160,7 @@ class HabitatMixin(MixinsCommon):
     model_auto_cls = EtcDataHabitattypeAutomaticAssessment
     model_manual_cls = HabitattypesManualAssessment
     model_comment_cls = HabitatComment
+    prev_lu_cls = LuHabitatManual2007
     subject_name = 'habitat'
     summary_endpoint = 'summary.habitat-summary'
 

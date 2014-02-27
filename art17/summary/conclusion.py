@@ -76,6 +76,14 @@ class ConclusionView(object):
                     method = getattr(ass, 'assessment_method')
                     values[CONC_METHODS[attr]] = method
                 break
+        # Special case: conclusion_assessment_prev
+        prev_lu = (
+            self.prev_lu_cls.query
+            .filter_by(subject=subject, region=region, dataset_id=period)
+            .first()
+        )
+        if prev_lu:
+            values['conclusion_assessment_prev'] = prev_lu.conclusion_assessment
         return values
 
     def get_form_cls(self):
