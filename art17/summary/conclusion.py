@@ -15,12 +15,16 @@ CONC_METHODS = {
     'conclusion_range': 'method_range',
     'conclusion_population': 'method_population',
     'conclusion_habitat': 'method_habitat',
-    'conclusion_future': 'method_future',
-    'conclusion_assessment': 'method_assessment',
+    #'conclusion_future': 'method_future',
+    #'conclusion_assessment': 'method_assessment',
     'conclusion_target1': 'method_target1',
     'conclusion_area': 'method_area',
-    'conclusion_structure': 'method_structure',
+    #'conclusion_structure': 'method_structure',
 }
+
+EXCLUDE_FIELDS = (
+    'conclusion_future', 'conclusion_assessment', 'conclusion_structure',
+)
 
 
 class ConclusionView(object):
@@ -46,7 +50,8 @@ class ConclusionView(object):
         for f in all_fields(self.manual_form_cls()):
             attr = f.name
             for ass in filter(lambda a: getattr(a, attr, None), best):
-                values[attr] = getattr(ass, attr)
+                if attr not in EXCLUDE_FIELDS:
+                    values[attr] = getattr(ass, attr)
                 if attr in CONC_METHODS:
                     method = getattr(ass, 'assessment_method')
                     values[CONC_METHODS[attr]] = method
