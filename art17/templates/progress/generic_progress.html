@@ -44,7 +44,8 @@
                               region=region.reg_code) %}
                 {% if data %}
                   <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }}"
-                      title="{{ data['title'] }}">
+                      title="{{ data['title'] }}"
+                      data-tooltip-place="s">
                         <a href="{{ url }}" class="conclusion">
                         {% if can_view_details() %}
                           {{ data['main_decision'] }}
