@@ -148,7 +148,7 @@ class _OptionsBase(object):
         return [
             (a, b)
             for (a, b) in methods
-            if not a or (a.startswith('2') and a != self.EXCLUDE2) or a == '1'
+            if not a or (a.startswith('2') and a != self.EXCLUDE2)
         ]
 
     def get_assesm_options(self, methods):
@@ -257,7 +257,7 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
             ZERO_METHODS + self.get_method_options(methods)
         )
         self.method_habitat.choices = (
-            ZERO_METHODS + self.get_sf_options(methods)
+            ZERO_METHODS + self.get_method_options(methods)
         )
 
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
