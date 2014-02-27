@@ -87,3 +87,11 @@ Configure deploy
 - copy fabfile/env.ini.example to fabfile/env.ini
 - configure staging and production settings
 - run fab staging deploy or fab production deploy
+
+
+Running unit tests
+==================
+
+Simply run ``py.test testsuite``, it will find and run the tests. For a
+bit of speedup you can install ``pytest-xdist`` and run tests in
+parallel, ``py.test testsuite -n 4``.
