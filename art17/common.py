@@ -342,6 +342,7 @@ def get_title_for_species_country(row):
             title.append(row.species_type_details.SpeciesType
                          if row.species_type_details else row.species_type)
 
+    title = [t.replace('\n', '<br>') for t in title]
     return title
 
 

@@ -5,7 +5,7 @@
     <div class="tooltip-html hidden">
       <div class="extra-padding">
         {% if country_title %}
-          <p class="br width-600 margin-small">{{ country_title|join('') }}</p>
+          <p class="br width-600 margin-small">{{ country_title|join('')|safe }}</p>
         {% endif %}
         {% if not row.is_assesm %}
         <p class="margin-small">
