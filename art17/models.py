@@ -1194,6 +1194,32 @@ class Config(Base):
     default_dataset_id = Column(Integer, default=1)
 
 
+class LuSpeciesManual2007(Base):
+    __tablename__ = 'lu_species_manual_assessments_2007'
+
+    subject = Column('assesment_speciesname', String(60), primary_key=True)
+    region = Column(String(4), primary_key=True)
+    conclusion_assessment = Column(String(2), nullable=True)
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+        primary_key=True,
+    )
+
+
+class LuHabitatManual2007(Base):
+    __tablename__ = 'lu_habitattypes_manual_assessments_2007'
+
+    subject = Column('habitatcode', String(50), primary_key=True)
+    region = Column(String(4), primary_key=True)
+    conclusion_assessment = Column(String(2), nullable=True)
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+        primary_key=True,
+    )
+
+
 db_manager = Manager()
 
 

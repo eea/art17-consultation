@@ -454,6 +454,12 @@ IMPORT_SCHEMA = {
             'conclusion_assessment_change',
             'conclusion_target1', 'method_target1',
         ]),
+        ('lu_species_manual_assessments_2007', [
+            'assesment_speciesname', 'region', 'conclusion_assessment',
+        ]),
+        ('lu_habitattypes_manual_assessments_2007', [
+            'habitatcode', 'region', 'conclusion_assessment',
+        ]),
     ]
 }
 
