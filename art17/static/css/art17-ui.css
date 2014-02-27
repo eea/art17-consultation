@@ -784,16 +784,7 @@ a.conclusion:hover {
 }
 .popout-table {
   border-collapse: collapse!important;
-  margin: -4px -7px;
-}
-.popout-table td,
-.popout-table th {
-  padding: 2px 4px;
-  border: 1px solid #bbb;
-}
-.popout-table th {
-  font-weight: normal;
-  background: #f6f6f6!important;
+  margin: -1px;
 }
 .popout-table td {
   background: #fff!important;
