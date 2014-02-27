@@ -79,7 +79,6 @@ class Comment(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
-        primary_key=True,
     )
 
     record = relationship(
@@ -717,7 +716,6 @@ class HabitatComment(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
-        primary_key=True,
     )
 
     record = relationship(
