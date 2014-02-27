@@ -23,6 +23,19 @@ alembic_cfg_path = path(__file__).dirname() / '..' / 'alembic.ini'
 alembic_cfg = config.Config(alembic_cfg_path.abspath())
 
 
+def create_generic_fixtures():
+    models.db.create_all()
+    models.db.session.execute(
+        "insert into roles(name, description) values "
+        "('admin', 'Administrator'), "
+        "('etc', 'European topic center'), "
+        "('stakeholder', 'Stakeholder'), "
+        "('nat', 'National expert')"
+    )
+    models.db.session.execute(
+        "insert into config(default_dataset_id) values (1)")
+
+
 def create_testing_app():
     local_config = create_app().config
 
@@ -43,21 +56,10 @@ def app(request):
 
     app_context = app.app_context()
     app_context.push()
-
-    models.db.create_all()
-    models.db.session.execute(
-        "insert into roles(name, description) values "
-        "('admin', 'Administrator'), "
-        "('etc', 'European topic center'), "
-        "('stakeholder', 'Stakeholder'), "
-        "('nat', 'National expert')"
-    )
-    models.db.session.execute(
-        "insert into config(default_dataset_id) values (1)")
+    create_generic_fixtures()
 
     @request.addfinalizer
     def fin():
-        models.db.session.rollback()
         app_context.pop()
     return app
 
