@@ -9,14 +9,15 @@ from .factories import (
     EtcDataHabitattypeRegionFactory,
     EtcDicHdHabitat,
     SpeciesManualAssessmentFactory,
-    HabitattypesManualAssessmentsFactory
+    HabitattypesManualAssessmentsFactory,
+    EtcDataSpeciesAutomaticAssessmentFactory,
+    EtcDataHabitattypeAutomaticAssessmentFactory
 )
 from art17 import models
 from conftest import get_request_params, create_user
 
 
-@pytest.fixture
-def setup_add(app):
+def setup_common():
     EtcDicBiogeoregFactory()
     EtcDataSpeciesRegionFactory(
         speciescode='1111',
@@ -26,23 +27,51 @@ def setup_add(app):
     DatasetFactory()
     EtcDataHabitattypeRegionFactory(habitatcode=1110)
     EtcDicHdHabitat()
+
+
+@pytest.fixture
+def setup_add(app):
+    setup_common()
     models.db.session.commit()
 
 
 @pytest.fixture
 def setup_edit(app):
-    EtcDicBiogeoregFactory()
-    EtcDataSpeciesRegionFactory(
-        speciescode='1111',
-        assesment_speciesname='Canis lupus')
-    EtcDicMethodFactory(order=4, method='2GD')
-    EtcDicConclusionFactory()
-    DatasetFactory()
-    EtcDicHdHabitat()
-
-    EtcDataHabitattypeRegionFactory(habitatcode=1110)
+    setup_common()
     SpeciesManualAssessmentFactory(region='ALP')
     HabitattypesManualAssessmentsFactory(region='ALP')
+    models.db.session.commit()
+
+
+@pytest.fixture
+def setup_autofill(app):
+    setup_common()
+    EtcDataSpeciesAutomaticAssessmentFactory(
+        assesment_speciesname='Canis lupus',
+        region='ALP',
+        assessment_method='2GD',
+        range_surface_area=100,
+        conclusion_range='FV'
+    )
+    EtcDataHabitattypeAutomaticAssessmentFactory(
+        habitatcode='1110',
+        region='ALP',
+        assessment_method='2GD',
+        range_surface_area=100,
+        conclusion_range='FV'
+    )
+    SpeciesManualAssessmentFactory(
+        region='ALP',
+        range_surface_area=100,
+        method_range='2GD',
+        conclusion_range='FV'
+    )
+    HabitattypesManualAssessmentsFactory(
+        region='ALP',
+        range_surface_area=100,
+        method_range='2GD',
+        conclusion_range='FV'
+    )
     models.db.session.commit()
 
 
@@ -167,3 +196,52 @@ def test_edit_conclusion(app, client, zope_auth, setup_edit, request_args,
 
     if search_text:
         assert search_text in resp.html.text
+
+
+@pytest.mark.parametrize(
+    "request_args, user",
+    # Species
+    # Add conclusion
+    [(['/species/summary/', {
+        'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+        'region': 'ALP'}], 'newuser'),
+     # Edit conclusion
+     (['/species/summary/', {
+       'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+       'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
+       'edit_region': 'ALP'}], 'someuser'),
+     # Habitat
+     (['/habitat/summary/', {
+       'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+       'region': 'ALP'}], 'newuser'),
+     (['/habitat/summary/', {
+       'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+       'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
+       'edit_region': 'ALP'}], 'someuser')
+     ])
+def test_autofill_conclusion_form(app, client, zope_auth, setup_autofill,
+                                  request_args, user):
+    create_user(user, ['stakeholder'])
+    zope_auth.update({'user_id': user})
+
+    resp = client.get(*get_request_params('get', request_args))
+    form = resp.forms[1]
+
+    assert form['range_surface_area'].value == '100'
+    assert form['method_range'].value == '2GD'
+    assert form['conclusion_range'].value == 'FV'
+
+    form['complementary_favourable_range'] = '200~~'
+
+    resp = form.submit()
+    form = resp.forms[1]
+
+    assert form['range_surface_area'].value == '100'
+    assert form['method_range'].value == '2GD'
+    assert form['conclusion_range'].value == 'FV'
+
+    assert form['complementary_favourable_range'].value == '200~~'
+    assert 'form-error-td' in resp.html.find(
+        id='complementary_favourable_range').parent.get('class')
+    assert resp.html.find('li', {'class': 'flashmessage'}).text == \
+        'Please correct the errors below and try again.'
