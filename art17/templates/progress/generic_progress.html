@@ -18,7 +18,9 @@
 
       <thead>
         <tr>
-          <th rowspan="2">{% block first_column_title %}{% endblock first_column_title %}</th>
+          <th class="text-left" rowspan="2">
+            {% block first_column_title %}{% endblock first_column_title %}
+          </th>
           <th colspan="{{ regions|count }}">Regions</th>
         </tr>
         <tr>
@@ -66,12 +68,22 @@
                 {% endif %}
               {% endfor %}
             </tr>
-            {% if loop.index % 25 == 0 %}
-                <tr>
-                  <th rowspan="2"></th>
+            {% if loop.index % 25 == 0 
+               and loop.length - loop.index >= 10 %}
+                <tr class="thead">
+                  <th class="text-center italic large" rowspan="2">
+                    <span class="italic muted">
+                    {{ loop.index }} - 
+                    {% if loop.index + 25 > loop.length %}
+                      {{ loop.length }}
+                    {% else %}
+                      {{ loop.index + 25 }}
+                    {% endif %}
+                    </span>
+                  </th>
                   <th colspan="{{ regions|count }}">Regions</th>
                 </tr>
-                <tr>
+                <tr class="thead">
                   {% for region in regions %}
                   <th>
                     {{ region.reg_code }}
