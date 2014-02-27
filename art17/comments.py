@@ -123,7 +123,7 @@ class CommentsList(views.View):
                 comment = self.model_comment_cls(
                     subject=self.record.subject,
                     region=self.record.region,
-                    user=self.record.user_id,
+                    user_id=self.record.user_id,
                     MS=self.record.MS,
                     comment=form.comment.data,
                     author_id=current_user.id,

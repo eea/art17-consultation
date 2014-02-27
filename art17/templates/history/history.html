@@ -39,12 +39,13 @@
       <tbody>
         {% for c in history.comments %}
         <tr>
-          <td>{{ c.post_date }}</td>
+          <td><a href="{{ url_for(summary_endpoint, subject=c.subject,
+                  region=c.region) + "#manual-thead" }}">{{ c.post_date }}</a></td>
           <td>{{ c.author.name or c.author_id }}</td>
           <td>{{ c.user.name or c.user_id }}</td>
           <td>{{ c.subject }}</td>
           <td>{{ c.region }}</td>
-          <td>{{ c.read_for(user) }}</td>
+          <td>{{ c.read_for(g.user) }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -67,7 +68,8 @@
       <tbody>
         {% for c in history.conclusions %}
         <tr>
-          <td><a href="{{ url_for(summary_endpoint, subject=c.subject, region=c.region) }}">{{ c.last_update }}</a></td>
+          <td><a href="{{ url_for(summary_endpoint, subject=c.subject,
+                  region=c.region) + "#manual-thead" }}">{{ c.last_update }}</a></td>
           <td>{{ c.user.name or c.user_id }}</td>
           <td>{{ c.subject }}</td>
           <td>{{ c.region }}</td>
@@ -75,6 +77,4 @@
         {% endfor %}
       </tbody>
     </table>
-    
-    
 {% endblock %}

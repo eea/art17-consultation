@@ -70,7 +70,7 @@ class Comment(Base):
     id = Column(Integer, primary_key=True, unique=True)
     region = Column(String(4), nullable=False)
     assesment_speciesname = Column(String(50), nullable=False)
-    user = Column(String(25), nullable=False)
+    user_id = Column('user', String(25), nullable=False)
     MS = Column(String(4), nullable=False, default='EU25')
     comment = Column(String)
     author_id = Column('author', String(25), nullable=False)
@@ -87,15 +87,20 @@ class Comment(Base):
             "and_(SpeciesManualAssessment.assesment_speciesname=="
             "Comment.assesment_speciesname,"
             "SpeciesManualAssessment.region==Comment.region,"
-            "SpeciesManualAssessment.user_id==Comment.user,"
+            "SpeciesManualAssessment.user_id==Comment.user_id,"
             "SpeciesManualAssessment.MS==Comment.MS)"),
-        foreign_keys=[assesment_speciesname, region, user, MS],
+        foreign_keys=[assesment_speciesname, region, user_id, MS],
         backref='comments',
     )
     author = relationship(
         'RegisteredUser',
         primaryjoin="Comment.author_id==RegisteredUser.id",
         foreign_keys=author_id,
+    )
+    user = relationship(
+        'RegisteredUser',
+        primaryjoin="Comment.user_id==RegisteredUser.id",
+        foreign_keys=user_id,
     )
     readers = relationship("RegisteredUser",
                            secondary=t_comments_read,
@@ -711,7 +716,7 @@ class HabitatComment(Base):
     id = Column(Integer, primary_key=True, unique=True)
     region = Column(String(4), nullable=False)
     habitat = Column(String(50), nullable=False)
-    user = Column(String(25), nullable=False)
+    user_id = Column('user', String(25), nullable=False)
     MS = Column(String(4), nullable=False, default='EU27')
     comment = Column(String)
     author_id = Column('author', String(25), nullable=False)
@@ -728,15 +733,20 @@ class HabitatComment(Base):
             "and_(HabitattypesManualAssessment.habitatcode=="
             "HabitatComment.habitat,"
             "HabitattypesManualAssessment.region==HabitatComment.region,"
-            "HabitattypesManualAssessment.user_id==HabitatComment.user,"
+            "HabitattypesManualAssessment.user_id==HabitatComment.user_id,"
             "HabitattypesManualAssessment.MS==HabitatComment.MS)"),
-        foreign_keys=[habitat, region, user, MS],
+        foreign_keys=[habitat, region, user_id, MS],
         backref='comments',
     )
     author = relationship(
         'RegisteredUser',
         primaryjoin="HabitatComment.author_id==RegisteredUser.id",
         foreign_keys=author_id,
+    )
+    user = relationship(
+        'RegisteredUser',
+        primaryjoin="HabitatComment.user_id==RegisteredUser.id",
+        foreign_keys=user_id,
     )
     readers = relationship("RegisteredUser",
                            secondary=t_habitat_comments_read,
@@ -825,7 +835,7 @@ class HabitattypesManualAssessment(Base):
                 .filter(HabitatComment.habitat == self.habitatcode)
                 .filter(HabitatComment.region == self.region)
                 .filter(HabitatComment.MS == self.MS)
-                .filter(HabitatComment.user == self.user_id)
+                .filter(HabitatComment.user_id == self.user_id)
                 .filter('habitat_comments_read.reader_user_id="%s"' % user)
                 .filter(or_(HabitatComment.deleted == 0,
                             HabitatComment.deleted == None))
@@ -1040,7 +1050,7 @@ class SpeciesManualAssessment(Base):
                 .filter(Comment.assesment_speciesname == self.assesment_speciesname)
                 .filter(Comment.region == self.region)
                 .filter(Comment.MS == self.MS)
-                .filter(Comment.user == self.user_id)
+                .filter(Comment.user_id == self.user_id)
                 .filter('comments_read.reader_user_id="%s"' % user)
                 .filter(or_(Comment.deleted == 0, Comment.deleted == None))
                 .count())

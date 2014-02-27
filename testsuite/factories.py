@@ -189,7 +189,7 @@ class CommentFactory(SQLAlchemyModelFactory):
     author_id = 'testuser'
     assesment_speciesname = 'Canis lupus'
     region = 'BOR'
-    user = 'someuser'
+    user_id = 'someuser'
     MS = 'EU25'
     post_date = datetime.now().strftime(DATE_FORMAT)
     dataset_id = 1
@@ -205,7 +205,7 @@ class HabitatCommentFactory(SQLAlchemyModelFactory):
     author_id = 'testuser'
     habitat = '1110'
     region = 'MATL'
-    user = 'someuser'
+    user_id = 'someuser'
     MS = 'EU25'
     post_date = datetime.now().strftime(DATE_FORMAT)
     dataset_id = 1
