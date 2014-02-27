@@ -760,7 +760,7 @@ a.conclusion:hover {
 .popout.assesment {
   left: 50%;
   margin-left: -102px;
-  margin-bottom: 3px;
+  margin-bottom: 1px;
   -webkit-box-shadow: 0 5px 5px -2px rgba(0,0,0,0.2);
   box-shadow: 0 5px 5px -2px rgba(0,0,0,0.2);
 }
@@ -801,8 +801,8 @@ a.conclusion:hover {
 /* POPOUT SIZE UNIT (SELECT)*/
 .popout.size_unit {
   left: 50%;
-  margin-left: -62px;
-  margin-bottom: 3px;
+  margin-left: -90px;
+  margin-bottom: 1px;
   -webkit-box-shadow: 0 5px 5px -2px rgba(0,0,0,0.2);
   box-shadow: 0 5px 5px -2px rgba(0,0,0,0.2);
 }
