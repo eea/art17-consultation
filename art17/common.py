@@ -332,7 +332,7 @@ def get_original_record_url(row):
 def get_title_for_species_country(row):
     title = []
     if (row.speciesname != row.assesment_speciesname or
-        row.complementary_other_information != ''):
+        row.complementary_other_information):
         title.append('\"%s\"\n%s' % (row.speciesname or row.assesment_speciesname or '',
                                      row.complementary_other_information))
         if row.species_type_asses == 0:
@@ -348,7 +348,7 @@ def get_title_for_species_country(row):
 
 def get_title_for_habitat_country(row):
     title = []
-    if row.complementary_other_information != '':
+    if row.complementary_other_information:
         title.append('%s' % row.complementary_other_information)
         if row.habitattype_type_asses == 0:
             title.append('\n\n%s' % (row.habitattype_type_details.SpeciesType
