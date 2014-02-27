@@ -1,9 +1,10 @@
   <tr {% if is_form %}class="form_row"{% endif %}>
     <th rowspan="2">
       {% if not is_form %}
-       <abbr title="Decision">Dec.</abbr>
+      <abbr title="Decision">Dec.</abbr>
+      {% elif can_select_MS %}
+      MS
       {% endif %}
-      {% if can_select_MS %}MS{% endif %}
     </th>
     {% if not region %}<th rowspan="2">Reg</th>{% endif %}
 
