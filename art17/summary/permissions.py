@@ -1,5 +1,5 @@
 from art17.auth import current_user
-from art17.common import expert_perm, admin_perm, etc_perm, sta_perm
+from art17.common import expert_perm, admin_perm, etc_perm, sta_perm, nat_perm
 from art17.summary import summary
 
 
@@ -60,8 +60,11 @@ def can_add_conclusion(dataset, zone, subject, region=None):
     if region and not current_user.is_anonymous():
         record_exists = zone_cls_mapping[zone].get_manual_record(
             dataset.id, subject, region, current_user.id)
-    return not dataset.is_readonly and (sta_perm.can() or admin_perm.can()) \
-        and not record_exists
+    return (
+        not dataset.is_readonly and
+        (sta_perm.can() or admin_perm.can() or nat_perm.can()) and
+        not record_exists
+    )
 
 
 @summary.app_template_global('can_select_MS')
@@ -73,10 +76,10 @@ def can_touch(assessment):
     if current_user.is_anonymous():
         return False
     if not assessment:
-        return admin_perm.can() or sta_perm.can()
+        return admin_perm.can() or sta_perm.can() or nat_perm.can()
     else:
         return admin_perm.can() or etc_perm.can() or (
-            sta_perm.can() and assessment.user == current_user)
+            assessment.user == current_user)
 
 
 def must_edit_ref(assessment):

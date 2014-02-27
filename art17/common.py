@@ -127,6 +127,7 @@ admin_perm = Permission(RoleNeed('admin'))
 expert_perm = Permission(RoleNeed('expert'))
 sta_perm = Permission(RoleNeed('stakeholder'))
 etc_perm = Permission(RoleNeed('etc'))
+nat_perm = Permission(RoleNeed('nat'))
 
 
 @common.record
