@@ -1,5 +1,5 @@
 
-{% set concl_value = get_range_conclusion_value(row.habitat,
+{% set concl_value = get_range_conclusion_value(row.habitatcode,
                             row.region, row.method_structure) %}
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} border"
     {% if concl_value %}title=": {{ concl_value }}"{% endif %}>

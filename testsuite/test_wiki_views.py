@@ -100,6 +100,8 @@ def test_empty_view(app, client, request_args):
      )
 ])
 def test_non_auth_view(app, setup, client, request_args, search_text):
+    create_user('testuser')
+    create_user('otheruser')
     resp = client.get(*request_args)
     assert resp.status_code == 200
     assert resp.content_type == 'text/html'

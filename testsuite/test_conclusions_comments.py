@@ -103,8 +103,10 @@ def setup(app):
 def test_comments(app, client, setup, zope_auth, request_type, request_args,
                   post_params, user, expect_errors, status_code,
                   assert_condition):
+    create_user('testuser')
     if user:
-        create_user(*user)
+        if user[0] != 'testuser':
+            create_user(*user)
         zope_auth.update({'user_id': user[0]})
 
     resp = getattr(client, request_type)(*get_request_params(

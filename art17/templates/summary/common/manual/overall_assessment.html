@@ -1,7 +1,7 @@
 {% if dataset.schema == '2006' %}
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
 
-  {% set concl_value = get_assesm_conclusion_value_for_species(row.assesment_speciesname, row.region, row.method_future) %}
+  {% set concl_value = get_assesm_conclusion_value_for_species(row.subject, row.region, row.method_future) %}
 
   <td colspan="4" class="{{ classes }} border_left"
       {% if concl_value %}title=": {{concl_value}}"{% endif %}>
@@ -10,7 +10,7 @@
 {% else %}
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
 
-  {% set concl_value = get_assesm_conclusion_value_for_species(row.assesment_speciesname,
+  {% set concl_value = get_assesm_conclusion_value_for_species(row.subject,
                                                                row.region,
                                                                row.method_future) %}
 

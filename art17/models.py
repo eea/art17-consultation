@@ -2,7 +2,6 @@
 import argparse
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer,\
     LargeBinary, SmallInteger, String, Table, Text, Boolean
-from sqlalchemy.dialects.mysql.base import MEDIUMBLOB
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import or_
@@ -72,7 +71,7 @@ class Comment(Base):
     region = Column(String(4), nullable=False)
     assesment_speciesname = Column(String(50), nullable=False)
     user = Column(String(25), nullable=False)
-    MS = Column(String(4), nullable=False, server_default=u"'EU25'")
+    MS = Column(String(4), nullable=False, default='EU25')
     comment = Column(String)
     author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
@@ -80,7 +79,6 @@ class Comment(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
-        primary_key=True,
     )
 
     record = relationship(
@@ -119,7 +117,7 @@ class DicCountryCode(Base):
     __tablename__ = 'dic_country_codes'
 
     code = Column(String(2), primary_key=True)
-    codeEU = Column(String(2), server_default=u"''")
+    codeEU = Column(String(2), default='')
     name = Column(String(40))
 
     dataset_id = Column(
@@ -266,9 +264,9 @@ class EtcDataHcoveragePressure(Base):
     eu_country_code = Column(String(2), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     habitatcode = Column(String(4), primary_key=True, nullable=False,
-                         server_default=u"'0'")
+                         default='0')
     pressure = Column(String(3), primary_key=True, nullable=False,
-                      server_default=u"''")
+                      default='')
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -283,9 +281,8 @@ class EtcDataHcoverageThreat(Base):
     eu_country_code = Column(String(2), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     habitatcode = Column(String(4), primary_key=True, nullable=False,
-                         server_default=u"'0'")
-    threat = Column(String(3), primary_key=True, nullable=False,
-                    server_default=u"''")
+                         default='0')
+    threat = Column(String(3), primary_key=True, nullable=False, default='')
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -467,10 +464,9 @@ class EtcDataSpopulationPressure(Base):
     eu_country_code = Column(String(2), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     n2000_species_code = Column(Integer, primary_key=True, nullable=False,
-                                server_default=u"'0'")
+                                default=0)
     assesment_speciesname = Column(String(60), nullable=False)
-    pressure = Column(String(3), primary_key=True, nullable=False,
-                      server_default=u"''")
+    pressure = Column(String(3), primary_key=True, nullable=False, default='')
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -485,10 +481,9 @@ class EtcDataSpopulationThreat(Base):
     eu_country_code = Column(String(2), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     n2000_species_code = Column(Integer, primary_key=True, nullable=False,
-                                server_default=u"'0'")
+                                default=0)
     assesment_speciesname = Column(String(60), nullable=False)
-    threat = Column(String(3), primary_key=True, nullable=False,
-                    server_default=u"''")
+    threat = Column(String(3), primary_key=True, nullable=False, default='')
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -661,7 +656,7 @@ class EtcQaErrorsHabitattypeManualChecked(Base):
     filename = Column(String(60), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     habitatcode = Column(String(50))
-    suspect_value = Column(String(150), nullable=False, server_default=u"''")
+    suspect_value = Column(String(150), nullable=False, default='')
     error_code = Column(Integer, primary_key=True, nullable=False)
     error_description = Column(Text)
     field = Column('FlagField', String(40))
@@ -686,7 +681,7 @@ class EtcQaErrorsSpeciesManualChecked(Base):
     filename = Column(String(60), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     assesment_speciesname = Column(String(60))
-    suspect_value = Column(String(150), nullable=False, server_default=u"''")
+    suspect_value = Column(String(150), nullable=False, default='')
     error_code = Column(Integer, primary_key=True, nullable=False)
     error_description = Column(Text)
     field = Column('FlagField', String(40))
@@ -717,7 +712,7 @@ class HabitatComment(Base):
     region = Column(String(4), nullable=False)
     habitat = Column(String(50), nullable=False)
     user = Column(String(25), nullable=False)
-    MS = Column(String(4), nullable=False, server_default=u"'EU27'")
+    MS = Column(String(4), nullable=False, default='EU27')
     comment = Column(String)
     author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
@@ -725,7 +720,6 @@ class HabitatComment(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
-        primary_key=True,
     )
 
     record = relationship(
@@ -772,7 +766,7 @@ class HabitattypesManualAssessment(Base):
     __tablename__ = 'habitattypes_manual_assessment'
 
     MS = Column(String(4), primary_key=True, nullable=False,
-                server_default=u"'EU27'")
+                default='EU27')
     region = Column(String(4), primary_key=True, nullable=False)
     habitatcode = Column(String(50), primary_key=True, nullable=False)
     range_surface_area = Column(String(23))
@@ -799,7 +793,7 @@ class HabitattypesManualAssessment(Base):
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     user_id = Column('user', String(25), primary_key=True, nullable=False,
-                     server_default=u"''")
+                     default='')
     last_update = Column(String(16))
     deleted = Column('deleted_record', Integer)
     decision = Column(String(3))
@@ -872,16 +866,16 @@ class PhotoHabitat(Base):
     __tablename__ = 'photo_habitats'
 
     id = Column(Integer, primary_key=True)
-    habitatcode = Column(String(4), nullable=False, server_default=u"''")
+    habitatcode = Column(String(4), nullable=False, default='')
     description = Column(String(4096))
     photographer = Column(String(64))
     location = Column(String(64))
     content_type = Column(String(32))
     picture_date = Column(DateTime, nullable=False,
                           server_default=u'CURRENT_TIMESTAMP')
-    picture_data = Column(MEDIUMBLOB)
-    thumbnail = Column(MEDIUMBLOB)
-    user = Column(String(50), nullable=False, server_default=u"''")
+    picture_data = Column(db.BLOB())
+    thumbnail = Column(db.BLOB())
+    user = Column(String(50), nullable=False, default='')
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -894,17 +888,16 @@ class PhotoSpecy(Base):
     __tablename__ = 'photo_species'
 
     id = Column(Integer, primary_key=True)
-    assessment_speciesname = Column(String(60), nullable=False,
-                                    server_default=u"''")
+    assessment_speciesname = Column(String(60), nullable=False, default='')
     description = Column(String(255))
     photographer = Column(String(64))
     location = Column(String(64))
-    karma = Column(Integer, nullable=False, server_default=u"'0'")
+    karma = Column(Integer, nullable=False, default=0)
     content_type = Column(String(32))
     picture_date = Column(DateTime)
     picture_data = Column(LargeBinary)
     thumbnail = Column(LargeBinary)
-    user = Column(String(50), nullable=False, server_default=u"''")
+    user = Column(String(50), nullable=False, default='')
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -931,10 +924,10 @@ class RegisteredUser(Base, UserMixin):
     email = Column(String(255))
     qualification = Column(String(255))
     account_date = Column(String(16), nullable=False)
-    show_assessment = Column(Integer, nullable=False, server_default=u"'1'")
+    show_assessment = Column(Integer, nullable=False, default=1)
     active = Column(Boolean)
     confirmed_at = db.Column(db.DateTime())
-    is_ldap = db.Column(Boolean, nullable=False, server_default='0')
+    is_ldap = db.Column(Boolean, nullable=False, default=False)
     roles = db.relationship(
         'Role',
         secondary=roles_users,
@@ -957,7 +950,7 @@ class Role(Base, RoleMixin):
 t_restricted_habitats = Table(
     'restricted_habitats', metadata,
     Column('habitatcode', String(4)),
-    Column('eu_country_code', String(2), nullable=False, server_default=u"''"),
+    Column('eu_country_code', String(2), nullable=False, default=''),
     Column('show_data', SmallInteger),
     Column('ext_dataset_id', ForeignKey('datasets.id')),
 )
@@ -965,9 +958,8 @@ t_restricted_habitats = Table(
 
 t_restricted_species = Table(
     'restricted_species', metadata,
-    Column('assesment_speciesname', String(60), nullable=False,
-           server_default=u"''"),
-    Column('eu_country_code', String(2), nullable=False, server_default=u"''"),
+    Column('assesment_speciesname', String(60), nullable=False, default=''),
+    Column('eu_country_code', String(2), nullable=False, default=''),
     Column('show_data', SmallInteger),
     Column('ext_dataset_id', ForeignKey('datasets.id')),
 )
@@ -984,8 +976,7 @@ t_species_group = Table(
 class SpeciesManualAssessment(Base):
     __tablename__ = 'species_manual_assessment'
 
-    MS = Column(String(4), primary_key=True, nullable=False,
-                server_default=u"'EU25'")
+    MS = Column(String(4), primary_key=True, nullable=False, default='EU25')
     region = Column(String(4), primary_key=True, nullable=False)
     assesment_speciesname = Column(String(60), primary_key=True,
                                    nullable=False)
@@ -1017,7 +1008,7 @@ class SpeciesManualAssessment(Base):
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     user_id = Column('user', String(25), primary_key=True, nullable=False,
-                     server_default=u"''")
+                     default='')
     last_update = Column(String(16))
     deleted = Column('deleted_record', Integer)
     decision = Column(String(3))
@@ -1100,7 +1091,7 @@ class WikiChange(Base):
     editor = Column(String(60), nullable=False)
     changed = Column(DateTime, nullable=False,
                      server_default=u'CURRENT_TIMESTAMP')
-    active = Column(Integer, server_default=u"'0'")
+    active = Column(Integer, default=0)
 
     wiki = relationship(u'Wiki', backref='changes')
 
@@ -1167,7 +1158,7 @@ class WikiTrailChange(Base):
     editor = Column(String(60), nullable=False)
     changed = Column(DateTime, nullable=False,
                      server_default=u'CURRENT_TIMESTAMP')
-    active = Column(Integer, server_default=u"'0'")
+    active = Column(Integer, default=0)
 
     wiki = relationship(u'WikiTrail', backref='changes')
 
@@ -1200,7 +1191,7 @@ class Config(Base):
     start_date = Column(db.Date)
     end_date = Column(db.Date)
     admin_email = Column(db.String(255))
-    default_dataset_id = Column(Integer, server_default='1')
+    default_dataset_id = Column(Integer, default=1)
 
 
 db_manager = Manager()
