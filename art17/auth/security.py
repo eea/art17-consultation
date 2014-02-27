@@ -117,7 +117,7 @@ class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, Form):
 class Art17AdminEditUserForm(Art17RegisterFormBase, Form):
 
     active = BooleanField('Active',
-                          description='*(allow user to login and gain roles)')
+                          description='User is allowed to login and gain roles.')
     email = TextField('Email address',
                       validators=[Required("Email is required"),
                                   email_validator,

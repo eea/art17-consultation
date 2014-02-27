@@ -19,9 +19,10 @@
       <label>
         {{ user_form.active }}
         {{ user_form.active.label.text }}
-        {{ user_form.active.description }}
       </label>
+      <p class="no-margins italic small">{{ user_form.active.description }}</p>
     </div>
+    <hr>
     <div class="form-group">
         <label for="admin_user-roles">Assigned Roles</label>
         <select name="roles" multiple id="admin_user-roles">
