@@ -301,7 +301,7 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
 class SummaryManualFormSpeciesSTA(SummaryManualFormSpecies):
 
-    MS = SelectField(default='', validators=[Optional(), species_ms_validator])
+    MS = SelectField(default='', validators=[species_ms_validator])
 
 
 class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
@@ -400,7 +400,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
 class SummaryManualFormHabitatSTA(SummaryManualFormHabitat):
 
-    MS = SelectField(default='', validators=[Optional(), habitat_ms_validator])
+    MS = SelectField(default='', validators=[habitat_ms_validator])
 
 
 class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
