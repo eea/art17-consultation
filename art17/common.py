@@ -124,7 +124,6 @@ def get_default_period():
 
 
 admin_perm = Permission(RoleNeed('admin'))
-expert_perm = Permission(RoleNeed('expert'))
 sta_perm = Permission(RoleNeed('stakeholder'))
 etc_perm = Permission(RoleNeed('etc'))
 nat_perm = Permission(RoleNeed('nat'))
@@ -135,7 +134,7 @@ def register_permissions_in_template_globals(state):
     app = state.app
 
     app.jinja_env.globals['admin_perm'] = admin_perm
-    app.jinja_env.globals['expert_perm'] = expert_perm
+    app.jinja_env.globals['etc_perm'] = etc_perm
     app.jinja_env.globals['sta_perm'] = sta_perm
     app.jinja_env.globals['HOMEPAGE_VIEW_NAME'] = HOMEPAGE_VIEW_NAME
 

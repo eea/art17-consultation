@@ -1,5 +1,5 @@
 from art17.auth import current_user
-from art17.common import expert_perm, admin_perm, etc_perm, sta_perm, nat_perm
+from art17.common import admin_perm, etc_perm, sta_perm, nat_perm
 from art17.summary import summary
 
 
@@ -16,12 +16,12 @@ def can_delete(record):
 
 @summary.app_template_global('can_update_decision')
 def can_update_decision(record):
-    return expert_perm.can() or admin_perm.can()
+    return etc_perm.can() or admin_perm.can()
 
 
 @summary.app_template_global('can_view')
 def can_view(record, countries):
-    return (admin_perm.can() or expert_perm.can() or
+    return (admin_perm.can() or etc_perm.can() or
             record.eu_country_code not in countries)
 
 
@@ -44,7 +44,7 @@ def can_edit(record):
 
 @summary.app_template_global('can_view_decision')
 def can_view_decision(record):
-    return expert_perm.can() or admin_perm.can()
+    return etc_perm.can() or admin_perm.can()
 
 
 @summary.app_template_global('can_add_conclusion')

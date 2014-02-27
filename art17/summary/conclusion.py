@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import views, request, url_for, abort, jsonify
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
-from art17.common import admin_perm, expert_perm, get_default_period
+from art17.common import admin_perm, get_default_period, etc_perm
 from art17.forms import all_fields
 from art17.models import db, EtcDicMethod
 from art17.summary.permissions import can_delete, can_update_decision, \
@@ -81,19 +81,19 @@ class ConclusionView(object):
         return form, manual_assessment
 
     def filter_conclusions(self, conclusions):
-        if admin_perm.can() or expert_perm.can():
+        if admin_perm.can() or etc_perm.can():
             return conclusions
         conclusions = list(conclusions)
         ok_conclusions = filter(lambda c: c.decision in ['OK', 'END'],
                                 conclusions)
         user_or_expert = (
             lambda c:
-            not c.user.has_role('admin') and not c.user.has_role('expert')
+            not c.user.has_role('admin') and not c.user.has_role('etc')
             if c.user else False
         )
         user_iurmax = (
             lambda c:
-            not c.user.has_role('expert')
+            not c.user.has_role('etc')
             if c.user else False
         )
         if ok_conclusions:

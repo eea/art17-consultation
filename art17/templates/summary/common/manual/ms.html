@@ -1,4 +1,4 @@
-{% if expert_perm.can() %}
+{% if can_update_decision(row) %}
   {% if row.user_decision and row.user_decision.name and row.last_update_decision %}
     {% set title='added by ' + row.user_decision.name + ' <br/>on ' + row.last_update_decision %}
   {% else %}

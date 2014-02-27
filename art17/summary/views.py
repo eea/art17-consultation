@@ -28,7 +28,6 @@ from art17.models import (
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.common import (
     get_default_period,
-    expert_perm,
     population_size_unit,
     population_ref,
     get_range_conclusion_value,
@@ -51,7 +50,7 @@ from art17.common import (
     CONTRIB_CONCLUSION,
     TREND_OPTIONS, TREND_OPTIONS_OVERALL, NATURE_OF_CHANGE_OPTIONS,
     HABITAT_OPTIONS,
-)
+    etc_perm)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
@@ -106,7 +105,7 @@ def inject_fuctions():
 def inject_static():
     make_tooltip = lambda d: '\n' + '\n'.join(['%s: %s' % (k, v) for k, v in d])
     return {
-        'expert_perm': expert_perm,
+        'etc_perm': etc_perm,
         'CONCLUSION_CLASSES': CONCLUSION_CLASSES,
         'COUNTRY_ASSESSMENTS': COUNTRY_ASSESSMENTS,
         'CONTRIB_METHOD': CONTRIB_METHOD,
