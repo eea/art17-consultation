@@ -26,6 +26,26 @@ EXCLUDE_FIELDS = (
     'conclusion_future', 'conclusion_assessment', 'conclusion_structure',
 )
 
+SPLIT_FIELDS = ['complementary_favourable_range',
+                'complementary_favourable_area',
+                'complementary_favourable_population',
+                'complementary_suitable_habitat',
+                'range_surface_area',
+                'coverage_surface_area',
+                'population_size',
+                'habitat_surface_area']
+
+SIZE_FIELD = 'population_size'
+
+
+def split_semicolon(field, value):
+    if value:
+        if field in SPLIT_FIELDS:
+            value = value.split(';')[0]
+        if field == SIZE_FIELD:
+            value = ' '.join(value.split(' ')[:-1])
+    return value
+
 
 class ConclusionView(object):
 
@@ -51,7 +71,7 @@ class ConclusionView(object):
             attr = f.name
             for ass in filter(lambda a: getattr(a, attr, None), best):
                 if attr not in EXCLUDE_FIELDS:
-                    values[attr] = getattr(ass, attr)
+                    values[attr] = split_semicolon(attr, getattr(ass, attr))
                 if attr in CONC_METHODS:
                     method = getattr(ass, 'assessment_method')
                     values[CONC_METHODS[attr]] = method
