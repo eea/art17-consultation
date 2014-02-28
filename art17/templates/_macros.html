@@ -51,7 +51,10 @@
                         name="{{ name }}"
                         value="{{ css_class }}"
                         data-class="{{ css_class }}"
-                        {% if checked %}checked{% endif %}>
+                        {% if checked %}
+                        checked
+                        secondClick="true"
+                        {% endif %}>
                 {{ css_class }}
             </label> {{ COUNTRY_ASSESSMENTS.get(conclusion, '') }}
     </li>
