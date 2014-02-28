@@ -316,7 +316,7 @@ $(document).ready(function () {
         var radios = $(this).find("input[type='radio']");
         var preview = $(this).closest('.popout-wrapper').find(".conclusion.select");
         var previewValue = $(preview).data('value');
-        var prevSecondClick;
+        var prevSecondClick = $(radios).filter(':checked');
         var currentClass = $(preview).data('initial');
 
         var updateSelect = function () {
@@ -326,22 +326,6 @@ $(document).ready(function () {
                 $(preview).children('.selected-value').addClass('hidden').html( $(this).val() );
             }
         };
-
-        var updateRadioValue = function (event) {
-            event.stopPropagation();
-            var checked = $(radios).filter(':checked');
-            var value = '';
-            var secondClick = $(this).attr('secondClick');
-            $(preview).children('.selected-value').html( function () {
-                if (secondClick == "false" || secondClick == undefined) {
-                    return $(checked).val();
-                } else {
-                    return '';
-                }
-            }).removeClass('hidden');   
-            console.log(checked.checked);
-            console.log();
-        }
 
         var updateRadio = function (event) {
             event.stopPropagation();
@@ -364,16 +348,20 @@ $(document).ready(function () {
                 $(this).attr('secondClick', false);
                 this.checked = false;
             }
+            // update value
+            if (previewValue == 'radio') {
+                var checked = $(radios).filter(':checked');
+                if ($(checked).val())
+                    $(preview).children('.selected-value').removeClass('hidden').html($(checked).val());
+                else
+                    $(preview).children('.selected-value').addClass('hidden').html('');
+            }
             prevSecondClick = this;
         };
 
         // Value
-        switch (previewValue) {
-            case 'method': 
-                $(method).on('change', updateSelect);
-                break;
-            case 'radio':
-                $(radios).on('click', updateRadioValue);
+        if (previewValue == 'method') {
+            $(method).on('change', updateSelect);
         }
 
         // Radios
@@ -449,7 +437,6 @@ $(document).ready(function() {
                 
             case 'html':
                 var br = $(this).find('.br').text();
-                console.log(br);
                 if (br != undefined) {
                     br = br.replace(/\n/g, '<br />'); // Replace line break with <br />
                 }
