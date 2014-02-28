@@ -363,35 +363,31 @@ def get_original_record_url(row):
 
 
 def get_title_for_species_country(row):
-    title = []
+    s_name, s_info, s_type = '', '', ''
     if (row.speciesname != row.assesment_speciesname or
-        row.complementary_other_information):
-        title.append('\"%s\"\n%s' % (row.speciesname or row.assesment_speciesname or '',
-                                     row.complementary_other_information))
-        if row.species_type_asses == 0:
-            title.append('\n\n%s' % (row.species_type_details.SpeciesType
-                         if row.species_type_details else row.species_type))
-    elif row.species_type_asses == 0:
-            title.append(row.species_type_details.SpeciesType
-                         if row.species_type_details else row.species_type)
-
-    title = [t.replace('\n', '<br>') for t in title]
-    return title
+            row.complementary_other_information):
+        s_name = row.speciesname or row.assesment_speciesname or ''
+        s_info = row.complementary_other_information or ''
+    if row.species_type_asses == 0:
+        s_type = row.species_type_details.SpeciesType \
+            if row.species_type_details else row.species_type
+    if s_info:
+        s_info = 'Information provided in the field 2.8.2: ' + s_info.replace(
+            '\n', '<br/>')
+    return s_name, s_info, s_type
 
 
 def get_title_for_habitat_country(row):
-    title = []
+    s_name, s_info, s_type = '', '', ''
     if row.complementary_other_information:
-        title.append('%s' % row.complementary_other_information)
-        if row.habitattype_type_asses == 0:
-            title.append('\n\n%s' % (row.habitattype_type_details.SpeciesType
-                         if row.habitattype_type_details else row.habitattype_type))
-    elif row.habitattype_type_asses == 0:
-            title.append('\n\n%s' % (row.habitattype_type_details.SpeciesType
-                         if row.habitattype_type_details else row.habitattype_type))
-
-    title = [t.replace('\n', '<br>') for t in title]
-    return title
+        s_info = row.complementary_other_information or ''
+    if row.habitattype_type_asses == 0:
+        s_type = row.habitattype_type_details.SpeciesType \
+            if row.habitattype_type_details else row.habitattype_type
+    if s_info:
+        s_info = 'Information provided in the field 2.7.5: ' + s_info.replace(
+            '\n', '<br/>')
+    return s_name, s_info, s_type
 
 
 @common.route('/')

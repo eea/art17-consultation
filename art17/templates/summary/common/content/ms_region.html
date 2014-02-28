@@ -1,12 +1,21 @@
 
-  {% set country_title = get_title_for_country(row) %}
+  {% set s_name, s_info, s_type = get_title_for_country(row) %}
   {% set original_url = get_original_record_url(row) %}
   <td class="border" data-tooltip="html">
     <div class="tooltip-html hidden">
       <div class="extra-padding">
-        {% if country_title %}
-          <p class="br width-600 margin-small">{{ country_title|join('')|safe }}</p>
+        <p class="br width-600 margin-small">
+        {% if s_name %}
+            Scientific name used in original MS report if different than
+            recommended: "{{ s_name|safe }}"<br/>
         {% endif %}
+        {% if s_info %}
+            {{ s_info|safe }}</br>
+        {% endif %}
+        {% if s_type %}
+            </br>Presence status in the reported check-list: {{ s_type|safe }}
+        {% endif %}
+        </p>
         {% if not row.is_assesm %}
         <p class="margin-small">
           <a href="{{ original_url }}">Open Original Report</a>
