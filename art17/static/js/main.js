@@ -321,10 +321,8 @@ $(document).ready(function () {
         var updateSelect = function () {
             if ($(this).val()) {
                 $(preview).children('.selected-value').removeClass('hidden').html( $(this).val() );
-                $(preview).children('.fa').addClass('hidden');
             } else {
                 $(preview).children('.selected-value').addClass('hidden').html( $(this).val() );
-                $(preview).children('.fa').removeClass('hidden');
             }
         };
 
