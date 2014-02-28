@@ -2,7 +2,11 @@
 
   <tr class="section-header">
     <th class="table-title" colspan="{{ colspan_all }}">
+      {% if dataset.schema == '2006' %}
       ETC/BD treated member states' data
+      {% else %}
+      Treated data from Member States reports
+      {% endif %}
     </th>
   </tr>
   <tr>
