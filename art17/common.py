@@ -166,12 +166,18 @@ def population_size_unit(row):
     return '%s %s' % (str2num(size_unit_value), size_unit)
 
 
-def population_size_unit_title(row):
+def population_size_unit_title(row, ds_schema):
     titles = []
-    titles.append('Reason for change: ' +
-                  (row.population_change_reason or 'N/A'))
-    titles.append("Agreed: " + (row.population_units_agreed or 'N/A'))
-    titles.append("Other: " + (row.population_units_other or 'N/A'))
+    reason, agreed, other = '', '', ''
+    if ds_schema == '2006':
+        reason, agreed, other = 'Reason for change: ', 'Agreed: ', 'Other: '
+    elif ds_schema == '2012':
+        reason, agreed, other = (
+            'Reason for change if current value is different than in 2007: ',
+            'Agreed units: ', 'Alternative units: ')
+    titles.append(reason + (row.population_change_reason or 'N/A'))
+    titles.append(agreed + (row.population_units_agreed or 'N/A'))
+    titles.append(other + (row.population_units_other or 'N/A'))
     if not titles:
         return ''
     return '\n'.join(titles)
