@@ -69,23 +69,22 @@ CONTRIB_CONCLUSION = {
 }
 
 TREND_OPTIONS = [
-    ('N/A', 'not reported'),
     ('x', 'unknown'),
     ('0', 'stable'),
     ('+', 'increase'),
     ('-', 'decrease'),
+    ('N/A', 'not reported'),
 ]
 
 TREND_OPTIONS_OVERALL = [
-    ('N/A', 'not reported'),
     ('x', 'unknown'),
     ('=', 'stable'),
     ('+', 'imporving'),
     ('-', 'declining'),
+    ('N/A', 'not reported'),
 ]
 
 NATURE_OF_CHANGE_OPTIONS = [
-    ('N/A', 'not reported'),
     ('a', 'genuine change'),
     ('b1', 'more accurate'),
     ('b2', 'taxonomic review'),
@@ -96,14 +95,15 @@ NATURE_OF_CHANGE_OPTIONS = [
     ('e', 'less accurate data than those used in the previous reporting ' +
           'or absent data'),
     ('nc', 'no change'),
+    ('N/A', 'not reported'),
 ]
 
 HABITAT_OPTIONS = [
-    ('N/A', 'not reported'),
     ('g', 'good'),
     ('m', 'moderate'),
     ('b', 'bad'),
     ('u', 'unknown'),
+    ('N/A', 'not reported'),
 ]
 
 HOMEPAGE_VIEW_NAME = 'common.homepage'
