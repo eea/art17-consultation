@@ -62,7 +62,7 @@ from art17.forms import (
     SummaryManualFormHabitatRefSTA,
     SummaryManualFormHabitatSTA,
 )
-from art17.utils import str2num, parse_semicolon, str1num
+from art17.utils import str2num, parse_semicolon, str1num, na_if_none
 from art17.summary.permissions import can_touch, must_edit_ref, can_select_MS
 from art17.summary import summary
 from art17.summary.conclusion import (
@@ -137,6 +137,11 @@ def _str1num(value, default='N/A'):
 @summary.app_template_filter('parse_semicolon')
 def _parse_semicolon(value, sep='<br/>'):
     return parse_semicolon(value, sep=sep)
+
+
+@summary.app_template_filter('na_if_none')
+def _na_if_none(value, default='N/A'):
+    return na_if_none(value, default=default)
 
 
 @summary.app_template_filter('get_quality')

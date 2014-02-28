@@ -14,11 +14,11 @@
     <span class="conclusion">{{ row.conclusion_assessment|str1num }}</span>
   </td>
 
-  <td>{{ row.conclusion_assessment_trend|str2num }}</td>
+  <td>{{ row.conclusion_assessment_trend|na_if_none }}</td>
 
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') %}
   <td class="{{ classes }}">
     <span class="conclusion">{{ row.conclusion_assessment_prev|str1num }}</span>
   </td>
-  <td>{{ row.conclusion_assessment_change|str2num }}</td>
+  <td>{{ row.conclusion_assessment_change|na_if_none }}</td>
 {% endif %}

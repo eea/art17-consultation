@@ -49,3 +49,9 @@ def validate_ref(s):
     if s:
         return bool(valid_ref.match(s))
     return True
+
+
+def na_if_none(s, default='N/A'):
+    if s is None:
+        return default
+    return s
