@@ -78,7 +78,6 @@
       {{ form.conclusion_assessment_trend() }}
       </td>
       {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev) }}
-      </td>
       <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
       {{ form.conclusion_assessment_change() }}
       </td>
