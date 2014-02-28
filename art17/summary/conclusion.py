@@ -12,18 +12,20 @@ from art17.summary.permissions import can_delete, can_update_decision, \
 DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 
 CONC_METHODS = {
-    'conclusion_range': 'method_range',
-    'conclusion_population': 'method_population',
-    'conclusion_habitat': 'method_habitat',
+    #'conclusion_range': 'method_range',
+    #'conclusion_population': 'method_population',
+    #'conclusion_habitat': 'method_habitat',
     #'conclusion_future': 'method_future',
     #'conclusion_assessment': 'method_assessment',
-    'conclusion_target1': 'method_target1',
-    'conclusion_area': 'method_area',
+    #'conclusion_target1': 'method_target1',
+    #'conclusion_area': 'method_area',
     #'conclusion_structure': 'method_structure',
 }
 
 EXCLUDE_FIELDS = (
     'conclusion_future', 'conclusion_assessment', 'conclusion_structure',
+    'conclusion_range', 'conclusion_population', 'conclusion_habitat',
+    'conclusion_area',
 )
 
 SPLIT_FIELDS = ['complementary_favourable_range',
