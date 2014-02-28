@@ -175,6 +175,16 @@
   </div>
 {% endmacro %}
 
+{% macro reason_title(dataset_schema, change_reason) %}
+    {% set reason = "" %}
+    {% if dataset_schema == '2006' %}
+        {% set reason = "Reason for change: " %}
+    {% elif dataset_schema == '2012' %}
+        {% set reason = "Reasons for change if current value is different than in 2007: " %}
+    {% endif %}
+    {{ reason + (change_reason or 'N/A') }}
+{% endmacro %}
+
 {% macro numval_species_title() %}
     title="Only numeric values or intervals are accepted.
 The numbers can be with decimals only if the numbers are smaller than 10.
