@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from urlparse import urlparse
 from datetime import date
 import flask
@@ -88,7 +89,7 @@ NATURE_OF_CHANGE_OPTIONS = [
     ('a', 'genuine change'),
     ('b1', 'more accurate'),
     ('b2', 'taxonomic review'),
-    ('c1', 'use of different methods to measure or evaluate individual '+
+    ('c1', 'use of different methods to measure or evaluate individual ' +
            'parameters in overall conservation status'),
     ('c2', 'use of different thresholds'),
     ('d', 'no information about the nature of change'),
@@ -105,6 +106,16 @@ HABITAT_OPTIONS = [
     ('u', 'unknown'),
     ('N/A', 'not reported'),
 ]
+
+FAV_REF_OPTIONS = {
+    'common': [
+        ('>', 'more than current value'),
+        ('>>', 'much more than current value'),
+        ('<', 'less than current value'),
+        ('x', 'unknown')],
+    '2006': [(u'~', 'approximately equal to current value')],
+    '2012': [(u'≈', 'approximately equal to current value')]
+}
 
 HOMEPAGE_VIEW_NAME = 'common.homepage'
 
@@ -194,6 +205,21 @@ def population_ref(row):
 
     content = '%s(%s)' if filled else '%s%s'
     return content % (population_q, str2num(population, ''))
+
+
+def favourable_ref_title(field, schema):
+    text_lines = ['Favourable reference value: ']
+    if field in ('complementary_favourable_range',
+                 'complementary_favourable_area'):
+        text_lines.append('(if only operator was used in MS data current value'
+                          ' was inserted automatically)')
+    elif field == 'complementary_favourable_population':
+        text_lines.append('(if only operator was used in MS data current value'
+                          '(min) was inserted automatically)')
+    options = FAV_REF_OPTIONS['common'][:-1] + \
+        FAV_REF_OPTIONS.get(schema, []) + FAV_REF_OPTIONS['common'][-1:]
+    text_lines.extend([' '.join(opt) for opt in options])
+    return '\n'.join(text_lines)
 
 
 def get_range_conclusion_value(assesment_speciesname, region,

@@ -36,12 +36,14 @@
     <th>Surface</th>
     <th title="Percentage of surface of the Range per MS per region">% MS</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
-    <th title="Favourable reference value">Ref.</th>
+    <th title="{{ favourable_ref_title('complementary_favourable_range',
+        dataset.schema) }}">Ref.</th>
 
     <th>Surface</th>
     <th title="Percentage of surface of the area of the habitat per MS per region">% MS</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
-    <th title="Favourable reference value">Ref.</th>
+    <th title="{{ favourable_ref_title('complementary_favourable_area',
+        dataset.schema) }}">Ref.</th>
 
     {% if dataset.schema == '2012' %}
     <th title="Current conservation status">Curr. CS</th>

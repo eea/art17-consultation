@@ -47,7 +47,8 @@
     <th>Area</th>
     <th title="Percentage of area of the Range per MS per region">% MS</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
-    <th title="Favourable reference value">Ref.</th>
+    <th title="{{ favourable_ref_title('complementary_favourable_range',
+        dataset.schema) }}">Ref.</th>
 
     <th>
         <div class="popout-wrapper hover">
@@ -70,7 +71,8 @@
     </th>
     <th title="Percentage of Population per MS per region">% MS</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
-    <th title="Favourable reference value">Ref.</th>
+    <th title="{{ favourable_ref_title('complementary_favourable_population',
+        dataset.schema) }}">Ref.</th>
 
     <th >Area</th>
     <th title="Percentage of area of the Habitat per MS per region">% MS</th>

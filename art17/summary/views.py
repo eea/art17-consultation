@@ -43,6 +43,7 @@ from art17.common import (
     get_title_for_species_country,
     get_title_for_habitat_country,
     population_size_unit_title,
+    favourable_ref_title,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
@@ -98,6 +99,7 @@ def inject_fuctions():
         'get_coverage_conclusion_value': get_coverage_conclusion_value,
         'get_struct_conclusion_value': get_struct_conclusion_value,
         'get_original_record_url': get_original_record_url,
+        'favourable_ref_title': favourable_ref_title,
     }
 
 
