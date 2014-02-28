@@ -99,10 +99,51 @@
   </div>
 {% endmacro %}
 
+{% macro select_conclusion_popout(title, conclusion_field) %}
+  <div class="popout-wrapper">
+      <div class="popout assesment caret">
+      <div class="popout-title">
+          <span class="close pull-right"><i class="fa fa-times"></i></span>
+          {{ title }}
+      </div>
+      <div class="form-group no-bottom">
+          <p class="bold btn-align">Conclusion</p>
+          <ul class="select-list no-list">
+              {% for conclusion, c in conclusion_field.choices %}
+                {% if conclusion %}
+                  {{ conclusion_li(conclusion, conclusion_field.name,
+                                   conclusion_field.data == conclusion) }}
+                {% endif %}
+              {% endfor %}
+          </ul>
+      </div>
+      </div>
+      <a class="conclusion select block {{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
+         tab-index
+         data-popout="assesment"
+         data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}">
+        {% if conclusion_field.data %}
+          <span class="selected-value">
+            {{ conclusion_field.data }}
+          </span>
+        {% else %}
+          <span class="selected-value hidden"></span>
+        {% endif %}
+      </a>
+  </div>
+{% endmacro %}
+
 {% macro method_conclusion_td(title, method_field, conclusion_field) %}
     <td {% if method_field.errors or conclusion_field.errors %}class="form-error-td"{% endif %}
         {{ cm_pair_title() }}>
         {{ method_conclusion_popout(title, method_field, conclusion_field) }}
+    </td>
+{% endmacro %}
+
+{% macro select_conclusion_td(title, conclusion_field) %}
+    <td {% if conclusion_field.errors %}class="form-error-td"{% endif %}
+        {{ cm_pair_title() }}>
+        {{ select_conclusion_popout(title, conclusion_field) }}
     </td>
 {% endmacro %}
 
