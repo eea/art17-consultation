@@ -315,6 +315,7 @@ $(document).ready(function () {
         var method = $(this).find("select");
         var radios = $(this).find("input[type='radio']");
         var preview = $(this).closest('.popout-wrapper').find(".conclusion.select");
+        var previewValue = $(preview).data('value');
         var prevSecondClick;
         var currentClass = $(preview).data('initial');
 
@@ -325,6 +326,22 @@ $(document).ready(function () {
                 $(preview).children('.selected-value').addClass('hidden').html( $(this).val() );
             }
         };
+
+        var updateRadioValue = function (event) {
+            event.stopPropagation();
+            var checked = $(radios).filter(':checked');
+            var value = '';
+            var secondClick = $(this).attr('secondClick');
+            $(preview).children('.selected-value').html( function () {
+                if (secondClick == "false" || secondClick == undefined) {
+                    return $(checked).val();
+                } else {
+                    return '';
+                }
+            }).removeClass('hidden');   
+            console.log(checked.checked);
+            console.log();
+        }
 
         var updateRadio = function (event) {
             event.stopPropagation();
@@ -350,12 +367,16 @@ $(document).ready(function () {
             prevSecondClick = this;
         };
 
-        // Select
-        //updateSelect(); // Initialize
-        $(method).on('change', updateSelect);
+        // Value
+        switch (previewValue) {
+            case 'method': 
+                $(method).on('change', updateSelect);
+                break;
+            case 'radio':
+                $(radios).on('click', updateRadioValue);
+        }
 
         // Radios
-        //updateRadio(); // Initialize
         $(radios).on('click', updateRadio);
     });
 

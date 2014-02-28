@@ -87,7 +87,8 @@
       <a class="conclusion select block {{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
          tab-index
          data-popout="assesment"
-         data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}">
+         data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
+         data-value="method">
         {% if conclusion_field.data %}
           <span class="selected-value">
             {{ method_field.data }}
@@ -121,7 +122,8 @@
       <a class="conclusion select block {{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
          tab-index
          data-popout="assesment"
-         data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}">
+         data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
+         data-value="radio">
         {% if conclusion_field.data %}
           <span class="selected-value">
             {{ conclusion_field.data }}
