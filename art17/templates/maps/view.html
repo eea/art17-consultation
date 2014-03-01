@@ -8,22 +8,14 @@
         var requiredMinorVersion = 0;
         var requiredRevision = 0;
     </script>
-</head>
-<body>
-{#
-    <tal:block define="species python:request.get('species', '');
-            region python:request.get('region', '');
-            assesment_speciesname python:here.string_decode(species).lower();
-            auth_user python:request.AUTHENTICATED_USER.getUserName();
-            auth_roles python:here.acl_manager.getSpecificUserRoles(auth_user);">
-#}
-
     <style>
     #flashcontent {
         width: 680px;
         height: 400px;
     }
     </style>
+</head>
+<body>
     <script src="{{ url_for('static', filename='js/maps/swfobject.js') }}"></script>
     <script>
     <!--
