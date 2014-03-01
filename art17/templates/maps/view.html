@@ -69,7 +69,16 @@
         <script>
             childPopups  = new Array();
             childPopupNr = 0;
-            var so = new SWFObject("{{ url_for('static', filename='js/maps/flamingo.swf') }}?config={{ url_for('.species_config_xml', page='species', _external=True) }}?region={{ region }}%26species%3D{{ species }}%26", "flamingo", "100%", "100%", "8", "#eaeaea");
+            var flamingo_swf = {{ url_for('static',
+                    filename='js/maps/flamingo.swf')
+                    |tojson|safe }};
+            var config_url = {{ url_for('.species_config_xml',
+                    region=region, species=species, _external=True)
+                    |tojson|safe }};
+            var so = new SWFObject(
+                flamingo_swf + "?config=" + encodeURIComponent(config_url + "&"),
+                "flamingo", "100%", "100%", "8", "#eaeaea"
+            );
             so.write("flashcontent");
         </script>
     </div>
