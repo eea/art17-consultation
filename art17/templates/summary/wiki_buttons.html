@@ -13,11 +13,7 @@
             {% endif %}>
         Audit trail</button>
 
-    {% set url = url_for('maps.maps_view',
-            page='species',
-            species=subject|base64encode,
-            region=region) %}
-    <button type="button" id="show-map" data-url="{{ url }}">map</button>
+    <button type="button" id="show-map" data-url="{{ map_url }}">map</button>
 
     <script>
       $('#show-map').click(function() {

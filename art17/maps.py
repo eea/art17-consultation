@@ -8,17 +8,12 @@ from art17.common import get_default_period
 maps = flask.Blueprint('maps', __name__)
 
 
-@maps.app_template_filter('base64encode')
-def base64encode(value):
-    return base64.b64encode(value)
-
-
 @maps.route('/<page>/map')
 def maps_view(page):
     if page == 'species':
         config_url = flask.url_for('.species_config_xml',
             region=flask.request.args.get('region'),
-            species=flask.request.args.get('species'),
+            species=base64.b64encode(flask.request.args.get('species')),
             _external=True,
         )
 
