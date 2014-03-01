@@ -128,8 +128,8 @@ def species_config_xml():
     restricted_species_list = [r[0] for r in rows]
     restricted = not (
         (species_name.lower() not in restricted_species_list)
-        or auth_roles['expert']
-        or auth_roles['administrator']
+        or 'admin' in roles
+        or 'nat' in roles
     )
 
     body = flask.render_template('maps/config-species.xml',
