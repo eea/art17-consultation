@@ -417,6 +417,11 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'progress_endpoint': 'progress.species-progress',
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
+            'map_url': url_for('maps.maps_view',
+                page='species',
+                species=request.args.get('subject'),
+                region=request.args.get('region'),
+            )
         }
 
 
@@ -482,6 +487,11 @@ class HabitatSummary(HabitatMixin, Summary):
             'progress_endpoint': 'progress.habitat-progress',
             'get_title_for_country': get_title_for_habitat_country,
             'wiki_unread': self.wiki_unread,
+            'map_url': url_for('maps.maps_view',
+                page='habitats',
+                habitat=request.args.get('subject'),
+                region=request.args.get('region'),
+            )
         }
 
     def get_current_selection(self, period_name, group, subject, region):
