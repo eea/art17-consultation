@@ -21,8 +21,8 @@ def maps_view(page):
     )
 
 
-@maps.route('/<page>/map/config.xml')
-def config_xml(page):
+@maps.route('/species/map/config.xml')
+def species_config_xml():
     dataset_id = get_default_period()
     region = flask.request.args.get('region', '')
     species = flask.request.args.get('species', '')
@@ -132,7 +132,7 @@ def config_xml(page):
         or auth_roles['administrator']
     )
 
-    body = flask.render_template('maps/config.xml',
+    body = flask.render_template('maps/config-species.xml',
         restricted=restricted,
         extent=','.join(str(v) for v in extent),
         assessment_speciesname=assesment_speciesname,
