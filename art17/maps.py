@@ -15,9 +15,25 @@ def base64encode(value):
 
 @maps.route('/<page>/map')
 def maps_view(page):
+    if page == 'species':
+        config_url = flask.url_for('.species_config_xml',
+            region=flask.request.args.get('region'),
+            species=flask.request.args.get('species'),
+            _external=True,
+        )
+
+    elif page == 'habitats':
+        config_url = flask.url_for('.habitats_config_xml',
+            region=flask.request.args.get('region'),
+            habitat=flask.request.args.get('habitat'),
+            _external=True,
+        )
+
+    else:
+        flask.abort(404)
+
     return flask.render_template('maps/view.html',
-        region=flask.request.args.get('region'),
-        species=flask.request.args.get('species'),
+        config_url=config_url,
     )
 
 

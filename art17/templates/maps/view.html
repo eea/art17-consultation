@@ -72,9 +72,7 @@
             var flamingo_swf = {{ url_for('static',
                     filename='js/maps/flamingo.swf')
                     |tojson|safe }};
-            var config_url = {{ url_for('.species_config_xml',
-                    region=region, species=species, _external=True)
-                    |tojson|safe }};
+            var config_url = {{ config_url|tojson|safe }};
             var so = new SWFObject(
                 flamingo_swf + "?config=" + encodeURIComponent(config_url + "&"),
                 "flamingo", "100%", "100%", "8", "#eaeaea"
