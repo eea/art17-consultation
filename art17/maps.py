@@ -140,3 +140,102 @@ def species_config_xml():
         region=region,
     )
     return flask.Response(body, content_type='text/xml')
+
+
+@maps.route('/habitats/map/config.xml')
+def habitats_config_xml():
+    dataset_id = get_default_period()
+
+    def select_habitat_regions(habitatcode):
+        """
+        SELECT DISTINCT 
+          etc_data_habitattype_regions.region
+        FROM
+          etc_data_habitattype_regions
+        WHERE <dtml-sqltest name="habitatcode" column="etc_data_habitattype_regions.habitatcode" type=string>
+        """
+        return (
+            models.db.session.query(
+                models.EtcDataHabitattypeRegion.region,
+            )
+            .distinct()
+            .filter_by(dataset_id=dataset_id)
+            .filter_by(habitatcode=habitatcode)
+        )
+
+
+    def getRegions(habitat):
+        regions = ['^%s' % rec.region for rec in select_habitat_regions(habitatcode=habitat)]
+        return '|'.join(regions)
+
+
+    def select_habitat_countries(region_list, habitatcode):
+        """
+        SELECT
+          eu_country_code,
+          code,
+          conclusion_assessment,
+          region
+        FROM
+          etc_data_habitattype_regions
+        WHERE <dtml-sqltest region type="string" multiple="multiple">
+        AND <dtml-sqltest habitatcode type=string>
+        """
+        return (
+            models.db.session.query(
+                models.EtcDataHabitattypeRegion.eu_country_code,
+                models.EtcDataHabitattypeRegion.code,
+                models.EtcDataHabitattypeRegion.conclusion_assessment,
+                models.EtcDataHabitattypeRegion.region,
+            )
+            .filter(models.EtcDataHabitattypeRegion.region.in_(region_list))
+            .filter_by(habitatcode=habitatcode)
+            .filter_by(dataset_id=dataset_id)
+        )
+
+    def background_colour(value):
+        colors = ('#9CB34D','#D16E43','#D16E43','#D16E43','#C22C15','#C22C15','#C22C15','#6F6C66','#FFFFFF')
+        assessments = ('FV','U1','U1-','U1+','U2','U2-','U2+','XX','')
+
+        RGBS = dict(zip(assessments,[x for x in colors]))
+        colour = RGBS.get(value,'')
+        if colour:
+            return colour[1:]
+        else:
+            return ''
+
+    region = flask.request.args.get('region', '')
+    habitat = flask.request.args.get('habitat', '')
+    if region == '':
+       region = '/%s/' % getRegions(habitat)
+    else:
+       region = "/^%s/" % region
+    results = select_habitat_countries(region_list=region[1:-1].replace('^', '').split('|'), habitatcode=habitat)
+
+    countries_style = []
+    countries = []
+    habitat_code = ''
+
+    for res in results:
+        if res.eu_country_code == 'UK':
+            country = 'GB'
+        else: 
+            if res.eu_country_code == 'EL':
+               country = 'GR'
+            else:
+               country = res.eu_country_code
+        habitat_code = res.code
+        countries.append(country)
+        countries_style.append('l=%s%s|%s' % (country, res.region, background_colour(res.conclusion_assessment)))
+
+    qstring="/%s/" % '|'.join(countries)
+    #extent = get_coordinates(region, qstring)
+    extent = [2635945.400202,1385857.104555,6084637.867846,5307244.006638]
+
+    body = flask.render_template('maps/config-habitats.xml',
+        extent=','.join(str(v) for v in extent),
+        habitat_code=habitat_code,
+        countries_style=Markup('&'.join(escape(s) for s in countries_style)),
+        region=region,
+    )
+    return flask.Response(body, content_type='text/xml')
