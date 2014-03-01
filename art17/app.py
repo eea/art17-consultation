@@ -21,6 +21,10 @@ from art17.assets import assets_env
 
 DEFAULT_CONFIG = {
     'WTF_CSRF_ENABLED': False,
+    'MAP_SERVICE_SPECIES': 'http://bd.eionet.europa.eu/article17/'
+                           'speciessummary/details/art17ws',
+    'MAP_SERVICE_HABITATS': 'http://bd.eionet.europa.eu/article17/'
+                            'habitatsummary/details/art17ws',
 }
 
 
