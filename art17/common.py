@@ -441,3 +441,8 @@ def config():
         return flask.redirect(flask.url_for('.config'))
 
     return flask.render_template('config.html', form=form)
+
+
+@common.app_template_filter('ugly_fix')
+def ugly_fix(value):
+    return value.replace('art17.eionet', 'bd.eionet')
