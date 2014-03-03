@@ -986,7 +986,7 @@ t_species_group = Table(
 class SpeciesManualAssessment(Base):
     __tablename__ = 'species_manual_assessment'
 
-    MS = Column(String(4), primary_key=True, nullable=False, default='EU25')
+    MS = Column(String(4), primary_key=True, nullable=False, default='EU27')
     region = Column(String(4), primary_key=True, nullable=False)
     assesment_speciesname = Column(String(60), primary_key=True,
                                    nullable=False)

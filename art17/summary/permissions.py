@@ -62,8 +62,8 @@ def can_add_conclusion(dataset, zone, subject, region=None):
             dataset.id, subject, region, current_user.id)
     return (
         not dataset.is_readonly and
-        (sta_perm.can() or admin_perm.can() or nat_perm.can()) and
-        not record_exists
+        (sta_perm.can() or admin_perm.can() or nat_perm.can()
+         or etc_perm.can()) and not record_exists
     )
 
 
@@ -76,7 +76,8 @@ def can_touch(assessment):
     if current_user.is_anonymous():
         return False
     if not assessment:
-        return admin_perm.can() or sta_perm.can() or nat_perm.can()
+        return admin_perm.can() or sta_perm.can() or nat_perm.can() \
+            or etc_perm.can()
     else:
         return admin_perm.can() or etc_perm.can() or (
             assessment.user == current_user)

@@ -51,7 +51,8 @@ from art17.common import (
     CONTRIB_CONCLUSION,
     TREND_OPTIONS, TREND_OPTIONS_OVERALL, NATURE_OF_CHANGE_OPTIONS,
     HABITAT_OPTIONS,
-    etc_perm)
+    etc_perm,
+    nat_perm)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
@@ -259,7 +260,7 @@ class Summary(ConclusionView, views.View):
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
-                    if not can_select_MS():
+                    if nat_perm.can():
                         manual_assessment.MS = current_user.MS
                     db.session.flush()
                     db.session.add(manual_assessment)
