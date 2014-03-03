@@ -79,13 +79,15 @@ def setup_autofill(app):
     "request_args, post_params, user, roles, expect_errors, status_code, "
     "search_text",
     # Species
+    # STK editing his own conclusion
     [(['/species/summary/', {
         'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
         'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
         'edit_region': 'ALP'}],
      {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
-      'conclusion_population': 'FV', 'submit': 'update'},
-     'someuser', ['stakeholder'], False, 302, 'Conclusion edited successfully'),
+      'conclusion_population': 'FV', 'submit': 'update'}, 'someuser',
+        ['stakeholder'], False, 302, 'Conclusion edited successfully'),
+     # Editing inexistent conclusion
      (['/species/summary/', {
          'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'otheruser',
@@ -93,6 +95,7 @@ def setup_autofill(app):
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
        'conclusion_population': 'FV', 'submit': 'update'},
       'otheruser', ['stakeholder'], True, 404, ''),
+     # STK editing another user's conclusion
      (['/species/summary/', {
          'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
@@ -100,21 +103,40 @@ def setup_autofill(app):
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
        'conclusion_population': 'FV', 'submit': 'update'},
       'otheruser', ['stakeholder'], True, 403, ''),
+     # ETC editing his own conclusion
+     (['/species/summary/', {
+         'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+         'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
+         'edit_region': 'ALP'}],
+      {'region': 'ALP', 'method_population': '2GD',
+       'conclusion_population': 'FV', 'submit': 'update'},
+      'someuser', ['etc'], False, 302, 'Conclusion edited successfully'),
+     # ETC editing another user's conclusion - Ref fields
      (['/species/summary/', {
          'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'complementary_favourable_range': '100'},
-      'someuser', ['etc'], False, 302, 'Conclusion edited successfully'),
+      'otheruser', ['etc'], False, 302, 'Conclusion edited successfully'),
+     # ETC editing another user's conclusion - non-ref fields
+     (['/species/summary/', {
+         'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+         'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
+         'edit_region': 'ALP'}],
+      {'method_population': '2GD', 'conclusion_population': 'FV',
+       'submit': 'update'}, 'otheruser', ['etc'], False, 200,
+         'Please fill at least one field'),
 
      # Habitat
+     # STK editing his own conclusion
      (['/habitat/summary/', {
          'period': 1, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
-       'conclusion_population': 'FV', 'submit': 'update'},
-      'someuser', ['stakeholder'], False, 302, 'Conclusion edited successfully'),
+       'conclusion_population': 'FV', 'submit': 'update'}, 'someuser',
+         ['stakeholder'], False, 302, 'Conclusion edited successfully'),
+     # Editing inexistent conclusion
      (['/habitat/summary/', {
          'period': 1, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'otheruser',
@@ -122,6 +144,7 @@ def setup_autofill(app):
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
        'conclusion_population': 'FV', 'submit': 'update'},
       'otheruser', ['stakeholder'], True, 404, ''),
+     # STK editing another user's conclusion
      (['/habitat/summary/', {
          'period': 1, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
@@ -129,12 +152,29 @@ def setup_autofill(app):
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
        'conclusion_population': 'FV', 'submit': 'update'},
       'otheruser', ['stakeholder'], True, 403, ''),
+     # ETC editing his own conclusion
      (['/habitat/summary/', {
          'period': 1, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
-      {'complementary_favourable_range': '100'},
-      'someuser', ['etc'], False, 302, 'Conclusion edited successfully'),
+      {'method_population': '2GD', 'conclusion_population': 'FV',
+       'submit': 'update'}, 'someuser', ['etc'], False, 302,
+         'Conclusion edited successfully'),
+     # ETC editing another user's conclusion - Ref fields
+     (['/habitat/summary/', {
+         'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+         'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
+         'edit_region': 'ALP'}],
+      {'complementary_favourable_range': '100', 'submit': 'update'},
+      'otheruser', ['etc'], False, 302, 'Conclusion edited successfully'),
+     # ETC editing another user's conclusion - non-ref fields
+     (['/habitat/summary/', {
+         'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+         'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
+         'edit_region': 'ALP'}],
+      {'method_population': '2GD', 'conclusion_population': 'FV',
+       'submit': 'update'}, 'otheruser', ['etc'], False, 200,
+         'Please fill at least one field'),
      ])
 def test_edit_conclusion(app, client, zope_auth, setup_edit, request_args,
                          post_params, user, roles, expect_errors, status_code,
