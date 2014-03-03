@@ -76,50 +76,6 @@ def setup_autofill(app):
 
 
 @pytest.mark.parametrize(
-    "request_args, post_params, roles, expect_errors, status_code, model_cls",
-    # Species
-    [(['/species/summary/', {'period': 1, 'group': 'Mammals',
-                             'subject': 'Canis lupus', 'region': 'ALP'}],
-     {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
-      'conclusion_population': 'FV', 'submit': 'add'},
-     ['stakeholder'], False, 200, models.SpeciesManualAssessment),
-
-     (['/species/summary/', {'period': 1, 'group': 'Mammals',
-                             'subject': 'Canis lupus', 'region': 'ALP'}],
-      {'region': 'ALP', 'method_population': '2GD',
-       'conclusion_population': 'FV', 'submit': 'add'},
-      ['etc'], True, 403, None),
-
-     # Habitat
-     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
-                             'subject': '1110', 'region': 'ALP'}],
-      {'region': 'ALP', 'MS': 'AT', 'method_range': '2GD',
-       'conclusion_range': 'FV', 'submit': 'add'},
-      ['stakeholder'], False, 200, models.HabitattypesManualAssessment),
-
-     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
-                             'subject': '1110', 'region': 'ALP'}],
-      {'region': 'ALP', 'method_range': '2GD',
-       'conclusion_range': 'FV', 'submit': 'add'},
-      ['etc'], True, 403, None)
-     ])
-def test_add_conclusion(app, client, zope_auth, setup_add, request_args,
-                        post_params, roles, expect_errors, status_code,
-                        model_cls):
-    create_user('concladd', roles)
-    zope_auth.update({'user_id': 'concladd'})
-
-    resp = client.post(*get_request_params('post', request_args, post_params),
-                       expect_errors=expect_errors)
-
-    assert resp.status_code == status_code
-
-    if not expect_errors:
-        post_params.pop('submit', None)
-        assert model_cls.query.filter_by(**post_params).one()
-
-
-@pytest.mark.parametrize(
     "request_args, post_params, user, roles, expect_errors, status_code, "
     "search_text",
     # Species
@@ -245,3 +201,93 @@ def test_autofill_conclusion_form(app, client, zope_auth, setup_autofill,
         id='complementary_favourable_range').parent.get('class')
     assert resp.html.find('li', {'class': 'flashmessage'}).text == \
         'Please correct the errors below and try again.'
+
+
+@pytest.mark.parametrize(
+    "request_args, post_params, user, MS, roles, model_cls",
+    # Species
+    [(['/species/summary/', {'period': 1, 'group': 'Mammals',
+                             'subject': 'Canis lupus', 'region': 'ALP'}],
+     {'region': 'ALP', 'method_population': '2GD',
+      'conclusion_population': 'FV', 'submit': 'add'}, 'natuser', 'FR',
+     ['nat'], models.SpeciesManualAssessment),
+
+     # Habitat
+     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
+                             'subject': '1110', 'region': 'ALP'}],
+      {'region': 'ALP', 'method_range': '2GD', 'conclusion_range': 'FV',
+       'submit': 'add'}, 'natuser', 'FR', ['nat'],
+      models.HabitattypesManualAssessment),
+     ])
+def test_add_conclusion_nat(app, client, zope_auth, setup_add, request_args,
+                            post_params, user, MS, roles, model_cls):
+    create_user(user, roles, ms=MS)
+    zope_auth.update({'user_id': user})
+
+    resp = client.post(*get_request_params('post', request_args, post_params))
+
+    assert resp.status_code == 200
+
+    post_params.pop('submit', None)
+    manual_ass = model_cls.query.filter_by(**post_params).one()
+    assert manual_ass.MS == MS
+
+
+@pytest.mark.parametrize(
+    "request_args, post_params, user, MS, roles, model_cls",
+    # Species
+    [(['/species/summary/', {'period': 1, 'group': 'Mammals',
+                             'subject': 'Canis lupus', 'region': 'ALP'}],
+     {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
+      'conclusion_population': 'FV', 'submit': 'add'}, 'stkuser', 'FR',
+     ['stakeholder'], models.SpeciesManualAssessment),
+
+     # Habitat
+     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
+                             'subject': '1110', 'region': 'ALP'}],
+      {'region': 'ALP', 'MS': 'AT', 'method_range': '2GD',
+       'conclusion_range': 'FV', 'submit': 'add'}, 'stkuser', 'FR',
+      ['stakeholder'], models.HabitattypesManualAssessment),
+     ])
+def test_add_conclusion_stk(app, client, zope_auth, setup_add, request_args,
+                            post_params, user, MS, roles, model_cls):
+    create_user(user, roles, ms=MS)
+    zope_auth.update({'user_id': user})
+
+    resp = client.post(*get_request_params('post', request_args, post_params))
+
+    assert resp.status_code == 200
+
+    post_params.pop('submit', None)
+    manual_ass = model_cls.query.filter_by(**post_params).one()
+    assert manual_ass.MS == post_params['MS']
+
+
+@pytest.mark.parametrize(
+    "request_args, post_params, user, MS, roles, model_cls",
+    # Species
+    [(['/species/summary/', {'period': 1, 'group': 'Mammals',
+                             'subject': 'Canis lupus', 'region': 'ALP'}],
+     {'region': 'ALP', 'method_population': '2GD',
+      'conclusion_population': 'FV', 'submit': 'add'}, 'etcuser', 'FR',
+     ['etc'], models.SpeciesManualAssessment),
+
+     # Habitat
+     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
+                             'subject': '1110', 'region': 'ALP'}],
+      {'region': 'ALP', 'method_range': '2GD', 'conclusion_range': 'FV',
+       'submit': 'add'}, 'etcuser', 'FR', ['etc'],
+      models.HabitattypesManualAssessment),
+     ])
+def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
+                            post_params, user, MS, roles, model_cls):
+    create_user(user, roles, ms=MS)
+    zope_auth.update({'user_id': user})
+
+    resp = client.post(*get_request_params('post', request_args, post_params))
+
+    assert resp.status_code == 200
+
+    post_params.pop('submit', None)
+    manual_ass = model_cls.query.filter_by(**post_params).one()
+    assert manual_ass.MS == 'EU27'

@@ -109,7 +109,7 @@ def zope_auth(app, request):
     return whoami_data
 
 
-def create_user(user_id, role_names=[], name='', institution=''):
+def create_user(user_id, role_names=[], name='', institution='', ms=''):
     user = models.RegisteredUser(
         id=user_id,
         account_date=datetime.utcnow().strftime('%Y-%m-%d %H:%M'),
@@ -117,6 +117,7 @@ def create_user(user_id, role_names=[], name='', institution=''):
         name=name,
         email='%s@example.com' % user_id,
         institution=institution,
+        MS=ms,
     )
     models.db.session.add(user)
     for name in role_names:
