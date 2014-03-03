@@ -174,7 +174,8 @@ class UpdateDecision(MixinView, views.View):
 
     methods = ['GET', 'POST']
 
-    def dispatch_request(self, period, subject, region, user, ms):
+    def dispatch_request(self, period, subject, region, user):
+        ms = request.args.get('ms')
         self.record = self.mixin.get_manual_record(period, subject, region,
                                                    user, ms)
         if not self.record:

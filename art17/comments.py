@@ -139,7 +139,8 @@ class CommentsList(views.View):
         else:
             raise PermissionDenied
 
-    def dispatch_request(self, period, subject, region, user, MS):
+    def dispatch_request(self, period, subject, region, user):
+        MS = request.args.get('MS')
         self.record = self.get_manual_record(period, subject, region, user, MS)
         edited_comment = None
         if request.args.get('edit'):
@@ -192,11 +193,11 @@ class HabitatCommentsList(HabitatMixin, CommentsList):
 
 
 comments.add_url_rule(
-    '/species/comments/<period>/<subject>/<region>/<user>/<MS>/',
+    '/species/comments/<period>/<subject>/<region>/<user>/',
     view_func=SpeciesCommentsList.as_view('species-comments')
 )
 comments.add_url_rule(
-    '/habitat/comments/<period>/<subject>/<region>/<user>/<MS>/',
+    '/habitat/comments/<period>/<subject>/<region>/<user>/',
     view_func=HabitatCommentsList.as_view('habitat-comments')
 )
 

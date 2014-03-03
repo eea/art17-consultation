@@ -65,7 +65,7 @@ from art17.forms import (
     SummaryManualFormHabitatSTA,
 )
 from art17.utils import str2num, parse_semicolon, str1num, na_if_none
-from art17.summary.permissions import can_touch, must_edit_ref, can_select_MS
+from art17.summary.permissions import can_touch, must_edit_ref
 from art17.summary import summary
 from art17.summary.conclusion import (
     UpdateDecision,
@@ -556,10 +556,10 @@ summary.add_url_rule('/habitat/conc/delete/',
                      .as_view('habitat-delete', mixin=HabitatMixin))
 
 summary.add_url_rule(
-    '/species/conc/update/<period>/<subject>/<region>/<user>/<ms>/',
+    '/species/conc/update/<period>/<subject>/<region>/<user>/',
     view_func=UpdateDecision
     .as_view('species-update', mixin=SpeciesMixin))
 summary.add_url_rule(
-    '/habitat/conc/update/<period>/<subject>/<region>/<user>/<ms>/',
+    '/habitat/conc/update/<period>/<subject>/<region>/<user>/',
     view_func=UpdateDecision
     .as_view('habitat-update', mixin=HabitatMixin))
