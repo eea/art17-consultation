@@ -224,13 +224,13 @@ class UserSummary(views.View):
         conclusions = (
             self.model_manual_cls.query
             .filter_by(dataset_id=period)
-            .order_by('-last_update').limit(100)
+            .order_by(self.model_manual_cls.last_update.desc()).limit(100)
         )
         comments_list = (
             self.model_comment_cls.query
             .join(self.model_comment_cls.record)
             .filter(self.model_manual_cls.dataset_id == period)
-            .order_by('-post_date').all()
+            .order_by(self.model_comment_cls.post_date.desc()).all()
         )
         return {'conclusions': conclusions, 'comments': comments_list}
 
