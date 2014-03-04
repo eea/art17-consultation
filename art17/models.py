@@ -1202,6 +1202,8 @@ class Config(Base):
     end_date = Column(db.Date)
     admin_email = Column(db.String(255))
     default_dataset_id = Column(Integer, default=1)
+    species_map_url = Column(db.String(255))
+    habitat_map_url = Column(db.String(255))
 
 
 class LuSpeciesManual2007(Base):
