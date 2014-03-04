@@ -288,7 +288,7 @@ class _CommentCounterBase(object):
                 Wiki.region_code,
                 func.count(WikiComment.id),
             )
-            .join(Wiki.comments)
+            .join(WikiComment.wiki)
             .filter(Wiki.dataset_id == self.dataset_id)
             .filter(or_(
                 WikiComment.deleted == 0,
