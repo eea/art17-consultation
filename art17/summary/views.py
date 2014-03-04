@@ -471,7 +471,7 @@ class HabitatSummary(HabitatMixin, Summary):
         subject = request.args.get('subject')
         if subject:
             map_url = generate_map_url(
-                category='species',
+                category='habitat',
                 subject=subject,
                 region=request.args.get('region', ''),
             )
