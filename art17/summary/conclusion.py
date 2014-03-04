@@ -99,7 +99,8 @@ class ConclusionView(object):
             filters = {
                 'region': request.args.get('edit_region'),
                 'user_id': request.args.get('edit_user'),
-                'subject': request.args.get('subject')
+                'subject': request.args.get('subject'),
+                'dataset_id': period,
             }
             manual_assessment = self.model_manual_cls.query.filter_by(
                 **filters
