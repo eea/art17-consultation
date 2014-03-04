@@ -49,14 +49,12 @@
                   {% set cc_user = comment_counts['user'].get(key, 0) %}
                   {% set cc_all = comment_counts['all'].get(key, 0) %}
                   {% set cc_wiki = comment_counts['wiki'].get(key, 0) %}
-                  {% set username = g.user.name or g.user.user_id if g.user
-                    else 'anonymous' %}
                   {% set title = data.get('title', '') + "
 
-                  Unread comments for {3}'s conclusions: {0}
+                  Unread comments for my conclusions: {0}
                   Unread comments for all conclusions: {1}
                   Unread comments for data sheet info: {2}".format(
-                  cc_user, cc_all, cc_wiki, username) %}
+                  cc_user, cc_all, cc_wiki) %}
 
                   <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }}"
                       title="{{ title }}"
