@@ -52,7 +52,9 @@ from art17.common import (
     TREND_OPTIONS, TREND_OPTIONS_OVERALL, NATURE_OF_CHANGE_OPTIONS,
     HABITAT_OPTIONS,
     etc_perm,
-    nat_perm)
+    nat_perm,
+    get_config,
+)
 from art17.forms import (
     SummaryFilterForm,
     SummaryManualFormSpecies,
@@ -418,11 +420,11 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'progress_endpoint': 'progress.species-progress',
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
-            'map_url': url_for('maps.maps_view',
-                page='species',
-                species=request.args.get('subject'),
+            'map_url': generate_map_url(
+                category='species',
+                subject=request.args.get('subject'),
                 region=request.args.get('region'),
-            )
+            ),
         }
 
 
@@ -488,11 +490,11 @@ class HabitatSummary(HabitatMixin, Summary):
             'progress_endpoint': 'progress.habitat-progress',
             'get_title_for_country': get_title_for_habitat_country,
             'wiki_unread': self.wiki_unread,
-            'map_url': url_for('maps.maps_view',
-                page='habitats',
-                habitat=request.args.get('subject'),
+            'map_url': generate_map_url(
+                category='habitat',
+                subject=request.args.get('subject'),
                 region=request.args.get('region'),
-            )
+            ),
         }
 
     def get_current_selection(self, period_name, group, subject, region):
@@ -563,3 +565,22 @@ summary.add_url_rule(
     '/habitat/conc/update/<period>/<subject>/<region>/<user>/',
     view_func=UpdateDecision
     .as_view('habitat-update', mixin=HabitatMixin))
+
+
+def generate_map_url(category, subject, region):
+    config = get_config()
+    if category == 'species':
+        return (
+            config.species_map_url
+            .replace("{species}", subject)
+            .replace("{region}", region)
+        )
+
+    if category == 'habitat':
+        return (
+            config.habitat_map_url
+            .replace("{habitat}", subject)
+            .replace("{region}", region)
+        )
+
+    raise RuntimeError('unknown category %r' % category)
