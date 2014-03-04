@@ -579,14 +579,14 @@ def generate_map_url(category, subject, region):
     config = get_config()
     if category == 'species':
         return (
-            config.species_map_url
+            (config.species_map_url or '')
             .replace("{species}", subject)
             .replace("{region}", region)
         )
 
     if category == 'habitat':
         return (
-            config.habitat_map_url
+            (config.habitat_map_url or '')
             .replace("{habitat}", subject)
             .replace("{region}", region)
         )
