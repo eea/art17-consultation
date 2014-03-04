@@ -9,6 +9,7 @@ from flask import (
     g,
 )
 from flask.ext.principal import PermissionDenied
+from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
@@ -384,7 +385,8 @@ class SpeciesSummary(SpeciesMixin, Summary):
                 .filter_by(**filter_args)
                 .join(
                     EtcDicMethod,
-                    self.model_auto_cls.assessment_method == EtcDicMethod.method
+                    and_(self.model_auto_cls.assessment_method == EtcDicMethod.method,
+                    EtcDicMethod.dataset_id == period),
                 )
             ).order_by(EtcDicMethod.order)
             self.manual_objects = self.model_manual_cls.query.filter_by(
@@ -458,9 +460,15 @@ class HabitatSummary(HabitatMixin, Summary):
             self.objects = self.model_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_cls.region, self.model_cls.country)
-            self.auto_objects = self.model_auto_cls.query.filter_by(
-                **filter_args
-            )
+            self.auto_objects = (
+                self.model_auto_cls.query
+                .filter_by(**filter_args)
+                .join(
+                    EtcDicMethod,
+                    and_(self.model_auto_cls.assessment_method == EtcDicMethod.method,
+                    EtcDicMethod.dataset_id == period),
+                )
+            ).order_by(EtcDicMethod.order)
             self.manual_objects = self.model_manual_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_manual_cls.decision.desc())
