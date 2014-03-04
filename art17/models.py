@@ -47,7 +47,7 @@ class Dataset(Base):
                 .filter_by(dataset_id=self.id).count()
             ),
             'habitat_auto': (
-                EtcDataSpeciesAutomaticAssessment.query
+                EtcDataHabitattypeAutomaticAssessment.query
                 .filter_by(dataset_id=self.id).count()
             ),
             'habitat_manual': (
