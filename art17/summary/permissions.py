@@ -15,7 +15,7 @@ def can_delete(record):
 
 
 @summary.app_template_global('can_update_decision')
-def can_update_decision(record):
+def can_update_decision():
     return etc_perm.can() or admin_perm.can()
 
 

@@ -44,6 +44,16 @@ def setup_edit(app):
 
 
 @pytest.fixture
+def setup_decision(app):
+    setup_common()
+    SpeciesManualAssessmentFactory(region='ALP')
+    HabitattypesManualAssessmentsFactory(region='ALP')
+    SpeciesManualAssessmentFactory(decision='OK')
+    HabitattypesManualAssessmentsFactory(decision='OK')
+    models.db.session.commit()
+
+
+@pytest.fixture
 def setup_autofill(app):
     setup_common()
     EtcDataSpeciesAutomaticAssessmentFactory(
@@ -331,3 +341,76 @@ def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
     post_params.pop('submit', None)
     manual_ass = model_cls.query.filter_by(**post_params).one()
     assert manual_ass.MS == 'EU27'
+
+
+@pytest.mark.parametrize(
+    "request_args, post_params, user, roles, expect_errors, status_code, "
+    "success, message",
+    # Species
+    # ETC successfully updating decision
+    [(['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU25'}],
+      {'decision': 'CO'}, 'testuser', ['etc'], False, 200, True, ''),
+     # ADM successfully updating decision
+     (['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU25'}],
+      {'decision': 'CO'}, 'testuser', ['admin'], False, 200, True, ''),
+     # ETC changing a final decision (OK) into another final decision (END)
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+      {'decision': 'END'}, 'testuser', ['etc'], False, 200, False,
+      'Another final decision already exists'),
+     # ETC selecting 'OK?' decision
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+      {'decision': 'OK?'}, 'testuser', ['etc'], False, 200, False,
+      "You are not allowed to select 'OK?'Please select another value."),
+     # ETC updating decision - inexistent assessment
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
+      {'decision': 'CO'}, 'testuser', ['etc'], True, 404, '', ''),
+     # No decision sent in request
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+      {}, 'testuser', ['etc'], True, 401, '', ''),
+     # NAT trying to update decision
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+      {}, 'testuser', ['nat'], True, 403, '', ''),
+     # STK trying to update decision
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+      {}, 'testuser', ['stakeholder'], True, 403, '', ''),
+     # Habitat
+     # ETC successfully updating decision
+     (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU25'}],
+      {'decision': 'CO'}, 'testuser', ['etc'], False, 200, True, ''),
+     # ADM successfully updating decision
+     (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU25'}],
+      {'decision': 'CO'}, 'testuser', ['admin'], False, 200, True, ''),
+     # ETC changing a final decision (OK) into another final decision (END)
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+      {'decision': 'END'}, 'testuser', ['etc'], False, 200, False,
+      'Another final decision already exists'),
+     # ETC selecting 'OK?' decision
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+      {'decision': 'OK?'}, 'testuser', ['etc'], False, 200, False,
+      "You are not allowed to select 'OK?'Please select another value."),
+     # ETC updating decision - inexistent assessment
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
+      {'decision': 'CO'}, 'testuser', ['etc'], True, 404, '', ''),
+     # No decision sent in request
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+      {}, 'testuser', ['etc'], True, 401, '', ''),
+     # NAT trying to update decision
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+      {}, 'testuser', ['nat'], True, 403, '', ''),
+     # STK trying to update decision
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+      {}, 'testuser', ['stakeholder'], True, 403, '', ''),
+     ])
+def test_update_decision(app, client, zope_auth, setup_decision, request_args,
+                         post_params, user, roles, expect_errors, status_code,
+                         success, message):
+    create_user(user, roles)
+    zope_auth.update({'user_id': user})
+
+    resp = client.post(*get_request_params('post', request_args, post_params),
+                       expect_errors=expect_errors)
+
+    assert resp.status_code == status_code
+    if status_code == 200:
+        assert resp.json['success'] == success
+        assert resp.json.get('error', '') == message
