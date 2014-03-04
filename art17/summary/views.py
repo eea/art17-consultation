@@ -393,6 +393,14 @@ class SpeciesSummary(SpeciesMixin, Summary):
         return True
 
     def get_context(self):
+        map_url = ''
+        subject = request.args.get('subject')
+        if subject:
+            map_url = generate_map_url(
+                category='species',
+                subject=subject,
+                region=request.args.get('region', ''),
+            )
         return {
             'groups_url': url_for('common.species-groups'),
             'subjects_url': url_for('.species-summary-species'),
@@ -420,11 +428,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'progress_endpoint': 'progress.species-progress',
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
-            'map_url': generate_map_url(
-                category='species',
-                subject=request.args.get('subject'),
-                region=request.args.get('region'),
-            ),
+            'map_url': map_url,
         }
 
 
@@ -463,6 +467,14 @@ class HabitatSummary(HabitatMixin, Summary):
         return True
 
     def get_context(self):
+        map_url = ''
+        subject = request.args.get('subject')
+        if subject:
+            map_url = generate_map_url(
+                category='species',
+                subject=subject,
+                region=request.args.get('region', ''),
+            )
         return {
             'groups_url': url_for('common.habitat-groups'),
             'subjects_url': url_for('.habitat-summary-species'),
@@ -490,11 +502,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'progress_endpoint': 'progress.habitat-progress',
             'get_title_for_country': get_title_for_habitat_country,
             'wiki_unread': self.wiki_unread,
-            'map_url': generate_map_url(
-                category='habitat',
-                subject=request.args.get('subject'),
-                region=request.args.get('region'),
-            ),
+            'map_url': map_url,
         }
 
     def get_current_selection(self, period_name, group, subject, region):
