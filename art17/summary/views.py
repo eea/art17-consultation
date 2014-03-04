@@ -244,7 +244,7 @@ class Summary(ConclusionView, views.View):
         )
         manual_form.region.choices = self.get_regions(period, subject, True)[1:]
         if not request.form.get('region'):
-            manual_form.region.process_data(region)
+            manual_form.region.process_data(region or manual_form.region.data)
         if hasattr(manual_form, 'MS'):
             manual_form.kwargs = dict(subject=subject, period=period)
             manual_form.MS.choices = self.get_MS(subject, region, period)
