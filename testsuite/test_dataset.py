@@ -137,13 +137,6 @@ def dataset_app(app):
     ('/habitat/summary/',
     {'period': 2, 'subject': 110, 'region': 'ALP'},
     'title=": 1040"'),
-    # get_structure_conclusion_value
-    ('/habitat/summary/',
-    {'period': 1, 'subject': 110, 'region': 'ALP'},
-    'title=": 1050"'),
-    ('/habitat/summary/',
-    {'period': 2, 'subject': 110, 'region': 'ALP'},
-    'title=": 1060"'),
     # percentage_structure
     ('/habitat/summary/',
     {'period': 1, 'subject': 110, 'region': 'ALP'},
@@ -166,7 +159,7 @@ def dataset_app(app):
     {'period': 2, 'subject': 110, 'region': 'ALP'},
     'title=": 1100"'),
     ])
-def _test_species_conclusion_values(client, dataset_app, url, params, expected):
+def test_species_conclusion_values(client, dataset_app, url, params, expected):
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
     assert expected in result.body
