@@ -4,12 +4,17 @@ from .factories import (
     EtcDataSpeciesAutomaticAssessmentFactory,
     SpeciesManualAssessmentFactory, EtcDicMethodFactory,
     EtcDataHabitattypeAutomaticAssessmentFactory,
-    HabitattypesManualAssessmentsFactory, EtcDicHdHabitat, CommentFactory)
+    HabitattypesManualAssessmentsFactory, EtcDicHdHabitat,
+    CommentFactory,
+    HabitatCommentFactory,
+)
 from .conftest import get_request_params
 from art17 import models
 
 
 CANIS_LUPUS = 'Canis lupus'
+HABCODE = 110
+
 
 @pytest.fixture
 def dataset_app(app):
@@ -168,12 +173,12 @@ def _test_species_conclusion_values(client, dataset_app, url, params, expected):
 
 
 def test_get_subject_details(client, dataset_app):
-    EtcDicHdHabitat(dataset_id=1, habcode=1110, name='foo foo')
-    EtcDicHdHabitat(dataset_id=2, habcode=1110, name='boo boo')
+    EtcDicHdHabitat(dataset_id=1, habcode=HABCODE, name='foo foo')
+    EtcDicHdHabitat(dataset_id=2, habcode=HABCODE, name='boo boo')
     models.db.session.commit()
 
     url = '/habitat/summary/'
-    params = {'period': 1, 'subject': 1110, 'region': ''}
+    params = {'period': 1, 'subject': HABCODE, 'region': ''}
 
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
@@ -185,7 +190,7 @@ def test_get_subject_details(client, dataset_app):
     assert 'boo boo' in result.body
 
 
-def test_unread_comments(client, dataset_app):
+def test_unread_comments_species(client, dataset_app):
     CommentFactory(id=1, dataset_id=1, region='ALP',
                    assesment_speciesname=CANIS_LUPUS)
     models.db.session.commit()
@@ -200,10 +205,43 @@ def test_unread_comments(client, dataset_app):
     params['period'] = 2
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
-    assert '0/1' in result
+    assert '0/0' in result
 
     CommentFactory(id=2, dataset_id=2, region='ALP',
                    assesment_speciesname=CANIS_LUPUS)
+    models.db.session.commit()
+
+    params['period'] = 1
+    result = client.get(*get_request_params('get', [url, params]))
+    assert result.status_code == 200
+    assert '0/1' in result
+
+    params['period'] = 2
+
+    result = client.get(*get_request_params('get', [url, params]))
+    assert result.status_code == 200
+    assert '0/1' in result
+    
+
+def test_unread_comments_habitat(client, dataset_app):
+    HabitatCommentFactory(id=1, dataset_id=1, region='ALP',
+                          habitat=HABCODE)
+    models.db.session.commit()
+    
+    url = '/habitat/summary/'
+    params = {'period': 1, 'subject': HABCODE, 'region': 'ALP'}
+
+    result = client.get(*get_request_params('get', [url, params]))
+    assert result.status_code == 200
+    assert '0/1' in result
+
+    params['period'] = 2
+    result = client.get(*get_request_params('get', [url, params]))
+    assert result.status_code == 200
+    assert '0/0' in result
+
+    HabitatCommentFactory(id=2, dataset_id=2, region='ALP',
+                          habitat=HABCODE)
     models.db.session.commit()
 
     params['period'] = 1
