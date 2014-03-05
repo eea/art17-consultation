@@ -90,7 +90,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       {% if not region %}<td class="border">{{ row.region or 'N/A' }}</td>{% endif %}
 
       {# Range #}
-      {% include 'summary/species/auto/range.html' %}
+      {% include 'summary/common/auto/range.html' %}
 
       {# Population #}
       {% include 'summary/species/auto/population.html' %}
