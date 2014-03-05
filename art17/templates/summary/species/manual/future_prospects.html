@@ -1,6 +1,7 @@
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' border' %}
 
-{% set concl_value = get_future_conclusion_value_for_species(row.assesment_speciesname, row.region, row.method_future) %}
+{% set concl_value = get_future_conclusion_value_for_species(
+    row.assesment_speciesname, row.region, row.method_future, row.dataset_id) %}
 
 <td class="{{ classes }}"
     {% if concl_value %}title=": {{concl_value}}"{% endif %}>

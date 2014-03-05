@@ -4,7 +4,7 @@
 
 
 {% set concl_value = get_population_conclusion_value(row.assesment_speciesname,
-                                row.region, row.method_range) %}
+                                row.region, row.method_range, row.dataset_id) %}
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}"
     {% if concl_value %}title=": {{concl_value}}"{% endif %}>
     <span class="conclusion">{{ row.method_population or '' }}</span>
