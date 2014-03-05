@@ -4,7 +4,7 @@ from .factories import (
     EtcDataSpeciesAutomaticAssessmentFactory,
     SpeciesManualAssessmentFactory, EtcDicMethodFactory,
     EtcDataHabitattypeAutomaticAssessmentFactory,
-    HabitattypesManualAssessmentsFactory)
+    HabitattypesManualAssessmentsFactory, EtcDicHdHabitat)
 from .conftest import get_request_params
 from art17 import models
 
@@ -74,7 +74,6 @@ def dataset_app(app):
         method_future='1', method_assessment='1',
     )
     models.db.session.commit()
-
 
 
 @pytest.mark.parametrize(
@@ -164,3 +163,21 @@ def test_species_conclusion_values(client, dataset_app, url, params, expected):
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
     assert expected in result.body
+
+
+def test_get_subject_details(client, dataset_app):
+    EtcDicHdHabitat(dataset_id=1, habcode=1110, name='foo foo')
+    EtcDicHdHabitat(dataset_id=2, habcode=1110, name='boo boo')
+    models.db.session.commit()
+
+    url = '/habitat/summary/'
+    params = {'period': 1, 'subject': 1110, 'region': ''}
+
+    result = client.get(*get_request_params('get', [url, params]))
+    assert result.status_code == 200
+    assert 'foo foo' in result.body
+
+    params['period'] = 2
+    result = client.get(*get_request_params('get', [url, params]))
+    assert result.status_code == 200
+    assert 'boo boo' in result.body
