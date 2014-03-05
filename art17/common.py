@@ -223,26 +223,13 @@ def favourable_ref_title(field, schema):
     return '\n'.join(text_lines)
 
 
-def get_range_conclusion_value(assesment_speciesname, region,
+def get_range_conclusion_value(model_auto_cls, subject, region,
                                assessment_method, dataset_id):
     query = (
-        EtcDataSpeciesAutomaticAssessment.query
+        model_auto_cls.query
         .with_entities(
-            EtcDataSpeciesAutomaticAssessment.percentage_range_surface_area)
-        .filter_by(assesment_speciesname=assesment_speciesname, region=region,
-                   assessment_method=assessment_method, dataset_id=dataset_id)
-        .first()
-    )
-    return query.percentage_range_surface_area if query else ''
-
-
-def get_range_conclusion_value_habitat(habitatcode, region,
-                               assessment_method, dataset_id):
-    query = (
-        EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(
-            EtcDataHabitattypeAutomaticAssessment.percentage_range_surface_area)
-        .filter_by(habitatcode=habitatcode, region=region,
+            model_auto_cls.percentage_range_surface_area)
+        .filter_by(subject=subject, region=region,
                    assessment_method=assessment_method, dataset_id=dataset_id)
         .first()
     )

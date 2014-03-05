@@ -2,7 +2,8 @@
   {{ row.range_surface_area }}
 </td>
 
-{% set concl_value = get_range_conclusion_value(row.subject,
+{% set concl_value = get_range_conclusion_value(model_auto_cls,
+                                                row.subject,
                                                 row.region,
                                                 row.method_range,
                                                 row.dataset_id) %}

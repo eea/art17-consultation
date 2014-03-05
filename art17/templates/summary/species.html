@@ -135,7 +135,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       {% else %}
       <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row">
         {% include 'summary/common/manual/ms.html' %}
-        {% include 'summary/species/manual/range.html' %}
+        {% include 'summary/common/manual/range.html' %}
         {% include 'summary/species/manual/population.html' %}
         {% include 'summary/species/manual/habitat.html' %}
         {% include 'summary/species/manual/future_prospects.html' %}

@@ -187,7 +187,7 @@ def test_unread_comments_species(client, dataset_app):
     CommentFactory(id=1, dataset_id=1, region='ALP',
                    assesment_speciesname=CANIS_LUPUS)
     models.db.session.commit()
-    
+
     url = '/species/summary/'
     params = {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'}
 
@@ -214,13 +214,13 @@ def test_unread_comments_species(client, dataset_app):
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
     assert '0/1' in result
-    
+
 
 def test_unread_comments_habitat(client, dataset_app):
     HabitatCommentFactory(id=1, dataset_id=1, region='ALP',
                           habitat=HABCODE)
     models.db.session.commit()
-    
+
     url = '/habitat/summary/'
     params = {'period': 1, 'subject': HABCODE, 'region': 'ALP'}
 
