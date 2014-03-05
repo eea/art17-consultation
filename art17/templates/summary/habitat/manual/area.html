@@ -2,8 +2,11 @@
   {{ row.coverage_surface_area|str2num('') }}
 </td>
 
-{% set concl_value = get_range_conclusion_value(row.habitatcode, row.region,
-                                                row.method_area, row.dataset_id) %}
+{% set concl_value = get_coverage_conclusion_value(
+                        row.habitatcode,
+                        row.region,
+                        row.method_area,
+                        row.dataset_id) %}
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}"
     {% if concl_value %}title=": {{concl_value}}"{% endif %}>
   <span class="conclusion">{{ row.method_area or '' }}</span>
