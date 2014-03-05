@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import views, request, url_for, abort, jsonify
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
-from art17.common import admin_perm, get_default_period, etc_perm
+from art17.common import admin_perm, get_default_period, etc_perm, MixinView
 from art17.forms import all_fields
 from art17.models import db, EtcDicMethod
 from art17.summary.permissions import can_delete, can_update_decision, \
@@ -136,12 +136,6 @@ class ConclusionView(object):
             return ok_conclusions + filter(user_or_expert, conclusions)
         else:
             return filter(user_iurmax, conclusions)
-
-
-class MixinView(object):
-
-    def __init__(self, mixin):
-        self.mixin = mixin
 
 
 class ConclusionDelete(MixinView, views.View):

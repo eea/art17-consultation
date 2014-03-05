@@ -158,6 +158,12 @@ def inject_globals():
     }
 
 
+class MixinView(object):
+
+    def __init__(self, mixin):
+        self.mixin = mixin
+
+
 def population_size_unit(row):
 
     min_size = row.population_minimum_size or ''
