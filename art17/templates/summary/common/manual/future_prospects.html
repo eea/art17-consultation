@@ -1,0 +1,12 @@
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') %}
+
+{% set concl_value = get_future_conclusion_value(model_auto_cls,
+                                                 row.subject,
+                                                 row.region,
+                                                 row.method_future,
+                                                 row.dataset_id) %}
+
+<td class="{{ classes }} border"
+    {% if concl_value %}title=": {{concl_value}}"{% endif %}>
+    <span class="conclusion">{{ row.method_future or '' }}</span>
+</td>

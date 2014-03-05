@@ -33,8 +33,7 @@ from art17.common import (
     population_ref,
     get_range_conclusion_value,
     get_population_conclusion_value,
-    get_future_conclusion_value_for_species,
-    get_future_conclusion_value_for_habitat,
+    get_future_conclusion_value,
     get_assesm_conclusion_value_for_species,
     get_assesm_conclusion_value_for_habitat,
     get_habitat_conclusion_value,
@@ -91,10 +90,7 @@ def inject_fuctions():
         'population_ref': population_ref,
         'get_range_conclusion_value': get_range_conclusion_value,
         'get_population_conclusion_value': get_population_conclusion_value,
-        'get_future_conclusion_value_for_species':
-            get_future_conclusion_value_for_species,
-        'get_future_conclusion_value_for_habitat':
-            get_future_conclusion_value_for_habitat,
+        'get_future_conclusion_value': get_future_conclusion_value,
         'get_assesm_conclusion_value_for_species':
             get_assesm_conclusion_value_for_species,
         'get_assesm_conclusion_value_for_habitat':
