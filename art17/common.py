@@ -236,6 +236,19 @@ def get_range_conclusion_value(assesment_speciesname, region,
     return query.percentage_range_surface_area if query else ''
 
 
+def get_range_conclusion_value_habitat(habitatcode, region,
+                               assessment_method, dataset_id):
+    query = (
+        EtcDataSpeciesAutomaticAssessment.query
+        .with_entities(
+            EtcDataHabitattypeAutomaticAssessment.percentage_range_surface_area)
+        .filter_by(habitatcode=habitatcode, region=region,
+                   assessment_method=assessment_method, dataset_id=dataset_id)
+        .first()
+    )
+    return query.percentage_range_surface_area if query else ''
+
+
 def get_population_conclusion_value(assesment_speciesname, region,
                                     assessment_method, dataset_id):
     query = (

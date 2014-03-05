@@ -55,6 +55,7 @@ from art17.common import (
     etc_perm,
     nat_perm,
     get_config,
+    get_range_conclusion_value_habitat,
 )
 from art17.forms import (
     SummaryFilterForm,
@@ -90,6 +91,7 @@ def inject_fuctions():
         'population_size_unit_title': population_size_unit_title,
         'population_ref': population_ref,
         'get_range_conclusion_value': get_range_conclusion_value,
+        'get_range_conclusion_value_habitat': get_range_conclusion_value_habitat,
         'get_population_conclusion_value': get_population_conclusion_value,
         'get_future_conclusion_value_for_species':
             get_future_conclusion_value_for_species,

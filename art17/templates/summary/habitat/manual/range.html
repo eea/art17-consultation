@@ -1,0 +1,21 @@
+<td class="number border_left">
+  {{ row.range_surface_area }}
+</td>
+
+{% set concl_value = get_range_conclusion_value_habitat(row.subject,
+                                                row.region,
+                                                row.method_range,
+                                                row.dataset_id) %}
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}"
+    {% if concl_value %}title=": {{concl_value}}"{% endif %}>
+    <span class="conclusion">{{ row.method_range }}</span>
+</td>
+
+<td class="center">
+  {{ row.range_trend or '' }}
+</td>
+
+<td class="center border_right">
+  {{ row.complementary_favourable_range|str2num('') }}
+</td>
