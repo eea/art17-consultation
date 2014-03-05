@@ -88,6 +88,7 @@ class Comment(Base):
             "Comment.assesment_speciesname,"
             "SpeciesManualAssessment.region==Comment.region,"
             "SpeciesManualAssessment.user_id==Comment.user_id,"
+            "SpeciesManualAssessment.dataset_id==Comment.dataset_id,"
             "SpeciesManualAssessment.MS==Comment.MS)"),
         foreign_keys=[assesment_speciesname, region, user_id, MS],
         backref='comments',
@@ -734,6 +735,7 @@ class HabitatComment(Base):
             "HabitatComment.habitat,"
             "HabitattypesManualAssessment.region==HabitatComment.region,"
             "HabitattypesManualAssessment.user_id==HabitatComment.user_id,"
+            "HabitattypesManualAssessment.dataset_id==HabitatComment.dataset_id,"
             "HabitattypesManualAssessment.MS==HabitatComment.MS)"),
         foreign_keys=[habitat, region, user_id, MS],
         backref='comments',
@@ -836,6 +838,7 @@ class HabitattypesManualAssessment(Base):
                 .filter(HabitatComment.region == self.region)
                 .filter(HabitatComment.MS == self.MS)
                 .filter(HabitatComment.user_id == self.user_id)
+                .filter(HabitatComment.dataset_id == self.dataset_id)
                 .filter('habitat_comments_read.reader_user_id="%s"' % user)
                 .filter(or_(HabitatComment.deleted == 0,
                             HabitatComment.deleted == None))
@@ -1051,6 +1054,7 @@ class SpeciesManualAssessment(Base):
                 .filter(Comment.region == self.region)
                 .filter(Comment.MS == self.MS)
                 .filter(Comment.user_id == self.user_id)
+                .filter(Comment.dataset_id == self.dataset_id)
                 .filter('comments_read.reader_user_id="%s"' % user)
                 .filter(or_(Comment.deleted == 0, Comment.deleted == None))
                 .count())
