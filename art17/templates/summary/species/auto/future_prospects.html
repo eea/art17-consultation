@@ -1,7 +1,0 @@
-
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' border' %}
-
-<td class="{{ classes }}">
-  <span class="conclusion">{{ row.percentage_future|default('', true)|parse_semicolon|safe  }}</span>
-</td>
-
