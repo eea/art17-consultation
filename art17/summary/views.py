@@ -590,18 +590,17 @@ summary.add_url_rule(
 
 def generate_map_url(category, subject, region):
     config = get_config()
+
     if category == 'species':
-        return (
-            (config.species_map_url or '')
-            .replace("{species}", subject)
-            .replace("{region}", region)
-        )
+        return ''
 
-    if category == 'habitat':
-        return (
-            (config.habitat_map_url or '')
-            .replace("{habitat}", subject)
-            .replace("{region}", region)
-        )
+    elif category == 'habitat':
+        map_href = config.habitat_map_url or ''
 
-    raise RuntimeError('unknown category %r' % category)
+        if region:
+            return map_href + '&HCode=' + subject + '&BioRegion=' + region
+        else:
+            return map_href + '&CCode=' + subject
+
+    else:
+        raise RuntimeError('unknown category %r' % category)
