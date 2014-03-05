@@ -1,0 +1,18 @@
+<table>
+  <tr>
+    <th>Dataset</th>
+  {% for region in regions %}
+    <th>
+    {{ region.reg_code }}
+    </th>
+  {% endfor %}
+  </tr>
+  {% for dataset,values in data.iteritems() %}
+  <tr>
+    <th>{{ dataset }}</th>
+    {% for r in regions %}
+    <td>{{ values[r.reg_code] }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>

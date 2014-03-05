@@ -37,7 +37,18 @@
             {% set subject_name, subject_title = subject %}
             <tr>
               <td class="th">
-                {{ subject_title }}
+                <div class="popout-wrapper hover">
+                    <div class="popout size_unit_th right caret"
+                        id="contentdiv{{ loop.index }}">
+                        <a href="#" class="load-comparison"
+                           data-url="{{ url_for(comparison_endpoint,
+                                                subject=subject_name) }}"
+                           data-container="contentdiv{{ loop.index }}">
+                            Load comparison data.
+                         </a>
+                    </div>
+                    {{ subject_title }}
+                </div>
               </td>
               {% for region in regions %}
                 {% set data = objects.get(subject_name, {}).get(region.reg_code, '') %}

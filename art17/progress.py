@@ -8,7 +8,7 @@ from flask import (
 )
 from werkzeug.datastructures import MultiDict
 from art17.auth import current_user
-from art17.common import get_default_period, COUNTRY_ASSESSMENTS
+from art17.common import get_default_period, COUNTRY_ASSESSMENTS, MixinView
 from art17.forms import ProgressFilterForm
 from art17.models import (
     Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db,
@@ -305,6 +305,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
     def get_context(self):
         return {
             'groups_url': url_for('common.species-groups'),
+            'comparison_endpoint': 'progress.species-comparison',
         }
 
 
@@ -371,10 +372,43 @@ class HabitatProgress(Progress, HabitatMixin):
     def get_context(self):
         return {
             'groups_url': url_for('common.habitat-groups'),
+            'comparison_endpoint': 'progress.habitat-comparison',
         }
+
+
+class ComparisonView(MixinView, views.View):
+
+    def dispatch_request(self):
+        subject = request.args.get('subject')
+        # TODO: conclusion
+        datasets = Dataset.query.order_by(Dataset.name).all()
+        data = {}
+        for d in datasets:
+            regions = (
+                self.mixin.model_manual_cls.query
+                .with_entities(self.mixin.model_manual_cls.region,
+                               self.mixin.model_manual_cls.method_assessment)
+                .filter_by(
+                    subject=subject, dataset=d,
+                )
+            )
+            data[d.name] = dict(regions)
+        regions = (
+            EtcDicBiogeoreg.query
+            .with_entities(EtcDicBiogeoreg.reg_code)
+            .distinct()
+        )
+        return render_template('progress/compare.html',
+                               **{'data': data, 'regions': regions})
 
 
 progress.add_url_rule('/species/progress/',
                       view_func=SpeciesProgress.as_view('species-progress'))
 progress.add_url_rule('/habitat/progress/',
                       view_func=HabitatProgress.as_view('habitat-progress'))
+progress.add_url_rule('/species/progress/compare/',
+                      view_func=ComparisonView.as_view('species-comparison',
+                                                       mixin=SpeciesMixin))
+progress.add_url_rule('/habitat/progress/compare/',
+                      view_func=ComparisonView.as_view('habitat-comparison',
+                                                       mixin=HabitatMixin))
