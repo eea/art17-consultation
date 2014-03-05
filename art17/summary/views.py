@@ -292,8 +292,8 @@ class Summary(ConclusionView, views.View):
         period_name = period_query.name if period_query else ''
 
         current_selection = self.get_current_selection(
-            period_name, group, subject, region)
-        annexes = self.get_annexes(subject)
+            period_name, group, subject, region, period)
+        annexes = self.get_annexes(subject, period)
         context = self.get_context()
         context.update({
             'objects': self.objects,
@@ -316,23 +316,25 @@ class Summary(ConclusionView, views.View):
 
         return render_template(self.template_name, **context)
 
-    def get_current_selection(self, period_name, group, subject, region):
+    def get_current_selection(self, period_name, group, subject, region,
+                              period):
         if not subject:
             return []
         current_selection = [period_name, group, subject]
         if region:
-            region_name = EtcDicBiogeoreg.get_region_name(region)
+            region_name = EtcDicBiogeoreg.get_region_name(region, period)
             if region_name:
                 current_selection.append(region_name[0])
         else:
             current_selection.append('All bioregions')
         return current_selection
 
-    def get_annexes(self, species):
+    def get_annexes(self, species, period):
         annexes_results = (
             EtcDataSpeciesRegion.query
             .with_entities('annex_II', 'annex_IV', 'annex_V', 'priority')
-            .filter(EtcDataSpeciesRegion.subject == species)
+            .filter(EtcDataSpeciesRegion.subject == species,
+                    EtcDataSpeciesRegion.dataset_id == period)
             .distinct()
             .first()
         )
@@ -513,13 +515,14 @@ class HabitatSummary(HabitatMixin, Summary):
             'map_url': map_url,
         }
 
-    def get_current_selection(self, period_name, group, subject, region):
+    def get_current_selection(self, period_name, group, subject, region,
+                              period):
         selection = super(HabitatSummary, self).get_current_selection(
-            period_name, group, subject, region
+            period_name, group, subject, region, period
         )
         if not selection:
             return selection
-        details = self.get_subject_details(subject)
+        details = self.get_subject_details(subject, period)
         if details:
             selection[2] = details.habcode + ' ' + details.name
         return selection

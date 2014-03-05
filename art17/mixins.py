@@ -229,5 +229,6 @@ class HabitatMixin(MixinsCommon):
         return blank_option + regions
 
     @classmethod
-    def get_subject_details(cls, subject):
-        return EtcDicHdHabitat.query.filter_by(habcode=subject).first()
+    def get_subject_details(cls, subject, dataset_id):
+        return EtcDicHdHabitat.query.filter_by(
+            habcode=subject, dataset_id=dataset_id).first()

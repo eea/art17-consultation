@@ -513,10 +513,11 @@ class EtcDicBiogeoreg(Base):
     )
 
     @classmethod
-    def get_region_name(cls, reg_code):
+    def get_region_name(cls, reg_code, dataset_id):
         return (
             cls.query.with_entities(cls.reg_name)
-            .filter(cls.reg_code == reg_code)
+            .filter(cls.reg_code == reg_code,
+                    cls.dataset_id == dataset_id)
             .first()
         )
 
