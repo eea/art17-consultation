@@ -12,8 +12,11 @@
       {% if concl_value %}title=": {{concl_value}}"{% endif %}>
       <span class="conclusion">{{ row.method_assessment or '' }}</span>
   </td>
-  <td>{{ row.conclusion_assessment_trend or 'N/A' }}</td>
-  <td>{{ row.conclusion_assessment_prev or 'N/A' }}</td>
+  <td>{{
+      row.conclusion_assessment_trend or 'N/A' }}</td>
+  <td class="{{ row.conclusion_assessment_prev or '' }}">
+      <span class="conclusion">{{
+          row.conclusion_assessment_prev or 'N/A' }}</span></td>
   <td class="border_right">{{
       NATURE_CHOICES.get(row.conclusion_assessment_change, 'N/A') }}</td>
 {% endif %}
