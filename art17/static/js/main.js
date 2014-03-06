@@ -459,10 +459,10 @@ $(document).ready(function () {
     $('.load-comparison').on('click', function (evt) {
         evt.preventDefault();
 
-        var container = $(this).parent().parent();
+        var container = $(this).closest('.popout');
         var url = $(this).data('url');
 
-        $(this).html('loading...');
+        $(this).after("<i class='fa fa-spinner fa-spin'></i>");
         $.ajax({
             type: "GET",
             url: url,

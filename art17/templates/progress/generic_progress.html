@@ -38,17 +38,17 @@
             <tr>
               <td class="th">
                 <div class="popout-wrapper hover">
-                    <div class="popout size_unit_th right caret"
+                    <div class="popout compare_data right caret"
                         id="contentdiv{{ loop.index }}">
-                        <p>
-                        <a href="#" class="load-comparison"
-                           data-url="{{ url_for(comparison_endpoint,
-                                                subject=subject_name,
-                                                conclusion=conclusion) }}"
-                           data-container="contentdiv{{ loop.index }}">
-                            Load comparison data.
-                        </a>
-                        </p>
+                        <div class="popout-padding">
+                          <a href="#" class="load-comparison no-break"
+                             data-url="{{ url_for(comparison_endpoint,
+                                                  subject=subject_name,
+                                                  conclusion=conclusion) }}"
+                             data-container="contentdiv{{ loop.index }}">
+                              Compare periods
+                          </a>
+                        </div>
                     </div>
                     {{ subject_title }}
                 </div>

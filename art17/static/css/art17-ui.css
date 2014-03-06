@@ -181,14 +181,14 @@ abbr {
 .complex_datatable tbody tr:last-child td {
     border-bottom: 1px solid #bbb;
 }
-.stripe_row {
-  border-top: 1px solid #bbb;
-  border-bottom: 1px solid #bbb;
-}
 .stripe_3rd tr:nth-child(3n+0) td {
   border-bottom: 1px solid #eee;
 }
 .stripe_3rd tr:nth-child(3n+0) td.th {
+  border-bottom: 1px solid #bbb;
+}
+.stripe_row {
+  border-top: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
 }
 /* FORM ROW */
@@ -224,6 +224,7 @@ abbr {
 .complex_datatable .form_cell {
   border-top: 1px solid #bbb;
   padding: 1px;
+  min-width: 48px;
 }
 
 .complex_datatable .form_cell.conclusion {
@@ -662,6 +663,9 @@ a.conclusion:hover {
   background: #fff;
   white-space: normal;
 }
+.popout-padding {
+  padding: 6px 12px;
+}
 .popout.caret:before,
 .popout.caret:after {
   position: absolute;
@@ -711,6 +715,7 @@ a.conclusion:hover {
 /* POPOUT RIGHT */
 .popout.right {
   left: 100%;
+  margin-left: 1px;
   top: -1px;
   bottom: auto;
 }
@@ -765,6 +770,24 @@ a.conclusion:hover {
   box-shadow: 0 5px 5px -2px rgba(0,0,0,0.2);
 }
 /* POPOUT SIZE UNIT (TABLE HEADER) */
+.popout.compare_data {
+  border-color: #aaa!important;
+  min-width: inherit;
+  padding: 0;
+  -webkit-box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
+  box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
+}
+.popout.compare_data.caret:before,
+.popout.compare_data.caret:after {
+  top: 8px!important;
+}
+.popout.compare_data.caret:before {
+  border-right-color: #aaa!important;
+}
+.popout.compare_data.caret:after {
+  border-right-color: #f6f6f6!important;
+}
+/* POPOUT SIZE UNIT (TABLE HEADER) */
 .popout.size_unit_th {
   border-color: #aaa!important;
   min-width: inherit;
@@ -786,7 +809,15 @@ a.conclusion:hover {
   border-collapse: collapse!important;
   margin: -1px;
 }
+.popout-table th,
+.popout-table .th {
+  font-weight: normal;
+  color: black;
+  border: 1px solid #bbb;
+  background: #f6f6f6;
+}
 .popout-table td {
+  border-bottom: 1px solid #bbb;
   background: #fff!important;
 }
 /* POPOUT SIZE UNIT (SELECT)*/
