@@ -59,6 +59,7 @@ from art17.forms import (
     SummaryManualFormSpeciesRefSTA,
     SummaryManualFormHabitatRefSTA,
     SummaryManualFormHabitatSTA,
+    NATURE_CHOICES,
 )
 from art17.utils import str2num, parse_semicolon, str1num, na_if_none
 from art17.summary.permissions import can_touch, must_edit_ref
@@ -107,6 +108,7 @@ def inject_static():
         'TREND_ALL_TOOLTIP': make_tooltip(TREND_OPTIONS_OVERALL),
         'NATURE_TOOLTIP': make_tooltip(NATURE_OF_CHANGE_OPTIONS),
         'HABITAT_TOOLTIP': make_tooltip(HABITAT_OPTIONS),
+        'NATURE_CHOICES': dict(NATURE_CHOICES),
     }
 
 
