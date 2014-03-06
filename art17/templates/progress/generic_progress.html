@@ -59,19 +59,8 @@
                               period=dataset.id, subject=subject_name,
                               region=region.reg_code) %}
                 {% if data %}
-                  {% set key = (subject_name, region.reg_code) %}
-                  {% set cc_user = comment_counts['user'].get(key, 0) %}
-                  {% set cc_all = comment_counts['all'].get(key, 0) %}
-                  {% set cc_wiki = comment_counts['wiki'].get(key, 0) %}
-                  {% set title = data.get('title', '') + "
-
-                  Unread comments for my conclusions: {0}
-                  Unread comments for all conclusions: {1}
-                  Unread comments for data sheet info: {2}".format(
-                  cc_user, cc_all, cc_wiki) %}
-
                   <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }}"
-                      title="{{ title }}"
+                      title="{{ data['title'] }}"
                       data-tooltip-place="s">
                         <a href="{{ url }}" class="conclusion">
                         {% if can_view_details() %}
@@ -79,7 +68,7 @@
                           {{ ' '.join(data['other_decisions']) }}
                           {{ data['method']|methodify }}
                           <br/>
-                          {{ cc_user }} {{cc_all}} {{cc_wiki}}
+                          {{ data['comment_counts'] }}
                         {% else %}
                           {{ data['method']|methodify }}
                         {% endif %}

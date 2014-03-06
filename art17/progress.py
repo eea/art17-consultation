@@ -68,6 +68,14 @@ def save_conclusion(output, decision, option, conclusion_type):
     return output
 
 
+def get_counts(comment_counts, subject, region):
+    key = (subject, region)
+    return {
+        ct: comment_counts[ct].get(key, 0)
+        for ct in ('user', 'all', 'wiki')
+    }
+
+
 class Progress(views.View):
 
     methods = ['GET']
@@ -113,7 +121,8 @@ class Progress(views.View):
         )
         return dict(occasional=occasional, present=present)
 
-    def process_title(self, subject, region, conclusion_type, cell, presence):
+    def process_title(self, subject, region, conclusion_type, cell, presence,
+                      comment_counts):
         title = []
         title.append(
             'Species: {species}, Region: {region}'.format(
@@ -135,9 +144,17 @@ class Progress(views.View):
                 method=cell['method'],
                 details=self.METHOD_DETAILS.get(cell['method'], '')
         ))
+        if can_view_details():
+            comms = get_counts(comment_counts, subject, region)
+            title.append((
+                "Unread comments for my conclusions: {user}\n" +
+                "Unread comments for all conclusions: {all}\n" +
+                "Unread comments for data sheet info: {wiki}").format(**comms)
+            )
         return '\n'.join(title)
 
-    def process_cell(self, cell_options, conclusion_type):
+    def process_cell(self, subject, region, cell_options, conclusion_type,
+                     presence_info, comment_counts):
         output = {
             'main_decision': '',
             'other_decisions': [],
@@ -176,6 +193,17 @@ class Progress(views.View):
                             output['other_decisions'].append(decision)
                         else:
                             output = save_conclusion(output, decision, option, conclusion_type)
+        if output['main_decision']:
+            presence = self.process_presence(presence_info)
+            output['title'] = self.process_title(
+                subject, region, conclusion_type, output, presence,
+                comment_counts,
+            )
+            output['comment_counts'] = (
+                "{user} {all} {wiki}"
+                .format(**get_counts(comment_counts, subject, region))
+            )
+
         return output
 
     def dispatch_request(self):
@@ -205,20 +233,17 @@ class Progress(views.View):
 
         presence = self.get_presence(period)
         data_dict = self.setup_objects_and_data(period, group, conclusion)
+        comment_counts = self.get_comment_counts(period)
         ret_dict = {}
         for subject, region in data_dict.iteritems():
             ret_dict[subject] = {}
             for region, cell_options in region.iteritems():
-                cell = self.process_cell(cell_options, conclusion)
+                presence_info = presence.get(subject, {}).get(region, {})
+                cell = self.process_cell(
+                    subject, region, cell_options, conclusion, presence_info,
+                    comment_counts,
+                )
                 ret_dict[subject][region] = cell
-                if cell['main_decision']:
-                    pi = presence.get(subject, {}).get(region, {})
-                    presence_info = self.process_presence(pi)
-                    ret_dict[subject][region]['title'] = self.process_title(
-                        subject, region, conclusion, cell, presence_info
-                    )
-
-        comment_counts = self.get_comment_counts(period)
 
         context = self.get_context()
         context.update({
@@ -231,7 +256,6 @@ class Progress(views.View):
             'regions': regions.all(),
             'objects': ret_dict,
             'dataset': period_query,
-            'comment_counts': comment_counts,
             'summary_endpoint': self.summary_endpoint,
         })
 
