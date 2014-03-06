@@ -33,8 +33,7 @@ from art17.common import (
     population_ref,
     get_range_conclusion_value,
     get_population_conclusion_value,
-    get_future_conclusion_value_for_species,
-    get_future_conclusion_value_for_habitat,
+    get_future_conclusion_value,
     get_assesm_conclusion_value_for_species,
     get_assesm_conclusion_value_for_habitat,
     get_habitat_conclusion_value,
@@ -55,7 +54,6 @@ from art17.common import (
     etc_perm,
     nat_perm,
     get_config,
-    get_range_conclusion_value_habitat,
 )
 from art17.forms import (
     SummaryFilterForm,
@@ -91,12 +89,8 @@ def inject_fuctions():
         'population_size_unit_title': population_size_unit_title,
         'population_ref': population_ref,
         'get_range_conclusion_value': get_range_conclusion_value,
-        'get_range_conclusion_value_habitat': get_range_conclusion_value_habitat,
         'get_population_conclusion_value': get_population_conclusion_value,
-        'get_future_conclusion_value_for_species':
-            get_future_conclusion_value_for_species,
-        'get_future_conclusion_value_for_habitat':
-            get_future_conclusion_value_for_habitat,
+        'get_future_conclusion_value': get_future_conclusion_value,
         'get_assesm_conclusion_value_for_species':
             get_assesm_conclusion_value_for_species,
         'get_assesm_conclusion_value_for_habitat':
@@ -435,6 +429,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
+            'model_auto_cls': self.model_auto_cls,
         }
 
 
@@ -515,6 +510,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'get_title_for_country': get_title_for_habitat_country,
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
+            'model_auto_cls': self.model_auto_cls,
         }
 
     def get_current_selection(self, period_name, group, subject, region,
@@ -598,7 +594,7 @@ def generate_map_url(category, subject, region):
         map_href = config.habitat_map_url or ''
 
         if region:
-            return map_href + '&HCode=' + subject + '&BioRegion=' + region
+            return map_href + '&CodeReg=' + subject + region
         else:
             return map_href + '&CCode=' + subject
 

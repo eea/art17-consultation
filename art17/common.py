@@ -229,26 +229,13 @@ def favourable_ref_title(field, schema):
     return '\n'.join(text_lines)
 
 
-def get_range_conclusion_value(assesment_speciesname, region,
+def get_range_conclusion_value(model_auto_cls, subject, region,
                                assessment_method, dataset_id):
     query = (
-        EtcDataSpeciesAutomaticAssessment.query
+        model_auto_cls.query
         .with_entities(
-            EtcDataSpeciesAutomaticAssessment.percentage_range_surface_area)
-        .filter_by(assesment_speciesname=assesment_speciesname, region=region,
-                   assessment_method=assessment_method, dataset_id=dataset_id)
-        .first()
-    )
-    return query.percentage_range_surface_area if query else ''
-
-
-def get_range_conclusion_value_habitat(habitatcode, region,
-                               assessment_method, dataset_id):
-    query = (
-        EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(
-            EtcDataHabitattypeAutomaticAssessment.percentage_range_surface_area)
-        .filter_by(habitatcode=habitatcode, region=region,
+            model_auto_cls.percentage_range_surface_area)
+        .filter_by(subject=subject, region=region,
                    assessment_method=assessment_method, dataset_id=dataset_id)
         .first()
     )
@@ -268,13 +255,12 @@ def get_population_conclusion_value(assesment_speciesname, region,
     return query.percentage_population_mean_size if query else ''
 
 
-def get_future_conclusion_value_for_species(assesment_speciesname, region,
-                                            assessment_method, dataset_id):
+def get_future_conclusion_value(model_auto_cls, subject, region,
+                                assessment_method, dataset_id):
     query = (
-        EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(
-            EtcDataSpeciesAutomaticAssessment.percentage_future)
-        .filter_by(assesment_speciesname=assesment_speciesname,
+        model_auto_cls.query
+        .with_entities(model_auto_cls.percentage_future)
+        .filter_by(subject=subject,
                    region=region,
                    assessment_method=assessment_method,
                    dataset_id=dataset_id)
@@ -298,21 +284,6 @@ def get_habitat_conclusion_value(assesment_speciesname, region,
     )
 
     return query.percentage_habitat_surface_area if query else ''
-
-
-def get_future_conclusion_value_for_habitat(habitatcode, region,
-                                            assessment_method, dataset_id):
-    query = (
-        EtcDataHabitattypeAutomaticAssessment.query
-        .with_entities(EtcDataHabitattypeAutomaticAssessment.percentage_future)
-        .filter_by(habitatcode=habitatcode,
-                   region=region,
-                   assessment_method=assessment_method,
-                   dataset_id=dataset_id)
-        .first()
-    )
-
-    return query.percentage_future if query else ''
 
 
 def get_assesm_conclusion_value_for_species(assesment_speciesname, region,
