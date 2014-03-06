@@ -5,6 +5,7 @@ from flask import (
     Blueprint,
     url_for,
     g,
+    abort,
 )
 from werkzeug.datastructures import MultiDict
 from art17.auth import current_user
@@ -352,19 +353,26 @@ class ComparisonView(MixinView, views.View):
 
     def dispatch_request(self):
         subject = request.args.get('subject')
-        # TODO: conclusion
+        conclusion = request.args.get('conclusion')
+        fields = self.mixin.get_progress_fields(conclusion)
+        if not fields:
+            abort(404)
         datasets = Dataset.query.order_by(Dataset.name).all()
         data = {}
         for d in datasets:
             regions = (
                 self.mixin.model_manual_cls.query
                 .with_entities(self.mixin.model_manual_cls.region,
-                               self.mixin.model_manual_cls.method_assessment)
+                               *fields)
                 .filter_by(
                     subject=subject, dataset=d,
                 )
             )
-            data[d.name] = dict(regions)
+            region_data = [
+                dict(zip(('region', 'method', 'conclusion'), r))
+                for r in regions
+            ]
+            data[d.name] = {r['region']: r for r in region_data}
         regions = (
             EtcDicBiogeoreg.query
             .with_entities(EtcDicBiogeoreg.reg_code)

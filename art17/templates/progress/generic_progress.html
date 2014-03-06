@@ -40,12 +40,15 @@
                 <div class="popout-wrapper hover">
                     <div class="popout size_unit_th right caret"
                         id="contentdiv{{ loop.index }}">
+                        <p>
                         <a href="#" class="load-comparison"
                            data-url="{{ url_for(comparison_endpoint,
-                                                subject=subject_name) }}"
+                                                subject=subject_name,
+                                                conclusion=conclusion) }}"
                            data-container="contentdiv{{ loop.index }}">
                             Load comparison data.
-                         </a>
+                        </a>
+                        </p>
                     </div>
                     {{ subject_title }}
                 </div>

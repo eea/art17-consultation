@@ -453,3 +453,20 @@ $(document).ready(function() {
         }
     });
 });
+
+// Dataset compare (progress)
+$(document).ready(function () {
+    $('.load-comparison').on('click', function (evt) {
+        evt.preventDefault();
+
+        var container = $(this).parent().parent();
+        var url = $(this).data('url');
+
+        $(this).html('loading...');
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "html"
+        }).done(function (msg) { container.html(msg); });
+    });
+});

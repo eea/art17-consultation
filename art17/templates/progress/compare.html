@@ -1,4 +1,5 @@
-<table>
+<table class="complex_datatable">
+  <tbody class="thead">
   <tr>
     <th>Dataset</th>
   {% for region in regions %}
@@ -7,12 +8,19 @@
     </th>
   {% endfor %}
   </tr>
+  </tbody>
+  <tbody>
   {% for dataset,values in data.iteritems() %}
   <tr>
     <th>{{ dataset }}</th>
     {% for r in regions %}
-    <td>{{ values[r.reg_code] }}</td>
+     {% set conclusion=values.get(r.reg_code, {}).get('conclusion', '') %}
+     {% set method=values.get(r.reg_code, {}).get('method', '') %}
+     <td class="{{ CONCLUSION_CLASSES[conclusion] }}">
+       <span>{{ method }}</span>
+     </td>
     {% endfor %}
   </tr>
   {% endfor %}
+  </tbody>
 </table>
