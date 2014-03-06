@@ -1,6 +1,7 @@
 # coding=utf-8
 from flask_wtf import Form as Form_base
-from wtforms import SelectField, TextField, TextAreaField, DateField
+from wtforms import SelectField, TextField, TextAreaField, DateField, \
+    BooleanField
 from wtforms.validators import Optional, ValidationError
 from art17.models import (
     Dataset,
@@ -434,6 +435,7 @@ class ProgressFilterForm(Form):
     period = SelectField('Period...')
     group = SelectField('Group...')
     conclusion = SelectField('Conclusion...')
+    extra = BooleanField('extra information')
 
     def __init__(self, *args, **kwargs):
         super(ProgressFilterForm, self).__init__(*args, **kwargs)

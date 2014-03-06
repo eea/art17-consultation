@@ -63,7 +63,7 @@
                       title="{{ data['title'] }}"
                       data-tooltip-place="s">
                         <a href="{{ url }}" class="conclusion">
-                        {% if can_view_details() %}
+                        {% if can_view_details() and extra %}
                           {{ data['main_decision'] }}
                           {{ ' '.join(data['other_decisions']) }}
                           {{ data['method']|methodify }}

@@ -210,9 +210,11 @@ class Progress(views.View):
         period = request.args.get('period') or get_default_period()
         group = request.args.get('group')
         conclusion = request.args.get('conclusion')
+        extra = request.args.get('extra') or ''
 
         progress_filter_form = ProgressFilterForm(
-            MultiDict(dict(period=period, group=group, conclusion=conclusion))
+            MultiDict(dict(period=period, group=group, conclusion=conclusion,
+                           extra=extra))
         )
         progress_filter_form.group.choices = self.get_groups(period)
         progress_filter_form.conclusion.choices = self.get_conclusions()
@@ -257,6 +259,7 @@ class Progress(views.View):
             'objects': ret_dict,
             'dataset': period_query,
             'summary_endpoint': self.summary_endpoint,
+            'extra': extra,
         })
 
         return render_template(self.template_name, **context)

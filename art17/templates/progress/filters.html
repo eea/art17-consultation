@@ -15,6 +15,13 @@
     {{ progress_filter_form.conclusion() }}
   </div>
 
+  {% if can_view_details() %}
+  <div class="box-col">
+    {{ progress_filter_form.extra.label }}
+    {{ progress_filter_form.extra(value='y') }}
+  </div>
+  {% endif %}
+
   <button class="btn-blue offset_top_label" type="submit">Filter</button>
 
 </form>
