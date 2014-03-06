@@ -255,22 +255,8 @@ class SpeciesProgress(Progress, SpeciesMixin):
         return SpeciesCommentCounter(period, g.identity.id).get_counts()
 
     def setup_objects_and_data(self, period, group, conclusion_type):
-        if conclusion_type == 'range':
-            fields = (self.model_manual_cls.method_range,
-                      self.model_manual_cls.conclusion_range)
-        elif conclusion_type == 'population':
-            fields = (self.model_manual_cls.method_population,
-                      self.model_manual_cls.conclusion_population)
-        elif conclusion_type == 'habitat':
-            fields = (self.model_manual_cls.method_habitat,
-                      self.model_manual_cls.conclusion_habitat)
-        elif conclusion_type == 'future prospects':
-            fields = (self.model_manual_cls.method_future,
-                      self.model_manual_cls.conclusion_future)
-        elif conclusion_type == 'overall assessment':
-            fields = (self.model_manual_cls.method_assessment,
-                      self.model_manual_cls.conclusion_assessment)
-        else:
+        fields = self.get_progress_fields(conclusion_type)
+        if not fields:
             return {}
 
         self.objects = (
@@ -321,22 +307,8 @@ class HabitatProgress(Progress, HabitatMixin):
         return HabitatCommentCounter(period, g.identity.id).get_counts()
 
     def setup_objects_and_data(self, period, group, conclusion_type):
-        if conclusion_type == 'range':
-            fields = (self.model_manual_cls.method_range,
-                      self.model_manual_cls.conclusion_range)
-        elif conclusion_type == 'area':
-            fields = (self.model_manual_cls.method_area,
-                      self.model_manual_cls.conclusion_area)
-        elif conclusion_type == 'future prospects':
-            fields = (self.model_manual_cls.method_future,
-                      self.model_manual_cls.conclusion_future)
-        elif conclusion_type == 'structure':
-            fields = (self.model_manual_cls.method_structure,
-                      self.model_manual_cls.conclusion_structure)
-        elif conclusion_type == 'overall assessment':
-            fields = (self.model_manual_cls.method_assessment,
-                      self.model_manual_cls.conclusion_assessment)
-        else:
+        fields = self.get_progress_fields(conclusion_type)
+        if not fields:
             return {}
 
         self.objects = (

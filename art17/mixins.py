@@ -152,6 +152,26 @@ class SpeciesMixin(MixinsCommon):
             .filter(assesment_field == species).all()
         )
         return blank_option + regions
+    
+    @classmethod
+    def get_progress_fields(cls, conclusion_type):
+        if conclusion_type == 'range':
+            return (cls.model_manual_cls.method_range,
+                    cls.model_manual_cls.conclusion_range)
+        elif conclusion_type == 'population':
+            return (cls.model_manual_cls.method_population,
+                    cls.model_manual_cls.conclusion_population)
+        elif conclusion_type == 'habitat':
+            return (cls.model_manual_cls.method_habitat,
+                    cls.model_manual_cls.conclusion_habitat)
+        elif conclusion_type == 'future prospects':
+            return (cls.model_manual_cls.method_future,
+                    cls.model_manual_cls.conclusion_future)
+        elif conclusion_type == 'overall assessment':
+            return (cls.model_manual_cls.method_assessment,
+                    cls.model_manual_cls.conclusion_assessment)
+        else:
+            return {}
 
 
 class HabitatMixin(MixinsCommon):
@@ -232,3 +252,23 @@ class HabitatMixin(MixinsCommon):
     def get_subject_details(cls, subject, dataset_id):
         return EtcDicHdHabitat.query.filter_by(
             habcode=subject, dataset_id=dataset_id).first()
+    
+    @classmethod
+    def get_progress_fields(cls, conclusion_type):
+        if conclusion_type == 'range':
+            return (cls.model_manual_cls.method_range,
+                      cls.model_manual_cls.conclusion_range)
+        elif conclusion_type == 'area':
+            return (cls.model_manual_cls.method_area,
+                      cls.model_manual_cls.conclusion_area)
+        elif conclusion_type == 'future prospects':
+            return (cls.model_manual_cls.method_future,
+                      cls.model_manual_cls.conclusion_future)
+        elif conclusion_type == 'structure':
+            return (cls.model_manual_cls.method_structure,
+                      cls.model_manual_cls.conclusion_structure)
+        elif conclusion_type == 'overall assessment':
+            return (cls.model_manual_cls.method_assessment,
+                      cls.model_manual_cls.conclusion_assessment)
+        else:
+            return {}
