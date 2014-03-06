@@ -245,10 +245,10 @@ abbr {
   border-right: 1px solid #bbb;
 }
 .complex_datatable td:first-child {
-  border-left-color: #bbb;
+  border-left: 1px solid #bbb;
 }
 .complex_datatable td:last-child {
-  border-right-color: #bbb;
+  border-right: 1px solid #bbb;
 }
 .complex_datatable .border_left {
   border-left: 1px solid #bbb;
