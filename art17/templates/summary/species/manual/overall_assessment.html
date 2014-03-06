@@ -1,10 +1,6 @@
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
 
-{% set concl_value = get_assesm_conclusion_value_for_species(
-                      row.subject,
-                      row.region,
-                      row.method_assessment,
-                      row.dataset_id) %}
+{% set concl_value = get_tooltip(row, 'method_assessment') %}
 
 {% if dataset.schema == '2006' %}
   <td colspan="4" class="{{ classes }} border_left"

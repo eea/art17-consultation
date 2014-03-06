@@ -31,14 +31,6 @@ from art17.common import (
     get_default_period,
     population_size_unit,
     population_ref,
-    get_range_conclusion_value,
-    get_population_conclusion_value,
-    get_future_conclusion_value,
-    get_assesm_conclusion_value_for_species,
-    get_assesm_conclusion_value_for_habitat,
-    get_habitat_conclusion_value,
-    get_coverage_conclusion_value,
-    get_struct_conclusion_value,
     get_original_record_url,
     get_title_for_species_country,
     get_title_for_habitat_country,
@@ -54,6 +46,8 @@ from art17.common import (
     etc_perm,
     nat_perm,
     get_config,
+    get_tooltip_for_habitat,
+    get_tooltip_for_species,
 )
 from art17.forms import (
     SummaryFilterForm,
@@ -88,16 +82,6 @@ def inject_fuctions():
         'population_size_unit': population_size_unit,
         'population_size_unit_title': population_size_unit_title,
         'population_ref': population_ref,
-        'get_range_conclusion_value': get_range_conclusion_value,
-        'get_population_conclusion_value': get_population_conclusion_value,
-        'get_future_conclusion_value': get_future_conclusion_value,
-        'get_assesm_conclusion_value_for_species':
-            get_assesm_conclusion_value_for_species,
-        'get_assesm_conclusion_value_for_habitat':
-            get_assesm_conclusion_value_for_habitat,
-        'get_habitat_conclusion_value': get_habitat_conclusion_value,
-        'get_coverage_conclusion_value': get_coverage_conclusion_value,
-        'get_struct_conclusion_value': get_struct_conclusion_value,
         'get_original_record_url': get_original_record_url,
         'favourable_ref_title': favourable_ref_title,
     }
@@ -429,7 +413,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
-            'model_auto_cls': self.model_auto_cls,
+            'get_tooltip': get_tooltip_for_species,
         }
 
 
@@ -510,7 +494,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'get_title_for_country': get_title_for_habitat_country,
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
-            'model_auto_cls': self.model_auto_cls,
+            'get_tooltip': get_tooltip_for_habitat,
         }
 
     def get_current_selection(self, period_name, group, subject, region,
