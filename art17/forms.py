@@ -435,7 +435,7 @@ class ProgressFilterForm(Form):
     period = SelectField('Period...')
     group = SelectField('Group...')
     conclusion = SelectField('Conclusion...')
-    extra = BooleanField('extra information')
+    extra = BooleanField('Details')
 
     def __init__(self, *args, **kwargs):
         super(ProgressFilterForm, self).__init__(*args, **kwargs)
