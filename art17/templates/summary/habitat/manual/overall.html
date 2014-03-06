@@ -1,8 +1,0 @@
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
-
-{% set concl_value = get_tooltip(row, 'method_assessment') %}
-
-<td class="{{ classes }} border"
-    {% if concl_value %}title=": {{concl_value}}"{% endif %}>
-    <span class="conclusion">{{ row.method_assessment or '' }}</span>
-</td>

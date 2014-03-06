@@ -14,5 +14,6 @@
   </td>
   <td>{{ row.conclusion_assessment_trend or 'N/A' }}</td>
   <td>{{ row.conclusion_assessment_prev or 'N/A' }}</td>
-  <td class="border_right">{{ row.conclusion_assessment_change or 'N/A' }}</td>
+  <td class="border_right">{{
+      NATURE_CHOICES.get(row.conclusion_assessment_change, 'N/A') }}</td>
 {% endif %}
