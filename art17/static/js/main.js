@@ -390,19 +390,8 @@ $(document).ready(function () {
     });
 });
 
-// Table column hover
-/*$(function () {
-    $(".complex_datatable").on('mouseenter mouseleave', "td", function (event) {
-        event.stopPropagation();
-        index = this.cellIndex;
-        if (index) {
-            $(this).parent().siblings().each ( function () {
-                $(this.cells[index]).toggleClass("hover");
-            });
-        }
-    });
-});*/
 
+// Filter form
 $(function() {
      $('#filterform').on('submit', function(e) {
          window.location.hash = '';
