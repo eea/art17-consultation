@@ -594,7 +594,7 @@ def generate_map_url(category, subject, region):
         map_href = config.habitat_map_url or ''
 
         if region:
-            return map_href + '&HCode=' + subject + '&BioRegion=' + region
+            return map_href + '&HCode=' + subject + '&BioReg=' + region
         else:
             return map_href + '&CCode=' + subject
 
