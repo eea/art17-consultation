@@ -219,3 +219,13 @@ class EtcDicConclusionFactory(SQLAlchemyModelFactory):
     order = 1
     conclusion = 'FV'
     dataset_id = 1
+
+
+class EtcDicDecisionFactory(SQLAlchemyModelFactory):
+
+    FACTORY_FOR = models.EtcDicDecision
+    FACTORY_SESSION = models.db.session
+
+    order = 1
+    decision = 'CO'
+    dataset_id = 1

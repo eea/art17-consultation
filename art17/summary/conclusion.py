@@ -4,7 +4,7 @@ from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
 from art17.common import admin_perm, get_default_period, etc_perm
 from art17.forms import all_fields
-from art17.models import db, EtcDicMethod
+from art17.models import db, EtcDicMethod, EtcDicDecision
 from art17.summary.permissions import can_delete, can_update_decision, \
     can_select_MS, must_edit_ref
 
@@ -189,16 +189,23 @@ class UpdateDecision(MixinView, views.View):
             abort(401)
 
         decision = request.form['decision']
-        result = self.validate(decision)
+        result = self.validate(decision, period)
         if result['success']:
             self.record.decision = decision
             self.record.last_update = datetime.now().strftime(DATE_FORMAT_PH)
             db.session.commit()
         return jsonify(result)
 
-    def validate(self, decision):
+    def validate(self, decision, period):
         validation_values = ['OK', 'END']
-        if decision == 'OK?':
+        valid_decisions = [d.decision for d in EtcDicDecision.query
+                           .filter_by(dataset_id=period).all()]
+        if decision not in valid_decisions:
+            return {
+                'success': False,
+                'error': "'{0}' is not a valid decision.".format(decision)
+            }
+        elif decision == 'OK?':
             return {
                 'success': False,
                 'error': "You are not allowed to select 'OK?'" +
