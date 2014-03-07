@@ -36,8 +36,10 @@ $(function () {
 
         var group = $('#group');
         var conclusion = $('#conclusion');
+        var assessor = $('#assessor');
 
         group.remoteChained('#period', group.data('href'));
+        assessor.remoteChained('#period, #group', assessor.data('href'));
     }
 });
 

@@ -1,3 +1,4 @@
+from sqlalchemy import and_
 from art17.models import (
     EtcDataSpeciesRegion,
     EtcDicBiogeoreg,
@@ -87,6 +88,30 @@ class MixinsCommon(object):
         return ms_qs.order_by(cls.model_cls.presence,
                               cls.model_cls.eu_country_code).all()
 
+    @classmethod
+    def get_assessors(cls, period, group):
+        blank_option = [('', 'All users')]
+        assessors = (
+            cls.model_manual_cls
+            .query
+            .join(
+                cls.model_cls,
+                and_(
+                    cls.model_manual_cls.dataset_id == cls.model_cls.dataset_id,
+                    cls.model_manual_cls.subject == cls.model_cls.subject)
+            )
+            .with_entities(
+                cls.model_manual_cls.user_id,
+                cls.model_manual_cls.user_id)
+            .filter(
+                cls.model_manual_cls.dataset_id == period,
+                cls.model_cls.group == group,
+            )
+            .distinct()
+            .all()
+        )
+        return blank_option + assessors
+
 
 class SpeciesMixin(MixinsCommon):
 
@@ -152,7 +177,7 @@ class SpeciesMixin(MixinsCommon):
             .filter(assesment_field == species).all()
         )
         return blank_option + regions
-    
+
     @classmethod
     def get_progress_fields(cls, conclusion_type):
         if conclusion_type == 'range':
@@ -252,7 +277,7 @@ class HabitatMixin(MixinsCommon):
     def get_subject_details(cls, subject, dataset_id):
         return EtcDicHdHabitat.query.filter_by(
             habcode=subject, dataset_id=dataset_id).first()
-    
+
     @classmethod
     def get_progress_fields(cls, conclusion_type):
         if conclusion_type == 'range':

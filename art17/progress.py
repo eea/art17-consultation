@@ -6,6 +6,7 @@ from flask import (
     url_for,
     g,
     abort,
+    jsonify,
 )
 from sqlalchemy import and_
 from werkzeug.datastructures import MultiDict
@@ -36,6 +37,14 @@ def can_view_details():
         return False
 
     return current_user.has_role('etc') or current_user.has_role('admin')
+
+
+@progress.app_template_global('can_select_assessor')
+def can_select_assessor():
+    if not current_user.is_authenticated():
+        return False
+
+    return current_user.has_role('admin')
 
 
 def user_is_expert(user):
@@ -134,7 +143,7 @@ class Progress(views.View):
             title.append('Reported as occasional by: ' + presence['occasional'])
         title.append('Assessment {type} : {details}'.format(
             type=conclusion_type,
-            details=COUNTRY_ASSESSMENTS.get(cell['conclusion'],'')
+            details=COUNTRY_ASSESSMENTS.get(cell['conclusion'], '')
         ))
         if current_user.has_role('etc') or current_user.has_role('admin'):
             title.append('Decision: {main} ({details})'.format(
@@ -211,14 +220,17 @@ class Progress(views.View):
         period = request.args.get('period') or get_default_period()
         group = request.args.get('group')
         conclusion = request.args.get('conclusion')
+        assessor = request.args.get('assessor')
         extra = request.args.get('extra') or ''
 
         progress_filter_form = ProgressFilterForm(
             MultiDict(dict(period=period, group=group, conclusion=conclusion,
-                           extra=extra))
+                           assessor=assessor, extra=extra))
         )
         progress_filter_form.group.choices = self.get_groups(period)
         progress_filter_form.conclusion.choices = self.get_conclusions()
+        progress_filter_form.assessor.choices = self.get_assessors(
+            period, group)
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
@@ -235,7 +247,8 @@ class Progress(views.View):
         self.METHOD_DETAILS = self.get_method_details()
 
         presence = self.get_presence(period)
-        data_dict = self.setup_objects_and_data(period, group, conclusion)
+        data_dict = self.setup_objects_and_data(period, group, conclusion,
+                                                assessor)
         comment_counts = self.get_comment_counts(period)
         ret_dict = {}
         for subject, region in data_dict.iteritems():
@@ -283,7 +296,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
     def get_comment_counts(self, period):
         return SpeciesCommentCounter(period, g.identity.id).get_counts()
 
-    def setup_objects_and_data(self, period, group, conclusion_type):
+    def setup_objects_and_data(self, period, group, conclusion_type, user_id):
         fields = self.get_progress_fields(conclusion_type)
         if not fields:
             return {}
@@ -299,6 +312,8 @@ class SpeciesProgress(Progress, SpeciesMixin):
                            *fields)
             .filter_by(dataset_id=period)
         )
+        if user_id:
+            self.objects = self.objects.filter_by(user_id=user_id)
 
         data_dict = {}
         for entry in self.objects.all():
@@ -320,6 +335,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
     def get_context(self):
         return {
             'groups_url': url_for('common.species-groups'),
+            'assessors_url': url_for('progress.species-assessors'),
             'comparison_endpoint': 'progress.species-comparison',
         }
 
@@ -335,7 +351,7 @@ class HabitatProgress(Progress, HabitatMixin):
     def get_comment_counts(self, period):
         return HabitatCommentCounter(period, g.identity.id).get_counts()
 
-    def setup_objects_and_data(self, period, group, conclusion_type):
+    def setup_objects_and_data(self, period, group, conclusion_type, user_id):
         fields = self.get_progress_fields(conclusion_type)
         if not fields:
             return {}
@@ -355,6 +371,9 @@ class HabitatProgress(Progress, HabitatMixin):
                            *fields)
             .filter(self.model_manual_cls.dataset_id == period)
         )
+        if user_id:
+            self.objects = self.objects.filter(
+                self.model_manual_cls.user_id == user_id)
 
         data_dict = {}
         for entry in self.objects.all():
@@ -375,6 +394,7 @@ class HabitatProgress(Progress, HabitatMixin):
     def get_context(self):
         return {
             'groups_url': url_for('common.habitat-groups'),
+            'assessors_url': url_for('progress.habitat-assessors'),
             'comparison_endpoint': 'progress.habitat-comparison',
         }
 
@@ -422,3 +442,15 @@ progress.add_url_rule('/species/progress/compare/',
 progress.add_url_rule('/habitat/progress/compare/',
                       view_func=ComparisonView.as_view('habitat-comparison',
                                                        mixin=HabitatMixin))
+
+@progress.route('/species/progress/assessors', endpoint='species-assessors')
+def species_assessors():
+    data = SpeciesMixin.get_assessors(
+        request.args.get('period'), request.args.get('group'))
+    return jsonify(data)
+
+@progress.route('/habitat/progress/assessors', endpoint='habitat-assessors')
+def species_assessors():
+    data = HabitatMixin.get_assessors(
+        request.args.get('period'), request.args.get('group'))
+    return jsonify(data)
