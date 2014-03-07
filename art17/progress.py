@@ -6,6 +6,7 @@ from flask import (
     url_for,
     g,
 )
+from sqlalchemy import and_
 from werkzeug.datastructures import MultiDict
 from art17.auth import current_user
 from art17.common import get_default_period, COUNTRY_ASSESSMENTS
@@ -340,8 +341,10 @@ class HabitatProgress(Progress, HabitatMixin):
 
         self.objects = (
             db.session.query(self.model_manual_cls)
-            .join(EtcDicHdHabitat, self.model_manual_cls.habitatcode ==
-                  EtcDicHdHabitat.habcode)
+            .join(EtcDicHdHabitat, and_(
+                self.model_manual_cls.habitatcode == EtcDicHdHabitat.habcode,
+                self.model_manual_cls.dataset_id == EtcDicHdHabitat.dataset_id
+            ))
             .with_entities(self.model_manual_cls.subject,
                            self.model_manual_cls.region,
                            self.model_manual_cls.decision,
@@ -349,7 +352,7 @@ class HabitatProgress(Progress, HabitatMixin):
                            self.model_manual_cls.method_assessment,
                            self.model_manual_cls.method_range,
                            *fields)
-            .filter_by(dataset_id=period)
+            .filter(self.model_manual_cls.dataset_id == period)
         )
 
         data_dict = {}
