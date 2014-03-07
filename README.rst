@@ -6,11 +6,15 @@ Art 17 Consultation
     git clone git@github.com:eea/art17-consultation.git -o origin
     cd art17-consultation
 
-2. Create & activate a virtual environment::
+2.1. Create & activate a virtual environment::
 
-    virtualenv sandbox
+    virtualenv --no-site-packages sandbox
     echo '*' > sandbox/.gitignore
     source sandbox/bin/activate
+
+2.2 Make sure setuptools >= 0.8 is installed::
+
+    pip install -U setuptools
 
 3. Install prerequisites if missing::
 
