@@ -112,8 +112,8 @@ class MixinsCommon(object):
                     cls.model_manual_cls.dataset_id == cls.model_cls.dataset_id,
                     cls.model_manual_cls.subject == cls.model_cls.subject)
             )
-            .join(RegisteredUser,
-                  cls.model_manual_cls.user_id == RegisteredUser.id)
+            .outerjoin(RegisteredUser,
+                cls.model_manual_cls.user_id == RegisteredUser.id)
             .with_entities(
                 cls.model_manual_cls.user_id,
                 RegisteredUser.name)
