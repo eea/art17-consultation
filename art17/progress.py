@@ -20,6 +20,8 @@ from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
 
 progress = Blueprint('progress', __name__)
 
+DEFAULT_CONCLUSION = 'overall assessment'
+
 
 @progress.app_template_filter('methodify')
 def methodify(s):
@@ -181,7 +183,7 @@ class Progress(views.View):
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
         group = request.args.get('group')
-        conclusion = request.args.get('conclusion')
+        conclusion = request.args.get('conclusion') or DEFAULT_CONCLUSION
 
         progress_filter_form = ProgressFilterForm(
             MultiDict(dict(period=period, group=group, conclusion=conclusion))
