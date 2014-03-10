@@ -41,3 +41,6 @@ def deploy():
         run('pip install -r requirements.txt')
         run('python manage.py db upgrade')
         run('supervisorctl -c %(supervisord_conf)s restart flask' % env)
+        for doc_type in ('overview', 'user'):
+            with cd(path('docs') / doc_type):
+                run('make html')
