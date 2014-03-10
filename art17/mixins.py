@@ -12,7 +12,10 @@ from art17.models import (
     DicCountryCode,
     Comment,
     HabitatComment,
-    LuSpeciesManual2007, LuHabitatManual2007)
+    LuSpeciesManual2007,
+    LuHabitatManual2007,
+    RegisteredUser,
+)
 
 
 class MixinsCommon(object):
@@ -100,9 +103,11 @@ class MixinsCommon(object):
                     cls.model_manual_cls.dataset_id == cls.model_cls.dataset_id,
                     cls.model_manual_cls.subject == cls.model_cls.subject)
             )
+            .join(RegisteredUser,
+                  cls.model_manual_cls.user_id == RegisteredUser.id)
             .with_entities(
                 cls.model_manual_cls.user_id,
-                cls.model_manual_cls.user_id)
+                RegisteredUser.name)
             .filter(
                 cls.model_manual_cls.dataset_id == period,
                 cls.model_cls.group == group,
@@ -110,6 +115,8 @@ class MixinsCommon(object):
             .distinct()
             .all()
         )
+        assessors = [(user_id, "{0} ({1})".format(name or user_id, user_id))
+                     for user_id, name in assessors]
         return blank_option + assessors
 
 
