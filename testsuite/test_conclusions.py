@@ -11,7 +11,8 @@ from .factories import (
     SpeciesManualAssessmentFactory,
     HabitattypesManualAssessmentsFactory,
     EtcDataSpeciesAutomaticAssessmentFactory,
-    EtcDataHabitattypeAutomaticAssessmentFactory
+    EtcDataHabitattypeAutomaticAssessmentFactory,
+    EtcDicDecisionFactory,
 )
 from art17 import models
 from conftest import get_request_params, create_user
@@ -50,6 +51,9 @@ def setup_decision(app):
     HabitattypesManualAssessmentsFactory(region='ALP')
     SpeciesManualAssessmentFactory(decision='OK')
     HabitattypesManualAssessmentsFactory(decision='OK')
+    EtcDicDecisionFactory()
+    EtcDicDecisionFactory(decision='OK')
+    EtcDicDecisionFactory(decision='OK?')
     models.db.session.commit()
 
 
@@ -353,10 +357,14 @@ def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
      # ADM successfully updating decision
      (['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU25'}],
       {'decision': 'CO'}, 'testuser', ['admin'], False, 200, True, ''),
-     # ETC changing a final decision (OK) into another final decision (END)
+     # ETC changing a final decision (OK) into another final decision (OK)
      (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
-      {'decision': 'END'}, 'testuser', ['etc'], False, 200, False,
+      {'decision': 'OK'}, 'testuser', ['etc'], False, 200, False,
       'Another final decision already exists'),
+     # ETC selecting invalid decision
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+      {'decision': 'WTF'}, 'testuser', ['etc'], False, 200, False,
+      "'WTF' is not a valid decision."),
      # ETC selecting 'OK?' decision
      (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
       {'decision': 'OK?'}, 'testuser', ['etc'], False, 200, False,
@@ -380,10 +388,14 @@ def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
      # ADM successfully updating decision
      (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU25'}],
       {'decision': 'CO'}, 'testuser', ['admin'], False, 200, True, ''),
-     # ETC changing a final decision (OK) into another final decision (END)
+     # ETC changing a final decision (OK) into another final decision (OK)
      (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
-      {'decision': 'END'}, 'testuser', ['etc'], False, 200, False,
+      {'decision': 'OK'}, 'testuser', ['etc'], False, 200, False,
       'Another final decision already exists'),
+     # ETC selecting invalid decision
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+      {'decision': 'WTF'}, 'testuser', ['etc'], False, 200, False,
+      "'WTF' is not a valid decision."),
      # ETC selecting 'OK?' decision
      (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
       {'decision': 'OK?'}, 'testuser', ['etc'], False, 200, False,

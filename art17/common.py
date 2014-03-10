@@ -117,6 +117,16 @@ FAV_REF_OPTIONS = {
     '2012': [(u'≈', 'approximately equal to current value')]
 }
 
+MANUAL_TOOLTIPS = {
+    'method_range': 'percentage_range_surface_area',
+    'method_population': 'percentage_population_mean_size',
+    'method_future': 'percentage_future',
+    'method_habitat': 'percentage_habitat_surface_area',
+    'method_assessment': 'percentage_assessment',
+    'method_area': 'percentage_coverage_surface_area',
+    'method_structure': 'percentage_structure',
+}
+
 HOMEPAGE_VIEW_NAME = 'common.homepage'
 
 common = flask.Blueprint('common', __name__)
@@ -229,116 +239,29 @@ def favourable_ref_title(field, schema):
     return '\n'.join(text_lines)
 
 
-def get_range_conclusion_value(model_auto_cls, subject, region,
-                               assessment_method, dataset_id):
+def get_tooltip(row, method_field, model_auto_cls):
+    tooltip_field = MANUAL_TOOLTIPS.get(method_field, '')
+    if not tooltip_field:
+        return ''
     query = (
         model_auto_cls.query
         .with_entities(
-            model_auto_cls.percentage_range_surface_area)
-        .filter_by(subject=subject, region=region,
-                   assessment_method=assessment_method, dataset_id=dataset_id)
+            getattr(model_auto_cls, tooltip_field))
+        .filter_by(subject=row.subject,
+                   region=row.region,
+                   assessment_method=getattr(row, method_field),
+                   dataset_id=row.dataset_id)
         .first()
     )
-    return query.percentage_range_surface_area if query else ''
+    return getattr(query, tooltip_field) if query else ''
 
 
-def get_population_conclusion_value(assesment_speciesname, region,
-                                    assessment_method, dataset_id):
-    query = (
-        EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(
-            EtcDataSpeciesAutomaticAssessment.percentage_population_mean_size)
-        .filter_by(assesment_speciesname=assesment_speciesname, region=region,
-                   assessment_method=assessment_method, dataset_id=dataset_id)
-        .first()
-    )
-    return query.percentage_population_mean_size if query else ''
+def get_tooltip_for_species(row, method_field):
+    return get_tooltip(row, method_field, EtcDataSpeciesAutomaticAssessment)
 
 
-def get_future_conclusion_value(model_auto_cls, subject, region,
-                                assessment_method, dataset_id):
-    query = (
-        model_auto_cls.query
-        .with_entities(model_auto_cls.percentage_future)
-        .filter_by(subject=subject,
-                   region=region,
-                   assessment_method=assessment_method,
-                   dataset_id=dataset_id)
-        .first()
-    )
-
-    return query.percentage_future if query else ''
-
-
-def get_habitat_conclusion_value(assesment_speciesname, region,
-                                 assessment_method, dataset_id):
-    query = (
-        EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(
-            EtcDataSpeciesAutomaticAssessment.percentage_habitat_surface_area)
-        .filter_by(assesment_speciesname=assesment_speciesname,
-                   region=region,
-                   assessment_method=assessment_method,
-                   dataset_id=dataset_id)
-        .first()
-    )
-
-    return query.percentage_habitat_surface_area if query else ''
-
-
-def get_assesm_conclusion_value_for_species(assesment_speciesname, region,
-                                            assessment_method, dataset_id):
-    query = (
-        EtcDataSpeciesAutomaticAssessment.query
-        .with_entities(EtcDataSpeciesAutomaticAssessment.percentage_assessment)
-        .filter_by(assesment_speciesname=assesment_speciesname,
-                   region=region,
-                   assessment_method=assessment_method,
-                   dataset_id=dataset_id)
-        .first()
-    )
-
-    return query.percentage_assessment if query else ''
-
-
-def get_assesm_conclusion_value_for_habitat(habitatcode, region,
-                                            assessment_method, dataset_id):
-    query = (
-        EtcDataHabitattypeAutomaticAssessment.query
-        .with_entities(
-            EtcDataHabitattypeAutomaticAssessment.percentage_assessment)
-        .filter_by(habitatcode=habitatcode,
-                   region=region,
-                   assessment_method=assessment_method,
-                   dataset_id=dataset_id)
-        .first()
-    )
-
-    return query.percentage_assessment if query else ''
-
-
-def get_coverage_conclusion_value(habitatcode, region, assessment_method,
-                                  dataset_id):
-    query = (
-        EtcDataHabitattypeAutomaticAssessment.query
-        .filter_by(habitatcode=habitatcode, region=region,
-                   assessment_method=assessment_method, dataset_id=dataset_id)
-        .first()
-    )
-    return query.percentage_coverage_surface_area if query else ''
-
-
-def get_struct_conclusion_value(habitatcode, region, assessment_method,
-                                dataset_id):
-    query = (
-        EtcDataHabitattypeAutomaticAssessment.query
-        .with_entities(
-            EtcDataHabitattypeAutomaticAssessment.percentage_structure)
-        .filter_by(habitatcode=habitatcode, region=region,
-                   assessment_method=assessment_method, dataset_id=dataset_id)
-        .first()
-    )
-    return query.percentage_structure if query else ''
+def get_tooltip_for_habitat(row, method_field):
+    return get_tooltip(row, method_field, EtcDataHabitattypeAutomaticAssessment)
 
 
 def get_original_record_url(row):
@@ -348,7 +271,8 @@ def get_original_record_url(row):
         page = 'habitat'
     else:
         raise NotImplementedError
-    url_scheme = CONVERTER_URLS.get(row.dataset.schema if row.dataset else 0, {})
+    url_scheme = CONVERTER_URLS.get(row.dataset.schema if row.dataset else 0,
+                                    {})
     url_format = url_scheme.get(page, '')
     info = urlparse(row.envelope)
     return url_format.format(

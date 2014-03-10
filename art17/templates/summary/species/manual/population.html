@@ -2,9 +2,8 @@
   {{ row.population_size or ''}} {{ row.population_size_unit or '' }}
 </td>
 
+{% set concl_value = get_tooltip(row, 'method_population') %}
 
-{% set concl_value = get_population_conclusion_value(row.assesment_speciesname,
-                                row.region, row.method_population, row.dataset_id) %}
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}"
     {% if concl_value %}title=": {{concl_value}}"{% endif %}>
     <span class="conclusion">{{ row.method_population or '' }}</span>

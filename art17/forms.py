@@ -23,7 +23,7 @@ METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
 INVALID_MS_REGION_PAIR = "Please select an MS country code that is available " \
     "for the selected region"
 
-NATURE_CHOICES = [('yes', 'yes'), ('no', 'no'), ('nc', 'nc')]
+NATURE_CHOICES = [('', ''), ('y', 'yes'), ('n', 'no'), ('nc', 'nc')]
 CONTRIB_METHODS = [
     ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
 ]
@@ -271,7 +271,7 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
                   self.conclusion_habitat, self.conclusion_future,
                   self.conclusion_assessment, self.conclusion_assessment_prev):
             f.choices = conclusions
-        self.conclusion_assessment_change.choices = empty + NATURE_CHOICES
+        self.conclusion_assessment_change.choices = NATURE_CHOICES
         self.population_size_unit.choices = units
         self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
@@ -371,7 +371,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
                   self.conclusion_assessment,
                   self.conclusion_assessment_prev):
             f.choices = conclusions
-        self.conclusion_assessment_change.choices = empty + NATURE_CHOICES
+        self.conclusion_assessment_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
         self.conclusion_target1.choices = empty + CONTRIB_TYPE
 

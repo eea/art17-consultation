@@ -1,9 +1,5 @@
+{% set concl_value = get_tooltip(row, 'method_structure') %}
 
-{% set concl_value = get_struct_conclusion_value(
-                            row.habitatcode,
-                            row.region,
-                            row.method_structure,
-                            row.dataset_id) %}
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} border"
     {% if concl_value %}title=": {{ concl_value }}"{% endif %}>
   <span class="conclusion">{{ row.method_structure }}</span>

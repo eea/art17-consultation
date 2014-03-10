@@ -1,10 +1,6 @@
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') %}
 
-{% set concl_value = get_future_conclusion_value(model_auto_cls,
-                                                 row.subject,
-                                                 row.region,
-                                                 row.method_future,
-                                                 row.dataset_id) %}
+{% set concl_value = get_tooltip(row, 'method_future') %}
 
 <td class="{{ classes }} border"
     {% if concl_value %}title=": {{concl_value}}"{% endif %}>

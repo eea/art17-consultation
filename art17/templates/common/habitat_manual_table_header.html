@@ -31,7 +31,7 @@
     {% endif %}
 
     {% if dataset.schema == '2006' %}
-    <th rowspan="2" colspan="2"></th>
+    <th colspan="2"></th>
     {% else %}
     <th colspan="2">Target 1</th>
     {% endif %}
@@ -39,9 +39,11 @@
 
     <th rowspan="2" colspan="5">{# padding #}</th>
   </tr>
-  {% if dataset.schema != '2006' %}
   <tr {% if is_form %}class="form_row"{% endif %}>
+    {% if dataset.schema != '2006' %}
     <th title="Contribution to target ">Contrib.</th>
     <th>Type</th>
+    {% else %}
+    <th colspan="2"></th>
+    {% endif %}
   </tr>
-  {% endif %}

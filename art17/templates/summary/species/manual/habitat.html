@@ -4,8 +4,7 @@
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
 
-{% set concl_value = get_habitat_conclusion_value(row.assesment_speciesname,
-                                row.region, row.method_habitat, row.dataset_id) %}
+{% set concl_value = get_tooltip(row, 'method_habitat') %}
 
 <td class="{{ classes }}"
     {% if concl_value %}title=": {{concl_value}}"{% endif %}>
