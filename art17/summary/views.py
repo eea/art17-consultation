@@ -382,11 +382,18 @@ class SpeciesSummary(SpeciesMixin, Summary):
         map_url = ''
         subject = request.args.get('subject')
         if subject:
-            map_url = generate_map_url(
-                category='species',
-                subject=subject,
-                region=request.args.get('region', ''),
+            subject_code = (
+                db.session.query(self.model_cls.speciescode)
+                .filter_by(speciesname=subject)
+                .filter_by(dataset_id=request.args.get('period'))
+                .first()[0]
             )
+            if subject_code:
+                map_url = generate_map_url(
+                    category='species',
+                    subject=subject_code,
+                    region=request.args.get('region', ''),
+                )
         return {
             'groups_url': url_for('common.species-groups'),
             'subjects_url': url_for('.species-summary-species'),
@@ -574,7 +581,12 @@ def generate_map_url(category, subject, region):
     config = get_config()
 
     if category == 'species':
-        return ''
+        map_href =config.species_map_url or ''
+
+        if region:
+            return map_href + '&CodeReg=' + subject + region
+        else:
+            return map_href + '&CCode=' + subject
 
     elif category == 'habitat':
         map_href = config.habitat_map_url or ''
