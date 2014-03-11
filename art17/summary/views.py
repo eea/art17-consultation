@@ -294,6 +294,8 @@ class Summary(ConclusionView, views.View):
             'region': region,
             'period_name': period_name,
             'dataset': period_query,
+            'current_user_ms': current_user.MS if
+            current_user.is_authenticated() else '',
         })
 
         return render_template(self.template_name, **context)
@@ -382,11 +384,18 @@ class SpeciesSummary(SpeciesMixin, Summary):
         map_url = ''
         subject = request.args.get('subject')
         if subject:
-            map_url = generate_map_url(
-                category='species',
-                subject=subject,
-                region=request.args.get('region', ''),
+            subject_code_row = (
+                db.session.query(self.model_cls.speciescode)
+                .filter_by(speciesname=subject)
+                .filter_by(dataset_id=request.args.get('period'))
+                .first()
             )
+            if subject_code_row:
+                map_url = generate_map_url(
+                    category='species',
+                    subject=subject_code_row[0],
+                    region=request.args.get('region', ''),
+                )
         return {
             'groups_url': url_for('common.species-groups'),
             'subjects_url': url_for('.species-summary-species'),
@@ -574,7 +583,12 @@ def generate_map_url(category, subject, region):
     config = get_config()
 
     if category == 'species':
-        return ''
+        map_href =config.species_map_url or ''
+
+        if region:
+            return map_href + '&CodeReg=' + subject + region
+        else:
+            return map_href + '&CCode=' + subject
 
     elif category == 'habitat':
         map_href = config.habitat_map_url or ''

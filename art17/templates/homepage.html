@@ -6,15 +6,16 @@
   <h1>Online report on Article 17 of the Habitats Directive</h1>
 
   <p class="documentDescription">
-    Welcome to the Article 17 Web Tool on biogeographical assessments
-    of conservation status for species and habitats, as reported by
-    Member States according to the provisions of Article 17 of the
+    Welcome to the Article 17 web tool on biogeographical assessments
+    of conservation status of species and habitats under Article 17 of the
     Habitats Directive.
   </p>
 
   <p>
-    The MS assessments as well as the biogeographical assessments
-    performed by the ETC/BD are now available for public view.
+  The biogeographical assessments from the Member States are now available for
+  public view; the EU biogeographical assessments performed by the EEA and the
+  ETC/BD are under development and will become available for public view and
+  consultation during the second quarter of 2014.
   </p>
 
   <div class="warning">
@@ -36,12 +37,19 @@
   </div>
 
   {% if AUTH_BLUEPRINT_INSTALLED %}
-    {% if start_date and start_date > today %}
+    {% if not start_date %}
       <h2>The consultation has not started yet.</h2>
 
       <p>
         You cannot sign-up for a new account because the registration
-        process will start on on {{ start_date }}.
+        process has not started yet.
+      </p>
+    {% elif start_date and start_date > today %}
+      <h2>The consultation has not started yet.</h2>
+
+      <p>
+        You cannot sign-up for a new account because the registration
+        process will start on {{ start_date }}.
       </p>
 
     {% elif end_date and end_date < today %}
@@ -104,7 +112,7 @@
   <p><strong>Biogeographical assessments at EU 27 level:</strong></p>
   <ul>
     <li><a href="{{ url_for('progress.species-progress') }}">
-        Species asssessments</a></li>
+        Species assessments</a></li>
     <li><a href="{{ url_for('progress.habitat-progress') }}">
         Habitats assessments</a></li>
     <li><a href="{{ url_for('summary.species-summary') }}">
