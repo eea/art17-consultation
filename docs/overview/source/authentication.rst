@@ -5,7 +5,7 @@ The authentication process is done externally, using Zope's builtin
 authentication mechanism. This page describes the authentication process for a
 registered user.
 
-.. figure:: images/authentication.png
+.. figure:: images/authentication2.png
    :alt: Authentication Overview
 
    Authentication Overview
