@@ -5,7 +5,7 @@ The consultation tool is a Flask web application, running on a MySQL database
 using SQLAlchemy as the ORM.
 
 It runs in an isolated environment, using Virtualenv. The WSGI server used in
-deployments is Waitress (in a combination with Apache2 mod_proxy).
+deployments is Waitress (combined with Apache2 mod_proxy).
 
 Module structure
 ----------------
@@ -25,3 +25,12 @@ Other modules are: `assets`, `common`, `dataset`, `forms`, `layout`, `maps`, `mi
 
 Source code summary
 -------------------
+
+* `alembic/` - database migrations used in development
+* `art17/` - main python application
+* `art17/static/` - static files such as CSS or Javascript
+* `art17/templates/` - HTML templates used in views
+* `docs/` - documentation, user manual and overview
+* `fabfile/` - deployment configuration
+* `testsuite/` - unit testing
+* `zope_api/` - code for Zope integration

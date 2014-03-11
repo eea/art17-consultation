@@ -3,8 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Art17 Consultation's Overview!
-==============================
+Art17 Consultation Overview
+===========================
+
+This documentation describes the architecture of the Art17 Consultation Tool.
+
+For an user perspective documentation, please check the *User Manual*.
+
 
 Contents:
 
@@ -17,5 +22,8 @@ Contents:
    database
    views
 
+For details about the installation process check the `github repository`_.
+
+.. _github repository: https://github.com/eea/art17-consultation/
 
 
