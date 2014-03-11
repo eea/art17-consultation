@@ -23,9 +23,12 @@
   {% endif %}
 
   {% if can_view_details() %}
-  <div class="box-col">
-    {{ progress_filter_form.extra.label }}
-    {{ progress_filter_form.extra(value='y') }}
+  <div class="pull-left right-12 no-width">
+
+    <label class="offset_top_label btn-align">
+        {{ progress_filter_form.extra }}
+        {{ progress_filter_form.extra.label.text }}
+    </label>
   </div>
   {% endif %}
 

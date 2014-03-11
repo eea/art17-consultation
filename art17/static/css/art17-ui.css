@@ -1370,6 +1370,12 @@ hr {
   width: 66.666666%;
 }
 /* SPACING HELPERS */
+.left-12 {
+  margin-left: 12px;
+}
+.right-12 {
+  margin-right: 12px;
+}
 .no-top {
   margin-top: 0!important;
 }
@@ -1378,6 +1384,11 @@ hr {
 }
 .no-margins {
   margin: 0!important;
+}
+.no-width {
+  width: auto!important;
+  min-width: 0px!important;
+  max-width: 100%!important;
 }
 .extra-padding {
   padding: 3px 6px;
