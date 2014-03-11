@@ -294,6 +294,8 @@ class Summary(ConclusionView, views.View):
             'region': region,
             'period_name': period_name,
             'dataset': period_query,
+            'current_user_ms': current_user.MS if
+            current_user.is_authenticated() else '',
         })
 
         return render_template(self.template_name, **context)

@@ -12,7 +12,13 @@
         {{ form.MS() }}
       </td>
     {% else %}
-     <td></td>
+      <td>
+        {% if etc_perm.can() %}
+        EU27
+        {% elif nat_perm.can() %}
+        {{ current_user_ms }}
+        {% endif %}
+      </td>
     {% endif %}
     {% if not region %}
       <td>{{ form.region(disabled="disabled") }}</td>
