@@ -1,5 +1,5 @@
-Art 17 Consultation Tool for http://bd.eionet.europa.eu/article17/reports2012/
-==============================================================================
+Art 17 Consultation Tool http://bd.eionet.europa.eu/article17/reports2012/
+==========================================================================
 
 .. contents ::
 
