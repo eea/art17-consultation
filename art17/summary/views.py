@@ -382,16 +382,16 @@ class SpeciesSummary(SpeciesMixin, Summary):
         map_url = ''
         subject = request.args.get('subject')
         if subject:
-            subject_code = (
+            subject_code_row = (
                 db.session.query(self.model_cls.speciescode)
                 .filter_by(speciesname=subject)
                 .filter_by(dataset_id=request.args.get('period'))
-                .first()[0]
+                .first()
             )
-            if subject_code:
+            if subject_code_row:
                 map_url = generate_map_url(
                     category='species',
-                    subject=subject_code,
+                    subject=subject_code_row[0],
                     region=request.args.get('region', ''),
                 )
         return {
