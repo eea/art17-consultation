@@ -19,7 +19,7 @@ The tables can be classified *by content* in:
 #. application specific (Registered Users, Configuration, Dataset information).
 
 Each of the tables in the first three categories contain a column named *ext_dataset_id* linking
- to the dataset the record belongs to.
+to the dataset the record belongs to.
 
 Backend
 -------
