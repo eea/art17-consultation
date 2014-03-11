@@ -27,7 +27,7 @@ conservation status at biogeographical level, can be seen by following the
 “Species/Habitat assessments” link, under the “Biogeographical assessments at
 EU 27 level” section, that will open the following page:
 
-.. image
+.. figure
 
 The default period for displaying data is 2007-2012, but it can be changed
 using the “Period...” selectbox.
@@ -55,11 +55,58 @@ will be opened.
 Species/Habitat data summaries
 ------------------------------
 
+The data summary sheet for species/habitat conservation status provides an
+overview per biogeographical region.
+
+.. figure
+
+The default period for displaying data is 2007-2012, but it can be changed
+using the “Period...” selectbox.
+After choosing a group, the “Name...” selectbox will be populated with all the
+species/habitat type names belonging to that group. The selection of a
+species/habitat type name is mandatory for filtering, while the selection of a
+bio-region is optional.
+
+After pressing the “Filter” button a page similar to the one below appears:
+
+.. figure
+
+The table is made of three main sections:
+
+* Treated data from Member States reports
+* Automatic Assessments (hidden by default; the user can view information in
+  this section by pressing Show)
+* EU Biogeographical assessment and proposed corrections
+
+The buttons above the table open corresponding pages in pop-up windows:
+
+* Data sheet info (view/edit data sheet info, add comments)
+* Audit trail (view/edit audit trail)
+* Map (show the reports from the countries on a map)
+
 Biogeographical assessments at Member State level
 =================================================
 
 Species/Habitat assessments
 ---------------------------
 
+This page provides a view similar to the “Species/Habitat data summaries”,
+having the option to refine the query by country instead of species/habitat
+name.
+
+By clicking the species/habitat type name, a popup window with the original
+data is opened. The map view can be accessed through the link on the region
+name.
+
 Activity logs
 =============
+
+The activity logs page provides to the authenticated user a view with recent
+conclusions added by users and recent comments for these conclusions.
+
+The user can switch between the Species/Habitat view by clicking the desired
+tab.
+
+The dates, both for comments and conclusions, are links to the “EU
+Biogeographical assessment and proposed corrections” section for the
+species/habitat and region selected.
