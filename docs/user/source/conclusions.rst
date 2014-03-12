@@ -1,15 +1,20 @@
 EU Biogeographical assessment and proposed corrections
 ======================================================
 
-By design and software specifications, the data from Art17 consultation is
-available to view, without any form of authentication. However, updating
-data is conditioned by prior registration for the consultation.
+Assessments on the conservation status of the habitat types and species of
+Community interest have been carried out in EU25 for the period 2001-2006 and
+in EU 27 for the period 2007-2012, compiled as part of the Habitats Directive -
+Article 17 reporting process. The data summary sheet for species and habitat
+conservation status provides an overview per biogeographical region.
+
+By design and software specifications, the data is available to view,
+without any form of authentication. However, updating data is
+conditioned by prior registration for the consultation.
 The two ways by which one can do so are widely described in ... TODO.
 
 The level of access to the application core is spread through different
-permissions that are nicely bundled into four different roles:
+permissions that are nicely bundled into three different roles:
 
-* Administrator (ADM)
 * European topic center (ETC)
 * National expert (NAT)
 * Stakeholder (STK)
@@ -22,7 +27,7 @@ Add assessments
 ---------------
 
 All registered users can propose corrections to the automatic assessments by
-adding a manual assessment on the Species/Habitat data summaries page.
+adding a manual assessment on each of the Species/Habitat data summaries pages.
 The user is allowed to add only one record for each period, subject and region.
 In order to add an assessment a bio-region must be selected.
 
