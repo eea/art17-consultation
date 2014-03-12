@@ -11,8 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   viewdata
-   updatedata
+   views
+   conclusions
+   wiki
 
 
 Indices and tables

@@ -1,26 +1,3 @@
-***********
-Update data
-***********
-
-EU Biogeographical assessment and proposed corrections
-======================================================
-
-Add assessments
----------------
-
-Edit assessments
-----------------
-
-Edit other user's assessments (Ref)
------------------------------------
-
-Comment on assessments
-----------------------
-
-Change decision
----------------
-
-
 Data sheet info and Audit trail
 ===============================
 
@@ -32,6 +9,12 @@ Change active revision for data sheet info
 
 Comment on data sheet info
 --------------------------
+
+Delete/Undelete comments
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Mark comments as read/unread
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Add/Edit audit trail
 --------------------
