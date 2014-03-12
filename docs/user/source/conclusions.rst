@@ -28,8 +28,11 @@ Add assessments
 
 All registered users can propose corrections to the automatic assessments by
 adding a manual assessment on each of the Species/Habitat data summaries pages.
-The user is allowed to add only one record for each period, subject and region.
-In order to add an assessment a bio-region must be selected.
+The user is allowed to add **only one** record for each period, subject and region.
+As the next figure depicts, in order to add an assessment a bio-region **must
+be** selected.
+
+.. figure:: images/please_select_a_bioregion.png
 
 All users add conclusions using roughly the same form, with a few exceptions:
 
