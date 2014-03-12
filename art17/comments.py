@@ -40,6 +40,8 @@ def mark_unread(comment, user):
 def can_post_comment(record):
     if not current_user.is_authenticated():
         return False
+    if record.dataset and record.dataset.is_readonly:
+        return False
     can_add = False
     if current_user.has_role('stakeholder') or current_user.has_role('nat'):
         if not record.user or record.user.has_role('stakeholder') or \
@@ -60,6 +62,9 @@ def can_post_comment(record):
 @comments.app_template_global('can_edit_comment')
 def can_edit_comment(comment):
     if not comment or not current_user.is_authenticated():
+        return False
+    if comment and comment.record and comment.record.dataset and \
+            comment.record.dataset.is_readonly:
         return False
     return (not comment.record.deleted and not comment.deleted
             and comment.author_id == current_user.id)
