@@ -272,7 +272,7 @@ class _CommentCounterBase(object):
                 self.comment_cls.deleted == 0,
                 self.comment_cls.deleted == None,
             ))
-            .filter(WikiComment.author_id != self.user_id)
+            .filter(self.comment_cls.author_id != self.user_id)
             .group_by(
                 self.subject_column,
                 self.comment_cls.region,
