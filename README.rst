@@ -206,7 +206,7 @@ Copyright and license
 =====================
 
 This project is free software; you can redistribute it and/or modify it under
-the terms of the MIT License.
+the terms of the EUPL v1.1.
 
 More details under `LICENSE.txt`_.
 
