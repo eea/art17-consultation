@@ -76,11 +76,14 @@ be run as an unprivileged user in the product directory.
 
 8. Create your user and assign admin role to it::
 
-    ./manage.py user create -e user_email -i user_id
-    ./manage.py role create -n admin
+    # for local user
+    ./manage.py user create -e user_email -i user_id -p <password>
+    # for Eionet user
+    ./manage.py user create -i user_id --ldap
+    # make it admin
     ./manage.py role add -u user_id -r admin
-    
-    
+
+
 Configuration
 -------------
 Details about configurable settings can be found in `settings.py.example`.
