@@ -10,20 +10,23 @@ The Project Name is Article 17 Consultation.
 Prerequisites - System packages
 -------------------------------
 
-These packages should be installed as superuser on.
+These packages should be installed as superuser (root).
 
 Debian based systems
 ~~~~~~~~~~~~~~~~~~~~
-Install this before setting up an environment::
+Install these before setting up an environment::
 
-    apt-get install python-setuptools python-dev libmysqlclient-dev libldap2-dev python-virtualenv
+    apt-get install python-setuptools python-dev libmysqlclient-dev \
+    libldap2-dev python-virtualenv mysql-server git
 
-OS X
-~~~~
-Install python and pip::
 
-    brew install python --universal --framework
-    pip install virtualenv
+RHEL based systems
+~~~~~~~~~~~~~~~~~~
+
+Install these packages::
+
+    yum install python-pip python27-setuptools mysql-server mysql git
+
 
 Product directory
 -----------------
@@ -55,7 +58,7 @@ be run as an unprivileged user in the product directory.
 
 3. Install dependencies::
 
-    pip install -r requirements-dev.txt
+    pip install -r requirements-dep.txt
 
 4. Create a configuration file::
 
@@ -131,6 +134,9 @@ Setup the production environment like this (using an unprivileged user)::
 
 Configure database and authentication connectors, then reset the application::
 
+    cd /var/local/art17
+    cp flask/supervisord.conf.example supervisord.conf
+    vim supervisord.conf
     ./bin/supervisorctl reload 1>/dev/null || ./bin/supervisord
 
 
@@ -139,7 +145,7 @@ Build staging
 
 Setup the production environment like this::
 
-    $ cd /var/local/art17staging
+    cd /var/local/art17staging
     # install dependencies, see above
     . sandbox/bin/activate
     cd flask
@@ -149,10 +155,22 @@ Setup the production environment like this::
 
 Configure database and authentication connectors, then reset the application::
 
+    cd /var/local/art17staging
+    cp flask/supervisord.conf.example supervisord.conf
+    vim supervisord.conf
     ./bin/supervisorctl reload 1>/dev/null || ./bin/supervisord
+
 
 Development hints
 =================
+
+Requirements
+------------
+
+User ``requirements-dev.txt`` instead of ``requirements-dep.text``::
+
+    pip install -r requirements-dev.txt
+
 
 Configure deploy
 ----------------
