@@ -30,6 +30,9 @@ Edit assessments
 
 Assessments can be updated by accessing the Edit Assessment (Propose correction
 for STA users) button visible after clicking the assessor's name.
+
+.. figure:: images/edit_assmt_btn.png
+
 All registered users can edit their own assessments; all assessment fields can
 be modified.
 ETC and ADM users can also edit other user's assessments, but they can only
