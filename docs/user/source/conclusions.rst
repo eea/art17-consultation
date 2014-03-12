@@ -1,15 +1,22 @@
-While viewing data is open to any user, updating data is conditioned by the
-registered user status. The registration process is described in ... TODO
-Registered users have different permissions depending on their role, that can
-be one of the following:
+EU Biogeographical assessment and proposed corrections
+======================================================
+
+By design and software specifications, the data from Art17 consultation is
+available to view, without any form of authentication. However, updating
+data is conditioned by prior registration for the consultation.
+The two ways by which one can do so are widely described in ... TODO.
+
+The level of access to the application core is spread through different
+permissions that are nicely bundled into four different roles:
 
 * Administrator (ADM)
 * European topic center (ETC)
 * National expert (NAT)
 * Stakeholder (STK)
 
-EU Biogeographical assessment and proposed corrections
-======================================================
+Further details about each role and its capabilities in terms of assessment
+operations are to be described within each of the following sections.
+
 
 Add assessments
 ---------------
