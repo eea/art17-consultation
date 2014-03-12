@@ -148,7 +148,8 @@ class CommonSection(object):
                      .order_by(self.wiki_change_cls.changed.desc()).all())
 
         request_args = self.get_req_args()
-        dataset = Dataset.query.get(request_args.get('period'))
+        period = request_args.get('period')
+        dataset = Dataset.query.get(period) if period else None
 
         return {
             'wiki_body': [('', '', active_change.body)]
