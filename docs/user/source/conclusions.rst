@@ -34,6 +34,30 @@ be** selected.
 
 .. figure:: images/please_select_a_bioregion.png
 
+Adding a proposed correction to the automatic assessment is straightforward.
+A long horizontal table sized form, measuring all corresponding table columns
+lies at the bottom of the table, marked as `EU Biogeographical assessment and
+proposed corrections` section. The input values that can be added are bounded
+to the same range as the already registered ones. However, for a better
+understanding and an improved usability, each form field reveals clarifications
+and constraints along with more information about that specific cell. The next
+figure depicts a sample of the shown tooltip when the mouse is hover in the
+`Population -> Reference` cell. Please do keep in mind that all cells in this
+form reveal such a tooltip.
+
+.. figure:: images/reference_tooltip.png
+
+As the range values for each form field content are specified in the above mentioned
+tooltips, there is also a logic requirement when adding corrections. That is, at
+least one pair of `method-conclusion` must be added of all the possible
+conclusions: range, population, habitat, future prospects and overall
+assessments. The next two figures depict the way this required logic is
+presented along with the situation in which the corresponding validating errors
+are raised.
+
+.. figure:: images/at_leat_method_conclusion.png
+.. figure:: images/at_least_method_conclusion_error.png
+
 All users add conclusions using roughly the same form, with a few exceptions:
 
 * NAT user can add a conclusion only for his country;
