@@ -54,7 +54,7 @@ Run these commands::
 
     pip2.7 install virtualenv
 
-    yum install mysql-server mysql git
+    yum install mysql-server mysql git openldap-devel mysql-devel
 
 
 Product directory
@@ -105,9 +105,9 @@ be run as an unprivileged user in the product directory::
 4. Create a configuration file::
 
     mkdir -p instance
-    touch instance/settings.py
+    cp settings.py.example instance/settings.py
 
-    # Check settings.local.example for configuration details
+    # Follow instructions in instance/settings.py to adapt it to your needs.
 
 6. Set up the MySQL database::
 

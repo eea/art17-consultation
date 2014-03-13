@@ -1,13 +1,29 @@
+# Change `user` and `password` into your MySQL user and password
+SQLALCHEMY_DATABASE_URI = 'mysql://user:password@localhost/art17'
 
-SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17'
-ASSETS_DEBUG = True
+# This is mandatory. Please define a secret key
+SECRET_KEY = 'place your secret key here'
 
-EEA_LDAP_SERVER = ''
+# Fields below are optional. Update and uncomment the ones you need.
+
+# ASSETS_DEBUG = False
+# AUTH_DEBUG = False
+
+# AUTH_LOG_FILE = '/var/local/art17/logs/flask-auth.log'
+# AUTH_ZOPE = True
+# AUTH_ZOPE_WHOAMI_URL = 'http://example.com/art17_api/whoami'
+# LAYOUT_ZOPE_URL = 'http://example.com/art17_api/layout'
+
+# AUTH_ZOPE_ACL_MANAGER_URL = 'http://example.com/acl_manager'
+# AUTH_ZOPE_ACL_MANAGER_KEY = ''
+
+# EEA_LDAP_SERVER = ''
 
 # Set this for correct links in emails.
-# SERVER_NAME = ''
+# SERVER_NAME = 'example.com'
 
-# Testing setup - prefix 'TESTING_' to any config, example:
-#TESTING_SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17test'
+# SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + SERVER_NAME
 
-# SECURITY_POST_REGISTER_VIEW = '/article17'
+# SECURITY_POST_REGISTER_VIEW = '/article17/'
+
+# SENTRY_DSN = ''
