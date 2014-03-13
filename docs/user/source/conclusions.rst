@@ -71,11 +71,14 @@ are raised.
 
    Method/conclusion error message
 
-All users add conclusions using roughly the same form, with a few exceptions:
+As previously stated, the level of access to the application core is spread through different
+permissions bundled into three different roles. Regardless of the role granted,
+the form to propose assessments is roughly the same, with very few exceptions:
 
-* NAT user can add a conclusion only for his country;
-* ETC user can add a conclusion only for EU27;
-* STK and ADM have an additional MS selectbox, and can select any Member State.
+* The National expert (NAT) can add a conclusion only for the represented country
+* The European topic center (ETC) can add a conclusion only for a country member that is part of EU27
+* Stakeholder (STK) has instead, at the beginning of the form, an additional
+* selectbox, filled with the country codes that provide content for the current `(subject, group, region)` tuple, from which
 
 Edit assessments
 ----------------
