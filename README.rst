@@ -23,15 +23,44 @@ Install these before setting up an environment::
 RHEL based systems
 ~~~~~~~~~~~~~~~~~~
 
-Install these packages::
+Run these commands::
 
-    yum install python-pip python27-setuptools python-virtualenv mysql-server \
-    mysql git
+    yum -y update
+    yum groupinstall -y 'development tools'
+    yum install -y zlib-devel bzip2-devel openssl-devel xz-libs wget
+
+    wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
+    xz -d Python-2.7.6.tar.xz
+    tar -xvf Python-2.7.6.tar
+
+    cd Python-2.7.6
+
+    ./configure --prefix=/usr/local
+
+    make
+    make altinstall
+
+    export PATH="/usr/local/bin:$PATH"
+
+    wget --no-check-certificate
+    https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
+
+    tar -xvf setuptools-1.4.2.tar.gz
+    cd setuptools-1.4.2
+
+    python2.7 setup.py install
+
+    curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python2.7 -
+
+    pip2.7 install virtualenv
+
+    yum install mysql-server mysql git
 
 
 Product directory
 -----------------
 
+    # Install setuptools using the Python 2.7.6:
 Create the product directory::
 
     mkdir -p /var/local/art17
