@@ -42,7 +42,7 @@ Run these commands::
 
     export PATH="/usr/local/bin:$PATH"
 
-    wget --no-check-certificate
+    wget --no-check-certificate \
     https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
 
     tar -xvf setuptools-1.4.2.tar.gz
