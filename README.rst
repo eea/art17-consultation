@@ -25,7 +25,8 @@ RHEL based systems
 
 Install these packages::
 
-    yum install python-pip python27-setuptools mysql-server mysql git
+    yum install python-pip python27-setuptools python-virtualenv mysql-server \
+    mysql git
 
 
 Product directory
@@ -44,19 +45,15 @@ Change the product directory's owner::
 
     chown edw:edw /var/local/art17
 
-Change the session owner::
-
-    su edw
-
-Change the current directory::
-
-    cd /var/local/art17
 
 
 Install dependencies
 --------------------
 We should use Virtualenv for isolated environments. The following commands will
-be run as an unprivileged user in the product directory.
+be run as an unprivileged user in the product directory::
+
+    su edw
+    cd /var/local/art17
 
 1. Clone the repository::
 
