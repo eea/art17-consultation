@@ -36,6 +36,23 @@ Create the product directory::
     mkdir -p /var/local/art17
 
 
+Create a new user::
+
+    adduser edw
+
+Change the product directory's owner::
+
+    chown edw:edw /var/local/art17
+
+Change the session owner::
+
+    su edw
+
+Change the current directory::
+
+    cd /var/local/art17
+
+
 Install dependencies
 --------------------
 We should use Virtualenv for isolated environments. The following commands will
@@ -43,7 +60,7 @@ be run as an unprivileged user in the product directory.
 
 1. Clone the repository::
 
-    git clone git@github.com:eea/art17-consultation.git -o origin flask
+    git clone https://github.com/eea/art17-consultation.git -o origin flask
     cd flask
 
 2.1. Create & activate a virtual environment::
