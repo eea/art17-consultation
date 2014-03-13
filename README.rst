@@ -60,7 +60,6 @@ Run these commands::
 Product directory
 -----------------
 
-    # Install setuptools using the Python 2.7.6:
 Create the product directory::
 
     mkdir -p /var/local/art17
