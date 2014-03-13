@@ -1,0 +1,22 @@
+[unix_http_server]
+file = /tmp/supervisor.sock
+chmod = 0777
+
+[supervisord]
+logfile = %(here)s/logs/supervisord.log
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix:///tmp/supervisor.sock
+
+[program:flask]
+directory=%(here)s/flask/
+command=%(here)s/sandbox/bin/waitress-serve --port 5000 --url-prefix=/article17 --call art17.app:create_app
+environment=PYTHONPATH=%(here)s/sandbox/
+redirect_stderr = true
+stdout_logfile = %(here)s/logs/%(program_name)s.log
+stdout_logfile_maxbytes = 10MB
+stdout_logfile_backups = 4
+startretries = 1

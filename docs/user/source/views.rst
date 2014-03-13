@@ -27,7 +27,7 @@ conservation status at biogeographical level, can be seen by following the
 “Species/Habitat assessments” link, under the “Biogeographical assessments at
 EU 27 level” section, that will open the following page:
 
-.. figure
+.. figure:: images/progress_page.png
 
 The default period for displaying data is 2007-2012, but it can be changed
 using the “Period...” selectbox.
@@ -35,10 +35,11 @@ By selecting a group and a conclusion type (overall assessment, range, future
 prospects, etc.) a view with all the assessments for the
 species/habitat types pertaining to the chosen group and corresponding
 biogeographical regions is provided.
-Users with administrator role have two additional filtering options: they can
-view assessments added by a certain user (using the “Assessor...” selectbox)
-and, also, they can switch between a detailed/elementary view (by
-checking/unchecking the “Details...” checkbox)
+
+.. Users with administrator role have two additional filtering options: they
+.. can view assessments added by a certain user (using the “Assessor...”
+.. selectbox) and, also, they can switch between a detailed/elementary view (by
+.. checking/unchecking the “Details...” checkbox)
 
 Each cell contains a series of information: the decision for that assessment,
 the method used for the selected conclusion type and three numbers that show:
@@ -49,6 +50,8 @@ The cell background shows the conclusion of the assessment for the selected
 conclusion type and the possible options are presented in the Legend above the
 table.
 
+.. figure:: images/habitatprogress.png
+
 By clicking on a cell, the corresponding “Species/Habitat data summaries” page
 will be opened.
 
@@ -58,7 +61,7 @@ Species/Habitat data summaries
 The data summary sheet for species/habitat conservation status provides an
 overview per biogeographical region.
 
-.. figure
+.. figure:: images/summary_page.png
 
 The default period for displaying data is 2007-2012, but it can be changed
 using the “Period...” selectbox.
@@ -69,7 +72,7 @@ bio-region is optional.
 
 After pressing the “Filter” button a page similar to the one below appears:
 
-.. figure
+.. figure:: images/species-summary.png
 
 The table is made of three main sections:
 
@@ -80,9 +83,13 @@ The table is made of three main sections:
 
 The buttons above the table open corresponding pages in pop-up windows:
 
+.. figure:: images/buttons.png
+
 * Data sheet info (view/edit data sheet info, add comments)
 * Audit trail (view/edit audit trail)
 * Map (show the reports from the countries on a map)
+
+.. figure:: images/map.png
 
 Biogeographical assessments at Member State level
 =================================================
@@ -90,9 +97,13 @@ Biogeographical assessments at Member State level
 Species/Habitat assessments
 ---------------------------
 
+.. figure:: images/table-empty.png
+
 This page provides a view similar to the “Species/Habitat data summaries”,
 having the option to refine the query by country instead of species/habitat
 name.
+
+.. figure:: images/table-full.png
 
 By clicking the species/habitat type name, a popup window with the original
 data is opened. The map view can be accessed through the link on the region
@@ -104,8 +115,12 @@ Activity logs
 The activity logs page provides to the authenticated user a view with recent
 conclusions added by users and recent comments for these conclusions.
 
+.. figure:: images/activity_log_species.png
+
 The user can switch between the Species/Habitat view by clicking the desired
 tab.
+
+.. figure:: images/activity_log_habitat.png
 
 The dates, both for comments and conclusions, are links to the “EU
 Biogeographical assessment and proposed corrections” section for the

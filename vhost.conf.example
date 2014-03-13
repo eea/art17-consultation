@@ -1,0 +1,8 @@
+<VirtualHost *:80>
+    ServerAdmin email@example.com
+    ServerName server-name.example.com
+
+    ProxyTimeout 120
+    ProxyPass /article17 http://127.0.0.1:5000 retry=2
+    ProxyPreserveHost On
+</VirtualHost>

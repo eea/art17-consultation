@@ -2,6 +2,7 @@ import pytest
 
 from art17.models import db, WikiChange, Wiki, WikiComment, RegisteredUser
 from .factories import (
+    DatasetFactory,
     WikiFactory,
     WikiChangeFactory,
     EtcDicBiogeoregFactory,
@@ -15,6 +16,7 @@ from conftest import create_user, get_request_params
 
 @pytest.fixture
 def setup(app):
+    DatasetFactory(id=1, schema='2012')
     WikiFactory()
     WikiChangeFactory()
     WikiFactory(

@@ -17,6 +17,7 @@ from art17.models import (
     WikiTrail,
     WikiTrailChange,
     RegisteredUser,
+    Dataset,
     db,
 )
 from art17.forms import WikiEditForm
@@ -87,7 +88,9 @@ def can_manage_revisions():
 
 
 @wiki.app_template_global('can_add_comment')
-def can_add_comment(comments, revisions):
+def can_add_comment(comments, revisions, dataset):
+    if not dataset or dataset.is_readonly:
+        return False
     is_author = current_user in [cmnt.author for cmnt in comments]
     return not (current_user.is_anonymous() or is_author) and revisions
 
@@ -145,12 +148,15 @@ class CommonSection(object):
                      .order_by(self.wiki_change_cls.changed.desc()).all())
 
         request_args = self.get_req_args()
+        period = request_args.get('period')
+        dataset = Dataset.query.get(period) if period else None
 
         return {
             'wiki_body': [('', '', active_change.body)]
             if active_change else [],
             'revisions': revisions,
             'page': self.page,
+            'dataset': dataset,
             'home_url': url_for(self.home_endpoint,
                                 page=self.page,
                                 **request_args),
@@ -318,7 +324,9 @@ class AddComment(WikiView):
         wiki_changes = self.section.get_wiki_changes().all()
         comments = wiki.comments if wiki else []
 
-        if not can_add_comment(comments, wiki_changes):
+        dataset = Dataset.query.get(request.args.get('period'))
+
+        if not can_add_comment(comments, wiki_changes, dataset):
             raise PermissionDenied
 
         comment = self.section.wiki_comment_cls(

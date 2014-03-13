@@ -270,8 +270,8 @@ class Summary(ConclusionView, views.View):
             else:
                 flash('Please correct the errors below and try again.')
 
-        period_query = Dataset.query.get(period)
-        period_name = period_query.name if period_query else ''
+        self.dataset = Dataset.query.get(period)
+        period_name = self.dataset.name if self.dataset else ''
 
         current_selection = self.get_current_selection(
             period_name, group, subject, region, period)
@@ -293,7 +293,7 @@ class Summary(ConclusionView, views.View):
             'subject': subject,
             'region': region,
             'period_name': period_name,
-            'dataset': period_query,
+            'dataset': self.dataset,
             'current_user_ms': current_user.MS if
             current_user.is_authenticated() else '',
         })
@@ -382,19 +382,22 @@ class SpeciesSummary(SpeciesMixin, Summary):
 
     def get_context(self):
         map_url = ''
+        period = self.dataset.id if self.dataset else 0
         subject = request.args.get('subject')
+        region = request.args.get('region')
+        url_kwargs = dict(period=period, subject=subject, region=region)
         if subject:
             subject_code_row = (
                 db.session.query(self.model_cls.speciescode)
                 .filter_by(speciesname=subject)
-                .filter_by(dataset_id=request.args.get('period'))
+                .filter_by(dataset_id=period)
                 .first()
             )
             if subject_code_row:
                 map_url = generate_map_url(
                     category='species',
                     subject=subject_code_row[0],
-                    region=request.args.get('region', ''),
+                    region=region,
                 )
         return {
             'groups_url': url_for('common.species-groups'),
@@ -406,20 +409,14 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'update_endpoint': '.species-update',
             'datasheet_url': url_for('wiki.datasheet',
                                      page='species',
-                                     subject=request.args.get('subject'),
-                                     region=request.args.get('region'),
-                                     period=request.args.get('period')),
+                                     **url_kwargs),
             'audittrail_url': url_for('wiki.audittrail',
                                       page='species',
-                                      subject=request.args.get('subject'),
-                                      region=request.args.get('region'),
-                                      period=request.args.get('period')),
+                                      **url_kwargs),
             'audittrail_merged_url': url_for(
                 'wiki.audittrail-merged',
                 page='species',
-                subject=request.args.get('subject'),
-                region=request.args.get('region'),
-                period=request.args.get('period')),
+                **url_kwargs),
             'progress_endpoint': 'progress.species-progress',
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
@@ -470,7 +467,10 @@ class HabitatSummary(HabitatMixin, Summary):
 
     def get_context(self):
         map_url = ''
+        period = self.dataset.id if self.dataset else 0
         subject = request.args.get('subject')
+        region = request.args.get('region')
+        url_kwargs = dict(period=period, subject=subject, region=region)
         if subject:
             map_url = generate_map_url(
                 category='habitat',
@@ -487,20 +487,14 @@ class HabitatSummary(HabitatMixin, Summary):
             'update_endpoint': '.habitat-update',
             'datasheet_url': url_for('wiki.datasheet',
                                      page='habitat',
-                                     subject=request.args.get('subject'),
-                                     region=request.args.get('region'),
-                                     period=request.args.get('period')),
+                                     **url_kwargs),
             'audittrail_url': url_for('wiki.audittrail',
                                       page='habitat',
-                                      subject=request.args.get('subject'),
-                                      region=request.args.get('region'),
-                                      period=request.args.get('period')),
+                                      **url_kwargs),
             'audittrail_merged_url': url_for(
                 'wiki.audittrail-merged',
                 page='habitat',
-                subject=request.args.get('subject'),
-                region=request.args.get('region'),
-                period=request.args.get('period')),
+                **url_kwargs),
             'progress_endpoint': 'progress.habitat-progress',
             'get_title_for_country': get_title_for_habitat_country,
             'wiki_unread': self.wiki_unread,

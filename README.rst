@@ -10,20 +10,52 @@ The Project Name is Article 17 Consultation.
 Prerequisites - System packages
 -------------------------------
 
-These packages should be installed as superuser on.
+These packages should be installed as superuser (root).
 
 Debian based systems
 ~~~~~~~~~~~~~~~~~~~~
-Install this before setting up an environment::
+Install these before setting up an environment::
 
-    apt-get install python-setuptools python-dev libmysqlclient-dev libldap2-dev python-virtualenv
+    apt-get install python-setuptools python-dev libmysqlclient-dev \
+    libldap2-dev python-virtualenv mysql-server git
 
-OS X
-~~~~
-Install python and pip::
 
-    brew install python --universal --framework
-    pip install virtualenv
+RHEL based systems
+~~~~~~~~~~~~~~~~~~
+
+Run these commands::
+
+    yum -y update
+    yum groupinstall -y 'development tools'
+    yum install -y zlib-devel bzip2-devel openssl-devel xz-libs wget
+
+    wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
+    xz -d Python-2.7.6.tar.xz
+    tar -xvf Python-2.7.6.tar
+
+    cd Python-2.7.6
+
+    ./configure --prefix=/usr/local
+
+    make
+    make altinstall
+
+    export PATH="/usr/local/bin:$PATH"
+
+    wget --no-check-certificate \
+    https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
+
+    tar -xvf setuptools-1.4.2.tar.gz
+    cd setuptools-1.4.2
+
+    python2.7 setup.py install
+
+    curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python2.7 -
+
+    pip2.7 install virtualenv
+
+    yum install mysql-server mysql git
+
 
 Product directory
 -----------------
@@ -33,14 +65,27 @@ Create the product directory::
     mkdir -p /var/local/art17
 
 
+Create a new user::
+
+    adduser edw
+
+Change the product directory's owner::
+
+    chown edw:edw /var/local/art17
+
+
+
 Install dependencies
 --------------------
 We should use Virtualenv for isolated environments. The following commands will
-be run as an unprivileged user in the product directory.
+be run as an unprivileged user in the product directory::
+
+    su edw
+    cd /var/local/art17
 
 1. Clone the repository::
 
-    git clone git@github.com:eea/art17-consultation.git -o origin flask
+    git clone https://github.com/eea/art17-consultation.git -o origin flask
     cd flask
 
 2.1. Create & activate a virtual environment::
@@ -55,7 +100,7 @@ be run as an unprivileged user in the product directory.
 
 3. Install dependencies::
 
-    pip install -r requirements-dev.txt
+    pip install -r requirements-dep.txt
 
 4. Create a configuration file::
 
@@ -73,11 +118,14 @@ be run as an unprivileged user in the product directory.
 
 8. Create your user and assign admin role to it::
 
-    ./manage.py user create -e user_email -i user_id
-    ./manage.py role create -n admin
+    # for local user
+    ./manage.py user create -e user_email -i user_id -p <password>
+    # for Eionet user
+    ./manage.py user create -i user_id --ldap
+    # make it admin
     ./manage.py role add -u user_id -r admin
-    
-    
+
+
 Configuration
 -------------
 Details about configurable settings can be found in `settings.py.example`.
@@ -131,6 +179,9 @@ Setup the production environment like this (using an unprivileged user)::
 
 Configure database and authentication connectors, then reset the application::
 
+    cd /var/local/art17
+    cp flask/supervisord.conf.example supervisord.conf
+    vim supervisord.conf
     ./bin/supervisorctl reload 1>/dev/null || ./bin/supervisord
 
 
@@ -139,7 +190,7 @@ Build staging
 
 Setup the production environment like this::
 
-    $ cd /var/local/art17staging
+    cd /var/local/art17staging
     # install dependencies, see above
     . sandbox/bin/activate
     cd flask
@@ -149,10 +200,22 @@ Setup the production environment like this::
 
 Configure database and authentication connectors, then reset the application::
 
+    cd /var/local/art17staging
+    cp flask/supervisord.conf.example supervisord.conf
+    vim supervisord.conf
     ./bin/supervisorctl reload 1>/dev/null || ./bin/supervisord
+
 
 Development hints
 =================
+
+Requirements
+------------
+
+User ``requirements-dev.txt`` instead of ``requirements-dep.text``::
+
+    pip install -r requirements-dev.txt
+
 
 Configure deploy
 ----------------
@@ -206,7 +269,7 @@ Copyright and license
 =====================
 
 This project is free software; you can redistribute it and/or modify it under
-the terms of the MIT License.
+the terms of the EUPL v1.1.
 
 More details under `LICENSE.txt`_.
 

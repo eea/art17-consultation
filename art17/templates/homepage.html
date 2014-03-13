@@ -38,12 +38,6 @@
 
   {% if AUTH_BLUEPRINT_INSTALLED %}
     {% if not start_date %}
-      <h2>The consultation has not started yet.</h2>
-
-      <p>
-        You cannot sign-up for a new account because the registration
-        process has not started yet.
-      </p>
     {% elif start_date and start_date > today %}
       <h2>The consultation has not started yet.</h2>
 
@@ -89,12 +83,14 @@
     {% endif %}
   {% endif %}
 
+  {% if start_date %}
   <p>
     There is no need to register if you just want to view the data.
     You just click on one of the links below. If you want as well to
     indicate how the assessments should be changed, than you will need
     to register.
   </p>
+  {% endif %}
 
   <h2>Quick links for the impatient</h2>
 

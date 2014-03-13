@@ -561,7 +561,7 @@ class EtcDicHdHabitat(Base):
     habcode = Column(String(4), primary_key=True)
     group = Column(String(40))
     priority = Column(Integer, nullable=False)
-    name = Column(String(155), nullable=False)
+    name = Column(String(255), nullable=False)
     shortname = Column(String(70))
     annex_I_comments = Column(String(30))
     marine = Column(Integer)
