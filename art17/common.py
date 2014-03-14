@@ -108,6 +108,10 @@ HABITAT_OPTIONS = [
 ]
 
 FAV_REF_OPTIONS = {
+    'complementary_favourable_range': [
+        ('>', 'more than current value'),
+        ('>>', 'much more than current value'),
+        ('x', 'unknown')],
     'common': [
         ('>', 'more than current value'),
         ('>>', 'much more than current value'),
@@ -228,8 +232,22 @@ def favourable_ref_title(field, schema):
     elif field == 'complementary_favourable_population':
         text_lines.append('(if only operator was used in MS data current value'
                           '(min) was inserted automatically)')
+    return text_lines
+
+
+def favourable_ref_title_habitat(field, schema):
+    text_lines = favourable_ref_title(field, schema)
     options = FAV_REF_OPTIONS['common'][:-1] + \
         FAV_REF_OPTIONS.get(schema, []) + FAV_REF_OPTIONS['common'][-1:]
+    text_lines.extend([' '.join(opt) for opt in options])
+    return '\n'.join(text_lines)
+
+
+def favourable_ref_title_species(field, schema):
+    text_lines = favourable_ref_title(field, schema)
+    options = FAV_REF_OPTIONS.get(field, FAV_REF_OPTIONS['common'])[:-1] + \
+        FAV_REF_OPTIONS.get(schema, []) + \
+        FAV_REF_OPTIONS.get(field, FAV_REF_OPTIONS['common'])[-1:]
     text_lines.extend([' '.join(opt) for opt in options])
     return '\n'.join(text_lines)
 

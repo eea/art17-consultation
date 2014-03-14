@@ -35,7 +35,8 @@ from art17.common import (
     get_title_for_species_country,
     get_title_for_habitat_country,
     population_size_unit_title,
-    favourable_ref_title,
+    favourable_ref_title_species,
+    favourable_ref_title_habitat,
     CONCLUSION_CLASSES,
     COUNTRY_ASSESSMENTS,
     QUALITIES,
@@ -84,7 +85,6 @@ def inject_fuctions():
         'population_size_unit_title': population_size_unit_title,
         'population_ref': population_ref,
         'get_original_record_url': get_original_record_url,
-        'favourable_ref_title': favourable_ref_title,
     }
 
 
@@ -422,6 +422,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
             'get_tooltip': get_tooltip_for_species,
+            'favourable_ref_title': favourable_ref_title_species,
         }
 
 
@@ -500,6 +501,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
             'get_tooltip': get_tooltip_for_habitat,
+            'favourable_ref_title': favourable_ref_title_habitat,
         }
 
     def get_current_selection(self, period_name, group, subject, region,
