@@ -54,7 +54,7 @@ Run these commands::
 
     pip2.7 install virtualenv
 
-    yum install mysql-server mysql git
+    yum install mysql-server mysql git openldap-devel mysql-devel
 
 
 Product directory
@@ -63,7 +63,7 @@ Product directory
 Create the product directory::
 
     mkdir -p /var/local/art17
-
+    mkdir /var/local/art17/logs
 
 Create a new user::
 
@@ -71,7 +71,7 @@ Create a new user::
 
 Change the product directory's owner::
 
-    chown edw:edw /var/local/art17
+    chown edw:edw /var/local/art17 -R
 
 
 
@@ -105,13 +105,14 @@ be run as an unprivileged user in the product directory::
 4. Create a configuration file::
 
     mkdir -p instance
-    touch instance/settings.py
+    cp settings.py.example instance/settings.py
 
-    # Check settings.local.example for configuration details
+    # Follow instructions in instance/settings.py to adapt it to your needs.
 
 6. Set up the MySQL database::
 
-    mysql> create database art17 CHARACTER SET utf8 COLLATE utf8_general_ci;
+    # Replace [user] and [password] with your MySQL credentials and [db_name] with the name of the database:
+    mysql -u[user] -p[password] -e 'create database [db_name] CHARACTER SET utf8 COLLATE utf8_general_ci;'
     ./manage.py db upgrade
 
 7. Import sql data dump in your art17 database, see "data import" below.
@@ -124,6 +125,45 @@ be run as an unprivileged user in the product directory::
     ./manage.py user create -i user_id --ldap
     # make it admin
     ./manage.py role add -u user_id -r admin
+
+
+Build production
+----------------
+
+Setup the production environment like this (using an unprivileged user)::
+
+    # install dependencies, see above
+    cd /var/local/art17
+    source sandbox/bin/activate
+
+Configure supervisord and set the WSGI server port (by default it is 5000)::
+
+    cp flask/supervisord.conf.example supervisord.conf
+    vim supervisord.conf
+    supervisorctl reload 1>/dev/null || ./bin/supervisord
+
+At this stage, the application is up and running. You should also configure:
+
+    * firewall policy
+    * public webserver (see vhost.conf.example for an example)
+    * start supervisord with the system (see init-svisor.example as an example
+      init script)
+
+
+Build staging
+-------------
+
+To setup a staging environment, follow the same steps as above. Create and use
+a different database (for example ``art17staging``).
+
+Configure supervisord and set the WSGI server port (a different one from the
+production, for example 5001)::
+
+    cd /var/local/art17staging
+    source sandbox/bin/activate
+    cp flask/supervisord.conf.example supervisord.conf
+    vim supervisord.conf
+    supervisorctl reload 1>/dev/null || ./bin/supervisord
 
 
 Configuration
@@ -163,48 +203,6 @@ specify the right schema version, in this case '2006'::
 
 An optional argument ``-f`` (fallback) exists. When there are no records to import
 in a table, it copies the entire table from the specified dataset.
-
-Build production
-----------------
-
-Setup the production environment like this (using an unprivileged user)::
-
-    cd /var/local/art17
-    # install dependencies, see above
-    . sandbox/bin/activate
-    cd flask
-    mkdir instance
-    cp settings.py.example instance/settings.py
-    vim instance/settings.py
-
-Configure database and authentication connectors, then reset the application::
-
-    cd /var/local/art17
-    cp flask/supervisord.conf.example supervisord.conf
-    vim supervisord.conf
-    ./bin/supervisorctl reload 1>/dev/null || ./bin/supervisord
-
-
-Build staging
--------------
-
-Setup the production environment like this::
-
-    cd /var/local/art17staging
-    # install dependencies, see above
-    . sandbox/bin/activate
-    cd flask
-    mkdir instance
-    cp settings.py.example instance/settings.py
-    vim instance/settings.py
-
-Configure database and authentication connectors, then reset the application::
-
-    cd /var/local/art17staging
-    cp flask/supervisord.conf.example supervisord.conf
-    vim supervisord.conf
-    ./bin/supervisorctl reload 1>/dev/null || ./bin/supervisord
-
 
 Development hints
 =================

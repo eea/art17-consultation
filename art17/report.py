@@ -8,7 +8,11 @@ from flask import (
 )
 from werkzeug.datastructures import MultiDict
 
-from art17.common import get_default_period
+from art17.common import (
+    get_default_period,
+    favourable_ref_title_species,
+    favourable_ref_title_habitat,
+)
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.forms import ReportFilterForm
 from art17.models import Dataset, EtcDicBiogeoreg, DicCountryCode
@@ -90,6 +94,7 @@ class SpeciesReport(SpeciesMixin, Report):
         return {
             'groups_url': url_for('common.species-groups'),
             'regions_url': url_for('.species-report-regions'),
+            'favourable_ref_title': favourable_ref_title_species,
         }
 
 
@@ -100,7 +105,8 @@ class HabitatReport(HabitatMixin, Report):
     def get_context(self):
         return {
             'groups_url': url_for('common.habitat-groups'),
-            'regions_url': url_for('.habitat-report-regions')
+            'regions_url': url_for('.habitat-report-regions'),
+            'favourable_ref_title': favourable_ref_title_habitat,
         }
 
 
