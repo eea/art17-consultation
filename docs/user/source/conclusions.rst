@@ -82,9 +82,9 @@ the form to propose assessments is roughly the same, with very few exceptions:
 Regardless of the role granted, a successful assessment added would formaly look the way the next figure depicts.
 
 .. figure:: images/conclusion_added_sample.png
-   :alt: Add a conclusion
+   :alt: Successfully add a conclusion
 
-   Add a conclusion
+   Successfully add a conclusion
 
 Edit assessments
 ----------------
@@ -102,9 +102,7 @@ For simplicity, the protocol states that all registered users can edit their
 own assessments; if so, all assessment fields can be modified. Additionaly,
 European topic center (ETC) users can also edit other users assessments. For
 the latter, please be advised that **only** favourable reference values are
-subject to change. The next figure depicts the way an ETC user can update
-an assessment for a NAT user.
-The figures below feature the two edit forms.
+subject to change. The figures below feature the two edit forms.
 
 .. figure:: images/edit_own_assessment.png
    :alt: Edit an assessment added by the current user
@@ -119,41 +117,31 @@ The figures below feature the two edit forms.
 
 Delete assessments
 ------------------
+
 Due to the same human error scope, according to the protocol the Art17
 Consultation states, assessments can also be deleted. As a counterpart of
-`Edit` operation, the `Delete` one is allowed to owners of the assessments
-only. The next figure depicts the way a delete operation can be done by
-accessing the `Delete` (hence remove that occurence) button, visible after
-clicking the assessor's name.
-
-.. figure:: images/delete_an_assessment.png
-
-However, even after being deleted, an assessment continues to be shown in the
-`EU Biogeographical assessment and proposed corrections` section so that
-other users are notified upon the changes and modifications that took place
-for the for the current `(subject, group, region)` tuple. The next figure
-depicts such a scenario.
-
-.. figure:: images/view_of_deleted_assessment_sample.png
-
-Please note that NAT and STK users can only see each other's deleted assessments
-while ETC can overview them all.
-
-An assessment can also be deleted, but only by its **author**. This can be
-achieved by clicking the assessor's name and then the *Delete* button.
+`Edit`, the `Delete` operation is allowed to assessments **authors only**.
+This can be achieved by clicking the assessor's name and then the *Delete* button.
 
 .. figure:: images/delete_button_ass.png
    :alt: Delete button for assessments
 
    Delete button for assessments
 
-Deleted assessments distinguish by their light pink background and are visible
-only to users with **administrator** role.
+However, even after being deleted, an assessment continues to be shown in the
+`EU Biogeographical assessment and proposed corrections` section so that
+other users are notified upon the changes and modifications that took place
+for the for the current `(subject, group, region)` tuple. Deleted assessments
+are easily distinguished by their light pink background.
 
 .. figure:: images/deleted_assessment.png
    :alt: Deleted assessment
 
    Deleted assessment
+
+Please note that NAT and STK users can only see each other's deleted assessments
+while ETC can overview them all.
+
 
 Comment on assessments
 ----------------------
