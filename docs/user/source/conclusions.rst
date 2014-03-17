@@ -77,24 +77,33 @@ the form to propose assessments is roughly the same, with very few exceptions:
 
 * The National expert (NAT) can add a conclusion only for the represented country
 * The European topic center (ETC) can add a conclusion only for a country member that is part of EU27
-* Stakeholder (STK) has instead, at the beginning of the form, an additional
-* selectbox, filled with the country codes that provide content for the current `(subject, group, region)` tuple, from which
+* Stakeholder (STK) has instead, at the beginning of the form, an additional selectbox with the corresponding country codes previously filled with content for the current `(subject, group, region)` tuple
+
+Regardless of the role granted, a successful assessment added would formaly look the way the next figure depicts.
+
+.. figure:: images/conclusion_added_sample.png
+   :alt: Add a conclusion
+
+   Add a conclusion
 
 Edit assessments
 ----------------
 
-Assessments can be updated by accessing the Edit Assessment (Propose correction
-for STA users) button visible after clicking the assessor's name.
+Due to admitted human error scope, assessments in the Art17 Consultation platform can be
+updated. This is done by by accessing the `Edit Assessment` (hence, propose a
+correction for that occurence) button visible after clicking the assessor's name.
 
 .. figure:: images/edit_assmt_btn.png
    :alt: Edit assessment button
 
    Edit assessment button
 
-All registered users can edit their own assessments; all assessment fields can
-be modified.
-ETC and ADM users can also edit other user's assessments, but they can only
-change favourable reference values.
+For simplicity, the protocol states that all registered users can edit their
+own assessments; if so, all assessment fields can be modified. Additionaly,
+European topic center (ETC) users can also edit other users assessments. For
+the latter, please be advised that **only** favourable reference values are
+subject to change. The next figure depicts the way an ETC user can update
+an assessment for a NAT user.
 The figures below feature the two edit forms.
 
 .. figure:: images/edit_own_assessment.png
