@@ -90,8 +90,8 @@ Edit assessments
 ----------------
 
 Due to admitted human error scope, assessments in the Art17 Consultation platform can be
-updated. This is done by by accessing the `Edit Assessment` (hence, propose a
-correction for that occurence) button visible after clicking the assessor's name.
+updated. This is done by accessing the `Edit Assessment` (hence, propose a
+correction for that occurence) button, visible after clicking the assessor's name.
 
 .. figure:: images/edit_assmt_btn.png
    :alt: Edit assessment button
@@ -119,6 +119,25 @@ The figures below feature the two edit forms.
 
 Delete assessments
 ------------------
+Due to the same human error scope, according to the protocol the Art17
+Consultation states, assessments can also be deleted. As a counterpart of
+`Edit` operation, the `Delete` one is allowed to owners of the assessments
+only. The next figure depicts the way a delete operation can be done by
+accessing the `Delete` (hence remove that occurence) button, visible after
+clicking the assessor's name.
+
+.. figure:: images/delete_an_assessment.png
+
+However, even after being deleted, an assessment continues to be shown in the
+`EU Biogeographical assessment and proposed corrections` section so that
+other users are notified upon the changes and modifications that took place
+for the for the current `(subject, group, region)` tuple. The next figure
+depicts such a scenario.
+
+.. figure:: images/view_of_deleted_assessment_sample.png
+
+Please note that NAT and STK users can only see each other's deleted assessments
+while ETC can overview them all.
 
 An assessment can also be deleted, but only by its **author**. This can be
 achieved by clicking the assessor's name and then the *Delete* button.
