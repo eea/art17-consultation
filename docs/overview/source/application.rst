@@ -21,7 +21,8 @@ The main application module is `art17`. The main submodules are:
 * `summary` - summary views and conclusion features
 * `wiki` - datasheet info and audit trail
 
-Other modules are: `assets`, `common`, `dataset`, `forms`, `layout`, `maps`, `mixins`, `utils`.
+Other submodules are: `assets`, `common`, `dataset`, `forms`, `layout`, `maps`,
+`mixins`, `utils`.
 
 Source code summary
 -------------------

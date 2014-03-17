@@ -11,8 +11,6 @@ This documentation describes the architecture of the Art17 Consultation Tool.
 For an user perspective documentation, please check the *User Manual*.
 
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
