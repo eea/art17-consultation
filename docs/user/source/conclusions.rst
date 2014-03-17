@@ -34,6 +34,7 @@ region. As the next figure depicts, in order to add an assessment a bio-region
 
 .. figure:: images/please_select_a_bioregion.png
    :alt: "Please select a bioregion" warning message
+   :width: 100%
 
    "Please select a bioregion" warning message
 
@@ -50,6 +51,7 @@ form reveal such a tooltip.
 
 .. figure:: images/reference_tooltip.png
    :alt: Reference tooltip
+   :width: 100%
 
    Reference tooltip
 
@@ -63,11 +65,13 @@ are raised.
 
 .. figure:: images/at_least_method_conclusion.png
    :alt: Method/conclusion tooltip
+   :width: 100%
 
    Method/conclusion tooltip
 
 .. figure:: images/at_least_method_conclusion_error.png
    :alt: Method/conclusion error message
+   :width: 100%
 
    Method/conclusion error message
 
@@ -83,6 +87,7 @@ Regardless of the role granted, a successful assessment added would formaly look
 
 .. figure:: images/conclusion_added_sample.png
    :alt: Successfully add a conclusion
+   :width: 100%
 
    Successfully add a conclusion
 
@@ -95,6 +100,7 @@ correction for that occurence) button, visible after clicking the assessor's nam
 
 .. figure:: images/edit_assmt_btn.png
    :alt: Edit assessment button
+   :width: 100%
 
    Edit assessment button
 
@@ -106,11 +112,13 @@ subject to change. The figures below feature the two edit forms.
 
 .. figure:: images/edit_own_assessment.png
    :alt: Edit an assessment added by the current user
+   :width: 100%
 
    Edit an assessment added by the current user
 
 .. figure:: images/edit_ref_assessment.png
    :alt: Edit an assessment added by another user
+   :width: 100%
 
    Edit an assessment added by another user
 
@@ -125,6 +133,7 @@ This can be achieved by clicking the assessor's name and then the *Delete* butto
 
 .. figure:: images/delete_button_ass.png
    :alt: Delete button for assessments
+   :width: 100%
 
    Delete button for assessments
 
@@ -136,6 +145,7 @@ are easily distinguished by their light pink background.
 
 .. figure:: images/deleted_assessment.png
    :alt: Deleted assessment
+   :width: 100%
 
    Deleted assessment
 
@@ -153,6 +163,7 @@ assessor's name will open an overlay with the comments for that assessment.
 
 .. figure:: images/ass_comments_button.png
    :alt: Assessment comments button
+   :width: 100%
 
    Assessment comments button
 
@@ -161,6 +172,7 @@ button.
 
 .. figure:: images/add_ass_comment_button.png
    :alt: Add comment button
+   :width: 90%
 
    Add comment button
 
@@ -172,11 +184,13 @@ Other users' comments can be marked as read/unread.
 
 .. figure:: images/ass_comments_states1.png
    :alt: Actions available for assessment comments (1)
+   :width: 90%
 
    Actions available for assessment comments (1)
 
 .. figure:: images/ass_comments_states2.png
    :alt: Actions available for assessment comments (2)
+   :width: 90%
 
    Actions available for assessment comments (2)
 
@@ -189,6 +203,7 @@ selectbox, as depicted in the figure below.
 
 .. figure:: images/change_decision_select.png
    :alt: Decision drop-down list
+   :width: 100%
 
    Decision drop-down list
 
@@ -197,5 +212,6 @@ entire assessment row.
 
 .. figure:: images/change_decision_success.png
    :alt: Successfully changed decision
+   :width: 100%
 
    Successfully changed decision

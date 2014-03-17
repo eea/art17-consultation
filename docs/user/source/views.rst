@@ -29,6 +29,7 @@ EU 27 level” section, that will open the following page:
 
 .. figure:: images/progress_page.png
    :alt: Species progress filtering form
+   :width: 90%
 
    Species progress filtering form
 
@@ -55,6 +56,7 @@ table.
 
 .. figure:: images/habitatprogress.png
    :alt: Habitat progress page
+   :width: 90%
 
    Habitat progress page
 
@@ -69,6 +71,7 @@ overview per biogeographical region.
 
 .. figure:: images/summary_page.png
    :alt: Species summary filtering form
+   :width: 90%
 
    Species summary filtering form
 
@@ -83,6 +86,7 @@ After pressing the “Filter” button a page similar to the one below appears:
 
 .. figure:: images/species-summary.png
    :alt: Species summary page
+   :width: 90%
 
    Species summary page
 
@@ -97,6 +101,7 @@ The buttons above the table open corresponding pages in pop-up windows:
 
 .. figure:: images/buttons.png
    :alt: Species/habitat summary buttons
+   :width: 40%
 
    Species/habitat summary buttons
 
@@ -106,6 +111,7 @@ The buttons above the table open corresponding pages in pop-up windows:
 
 .. figure:: images/map.png
    :alt: Map popup window
+   :width: 100%
 
    Map popup window
 
@@ -117,8 +123,9 @@ Species/Habitat assessments
 
 .. figure:: images/table-empty.png
    :alt: Species report filtering form
+   :width: 90%
 
-  Species report filtering form
+   Species report filtering form
 
 This page provides a view similar to the “Species/Habitat data summaries”,
 having the option to refine the query by country instead of species/habitat
@@ -126,6 +133,7 @@ name.
 
 .. figure:: images/table-full.png
    :alt: Species report page
+   :width: 90%
 
    Species report page
 
@@ -141,6 +149,7 @@ conclusions added by users and recent comments for these conclusions.
 
 .. figure:: images/activity_log_species.png
    :alt: User activity log for species
+   :width: 50%
 
    User activity log for species
 
@@ -149,6 +158,7 @@ tab.
 
 .. figure:: images/activity_log_habitat.png
    :alt: User activity log for habitat
+   :width: 50%
 
    User activity log for habitat
 
