@@ -12,4 +12,5 @@ Art17 Consultation User Manual
    views
    conclusions
    wiki
+   registration
 
