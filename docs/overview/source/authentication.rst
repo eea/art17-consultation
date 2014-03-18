@@ -13,8 +13,8 @@ registered user.
 Backend
 -------
 The authorization is done using the Zope `/loggedin` view, which validates
-the user credentials (externally to the Flask application), using either LDAP
-or local stored accounts.
+the user credentials using either LDAP or local stored accounts. The validation
+is made entirely by Zope, independent of the Flask application.
 
 An authenticated session uses HTTP Basic Authentication. This means the browser
 sends with every request a HTTP header with the authenticated user credentials.

@@ -46,5 +46,5 @@ are available:
 * ``dataset import`` - import a new dataset into the application database; a
   new dataset will be created and records from another database will be copied
   and inserted with the new dataset id as *ext_dataset_id* key
-* ``dataset update`` - update values from a list of tables in an existing
-  dataset
+* ``dataset update`` - replace values with a given dataset from a list of
+  tables with values from correspondent tables in another database

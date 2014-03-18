@@ -44,7 +44,7 @@ Propose a correction form.
 
 Activity Log
 ~~~~~~~~~~~~
-The most recent conclusions and comments are listed here, ordered by add date.
+The most recent conclusions and comments are listed here, ordered by date.
 
 Admin views
 -----------
