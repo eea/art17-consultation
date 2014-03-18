@@ -1,0 +1,19 @@
+@import url("haiku.css");
+
+.figure img {
+    max-width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 2px 2px 5px #888888;
+}
+
+.figure .caption {
+    text-align: center;
+    font-style: italic;
+}
+
+body {
+    max-width: 55em;
+    min-width: 50em;
+}
