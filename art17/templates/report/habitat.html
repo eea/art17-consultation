@@ -52,7 +52,18 @@
           </td>
 
           {% if not country %}<td class="border">{{ row.eu_country_code }}</td>{% endif %}
-          {% if not region %}<td class="border"><a href="#map">{{ row.region }}</a></td>{% endif %}
+          {% if not region %}
+              <td class="border">
+                  <a id="show-map" href="#"
+                      data-url="{{ generate_map_url(
+                                      'habitat',
+                                      row.habitatcode,
+                                      row.region,
+                                      row.dataset_id) }}">
+                      {{ row.region }}
+                  </a>
+              </td>
+          {% endif %}
 
           {% if not visible %}
           <td class="border" colspan="4">
