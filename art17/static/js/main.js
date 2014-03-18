@@ -77,6 +77,15 @@ $(function() {
       popup.focus();
     });
 
+    $('body').on('click', '#show-map', function(evt) {
+        var url = $(this).data('url');
+        if (url != "") {
+            title = "Map";
+            var params = "left=400,top=100,width=700,height=420," +
+                            "toolbar=0,resizable=0,scrollbars=0";
+            window.open(url, title, params).focus();
+        }
+    });
 });
 
 $(function() {
@@ -434,7 +443,7 @@ $(document).ready(function() {
                 }
                 $(this).removeAttr('title');
                 break;
-                
+
             case 'html':
                 var br = $(this).find('.br').text();
                 if (br != undefined) {

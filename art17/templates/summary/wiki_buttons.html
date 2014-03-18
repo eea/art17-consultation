@@ -16,14 +16,4 @@
     {% if map_url %}
         <button type="button" id="show-map" data-url="{{ map_url }}">Map</button>
     {% endif %}
-
-    <script>
-      $('#show-map').click(function() {
-        var url = $(this).data('url');
-        title = "Map";
-        var params = "left=400,top=100,width=700,height=420," +
-                     "toolbar=0,resizable=0,scrollbars=0";
-        window.open(url, title, params).focus();
-      });
-    </script>
 </div>

@@ -46,9 +46,9 @@ from art17.common import (
     HABITAT_OPTIONS,
     etc_perm,
     nat_perm,
-    get_config,
     get_tooltip_for_habitat,
     get_tooltip_for_species,
+    generate_map_url,
 )
 from art17.forms import (
     SummaryFilterForm,
@@ -387,18 +387,12 @@ class SpeciesSummary(SpeciesMixin, Summary):
         region = request.args.get('region')
         url_kwargs = dict(period=period, subject=subject, region=region)
         if subject:
-            subject_code_row = (
-                db.session.query(self.model_cls.speciescode)
-                .filter_by(speciesname=subject)
-                .filter_by(dataset_id=period)
-                .first()
+            map_url = generate_map_url(
+                category='species',
+                subject=subject,
+                region=region,
+                period=period,
             )
-            if subject_code_row:
-                map_url = generate_map_url(
-                    category='species',
-                    subject=subject_code_row[0],
-                    region=region,
-                )
         return {
             'groups_url': url_for('common.species-groups'),
             'subjects_url': url_for('.species-summary-species'),
@@ -477,6 +471,7 @@ class HabitatSummary(HabitatMixin, Summary):
                 category='habitat',
                 subject=subject,
                 region=request.args.get('region', ''),
+                period=period,
             )
         return {
             'groups_url': url_for('common.habitat-groups'),
@@ -573,26 +568,3 @@ summary.add_url_rule(
     '/habitat/conc/update/<period>/<subject>/<region>/<user>/',
     view_func=UpdateDecision
     .as_view('habitat-update', mixin=HabitatMixin))
-
-
-def generate_map_url(category, subject, region):
-    config = get_config()
-
-    if category == 'species':
-        map_href =config.species_map_url or ''
-
-        if region:
-            return map_href + '&CodeReg=' + subject + region
-        else:
-            return map_href + '&CCode=' + subject
-
-    elif category == 'habitat':
-        map_href = config.habitat_map_url or ''
-
-        if region:
-            return map_href + '&CodeReg=' + subject + region
-        else:
-            return map_href + '&CCode=' + subject
-
-    else:
-        raise RuntimeError('unknown category %r' % category)

@@ -324,6 +324,38 @@ def get_title_for_habitat_country(row):
     return s_name, s_info, s_type
 
 
+def generate_map_url(category, subject, region, period):
+    config = get_config()
+
+    if category == 'species':
+        map_href = config.species_map_url
+
+        subject_code_row = (
+            db.session.query(EtcDataSpeciesRegion.speciescode)
+            .filter_by(speciesname=subject)
+            .filter_by(dataset_id=period)
+            .first()
+        )
+        if subject_code_row:
+            subject = subject_code_row[0]
+        else:
+            return ''
+
+    elif category == 'habitat':
+        map_href = config.habitat_map_url
+
+    else:
+        raise RuntimeError('unknown category %r' % category)
+
+    if not map_href:
+        return ''
+
+    if region:
+        return map_href + '&CodeReg=' + subject + region
+    else:
+        return map_href + '&CCode=' + subject
+
+
 @common.route('/')
 def homepage():
     cfg = get_config()
