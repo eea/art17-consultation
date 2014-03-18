@@ -25,7 +25,6 @@ RHEL based systems
 
 Run these commands::
 
-    yum -y update
     yum groupinstall -y 'development tools'
     yum install -y zlib-devel bzip2-devel openssl-devel xz-libs wget
 
