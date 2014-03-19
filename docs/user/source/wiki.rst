@@ -10,6 +10,7 @@ pressing *Edit Data Sheet info*.
 
 .. figure:: images/add_new_dsi.png
    :alt: Add new data sheet info
+   :width: 70%
 
    Add new data sheet info
 
@@ -18,6 +19,7 @@ and format the data sheet info text.
 
 .. figure:: images/edit_dsi.png
    :alt: Add new data sheet info form
+   :width: 70%
 
    Add new data sheet info form
 
@@ -26,6 +28,7 @@ The operation can be interrupted using the *Cancel* button.
 
 .. figure:: images/saved_dsi.png
    :alt: Active data sheet info
+   :width: 70%
 
    Active data sheet info
 
@@ -34,11 +37,13 @@ Only the active data sheet info can be edited.
 
 .. figure:: images/edit_dsi2.png
    :alt: Edit data sheet info
+   :width: 70%
 
    Edit data sheet info
 
 .. figure:: images/saved_dsi2.png
    :alt: Updated data sheet info
+   :width: 70%
 
    Updated data sheet info
 
@@ -47,6 +52,7 @@ revision. All the revisions can be seen by accessing the *Page History*.
 
 .. figure:: images/page_history_dsi.png
    :alt: Page history
+   :width: 70%
 
    Page history
 
@@ -59,6 +65,7 @@ active one can be previewed by clicking the options in the versions list.
 
 .. figure:: images/preview_revision.png
    :alt: Preview revision
+   :width: 70%
 
    Preview revision
 
@@ -67,6 +74,7 @@ info with the one selected from *Page history*.
 
 .. figure:: images/change_revision.png
    :alt: Change revision
+   :width: 70%
 
    Change revision
 
@@ -84,6 +92,7 @@ comment or *cancel* the operation.
 
 .. figure:: images/add_comment_dsi.png
    :alt: Add comment
+   :width: 70%
 
    Add comment
 
@@ -102,6 +111,7 @@ A series of operations are permitted for data sheet info comments:
 
 .. figure:: images/manage_comment_dsi.png
    :alt: Manage comments
+   :width: 70%
 
    Manage comments
 
@@ -114,6 +124,7 @@ warning message will be displayed.
 
 .. figure:: images/all_bioreg_at.png
    :alt: No region selected warning
+   :width: 70%
 
    No region selected warning
 
@@ -122,6 +133,7 @@ page.
 
 .. figure:: images/add_at_button.png
    :alt: Add Audit Trail button
+   :width: 70%
 
    Add Audit Trail button
 
@@ -136,6 +148,7 @@ modify the existing content for their selection.
 
 .. figure:: images/add_edit_at.png
    :alt: Add/Edit Audit Trail form
+   :width: 70%
 
    Add/Edit Audit Trail form
 
@@ -147,6 +160,7 @@ biogeographical region.
 
 .. figure:: images/merged_view_at.png
    :alt: Audit Trail merged page for all bioregions
+   :width: 70%
 
    Audit Trail merged page for all bioregions
 
@@ -157,6 +171,7 @@ page is possible by pressing the *Back* button in the top-left corner.
 
 .. figure:: images/at_back_btn.png
    :alt: Audit Trail back button
+   :width: 70%
 
    Audit Trail back button
 
@@ -169,6 +184,7 @@ active one can be previewed by clicking the options in the versions list.
 
 .. figure:: images/preview_revision_at.png
    :alt: Preview revision
+   :width: 70%
 
    Preview revision
 
@@ -177,5 +193,6 @@ trail with the one selected from *Page history*.
 
 .. figure:: images/change_revision_at.png
    :alt: Change revision
+   :width: 70%
 
    Change revision

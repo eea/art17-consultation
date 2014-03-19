@@ -12,10 +12,11 @@ from art17.common import (
     get_default_period,
     favourable_ref_title_species,
     favourable_ref_title_habitat,
+    generate_map_url,
 )
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.forms import ReportFilterForm
-from art17.models import Dataset, EtcDicBiogeoreg, DicCountryCode
+from art17.models import Dataset
 
 report = Blueprint('report', __name__)
 
@@ -61,6 +62,7 @@ class Report(views.View):
             'country': country,
             'show_report_headers': True,
             'dataset': period_query,
+            'generate_map_url': generate_map_url,
         })
 
         return render_template(self.template_name, **context)

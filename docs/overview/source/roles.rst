@@ -3,7 +3,8 @@
 Roles
 =====
 
-Roles are sets of permissions that can be given to users. An user can have zero, one or many roles.
+Roles are sets of permissions that can be given to users. An user can have
+zero, one or more roles.
 
 The main roles used in the application are:
 

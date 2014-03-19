@@ -34,6 +34,7 @@ region. As the next figure depicts, in order to add an assessment a bio-region
 
 .. figure:: images/please_select_a_bioregion.png
    :alt: "Please select a bioregion" warning message
+   :width: 100%
 
    "Please select a bioregion" warning message
 
@@ -50,6 +51,7 @@ form reveal such a tooltip.
 
 .. figure:: images/reference_tooltip.png
    :alt: Reference tooltip
+   :width: 100%
 
    Reference tooltip
 
@@ -63,44 +65,60 @@ are raised.
 
 .. figure:: images/at_least_method_conclusion.png
    :alt: Method/conclusion tooltip
+   :width: 100%
 
    Method/conclusion tooltip
 
 .. figure:: images/at_least_method_conclusion_error.png
    :alt: Method/conclusion error message
+   :width: 100%
 
    Method/conclusion error message
 
-All users add conclusions using roughly the same form, with a few exceptions:
+As previously stated, the level of access to the application core is spread through different
+permissions bundled into three different roles. Regardless of the role granted,
+the form to propose assessments is roughly the same, with very few exceptions:
 
-* NAT user can add a conclusion only for his country;
-* ETC user can add a conclusion only for EU27;
-* STK and ADM have an additional MS selectbox, and can select any Member State.
+* The National expert (NAT) can add a conclusion only for the represented country
+* The European topic center (ETC) can add a conclusion only for a country member that is part of EU27
+* Stakeholder (STK) has instead, at the beginning of the form, an additional selectbox with the corresponding country codes previously filled with content for the current `(subject, group, region)` tuple
+
+Regardless of the role granted, a successful assessment added would formaly look the way the next figure depicts.
+
+.. figure:: images/conclusion_added_sample.png
+   :alt: Successfully add a conclusion
+   :width: 100%
+
+   Successfully add a conclusion
 
 Edit assessments
 ----------------
 
-Assessments can be updated by accessing the Edit Assessment (Propose correction
-for STA users) button visible after clicking the assessor's name.
+Due to admitted human error scope, assessments in the Art17 Consultation platform can be
+updated. This is done by accessing the `Edit Assessment` (hence, propose a
+correction for that occurence) button, visible after clicking the assessor's name.
 
 .. figure:: images/edit_assmt_btn.png
    :alt: Edit assessment button
+   :width: 100%
 
    Edit assessment button
 
-All registered users can edit their own assessments; all assessment fields can
-be modified.
-ETC and ADM users can also edit other user's assessments, but they can only
-change favourable reference values.
-The figures below feature the two edit forms.
+For simplicity, the protocol states that all registered users can edit their
+own assessments; if so, all assessment fields can be modified. Additionaly,
+European topic center (ETC) users can also edit other users assessments. For
+the latter, please be advised that **only** favourable reference values are
+subject to change. The figures below feature the two edit forms.
 
 .. figure:: images/edit_own_assessment.png
    :alt: Edit an assessment added by the current user
+   :width: 100%
 
    Edit an assessment added by the current user
 
 .. figure:: images/edit_ref_assessment.png
    :alt: Edit an assessment added by another user
+   :width: 100%
 
    Edit an assessment added by another user
 
@@ -108,21 +126,32 @@ The figures below feature the two edit forms.
 Delete assessments
 ------------------
 
-An assessment can also be deleted, but only by its **author**. This can be
-achieved by clicking the assessor's name and then the *Delete* button.
+Due to the same human error scope, according to the protocol the Art17
+Consultation states, assessments can also be deleted. As a counterpart of
+`Edit`, the `Delete` operation is allowed to assessments **authors only**.
+This can be achieved by clicking the assessor's name and then the *Delete* button.
 
 .. figure:: images/delete_button_ass.png
    :alt: Delete button for assessments
+   :width: 100%
 
    Delete button for assessments
 
-Deleted assessments distinguish by their light pink background and are visible
-only to users with **administrator** role.
+However, even after being deleted, an assessment continues to be shown in the
+`EU Biogeographical assessment and proposed corrections` section so that
+other users are notified upon the changes and modifications that took place
+for the for the current `(subject, group, region)` tuple. Deleted assessments
+are easily distinguished by their light pink background.
 
 .. figure:: images/deleted_assessment.png
    :alt: Deleted assessment
+   :width: 100%
 
    Deleted assessment
+
+Please note that NAT and STK users can only see each other's deleted assessments
+while ETC can overview them all.
+
 
 Comment on assessments
 ----------------------
@@ -134,6 +163,7 @@ assessor's name will open an overlay with the comments for that assessment.
 
 .. figure:: images/ass_comments_button.png
    :alt: Assessment comments button
+   :width: 100%
 
    Assessment comments button
 
@@ -142,6 +172,7 @@ button.
 
 .. figure:: images/add_ass_comment_button.png
    :alt: Add comment button
+   :width: 90%
 
    Add comment button
 
@@ -153,11 +184,13 @@ Other users' comments can be marked as read/unread.
 
 .. figure:: images/ass_comments_states1.png
    :alt: Actions available for assessment comments (1)
+   :width: 90%
 
    Actions available for assessment comments (1)
 
 .. figure:: images/ass_comments_states2.png
    :alt: Actions available for assessment comments (2)
+   :width: 90%
 
    Actions available for assessment comments (2)
 
@@ -170,6 +203,7 @@ selectbox, as depicted in the figure below.
 
 .. figure:: images/change_decision_select.png
    :alt: Decision drop-down list
+   :width: 100%
 
    Decision drop-down list
 
@@ -178,5 +212,6 @@ entire assessment row.
 
 .. figure:: images/change_decision_success.png
    :alt: Successfully changed decision
+   :width: 100%
 
    Successfully changed decision
