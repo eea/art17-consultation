@@ -614,7 +614,7 @@ class EtcDicPopulationUnit(Base):
     @classmethod
     def all(cls, dataset_id):
         return (
-            cls.query.with_entities(cls.population_units)
+            cls.query.with_entities(cls.population_units, cls.details)
             .filter_by(dataset_id=dataset_id)
             .order_by(cls.order)
         )

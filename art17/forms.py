@@ -246,8 +246,8 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         #trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
         #trends = empty + zip(trends, trends)
         trends = empty + CONCL_TYPE
-        units = [a[0] for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
-        units = empty + zip(units, units)
+        units = [a for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
+        units = empty + units
 
         self.region.choices = empty
 
