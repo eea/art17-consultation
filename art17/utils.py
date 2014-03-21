@@ -6,7 +6,7 @@ patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
 valid_numeric = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
                            u"|(>|>>|≈|<)?\s*((\d\.)?\d+)" + ")" + "\s*$")
 valid_ref = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
-                       u"|(>|>>|≈|<)?\s*((\d\.)?\d+)?" + ")" + "\s*$")
+                       u"|(>|>>|≈|<)?\s*((\d\.)?\d+)?|x" + ")" + "\s*$")
 
 
 def str2num(s, default='N/A', number_format='%.2f'):

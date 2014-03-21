@@ -155,7 +155,7 @@
       <a class="close pull-right"><i class="fa fa-times"></i></a>
       <div class="form-group clearfix no-bottom">
           <label class="btn-align pull-left no-bottom">Size</label>
-          <div {{ numval_species_title() }} class="width-2third pull-right">{{ pop_size_field(size=size) }}</div>
+          <div {{ numval_species_title(x=False) }} class="width-2third pull-right">{{ pop_size_field(size=size) }}</div>
       </div>
       <div class="form-group clearfix no-bottom">
           <label class="btn-align pull-left no-bottom">Unit</label>
@@ -185,18 +185,30 @@
     {{ reason + (change_reason or 'N/A') }}
 {% endmacro %}
 
-{% macro numval_species_title() %}
+{% macro numval_species_title(lt=True, x=True) %}
     title="Only numeric values or intervals are accepted.
 The numbers can be with decimals only if the numbers are smaller than 10.
-Full stop '.' should be used as decimal separator. The numbers can be preceded by a qualifier: '~', '>', '>>', '<'.
+Full stop '.' should be used as decimal separator. The numbers can be preceded by a qualifier: '~', '>', '>>'
+{%- if lt -%}
+    , '<'
+{%- endif -%}.
 Leave the cell blank only if it is not possible to calculate a value.
+{%- if x %}
+Mark unknown values with an 'x'.
+{% endif -%}
 Reference values should be indicated only by a qualifier if the numerical value is the same as the actual value.
-The automatic computation for the reference values is not able to calculate a value, unless the corresponding conclusion is favourable, therefore the reference values need to be computed manually."
+The automatic computation for the reference values is not able to calculate a value, unless the corresponding conclusion
+is favourable, therefore the reference values need to be computed manually."
 {% endmacro %}
 
-{% macro numval_habitat_title() %}
+{% macro numval_habitat_title(x=True) %}
     title="Only numeric values or intervals are accepted.
-The numbers can be float with '.' for decimals and 2 decimals."
+The numbers can be float with '.' for decimals and 2 decimals.
+Leave the cell blank only if it is not possible to calculate a value.
+{%- if x %}
+Mark unknown values with an 'x'.
+{% endif -%}
+"
 {% endmacro %}
 
 {% macro cm_pair_title() %}

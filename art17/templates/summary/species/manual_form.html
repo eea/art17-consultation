@@ -27,7 +27,7 @@
     {% if not edit_ref %}
       {# Range #}
       <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}
-          {{ numval_species_title() }}>
+          {{ numval_species_title(lt=False, x=False) }}>
       {{ form.range_surface_area(size=5) }}
       </td>
 
@@ -58,7 +58,7 @@
 
       {# Habitat #}
       <td {% if form.habitat_surface_area.errors %}class="form-error-td"{% endif %}
-          {{ numval_species_title() }}>
+          {{ numval_species_title(x=False) }}>
       {{ form.habitat_surface_area(size=5) }}
       </td>
 

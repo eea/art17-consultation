@@ -21,7 +21,7 @@
 
     {% if not edit_ref %}
       <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}
-          {{ numval_habitat_title() }}>
+          {{ numval_habitat_title(x=False) }}>
       {{ form.range_surface_area(size=5) }}
       </td>
       {{ method_conclusion_td('Range Conclusions', form.method_range, form.conclusion_range) }}
@@ -34,7 +34,7 @@
       </td>
 
       <td {% if form.coverage_surface_area.errors %}class="form-error-td"{% endif %}
-          {{ numval_habitat_title() }}>
+          {{ numval_habitat_title(x=False) }}>
       {{ form.coverage_surface_area(size=5) }}
       </td>
       {{ method_conclusion_td('Area Conclusions', form.method_area, form.conclusion_area) }}

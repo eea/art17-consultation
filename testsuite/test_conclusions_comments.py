@@ -5,6 +5,7 @@ from .factories import (
     CommentFactory,
     HabitattypesManualAssessmentsFactory,
     HabitatCommentFactory,
+    DatasetFactory,
 )
 from art17 import models
 from conftest import get_request_params, create_user
@@ -129,3 +130,60 @@ def test_comments(app, client, setup, zope_auth, request_type, request_args,
 
     if assert_condition:
         assert eval(assert_condition)
+
+
+@pytest.mark.parametrize("manual_assessment_cls", [
+    (SpeciesManualAssessmentFactory),
+    (HabitattypesManualAssessmentsFactory),
+])
+def test_count_read_comments_no_comments(app, manual_assessment_cls):
+    record = manual_assessment_cls()
+    assert record.comments_count_read('someuser') == 0
+
+
+@pytest.mark.parametrize(
+    "manual_assessment_cls, comment_cls, deleted, expected_result", [
+        (SpeciesManualAssessmentFactory, CommentFactory, 0, 1),
+        (SpeciesManualAssessmentFactory, CommentFactory, 1, 0),
+        (HabitattypesManualAssessmentsFactory, HabitatCommentFactory, 0, 1),
+        (HabitattypesManualAssessmentsFactory, HabitatCommentFactory, 1, 0),
+    ])
+def test_count_read_comments_deleted(app, manual_assessment_cls, comment_cls,
+                                     deleted, expected_result):
+    record = manual_assessment_cls()
+    comment = comment_cls(deleted=deleted)
+    models.db.session.commit()
+
+    user = create_user('someuser')
+    comment.readers.append(user)
+    models.db.session.commit()
+
+    assert record.comments_count_read('someuser') == expected_result
+
+
+@pytest.mark.parametrize("manual_assessment_cls, comment_cls, request_args", [
+    (SpeciesManualAssessmentFactory, CommentFactory, [
+        '/species/summary/', {'period': 1, 'group': 'Mammals',
+                              'subject': 'Canis lupus', 'region': 'ALP'}]),
+    (HabitattypesManualAssessmentsFactory, HabitatCommentFactory, [
+        '/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
+                              'subject': 1110, 'region': 'ALP'}]),
+])
+def test_count_read_comments_view(app, client, zope_auth,
+                                  manual_assessment_cls, comment_cls,
+                                  request_args):
+    DatasetFactory()
+    manual_assessment_cls(region='ALP')
+    comment = comment_cls(region='ALP')
+    models.db.session.commit()
+
+    user = create_user('someuser')
+    comment.readers.append(user)
+    models.db.session.commit()
+
+    zope_auth.update({'user_id': 'someuser'})
+    resp = client.get(*get_request_params('get', request_args))
+
+    assert resp.status_code == 200
+    assert (resp.html.find('a', {'title': 'Comments: Read/Total'}).text.strip()
+            == '1/1')

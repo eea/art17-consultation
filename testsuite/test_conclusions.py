@@ -348,6 +348,78 @@ def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
 
 
 @pytest.mark.parametrize(
+    "request_args, user, status_code, expect_errors, model_cls",
+    # Species
+    # Inexistent record
+    [(['/species/conc/delete/', {
+        'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
+        'delete_region': 'ALP', 'delete_user': 'someuser', 'delete_ms': 'FR'}],
+      'someuser', 404, True, None),
+     # Anonymous user
+     (['/species/conc/delete/', {
+       'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
+       'delete_region': 'ALP', 'delete_user': 'someuser',
+       'delete_ms': 'EU25'}], '', 403, True, None),
+     # Trying to delete another user's conclusion
+     (['/species/conc/delete/', {
+       'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
+       'delete_region': 'ALP', 'delete_user': 'someuser',
+       'delete_ms': 'EU25'}], 'otheruser', 403, True, None),
+     # Successfully deleting its own conclusion
+     (['/species/conc/delete/', {
+       'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
+       'delete_region': 'ALP', 'delete_user': 'someuser',
+       'delete_ms': 'EU25'}], 'someuser', 302, False,
+      models.SpeciesManualAssessment),
+
+     # Habitat
+     # Inexistent record
+     (['/habitat/conc/delete/', {
+       'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
+       'delete_user': 'someuser', 'delete_ms': 'FR'}],
+      'someuser', 404, True, None),
+     # Anonymous user
+     (['/habitat/conc/delete/', {
+       'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
+       'delete_user': 'someuser', 'delete_ms': 'EU25'}],
+      '', 403, True, None),
+     # Trying to delete another user's conclusion
+     (['/habitat/conc/delete/', {
+       'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
+       'delete_user': 'someuser', 'delete_ms': 'EU25'}],
+      'otheruser', 403, True, None),
+     # Successfully deleting its own conclusion
+     (['/habitat/conc/delete/', {
+       'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
+       'delete_user': 'someuser', 'delete_ms': 'EU25'}],
+      'someuser', 302, False, models.HabitattypesManualAssessment),
+     ])
+def test_delete_conclusion(app, client, zope_auth, setup_edit, request_args,
+                           user, status_code, expect_errors, model_cls):
+    if user:
+        create_user(user)
+        zope_auth.update({'user_id': user})
+
+    resp = client.get(*get_request_params('get', request_args),
+                      expect_errors=expect_errors)
+
+    assert resp.status_code == status_code
+
+    if model_cls:
+        args = request_args[1]
+        records = model_cls.query.filter_by(
+            dataset_id=args['period'],
+            subject=args['subject'],
+            region=args['delete_region'],
+            user_id=args['delete_user'],
+            MS=args['delete_ms'],
+        ).all()
+
+        assert len(records) == 1
+        assert records[0].deleted == 1
+
+
+@pytest.mark.parametrize(
     "request_args, post_params, user, roles, expect_errors, status_code, "
     "success, message",
     # Species
