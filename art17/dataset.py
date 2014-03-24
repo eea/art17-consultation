@@ -342,10 +342,14 @@ IMPORT_SCHEMA = {
             'conclusion_future', 'method_assessment', 'conclusion_assessment',
             'user', 'last_update', 'deleted_record', 'decision',
             'user_decision', 'last_update_decision']),
-        #('wiki', [
-        #    'id', 'region', 'assesment_speciesname', 'habitatcode']),
-        #('wiki_trail', [
-        #    'id', 'region', 'assesment_speciesname', 'habitatcode']),
+        ('wiki', [
+            'id', 'region', 'assesment_speciesname', 'habitatcode']),
+        ('wiki_trail', [
+            'id', 'region', 'assesment_speciesname', 'habitatcode']),
+        ('wiki_changes', [
+            'id', 'wiki_id', 'body', 'editor', 'changed', 'active']),
+        ('wiki_trail_changes', [
+            'id', 'wiki_id', 'body', 'editor', 'changed', 'active']),
     ],
     '2012': [
         ('dic_country_codes', [
