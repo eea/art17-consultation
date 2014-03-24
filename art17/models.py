@@ -1107,7 +1107,10 @@ class WikiChange(Base):
     changed = Column(DateTime, nullable=False,
                      server_default=u'CURRENT_TIMESTAMP')
     active = Column(Integer, default=0)
-
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+    )
     wiki = relationship(u'Wiki', backref='changes')
 
 
@@ -1174,7 +1177,10 @@ class WikiTrailChange(Base):
     changed = Column(DateTime, nullable=False,
                      server_default=u'CURRENT_TIMESTAMP')
     active = Column(Integer, default=0)
-
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+    )
     wiki = relationship(u'WikiTrail', backref='changes')
 
 
