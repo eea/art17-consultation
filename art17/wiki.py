@@ -131,7 +131,10 @@ class CommonSection(object):
                 .first())
 
     def get_wiki_changes(self):
-        return self.wiki_change_cls.query.filter_by(wiki=self.get_wiki())
+        wiki = self.get_wiki()
+        dataset_id = wiki.dataset_id if wiki else 0
+        return self.wiki_change_cls.query.filter_by(wiki=wiki,
+                                                    dataset_id=dataset_id)
 
     def get_active_change(self):
         return self.get_wiki_changes().filter_by(active=1).first()
@@ -276,8 +279,14 @@ class MergedRegionsView(views.View):
         wiki_body = []
 
         for wiki in wikis:
-            change = (self.section.wiki_change_cls.query
-                      .filter_by(wiki=wiki, active=1).first())
+            change = (
+                self.section.wiki_change_cls.query
+                .filter_by(
+                    wiki=wiki,
+                    active=1,
+                    dataset_id=wiki.dataset_id,
+                ).first()
+            )
             if change:
                 region_change_url = url_for(
                     self.section.home_endpoint,
@@ -360,9 +369,15 @@ class EditPage(WikiView):
         else:
             self.section.insert_inexistent_wiki()
 
+        wiki = self.section.get_wiki()
         new_change = self.section.wiki_change_cls(
-            wiki_id=self.section.get_wiki().id, body=request.form.get('text'),
-            editor=current_user.id, changed=datetime.now(), active=1)
+            wiki_id=wiki.id,
+            body=request.form.get('text'),
+            editor=current_user.id,
+            changed=datetime.now(),
+            active=1,
+            dataset_id=wiki.dataset_id,
+        )
         db.session.add(new_change)
         db.session.commit()
 
@@ -448,8 +463,11 @@ class GetRevision(WikiView):
             raise PermissionDenied
 
         revision_id = request.args.get('revision_id')
-        revision = (self.section.wiki_change_cls.query
-                    .filter_by(id=revision_id).first_or_404())
+        revision = (
+            self.section.wiki_change_cls.query
+            .filter_by(id=revision_id)
+            .first_or_404()
+        )
 
         return revision.body
 
