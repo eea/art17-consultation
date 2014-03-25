@@ -920,7 +920,8 @@ class PhotoSpecy(Base):
     )
 
 
-roles_users = db.Table('roles_users',
+roles_users = db.Table(
+    'roles_users',
     db.Column('registered_users_user', db.String(50),
               db.ForeignKey('registered_users.user')),
     db.Column('role_id', db.Integer(), db.ForeignKey('roles.id')),
@@ -1110,6 +1111,7 @@ class WikiChange(Base):
         'ext_dataset_id',
         ForeignKey('datasets.id'),
     )
+    dataset = relationship(Dataset)
     wiki = relationship(
         u'Wiki',
         primaryjoin="and_(WikiChange.wiki_id==Wiki.id,"
@@ -1195,6 +1197,7 @@ class WikiTrailChange(Base):
         'ext_dataset_id',
         ForeignKey('datasets.id'),
     )
+    dataset = relationship(Dataset)
     wiki = relationship(
         u'WikiTrail',
         primaryjoin="and_(WikiTrailChange.wiki_id==WikiTrail.id,"

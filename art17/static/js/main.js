@@ -93,17 +93,7 @@ $(function() {
         evt.preventDefault();
         var clicked_button = $(this);
         var comment = clicked_button.parent().parent();
-
         var url = clicked_button.attr('href');
-        var url_parts = url.split("?");
-        var req_args = url_parts[1].split('&')
-        var final_href = url_parts[0] + '?'
-        for (i=0; i<req_args.length; i++) {
-            if ((req_args[i].lastIndexOf("period", 0) === 0) ||
-                (req_args[i].lastIndexOf("comment_id", 0) === 0)) {
-                    final_href += req_args[i] + '&'
-                }
-        }
         var request = $.ajax({
             type: "GET",
             url: url,
@@ -114,14 +104,12 @@ $(function() {
                         comment.attr('class', 'cmnt-deleted');
                         comment.find('.cmnt-type').html('Deleted');
                         clicked_button.html('Undelete');
-                        clicked_button.attr('href', final_href + 'toggle=del');
                         comment.find('.edit-btn').hide()
                         break;
                     case 'cmnt-deleted':
                         comment.attr('class', 'cmnt-owned');
                         comment.find('.cmnt-type').html('Your comment');
                         clicked_button.html('Delete');
-                        clicked_button.attr('href', final_href + 'toggle=del');
                         comment.find('.edit-btn').show()
                         comment.find('.cancel-edit').hide()
                         break;
@@ -129,13 +117,11 @@ $(function() {
                         comment.attr('class', 'cmnt-read');
                         comment.find('.cmnt-type').html('Read');
                         clicked_button.html('Mark as unread');
-                        clicked_button.attr('href', final_href + 'toggle=read');
                         break;
                     case 'cmnt-read':
                         comment.attr('class', 'cmnt-notread');
                         comment.find('.cmnt-type').html('Unread');
                         clicked_button.html('Mark as read');
-                        clicked_button.attr('href', final_href + 'toggle=read');
                         break;
                 }
             }

@@ -15,7 +15,7 @@
         {% if revision.active %}<em class="white">Active</em>{% endif %}
         <br/>by {{ revision.editor }}
 
-        {% if not revision.active and can_change_revision(dataset) %}
+        {% if can_change_revision(revision) %}
         <form method="post" action="{{ page_history_url }}">
             <input type="hidden" name="revision_id" value="{{ revision.id }}"/>
             <button class="btn-text" type="submit">Restore version</button>

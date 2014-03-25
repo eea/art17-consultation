@@ -90,10 +90,11 @@ def can_manage_revisions():
 
 
 @wiki.app_template_global('can_change_revision')
-def can_change_revision(dataset):
-    if not dataset or dataset.is_readonly:
+def can_change_revision(revision):
+    if not revision.dataset or revision.dataset.is_readonly or \
+            revision.active or current_user.is_anonymous():
         return False
-    return not current_user.is_anonymous()
+    return True
 
 
 @wiki.app_template_global('can_add_comment')
@@ -150,13 +151,11 @@ class CommonSection(object):
     def get_context(self):
         active_change = self.get_active_change()
 
-        revisions = (self.get_wiki_changes()
-                     .with_entities(
-                         self.wiki_change_cls.changed,
-                         self.wiki_change_cls.editor,
-                         self.wiki_change_cls.active,
-                         self.wiki_change_cls.id)
-                     .order_by(self.wiki_change_cls.changed.desc()).all())
+        revisions = (
+            self.get_wiki_changes()
+            .order_by(self.wiki_change_cls.changed.desc())
+            .all()
+        )
 
         request_args = self.get_req_args()
         period = request_args.get('period')
@@ -215,11 +214,13 @@ class DataSheetSection(CommonSection):
         comments = [c for c in wiki.comments if not
                     (c.deleted and c.author != current_user)] if wiki else []
         request_args = self.get_req_args()
-        context.update({'comments': comments,
-                        'add_comment_url': url_for(self.addcmnt_endpoint,
-                                                   page=self.page,
-                                                   **request_args)
-                        })
+        context.update({
+            'comments': comments,
+            'add_comment_url': url_for(
+                self.addcmnt_endpoint,
+                page=self.page,
+                **request_args)
+        })
         return context
 
 
@@ -238,9 +239,12 @@ class AuditTrailSection(CommonSection):
         if request.args.get('merged') == 'merged':
             request_args = self.get_req_args()
             request_args['region'] = ''
-            context.update({'back_url': url_for('.audittrail-merged',
-                                                page=self.page,
-                                                **request_args)})
+            context.update({
+                'back_url': url_for(
+                    '.audittrail-merged',
+                    page=self.page,
+                    **request_args)
+            })
         return context
 
 
@@ -313,17 +317,18 @@ class MergedRegionsView(views.View):
 class PageHistory(WikiView):
 
     def process_post_request(self):
-        dataset = Dataset.query.get(request.args.get('period'))
-
-        if not can_change_revision(dataset):
-            raise PermissionDenied
-
         wiki_changes = self.section.get_wiki_changes()
         active_change = self.section.get_active_change()
 
         new_change_id = request.form.get('revision_id')
-        new_active_change = (wiki_changes
-                             .filter_by(id=new_change_id).first_or_404())
+        new_active_change = (
+            wiki_changes
+            .filter_by(id=new_change_id)
+            .first_or_404()
+        )
+
+        if not can_change_revision(new_active_change):
+            raise PermissionDenied
 
         if active_change:
             active_change.active = 0
@@ -347,10 +352,14 @@ class AddComment(WikiView):
         if not can_add_comment(comments, wiki_changes, dataset):
             raise PermissionDenied
 
+        comment_text = request.form.get('text')
         comment = self.section.wiki_comment_cls(
-            wiki_id=wiki.id, comment=request.form.get('text'),
-            author_id=current_user.id, posted=datetime.now(),
-            dataset_id=dataset.id)
+            wiki_id=wiki.id,
+            comment=comment_text,
+            author_id=current_user.id,
+            posted=datetime.now(),
+            dataset_id=dataset.id,
+        )
         db.session.add(comment)
         db.session.commit()
 
@@ -372,18 +381,18 @@ class EditPage(WikiView):
         new_body = request.form.get('text')
         active_change = self.section.get_active_change()
         if active_change:
-
             if active_change.body == new_body:
                 flash('No changes were made.')
                 return False
-
             active_change.active = 0
         else:
             self.section.insert_inexistent_wiki()
 
+        body_text = request.form.get('text')
+        wiki = self.section.get_wiki()
         new_change = self.section.wiki_change_cls(
-            wiki_id=self.section.get_wiki().id,
-            body=request.form.get('text'),
+            wiki_id=wiki.id,
+            body=body_text,
             editor=current_user.id,
             changed=datetime.now(),
             active=1,
@@ -407,8 +416,11 @@ class EditComment(WikiView):
 
     def process_post_request(self):
         comment_id = request.args.get('comment_id')
-        comment = (self.section.wiki_comment_cls.query
-                   .filter_by(id=comment_id).first_or_404())
+        comment = (
+            self.section.wiki_comment_cls.query
+            .filter_by(id=comment_id)
+            .first_or_404()
+        )
 
         if not can_edit_comment(comment):
             raise PermissionDenied
@@ -423,8 +435,11 @@ class EditComment(WikiView):
 
     def get_context(self):
         comment_id = request.args.get('comment_id')
-        comment = (self.section.wiki_comment_cls.query
-                   .filter_by(id=comment_id).first_or_404())
+        comment = (
+            self.section.wiki_comment_cls.query
+            .filter_by(id=comment_id)
+            .first_or_404()
+        )
 
         wiki_edit_cmnt_form = self.wiki_form_cls()
         wiki_edit_cmnt_form.text.process_data(comment.comment)
@@ -442,8 +457,11 @@ class ManageComment(WikiView):
             raise PermissionDenied
 
         comment_id = request.args.get('comment_id')
-        comment = (self.section.wiki_comment_cls.query
-                   .filter_by(id=comment_id).first_or_404())
+        comment = (
+            self.section.wiki_comment_cls.query
+            .filter_by(id=comment_id)
+            .first_or_404()
+        )
 
         toggle = request.args.get('toggle')
         if toggle == 'del':
