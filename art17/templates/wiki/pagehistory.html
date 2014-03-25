@@ -7,15 +7,15 @@
     <ul class="history-list">
 
     {% for revision in revisions %}
-        <li id="{{ revision.id }}" 
+        <li id="{{ revision.id }}"
             href="{{ url_for(get_rvs_endpoint, page=page, revision_id=revision.id, section=section)}}"
-            class="{% if revision.active %}active{% endif %}"> 
+            class="{% if revision.active %}active{% endif %}">
 
         {{ revision.changed | format_date_cmnt }}
         {% if revision.active %}<em class="white">Active</em>{% endif %}
-        <br/>by {{ revision.editor }} 
+        <br/>by {{ revision.editor }}
 
-        {% if not revision.active %}
+        {% if not revision.active and can_change_revision(dataset) %}
         <form method="post" action="{{ page_history_url }}">
             <input type="hidden" name="revision_id" value="{{ revision.id }}"/>
             <button class="btn-text" type="submit">Restore version</button>

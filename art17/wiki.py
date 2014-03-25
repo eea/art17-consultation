@@ -78,12 +78,21 @@ def get_css_class(comment):
 
 
 @wiki.app_template_global('can_edit_page')
-def can_edit_page():
+def can_edit_page(dataset):
+    if not dataset or dataset.is_readonly:
+        return False
     return not current_user.is_anonymous()
 
 
 @wiki.app_template_global('can_manage_revisions')
 def can_manage_revisions():
+    return not current_user.is_anonymous()
+
+
+@wiki.app_template_global('can_change_revision')
+def can_change_revision(dataset):
+    if not dataset or dataset.is_readonly:
+        return False
     return not current_user.is_anonymous()
 
 
@@ -103,7 +112,9 @@ def can_edit_comment(comment):
 
 
 @wiki.app_template_global('can_manage_comment')
-def can_manage_comment():
+def can_manage_comment(dataset):
+    if not dataset or dataset.is_readonly:
+        return False
     return not current_user.is_anonymous()
 
 
@@ -302,7 +313,9 @@ class MergedRegionsView(views.View):
 class PageHistory(WikiView):
 
     def process_post_request(self):
-        if not can_manage_revisions():
+        dataset = Dataset.query.get(request.args.get('period'))
+
+        if not can_change_revision(dataset):
             raise PermissionDenied
 
         wiki_changes = self.section.get_wiki_changes()
@@ -351,7 +364,9 @@ class AddComment(WikiView):
 class EditPage(WikiView):
 
     def process_post_request(self):
-        if not can_edit_page():
+        dataset = Dataset.query.get(request.args.get('period'))
+
+        if not can_edit_page(dataset):
             raise PermissionDenied
 
         new_body = request.form.get('text')
@@ -372,6 +387,7 @@ class EditPage(WikiView):
             editor=current_user.id,
             changed=datetime.now(),
             active=1,
+            dataset_id=dataset.id,
         )
         db.session.add(new_change)
         db.session.commit()
@@ -420,7 +436,9 @@ class ManageComment(WikiView):
     methods = ['GET']
 
     def dispatch_request(self, page):
-        if not can_manage_comment():
+        dataset = Dataset.query.get(request.args.get('period'))
+
+        if not can_manage_comment(dataset):
             raise PermissionDenied
 
         comment_id = request.args.get('comment_id')
