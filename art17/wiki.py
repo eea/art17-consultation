@@ -131,10 +131,7 @@ class CommonSection(object):
                 .first())
 
     def get_wiki_changes(self):
-        wiki = self.get_wiki()
-        dataset_id = wiki.dataset_id if wiki else 0
-        return self.wiki_change_cls.query.filter_by(wiki=wiki,
-                                                    dataset_id=dataset_id)
+        return self.wiki_change_cls.query.filter_by(wiki=self.get_wiki())
 
     def get_active_change(self):
         return self.get_wiki_changes().filter_by(active=1).first()
@@ -284,7 +281,6 @@ class MergedRegionsView(views.View):
                 .filter_by(
                     wiki=wiki,
                     active=1,
-                    dataset_id=wiki.dataset_id,
                 ).first()
             )
             if change:
@@ -340,7 +336,8 @@ class AddComment(WikiView):
 
         comment = self.section.wiki_comment_cls(
             wiki_id=wiki.id, comment=request.form.get('text'),
-            author_id=current_user.id, posted=datetime.now())
+            author_id=current_user.id, posted=datetime.now(),
+            dataset_id=dataset.id)
         db.session.add(comment)
         db.session.commit()
 
@@ -369,14 +366,12 @@ class EditPage(WikiView):
         else:
             self.section.insert_inexistent_wiki()
 
-        wiki = self.section.get_wiki()
         new_change = self.section.wiki_change_cls(
-            wiki_id=wiki.id,
+            wiki_id=self.section.get_wiki().id,
             body=request.form.get('text'),
             editor=current_user.id,
             changed=datetime.now(),
             active=1,
-            dataset_id=wiki.dataset_id,
         )
         db.session.add(new_change)
         db.session.commit()

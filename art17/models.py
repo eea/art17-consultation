@@ -1085,7 +1085,7 @@ t_species_name = Table(
 class Wiki(Base):
     __tablename__ = 'wiki'
 
-    id = Column(Integer, primary_key=True, unique=True)
+    id = Column(Integer, primary_key=True)
     region_code = Column('region', String(4), nullable=False)
     assesment_speciesname = Column(String(60))
     habitatcode = Column(String(4))
@@ -1093,7 +1093,6 @@ class Wiki(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
-        primary_key=True,
     )
 
 
@@ -1111,7 +1110,13 @@ class WikiChange(Base):
         'ext_dataset_id',
         ForeignKey('datasets.id'),
     )
-    wiki = relationship(u'Wiki', backref='changes')
+    wiki = relationship(
+        u'Wiki',
+        primaryjoin="and_(WikiChange.wiki_id==Wiki.id,"
+        "WikiChange.dataset_id==Wiki.dataset_id)",
+        foreign_keys=[wiki_id, dataset_id],
+        backref='changes',
+    )
 
 
 t_wiki_comments_read = Table(
@@ -1132,8 +1137,18 @@ class WikiComment(Base):
     posted = Column(
         DateTime, nullable=False,
         server_default=u'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+    )
 
-    wiki = relationship(u'Wiki', backref='comments')
+    wiki = relationship(
+        u'Wiki',
+        primaryjoin="and_(WikiComment.wiki_id==Wiki.id,"
+        "WikiComment.dataset_id==Wiki.dataset_id)",
+        foreign_keys=[wiki_id, dataset_id],
+        backref='comments',
+    )
 
     author = relationship(
         'RegisteredUser',
@@ -1149,14 +1164,13 @@ class WikiComment(Base):
 class WikiTrail(Base):
     __tablename__ = 'wiki_trail'
 
-    id = Column(Integer, primary_key=True, unique=True)
+    id = Column(Integer, primary_key=True)
     region_code = Column('region', String(4), nullable=False)
     assesment_speciesname = Column(String(60))
     habitatcode = Column(String(4))
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
-        primary_key=True,
     )
 
     region = relationship(
@@ -1181,7 +1195,13 @@ class WikiTrailChange(Base):
         'ext_dataset_id',
         ForeignKey('datasets.id'),
     )
-    wiki = relationship(u'WikiTrail', backref='changes')
+    wiki = relationship(
+        u'WikiTrail',
+        primaryjoin="and_(WikiTrailChange.wiki_id==WikiTrail.id,"
+        "WikiTrailChange.dataset_id==WikiTrail.dataset_id)",
+        foreign_keys=[wiki_id, dataset_id],
+        backref='changes',
+    )
 
 
 class WikiTrailComment(Base):
@@ -1192,10 +1212,21 @@ class WikiTrailComment(Base):
     comment = Column(String, nullable=False)
     author = Column(String(60), nullable=False)
     deleted = Column(Integer)
-    posted = Column(DateTime, nullable=False,
-        server_default=u'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+    posted = Column(DateTime, nullable=False, server_default=
+                    u'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
 
-    wiki = relationship(u'WikiTrail')
+    dataset_id = Column(
+        'ext_dataset_id',
+        ForeignKey('datasets.id'),
+    )
+
+    wiki = relationship(
+        u'WikiTrail',
+        primaryjoin="and_(WikiTrailComment.wiki_id==WikiTrail.id,"
+        "WikiTrailComment.dataset_id==WikiTrail.dataset_id)",
+        foreign_keys=[wiki_id, dataset_id],
+        backref='comments',
+    )
 
 
 t_wiki_trail_comments_read = Table(

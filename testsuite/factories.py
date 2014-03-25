@@ -179,6 +179,7 @@ class WikiCommentFactory(SQLAlchemyModelFactory):
     comment = 'This is a comment'
     author_id = 'testuser'
     posted = datetime.now()
+    dataset_id = 1
 
 
 class CommentFactory(SQLAlchemyModelFactory):
