@@ -1,7 +1,7 @@
 from datetime import datetime
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
-from sqlalchemy import or_, func
+from sqlalchemy import or_, func, not_
 from flask import (
     Blueprint,
     views,
@@ -229,12 +229,15 @@ class UserSummary(views.View):
         conclusions = (
             self.model_manual_cls.query
             .filter_by(dataset_id=period)
+            .filter(or_(self.model_manual_cls.deleted == 0,
+                        self.model_manual_cls.deleted == None))
             .order_by(self.model_manual_cls.last_update.desc()).limit(100)
         )
         comments_list = (
             self.model_comment_cls.query
-            .join(self.model_comment_cls.record)
-            .filter(self.model_manual_cls.dataset_id == period)
+            .filter_by(dataset_id=period)
+            .filter(or_(self.model_comment_cls.deleted == 0,
+                        self.model_comment_cls.deleted == None))
             .order_by(self.model_comment_cls.post_date.desc()).all()
         )
         return {'conclusions': conclusions, 'comments': comments_list}

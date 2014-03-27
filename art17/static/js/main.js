@@ -96,7 +96,6 @@ $(function() {
         var clicked_button = $(this);
         var comment = clicked_button.parent().parent();
         var url = clicked_button.attr('href');
-        var url_parts = url.split("?");
         var request = $.ajax({
             type: "GET",
             url: url,
@@ -107,14 +106,12 @@ $(function() {
                         comment.attr('class', 'cmnt-deleted');
                         comment.find('.cmnt-type').html('Deleted');
                         clicked_button.html('Undelete');
-                        clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=del');
                         comment.find('.edit-btn').hide()
                         break;
                     case 'cmnt-deleted':
                         comment.attr('class', 'cmnt-owned');
                         comment.find('.cmnt-type').html('Your comment');
                         clicked_button.html('Delete');
-                        clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=del');
                         comment.find('.edit-btn').show()
                         comment.find('.cancel-edit').hide()
                         break;
@@ -122,13 +119,11 @@ $(function() {
                         comment.attr('class', 'cmnt-read');
                         comment.find('.cmnt-type').html('Read');
                         clicked_button.html('Mark as unread');
-                        clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=read');
                         break;
                     case 'cmnt-read':
                         comment.attr('class', 'cmnt-notread');
                         comment.find('.cmnt-type').html('Unread');
                         clicked_button.html('Mark as read');
-                        clicked_button.attr('href', url_parts[0] + '?comment_id=' + comment.attr('id') + '&toggle=read');
                         break;
                 }
             }

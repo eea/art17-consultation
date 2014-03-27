@@ -141,6 +141,7 @@ class WikiChangeFactory(SQLAlchemyModelFactory):
     editor = 'testuser'
     changed = datetime.strptime('10-02-2014 14:22:23', '%d-%m-%Y %H:%M:%S')
     active = 1
+    dataset_id = 1
 
 
 class WikiTrailFactory(SQLAlchemyModelFactory):
@@ -165,6 +166,7 @@ class WikiTrailChangeFactory(SQLAlchemyModelFactory):
     editor = 'testuser'
     changed = datetime.now()
     active = 1
+    dataset_id = 1
 
 
 class WikiCommentFactory(SQLAlchemyModelFactory):
@@ -177,6 +179,7 @@ class WikiCommentFactory(SQLAlchemyModelFactory):
     comment = 'This is a comment'
     author_id = 'testuser'
     posted = datetime.now()
+    dataset_id = 1
 
 
 class CommentFactory(SQLAlchemyModelFactory):

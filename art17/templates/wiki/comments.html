@@ -21,7 +21,7 @@
              subject=request.args['subject'], region=request.args['region']) %}
       {% if g.identity.id == comment.author_id %}
         {% set href = url_for('.ds-manage-comment', comment_id=comment.id,
-                              toggle='del', page=page) %}
+                              toggle='del', page=page, period=request.args['period']) %}
         {% if comment.deleted %}
           {% set comment_type = 'Deleted' %}
           {% set btn_text  = 'Undelete' %}
@@ -31,7 +31,7 @@
         {% endif %}
       {% else %}
         {% set href = url_for('.ds-manage-comment', comment_id=comment.id,
-                              toggle='read', page=page) %}
+                              toggle='read', page=page, period=request.args['period']) %}
         {% if is_read(comment) %}
           {% set comment_type = 'Read'%}
           {% set btn_text  = 'Mark as unread'%}
@@ -42,7 +42,7 @@
       {% endif %}
 
         <li class="{{ get_css_class(comment) }}" id="{{comment.id}}">
-        {% if can_manage_comment() %}
+        {% if can_manage_comment(dataset) %}
 	      <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
             <button class="btn-text" href="{{ href }}"

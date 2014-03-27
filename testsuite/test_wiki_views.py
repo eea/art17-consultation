@@ -124,7 +124,7 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
         'period': '1', 'subject': 'Canis lupus', 'region': '',
         'comment_id': 1}], {'text': 'Test edit comment.'}),
     ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'read'}], {}),
+        'comment_id': 1, 'toggle': 'read', 'period': '1'}], {}),
     ('get', ['/species/summary/datasheet/get_revision/', {
         'revision_id': 1}], {})
 ])
@@ -138,10 +138,10 @@ def test_perms(app, setup, zope_auth, client, request_type, request_args,
 @pytest.mark.parametrize("request_type, request_args, post_params", [
     # Test (un-)deleting someone else's comment
     ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'del'}], {}),
+        'comment_id': 1, 'toggle': 'del', 'period': '1'}], {}),
     # Test marking as (un-)read current user's comment
     ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 2, 'toggle': 'read'}], {}),
+        'comment_id': 2, 'toggle': 'read', 'period': '1'}], {}),
     # Test editing someone else's comment
     ('post', ['/species/summary/datasheet/edit_comment/', {
         'period': '1', 'subject': 'Canis lupus', 'region': '',
@@ -168,7 +168,7 @@ def test_perms_auth_user(app, setup, zope_auth, client, request_type,
         'period': '1', 'subject': 'Canis lupus', 'region': '',
         'comment_id': 999}], {'text': 'Test edit comment.'}),
     ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 999, 'toggle': 'read'}], {}),
+        'comment_id': 999, 'toggle': 'read', 'period': '1'}], {}),
     ('get', ['/species/summary/datasheet/get_revision/', {
         'revision_id': 999}], {})
 ])
@@ -232,7 +232,7 @@ def test_toggle_del(app, setup, zope_auth, client):
     set_user('testuser')
     initial_value = get_instance(WikiComment, id=1).deleted or 0
     client.get('/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'del'})
+        'comment_id': 1, 'toggle': 'del', 'period': '1'})
     assert get_instance(WikiComment, id=1).deleted == 1 - initial_value
 
 
@@ -245,7 +245,7 @@ def test_toggle_read(app, setup, zope_auth, client):
             RegisteredUser, id='otheruser').read_comments
     initial_value = get_value()
     client.get('/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'read'})
+        'comment_id': 1, 'toggle': 'read', 'period': '1'})
     assert get_value() is not initial_value
 
 
