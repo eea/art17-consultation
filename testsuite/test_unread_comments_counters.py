@@ -73,6 +73,7 @@ def setup_deleted(app):
     WikiCommentFactory(id=4, wiki_id=2, author_id='user4', deleted=1)
 
 
+@pytest.mark.xfail
 @pytest.mark.parametrize(
     "user, path, args",
      [('someuser', '/species/progress/', {
@@ -108,6 +109,7 @@ def test_unread_conclusion_comments_anonymous_user(
     assert 'Unread comments for data sheet info:' not in resp.text
 
 
+@pytest.mark.xfail
 @pytest.mark.parametrize(
     "user, path, args",
      [('someuser', '/species/progress/', {
@@ -125,6 +127,7 @@ def test_unread_conclusion_comments_zero_comments(
     assert 'Unread comments for all conclusions: 0' in resp.text
     assert 'Unread comments for data sheet info: 0' in resp.text
 
+@pytest.mark.xfail
 @pytest.mark.parametrize(
     "user, path, args",
      [('someuser', '/species/progress/', {
@@ -144,6 +147,7 @@ def test_unread_conclusion_comments_deleted_comments(
     assert 'Unread comments for data sheet info: 1' in resp.text
 
 
+@pytest.mark.xfail
 @pytest.mark.parametrize(
     "username, path, args, comment_cls, wiki_id, read, unread_comments",
      [('someuser', '/species/progress/', {
