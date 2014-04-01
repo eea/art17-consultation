@@ -23,31 +23,9 @@ Install these before setting up an environment::
 RHEL based systems
 ~~~~~~~~~~~~~~~~~~
 
+Install Python2.7 with PUIAS: https://gist.github.com/nico4/9616638
+
 Run these commands::
-
-    yum groupinstall -y 'development tools'
-    yum install -y zlib-devel bzip2-devel openssl-devel xz-libs wget
-
-    wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
-    xz -d Python-2.7.6.tar.xz
-    tar -xvf Python-2.7.6.tar
-
-    cd Python-2.7.6
-
-    ./configure --prefix=/usr/local
-
-    make
-    make altinstall
-
-    export PATH="/usr/local/bin:$PATH"
-
-    wget --no-check-certificate \
-    https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
-
-    tar -xvf setuptools-1.4.2.tar.gz
-    cd setuptools-1.4.2
-
-    python2.7 setup.py install
 
     curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python2.7 -
 

@@ -12,6 +12,7 @@ from art17.models import (
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion,
     Config,
+    restricted_species_2013,
 )
 
 from .utils import str2num
@@ -334,11 +335,9 @@ def generate_map_url(category, subject, region, period):
     config = get_config()
 
     if category == 'species':
-        map_href = config.species_map_url
-
         subject_code_row = (
             db.session.query(EtcDataSpeciesRegion.speciescode)
-            .filter_by(speciesname=subject)
+            .filter_by(subject=subject)
             .filter_by(dataset_id=period)
             .first()
         )
@@ -346,6 +345,12 @@ def generate_map_url(category, subject, region, period):
             subject = subject_code_row[0]
         else:
             return ''
+
+        if subject in [s.speciescode for s in
+                       db.session.query(restricted_species_2013).all()]:
+            map_href = config.sensitive_species_map_url
+        else:
+            map_href = config.species_map_url
 
     elif category == 'habitat':
         map_href = config.habitat_map_url
