@@ -25,6 +25,7 @@ from art17.models import (
     EtcQaErrorsHabitattypeManualChecked,
     EtcDicMethod,
     EtcDicDecision,
+    restricted_species_2013,
 )
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.common import (
@@ -382,17 +383,36 @@ class SpeciesSummary(SpeciesMixin, Summary):
 
     def get_context(self):
         map_url = ''
+        map_warning = ''
         period = self.dataset.id if self.dataset else 0
         subject = request.args.get('subject')
         region = request.args.get('region')
         url_kwargs = dict(period=period, subject=subject, region=region)
         if subject:
-            map_url = generate_map_url(
-                category='species',
-                subject=subject,
-                region=region,
-                period=period,
+            speciescode_row = (
+                db.session.query(EtcDataSpeciesRegion.speciescode)
+                .filter_by(subject=subject)
+                .filter_by(dataset_id=period)
+                .first()
             )
+            speciescode = speciescode_row[0] if speciescode_row else None
+            sensitive_q = db.session.query(restricted_species_2013)
+            sensitive = False
+            if speciescode in [s.speciescode for s in sensitive_q.all()]:
+                if current_user.is_anonymous():
+                    map_warning = ', '.join(
+                        [s.eu_country_code for s in sensitive_q
+                         .filter_by(speciescode=speciescode)
+                         .all()])
+                else:
+                    sensitive = True
+            if speciescode:
+                map_url = generate_map_url(
+                    category='species',
+                    subject=speciescode,
+                    region=region,
+                    sensitive=sensitive,
+                )
         return {
             'groups_url': url_for('common.species-groups'),
             'subjects_url': url_for('.species-summary-species'),
@@ -415,6 +435,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
+            'map_warning': map_warning,
             'get_tooltip': get_tooltip_for_species,
             'favourable_ref_title': favourable_ref_title_species,
         }
@@ -471,7 +492,6 @@ class HabitatSummary(HabitatMixin, Summary):
                 category='habitat',
                 subject=subject,
                 region=request.args.get('region', ''),
-                period=period,
             )
         return {
             'groups_url': url_for('common.habitat-groups'),

@@ -465,7 +465,7 @@ class ConfigForm(Form):
     species_map_url = TextField(label="URL for species map",
                                 validators=[Optional()])
     sensitive_species_map_url = TextField(
-        label="URL for restricted species map", validators=[Optional()])
+        label="URL for sensitive species map", validators=[Optional()])
     habitat_map_url = TextField(label="URL for habitat map",
                                 validators=[Optional()])
 

@@ -331,23 +331,11 @@ def get_title_for_habitat_country(row):
     return s_name, s_info, s_type
 
 
-def generate_map_url(category, subject, region, period):
+def generate_map_url(category, subject, region, sensitive=False):
     config = get_config()
 
     if category == 'species':
-        subject_code_row = (
-            db.session.query(EtcDataSpeciesRegion.speciescode)
-            .filter_by(subject=subject)
-            .filter_by(dataset_id=period)
-            .first()
-        )
-        if subject_code_row:
-            subject = subject_code_row[0]
-        else:
-            return ''
-
-        if subject in [s.speciescode for s in
-                       db.session.query(restricted_species_2013).all()]:
+        if sensitive:
             map_href = config.sensitive_species_map_url
         else:
             map_href = config.species_map_url
