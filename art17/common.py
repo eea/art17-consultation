@@ -285,8 +285,15 @@ def get_original_record_url(row):
         page = 'habitat'
     else:
         raise NotImplementedError
-    url_scheme = CONVERTER_URLS.get(row.dataset.schema if row.dataset else 0,
-                                    {})
+
+    if row.eu_country_code in ['EU', 'GR']:
+        schema = '2006'
+    elif row.dataset:
+        schema = row.dataset.schema
+    else:
+        schema = 0
+
+    url_scheme = CONVERTER_URLS.get(schema, {})
     url_format = url_scheme.get(page, '')
     info = urlparse(row.envelope)
     return url_format.format(
