@@ -1248,6 +1248,7 @@ class Config(Base):
     admin_email = Column(db.String(255))
     default_dataset_id = Column(Integer, default=1)
     species_map_url = Column(db.String(255))
+    sensitive_species_map_url = Column(db.String(255))
     habitat_map_url = Column(db.String(255))
 
 
@@ -1275,6 +1276,14 @@ class LuHabitatManual2007(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+
+restricted_species_2013 = Table(
+    'restricted_species_2013',
+    metadata,
+    Column('eu_country_code', String(2), nullable=False),
+    Column('speciescode', String(20), nullable=False),
+)
 
 
 db_manager = Manager()

@@ -24,6 +24,11 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
 
   {% include 'summary/wiki_buttons.html' %}
 
+  {% if map_warning %}
+    <p class="note"><strong>Warning</strong>:
+    The map does not show the distribution for sensitive species in {{ map_warning }}
+    </p>
+  {% endif %}
   {% include 'common/note.html' %}
   {% include 'common/table_legend.html' %}
 
