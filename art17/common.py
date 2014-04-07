@@ -12,7 +12,6 @@ from art17.models import (
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion,
     Config,
-    restricted_species_2013,
 )
 
 from .utils import str2num
@@ -286,7 +285,7 @@ def get_original_record_url(row):
     else:
         raise NotImplementedError
 
-    if row.eu_country_code in ['EU', 'GR']:
+    if row.eu_country_code in ['EL', 'GR']:
         schema = '2006'
     elif row.dataset:
         schema = row.dataset.schema
