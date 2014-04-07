@@ -82,31 +82,24 @@
         {{ form.complementary_favourable_range(size=5) }}
       </td>
 
-      <td>{{ ass.population_size }}
-          {{ ass.population_size_unit }}</td>
-      {{ conclusion_td(ass.conclusion_population, ass.method_population) }}
-      <td>{{ ass.population_trend }}</td>
+      <td>{{ ass.coverage_surface_area }}</td>
+      {{ conclusion_td(ass.conclusion_area, ass.method_area) }}
+      <td>{{ ass.coverage_trend }}</td>
       <td {% if form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}
           {{ numval_habitat_title() }}>
         {{ form.complementary_favourable_area(size=5) }}
       </td>
 
-      <td>{{ ass.habitat_surface_area }}</td>
-      {{ conclusion_td(ass.conclusion_habitat, ass.method_habitat) }}
-      <td></td>
-      <td>{{ ass.habitat_trend }}</td>
-      <td>{{ ass.complementary_suitable_habitat }}</td>
-
-      {# FP #}
+      {{ conclusion_td(ass.conclusion_structure, ass.method_structure) }}
       {{ conclusion_td(ass.conclusion_future, ass.method_future) }}
+      {{ conclusion_td(ass.conclusion_assessment, ass.method_assessment) }}
 
-      {# Overall #}
-      {{ conclusion_td(ass.conclusion_assessment, ass.method_range) }}
       <td>{{ ass.conclusion_assessment_trend }}</td>
       <td>{{ ass.conclusion_assessment_prev }}</td>
       <td>{{ ass.conclusion_assessment_change }}</td>
+      <td>{{ ass.method_target1 }}</td>
+      <td>{{ ass.conclusion_target1 }}</td>
 
-      {{ conclusion_td(ass.conclusion_target1, ass.method_target1, colspan=2) }}
     {% endif %}
 
     {% include 'summary/common/manual/edit_buttons.html' %}
