@@ -12,7 +12,7 @@
 			<span class="close pull-right"><i class="fa fa-times"></i></span>
 			<div>
 				<p class="muted">{{ row.last_update|format_date }}</p>
-				<p class="bold">{{ row.user.name or row.user_id}}</p>
+				<p class="bold">{{ (row.user.name or row.user_id) | hide_adm_etc_username }}</p>
 				<p>Institution: {{ row.user.institution }}</p>
 				<p>Member State: {{ row.MS }}</p>
 			</div>
@@ -55,7 +55,7 @@
 		</a>
 		{% else %}
 		<a class="btn-text" data-popout="details" title="View details">
-      {{ row.user.name or row.user_id or 'Details'}}
+      {{ (row.user.name or row.user_id) | hide_adm_etc_username or 'Details' }}
     </a>
     {% endif %}
 

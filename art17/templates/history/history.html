@@ -41,8 +41,8 @@
         <tr>
           <td><a href="{{ url_for(summary_endpoint, subject=c.subject,
                   region=c.region, period=c.dataset_id) + "#manual-thead" }}">{{ c.post_date }}</a></td>
-          <td>{{ c.author.name or c.author_id }}</td>
-          <td>{{ c.user.name or c.user_id }}</td>
+          <td>{{ (c.author.name or c.author_id) | hide_adm_etc_username }}</td>
+          <td>{{ (c.user.name or c.user_id) | hide_adm_etc_username }}</td>
           <td>{{ c.subject }}</td>
           <td>{{ c.region }}</td>
           <td>{{ c.read_for(g.user) }}</td>
@@ -70,7 +70,7 @@
         <tr>
           <td><a href="{{ url_for(summary_endpoint, subject=c.subject,
                   region=c.region, period=c.dataset_id) + "#manual-thead" }}">{{ c.last_update }}</a></td>
-          <td>{{ c.user.name or c.user_id }}</td>
+          <td>{{ (c.user.name or c.user_id) | hide_adm_etc_username }}</td>
           <td>{{ c.subject }}</td>
           <td>{{ c.region }}</td>
         </tr>
