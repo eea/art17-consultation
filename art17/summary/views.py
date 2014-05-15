@@ -50,6 +50,7 @@ from art17.common import (
     get_tooltip_for_habitat,
     get_tooltip_for_species,
     generate_map_url,
+    DATE_FORMAT,
 )
 from art17.forms import (
     SummaryFilterForm,
@@ -72,9 +73,6 @@ from art17.summary.conclusion import (
     ConclusionView,
 )
 from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
-
-
-DATE_FORMAT = '%d/%m/%Y %H:%M'
 
 
 @summary.app_context_processor

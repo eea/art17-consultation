@@ -26,7 +26,6 @@ from art17.auth import current_user
 
 wiki = Blueprint('wiki', __name__)
 
-DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 DATE_FORMAT_CMNT = '%B %d, %Y'
 TIME_FORMAT_CMNT = '%H:%M:%S'
 
