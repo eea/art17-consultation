@@ -18,6 +18,8 @@ header_pattern = (
     r'<body>(?P<startofbody>)'
     r'.*'
     r'(?P<breadcrumbs><div class="breadcrumbitemlast">[^<]*</div>)'
+    r'.*'
+    r'(?P<leftcolumn><div id="leftcolumn">.*)<div id="workarea">'
     r'.*$'
 )
 
@@ -51,8 +53,10 @@ def split_layout(header, footer):
             Markup(header[m.end('endofhead'):m.start('startofbody')]),
         'startofbody_to_breadcrumbs':
             Markup(header[m.end('startofbody'):m.start('breadcrumbs')]),
-        'breadcrumbs_to_content':
-            Markup(header[m.end('breadcrumbs'):]),
+        'breadcrumbs_to_leftcolumn':
+            Markup(header[m.end('breadcrumbs'):m.start('leftcolumn')]),
+        'leftcolumn_to_content':
+            Markup(header[m.end('leftcolumn'):]),
         'content_to_end':
             Markup(footer),
     }
