@@ -126,7 +126,7 @@ class Progress(views.View):
             title.append('Reported as occasional by: ' + presence['occasional'])
         title.append('Assessment {type} : {details}'.format(
             type=conclusion_type,
-            details=COUNTRY_ASSESSMENTS.get(cell['conclusion'],'')
+            details=COUNTRY_ASSESSMENTS.get(cell['conclusion'], '')
         ))
         if current_user.has_role('etc') or current_user.has_role('admin'):
             title.append('Decision: {main} ({details})'.format(
@@ -134,8 +134,8 @@ class Progress(views.View):
                 details=self.DECISION_DETAILS.get(cell['main_decision'], 'Auto')
             ))
         title.append('Method {method} ({details})'.format(
-                method=cell['method'],
-                details=self.METHOD_DETAILS.get(cell['method'], '')
+            method=cell['method'],
+            details=self.METHOD_DETAILS.get(cell['method'], '')
         ))
         return '\n'.join(title)
 
@@ -197,6 +197,7 @@ class Progress(views.View):
             EtcDicBiogeoreg.query
             .with_entities(EtcDicBiogeoreg.reg_code)
             .filter_by(dataset_id=period)
+            .order_by(EtcDicBiogeoreg.order)
         )
 
         current_selection = self.get_current_selection(
