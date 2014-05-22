@@ -1,7 +1,7 @@
 from datetime import datetime
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
-from sqlalchemy import or_, func, not_
+from sqlalchemy import or_, func
 from flask import (
     Blueprint,
     views,
@@ -12,7 +12,7 @@ from flask import (
 from flask.ext.principal import PermissionDenied
 
 from art17.auth import current_user
-from art17.common import get_default_period, admin_perm
+from art17.common import get_default_period, admin_perm, DATE_FORMAT
 from art17.forms import CommentForm
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
@@ -20,9 +20,6 @@ from art17.models import (
     Comment, t_comments_read, HabitatComment, t_habitat_comments_read,
     Wiki, WikiComment, t_wiki_comments_read,
 )
-
-
-DATE_FORMAT = '%Y-%m-%d'
 
 
 comments = Blueprint('comments', __name__)

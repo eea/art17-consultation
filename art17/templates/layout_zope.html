@@ -21,7 +21,8 @@
     {{ breadcrumbs(APP_BREADCRUMBS) }}
   {% endblock %}
 
-{{ g.zope_layout.breadcrumbs_to_content }}
+{{ g.zope_layout.breadcrumbs_to_leftcolumn }}
+{{ g.zope_layout.leftcolumn_to_content }}
 
   <script>$('body').addClass('fullscreen')</script>
   {% include 'flash_messages.html' %}

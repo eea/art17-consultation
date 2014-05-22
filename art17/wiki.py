@@ -9,6 +9,7 @@ from flask import (
     redirect)
 from flask.ext.principal import PermissionDenied
 from datetime import datetime
+from sqlalchemy import or_
 
 from art17.models import (
     Wiki,
@@ -26,7 +27,6 @@ from art17.auth import current_user
 
 wiki = Blueprint('wiki', __name__)
 
-DATE_FORMAT_PH = '%Y-%m-%d %H:%M:%S'
 DATE_FORMAT_CMNT = '%B %d, %Y'
 TIME_FORMAT_CMNT = '%H:%M:%S'
 
@@ -50,14 +50,22 @@ def format_time_cmnt(value):
 
 @wiki.app_template_filter('hide_adm_etc_username')
 def hide_adm_etc_username(name):
-    author = RegisteredUser.query.filter_by(name=name).first()
-    if not author:
-        return name
-    if (author.has_role('etc') or author.has_role('admin')) and not (
-            current_user.has_role('etc') or current_user.has_role('admin')):
-        return 'Someone'
-    else:
-        return name or ''
+    author = (
+        RegisteredUser.query
+        .filter(or_(
+            RegisteredUser.name == name,
+            RegisteredUser.id == name,
+        ))
+        .first()
+    )
+    ret_name = name or ''
+    if not (current_user.has_role('etc') or current_user.has_role('admin')):
+        if author:
+            if author.has_role('etc'):
+                ret_name = 'EEA-ETC/BD'
+            elif author.has_role('admin'):
+                ret_name = 'Admin'
+    return ret_name
 
 
 @wiki.app_template_global('is_read')
