@@ -38,7 +38,8 @@ def can_view_details():
     if not current_user.is_authenticated():
         return False
 
-    return current_user.has_role('etc') or current_user.has_role('admin')
+    #return current_user.has_role('etc') or current_user.has_role('admin')
+    return current_user.has_role('admin')
 
 
 @progress.app_template_global('can_select_assessor')
@@ -164,7 +165,7 @@ class Progress(views.View):
             method=cell['method'],
             details=self.METHOD_DETAILS.get(cell['method'], '')
         ))
-        if can_view_details():
+        if current_user.has_role('etc') or current_user.has_role('admin'):
             comms = get_counts(comment_counts, subject, region)
             title.append((
                 "Unread comments for my conclusions: {user}\n" +
@@ -239,8 +240,9 @@ class Progress(views.View):
         )
         progress_filter_form.group.choices = self.get_groups(period)
         progress_filter_form.conclusion.choices = self.get_conclusions()
-        progress_filter_form.assessor.choices = self.get_assessors(
-            period, group)
+        progress_filter_form.assessor.choices = (
+            self.get_assessors(period, group)
+        )
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ''
