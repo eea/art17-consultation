@@ -112,18 +112,21 @@
 
   <p><strong>Biogeographical assessments at EU 27 level:</strong></p>
   <ul>
+    {% if not is_public %}
     <li><a href="{{ url_for('progress.species-progress') }}">
         Species assessments</a></li>
     <li><a href="{{ url_for('progress.habitat-progress') }}">
         Habitats assessments</a></li>
+    {% endif %}
     <li><a href="{{ url_for('summary.species-summary') }}">
-        Species data summaries</a></li>
+        Species assessments</a></li>
     <li><a href="{{ url_for('summary.habitat-summary') }}">
-        Habitat data summaries</a></li>
+        Habitat assessments</a></li>
   </ul>
 
   <br/>
 
+  {% if current_user.is_authenticated() %}
   <h2>Activity logs</h2>
   <ul>
     <li>
@@ -133,6 +136,7 @@
       <a href="{{ url_for('comments.habitat-history') }}">Habitats</a>
     </li>
   </ul>
+  {% endif %}
 
 
   {% if admin_perm.can() %}

@@ -178,6 +178,8 @@ def register_permissions_in_template_globals(state):
 
 @common.app_context_processor
 def inject_globals():
+    from art17.auth import current_user
+
     cfg = get_config()
 
     today = date.today()
@@ -189,12 +191,15 @@ def inject_globals():
     else:
         consultation_started = False
 
+    is_public = not current_user.is_authenticated() or is_public_user()
+
     return {
         'APP_BREADCRUMBS': [('Article 17', flask.url_for(HOMEPAGE_VIEW_NAME))],
         'consultation_started': consultation_started,
         'today': today,
         'start_date': cfg.start_date,
         'end_date': cfg.end_date,
+        'is_public': is_public,
     }
 
 
