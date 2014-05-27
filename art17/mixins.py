@@ -124,9 +124,13 @@ class MixinsCommon(object):
             .distinct()
             .all()
         )
-        assessors = [(user_id, "{0} ({1})".format(name or user_id, user_id))
-                     for user_id, name in assessors]
-        return blank_option + assessors
+        assessors_data = []
+        for user_id, name in assessors:
+            if name:
+                name = name.encode('utf-8')
+            name = name or user_id
+            assessors_data.append((user_id, "{0} ({1})".format(name, user_id)))
+        return blank_option + assessors_data
 
 
 class SpeciesMixin(MixinsCommon):
