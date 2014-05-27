@@ -4,7 +4,7 @@ from pytest import fixture
 from alembic import command, config
 from path import path
 from mock import patch
-from datetime import datetime
+from datetime import datetime, date
 import urllib
 
 from art17.app import create_app
@@ -33,7 +33,9 @@ def create_generic_fixtures():
         "('nat', 'National expert')"
     )
     models.db.session.execute(
-        "insert into config(default_dataset_id) values (1)")
+        "insert into config(default_dataset_id, start_date) values (1, '%s')" %
+        date.today()
+    )
 
 
 def create_testing_app():

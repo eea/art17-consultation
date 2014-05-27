@@ -171,8 +171,23 @@ def register_permissions_in_template_globals(state):
 
 @common.app_context_processor
 def inject_globals():
+    cfg = get_config()
+
+    today = date.today()
+    if cfg.start_date:
+        if cfg.end_date:
+            consultation_started = cfg.start_date <= today <= cfg.end_date
+        else:
+            consultation_started = cfg.start_date <= today
+    else:
+        consultation_started = False
+
     return {
         'APP_BREADCRUMBS': [('Article 17', flask.url_for(HOMEPAGE_VIEW_NAME))],
+        'consultation_started': consultation_started,
+        'today': today,
+        'start_date': cfg.start_date,
+        'end_date': cfg.end_date,
     }
 
 
@@ -360,23 +375,9 @@ def generate_map_url(category, subject, region, sensitive=False):
 
 @common.route('/')
 def homepage():
-    cfg = get_config()
     from art17.auth.security import current_user
 
-    today = date.today
-    if cfg.start_date:
-        if cfg.end_date:
-            consultation_started = cfg.start_date <= today <= cfg.end_date
-        else:
-            consultation_started = cfg.start_date <= today
-    else:
-        consultation_started = False
-
     return flask.render_template('homepage.html', **{
-        'start_date': cfg.start_date,
-        'end_date': cfg.end_date,
-        'today': today,
-        'consultation_started': consultation_started,
         'current_user': current_user,
     })
 
