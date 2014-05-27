@@ -10,6 +10,7 @@ from flask import (
 from flask.ext.principal import PermissionDenied
 from datetime import datetime
 from sqlalchemy import or_
+from art17.common import is_public_user
 
 from art17.models import (
     Wiki,
@@ -89,18 +90,19 @@ def get_css_class(comment):
 def can_edit_page(dataset):
     if not dataset or dataset.is_readonly:
         return False
-    return not current_user.is_anonymous()
+
+    return not current_user.is_anonymous() and not is_public_user()
 
 
 @wiki.app_template_global('can_manage_revisions')
 def can_manage_revisions():
-    return not current_user.is_anonymous()
+    return not current_user.is_anonymous() and not is_public_user()
 
 
 @wiki.app_template_global('can_change_revision')
 def can_change_revision(revision):
     if not revision.dataset or revision.dataset.is_readonly or \
-            revision.active or current_user.is_anonymous():
+            revision.active or current_user.is_anonymous() or is_public_user():
         return False
     return True
 
@@ -124,7 +126,7 @@ def can_edit_comment(comment):
 def can_manage_comment(dataset):
     if not dataset or dataset.is_readonly:
         return False
-    return not current_user.is_anonymous()
+    return not current_user.is_anonymous() and not is_public_user()
 
 
 class CommonSection(object):
