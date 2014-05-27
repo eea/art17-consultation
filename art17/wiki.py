@@ -126,7 +126,7 @@ def can_edit_comment(comment):
 def can_manage_comment(dataset):
     if not dataset or dataset.is_readonly:
         return False
-    return not current_user.is_anonymous() and not is_public_user()
+    return not current_user.is_anonymous()
 
 
 class CommonSection(object):
