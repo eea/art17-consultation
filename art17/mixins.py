@@ -143,10 +143,12 @@ class SpeciesMixin(MixinsCommon):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
 
     def subjects_by_group(self, period, group):
+        assessment_field = self.model_cls.subject
         qs = (
-            db.session.query(self.model_cls.speciesname)
+            db.session.query(assessment_field)
+            .filter(assessment_field != None)
             .filter_by(group=group, dataset_id=period).distinct()
-            .order_by(self.model_cls.speciesname)
+            .order_by(assessment_field)
         )
         return [(row[0], row[0]) for row in qs if row[0]]
 

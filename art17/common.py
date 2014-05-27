@@ -369,10 +369,20 @@ def homepage():
     cfg = get_config()
     from art17.auth.security import current_user
 
+    today = date.today
+    if cfg.start_date:
+        if cfg.end_date:
+            consultation_started = cfg.start_date <= today <= cfg.end_date
+        else:
+            consultation_started = cfg.start_date <= today
+    else:
+        consultation_started = False
+
     return flask.render_template('homepage.html', **{
         'start_date': cfg.start_date,
         'end_date': cfg.end_date,
-        'today': date.today(),
+        'today': today,
+        'consultation_started': consultation_started,
         'current_user': current_user,
     })
 
