@@ -96,6 +96,38 @@ class MixinsCommon(object):
         return ms_qs.order_by(cls.model_cls.presence,
                               cls.model_cls.eu_country_code).all()
 
+    @classmethod
+    def get_assessors(cls, period, group):
+        blank_option = [('', 'All users')]
+        assessors = (
+            cls.model_manual_cls
+            .query
+            .join(
+                cls.model_cls,
+                and_(
+                    cls.model_manual_cls.dataset_id == cls.model_cls.dataset_id,
+                    cls.model_manual_cls.subject == cls.model_cls.subject)
+            )
+            .outerjoin(RegisteredUser,
+                cls.model_manual_cls.user_id == RegisteredUser.id)
+            .with_entities(
+                cls.model_manual_cls.user_id,
+                RegisteredUser.name)
+            .filter(
+                cls.model_manual_cls.dataset_id == period,
+                cls.model_cls.group == group,
+            )
+            .distinct()
+            .all()
+        )
+        assessors_data = []
+        for user_id, name in assessors:
+            if name:
+                name = name.encode('utf-8')
+            name = name or user_id
+            assessors_data.append((user_id, "{0} ({1})".format(name, user_id)))
+        return blank_option + assessors_data
+
 
 class SpeciesMixin(MixinsCommon):
 
