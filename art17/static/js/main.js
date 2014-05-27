@@ -211,6 +211,18 @@ $(document).ready(function () {
     });
 });
 
+// Confirm permanently delete
+$(document).ready(function () {
+    $('.perm-del').on('click', function (evt) {
+        evt.preventDefault();
+        var confirm_del = confirm("Are you sure you want to permanently delete this record?");
+        if (confirm_del) {
+            var href = $(this).attr('href');
+            window.location = href;
+        }
+    });
+});
+
 // Handle error display in form registration
 $(document).ready(function () {
     $('.form-error').on('focus', function () {
