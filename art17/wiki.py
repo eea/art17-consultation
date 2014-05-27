@@ -51,6 +51,7 @@ def format_time_cmnt(value):
 
 @wiki.app_template_filter('hide_adm_etc_username')
 def hide_adm_etc_username(name):
+    name = name or ''
     author = (
         RegisteredUser.query
         .filter(or_(
@@ -59,14 +60,13 @@ def hide_adm_etc_username(name):
         ))
         .first()
     )
-    ret_name = name or ''
     if not (current_user.has_role('etc') or current_user.has_role('admin')):
         if author:
             if author.has_role('etc'):
-                ret_name = 'EEA-ETC/BD'
+                name = 'EEA-ETC/BD'
             elif author.has_role('admin'):
-                ret_name = 'Admin'
-    return ret_name
+                name = 'Admin'
+    return name
 
 
 @wiki.app_template_global('is_read')
@@ -261,6 +261,7 @@ class AuditTrailSection(CommonSection):
 class WikiView(views.View):
     methods = ['GET', 'POST']
     wiki_form_cls = WikiEditForm
+    cmnt_form_cls = CommentForm
     template_name = 'wiki/wiki.html'
 
     def __init__(self, section):
@@ -381,7 +382,7 @@ class AddComment(WikiView):
         return True
 
     def get_context(self):
-        return {'add_cmnt_form': self.wiki_form_cls()}
+        return {'add_cmnt_form': self.cmnt_form_cls()}
 
 
 class EditPage(WikiView):
@@ -463,8 +464,8 @@ class EditComment(WikiView):
             .first_or_404()
         )
 
-        wiki_edit_cmnt_form = self.wiki_form_cls()
-        wiki_edit_cmnt_form.text.process_data(comment.comment)
+        wiki_edit_cmnt_form = self.cmnt_form_cls()
+        wiki_edit_cmnt_form.comment.process_data(comment.comment)
 
         return {'edit_comment_form': wiki_edit_cmnt_form}
 

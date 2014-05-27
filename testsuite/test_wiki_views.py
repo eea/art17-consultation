@@ -198,13 +198,13 @@ def test_add_comment(app, setup, zope_auth, client):
     set_user('newuser')
     request_data = ('post', ['/species/summary/datasheet/add_comment/', {
         'period': '1', 'subject': 'Canis lupus', 'region': ''}],
-        {'text': 'Test add comment.'})
+        {'comment': 'Test add comment.'})
     client.post(*get_request_params(*request_data))
     request_args = request_data[1][1]
     wiki = get_instance(Wiki, dataset_id=request_args['period'],
                         assesment_speciesname=request_args['subject'],
                         region_code=request_args['region'])
-    assert request_data[2]['text'] in [c.comment for c in wiki.comments]
+    assert request_data[2]['comment'] in [c.comment for c in wiki.comments]
 
 
 def test_edit_page(app, setup, zope_auth, client):
@@ -224,7 +224,7 @@ def test_edit_comment(app, setup, zope_auth, client):
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/edit_comment/', {
             'period': '1', 'subject': 'Canis lupus', 'region': '',
-            'comment_id': 1}], {'text': 'Test edit comment.'}))
+            'comment_id': 1}], {'comment': 'Test edit comment.'}))
     assert get_instance(WikiComment, id=1).comment == 'Test edit comment.'
 
 

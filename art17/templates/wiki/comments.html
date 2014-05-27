@@ -51,7 +51,7 @@
                 {% endif %}
                 >{{ btn_text }}</button>
 
-            <button class="btn-text edit-btn" href="{{ edit_cmnt_url ~ '#' ~ comment.id }}"
+            <button class="btn-ext edit-btn" href="{{ edit_cmnt_url ~ '#' ~ comment.id }}"
             {% if not can_edit_comment(comment) or edit_comment_form %}
             style="display: none;"{% endif %}>Edit</button>
 
