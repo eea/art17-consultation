@@ -15,6 +15,23 @@
     {{ progress_filter_form.conclusion() }}
   </div>
 
+  {% if can_select_assessor() %}
+  <div class="box-col">
+    {{ progress_filter_form.assessor.label }}
+    {{ progress_filter_form.assessor(**{'data-href': assessors_url}) }}
+  </div>
+  {% endif %}
+
+  {% if can_view_details() %}
+  <div class="pull-left right-12 no-width">
+
+    <label class="offset_top_label btn-align">
+        {{ progress_filter_form.extra(value='on') }}
+        {{ progress_filter_form.extra.label.text }}
+    </label>
+  </div>
+  {% endif %}
+
   <button class="btn-blue offset_top_label" type="submit">Filter</button>
 
 </form>
