@@ -11,7 +11,7 @@ from art17.models import (
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion,
 )
-from art17.utils import validate_field, validate_ref
+from art17.utils import validate_field, validate_ref, validate_nonempty
 
 EMPTY_FORM = "Please fill at least one field"
 NOT_NUMERIC_VALUES = (
@@ -447,10 +447,16 @@ class WikiEditForm(Form):
 
     text = TextAreaField()
 
+    def custom_validate(self):
+        return validate_nonempty(self.text.data)
+
 
 class CommentForm(Form):
 
     comment = TextAreaField()
+
+    def custom_validate(self):
+        return validate_nonempty(self.comment.data)
 
 
 class ConfigForm(Form):

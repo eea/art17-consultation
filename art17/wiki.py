@@ -22,7 +22,7 @@ from art17.models import (
     Dataset,
     db,
 )
-from art17.forms import WikiEditForm
+from art17.forms import WikiEditForm, CommentForm
 from art17.auth import current_user
 
 
@@ -51,6 +51,7 @@ def format_time_cmnt(value):
 
 @wiki.app_template_filter('hide_adm_etc_username')
 def hide_adm_etc_username(name):
+    name = name or ''
     author = (
         RegisteredUser.query
         .filter(or_(
@@ -59,14 +60,13 @@ def hide_adm_etc_username(name):
         ))
         .first()
     )
-    ret_name = name or ''
     if not (current_user.has_role('etc') or current_user.has_role('admin')):
         if author:
             if author.has_role('etc'):
-                ret_name = 'EEA-ETC/BD'
+                name = 'EEA-ETC/BD'
             elif author.has_role('admin'):
-                ret_name = 'Admin'
-    return ret_name
+                name = 'Admin'
+    return name
 
 
 @wiki.app_template_global('is_read')
@@ -261,6 +261,7 @@ class AuditTrailSection(CommonSection):
 class WikiView(views.View):
     methods = ['GET', 'POST']
     wiki_form_cls = WikiEditForm
+    cmnt_form_cls = CommentForm
     template_name = 'wiki/wiki.html'
 
     def __init__(self, section):
@@ -362,10 +363,14 @@ class AddComment(WikiView):
         if not can_add_comment(comments, wiki_changes, dataset):
             raise PermissionDenied
 
-        comment_text = request.form.get('text')
+        form = CommentForm(request.form)
+        if not form.validate():
+            flash("Please enter a valid comment.")
+            return False
+
         comment = self.section.wiki_comment_cls(
             wiki_id=wiki.id,
-            comment=comment_text,
+            comment=form.comment.data,
             author_id=current_user.id,
             posted=datetime.now(),
             dataset_id=dataset.id,
@@ -377,7 +382,7 @@ class AddComment(WikiView):
         return True
 
     def get_context(self):
-        return {'add_cmnt_form': self.wiki_form_cls()}
+        return {'add_cmnt_form': self.cmnt_form_cls()}
 
 
 class EditPage(WikiView):
@@ -388,21 +393,24 @@ class EditPage(WikiView):
         if not can_edit_page(dataset):
             raise PermissionDenied
 
-        new_body = request.form.get('text')
+        form = WikiEditForm(request.form)
+        if not form.validate():
+            flash("Please enter a valid data sheet info entry.")
+            return False
+
         active_change = self.section.get_active_change()
         if active_change:
-            if active_change.body == new_body:
+            if active_change.body == form.text.data:
                 flash('No changes were made.')
                 return False
             active_change.active = 0
         else:
             self.section.insert_inexistent_wiki()
 
-        body_text = request.form.get('text')
         wiki = self.section.get_wiki()
         new_change = self.section.wiki_change_cls(
             wiki_id=wiki.id,
-            body=body_text,
+            body=form.text.data,
             editor=current_user.id,
             changed=datetime.now(),
             active=1,
@@ -435,7 +443,12 @@ class EditComment(WikiView):
         if not can_edit_comment(comment):
             raise PermissionDenied
 
-        comment.comment = request.form.get('text')
+        form = CommentForm(request.form)
+        if not form.validate():
+            flash("Please enter a valid comment.")
+            return False
+
+        comment.comment = form.comment.data
         comment.readers = []
         db.session.commit()
 
@@ -451,8 +464,8 @@ class EditComment(WikiView):
             .first_or_404()
         )
 
-        wiki_edit_cmnt_form = self.wiki_form_cls()
-        wiki_edit_cmnt_form.text.process_data(comment.comment)
+        wiki_edit_cmnt_form = self.cmnt_form_cls()
+        wiki_edit_cmnt_form.comment.process_data(comment.comment)
 
         return {'edit_comment_form': wiki_edit_cmnt_form}
 

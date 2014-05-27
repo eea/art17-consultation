@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import re
 from decimal import Decimal
+from bs4 import BeautifulSoup
 
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
 valid_numeric = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
                            u"|(>|>>|≈|<)?\s*((\d\.)?\d+)" + ")" + "\s*$")
 valid_ref = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
                        u"|(>|>>|≈|<)?\s*((\d\.)?\d+)?|x" + ")" + "\s*$")
+empty_str = re.compile("^\s*$")
 
 
 def str2num(s, default='N/A', number_format='%.2f'):
@@ -50,6 +52,15 @@ def validate_ref(s):
     if s:
         return bool(valid_ref.match(s))
     return True
+
+
+def validate_nonempty(s):
+    """ Checks if a ckeditor text is empty (whitespaces only)
+    """
+    if s:
+        soup = BeautifulSoup(s)
+        return not bool(empty_str.match(soup.text.replace(u'\xa0', ' ')))
+    return False
 
 
 def na_if_none(s, default='N/A'):

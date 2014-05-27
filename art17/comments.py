@@ -8,6 +8,7 @@ from flask import (
     render_template,
     request,
     url_for,
+    flash,
 )
 from flask.ext.principal import PermissionDenied
 
@@ -139,7 +140,7 @@ class CommentsList(views.View):
                 db.session.commit()
             return True
         else:
-            raise PermissionDenied
+            flash("Please enter a valid comment.")
 
     def dispatch_request(self, period, subject, region, user):
         MS = request.args.get('MS')
