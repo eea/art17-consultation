@@ -1,7 +1,14 @@
 {% extends layout_template %}
 
 {% block content %}
-    {% block text_description %}{% endblock text_description %}
+  {% block text_description %}{% endblock text_description %}
+
+
+  {% if not consultation_started and not can_preview_progress() %}
+
+    <p>The public consultation has not started yet. </p>
+
+  {% else %}
 
     {% include 'progress/filters.html' %}
 
@@ -105,5 +112,6 @@
     {% else %}
         <p><b>Please select a group and a conclusion.</b></p>
     {% endif %}
+  {% endif %}
 
 {% endblock %}

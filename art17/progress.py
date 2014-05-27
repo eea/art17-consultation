@@ -39,6 +39,14 @@ def can_view_details():
     return current_user.has_role('etc') or current_user.has_role('admin')
 
 
+@progress.app_template_global('can_preview_progress')
+def can_preview_progress():
+    if not current_user.is_authenticated():
+        return False
+
+    return current_user.has_role('etc') or current_user.has_role('admin')
+
+
 def user_is_expert(user):
     return True if user in ('maximiur', 'iurieetcbd') else False
 
