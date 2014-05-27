@@ -11,7 +11,7 @@ def can_delete(record):
     if record.dataset.is_readonly:
         return False
 
-    return admin_perm.can() or record.user_id == current_user.id
+    return record.user_id == current_user.id
 
 
 @summary.app_template_global('can_update_decision')
