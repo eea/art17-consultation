@@ -150,6 +150,9 @@ def test_perms(app, setup, zope_auth, client, request_type, request_args,
     ('post', ['/species/summary/datasheet/add_comment/', {
         'period': '1', 'subject': 'Canis lupus', 'region': ''}],
         {'text': 'Test add comment.'}),
+    # Getting revision info, unavailable to public
+    ('get', ['/species/summary/datasheet/get_revision/', {
+        'revision_id': 999}], {})
 ])
 def test_perms_auth_user(app, setup, zope_auth, client, request_type,
                          request_args, post_params):
@@ -169,8 +172,6 @@ def test_perms_auth_user(app, setup, zope_auth, client, request_type,
         'comment_id': 999}], {'text': 'Test edit comment.'}),
     ('get', ['/species/summary/datasheet/manage_comment/', {
         'comment_id': 999, 'toggle': 'read', 'period': '1'}], {}),
-    ('get', ['/species/summary/datasheet/get_revision/', {
-        'revision_id': 999}], {})
 ])
 def test_404_error(app, setup, zope_auth, client, request_type, request_args,
                    post_params):
@@ -182,7 +183,7 @@ def test_404_error(app, setup, zope_auth, client, request_type, request_args,
 
 
 def test_change_active_revision(app, setup, zope_auth, client):
-    create_user('otheruser')
+    create_user('otheruser', role_names=['stakeholder'])
     set_user('otheruser')
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/page_history/', {
@@ -207,7 +208,7 @@ def test_add_comment(app, setup, zope_auth, client):
 
 
 def test_edit_page(app, setup, zope_auth, client):
-    create_user('testuser')
+    create_user('testuser', role_names=['stakeholder'])
     set_user('testuser')
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/edit_page/', {
@@ -218,7 +219,7 @@ def test_edit_page(app, setup, zope_auth, client):
 
 
 def test_edit_comment(app, setup, zope_auth, client):
-    create_user('testuser')
+    create_user('testuser', role_names=['stakeholder'])
     set_user('testuser')
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/edit_comment/', {
@@ -250,7 +251,7 @@ def test_toggle_read(app, setup, zope_auth, client):
 
 
 def test_get_revision(app, setup, zope_auth, client):
-    create_user('testuser')
+    create_user('testuser', role_names=['stakeholder'])
     set_user('testuser')
 
     resp = client.get('/species/summary/datasheet/get_revision/', {
