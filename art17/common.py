@@ -157,6 +157,13 @@ etc_perm = Permission(RoleNeed('etc'))
 nat_perm = Permission(RoleNeed('nat'))
 
 
+def is_public_user():
+    """ Call for authenticated users. """
+    return not (
+        admin_perm.can() or sta_perm.can() or etc_perm.can() or nat_perm.can()
+    )
+
+
 @common.record
 def register_permissions_in_template_globals(state):
     app = state.app
