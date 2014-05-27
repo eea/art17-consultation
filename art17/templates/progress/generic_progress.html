@@ -3,14 +3,13 @@
 {% block content %}
   {% block text_description %}{% endblock text_description %}
 
+  {% include 'progress/filters.html' %}
 
-  {% if not consultation_started and not can_preview_progress() %}
+  {% if not dataset.is_readonly and (not consultation_started and not can_preview_progress()) %}
 
     <p>The public consultation has not started yet. </p>
 
   {% else %}
-
-    {% include 'progress/filters.html' %}
 
     {% if current_selection %}
 
