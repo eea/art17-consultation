@@ -145,18 +145,24 @@ class ConclusionDelete(MixinView, views.View):
         delete_region = request.args.get('delete_region')
         delete_user = request.args.get('delete_user')
         delete_ms = request.args.get('delete_ms')
+        permanently = request.args.get('perm', 0)
         record = self.mixin.get_manual_record(period, subject, delete_region,
                                               delete_user, delete_ms)
         if not record:
             abort(404)
         if not can_delete(record):
             abort(403)
-        if record.deleted:
-            record.deleted = 0
+
+        if permanently:
+            db.session.delete(record)
         else:
-            record.deleted = 1
-        db.session.add(record)
+            if record.deleted:
+                record.deleted = 0
+            else:
+                record.deleted = 1
+            db.session.add(record)
         db.session.commit()
+
         return redirect(
             url_for(self.mixin.summary_endpoint, period=period,
                     subject=subject, region=region)
