@@ -99,17 +99,6 @@
 
   <h2>Quick links for the impatient</h2>
 
-  <p>
-    <strong>Biogeographical assessments at Member State level:</strong>
-  </p>
-
-  <ul>
-    <li><a href="{{ url_for('report.species-report') }}">
-        Species assessments</a></li>
-    <li><a href="{{ url_for('report.habitat-report') }}">
-        Habitats assessments</a></li>
-  </ul>
-
   <p><strong>Biogeographical assessments at EU 27 level:</strong></p>
   <ul>
     {% if not is_public %}
@@ -121,8 +110,20 @@
     <li><a href="{{ url_for('summary.species-summary') }}">
         Species assessments</a></li>
     <li><a href="{{ url_for('summary.habitat-summary') }}">
-        Habitat assessments</a></li>
+        Habitats assessments</a></li>
   </ul>
+
+  <p>
+    <strong>Biogeographical assessments at Member State level:</strong>
+  </p>
+
+  <ul>
+    <li><a href="{{ url_for('report.species-report') }}">
+        Species assessments</a></li>
+    <li><a href="{{ url_for('report.habitat-report') }}">
+        Habitats assessments</a></li>
+  </ul>
+
 
   <br/>
 
