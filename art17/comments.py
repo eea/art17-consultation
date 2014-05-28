@@ -151,12 +151,6 @@ class CommentsList(views.View):
             edited_comment = self.model_comment_cls.query.get(edit_id)
             if not can_edit_comment(edited_comment):
                 raise PermissionDenied
-        if request.args.get('toggle'):
-            comment = self.model_comment_cls.query.get(request.args['toggle'])
-            self.toggle_read(comment)
-        if request.args.get('delete'):
-            comment = self.model_comment_cls.query.get(request.args['delete'])
-            self.toggle_delete(comment)
 
         if request.method == 'POST':
             form = CommentForm(request.form)
@@ -167,6 +161,20 @@ class CommentsList(views.View):
                     hash = '#theform'
                 return redirect(request.base_url + hash)
         else:
+            if request.args.get('toggle'):
+                comment = self.model_comment_cls.query.get(request.args
+                                                           ['toggle'])
+                self.toggle_read(comment)
+            if request.args.get('delete'):
+                comment = self.model_comment_cls.query.get(request.args
+                                                           ['delete'])
+                permanently = request.args.get('perm', 0)
+                if permanently:
+                    db.session.delete(comment)
+                    db.session.commit()
+                else:
+                    self.toggle_delete(comment)
+
             if edited_comment:
                 form_data = MultiDict({'comment': edited_comment.comment})
             else:

@@ -59,10 +59,11 @@
                 </a>&ensp;
               {% endif %}
               {% if can_delete_comment(comment) %}
-                <a class="btn-text2"
-                   href="?delete={{ comment.id }}&deleted={{ deleted }}#comment-{{ comment.id }}">
-                  {% if deleted %}Undelete{% else %}Delete{% endif %}
-                </a>
+              <a class="btn-text2"
+                 href="?delete={{ comment.id }}&deleted={{ deleted }}#comment-{{ comment.id }}"
+                    >{% if deleted %}Undelete{% else %}Delete{% endif %}</a>&ensp;
+                <a class="btn-text2 perm-del"
+                    href="?delete={{ comment.id }}&perm=1">Permanently delete</a>
               {% endif %}
             </div>
             <div class="cmnt-body">{{ comment.comment | safe }}</div>

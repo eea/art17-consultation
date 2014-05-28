@@ -41,10 +41,10 @@
 
         {% if can_delete(row) %}
           {% set url = url_for(delete_endpoint, period=row.dataset_id,
-          subject=subject, region=region, delete_region=row.region, 
+          subject=subject, region=region, delete_region=row.region,
           delete_user=row.user_id, delete_ms=row.MS) %}
           <a class="button delete-btn" href="{{ url }}#man-row-{{ loop.index }}">{% if row.deleted %}Undelete{% else %}Delete{% endif %}</a>
-          <a class="button btn-red perm-del" href="{{ url }}&perm=1#man-row-{{ loop.index }}">Permanently delete</a>
+          <a class="button btn-red perm-del" href="{{ url }}&perm=1#manual-thead">Permanently delete</a>
         {% endif %}
 			</div>
 			{% endif %}
