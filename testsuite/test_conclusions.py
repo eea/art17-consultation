@@ -33,6 +33,17 @@ def setup_common():
 @pytest.fixture
 def setup_add(app):
     setup_common()
+    EtcDataSpeciesRegionFactory(
+        speciescode='1111',
+        assesment_speciesname='Canis lupus',
+        eu_country_code='FR',
+        country='FR',
+    )
+    EtcDataHabitattypeRegionFactory(
+        habitatcode=1110,
+        eu_country_code='FR',
+        country='FR',
+    )
     models.db.session.commit()
 
 
@@ -263,14 +274,14 @@ def test_autofill_conclusion_form(app, client, zope_auth, setup_autofill,
     [(['/species/summary/', {'period': 1, 'group': 'Mammals',
                              'subject': 'Canis lupus', 'region': 'ALP'}],
      {'region': 'ALP', 'method_population': '2GD',
-      'conclusion_population': 'FV', 'submit': 'add'}, 'natuser', 'FR',
-     ['nat'], models.SpeciesManualAssessment),
+      'conclusion_population': 'FV', 'submit': 'add', 'MS': 'FR'},
+      'natuser', 'FR', ['nat'], models.SpeciesManualAssessment),
 
      # Habitat
      (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
                              'subject': '1110', 'region': 'ALP'}],
       {'region': 'ALP', 'method_range': '2GD', 'conclusion_range': 'FV',
-       'submit': 'add'}, 'natuser', 'FR', ['nat'],
+       'submit': 'add', 'MS': 'FR'}, 'natuser', 'FR', ['nat'],
       models.HabitattypesManualAssessment),
      ])
 def test_add_conclusion_nat(app, client, zope_auth, setup_add, request_args,
@@ -323,14 +334,14 @@ def test_add_conclusion_stk(app, client, zope_auth, setup_add, request_args,
     [(['/species/summary/', {'period': 1, 'group': 'Mammals',
                              'subject': 'Canis lupus', 'region': 'ALP'}],
      {'region': 'ALP', 'method_population': '2GD',
-      'conclusion_population': 'FV', 'submit': 'add'}, 'etcuser', 'FR',
-     ['etc'], models.SpeciesManualAssessment),
+      'conclusion_population': 'FV', 'submit': 'add', 'MS': 'EU27'},
+      'etcuser', 'FR', ['etc'], models.SpeciesManualAssessment),
 
      # Habitat
      (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
                              'subject': '1110', 'region': 'ALP'}],
       {'region': 'ALP', 'method_range': '2GD', 'conclusion_range': 'FV',
-       'submit': 'add'}, 'etcuser', 'FR', ['etc'],
+       'submit': 'add', 'MS': 'EU27'}, 'etcuser', 'FR', ['etc'],
       models.HabitattypesManualAssessment),
      ])
 def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
@@ -359,17 +370,17 @@ def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
      (['/species/conc/delete/', {
        'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
        'delete_region': 'ALP', 'delete_user': 'someuser',
-       'delete_ms': 'EU25'}], '', 403, True, None),
+       'delete_ms': 'EU27'}], '', 403, True, None),
      # Trying to delete another user's conclusion
      (['/species/conc/delete/', {
        'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
        'delete_region': 'ALP', 'delete_user': 'someuser',
-       'delete_ms': 'EU25'}], 'otheruser', 403, True, None),
+       'delete_ms': 'EU27'}], 'otheruser', 403, True, None),
      # Successfully deleting its own conclusion
      (['/species/conc/delete/', {
        'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
        'delete_region': 'ALP', 'delete_user': 'someuser',
-       'delete_ms': 'EU25'}], 'someuser', 302, False,
+       'delete_ms': 'EU27'}], 'someuser', 302, False,
       models.SpeciesManualAssessment),
 
      # Habitat
@@ -381,17 +392,17 @@ def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
      # Anonymous user
      (['/habitat/conc/delete/', {
        'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
-       'delete_user': 'someuser', 'delete_ms': 'EU25'}],
+       'delete_user': 'someuser', 'delete_ms': 'EU27'}],
       '', 403, True, None),
      # Trying to delete another user's conclusion
      (['/habitat/conc/delete/', {
        'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
-       'delete_user': 'someuser', 'delete_ms': 'EU25'}],
+       'delete_user': 'someuser', 'delete_ms': 'EU27'}],
       'otheruser', 403, True, None),
      # Successfully deleting its own conclusion
      (['/habitat/conc/delete/', {
        'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
-       'delete_user': 'someuser', 'delete_ms': 'EU25'}],
+       'delete_user': 'someuser', 'delete_ms': 'EU27'}],
       'someuser', 302, False, models.HabitattypesManualAssessment),
      ])
 def test_delete_conclusion(app, client, zope_auth, setup_edit, request_args,
@@ -424,65 +435,65 @@ def test_delete_conclusion(app, client, zope_auth, setup_edit, request_args,
     "success, message",
     # Species
     # ETC successfully updating decision
-    [(['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU25'}],
+    [(['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU27'}],
       {'decision': 'CO'}, 'testuser', ['etc'], False, 200, True, ''),
      # ADM successfully updating decision
-     (['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU25'}],
+     (['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU27'}],
       {'decision': 'CO'}, 'testuser', ['admin'], False, 200, True, ''),
      # ETC changing a final decision (OK) into another final decision (OK)
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
       {'decision': 'OK'}, 'testuser', ['etc'], False, 200, False,
       'Another final decision already exists'),
      # ETC selecting invalid decision
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
       {'decision': 'WTF'}, 'testuser', ['etc'], False, 200, False,
       "'WTF' is not a valid decision."),
      # ETC selecting 'OK?' decision
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
       {'decision': 'OK?'}, 'testuser', ['etc'], False, 200, False,
       "You are not allowed to select 'OK?'Please select another value."),
      # ETC updating decision - inexistent assessment
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'RAND'}],
       {'decision': 'CO'}, 'testuser', ['etc'], True, 404, '', ''),
      # No decision sent in request
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
       {}, 'testuser', ['etc'], True, 401, '', ''),
      # NAT trying to update decision
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
       {}, 'testuser', ['nat'], True, 403, '', ''),
      # STK trying to update decision
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU25'}],
+     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
       {}, 'testuser', ['stakeholder'], True, 403, '', ''),
      # Habitat
      # ETC successfully updating decision
-     (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU25'}],
+     (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU27'}],
       {'decision': 'CO'}, 'testuser', ['etc'], False, 200, True, ''),
      # ADM successfully updating decision
-     (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU25'}],
+     (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU27'}],
       {'decision': 'CO'}, 'testuser', ['admin'], False, 200, True, ''),
      # ETC changing a final decision (OK) into another final decision (OK)
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
       {'decision': 'OK'}, 'testuser', ['etc'], False, 200, False,
       'Another final decision already exists'),
      # ETC selecting invalid decision
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
       {'decision': 'WTF'}, 'testuser', ['etc'], False, 200, False,
       "'WTF' is not a valid decision."),
      # ETC selecting 'OK?' decision
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
       {'decision': 'OK?'}, 'testuser', ['etc'], False, 200, False,
       "You are not allowed to select 'OK?'Please select another value."),
      # ETC updating decision - inexistent assessment
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'RAND'}],
       {'decision': 'CO'}, 'testuser', ['etc'], True, 404, '', ''),
      # No decision sent in request
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
       {}, 'testuser', ['etc'], True, 401, '', ''),
      # NAT trying to update decision
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
       {}, 'testuser', ['nat'], True, 403, '', ''),
      # STK trying to update decision
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU25'}],
+     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
       {}, 'testuser', ['stakeholder'], True, 403, '', ''),
      ])
 def test_update_decision(app, client, zope_auth, setup_decision, request_args,

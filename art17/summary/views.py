@@ -51,6 +51,7 @@ from art17.common import (
     get_tooltip_for_species,
     generate_map_url,
     DATE_FORMAT,
+    DEFAULT_MS,
 )
 from art17.forms import (
     SummaryFilterForm,
@@ -228,7 +229,8 @@ class Summary(ConclusionView, views.View):
             manual_form.region.process_data(region or manual_form.region.data)
         if hasattr(manual_form, 'MS'):
             manual_form.kwargs = dict(subject=subject, period=period)
-            manual_form.MS.choices = self.get_MS(subject, region, period)
+            manual_form.MS.choices = self.get_MS(subject, region, period) \
+                + [(DEFAULT_MS, DEFAULT_MS)]
 
         if request.method == 'POST':
             home_url = url_for(self.summary_endpoint, period=period,
@@ -275,6 +277,7 @@ class Summary(ConclusionView, views.View):
         current_selection = self.get_current_selection(
             period_name, group, subject, region, period)
         annexes = self.get_annexes(subject, period)
+        default_ms = DEFAULT_MS if not nat_perm.can() else current_user.MS
         context = self.get_context()
         context.update({
             'objects': self.objects,
@@ -293,8 +296,7 @@ class Summary(ConclusionView, views.View):
             'region': region,
             'period_name': period_name,
             'dataset': self.dataset,
-            'current_user_ms': current_user.MS if
-            current_user.is_authenticated() else '',
+            'default_ms': default_ms,
         })
 
         return render_template(self.template_name, **context)

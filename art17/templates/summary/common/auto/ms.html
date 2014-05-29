@@ -1,4 +1,5 @@
-  <td title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+  <td colspan="2" class="border"
+      title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
     {{ row.assessment_method or 'N/A' }}
   </td>
-  {% if not region %}<td>{{ row.region or 'N/A' }}</td>{% endif %}
+  {% if not region %}<td class="border">{{ row.region or 'N/A' }}</td>{% endif %}

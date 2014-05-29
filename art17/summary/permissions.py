@@ -43,7 +43,7 @@ def can_edit(record):
 
 
 @summary.app_template_global('can_view_decision')
-def can_view_decision(record):
+def can_view_decision():
     return etc_perm.can() or admin_perm.can()
 
 

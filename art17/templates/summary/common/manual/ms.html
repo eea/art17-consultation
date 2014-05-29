@@ -8,7 +8,7 @@
     {% set title=DECISION_DETAILS.get(row.decision, '') %}
 {% endif %}
 
-{% if can_view_decision(row) %}
+{% if can_view_decision() %}
 <td {% if title %}title="{{ title }}"{% endif %} class="form_cell">
   {% if row.dataset.is_readonly %}
     {{ row.decision }}
@@ -24,8 +24,9 @@
   </select>
   {% endif %}
 </td>
+<td class="border">{{ row.MS }}</td>
 {% else %}
-<td class="border center"></td>
+<td colspan="2" class="border">{{ row.MS }}</td>
 {% endif %}
 
 {% if not region %}

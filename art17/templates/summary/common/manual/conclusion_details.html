@@ -14,7 +14,7 @@
 				<p class="muted">{{ row.last_update|format_date }}</p>
 				<p class="bold">{{ (row.user.name or row.user_id) | hide_adm_etc_username }}</p>
 				<p>Institution: {{ row.user.institution }}</p>
-				<p>Member State: {{ row.MS }}</p>
+				<p>Member State: {{ row.user.MS or '' }}</p>
 			</div>
 			{% if row.deleted and not can_delete(row) %}
 			<hr>

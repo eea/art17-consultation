@@ -89,10 +89,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     <tbody id="automatic_body" class="stripe_3rd hidden">
     {% for row in auto_objects %}
     <tr>
-      <td class="border" title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
-        {{ row.assessment_method or 'N/A' }}
-      </td>
-      {% if not region %}<td class="border">{{ row.region or 'N/A' }}</td>{% endif %}
+      {% include 'summary/common/auto/ms.html' with context %}
 
       {# Range #}
       {% include 'summary/common/auto/range.html' %}

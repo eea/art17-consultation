@@ -18,6 +18,7 @@ from .utils import str2num
 
 
 DATE_FORMAT = '%Y-%m-%d %H:%M'
+DEFAULT_MS = 'EU27'
 
 QUALITIES = {
     'B': 'Bad',

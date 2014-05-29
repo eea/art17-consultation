@@ -64,7 +64,7 @@ def species_ms_validator(form, field):
             subject=form.kwargs['subject'],
             dataset_id=form.kwargs['period'])
         .all())
-    if not species_record:
+    if not species_record and field.data != 'EU27':
         raise ValidationError(INVALID_MS_REGION_PAIR)
 
 
@@ -76,7 +76,7 @@ def habitat_ms_validator(form, field):
             subject=form.kwargs['subject'],
             dataset_id=form.kwargs['period'])
         .all())
-    if not habitat_record:
+    if not habitat_record and field.data != 'EU27':
         raise ValidationError(INVALID_MS_REGION_PAIR)
 
 

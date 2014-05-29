@@ -7,21 +7,18 @@
 {% set form=manual_form %}
   {% set is_form=true %}
   <tr class="form form_row" id="theform">
+      <td></td>
     {% if can_select_MS() %}
       <td {% if form.MS.errors %}class="form-error-td"{% endif %}>
         {{ form.MS() }}
       </td>
     {% else %}
       <td>
-        {% if etc_perm.can() %}
-        EU27
-        {% elif nat_perm.can() %}
-        {{ current_user_ms }}
-        {% endif %}
+        {{ manual_assessment.MS or default_ms }}
       </td>
     {% endif %}
     {% if not region %}
-      <td>{{ form.region(disabled="disabled") }}</td>
+      <td>{{ manual_assessment.region }}</td>
     {% endif %}
 
     {% if not edit_ref %}
