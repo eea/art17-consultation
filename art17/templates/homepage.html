@@ -127,7 +127,7 @@
 
   <br/>
 
-  {% if current_user.is_authenticated() %}
+  {% if not is_public %}
   <h2>Activity logs</h2>
   <ul>
     <li>

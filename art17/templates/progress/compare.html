@@ -1,0 +1,24 @@
+<table class="popout-table">
+  <tbody>
+  <tr>
+    <th>Dataset</th>
+  {% for region in regions %}
+    <th>
+    {{ region.reg_code }}
+    </th>
+  {% endfor %}
+  </tr>
+  {% for dataset,values in data.iteritems() %}
+  <tr>
+    <th class="border_right">{{ dataset }}</th>
+    {% for r in regions %}
+     {% set conclusion=values.get(r.reg_code, {}).get('conclusion', '') %}
+     {% set method=values.get(r.reg_code, {}).get('method', '') %}
+     <td class="{{ CONCLUSION_CLASSES[conclusion] }}">
+       <span class="conclusion">{{ method }}</span>
+     </td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>

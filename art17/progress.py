@@ -5,11 +5,13 @@ from flask import (
     Blueprint,
     url_for,
     g,
+    abort,
+    jsonify,
 )
 from sqlalchemy import and_
 from werkzeug.datastructures import MultiDict
 from art17.auth import current_user
-from art17.common import get_default_period, COUNTRY_ASSESSMENTS
+from art17.common import get_default_period, COUNTRY_ASSESSMENTS, MixinView
 from art17.forms import ProgressFilterForm
 from art17.models import (
     Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db,
@@ -87,6 +89,14 @@ def save_conclusion(output, decision, option, conclusion_type):
     return output
 
 
+def get_counts(comment_counts, subject, region):
+    key = (subject, region)
+    return {
+        ct: comment_counts[ct].get(key, 0)
+        for ct in ('user', 'all', 'wiki')
+    }
+
+
 class Progress(views.View):
 
     methods = ['GET']
@@ -132,7 +142,8 @@ class Progress(views.View):
         )
         return dict(occasional=occasional, present=present)
 
-    def process_title(self, subject, region, conclusion_type, cell, presence):
+    def process_title(self, subject, region, conclusion_type, cell, presence,
+                      comment_counts):
         title = []
         title.append(
             'Species: {species}, Region: {region}'.format(
@@ -163,7 +174,8 @@ class Progress(views.View):
             )
         return '\n'.join(title)
 
-    def process_cell(self, cell_options, conclusion_type):
+    def process_cell(self, subject, region, cell_options, conclusion_type,
+                     presence_info, comment_counts):
         output = {
             'main_decision': '',
             'other_decisions': [],
@@ -202,15 +214,29 @@ class Progress(views.View):
                             output['other_decisions'].append(decision)
                         else:
                             output = save_conclusion(output, decision, option, conclusion_type)
+        if output['main_decision']:
+            presence = self.process_presence(presence_info)
+            output['title'] = self.process_title(
+                subject, region, conclusion_type, output, presence,
+                comment_counts,
+            )
+            output['comment_counts'] = (
+                "{user} {all} {wiki}"
+                .format(**get_counts(comment_counts, subject, region))
+            )
+
         return output
 
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
         group = request.args.get('group')
         conclusion = request.args.get('conclusion') or DEFAULT_CONCLUSION
+        assessor = request.args.get('assessor')
+        extra = request.args.get('extra') or ''
 
         progress_filter_form = ProgressFilterForm(
-            MultiDict(dict(period=period, group=group, conclusion=conclusion))
+            MultiDict(dict(period=period, group=group, conclusion=conclusion,
+                           assessor=assessor, extra=extra))
         )
         progress_filter_form.group.choices = self.get_groups(period)
         progress_filter_form.conclusion.choices = self.get_conclusions()
@@ -234,21 +260,19 @@ class Progress(views.View):
         self.METHOD_DETAILS = self.get_method_details()
 
         presence = self.get_presence(period)
-        data_dict = self.setup_objects_and_data(period, group, conclusion)
+        data_dict = self.setup_objects_and_data(period, group, conclusion,
+                                                assessor)
+        comment_counts = self.get_comment_counts(period)
         ret_dict = {}
         for subject, region in data_dict.iteritems():
             ret_dict[subject] = {}
             for region, cell_options in region.iteritems():
-                cell = self.process_cell(cell_options, conclusion)
+                presence_info = presence.get(subject, {}).get(region, {})
+                cell = self.process_cell(
+                    subject, region, cell_options, conclusion, presence_info,
+                    comment_counts,
+                )
                 ret_dict[subject][region] = cell
-                if cell['main_decision']:
-                    pi = presence.get(subject, {}).get(region, {})
-                    presence_info = self.process_presence(pi)
-                    ret_dict[subject][region]['title'] = self.process_title(
-                        subject, region, conclusion, cell, presence_info
-                    )
-
-        comment_counts = self.get_comment_counts(period)
 
         context = self.get_context()
         context.update({
@@ -261,8 +285,8 @@ class Progress(views.View):
             'regions': regions.all(),
             'objects': ret_dict,
             'dataset': period_query,
-            'comment_counts': comment_counts,
             'summary_endpoint': self.summary_endpoint,
+            'extra': extra,
         })
 
         return render_template(self.template_name, **context)
@@ -285,23 +309,9 @@ class SpeciesProgress(Progress, SpeciesMixin):
     def get_comment_counts(self, period):
         return SpeciesCommentCounter(period, g.identity.id).get_counts()
 
-    def setup_objects_and_data(self, period, group, conclusion_type):
-        if conclusion_type == 'range':
-            fields = (self.model_manual_cls.method_range,
-                      self.model_manual_cls.conclusion_range)
-        elif conclusion_type == 'population':
-            fields = (self.model_manual_cls.method_population,
-                      self.model_manual_cls.conclusion_population)
-        elif conclusion_type == 'habitat':
-            fields = (self.model_manual_cls.method_habitat,
-                      self.model_manual_cls.conclusion_habitat)
-        elif conclusion_type == 'future prospects':
-            fields = (self.model_manual_cls.method_future,
-                      self.model_manual_cls.conclusion_future)
-        elif conclusion_type == 'overall assessment':
-            fields = (self.model_manual_cls.method_assessment,
-                      self.model_manual_cls.conclusion_assessment)
-        else:
+    def setup_objects_and_data(self, period, group, conclusion_type, user_id):
+        fields = self.get_progress_fields(conclusion_type)
+        if not fields:
             return {}
 
         self.objects = (
@@ -315,6 +325,8 @@ class SpeciesProgress(Progress, SpeciesMixin):
                            *fields)
             .filter_by(dataset_id=period)
         )
+        if user_id:
+            self.objects = self.objects.filter_by(user_id=user_id)
 
         data_dict = {}
         for entry in self.objects.all():
@@ -336,6 +348,8 @@ class SpeciesProgress(Progress, SpeciesMixin):
     def get_context(self):
         return {
             'groups_url': url_for('common.species-groups'),
+            'assessors_url': url_for('progress.species-assessors'),
+            'comparison_endpoint': 'progress.species-comparison',
         }
 
 
@@ -350,23 +364,9 @@ class HabitatProgress(Progress, HabitatMixin):
     def get_comment_counts(self, period):
         return HabitatCommentCounter(period, g.identity.id).get_counts()
 
-    def setup_objects_and_data(self, period, group, conclusion_type):
-        if conclusion_type == 'range':
-            fields = (self.model_manual_cls.method_range,
-                      self.model_manual_cls.conclusion_range)
-        elif conclusion_type == 'area':
-            fields = (self.model_manual_cls.method_area,
-                      self.model_manual_cls.conclusion_area)
-        elif conclusion_type == 'future prospects':
-            fields = (self.model_manual_cls.method_future,
-                      self.model_manual_cls.conclusion_future)
-        elif conclusion_type == 'structure':
-            fields = (self.model_manual_cls.method_structure,
-                      self.model_manual_cls.conclusion_structure)
-        elif conclusion_type == 'overall assessment':
-            fields = (self.model_manual_cls.method_assessment,
-                      self.model_manual_cls.conclusion_assessment)
-        else:
+    def setup_objects_and_data(self, period, group, conclusion_type, user_id):
+        fields = self.get_progress_fields(conclusion_type)
+        if not fields:
             return {}
 
         self.objects = (
@@ -384,6 +384,9 @@ class HabitatProgress(Progress, HabitatMixin):
                            *fields)
             .filter(self.model_manual_cls.dataset_id == period)
         )
+        if user_id:
+            self.objects = self.objects.filter(
+                self.model_manual_cls.user_id == user_id)
 
         data_dict = {}
         for entry in self.objects.all():
@@ -404,10 +407,63 @@ class HabitatProgress(Progress, HabitatMixin):
     def get_context(self):
         return {
             'groups_url': url_for('common.habitat-groups'),
+            'assessors_url': url_for('progress.habitat-assessors'),
+            'comparison_endpoint': 'progress.habitat-comparison',
         }
+
+
+class ComparisonView(MixinView, views.View):
+
+    def dispatch_request(self):
+        subject = request.args.get('subject')
+        conclusion = request.args.get('conclusion')
+        fields = self.mixin.get_progress_fields(conclusion)
+        if not fields:
+            abort(404)
+        datasets = Dataset.query.order_by(Dataset.name).all()
+        data = {}
+        for d in datasets:
+            regions = (
+                self.mixin.model_manual_cls.query
+                .with_entities(self.mixin.model_manual_cls.region,
+                               *fields)
+                .filter_by(
+                    subject=subject, dataset=d,
+                )
+            )
+            region_data = [
+                dict(zip(('region', 'method', 'conclusion'), r))
+                for r in regions
+            ]
+            data[d.name] = {r['region']: r for r in region_data}
+        regions = (
+            EtcDicBiogeoreg.query
+            .with_entities(EtcDicBiogeoreg.reg_code)
+            .distinct()
+        )
+        return render_template('progress/compare.html',
+                               **{'data': data, 'regions': regions})
 
 
 progress.add_url_rule('/species/progress/',
                       view_func=SpeciesProgress.as_view('species-progress'))
 progress.add_url_rule('/habitat/progress/',
                       view_func=HabitatProgress.as_view('habitat-progress'))
+progress.add_url_rule('/species/progress/compare/',
+                      view_func=ComparisonView.as_view('species-comparison',
+                                                       mixin=SpeciesMixin))
+progress.add_url_rule('/habitat/progress/compare/',
+                      view_func=ComparisonView.as_view('habitat-comparison',
+                                                       mixin=HabitatMixin))
+
+@progress.route('/species/progress/assessors', endpoint='species-assessors')
+def species_assessors():
+    data = SpeciesMixin.get_assessors(
+        request.args.get('period'), request.args.get('group'))
+    return jsonify(data)
+
+@progress.route('/habitat/progress/assessors', endpoint='habitat-assessors')
+def species_assessors():
+    data = HabitatMixin.get_assessors(
+        request.args.get('period'), request.args.get('group'))
+    return jsonify(data)

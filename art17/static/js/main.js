@@ -36,8 +36,10 @@ $(function () {
 
         var group = $('#group');
         var conclusion = $('#conclusion');
+        var assessor = $('#assessor');
 
         group.remoteChained('#period', group.data('href'));
+        assessor.remoteChained('#period, #group', assessor.data('href'));
     }
 });
 
@@ -406,19 +408,8 @@ $(document).ready(function () {
     });
 });
 
-// Table column hover
-/*$(function () {
-    $(".complex_datatable").on('mouseenter mouseleave', "td", function (event) {
-        event.stopPropagation();
-        index = this.cellIndex;
-        if (index) {
-            $(this).parent().siblings().each ( function () {
-                $(this.cells[index]).toggleClass("hover");
-            });
-        }
-    });
-});*/
 
+// Filter form
 $(function() {
      $('#filterform').on('submit', function(e) {
          window.location.hash = '';
@@ -478,5 +469,22 @@ $(document).ready(function() {
                     $(this).removeAttr('title');
                 }
         }
+    });
+});
+
+// Dataset compare (progress)
+$(document).ready(function () {
+    $('.load-comparison').on('click', function (evt) {
+        evt.preventDefault();
+
+        var container = $(this).closest('.popout');
+        var url = $(this).data('url');
+
+        $(this).after("<i class='fa fa-spinner fa-spin'></i>");
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "html"
+        }).done(function (msg) { container.html(msg); });
     });
 });

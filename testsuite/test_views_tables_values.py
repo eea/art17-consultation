@@ -24,6 +24,7 @@ def setup(app):
         range_surface_area=19850,
         region='ALP',
         method_range='2GD',
+        conclusion_range='U1',
         decision='OK')
     EtcDataSpeciesAutomaticAssessmentFactory(
         assesment_speciesname='Capra ibex',
@@ -73,10 +74,10 @@ def test_summary_range_value(app, client, request_args, search_dict):
 @pytest.mark.parametrize("request_args,search_text", [
     (['/species/progress/', {
         'group': 'Mammals', 'period': '1',  'conclusion': 'range'}],
-     '2GD'),
+     'U1'),
     (['/habitat/progress/', {
         'group': 'coastal habitats', 'period': '1',  'conclusion': 'range'}],
-     '2XA')
+     'FV')
 ])
 def test_progress_range_value(app, client, request_args, search_text):
     resp = client.get(*request_args)
