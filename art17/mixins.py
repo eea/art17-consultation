@@ -11,7 +11,9 @@ from art17.models import (
     DicCountryCode,
     Comment,
     HabitatComment,
-    LuSpeciesManual2007, LuHabitatManual2007)
+    LuSpeciesManual2007,
+    LuHabitatManual2007,
+)
 
 
 class MixinsCommon(object):
