@@ -71,19 +71,26 @@
                 You have logged in and already registered for this consultation.
             </li>
         {% else %}
-            <li>
+            <!--<li>
               If you have an Eionet account please
               <a href="{{ url_for('auth.register_ldap') }}">register here</a>.
             </li>
             <li>
               If you don't have an Eionet account please
               <a href="{{ url_for('auth.register_local') }}">register here</a>.
+            </li>-->
+            <li>If you are a National Data Coordinator for Article 17 or have
+              an Eionet account please
+              <a href="{{ url_for('auth.register_ldap') }}">log in</a>.
+            </li>
+            <li>If you don't have an Eionet account please
+              <a href="{{ url_for('auth.register_local') }}">register here</a>.
             </li>
         {% endif %}
-        <li>
+        <!--<li>
           If you are a National Data Coordinator for Article 17,
           you are already registered.
-        </li>
+        </li>-->
       </ul>
     {% endif %}
   {% endif %}
@@ -101,7 +108,7 @@
 
   <p><strong>Biogeographical assessments at EU 27 level:</strong></p>
   <ul>
-    {% if not is_public %}
+    {% if admin_perm.can() %}
     <li><a href="{{ url_for('progress.species-progress') }}">
         Species assessments progress</a></li>
     <li><a href="{{ url_for('progress.habitat-progress') }}">
