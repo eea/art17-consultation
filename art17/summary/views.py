@@ -47,6 +47,7 @@ from art17.common import (
     HABITAT_OPTIONS,
     etc_perm,
     nat_perm,
+    sta_perm,
     get_tooltip_for_habitat,
     get_tooltip_for_species,
     generate_map_url,
@@ -196,6 +197,13 @@ class Summary(ConclusionView, views.View):
 
     methods = ['GET', 'POST']
 
+    def get_user_MS(self, subject, region, period):
+        if sta_perm.can():
+            member_states = self.get_MS(subject, region, period)
+        elif nat_perm.can() and current_user.MS:
+            member_states = [(current_user.MS, current_user.MS)]
+        return member_states + [(DEFAULT_MS, DEFAULT_MS)]
+
     def dispatch_request(self):
         period = request.args.get('period') or get_default_period()
         subject = request.args.get('subject')
@@ -229,8 +237,7 @@ class Summary(ConclusionView, views.View):
             manual_form.region.process_data(region or manual_form.region.data)
         if hasattr(manual_form, 'MS'):
             manual_form.kwargs = dict(subject=subject, period=period)
-            manual_form.MS.choices = self.get_MS(subject, region, period) \
-                + [(DEFAULT_MS, DEFAULT_MS)]
+            manual_form.MS.choices = self.get_user_MS(subject, region, period)
 
         if request.method == 'POST':
             home_url = url_for(self.summary_endpoint, period=period,
@@ -246,8 +253,6 @@ class Summary(ConclusionView, views.View):
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
                     manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
-                    if nat_perm.can():
-                        manual_assessment.MS = current_user.MS
                     db.session.flush()
                     db.session.add(manual_assessment)
                     try:
