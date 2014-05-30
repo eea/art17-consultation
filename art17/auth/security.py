@@ -3,6 +3,7 @@ import flask
 import flask.ext.security.script
 import flask.ext.security as flask_security
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
+from flask.ext.security.utils import string_types
 from flask_wtf import Form
 from datetime import datetime
 from werkzeug.local import LocalProxy
@@ -66,7 +67,11 @@ class UserDatastore(SQLAlchemyUserDatastore):
         return super(UserDatastore, self).create_user(**kwargs)
 
     def _prepare_role_modify_args(self, user, role):
-        return (self.find_user(id=user), self.find_role(role))
+        if isinstance(user, string_types):
+            user = self.find_user(id=user)
+        if isinstance(role, string_types):
+            role = self.find_role(role)
+        return user, role
 
 
 def check_duplicate_with_ldap(form, field):

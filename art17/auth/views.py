@@ -2,6 +2,7 @@ from datetime import datetime
 from collections import defaultdict
 import flask
 from flask.ext.principal import PermissionDenied
+from flask.ext.security import user_registered
 from flask.ext.security.forms import ChangePasswordForm
 from flask.ext.security.changeable import change_user_password
 from flask.ext.security.registerable import register_user, encrypt_password
@@ -24,6 +25,17 @@ from art17.auth.common import (
     check_dates,
     safe_send_mail,
 )
+
+DEFAULT_ROLE = 'stakeholder'
+
+
+def user_registered_sighandler(app, user, confirm_token):
+    datastore = flask.current_app.extensions['security'].datastore
+    default_role = datastore.find_role(DEFAULT_ROLE)
+    datastore.add_role_to_user(user, default_role)
+    models.db.session.commit()
+
+user_registered.connect(user_registered_sighandler)
 
 
 @auth.app_errorhandler(PermissionDenied)
