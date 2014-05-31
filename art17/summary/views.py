@@ -198,6 +198,7 @@ class Summary(ConclusionView, views.View):
     methods = ['GET', 'POST']
 
     def get_user_MS(self, subject, region, period):
+        member_states = []
         if sta_perm.can():
             member_states = self.get_MS(subject, region, period)
         elif nat_perm.can() and current_user.MS:
