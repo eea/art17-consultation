@@ -180,7 +180,7 @@ class UpdateDecision(MixinView, views.View):
         if not self.record:
             abort(404)
 
-        if not can_update_decision():
+        if not can_update_decision(self.record):
             abort(403)
 
         if not request.form.get('decision'):
