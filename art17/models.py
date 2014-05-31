@@ -9,6 +9,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
 from flask.ext.security import UserMixin, RoleMixin
 
+DEFAULT_MS = 'EU27'
 
 db = SQLAlchemy()
 Base = db.Model
@@ -71,7 +72,7 @@ class Comment(Base):
     region = Column(String(4), nullable=False)
     assesment_speciesname = Column(String(50), nullable=False)
     user_id = Column('user', String(25), nullable=False)
-    MS = Column(String(4), nullable=False, default='EU25')
+    MS = Column(String(4), nullable=False, default=DEFAULT_MS)
     comment = Column(String)
     author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
@@ -719,7 +720,7 @@ class HabitatComment(Base):
     region = Column(String(4), nullable=False)
     habitat = Column(String(50), nullable=False)
     user_id = Column('user', String(25), nullable=False)
-    MS = Column(String(4), nullable=False, default='EU27')
+    MS = Column(String(4), nullable=False, default=DEFAULT_MS)
     comment = Column(String)
     author_id = Column('author', String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
@@ -779,7 +780,7 @@ class HabitattypesManualAssessment(Base):
     __tablename__ = 'habitattypes_manual_assessment'
 
     MS = Column(String(4), primary_key=True, nullable=False,
-                default='EU27')
+                default=DEFAULT_MS)
     region = Column(String(4), primary_key=True, nullable=False)
     habitatcode = Column(String(50), primary_key=True, nullable=False)
     range_surface_area = Column(String(23))
@@ -991,7 +992,7 @@ t_species_group = Table(
 class SpeciesManualAssessment(Base):
     __tablename__ = 'species_manual_assessment'
 
-    MS = Column(String(4), primary_key=True, nullable=False, default='EU27')
+    MS = Column(String(4), primary_key=True, nullable=False, default=DEFAULT_MS)
     region = Column(String(4), primary_key=True, nullable=False)
     assesment_speciesname = Column(String(60), primary_key=True,
                                    nullable=False)
