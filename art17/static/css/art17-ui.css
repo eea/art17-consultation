@@ -534,6 +534,10 @@ a.conclusion:hover {
 .table-list td.text-center {
   vertical-align: middle;
 }
+.complex_datatable td.text-center-vh {
+  vertical-align: middle;
+  text-align: center;
+}
 .table-list th,
 .table-list td {
   padding: 3px 12px;

@@ -10,7 +10,7 @@
 
 
 {% if can_view_decision() %}
-<td {% if title %}title="{{ title }}"{% endif %} class="form_cell">
+<td {% if title %}title="{{ title }}"{% endif %} class="form_cell text-center-vh">
   {% if row.dataset.is_readonly or not can_update_decision(row) %}
     {{ row.decision or '' }}
   {% else %}
