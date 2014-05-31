@@ -3,6 +3,8 @@ from flask_wtf import Form as Form_base
 from wtforms import SelectField, TextField, TextAreaField, DateField, \
     BooleanField
 from wtforms.validators import Optional, ValidationError
+
+from art17.common import DEFAULT_MS
 from art17.models import (
     Dataset,
     EtcDicMethod,
@@ -58,26 +60,36 @@ def ref_validation(form, field):
 
 
 def species_ms_validator(form, field):
-    species_record = (
+    member_states = (
         EtcDataSpeciesRegion.query
+        .with_entities(
+            EtcDataSpeciesRegion.eu_country_code
+        )
         .filter_by(
-            eu_country_code=field.data, region=form.region.data,
+            region=form.region.data,
             subject=form.kwargs['subject'],
             dataset_id=form.kwargs['period'])
         .all())
-    if not species_record and field.data != 'EU27':
+    member_states = [ms[0] for ms in member_states]
+    member_states.append(DEFAULT_MS)
+    if field.data not in member_states:
         raise ValidationError(INVALID_MS_REGION_PAIR)
 
 
 def habitat_ms_validator(form, field):
-    habitat_record = (
+    member_states = (
         EtcDataHabitattypeRegion.query
+        .with_entities(
+            EtcDataHabitattypeRegion.eu_country_code
+        )
         .filter_by(
-            eu_country_code=field.data, region=form.region.data,
+            region=form.region.data,
             subject=form.kwargs['subject'],
             dataset_id=form.kwargs['period'])
         .all())
-    if not habitat_record and field.data != 'EU27':
+    member_states = [ms[0] for ms in member_states]
+    member_states.append(DEFAULT_MS)
+    if field.data not in member_states:
         raise ValidationError(INVALID_MS_REGION_PAIR)
 
 
