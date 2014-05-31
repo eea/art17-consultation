@@ -2,7 +2,15 @@ from datetime import datetime
 from flask import views, request, url_for, abort, jsonify
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
-from art17.common import admin_perm, get_default_period, etc_perm, MixinView, DATE_FORMAT
+
+from art17.auth import current_user
+from art17.common import (
+    admin_perm,
+    get_default_period,
+    etc_perm,
+    MixinView,
+    DATE_FORMAT,
+)
 from art17.forms import all_fields
 from art17.models import db, EtcDicMethod, EtcDicDecision
 from art17.summary.permissions import can_delete, can_update_decision, \
@@ -190,7 +198,9 @@ class UpdateDecision(MixinView, views.View):
         result = self.validate(decision, period)
         if result['success']:
             self.record.decision = decision
-            self.record.last_update = datetime.now().strftime(DATE_FORMAT)
+            self.record.last_update = self.record.last_update_decision = \
+                datetime.now().strftime(DATE_FORMAT)
+            self.record.user_decision = current_user
             db.session.commit()
         return jsonify(result)
 
