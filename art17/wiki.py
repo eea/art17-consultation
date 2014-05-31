@@ -395,7 +395,7 @@ class EditPage(WikiView):
 
         form = WikiEditForm(request.form)
         if not form.validate():
-            flash("Please enter a valid data sheet info entry.")
+            flash("Please enter a non-empty text.")
             return False
 
         active_change = self.section.get_active_change()
