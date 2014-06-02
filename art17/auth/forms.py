@@ -1,5 +1,6 @@
 from flask_wtf import Form as Form_base
 from wtforms import SelectField, TextField
+from wtforms.validators import Optional
 from wtforms.widgets import HiddenInput
 from flask.ext.security.forms import (
     Required,
@@ -30,12 +31,12 @@ class Art17RegisterFormBase(object):
     name = TextField('Full name',
         validators=[Required("Full name is required")])
     institution = TextField('Institution',
-        validators=[Required("Institution name is required")])
+        validators=[Optional()])
     abbrev = TextField('Abbrev.')
     MS = TextField(widget=HiddenInput())
     country_options = SelectField('Member State')
     other_country = TextField('Other country')
-    qualification = TextField('Qualification')
+    qualification = TextField('Qualification', validators=[Optional()])
 
     def __init__(self, *args, **kwargs):
         super(Art17RegisterFormBase, self).__init__(*args, **kwargs)
