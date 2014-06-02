@@ -11,7 +11,12 @@ from flask import (
 from sqlalchemy import and_
 from werkzeug.datastructures import MultiDict
 from art17.auth import current_user
-from art17.common import get_default_period, COUNTRY_ASSESSMENTS, MixinView
+from art17.common import (
+    get_default_period,
+    COUNTRY_ASSESSMENTS,
+    MixinView,
+    admin_perm,
+)
 from art17.forms import ProgressFilterForm
 from art17.models import (
     Dataset, EtcDicBiogeoreg, EtcDicHdHabitat, db,
@@ -328,6 +333,9 @@ class SpeciesProgress(Progress, SpeciesMixin):
         if user_id:
             self.objects = self.objects.filter_by(user_id=user_id)
 
+        if not admin_perm.can():
+            self.objects = self.objects.filter_by(decision='OK')
+
         data_dict = {}
         for entry in self.objects.all():
             fields = ('subject', 'region', 'decision', 'user_id',
@@ -387,6 +395,10 @@ class HabitatProgress(Progress, HabitatMixin):
         if user_id:
             self.objects = self.objects.filter(
                 self.model_manual_cls.user_id == user_id)
+
+        if not admin_perm.can():
+            self.objects = self.objects.filter(
+                self.model_manual_cls.decision == 'OK')
 
         data_dict = {}
         for entry in self.objects.all():
