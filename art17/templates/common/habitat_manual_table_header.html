@@ -1,9 +1,9 @@
   <tr {% if is_form %}class="form_row"{% endif %}>
     {% if can_view_decision() %}
       <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
-      <th rowspan="2"><abbr title="Member State">MS</abbr></th>
+      <th rowspan="2"><abbr title="Member State/EU27">MS/EU27</abbr></th>
     {% else %}
-      <th rowspan="2" colspan="2"><abbr title="Member State">MS</abbr></th>
+      <th rowspan="2" colspan="2"><abbr title="Member State/EU27">MS/EU27</abbr></th>
     {% endif %}
     {% if not region %}<th rowspan="2">Reg</th>{% endif %}
 
