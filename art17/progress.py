@@ -429,6 +429,7 @@ class ComparisonView(MixinView, views.View):
     def dispatch_request(self):
         subject = request.args.get('subject')
         conclusion = request.args.get('conclusion')
+        current_dataset = request.args.get('period')
         fields = self.mixin.get_progress_fields(conclusion)
         if not fields:
             abort(404)
@@ -451,7 +452,8 @@ class ComparisonView(MixinView, views.View):
         regions = (
             EtcDicBiogeoreg.query
             .with_entities(EtcDicBiogeoreg.reg_code)
-            .distinct()
+            .filter_by(dataset_id=current_dataset)
+            .order_by(EtcDicBiogeoreg.order)
         )
         return render_template('progress/compare.html',
                                **{'data': data, 'regions': regions})

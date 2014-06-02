@@ -50,7 +50,8 @@
                           <a href="#" class="load-comparison no-break"
                              data-url="{{ url_for(comparison_endpoint,
                                                   subject=subject_name,
-                                                  conclusion=conclusion) }}"
+                                                  conclusion=conclusion,
+                                                  period=dataset.id) }}"
                              data-container="contentdiv{{ loop.index }}">
                               Compare periods
                           </a>
