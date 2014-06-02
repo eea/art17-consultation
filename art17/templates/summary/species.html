@@ -170,3 +170,17 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
   <p><b>Please select a group and a species.</b></p>
   {% endif %}
 {% endblock %}
+
+{% block scripts %}
+{% if fresh_new_record %}
+  {% set row=fresh_new_record %}
+  {% set url=url_for(comments_endpoint, period=row.dataset_id,
+                     subject=row.subject, region=row.region, user=row.user_id,
+                     MS=row.MS) %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+      openModal('{{ url }}');
+    });
+  </script>
+{% endif %}
+{% endblock %}

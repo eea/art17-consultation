@@ -212,6 +212,7 @@ class Summary(ConclusionView, views.View):
         region = request.args.get('region')
         action = request.args.get('action')
         rowid = request.args.get('rowid')
+        fresh_new_record = False
 
         self.objects = []
         self.restricted_countries = []
@@ -264,6 +265,7 @@ class Summary(ConclusionView, views.View):
                               'error')
                     else:
                         flash('Conclusion added successfully')
+                        fresh_new_record = manual_assessment
                     manual_assessment = None
                 else:
                     manual_form.populate_obj(manual_assessment)
@@ -303,6 +305,7 @@ class Summary(ConclusionView, views.View):
             'period_name': period_name,
             'dataset': self.dataset,
             'default_ms': default_ms,
+            'fresh_new_record': fresh_new_record,
         })
 
         return render_template(self.template_name, **context)
