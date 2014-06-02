@@ -2,7 +2,7 @@ Dear {{ user.name }},
 
 A new account has been created for you on the Biological Diversity website:
 
-{{ home_url }}
+{{ home_url|ugly_fix }}
 
 {% if user.is_ldap -%}
   You can log in with your Eionet credentials "{{ user.id }}".
