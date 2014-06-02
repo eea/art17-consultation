@@ -102,18 +102,19 @@
     indicate how the assessments should be changed, than you will need
     to register.
   </p>
+    {% if false %}
+  <p>
+    A guide to the assessments of conservation status and the public
+    consultation is available at
+    <a target="_blank" href="http://bd.eionet.europa.eu/activities/Reporting/Article_17/reference_portal/consultation_document.pdf">
+      this link
+    </a>
+  </p>
+    {% endif %}
   {% endif %}
-
-  <h2>Quick links for the impatient</h2>
 
   <p><strong>Biogeographical assessments at EU 27 level:</strong></p>
   <ul>
-    {% if admin_perm.can() %}
-    <li><a href="{{ url_for('progress.species-progress') }}">
-        Species assessments progress</a></li>
-    <li><a href="{{ url_for('progress.habitat-progress') }}">
-        Habitats assessments progress</a></li>
-    {% endif %}
     <li><a href="{{ url_for('summary.species-summary') }}">
         Species assessments</a></li>
     <li><a href="{{ url_for('summary.habitat-summary') }}">
@@ -131,6 +132,16 @@
         Habitats assessments</a></li>
   </ul>
 
+  <p>
+    <strong>Summary of assessments by group:</strong>
+  </p>
+
+  <ul>
+    <li><a href="{{ url_for('progress.species-progress') }}">
+        Species assessments</a></li>
+    <li><a href="{{ url_for('progress.habitat-progress') }}">
+        Habitats assessments</a></li>
+  </ul>
 
   <br/>
 
