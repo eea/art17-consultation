@@ -57,9 +57,9 @@
                     <a id="show-map" href="#"
                         data-url="{{ generate_map_url(
                                         'species',
-                                        row.assesment_speciesname,
+                                        row.speciescode,
                                         row.region,
-                                        row.dataset_id) }}">
+                                        is_sensitive(row.speciescode)) }}">
                       {{ row.region }}
                     </a>
                 </td>

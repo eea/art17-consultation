@@ -25,7 +25,6 @@ from art17.models import (
     EtcQaErrorsHabitattypeManualChecked,
     EtcDicMethod,
     EtcDicDecision,
-    restricted_species_2013,
 )
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.common import (
@@ -53,6 +52,7 @@ from art17.common import (
     generate_map_url,
     DATE_FORMAT,
     DEFAULT_MS,
+    get_sensitive_records,
 )
 from art17.forms import (
     SummaryFilterForm,
@@ -405,14 +405,13 @@ class SpeciesSummary(SpeciesMixin, Summary):
                 .first()
             )
             speciescode = speciescode_row[0] if speciescode_row else None
-            sensitive_q = db.session.query(restricted_species_2013)
+
             sensitive = False
-            if speciescode in [s.speciescode for s in sensitive_q.all()]:
+            sensitive_records = get_sensitive_records(speciescode)
+            if sensitive_records:
                 if current_user.is_anonymous():
-                    map_warning = ', '.join(
-                        [s.eu_country_code for s in sensitive_q
-                         .filter_by(speciescode=speciescode)
-                         .all()])
+                    map_warning = ', '.join([s.eu_country_code for s in
+                                             sensitive_records])
                 else:
                     sensitive = True
             if speciescode:

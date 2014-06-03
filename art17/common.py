@@ -12,6 +12,7 @@ from art17.models import (
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion,
     Config,
+    restricted_species_2013,
 )
 
 from .utils import str2num
@@ -390,6 +391,15 @@ def generate_map_url(category, subject, region, sensitive=False):
         return map_href + '&CodeReg=' + subject + region
     else:
         return map_href + '&CCode=' + subject
+
+
+@common.app_template_global('is_sensitive')
+def get_sensitive_records(speciescode):
+    return (
+        db.session.query(restricted_species_2013)
+        .filter_by(speciescode=speciescode)
+        .all()
+    )
 
 
 @common.route('/')
