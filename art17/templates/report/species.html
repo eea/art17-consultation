@@ -41,11 +41,20 @@
 
         {% for row in objects %}
           {% set visible = can_view(row, restricted_countries) %}
+
+          {% if row.speciesname != row.assesment_speciesname %}
+            {% set title="Scientific name used in original MS report if different than recommended: "
+            + row.speciesname or row.assesment_speciesname or '' %}
+          {% else %}
+            {% set title = row.subject | safe %}
+          {% endif %}
+
           {% set qa_errors = record_errors(row) %}
           <tr {% if row.is_assesm %}class="assesm"{% endif %}>
             <td class="border">
               {% set original_url=get_original_record_url(row) %}
-              <a class="clipped popup-btn block" data-title="Factsheet" href="{{ original_url }}" title="{{ row.subject }}">
+              <a class="clipped popup-btn block" data-title="Factsheet"
+                  href="{{ original_url }}" title="{{ title }}">
                 {{ row.subject }}
               </a>
             </td>
