@@ -30,7 +30,7 @@ class Report(views.View):
         region = request.args.get('region')
 
         self.objects = []
-        self.setup_objects_and_data(period, group, country)
+        self.setup_objects_and_data(period, group, country, region)
 
         countries = self.get_countries(period)
         regions = self.get_regions_by_country(period, country)
@@ -73,7 +73,7 @@ class Report(views.View):
             return []
         return [period_name, group, country_name, region_name]
 
-    def setup_objects_and_data(self, period, group, country):
+    def setup_objects_and_data(self, period, group, country, region):
         filter_args = {}
         if not group:
             return
@@ -81,6 +81,8 @@ class Report(views.View):
         filter_args['dataset_id'] = period
         if country:
             filter_args['eu_country_code'] = country
+        if region:
+            filter_args['region'] = region
         self.objects = (
             self.model_cls.query
             .filter_by(**filter_args)
