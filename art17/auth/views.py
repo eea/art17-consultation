@@ -22,18 +22,15 @@ from art17.auth.common import (
     set_user_active,
     get_ldap_user_info,
     activate_and_notify_admin,
+    add_default_role,
     check_dates,
     safe_send_mail,
 )
 
-DEFAULT_ROLE = 'stakeholder'
-
 
 def user_registered_sighandler(app, user, confirm_token):
-    datastore = flask.current_app.extensions['security'].datastore
-    default_role = datastore.find_role(DEFAULT_ROLE)
-    datastore.add_role_to_user(user, default_role)
-    models.db.session.commit()
+    add_default_role(user)
+
 
 user_registered.connect(user_registered_sighandler)
 
@@ -154,6 +151,7 @@ def register_ldap():
                 'success',
             )
             activate_and_notify_admin(flask._app_ctx_stack.top.app, user)
+            add_default_role(user)
             return flask.render_template('auth/register_ldap_done.html')
 
     return flask.render_template('auth/register_ldap.html', **{

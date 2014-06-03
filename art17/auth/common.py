@@ -14,6 +14,8 @@ from art17.auth import zope_acl_manager
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+DEFAULT_ROLE = 'stakeholder'
+
 
 def safe_send_mail(app, msg):
     try:
@@ -102,3 +104,10 @@ def check_dates(view):
         return view(*args, **kwargs)
 
     return wrapper
+
+
+def add_default_role(user):
+    datastore = flask.current_app.extensions['security'].datastore
+    default_role = datastore.find_role(DEFAULT_ROLE)
+    datastore.add_role_to_user(user, default_role)
+    models.db.session.commit()
