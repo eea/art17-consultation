@@ -69,7 +69,7 @@ class Report(views.View):
 
     def get_current_selection(self, period_name, group,
                               country_name, region_name):
-        if not group:
+        if not group or country_name == '-':
             return []
         return [period_name, group, country_name, region_name]
 

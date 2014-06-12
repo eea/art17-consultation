@@ -31,7 +31,7 @@ class MixinsCommon(object):
 
     @classmethod
     def get_countries(cls, period):
-        blank_option = [('', 'All MS')]
+        blank_option = [('', '-')]
         countries = (
             DicCountryCode.query
             .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
