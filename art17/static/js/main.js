@@ -30,6 +30,13 @@ $(function () {
 
         var group = $('#group');
         group.remoteChained('#period', group.data('href'));
+
+        var country = $('#country');
+
+        if(country.find('option:selected').val() == '') {
+            region.prop('disabled', true);
+        }
+
     }
 
     if($('#progress-filterform').length == 1) {
