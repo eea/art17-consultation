@@ -20,8 +20,8 @@
         {% set qtitle = 'Yearly magnitude = ' + row.coverage_yearly_magnitude|string %}
       {%- endif -%}
     {% endif %}
-    <td class="{{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-     <span class="conclusion">{{ row.coverage_trend or 'N/A' }}</span>
+    <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+     {{ row.coverage_trend or 'N/A' }}
     </td>
 
     <td {{ parse_errors(['complementary_favourable_area_q',

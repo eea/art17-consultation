@@ -21,8 +21,9 @@
         {% set qtitle = 'Yearly magnitude = ' + row.population_yearly_magnitude|string %}
       {%- endif -%}
     {% endif %}
-    <td class="{{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-      <span class="conclusion">{{ row.population_trend or 'N/A' }}</span></td>
+    <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+      {{ row.population_trend or 'N/A' }}
+    </td>
 
     <td {{ parse_errors(['complementary_favourable_population_q',
                          'complementary_favourable_population',

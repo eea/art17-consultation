@@ -18,13 +18,12 @@
     {% set qtitle = 'Yearly magnitude = ' + row.range_yearly_magnitude|string %}
   {%- endif -%}
 {% endif %}
-<td class="{{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+<td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
   {{ row.range_trend or 'N/A' }}
 </td>
 
-<td class="border_right" {{ parse_errors(['complementary_favourable_range_q',
-                     'complementary_favourable_range'],
-                     row, qa_errors, '', 'text-right') }}>
+<td {{ parse_errors(['complementary_favourable_range_q', 'complementary_favourable_range'],
+                     row, qa_errors, '', 'number border_right') }}>
   {% set range_q = row.complementary_favourable_range_q or '' %}
   {% set range = row.complementary_favourable_range %}
 
