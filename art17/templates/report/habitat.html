@@ -51,7 +51,7 @@
             </a>
           </td>
 
-          {% if not country %}<td class="border">{{ row.eu_country_code }}</td>{% endif %}
+          {% if not country %}<td class="border" colspan="2">{{ row.eu_country_code }}</td>{% endif %}
           {% if not region %}
               <td class="border">
                   <a id="show-map" href="#"
