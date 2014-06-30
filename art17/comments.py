@@ -9,6 +9,7 @@ from flask import (
     request,
     url_for,
     flash,
+    abort,
 )
 from flask.ext.principal import PermissionDenied
 
@@ -145,6 +146,8 @@ class CommentsList(views.View):
     def dispatch_request(self, period, subject, region, user):
         MS = request.args.get('MS')
         self.record = self.get_manual_record(period, subject, region, user, MS)
+        if not self.record:
+            abort(404)
         edited_comment = None
         if request.args.get('edit'):
             edit_id = request.args.get('edit')
