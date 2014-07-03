@@ -100,7 +100,7 @@ def reset_password(user_id):
     models.db.session.commit()
     print "password for %s has been changed" % user_id
     if user.active:
-        zope_acl_manager.edit(user)
+        zope_acl_manager.edit(user_id, plaintext_password)
         print "The Zope password has been changed"
 
 
