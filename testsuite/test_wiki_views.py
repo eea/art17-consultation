@@ -183,7 +183,7 @@ def test_404_error(app, setup, zope_auth, client, request_type, request_args,
 
 
 def test_change_active_revision(app, setup, zope_auth, client):
-    create_user('otheruser', role_names=['stakeholder'])
+    create_user('otheruser', role_names=['etc'])
     set_user('otheruser')
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/page_history/', {
@@ -208,7 +208,7 @@ def test_add_comment(app, setup, zope_auth, client):
 
 
 def test_edit_page(app, setup, zope_auth, client):
-    create_user('testuser', role_names=['stakeholder'])
+    create_user('testuser', role_names=['etc'])
     set_user('testuser')
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/edit_page/', {
@@ -251,7 +251,7 @@ def test_toggle_read(app, setup, zope_auth, client):
 
 
 def test_get_revision(app, setup, zope_auth, client):
-    create_user('testuser', role_names=['stakeholder'])
+    create_user('testuser', role_names=['etc'])
     set_user('testuser')
 
     resp = client.get('/species/summary/datasheet/get_revision/', {
