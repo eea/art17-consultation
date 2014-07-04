@@ -71,7 +71,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
 
 @summary.app_template_global('can_select_MS')
 def can_select_MS():
-    return sta_perm.can() or nat_perm.can()
+    return admin_perm.can() or sta_perm.can() or nat_perm.can()
 
 
 def can_touch(assessment):
