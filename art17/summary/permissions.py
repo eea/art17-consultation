@@ -1,5 +1,12 @@
 from art17.auth import current_user
-from art17.common import admin_perm, etc_perm, sta_perm, nat_perm
+from art17.common import (
+    admin_perm,
+    etc_perm,
+    sta_perm,
+    nat_perm,
+    sta_cannot_change,
+    consultation_ended,
+)
 from art17.summary import summary
 
 
@@ -11,7 +18,10 @@ def can_delete(record):
     if record.dataset.is_readonly:
         return False
 
-    return record.user_id == current_user.id
+    if record.user_id == current_user.id:
+        if sta_cannot_change():
+            return False
+        return True
 
 
 @summary.app_template_global('can_update_decision')
@@ -39,6 +49,8 @@ def can_edit(record):
         return False
 
     if record.user_id == current_user.id:
+        if sta_cannot_change():
+            return False
         return True
 
     return etc_perm.can() or admin_perm.can()
@@ -64,8 +76,8 @@ def can_add_conclusion(dataset, zone, subject, region=None):
             dataset.id, subject, region, current_user.id)
     return (
         not dataset.is_readonly and
-        (sta_perm.can() or admin_perm.can() or nat_perm.can()
-         or etc_perm.can()) and not record_exists
+        ((sta_perm.can() and not consultation_ended()) or admin_perm.can()
+         or nat_perm.can() or etc_perm.can()) and not record_exists
     )
 
 
@@ -78,11 +90,10 @@ def can_touch(assessment):
     if current_user.is_anonymous():
         return False
     if not assessment:
-        return admin_perm.can() or sta_perm.can() or nat_perm.can() \
-            or etc_perm.can()
-    else:
-        return admin_perm.can() or etc_perm.can() or (
-            assessment.user == current_user)
+        return admin_perm.can() or nat_perm.can() or etc_perm.can() or (
+            sta_perm.can() and not consultation_ended())
+    return admin_perm.can() or etc_perm.can() or (
+        assessment.user == current_user and not sta_cannot_change())
 
 
 def must_edit_ref(assessment):

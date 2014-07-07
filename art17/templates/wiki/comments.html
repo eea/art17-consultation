@@ -46,7 +46,7 @@
 	      <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
             <button class="btn-text" href="{{ href }}"
-                {% if edit_comment_form %}
+                {% if edit_comment_form or ('elete' in btn_text and sta_cannot_change()) %}
                     style="display: none;"
                 {% endif %}
                 >{{ btn_text }}</button>

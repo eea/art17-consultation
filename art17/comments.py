@@ -14,7 +14,14 @@ from flask import (
 from flask.ext.principal import PermissionDenied
 
 from art17.auth import current_user
-from art17.common import get_default_period, admin_perm, DATE_FORMAT
+from art17.common import (
+    get_default_period,
+    admin_perm,
+    sta_perm,
+    nat_perm,
+    sta_cannot_change,
+    DATE_FORMAT,
+)
 from art17.forms import CommentForm
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
@@ -42,10 +49,11 @@ def can_post_comment(record):
     if record.dataset and record.dataset.is_readonly:
         return False
     can_add = False
-    if current_user.has_role('stakeholder') or current_user.has_role('nat'):
-        if not record.user or record.user.has_role('stakeholder') or \
-            (record.user.has_role('nat')
-             and record.user_id == current_user.id):
+    if sta_cannot_change():
+        can_add = False
+    elif sta_perm.can() or nat_perm.can():
+        if (record.user.has_role('nat') and record.user_id == current_user.id)\
+            or not record.user or record.user.has_role('stakeholder'):
                 can_add = True
     else:
         can_add = True
@@ -65,8 +73,8 @@ def can_edit_comment(comment):
     if comment and comment.record and comment.record.dataset and \
             comment.record.dataset.is_readonly:
         return False
-    return (not comment.record.deleted and not comment.deleted
-            and comment.author_id == current_user.id)
+    return (not comment.record.deleted and not comment.deleted and
+            comment.author_id == current_user.id and not sta_cannot_change())
 
 
 @comments.app_template_global('can_toggle_read')
@@ -86,6 +94,8 @@ def can_delete_comment(comment):
         return False
 
     if comment.author_id == current_user.id:
+        if sta_cannot_change():
+            return False
         return True
 
     return admin_perm.can()
