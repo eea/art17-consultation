@@ -10,6 +10,7 @@ from art17.common import (
     etc_perm,
     MixinView,
     DATE_FORMAT,
+    consultation_ended,
 )
 from art17.forms import all_fields
 from art17.models import db, EtcDicMethod, EtcDicDecision
@@ -61,6 +62,20 @@ class ConclusionView(object):
         period = request.args.get('period') or get_default_period()
         subject = request.args.get('subject')
         region = request.args.get('region')
+        if consultation_ended() and etc_perm.can():
+            best = (
+                self.model_manual_cls.query
+                .filter_by(
+                    dataset_id=period,
+                    subject=subject,
+                    region=region,
+                    decision='OK',
+                )
+                .first()
+            )
+            if best:
+                return best.__dict__
+
         best = (
             self.model_auto_cls.query
             .filter_by(dataset_id=period, subject=subject, region=region)
