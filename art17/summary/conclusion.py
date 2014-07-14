@@ -62,7 +62,7 @@ class ConclusionView(object):
         period = request.args.get('period') or get_default_period()
         subject = request.args.get('subject')
         region = request.args.get('region')
-        if consultation_ended() and etc_perm.can():
+        if consultation_ended() and (etc_perm.can() or admin_perm.can()):
             best = (
                 self.model_manual_cls.query
                 .filter_by(
