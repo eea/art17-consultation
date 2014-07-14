@@ -154,7 +154,9 @@ class ConclusionView(object):
             if c.user else False
         )
         if ok_conclusions:
-            return ok_conclusions + filter(user_or_expert, conclusions)
+            return list(
+                set(ok_conclusions + filter(user_or_expert, conclusions))
+            )
         else:
             return filter(user_iurmax, conclusions)
 
