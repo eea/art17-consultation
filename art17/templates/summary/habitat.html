@@ -113,7 +113,7 @@
       {% include 'common/habitat_manual_table_header.html' %}
       </tbody>
 
-
+      <tbody>
       {% for row in manual_objects %}
         {% if row != manual_assessment %}
         <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row">
