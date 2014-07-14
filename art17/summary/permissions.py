@@ -19,9 +19,7 @@ def can_delete(record):
         return False
 
     if record.user_id == current_user.id:
-        if sta_cannot_change():
-            return False
-        return True
+        return not sta_cannot_change()
 
 
 @summary.app_template_global('can_update_decision')
