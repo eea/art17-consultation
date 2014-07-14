@@ -146,6 +146,7 @@ class ConclusionView(object):
         user_or_expert = (
             lambda c:
             not c.user.has_role('admin') and not c.user.has_role('etc')
+            and c not in ok_conclusions
             if c.user else False
         )
         user_iurmax = (
@@ -154,9 +155,7 @@ class ConclusionView(object):
             if c.user else False
         )
         if ok_conclusions:
-            return list(
-                set(ok_conclusions + filter(user_or_expert, conclusions))
-            )
+            return ok_conclusions + filter(user_or_expert, conclusions)
         else:
             return filter(user_iurmax, conclusions)
 
