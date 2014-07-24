@@ -153,6 +153,19 @@ def get_default_period():
     return conf.default_dataset_id
 
 
+def consultation_ended():
+    cfg = get_config()
+    if cfg.end_date:
+        today = date.today()
+        return cfg.end_date < today
+    return False
+
+
+@common.app_template_global('sta_cannot_change')
+def sta_cannot_change():
+    return sta_perm.can() and consultation_ended()
+
+
 admin_perm = Permission(RoleNeed('admin'))
 sta_perm = Permission(RoleNeed('stakeholder'))
 etc_perm = Permission(RoleNeed('etc'))

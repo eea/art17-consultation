@@ -10,8 +10,8 @@ from flask import (
 from flask.ext.principal import PermissionDenied
 from datetime import datetime
 from sqlalchemy import or_
-from art17.common import admin_perm, etc_perm
 
+from art17.common import admin_perm, etc_perm, sta_cannot_change
 from art17.models import (
     Wiki,
     WikiChange,
@@ -108,7 +108,7 @@ def can_change_revision(revision):
 
 @wiki.app_template_global('can_add_comment')
 def can_add_comment(comments, revisions, dataset):
-    if not dataset or dataset.is_readonly:
+    if not dataset or dataset.is_readonly or sta_cannot_change():
         return False
     is_author = current_user in [cmnt.author for cmnt in comments]
     return not (current_user.is_anonymous() or is_author) and revisions
@@ -116,7 +116,8 @@ def can_add_comment(comments, revisions, dataset):
 
 @wiki.app_template_global('can_edit_comment')
 def can_edit_comment(comment):
-    if current_user == comment.author and not comment.deleted:
+    if current_user == comment.author and not comment.deleted and \
+            not sta_cannot_change():
         return True
     return False
 
@@ -487,7 +488,7 @@ class ManageComment(WikiView):
 
         toggle = request.args.get('toggle')
         if toggle == 'del':
-            if comment.author != current_user:
+            if comment.author != current_user or sta_cannot_change():
                 raise PermissionDenied
             if comment.deleted is None:
                 comment.deleted = 0

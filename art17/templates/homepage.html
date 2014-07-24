@@ -10,8 +10,6 @@
   <p class="documentDescription">
     This page gives access to  assessments both by the Member States  and
     the EU biogeographical assessments  by the ETC/BD and the EEA.<br/>
-    From 2 June till the 7 July 2014 there is an opportunity to comment on the
-    assessments.
   </p>
 
   <div class="warning">
@@ -43,12 +41,11 @@
       </p>
 
     {% elif end_date and end_date < today %}
-      <h2>The deadline for this consultation has passed.</h2>
-
-      <p>
-        You cannot sign-up for a new account because the registration
-        process ended on {{ end_date }}.
-      </p>
+    <p>
+      A public consultation was held in June 2014 and the EEA and the ETC/BD
+      would like to thank all who participated. Some 500 comments were received
+      and these have helped improve the assessments.
+    </p>
 
     {% else %}
       <h2>
@@ -87,15 +84,16 @@
   {% endif %}
 
   {% if start_date %}
+    {% if end_date and end_date >= today %}
+      <p>
+        There is no need to register if you just want to view the data.
+        You just click on one of the links below. If you want as well to
+        indicate how the assessments should be changed, than you will need
+        to register.
+      </p>
+    {% endif %}
   <p>
-    There is no need to register if you just want to view the data.
-    You just click on one of the links below. If you want as well to
-    indicate how the assessments should be changed, than you will need
-    to register.
-  </p>
-  <p>
-    A guide to the assessments of conservation status and the public
-    consultation is available at
+    A guide to the assessments of conservation status is available at
     <a target="_blank" href="http://bd.eionet.europa.eu/activities/Reporting/Article_17/Documents/ART17%20public%20consultation%20guide.pdf">
       this link
     </a>

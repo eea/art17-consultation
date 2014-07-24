@@ -136,14 +136,14 @@
       {% endfor %}
       </tbody>
       {# Add manual assessment form #}
-      {% if not manual_assessment and can_add_conclusion(dataset, 'habitat',
-      subject, region) %}
+      {% set can_add, warning_message = can_add_conclusion(dataset, 'habitat', subject, region) %}
+      {% if not manual_assessment %}
       <tbody class="form">
-        {% if region %}
+        {% if can_add %}
           {% include 'summary/habitat/manual_form.html' %}
         {% else %}
         <tr class="form_row">
-          <td colspan="{{ colspan_all }}">Please select a Bioregion in order to add a conclusion.</td>
+            <td colspan="{{ colspan_all }}">{{ warning_message }}</td>
         </tr>
         {% endif %}
       </tbody>
