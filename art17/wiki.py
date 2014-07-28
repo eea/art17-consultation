@@ -139,7 +139,7 @@ class CommonSection(object):
             self.subject_field = 'habitatcode'
 
     def get_req_args(self):
-        return {arg: request.args.get(arg) for arg in
+        return {arg: request.args.get(arg, '') for arg in
                 ['subject', 'region', 'period']}
 
     def get_wiki(self):
@@ -193,10 +193,12 @@ class CommonSection(object):
     def insert_inexistent_wiki(self):
         if not self.get_wiki():
             wiki_attrs = {
-                'region_code': request.args.get('region'),
+                'region_code': request.args.get('region', ''),
                 self.subject_field: request.args.get('subject'),
                 'dataset_id': request.args.get('period')
             }
+            if self.wiki_cls == WikiTrail and wiki_attrs['region_code'] == '':
+                raise PermissionDenied
             new_wiki = self.wiki_cls(**wiki_attrs)
             db.session.add(new_wiki)
             db.session.commit()
