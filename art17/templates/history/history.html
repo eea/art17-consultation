@@ -94,12 +94,39 @@
         {% for d in history.datasheets %}
         <tr>
           <td><a href="{{ url_for('wiki.datasheet', page=subject_name,
-            period=d.dataset_id, subject=d.subject, region=d.region_code) }}"
+            period=d.dataset_id, subject=d.wiki.subject, region=d.wiki.region_code) }}"
             id="wikibutton">{{ d.changed }}</a></td>
           <td>{{ d.editor | hide_adm_etc_username }}</td>
-          <td>{{ d.subject }}</td>
-          <td>{{ d.region_code or 'All bioregions' }}</td>
+          <td>{{ d.wiki.subject }}</td>
+          <td>{{ d.wiki.region_code or 'All bioregions' }}</td>
         </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p class="h2">Recent data sheet info comments</p>
+    <table class="table-list">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Author</th>
+          <th>{{ subject_name|capitalize }}</th>
+          <th>Region</th>
+          <th>Read</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in history.datasheet_comments %}
+        <tr>
+          <td><a href="{{ url_for('wiki.datasheet', page=subject_name,
+            period=c.dataset_id, subject=c.wiki.subject, region=c.wiki.region_code) }}"
+            id="wikibutton">{{ c.posted }}</a></td>
+          <td>{{ (c.author.name or c.author_id) | hide_adm_etc_username }}</td>
+          <td>{{ c.wiki.subject }}</td>
+          <td>{{ c.wiki.region_code or 'All bioregions' }}</td>
+          <td>{{ c.read_for(g.user) }}</td>
+        </tr>
+
         {% endfor %}
       </tbody>
     </table>
@@ -118,11 +145,11 @@
         {% for a in history.audittrails %}
         <tr>
           <td><a href="{{ url_for('wiki.audittrail', page=subject_name,
-            period=a.dataset_id, subject=a.subject, region=a.region_code) }}"
+            period=a.dataset_id, subject=a.wiki.subject, region=a.wiki.region_code) }}"
             id="wikibutton">{{ a.changed }}</a></td>
           <td>{{ a.editor | hide_adm_etc_username }}</td>
-          <td>{{ a.subject }}</td>
-          <td>{{ a.region_code }}</td>
+          <td>{{ a.wiki.subject }}</td>
+          <td>{{ a.wiki.region_code }}</td>
         </tr>
         {% endfor %}
       </tbody>

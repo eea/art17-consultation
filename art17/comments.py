@@ -260,43 +260,44 @@ class UserSummary(views.View):
                         self.model_comment_cls.deleted == None))
             .order_by(self.model_comment_cls.post_date.desc()).all()
         )
+
+        wikis = {
+            wiki_cls:
+            wiki_cls.query
+            .with_entities(wiki_cls.id)
+            .filter(getattr(wiki_cls, self.wiki_subject_column) != None)
+            for wiki_cls in [Wiki, WikiTrail]
+        }
         datasheets = (
-            db.session.query(WikiChange, Wiki)
-            .join(WikiChange.wiki)
-            .with_entities(
-                WikiChange.editor,
-                WikiChange.changed,
-                getattr(Wiki, self.wiki_subject_column).label('subject'),
-                Wiki.region_code,
-                WikiChange.dataset_id,
-            )
+            WikiChange.query
             .filter(
                 WikiChange.dataset_id == period,
                 WikiChange.active == 1,
-                getattr(Wiki, self.wiki_subject_column) != None,
+                WikiChange.wiki_id.in_(wikis[Wiki]),
             )
             .order_by(WikiChange.changed.desc()).limit(100)
         )
         audittrails = (
-            db.session.query(WikiTrailChange, WikiTrail)
-            .join(WikiTrailChange.wiki)
-            .with_entities(
-                WikiTrailChange.editor,
-                WikiTrailChange.changed,
-                getattr(WikiTrail, self.wiki_subject_column).label('subject'),
-                WikiTrail.region_code,
-                WikiTrailChange.dataset_id,
-            )
+            WikiTrailChange.query
             .filter(
                 WikiTrailChange.dataset_id == period,
                 WikiTrailChange.active == 1,
-                getattr(WikiTrail, self.wiki_subject_column) != None,
+                WikiTrailChange.wiki_id.in_(wikis[WikiTrail]),
             )
             .order_by(WikiTrailChange.changed.desc()).limit(100)
         )
+        ds_comments = (
+            WikiComment.query
+            .filter(
+                WikiComment.dataset_id == period,
+                or_(WikiComment.deleted == 0, WikiComment.deleted == None),
+                WikiComment.wiki_id.in_(wikis[Wiki]),
+            )
+            .order_by(WikiComment.posted.desc()).limit(100)
+        )
         return {'conclusions': conclusions, 'comments': comments_list,
                 'datasheets': datasheets, 'audittrails': audittrails,
-                }
+                'datasheet_comments': ds_comments}
 
 
 class SpeciesUserSummary(SpeciesMixin, UserSummary):

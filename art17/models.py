@@ -1097,6 +1097,10 @@ class Wiki(Base):
         ForeignKey('datasets.id'),
     )
 
+    @hybrid_property
+    def subject(self):
+        return self.assesment_speciesname or self.habitatcode
+
 
 class WikiChange(Base):
     __tablename__ = 'wiki_changes'
@@ -1163,6 +1167,9 @@ class WikiComment(Base):
                            secondary=t_wiki_comments_read,
                            backref='read_comments')
 
+    def read_for(self, user):
+        return user in self.readers or user == self.author
+
 
 class WikiTrail(Base):
     __tablename__ = 'wiki_trail'
@@ -1182,6 +1189,10 @@ class WikiTrail(Base):
         "WikiTrail.dataset_id==EtcDicBiogeoreg.dataset_id)",
         foreign_keys=[region_code, dataset_id],
     )
+
+    @hybrid_property
+    def subject(self):
+        return self.assesment_speciesname or self.habitatcode
 
 
 class WikiTrailChange(Base):
