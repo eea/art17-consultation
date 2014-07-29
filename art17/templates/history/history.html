@@ -81,6 +81,7 @@
     </table>
 
     <p class="h2">Recent data sheet info entries</p>
+    {% if history.datasheets %}
     <table class="table-list">
       <thead>
         <tr>
@@ -103,8 +104,12 @@
         {% endfor %}
       </tbody>
     </table>
+    {% else %}
+      <p class="muted">No data sheet entries found.</p>
+    {% endif %}
 
     <p class="h2">Recent data sheet info comments</p>
+    {% if history.datasheet_comments %}
     <table class="table-list">
       <thead>
         <tr>
@@ -126,12 +131,15 @@
           <td>{{ c.wiki.region_code or 'All bioregions' }}</td>
           <td>{{ c.read_for(g.user) }}</td>
         </tr>
-
         {% endfor %}
       </tbody>
     </table>
+    {% else %}
+      <p class="muted">No data sheet comments found.</p>
+    {% endif %}
 
     <p class="h2">Recent audit trail entries</p>
+    {% if history.audittrails %}
     <table class="table-list">
       <thead>
         <tr>
@@ -154,5 +162,8 @@
         {% endfor %}
       </tbody>
     </table>
+    {% else %}
+      <p class="muted">No audit trail entries found.</p>
+    {% endif %}
 
 {% endblock %}
