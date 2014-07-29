@@ -275,7 +275,7 @@ class UserSummary(views.View):
                 WikiChange.active == 1,
                 WikiChange.wiki_id.in_(wikis[Wiki]),
             )
-            .order_by(WikiChange.changed.desc()).limit(100)
+            .order_by(WikiChange.changed.desc()).limit(100).all()
         )
         audittrails = (
             WikiTrailChange.query
@@ -284,7 +284,7 @@ class UserSummary(views.View):
                 WikiTrailChange.active == 1,
                 WikiTrailChange.wiki_id.in_(wikis[WikiTrail]),
             )
-            .order_by(WikiTrailChange.changed.desc()).limit(100)
+            .order_by(WikiTrailChange.changed.desc()).limit(100).all()
         )
         ds_comments = (
             WikiComment.query
@@ -293,7 +293,7 @@ class UserSummary(views.View):
                 or_(WikiComment.deleted == 0, WikiComment.deleted == None),
                 WikiComment.wiki_id.in_(wikis[Wiki]),
             )
-            .order_by(WikiComment.posted.desc()).limit(100)
+            .order_by(WikiComment.posted.desc()).limit(100).all()
         )
         return {'conclusions': conclusions, 'comments': comments_list,
                 'datasheets': datasheets, 'audittrails': audittrails,
