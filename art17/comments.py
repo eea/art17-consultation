@@ -27,7 +27,8 @@ from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
     Dataset, db,
     Comment, t_comments_read, HabitatComment, t_habitat_comments_read,
-    Wiki, WikiComment, t_wiki_comments_read,
+    Wiki, WikiComment, t_wiki_comments_read, WikiChange, WikiTrail,
+    WikiTrailChange,
 )
 
 
@@ -259,7 +260,43 @@ class UserSummary(views.View):
                         self.model_comment_cls.deleted == None))
             .order_by(self.model_comment_cls.post_date.desc()).all()
         )
-        return {'conclusions': conclusions, 'comments': comments_list}
+        datasheets = (
+            db.session.query(WikiChange, Wiki)
+            .join(WikiChange.wiki)
+            .with_entities(
+                WikiChange.editor,
+                WikiChange.changed,
+                getattr(Wiki, self.wiki_subject_column).label('subject'),
+                Wiki.region_code,
+                WikiChange.dataset_id,
+            )
+            .filter(
+                WikiChange.dataset_id == period,
+                WikiChange.active == 1,
+                getattr(Wiki, self.wiki_subject_column) != None,
+            )
+            .order_by(WikiChange.changed.desc()).limit(100)
+        )
+        audittrails = (
+            db.session.query(WikiTrailChange, WikiTrail)
+            .join(WikiTrailChange.wiki)
+            .with_entities(
+                WikiTrailChange.editor,
+                WikiTrailChange.changed,
+                getattr(WikiTrail, self.wiki_subject_column).label('subject'),
+                WikiTrail.region_code,
+                WikiTrailChange.dataset_id,
+            )
+            .filter(
+                WikiTrailChange.dataset_id == period,
+                WikiTrailChange.active == 1,
+                getattr(WikiTrail, self.wiki_subject_column) != None,
+            )
+            .order_by(WikiTrailChange.changed.desc()).limit(100)
+        )
+        return {'conclusions': conclusions, 'comments': comments_list,
+                'datasheets': datasheets, 'audittrails': audittrails,
+                }
 
 
 class SpeciesUserSummary(SpeciesMixin, UserSummary):

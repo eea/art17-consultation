@@ -40,13 +40,15 @@
         {% for c in history.comments %}
         <tr>
           <td><a href="{{ url_for(summary_endpoint, subject=c.subject,
-                  region=c.region, period=c.dataset_id) + "#manual-thead" }}">{{ c.post_date }}</a></td>
+                  region=c.region, period=c.dataset_id) + "#manual-thead" }}"
+                  >{{ c.post_date }}</a></td>
           <td>{{ (c.author.name or c.author_id) | hide_adm_etc_username }}</td>
           <td>{{ (c.user.name or c.user_id) | hide_adm_etc_username }}</td>
           <td>{{ c.subject }}</td>
           <td>{{ c.region }}</td>
           <td>{{ c.read_for(g.user) }}</td>
         </tr>
+
         {% endfor %}
       </tbody>
     </table>
@@ -77,4 +79,53 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <p class="h2">Recent data sheet info entries</p>
+    <table class="table-list">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>User</th>
+          <th>{{ subject_name|capitalize }}</th>
+          <th>Region</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in history.datasheets %}
+        <tr>
+          <td><a href="{{ url_for('wiki.datasheet', page=subject_name,
+            period=d.dataset_id, subject=d.subject, region=d.region_code) }}"
+            id="wikibutton">{{ d.changed }}</a></td>
+          <td>{{ d.editor | hide_adm_etc_username }}</td>
+          <td>{{ d.subject }}</td>
+          <td>{{ d.region_code or 'All bioregions' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p class="h2">Recent audit trail entries</p>
+    <table class="table-list">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>User</th>
+          <th>{{ subject_name|capitalize }}</th>
+          <th>Region</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in history.audittrails %}
+        <tr>
+          <td><a href="{{ url_for('wiki.audittrail', page=subject_name,
+            period=a.dataset_id, subject=a.subject, region=a.region_code) }}"
+            id="wikibutton">{{ a.changed }}</a></td>
+          <td>{{ a.editor | hide_adm_etc_username }}</td>
+          <td>{{ a.subject }}</td>
+          <td>{{ a.region_code }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
 {% endblock %}

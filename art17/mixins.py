@@ -141,6 +141,7 @@ class SpeciesMixin(MixinsCommon):
     prev_lu_cls = LuSpeciesManual2007
     subject_name = 'species'
     summary_endpoint = 'summary.species-summary'
+    wiki_subject_column = 'assesment_speciesname'
 
     def objects_by_group(self, period, group):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
@@ -219,6 +220,7 @@ class HabitatMixin(MixinsCommon):
     prev_lu_cls = LuHabitatManual2007
     subject_name = 'habitat'
     summary_endpoint = 'summary.habitat-summary'
+    wiki_subject_column = 'habitatcode'
 
     def subjects_by_group(self, period, group):
         qs = (
