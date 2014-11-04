@@ -400,12 +400,12 @@ class SpeciesSummary(SpeciesMixin, Summary):
         url_kwargs = dict(period=period, subject=subject, region=region)
         if subject:
             speciescode_row = (
-                db.session.query(EtcDataSpeciesRegion.speciescode)
+                EtcDataSpeciesRegion.query
                 .filter_by(subject=subject)
                 .filter_by(dataset_id=period)
                 .first()
             )
-            speciescode = speciescode_row[0] if speciescode_row else None
+            speciescode = speciescode_row.mapcode if speciescode_row else None
 
             sensitive = False
             sensitive_records = get_sensitive_records(speciescode)

@@ -456,6 +456,12 @@ class EtcDataSpeciesRegion(Base):
     def is_assesm(self):
         return self.species_type_asses == 0
 
+    @property
+    def mapcode(self):
+        if self.speciescode in ('1033', '1763', '2016', '2527'):
+            return self.speciescode
+        return unicode(self.n2000_species_code)
+
     @hybrid_property
     def subject(self):
         return self.assesment_speciesname
