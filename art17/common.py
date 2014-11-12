@@ -464,6 +464,26 @@ def config():
     return flask.render_template('config.html', form=form)
 
 
+@common.route('/auth/details', methods=['GET', 'POST'])
+def change_details():
+    from art17.auth import current_user
+
+    if current_user.is_anonymous():
+        flask.flash('You need to login to access this page.')
+        return flask.redirect(flask.url_for(HOMEPAGE_VIEW_NAME))
+    else:
+        from art17.forms import ChangeDetailsForm
+        form = ChangeDetailsForm(flask.request.form, current_user)
+        if form.validate_on_submit():
+            flask.flash('Details updated successfully!', 'success')
+            form.populate_obj(current_user)
+            db.session.commit()
+
+    return flask.render_template('change_details.html', **{
+        'form': form,
+    })
+
+
 @common.app_template_filter('ugly_fix')
 def ugly_fix(value):
     return value.replace('art17.eionet', 'bd.eionet')

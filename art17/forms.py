@@ -493,3 +493,10 @@ class ConfigForm(Form):
         self.default_dataset_id.choices = [
             (str(ds_id), name) for ds_id, name in dataset_qs
         ]
+
+
+class ChangeDetailsForm(Form):
+    institution = TextField(label="Institution", validators=[Optional()])
+    abbrev = TextField(label="Abbreviation", validators=[Optional()])
+    MS = TextField(label="MS", validators=[Optional()])
+    qualification = TextField(label="Qualification", validators=[Optional()])

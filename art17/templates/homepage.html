@@ -155,11 +155,14 @@
           <li><a href="{{ url_for('common.config') }}">Settings</a></li>
           <li><a href="{{ url_for('auth.change_password') }}">Change password</a></li>
         </ul>
-  {% elif current_user.is_authenticated() %}
+  {% endif %}
+  {% if current_user.is_authenticated() %}
       <h2>My account</h2>
         <ul>
+          <li><a href="{{ url_for('common.change_details') }}">Change details</a></li>
           <li><a href="{{ url_for('auth.change_password') }}">Change password</a></li>
         </ul>
+  {% else %}
   {% endif %}
 
 {% endblock content %}
