@@ -28,6 +28,7 @@
         <th rowspan="2">Qualification</th>
         <th rowspan="2">Country</th>
         <th colspan="4" class="text-center">Roles</th>
+        <th rowspan="2">Passwords</th>
       </tr>
       <tr>
         <th class="text-center">Administrator</th>
@@ -78,6 +79,7 @@
           <i class="fa fa-check"></i>
           {% endif %}
         </td>
+        <td><a href="{{ url_for('.admin_user_reset_password', user_id=user.id) }}">Reset password</a></td>
       </tr>
     {% endfor %}
     </tbody>

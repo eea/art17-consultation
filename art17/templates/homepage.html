@@ -153,7 +153,6 @@
         {% endif %}
           <li><a href="{{ url_for('auth.dataset_list') }}">Dataset admin</a></li>
           <li><a href="{{ url_for('common.config') }}">Settings</a></li>
-          <li><a href="{{ url_for('auth.change_password') }}">Change password</a></li>
         </ul>
   {% endif %}
   {% if current_user.is_authenticated() %}
