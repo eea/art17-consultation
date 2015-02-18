@@ -1,0 +1,49 @@
+{% extends layout_template %}
+
+{% block breadcrumbs %}
+  {% from '_macros.html' import breadcrumbs %}
+  {{ breadcrumbs(APP_BREADCRUMBS + [
+      ('configuration', None),
+    ]) }}
+{% endblock %}
+
+
+{% block content %}
+  {% from '_macros.html' import render_field_with_errors %}
+  <h1>Change details</h1>
+
+  <form id="config-form" class="form box box-small inline-block" name="config"
+        method="post">
+
+    {% if form.csrf_token.errors %}
+      <div class="warning">You have submitted an invalid CSRF token</div>
+    {% endif %}
+
+    <input type="hidden" name="csrf_token" value="">
+
+    <div class="form-group">
+      {{ render_field_with_errors(form.institution) }}
+    </div>
+
+
+    <div class="form-group">
+      {{ render_field_with_errors(form.abbrev) }}
+    </div>
+
+
+    <div class="form-group">
+      {{ render_field_with_errors(form.MS) }}
+    </div>
+
+
+    <div class="form-group">
+      {{ render_field_with_errors(form.qualification) }}
+    </div>
+
+    <div>
+      <button class="btn-blue" type="submit">Save</button>
+    </div>
+
+  </form>
+
+{% endblock content %}

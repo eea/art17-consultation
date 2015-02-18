@@ -3,7 +3,7 @@ from collections import defaultdict
 import flask
 from flask.ext.principal import PermissionDenied
 from flask.ext.security import user_registered
-from flask.ext.security.forms import ChangePasswordForm
+from flask.ext.security.forms import ChangePasswordForm, ResetPasswordForm
 from flask.ext.security.changeable import change_user_password
 from flask.ext.security.registerable import register_user, encrypt_password
 from flask.ext.mail import Message
@@ -352,6 +352,30 @@ def admin_user(user_id):
         'user_form': user_form,
         'current_user_roles': current_user_roles,
         'all_roles': dict(all_roles),
+    })
+
+
+
+@auth.route('/auth/users/<user_id>/reset_password', methods=['GET', 'POST'])
+@require_admin
+def admin_user_reset_password(user_id):
+    user = models.RegisteredUser.query.get_or_404(user_id)
+    if user.is_ldap:
+        message = 'The password can be changed only from the EIONET website '\
+                  '(http://www.eionet.europa.eu/profile).'
+        return flask.render_template('message.html', message=message)
+
+    form = ResetPasswordForm()
+
+    if form.validate_on_submit():
+        change_user_password(user, form.password.data)
+        models.db.session.commit()
+        msg = "Password successfully reseted."
+        flask.flash(msg, 'success')
+        zope_acl_manager.edit(user.id, form.password.data)
+    return flask.render_template('auth/admin_user_reset_password.html', **{
+        'user': user,
+        'form': form,
     })
 
 
