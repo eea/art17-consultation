@@ -17,6 +17,7 @@ from art17.maps import maps
 from art17.auth.script import user_manager, role_manager
 from art17.dataset import dataset_manager
 from art17.assets import assets_env
+from art17.factsheet import factsheet
 
 
 DEFAULT_CONFIG = {
@@ -64,6 +65,8 @@ def create_app(config={}, testing=False):
     app.register_blueprint(common)
     app.register_blueprint(wiki)
     app.register_blueprint(maps)
+    app.register_blueprint(factsheet)
+
     Mail().init_app(app)
 
     @app.route('/temp.html')
