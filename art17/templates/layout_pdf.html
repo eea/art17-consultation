@@ -4,10 +4,17 @@
   <head>
     <title>{% block title %}{% endblock %}</title>
 
+     <link rel="stylesheet" type="text/css"
+      href="{{ url_for('static', filename='css/factsheet-ui.css') }}"
+      media="screen">
+
     {% block head %}{% endblock %}
   </head>
 
   <body>
+    <h2>Habitats Directive Article 17 Reporting</h2>
+    <h3>Period 2007-2012</h3>
+
     {% block content %}{% endblock %}
   </body>
 

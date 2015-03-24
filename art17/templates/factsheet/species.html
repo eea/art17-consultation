@@ -1,4 +1,29 @@
 {% extends 'layout_pdf.html' %}
 
 {% block content %}
+
+  <table>
+    <tr>
+      <th colspan="2">Species name</th>
+      <td colspan="2">{{ name }}</td>
+    </tr>
+    <tr>
+      <th>Species code</th>
+      <td>{{ code }}</td>
+      <th>Species group</th>
+      <td>{{ group }}</td>
+    </tr>
+    <tr>
+      <th>Priority</th>
+      <td>{{ priority }}</td>
+      <th>Regions</th>
+      <td>{{ regions }}</td>
+    </tr>
+    <tr>
+      <th colspan="2"></th>
+      <td colspan="2"></td>
+    </tr>
+  </table>
+
+  <p>{{ wiki | safe }}</p>
 {% endblock %}
