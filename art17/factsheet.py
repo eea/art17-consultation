@@ -13,11 +13,10 @@ REASONS = {'a': 'Genuine', 'b': 'Better data', 'c': 'Change in methods',
 
 
 @factsheet.app_template_global('get_percentage')
-def get_percentage(row, manual_objects, field):
-    total = sum([float(getattr(obj, field) or 0) for obj in manual_objects])
+def get_percentage(total, value):
     if not total:
         return 0
-    percentage = float(getattr(row, field) or 0) / total * 100
+    percentage = float(value or 0) / total * 100
     if 0 < percentage < 1:
         return round(percentage, 2)
     else:
@@ -78,6 +77,9 @@ class FactSheet(MethodView):
         period = request.args.get('period')
         subject = request.args.get('subject')
         self.set_assessment(period, subject)
+        manual_objects = self.get_manual_objects(period, subject)
+        total_range = sum([float(getattr(obj, self.range_field) or 0)
+                           for obj in manual_objects])
 
         context = {
             'name': self.get_name(),
@@ -86,7 +88,8 @@ class FactSheet(MethodView):
             'code': self.assessment.code,
             'priority': self.get_priority(),
             'wiki': self.get_wiki(period, subject),
-            'manual_objects': self.get_manual_objects(period, subject),
+            'manual_objects': manual_objects,
+            'total_range': total_range,
             'objects': self.get_objects(period, subject),
         }
         return render_template(self.template_name, **context)
@@ -94,6 +97,7 @@ class FactSheet(MethodView):
 
 class SpeciesFactSheet(FactSheet, SpeciesMixin):
     template_name = 'factsheet/species.html'
+    range_field = 'range_surface_area'
 
     def get_name(self):
         return self.assessment.subject
@@ -101,6 +105,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
 
 class HabitatFactSheet(FactSheet, HabitatMixin):
     template_name = 'factsheet/habitat.html'
+    range_field = 'coverage_surface_area'
 
     def get_name(self):
         return self.assessment.habitat.name

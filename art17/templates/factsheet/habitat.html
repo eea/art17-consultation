@@ -65,7 +65,7 @@
           <span class="conclusion">{{ row.conclusion_assessment }}</span>
         </td>
         <td>{{ row.conclusion_assessment_trend }}</td>
-        <td>{{ get_percentage(row, manual_objects, 'coverage_surface_area') }}</td>
+        <td>{{ get_percentage(total_range, row.coverage_surface_area) }}</td>
         <td>{{ row.conclusion_assessment_prev }}</td>
         <td>{{ get_reason_for_change_manual(row.conclusion_assessment_change) }}</td>
       </tr>
