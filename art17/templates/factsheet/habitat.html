@@ -19,11 +19,56 @@
       <th>Regions</th>
       <td>{{ regions }}</td>
     </tr>
-    <tr>
-      <th colspan="2"></th>
-      <td colspan="2"></td>
-    </tr>
   </table>
 
   <p>{{ wiki | safe }}</p>
+
+  <h3>Assessment of conservation status at the European biogeographical level</h3>
+  <h6>(all biogeographic and marine regions – EU27)</h6>
+
+  [map]
+
+  <table class="complex_datatable">
+    <tbody class="thead">
+      <tr>
+        <th rowspan="2">Region</th>
+        <th colspan="4">Conservation status parameters</th>
+        <th rowspan="2">Conclusion 2007-2012</th>
+        <th rowspan="2">Trend in conservation status</th>
+        <th rowspan="2">% in biogeo. region</th>
+        <th rowspan="2">Conclusion 2001-2006</th>
+        <th rowspan="2">Reason for change</th>
+      </tr>
+      <tr>
+        <th>Range</th>
+        <th>Area</th>
+        <th>Structure &amp; Functions</th>
+        <th>Future prospects</th>
+      </tr>
+    </tbody>
+    {% for row in manual_objects %}
+      <tr class="stripe_row">
+        <td>{{ row.region }}</td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_range, '') }}">
+          <span class="conclusion">{{ row.conclusion_range }}</span>
+        </td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_area, '') }}">
+          <span class="conclusion">{{ row.conclusion_area}}</span>
+        </td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_structure, '') }}">
+          <span class="conclusion">{{ row.conclusion_structure }}</span>
+        </td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_future, '') }}">
+          <span class="conclusion">{{ row.conclusion_future }}</span>
+        </td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment, '') }}">
+          <span class="conclusion">{{ row.conclusion_assessment }}</span>
+        </td>
+        <td>{{ row.conclusion_assessment_trend }}</td>
+        <td>{{ get_percentage(row, manual_objects, 'coverage_surface_area') }}</td>
+        <td>{{ row.conclusion_assessment_prev }}</td>
+        <td>{{ get_reason_for_change(row) }}</td>
+      </tr>
+    {% endfor %}
+  </table>
 {% endblock %}
