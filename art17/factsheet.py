@@ -7,6 +7,23 @@ from art17.models import db, Wiki, WikiChange
 factsheet = Blueprint('factsheets', __name__)
 
 PRIORITY_TEXT = {'0': 'No', '1': 'Yes', '2': 'Yes in Ireland'}
+REASONS_MAPPING = {'n': 'Not genuine', 'y': 'Genuine', 'nc': 'No change'}
+
+
+@factsheet.app_template_global('get_percentage')
+def get_percentage(row, manual_objects, field):
+    total = sum([float(getattr(obj, field) or 0) for obj in manual_objects])
+    if not total:
+        return 0
+    percentage = float(getattr(row, field) or 0) / total * 100
+    if 0 < percentage < 1:
+        return round(percentage, 2)
+    else:
+        return int(round(percentage))
+
+@factsheet.app_template_global('get_reason_for_change')
+def get_reason_for_change(row):
+    return REASONS_MAPPING.get(row.conclusion_assessment_change, 'Unknown')
 
 
 class FactSheet(MethodView):
@@ -37,6 +54,11 @@ class FactSheet(MethodView):
                 .first())
         return wiki.body if wiki else ''
 
+    def get_manual_objects(self, period, subject):
+        return (self.model_manual_cls.query
+                .filter_by(dataset_id=period, subject=subject, decision='OK')
+                .all())
+
     def get(self):
         period = request.args.get('period')
         subject = request.args.get('subject')
@@ -49,6 +71,7 @@ class FactSheet(MethodView):
             'code': self.assessment.code,
             'priority': self.get_priority(),
             'wiki': self.get_wiki(period, subject),
+            'manual_objects': self.get_manual_objects(period, subject),
         }
         return render_template(self.template_name, **context)
 
