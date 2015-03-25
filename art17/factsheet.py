@@ -7,7 +7,9 @@ from art17.models import db, Wiki, WikiChange
 factsheet = Blueprint('factsheets', __name__)
 
 PRIORITY_TEXT = {'0': 'No', '1': 'Yes', '2': 'Yes in Ireland'}
-REASONS_MAPPING = {'n': 'Not genuine', 'y': 'Genuine', 'nc': 'No change'}
+REASONS_MANUAL = {'n': 'Not genuine', 'y': 'Genuine', 'nc': 'No change'}
+REASONS = {'a': 'Genuine', 'b': 'Better data', 'c': 'Change in methods',
+           'e': 'Change in methods', 'n': 'No change', 'd': 'No data'}
 
 
 @factsheet.app_template_global('get_percentage')
@@ -21,9 +23,17 @@ def get_percentage(row, manual_objects, field):
     else:
         return int(round(percentage))
 
+
+@factsheet.app_template_global('get_reason_for_change_manual')
+def get_reason_for_change_manual(value):
+    return REASONS_MANUAL.get(value, '')
+
+
 @factsheet.app_template_global('get_reason_for_change')
-def get_reason_for_change(row):
-    return REASONS_MAPPING.get(row.conclusion_assessment_change, 'Unknown')
+def get_reason_for_change(value):
+    if not value:
+        return ''
+    return REASONS.get(value[0], '')
 
 
 class FactSheet(MethodView):
@@ -59,6 +69,11 @@ class FactSheet(MethodView):
                 .filter_by(dataset_id=period, subject=subject, decision='OK')
                 .all())
 
+    def get_objects(self, period, subject):
+        return (self.model_cls.query
+                .filter_by(dataset_id=period, subject=subject)
+                .all())
+
     def get(self):
         period = request.args.get('period')
         subject = request.args.get('subject')
@@ -72,6 +87,7 @@ class FactSheet(MethodView):
             'priority': self.get_priority(),
             'wiki': self.get_wiki(period, subject),
             'manual_objects': self.get_manual_objects(period, subject),
+            'objects': self.get_objects(period, subject),
         }
         return render_template(self.template_name, **context)
 

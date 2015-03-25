@@ -3,26 +3,28 @@
 {% block content %}
 
   <table class="complex_datatable">
-    <tr>
-      <th colspan="2">Species name</th>
-      <td colspan="2">{{ name }}</td>
-    </tr>
-    <tr>
-      <th>Species code</th>
-      <td>{{ code }}</td>
-      <th>Species group</th>
-      <td>{{ group }}</td>
-    </tr>
-    <tr>
-      <th>Priority</th>
-      <td>{{ priority }}</td>
-      <th>Regions</th>
-      <td>{{ regions }}</td>
-    </tr>
-    <tr>
-      <th colspan="2">Annex list</th>
-      <td colspan="2"></td>
-    </tr>
+    <tbody class="thead">
+      <tr>
+        <th colspan="2">Species name</th>
+        <td colspan="2">{{ name }}</td>
+      </tr>
+      <tr>
+        <th>Species code</th>
+        <td>{{ code }}</td>
+        <th>Species group</th>
+        <td>{{ group }}</td>
+      </tr>
+      <tr>
+        <th>Priority</th>
+        <td>{{ priority }}</td>
+        <th>Regions</th>
+        <td>{{ regions }}</td>
+      </tr>
+      <tr>
+        <th colspan="2">Annex list</th>
+        <td colspan="2"></td>
+      </tr>
+    </tbody>
   </table>
 
   <p>{{ wiki | safe }}</p>
@@ -71,8 +73,65 @@
         <td>{{ row.conclusion_assessment_trend }}</td>
         <td>{{ get_percentage(row, manual_objects, 'range_surface_area') }}</td>
         <td>{{ row.conclusion_assessment_prev }}</td>
-        <td>{{ get_reason_for_change(row) }}</td>
+        <td>{{ get_reason_for_change_manual(row.conclusion_assessment_change) }}</td>
       </tr>
     {% endfor %}
+    </tbody>
   </table>
+
+  <h3>Assessment of conservation status at the Member State level</h3>
+  <h6>(all biogeographic and marine regions – EU27)</h6>
+
+  [map]
+
+  <table class="complex_datatable">
+    <tbody class="thead">
+      <tr>
+        <th rowspan="2">MS</th>
+        <th rowspan="2">Region</th>
+        <th colspan="4">Conservation status parameters</th>
+        <th rowspan="2">CS 2012</th>
+        <th rowspan="2">Trend in conservation status</th>
+        <th rowspan="2">% in biogeo. region</th>
+        <th rowspan="2">CS 2006</th>
+        <th rowspan="2">Reason for change</th>
+      </tr>
+      <tr>
+        <th>Range</th>
+        <th>Population</th>
+        <th>Habitat</th>
+        <th>Future prospects</th>
+      </tr>
+    </tbody>
+    {% for row in objects %}
+      <tr class="stripe_row">
+        <td>{{ row.eu_country_code }}</td>
+        <td>{{ row.region }}</td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_range, '') }}">
+          <span class="conclusion">{{ row.conclusion_range }}</span>
+        </td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_population, '') }}">
+          <span class="conclusion">{{ row.conclusion_population }}</span>
+        </td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_habitat, '') }}">
+          <span class="conclusion">{{ row.conclusion_habitat }}</span>
+        </td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_future, '') }}">
+          <span class="conclusion">{{ row.conclusion_future }}</span>
+        </td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment, '') }}">
+          <span class="conclusion">{{ row.conclusion_assessment }}</span>
+        </td>
+        <td>{{ row.conclusion_assessment_trend or '' }}</td>
+        <td>{{ row.percentage_range_surface_area | round(1) }}</td>
+        <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, 'NA') }}">
+          <span class="conclusion">{{ row.conclusion_assessment_prev }}</span>
+        </td>
+        <td>{{ get_reason_for_change(row.conclusion_assessment_change) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+
 {% endblock %}
