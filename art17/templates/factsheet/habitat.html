@@ -2,21 +2,23 @@
 
 {% block content %}
 
+  <h2>Habitat name: {{ name }}</h2>
+
   <table class="complex_datatable">
     <tbody class="thead">
       <tr>
-        <th colspan="2">Habitat name</th>
-        <td colspan="2">{{ name }}</td>
-      </tr>
-      <tr>
         <th>Habitat code</th>
         <td>{{ code }}</td>
+      </tr>
+      <tr>
         <th>Habitat group</th>
         <td>{{ group }}</td>
       </tr>
       <tr>
         <th>Priority</th>
         <td>{{ priority }}</td>
+      </tr>
+      <tr>
         <th>Regions</th>
         <td>{{ regions }}</td>
       </tr>

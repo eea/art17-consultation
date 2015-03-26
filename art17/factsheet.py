@@ -81,17 +81,16 @@ class FactSheet(MethodView):
         total_range = sum([float(getattr(obj, self.range_field) or 0)
                            for obj in manual_objects])
 
-        context = {
-            'name': self.get_name(),
+        context = self.get_context()
+        context.update({
             'group': self.get_group_for_subject(subject),
             'regions': self.get_regions(period, subject),
-            'code': self.assessment.code,
             'priority': self.get_priority(),
             'wiki': self.get_wiki(period, subject),
             'manual_objects': manual_objects,
             'total_range': total_range,
             'objects': self.get_objects(period, subject),
-        }
+        })
         return render_template(self.template_name, **context)
 
 
@@ -99,16 +98,33 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     template_name = 'factsheet/species.html'
     range_field = 'range_surface_area'
 
-    def get_name(self):
-        return self.assessment.subject
+    def get_context(self):
+        return {
+            'name': self.assessment.subject,
+            'annexes': self.get_annexes(),
+        }
+
+    def get_annexes(self):
+        annexes = list(
+            self.model_cls.query
+            .filter_by(subject=self.assessment.subject,
+                       dataset_id=self.assessment.dataset_id)
+            .with_entities('annex_II', 'annex_IV', 'annex_V')
+            .distinct()
+            .first()
+        )
+        return ', '.join(filter(bool, annexes))
 
 
 class HabitatFactSheet(FactSheet, HabitatMixin):
     template_name = 'factsheet/habitat.html'
     range_field = 'coverage_surface_area'
 
-    def get_name(self):
-        return self.assessment.habitat.name
+    def get_context(self):
+        return {
+            'name': self.assessment.habitat.name,
+            'code': self.assessment.code,
+        }
 
 
 factsheet.add_url_rule('/species/factsheet/',

@@ -2,27 +2,25 @@
 
 {% block content %}
 
+  <h2>Species name: {{ name }}</h2>
+
   <table class="complex_datatable">
     <tbody class="thead">
       <tr>
-        <th colspan="2">Species name</th>
-        <td colspan="2">{{ name }}</td>
-      </tr>
-      <tr>
-        <th>Species code</th>
-        <td>{{ code }}</td>
-        <th>Species group</th>
-        <td>{{ group }}</td>
+        <th>Annex</th>
+        <td>{{ annexes }}</td>
       </tr>
       <tr>
         <th>Priority</th>
         <td>{{ priority }}</td>
-        <th>Regions</th>
-        <td>{{ regions }}</td>
       </tr>
       <tr>
-        <th colspan="2">Annex list</th>
-        <td colspan="2"></td>
+        <th>Species group</th>
+        <td>{{ group }}</td>
+      </tr>
+      <tr>
+        <th>Regions</th>
+        <td>{{ regions }}</td>
       </tr>
     </tbody>
   </table>
