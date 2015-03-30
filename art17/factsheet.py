@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, current_app as app
 from flask.ext.script import Manager
 from flask.views import MethodView
 
@@ -50,7 +50,8 @@ class FactSheet(MethodView):
             self.model_manual_cls.query
             .filter_by(subject=subject, dataset_id=period, decision='OK')
             .with_entities(self.model_manual_cls.region)
-            .distinct().all())
+            .distinct().all()
+        )
         return ', '.join(['CONT' if r[0] == 'CON' else r[0] for r in regions])
 
     def get_priority(self):
@@ -77,6 +78,8 @@ class FactSheet(MethodView):
                 .all())
 
     def get_pressures(self, subject, pressure_type):
+        if not app.config['SQLALCHEMY_BINDS']:
+            return []
         engine = db.get_engine(app, 'factsheet')
         result = engine.execute(THREATS_QUERY.format(
             subject=subject,
@@ -89,9 +92,6 @@ class FactSheet(MethodView):
         ))
         return [dict(row.items()) for row in result]
 
-    def get_context_data(self):
-        period = request.args.get('period')
-        subject = request.args.get('subject')
     def get_context_data(self, **kwargs):
         period = kwargs.get('period')
         subject = kwargs.get('subject')
@@ -162,7 +162,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     subject_column = join_column = 'habitatcode'
     regionhash_column = 'habitat_regionhash'
 
-    def get_context(self, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(HabitatFactSheet, self).get_context_data(**kwargs)
         context.update({
             'name': self.assessment.habitat.name,
