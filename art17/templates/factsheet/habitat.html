@@ -5,7 +5,7 @@
   <h2>Habitat name: {{ name }}</h2>
 
   <table class="complex_datatable">
-    <tbody class="thead">
+    <tbody>
       <tr>
         <th>Habitat code</th>
         <td>{{ code }}</td>
@@ -139,5 +139,70 @@
       {% endfor %}
       </tbody>
     </table>
+
+    <p>Knowing that not all changes in conservation status between the
+    reporting periods were genuine, Member States were asked to give the
+    reasons for changes in conservation status. Bulgaria and Romania only
+    joined the EU in 2007 and Greece did not report for 2007-12 so no reason is
+    given for change for these countries. Greek data shown above is from
+    2001-06.</p>
   </section>
+
+  <section>
+    <header>
+      <h2>Main pressures and threats reported by Member States</h2>
+    </header>
+
+    <p>Member states were asked to report the 20 most important threats and
+    pressures using an agreed hierarchical list which can be found on the
+    Article 17 Reference Portal
+    <a href="http://bd.eionet.europa.eu/activities/Reporting/Article_17/reference_portal">
+    </a>. Pressures are activities which are currently having an impact on the
+    species and threats are activities expected to have an impact in the near
+    future. Pressures and threats were ranked in three classes ‘High, Medium
+    and low importance, the tables below only show threats and pressures
+    classed as ‘High’, for some species there were less than ten threats or
+    pressures reported as highly important.</p>
+
+    <h3>Ten most frequently reported 'Highly important' pressures</h3>
+
+    <table class='table-simple'>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Activity</th>
+          <th>% of reports</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pressure in pressures %}
+          <tr>
+            <td>{{ pressure['code'] }}</td>
+            <td>{{ pressure['activity'] }}</td>
+            <td>{{ pressure['pc'] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3>Ten most frequently reported 'Highly important' threats</h3>
+
+    <table class='table-simple'>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Activity</th>
+          <th>% of reports</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for threat in threats %}
+          <tr>
+            <td>{{ threat['code'] }}</td>
+            <td>{{ threat['activity'] }}</td>
+            <td>{{ threat['pc'] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 {% endblock %}

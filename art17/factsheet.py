@@ -6,6 +6,7 @@ from jinja2 import Markup
 
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange
+from art17.queries import THREATS_QUERY
 
 factsheet = Blueprint('factsheets', __name__)
 
@@ -84,6 +85,14 @@ class FactSheet(MethodView):
                 .filter_by(dataset_id=period, subject=subject)
                 .all())
 
+    def get_pressures(self, subject, pressure_type):
+        engine = db.get_engine(app, 'factsheet')
+        result = engine.execute(THREATS_QUERY.format(
+            subject=subject,
+            pressure_type=pressure_type,
+        ))
+        return [dict(row.items()) for row in result]
+
     def get(self):
         period = request.args.get('period')
         subject = request.args.get('subject')
@@ -101,6 +110,8 @@ class FactSheet(MethodView):
             'manual_objects': manual_objects,
             'total_range': total_range,
             'objects': self.get_objects(period, subject),
+            'pressures': self.get_pressures(subject, 'p'),
+            'threats': self.get_pressures(subject, 't'),
         })
         return render_template(self.template_name, **context)
 
