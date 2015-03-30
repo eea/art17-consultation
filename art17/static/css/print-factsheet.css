@@ -20,6 +20,7 @@ a {
 
 /* Page */
 @page {
+  size: A4 portrait;
   margin: .8cm 1.8cm;
 }
 @page :left {
@@ -30,8 +31,14 @@ a {
   margin-left: 1.8cm;
   margin-right: .8cm;
 }
-@page :first {
-  /* remove page counter and running header */
+
+#page-header {
+  display: block;
+  position: running(header);
+}
+#page-footer {
+  display: block;
+  position: running(footer);
 }
 
 /* Cover header */
@@ -73,12 +80,10 @@ header .subtitle {
   padding: 2pt 4pt;
 }
 .table-simple caption {
-  text-align: left;
   font-weight: bold;
   padding-bottom: 1em;
 }
 .table-simple thead th {
-  text-align: left;
   border-bottom: 2px solid;
 }
 .table-simple tbody tr:nth-child(odd) th,
@@ -100,6 +105,7 @@ header .subtitle {
 .complex_datatable th,
 .complex_datatable caption {
   padding: 3pt 5pt;
+  text-align: center;
 }
 .complex_datatable caption { 
   font-weight: normal;
@@ -127,25 +133,23 @@ header .subtitle {
   border-right: 1pt solid #ccc;
 }
 /* CONCLUSION */
-.conclusion,
-.conclusion:hover {
+.conclusion {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
-  padding: 2pt 4pt;
-  margin: -3pt -5pt;
+  padding: 0 3pt;
+  margin: 0 3pt;
   text-align: center;
   border-width: 1pt;
   border-style: solid;
   border-radius: 2pt;
-  /*min-height: 17px;*/
+  min-height: 1.4em;
   vertical-align: middle;
   position: relative;
   color: #000;
+  width: 20pt;
 }
-td .conclusion {
+/*td .conclusion {
   min-width: 100%;
-}
+}*/
 .conclusion.inline {
   margin: 0;
   vertical-align: top;
