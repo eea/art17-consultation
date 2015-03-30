@@ -31,7 +31,7 @@
   [map]
 
   <table class="complex_datatable">
-    <tbody class="thead">
+    <thead>
       <tr>
         <th rowspan="2">Region</th>
         <th colspan="4">Conservation status parameters</th>
@@ -47,7 +47,8 @@
         <th>Structure &amp; Functions</th>
         <th>Future prospects</th>
       </tr>
-    </tbody>
+    </thead>
+    <tbody>
     {% for row in manual_objects %}
       <tr class="stripe_row">
         <td>{{ row.region }}</td>
@@ -81,7 +82,7 @@
   [map]
 
   <table class="complex_datatable">
-    <tbody class="thead">
+    <thead>
       <tr>
         <th rowspan="2">MS</th>
         <th rowspan="2">Region</th>
@@ -98,7 +99,8 @@
         <th>Structure &amp; functions</th>
         <th>Future prospects</th>
       </tr>
-    </tbody>
+    </thead>
+    <tbody>
     {% for row in objects %}
       <tr class="stripe_row">
         <td>{{ row.eu_country_code }}</td>
