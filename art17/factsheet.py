@@ -90,6 +90,11 @@ class FactSheet(MethodView):
         result = engine.execute(THREATS_QUERY.format(
             subject=subject,
             pressure_type=pressure_type,
+            checklist_table=self.checklist_table,
+            regions_MS_table=self.regions_MS_table,
+            join_column=self.join_column,
+            regionhash_column=self.regionhash_column,
+            subject_column=self.subject_column,
         ))
         return [dict(row.items()) for row in result]
 
@@ -119,6 +124,11 @@ class FactSheet(MethodView):
 class SpeciesFactSheet(FactSheet, SpeciesMixin):
     template_name = 'factsheet/species.html'
     range_field = 'range_surface_area'
+    checklist_table = 'data_species_check_list'
+    regions_MS_table = 'data_species_regions_MS_level'
+    subject_column = 'assessment_speciesname'
+    join_column = 'speciesname'
+    regionhash_column = 'species_regionhash'
 
     def get_context(self):
         return {
@@ -141,6 +151,10 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
 class HabitatFactSheet(FactSheet, HabitatMixin):
     template_name = 'factsheet/habitat.html'
     range_field = 'coverage_surface_area'
+    checklist_table = 'data_habitats_check_list'
+    regions_MS_table = 'data_habitats_regions_MS_level'
+    subject_column = join_column = 'habitatcode'
+    regionhash_column = 'habitat_regionhash'
 
     def get_context(self):
         return {
