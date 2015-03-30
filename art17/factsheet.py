@@ -101,7 +101,6 @@ class FactSheet(MethodView):
                            for obj in manual_objects])
 
         return {
-            'name': self.get_name(),
             'group': self.get_group_for_subject(subject),
             'regions': self.get_regions(period, subject),
             'priority': self.get_priority(),
@@ -119,7 +118,7 @@ class FactSheet(MethodView):
 
     def get_pdf(self, **kwargs):
         context = self.get_context_data(**kwargs)
-        title = self.get_name()
+        title = context.get('name', '(untitled)')
         return PdfRenderer(self.template_name,
                            title=title,
                            height='11.693in', width='8.268in',
@@ -135,11 +134,13 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     join_column = 'speciesname'
     regionhash_column = 'species_regionhash'
 
-    def get_context(self):
-        return {
+    def get_context_data(self, **kwargs):
+        context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
+        context.update({
             'name': self.assessment.subject,
             'annexes': self.get_annexes(),
-        }
+        })
+        return context
 
     def get_annexes(self):
         annexes = list(
@@ -161,11 +162,13 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     subject_column = join_column = 'habitatcode'
     regionhash_column = 'habitat_regionhash'
 
-    def get_context(self):
-        return {
+    def get_context(self, **kwargs):
+        context = super(HabitatFactSheet, self).get_context_data(**kwargs)
+        context.update({
             'name': self.assessment.habitat.name,
             'code': self.assessment.code,
-        }
+        })
+        return context
 
 
 factsheet.add_url_rule('/species/factsheet/',
