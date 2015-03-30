@@ -1,14 +1,14 @@
-import os.path
-
-from flask import Blueprint, render_template, request, current_app as app
+from flask import Blueprint, render_template, request
+from flask.ext.script import Manager
 from flask.views import MethodView
-from jinja2 import Markup
 
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange
+from art17.pdf import PdfRenderer
 from art17.queries import THREATS_QUERY
 
 factsheet = Blueprint('factsheets', __name__)
+factsheet_manager = Manager()
 
 PRIORITY_TEXT = {'0': 'No', '1': 'Yes', '2': 'Yes in Ireland'}
 REASONS_MANUAL = {'n': 'Not genuine', 'y': 'Genuine', 'nc': 'No change'}
@@ -40,7 +40,6 @@ def get_reason_for_change(value):
 
 
 class FactSheet(MethodView):
-
     def set_assessment(self, period, subject):
         self.assessment = (self.model_cls.query
                            .filter_by(subject=subject, dataset_id=period)
@@ -93,6 +92,9 @@ class FactSheet(MethodView):
     def get_context_data(self):
         period = request.args.get('period')
         subject = request.args.get('subject')
+    def get_context_data(self, **kwargs):
+        period = kwargs.get('period')
+        subject = kwargs.get('subject')
         self.set_assessment(period, subject)
         manual_objects = self.get_manual_objects(period, subject)
         total_range = sum([float(getattr(obj, self.range_field) or 0)
@@ -112,8 +114,16 @@ class FactSheet(MethodView):
         }
 
     def get(self):
-        context = self.get_context_data()
+        context = self.get_context_data(**request.args)
         return render_template(self.template_name, **context)
+
+    def get_pdf(self, **kwargs):
+        context = self.get_context_data(**kwargs)
+        title = self.get_name()
+        return PdfRenderer(self.template_name,
+                           title=title,
+                           height='11.693in', width='8.268in',
+                           context=context)
 
 
 class SpeciesFactSheet(FactSheet, SpeciesMixin):
@@ -162,3 +172,20 @@ factsheet.add_url_rule('/species/factsheet/',
                        view_func=SpeciesFactSheet.as_view('factsheet-species'))
 factsheet.add_url_rule('/habitat/factsheet/',
                        view_func=HabitatFactSheet.as_view('factsheet-habitat'))
+
+
+def _get_pdf(subject, period, view_cls):
+    view = view_cls()
+    renderer = view.get_pdf(subject=subject, period=period)
+    renderer._generate()
+    print("Generated: " + renderer.pdf_path)
+
+
+@factsheet_manager.command
+def species(subject, period):
+    return _get_pdf(subject, period, SpeciesFactSheet)
+
+
+@factsheet_manager.command
+def habitat(subject, period):
+    return _get_pdf(subject, period, HabitatFactSheet)

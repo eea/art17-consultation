@@ -2,6 +2,10 @@
 import re
 from decimal import Decimal
 from bs4 import BeautifulSoup
+from markupsafe import Markup
+from path import path
+from flask import current_app as app
+
 
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
 valid_numeric = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
@@ -67,3 +71,10 @@ def na_if_none(s, default='N/A'):
     if s is None:
         return default
     return s
+
+
+def inject_static_file(filepath):
+    data = None
+    with open(path(app.static_folder) / filepath, 'r') as f:
+        data = f.read()
+    return Markup(data)

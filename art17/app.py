@@ -12,12 +12,13 @@ from art17.report import report
 from art17.auth import auth
 from art17.comments import comments
 from art17.common import common
+from art17.utils import inject_static_file
 from art17.wiki import wiki
 from art17.maps import maps
 from art17.auth.script import user_manager, role_manager
 from art17.dataset import dataset_manager
 from art17.assets import assets_env
-from art17.factsheet import factsheet
+from art17.factsheet import factsheet, factsheet_manager
 
 
 DEFAULT_CONFIG = {
@@ -26,6 +27,7 @@ DEFAULT_CONFIG = {
                            'speciessummary/details/art17ws',
     'MAP_SERVICE_HABITATS': 'http://bd.eionet.europa.eu/article17/'
                             'habitatsummary/details/art17ws',
+    'PDF_DESTINATION': '.',
 }
 
 
@@ -69,6 +71,8 @@ def create_app(config={}, testing=False):
 
     Mail().init_app(app)
 
+    app.add_template_global(inject_static_file)
+
     @app.route('/temp.html')
     def temp():
         return flask.render_template('temp.html')
@@ -103,4 +107,5 @@ def create_manager(app):
     manager.add_command('dataset', dataset_manager)
     manager.add_command('user', user_manager)
     manager.add_command('role', role_manager)
+    manager.add_command('factsheet', factsheet_manager)
     return manager
