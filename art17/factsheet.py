@@ -16,14 +16,6 @@ REASONS = {'a': 'Genuine', 'b': 'Better data', 'c': 'Change in methods',
            'e': 'Change in methods', 'n': 'No change', 'd': 'No data'}
 
 
-@factsheet.app_template_global('inject_static_file')
-def inject_static_file(filepath):
-    data = None
-    with open(os.path.join(app.static_folder, filepath), 'r') as f:
-        data = f.read()
-    return Markup(data)
-
-
 @factsheet.app_template_global('get_percentage')
 def get_percentage(total, value):
     if not total:
@@ -98,7 +90,7 @@ class FactSheet(MethodView):
         ))
         return [dict(row.items()) for row in result]
 
-    def get(self):
+    def get_context_data(self):
         period = request.args.get('period')
         subject = request.args.get('subject')
         self.set_assessment(period, subject)
@@ -106,8 +98,8 @@ class FactSheet(MethodView):
         total_range = sum([float(getattr(obj, self.range_field) or 0)
                            for obj in manual_objects])
 
-        context = self.get_context()
-        context.update({
+        return {
+            'name': self.get_name(),
             'group': self.get_group_for_subject(subject),
             'regions': self.get_regions(period, subject),
             'priority': self.get_priority(),
@@ -117,7 +109,10 @@ class FactSheet(MethodView):
             'objects': self.get_objects(period, subject),
             'pressures': self.get_pressures(subject, 'p'),
             'threats': self.get_pressures(subject, 't'),
-        })
+        }
+
+    def get(self):
+        context = self.get_context_data()
         return render_template(self.template_name, **context)
 
 
