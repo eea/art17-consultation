@@ -1,5 +1,8 @@
-from flask import Blueprint, render_template, request
+import os.path
+
+from flask import Blueprint, render_template, request, current_app as app
 from flask.views import MethodView
+from jinja2 import Markup
 
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange
@@ -10,6 +13,14 @@ PRIORITY_TEXT = {'0': 'No', '1': 'Yes', '2': 'Yes in Ireland'}
 REASONS_MANUAL = {'n': 'Not genuine', 'y': 'Genuine', 'nc': 'No change'}
 REASONS = {'a': 'Genuine', 'b': 'Better data', 'c': 'Change in methods',
            'e': 'Change in methods', 'n': 'No change', 'd': 'No data'}
+
+
+@factsheet.app_template_global('inject_static_file')
+def inject_static_file(filepath):
+    data = None
+    with open(os.path.join(app.static_folder, filepath), 'r') as f:
+        data = f.read()
+    return Markup(data)
 
 
 @factsheet.app_template_global('get_percentage')
