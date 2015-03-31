@@ -148,24 +148,22 @@ SELECT C.name AS activity,
   FROM ((SELECT RS1.measurecode AS level2_code,
        COUNT(RS2.region) AS pl2_num,
        1 AS pl2_set
-  FROM (data_species_check_list AS RS3
-        INNER JOIN data_species_regions_MS_level AS RS2
-            ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.speciesname = RS2.speciesname))
+  FROM ({checklist_table} AS RS3
+        INNER JOIN {regions_MS_table} AS RS2
+            ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.{join_column} = RS2.{join_column}))
         INNER JOIN data_measures RS1
-            ON (RS1.species_regionhash =
-                 RS2.regionhash)
- WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX')) AND UPPER(RS3.annex_II) like 'Y%%' AND (RS3.assessment_speciesname = '{subject}')
+            ON (RS1.{regionhash_column} = RS2.regionhash)
+ WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX')) {extra} AND (RS3.{subject_column} = '{subject}')
   GROUP BY RS1.measurecode) AS A
        INNER JOIN
        (SELECT COUNT(RS2.region) AS pl2_tot,
        1 AS pl2_set
-  FROM (data_species_check_list AS RS3
-        INNER JOIN data_species_regions_MS_level AS RS2
-            ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.speciesname = RS2.speciesname))
+  FROM ({checklist_table} AS RS3
+        INNER JOIN {regions_MS_table} AS RS2
+            ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.{join_column} = RS2.{join_column}))
        INNER JOIN data_measures RS1
-            ON (RS1.species_regionhash =
-                 RS2.regionhash)
- WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX')) AND UPPER(RS3.annex_II) like 'Y%%' AND (RS3.assessment_speciesname = '{subject}')) AS B
+            ON (RS1.{regionhash_column} = RS2.regionhash)
+ WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX')) {extra} AND (RS3.{subject_column} = '{subject}')) AS B
           ON (A.pl2_set = B.pl2_set))
        LEFT JOIN lu_measures AS C
           ON (C.code = A.level2_code)

@@ -112,10 +112,18 @@ class FactSheet(MethodView):
     def get_measures(self, subject):
         if not self.engine:
             return []
-        return self.engine.execute(MEASURES_QUERY.format(subject=subject))
+        return self.engine.execute(MEASURES_QUERY.format(
+            subject=subject,
+            checklist_table=self.checklist_table,
+            regions_MS_table=self.regions_MS_table,
+            join_column=self.join_column,
+            regionhash_column=self.regionhash_column,
+            subject_column=self.subject_column,
+            extra=self.extra_condition,
+        ))
 
     def get_url(self, subject, period):
-        base_url = url_for('summary.species-summary', _external=True)
+        base_url = url_for(self.summary_view, _external=True)
         params = {'subject': subject,
                   'period': period,
                   'region': '',
@@ -173,6 +181,9 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     join_column = 'speciesname'
     regionhash_column = 'species_regionhash'
     coverage_query = COVERAGE_QUERY_SPECIES
+    summary_view = 'summary.species-summary'
+    extra_condition = "AND UPPER(RS3.annex_II) like 'Y%%'"
+
 
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
@@ -202,6 +213,8 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     subject_column = join_column = 'habitatcode'
     regionhash_column = 'habitat_regionhash'
     coverage_query = COVERAGE_QUERY_HABITAT
+    summary_view = 'summary.habitat-summary'
+    extra_condition = ''
 
     def get_context_data(self, **kwargs):
         context = super(HabitatFactSheet, self).get_context_data(**kwargs)
