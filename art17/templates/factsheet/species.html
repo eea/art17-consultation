@@ -40,7 +40,7 @@
           <th>Range</th>
           <th>Population</th>
           <th>Habitat</th>
-          <th>Future prospects</th>
+          <th>Future<br>prospects</th>
         </tr>
       </thead>
       <tbody>
@@ -64,7 +64,9 @@
           </td>
           <td>{{ row.conclusion_assessment_trend }}</td>
           <td>{{ get_percentage(total_range, row.range_surface_area) }}</td>
-          <td>{{ row.conclusion_assessment_prev }}</td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') }}">
+             <span class="conclusion">{{ row.conclusion_assessment_prev }}</span>
+          </td>
           <td>{{ get_reason_for_change_manual(row.conclusion_assessment_change) }}</td>
         </tr>
       {% endfor %}
@@ -96,7 +98,7 @@
           <th>Range</th>
           <th>Population</th>
           <th>Habitat</th>
-          <th>Future prospects</th>
+          <th>Future<br>prospects</th>
         </tr>
       </thead>
       <tbody>

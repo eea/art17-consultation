@@ -6,6 +6,7 @@ body {
   line-height: 1.4;
   font-size: 11pt;
   line-height: 13pt;
+  padding: 0;
 }
 h1, h2, h3 {
   color: #005e9c;
@@ -25,11 +26,14 @@ a {
   word-break: break-all;
   text-decoration: underline;
 }
+table tr {
+    page-break-inside: avoid; /* Fix for wkhtmltopdf page break collapse bug */
+}
 
 /* Page */
 @page {
   size: A4 portrait;
-  margin: .8cm 1.8cm;
+  /*margin: .8cm 1.8cm;*/
 }
 /*@page :left {
   margin-right: 1.8cm;
@@ -71,6 +75,7 @@ header {
 }
 header h2,
 header .subtitle {
+  line-height: 1.2;
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -101,19 +106,24 @@ header .subtitle {
 .table-simple tbody th {
   text-align: left;
 }
+.table-simple th:first-child {
+    text-align: left;
+}
 /* COMPLEX DATATABLE */
 .complex_datatable {
   border-collapse: collapse;
   border-color: #ccc;
   border-width: 1pt;
   border-style: solid;
+  font-size: 9pt;
   line-height: 1.4;
   margin: 1em 0;
+  letter-spacing: -.04em;
 }
 .complex_datatable td,
 .complex_datatable th,
 .complex_datatable caption {
-  padding: 3pt 5pt;
+  padding: 3pt;
   text-align: center;
 }
 .complex_datatable caption { 
