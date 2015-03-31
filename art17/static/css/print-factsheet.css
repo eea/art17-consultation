@@ -12,7 +12,7 @@ h1, h2, h3 {
 a {
   text-decoration: none;
 } a:after {
-  content: '(' attr(href) ')';
+  content: attr(href);
   word-wrap: break-word;
   word-break: break-all;
   text-decoration: underline;

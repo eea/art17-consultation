@@ -60,8 +60,8 @@ SELECT  A.country, A.region,
     'na'
   ) pc
 
-FROM art17rp2_eu.data_habitats_regions_MS_level AS A
-INNER JOIN art17rp2_eu.data_habitats_check_list AS B
+FROM data_habitats_regions_MS_level AS A
+INNER JOIN data_habitats_check_list AS B
                ON ( A.country = B.country )
                   AND ( A.region = B.region )
                   AND ( A.habitatcode = B.habitatcode )
@@ -131,8 +131,8 @@ IF(A.natura2000_population_unit = A.population_size_unit,
             'na')),
       'na'
 )) AS pc
-FROM   art17rp2_eu.data_species_regions_MS_level AS A
-       INNER JOIN art17rp2_eu.data_species_check_list AS B
+FROM   data_species_regions_MS_level AS A
+       INNER JOIN data_species_check_list AS B
                ON ( A.speciesname = B.speciesname )
                   AND ( A.region = B.region )
                   AND ( A.country = B.country )
@@ -140,4 +140,34 @@ WHERE  ( Ucase(B.presence) IN ( '1', 'SR TAX', 'LR', 'OP', 'EX' ) )
        AND B.assessment_speciesname = '{subject}'
        AND A.country <> 'GR'
 ORDER BY country;
+"""
+
+MEASURES_QUERY = """
+SELECT C.name AS activity,
+       Round(100 * A.pl2_num / B.pl2_tot) AS pc
+  FROM ((SELECT RS1.measurecode AS level2_code,
+       COUNT(RS2.region) AS pl2_num,
+       1 AS pl2_set
+  FROM (data_species_check_list AS RS3
+        INNER JOIN data_species_regions_MS_level AS RS2
+            ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.speciesname = RS2.speciesname))
+        INNER JOIN data_measures RS1
+            ON (RS1.species_regionhash =
+                 RS2.regionhash)
+ WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX')) AND UPPER(RS3.annex_II) like 'Y%%' AND (RS3.assessment_speciesname = '{subject}')
+  GROUP BY RS1.measurecode) AS A
+       INNER JOIN
+       (SELECT COUNT(RS2.region) AS pl2_tot,
+       1 AS pl2_set
+  FROM (data_species_check_list AS RS3
+        INNER JOIN data_species_regions_MS_level AS RS2
+            ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.speciesname = RS2.speciesname))
+       INNER JOIN data_measures RS1
+            ON (RS1.species_regionhash =
+                 RS2.regionhash)
+ WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX')) AND UPPER(RS3.annex_II) like 'Y%%' AND (RS3.assessment_speciesname = '{subject}')) AS B
+          ON (A.pl2_set = B.pl2_set))
+       LEFT JOIN lu_measures AS C
+          ON (C.code = A.level2_code)
+ORDER BY 100 * A.pl2_num / B.pl2_tot DESC LIMIT 10;
 """

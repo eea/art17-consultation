@@ -1,6 +1,9 @@
 from collections import OrderedDict
+import urllib
 
-from flask import Blueprint, render_template, request, current_app as app
+from flask import (
+    Blueprint, render_template, request, current_app as app, url_for,
+)
 from flask.ext.script import Manager
 from flask.views import MethodView
 
@@ -9,6 +12,7 @@ from art17.models import db, Wiki, WikiChange
 from art17.pdf import PdfRenderer
 from art17.queries import (
     THREATS_QUERY, COVERAGE_QUERY_SPECIES, COVERAGE_QUERY_HABITAT,
+    MEASURES_QUERY,
 )
 
 factsheet = Blueprint('factsheets', __name__)
@@ -105,6 +109,19 @@ class FactSheet(MethodView):
             coverage.setdefault(row['country'], {})[row['region']] = row['pc']
         return coverage
 
+    def get_measures(self, subject):
+        if not self.engine:
+            return []
+        return self.engine.execute(MEASURES_QUERY.format(subject=subject))
+
+    def get_url(self, subject, period):
+        base_url = url_for('summary.species-summary', _external=True)
+        params = {'subject': subject,
+                  'period': period,
+                  'region': '',
+                  'group': self.assessment.group}
+        return '?'.join((base_url, urllib.urlencode(params)))
+
     def get_context_data(self, **kwargs):
         period = kwargs.get('period')[0]
         subject = kwargs.get('subject')[0]
@@ -130,6 +147,8 @@ class FactSheet(MethodView):
             'pressures': self.get_pressures(subject, 'p'),
             'threats': self.get_pressures(subject, 't'),
             'coverage': self.get_coverage(subject),
+            'measures': self.get_measures(subject),
+            'url': self.get_url(subject, period),
         }
 
     def get(self):
