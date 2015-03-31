@@ -93,8 +93,8 @@ class FactSheet(MethodView):
         return [dict(row.items()) for row in result]
 
     def get_context_data(self, **kwargs):
-        period = kwargs.get('period')
-        subject = kwargs.get('subject')
+        period = kwargs.get('period')[0]
+        subject = kwargs.get('subject')[0]
         self.set_assessment(period, subject)
         manual_objects = self.get_manual_objects(period, subject)
         total_range = sum([float(getattr(obj, self.range_field) or 0)
