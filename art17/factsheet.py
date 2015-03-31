@@ -7,7 +7,9 @@ from flask.views import MethodView
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange
 from art17.pdf import PdfRenderer
-from art17.queries import THREATS_QUERY, COVERAGE_QUERY
+from art17.queries import (
+    THREATS_QUERY, COVERAGE_QUERY_SPECIES, COVERAGE_QUERY_HABITAT,
+)
 
 factsheet = Blueprint('factsheets', __name__)
 factsheet_manager = Manager()
@@ -96,7 +98,8 @@ class FactSheet(MethodView):
     def get_coverage(self, subject):
         if not self.engine:
             return []
-        result = self.engine.execute(COVERAGE_QUERY.format(subject=subject))
+        result = self.engine.execute(
+            self.coverage_query.format(subject=subject))
         coverage = OrderedDict()
         for row in result:
             coverage.setdefault(row['country'], {})[row['region']] = row['pc']
@@ -150,6 +153,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     subject_column = 'assessment_speciesname'
     join_column = 'speciesname'
     regionhash_column = 'species_regionhash'
+    coverage_query = COVERAGE_QUERY_SPECIES
 
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
@@ -178,6 +182,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     regions_MS_table = 'data_habitats_regions_MS_level'
     subject_column = join_column = 'habitatcode'
     regionhash_column = 'habitat_regionhash'
+    coverage_query = COVERAGE_QUERY_HABITAT
 
     def get_context_data(self, **kwargs):
         context = super(HabitatFactSheet, self).get_context_data(**kwargs)

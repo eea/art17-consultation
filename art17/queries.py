@@ -40,7 +40,7 @@ ORDER  BY Round(100 * A.pl2_num / B.pl2_tot) DESC
 LIMIT 10;
 """
 
-COVERAGE_QUERY = """
+COVERAGE_QUERY_HABITAT = """
 SELECT  A.country, A.region,
  IF(
     NOT IFNULL(A.coverage_surface_area, 0)=0,
@@ -67,6 +67,77 @@ INNER JOIN art17rp2_eu.data_habitats_check_list AS B
                   AND ( A.habitatcode = B.habitatcode )
 WHERE  ( upper(B.presence) IN ( '1', 'SR TAX', 'LR', 'OP', 'EX' ) )
        AND A.habitatcode = '{subject}'
+       AND A.country <> 'GR'
+ORDER BY country;
+"""
+
+COVERAGE_QUERY_SPECIES = """
+SELECT A.country, A.region,
+IF(A.natura2000_population_unit = A.population_size_unit,
+   IF(NOT A.population_maximum_size IS null AND NOT IFNULL(A.population_maximum_size, 0)=0,
+      IF(NOT A.population_minimum_size IS null AND NOT IFNULL(A.population_minimum_size, 0)=0,
+         IF(NOT A.natura2000_population_max IS null,
+            IF(NOT A.natura2000_population_min IS null,
+               IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_minimum_size*A.population_maximum_size)>1,
+                  '100*',
+                  Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_minimum_size*A.population_maximum_size))),
+               'na'),
+            IF(NOT A.natura2000_population_min IS null,
+               IF(A.natura2000_population_min/SQRT(A.population_minimum_size*A.population_maximum_size)>1,
+                  '100*',
+                  Round(100*A.natura2000_population_min/SQRT(A.population_minimum_size*A.population_maximum_size))),
+               'na')),
+         'na'),
+       IF(NOT A.population_minimum_size IS null AND NOT IFNULL(A.population_minimum_size, 0)=0,
+          IF(NOT A.natura2000_population_max IS null,
+             IF(NOT A.natura2000_population_min IS null,
+                IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_minimum_size>1,
+                   '100*',
+                   Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_minimum_size)),
+                'na'),
+             IF(NOT A.natura2000_population_min IS null,
+                IF(A.natura2000_population_min/A.population_minimum_size>1,
+                   '100*',
+                   Round(100*A.natura2000_population_min/A.population_minimum_size)),
+                'na')),
+          'na')),
+   IF(A.natura2000_population_unit = A.population_alt_size_unit,
+      IF(NOT A.population_alt_maximum_size IS null AND NOT IFNULL(A.population_alt_maximum_size, 0)=0,
+         IF(NOT A.population_alt_minimum_size IS null AND NOT IFNULL(A.population_alt_minimum_size, 0)=0,
+            IF(NOT A.natura2000_population_max IS null,
+               IF(NOT A.natura2000_population_min IS null,
+                  IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size)>1,
+                     '100*',
+                     Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size))),
+                  'na'),
+               IF(NOT A.natura2000_population_min IS null,
+                  IF(A.natura2000_population_min/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size)>1,
+                     '100*',
+                     Round(100*A.natura2000_population_min/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size))),
+                  'na')),
+            'na'),
+         IF(NOT A.population_alt_minimum_size IS null AND NOT IFNULL(A.population_alt_minimum_size, 0)=0,
+            IF(NOT A.natura2000_population_max IS null,
+               IF(NOT A.natura2000_population_min IS null,
+                  IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_alt_minimum_size>1,
+                     '100*',
+                     Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_alt_minimum_size)),
+                  'na'),
+               IF(NOT A.natura2000_population_min IS null,
+                  IF(A.natura2000_population_min/A.population_alt_minimum_size>1,
+                     '100*',
+                     Round(100*A.natura2000_population_min/A.population_alt_minimum_size)),
+                  'na')),
+            'na')),
+      'na'
+)) AS pc
+FROM   art17rp2_eu.data_species_regions_MS_level AS A
+       INNER JOIN art17rp2_eu.data_species_check_list AS B
+               ON ( A.speciesname = B.speciesname )
+                  AND ( A.region = B.region )
+                  AND ( A.country = B.country )
+WHERE  ( Ucase(B.presence) IN ( '1', 'SR TAX', 'LR', 'OP', 'EX' ) )
+       AND B.assessment_speciesname = '{subject}'
        AND A.country <> 'GR'
 ORDER BY country;
 """
