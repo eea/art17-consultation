@@ -4,6 +4,8 @@
 body {
   font-family: sans-serif;
   line-height: 1.4;
+  font-size: 11pt;
+  line-height: 13pt;
 }
 h1, h2, h3 {
   color: #005e9c;
@@ -105,6 +107,7 @@ header .subtitle {
   border-color: #ccc;
   border-width: 1pt;
   border-style: solid;
+  line-height: 1.4;
   margin: 1em 0;
 }
 .complex_datatable td,
@@ -141,13 +144,14 @@ header .subtitle {
 /* CONCLUSION */
 .conclusion {
   display: inline-block;
-  padding: 0 3pt;
+  padding: .2em 3pt;
   margin: 0 3pt;
+  line-height: 1;
+  height: 1em;
   text-align: center;
-  border-width: 1pt;
-  border-style: solid;
+  /*border-width: 1pt;
+  border-style: solid;*/
   border-radius: 2pt;
-  min-height: 1.4em;
   vertical-align: middle;
   position: relative;
   color: #000;
