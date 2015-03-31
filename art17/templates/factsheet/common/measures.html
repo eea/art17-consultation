@@ -1,0 +1,34 @@
+<section>
+  <header>
+    <h2>Ten most frequently reported Conservation Measures</h2>
+  </header>
+
+  <p>Member states were asked to report the 10 most important conservation
+  measures being implemented for this species using an agreed list which can
+  be found on the Article 17 Reference Portal.</p>
+
+  <table class='table-simple'>
+    <thead>
+      <tr>
+        <th>Measure</th>
+        <th>% reports where noted</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in measures %}
+        <tr>
+          <td>{{ row['activity'] }}</td>
+          <td>{{ row['pc'] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p>This information is derived from the Member State national reports
+  submitted to the European Commission under Article 17 of the Habitats
+  Directive in 2013 and covering the period 2007-2012. More detailed
+  information, including the MS reports, is available at:
+  <a href="{{ url }}"></a>
+  </p>
+
+</section>
