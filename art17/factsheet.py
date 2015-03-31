@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from flask import Blueprint, render_template, request, current_app as app
 from flask.ext.script import Manager
 from flask.views import MethodView
@@ -5,7 +7,7 @@ from flask.views import MethodView
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange
 from art17.pdf import PdfRenderer
-from art17.queries import THREATS_QUERY
+from art17.queries import THREATS_QUERY, COVERAGE_QUERY
 
 factsheet = Blueprint('factsheets', __name__)
 factsheet_manager = Manager()
@@ -39,12 +41,12 @@ def get_reason_for_change(value):
     return REASONS.get(value[0], '')
 
 
-class FactSheet(MethodView):
-    def set_assessment(self, period, subject):
-        self.assessment = (self.model_cls.query
-                           .filter_by(subject=subject, dataset_id=period)
-                           .first_or_404())
+@factsheet.app_template_global('format_regions')
+def format_regions(regions):
+    return ', '.join(['CONT' if r == 'CON' else r for r in regions])
 
+
+class FactSheet(MethodView):
     def get_regions(self, period, subject):
         regions = (
             self.model_manual_cls.query
@@ -52,7 +54,7 @@ class FactSheet(MethodView):
             .with_entities(self.model_manual_cls.region)
             .distinct().all()
         )
-        return ', '.join(['CONT' if r[0] == 'CON' else r[0] for r in regions])
+        return [region[0] for region in regions]
 
     def get_priority(self):
         return PRIORITY_TEXT.get(self.assessment.priority, 'Unknown')
@@ -78,10 +80,9 @@ class FactSheet(MethodView):
                 .all())
 
     def get_pressures(self, subject, pressure_type):
-        if not app.config['SQLALCHEMY_BINDS']:
+        if not self.engine:
             return []
-        engine = db.get_engine(app, 'factsheet')
-        result = engine.execute(THREATS_QUERY.format(
+        result = self.engine.execute(THREATS_QUERY.format(
             subject=subject,
             pressure_type=pressure_type,
             checklist_table=self.checklist_table,
@@ -92,13 +93,28 @@ class FactSheet(MethodView):
         ))
         return [dict(row.items()) for row in result]
 
+    def get_coverage(self, subject):
+        if not self.engine:
+            return []
+        result = self.engine.execute(COVERAGE_QUERY.format(subject=subject))
+        coverage = OrderedDict()
+        for row in result:
+            coverage.setdefault(row['country'], {})[row['region']] = row['pc']
+        return coverage
+
     def get_context_data(self, **kwargs):
         period = kwargs.get('period')[0]
         subject = kwargs.get('subject')[0]
-        self.set_assessment(period, subject)
         manual_objects = self.get_manual_objects(period, subject)
         total_range = sum([float(getattr(obj, self.range_field) or 0)
                            for obj in manual_objects])
+
+        self.assessment = (self.model_cls.query
+                           .filter_by(subject=subject, dataset_id=period)
+                           .first_or_404())
+        self.engine = (
+            db.get_engine(app, 'factsheet') if app.config['SQLALCHEMY_BINDS']
+            and app.config['SQLALCHEMY_BINDS'].get('factsheet') else None)
 
         return {
             'group': self.get_group_for_subject(subject),
@@ -110,6 +126,7 @@ class FactSheet(MethodView):
             'objects': self.get_objects(period, subject),
             'pressures': self.get_pressures(subject, 'p'),
             'threats': self.get_pressures(subject, 't'),
+            'coverage': self.get_coverage(subject),
         }
 
     def get(self):

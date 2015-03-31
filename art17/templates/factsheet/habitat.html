@@ -20,7 +20,7 @@
       </tr>
       <tr>
         <th>Regions</th>
-        <td>{{ regions }}</td>
+        <td>{{ format_regions(regions) }}</td>
       </tr>
     </tbody>
   </table>
@@ -205,4 +205,41 @@
         {% endfor %}
       </tbody>
     </table>
+  </section>
+
+  <section>
+    <header>
+      <h2>Percentage of coverage by Natura 2000</h2>
+    </header>
+
+    <p>Member States were asked to report the area of the habitat which is
+    covered by the Natura 2000 network. In some cases this information has been
+    estimated using a different methodology to the estimate of overall area and
+    this can lead to percentage covers greater than 100%. In such case the
+    value has been given as 100% and highlighted with an asterisk (*). ‘na’
+    indicates that the MS has not reported the habitat area and/or the coverage
+    by Natura 2000. No information is available for Greece.</p>
+
+    <table class='table-simple'>
+      <thead>
+        <tr>
+          <th></th>
+          {% for region in regions %}
+            <th>{{ region }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for country, region_pc in coverage.iteritems() %}
+          <tr>
+            <th>{{ country }}</th>
+            {% for region in regions %}
+              <td>{{ region_pc.get(region, '') }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </section>
 {% endblock %}

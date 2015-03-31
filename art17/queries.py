@@ -39,3 +39,34 @@ FROM   ((SELECT RS4.level2_code,
 ORDER  BY Round(100 * A.pl2_num / B.pl2_tot) DESC
 LIMIT 10;
 """
+
+COVERAGE_QUERY = """
+SELECT  A.country, A.region,
+ IF(
+    NOT IFNULL(A.coverage_surface_area, 0)=0,
+    IF(
+      NOT IFNULL(A.natura2000_area_max, 0),
+      IF(
+        SQRT(A.natura2000_area_min*A.natura2000_area_max)/A.coverage_surface_area>1,
+        '100*',
+        Round(100*SQRT(A.natura2000_area_min*A.natura2000_area_max)/A.coverage_surface_area)
+      ),
+      IF(
+        A.natura2000_area_min/A.coverage_surface_area>1,
+        '100*',
+        Round(100*A.natura2000_area_min/A.coverage_surface_area)
+      )
+    ),
+    'na'
+  ) pc
+
+FROM art17rp2_eu.data_habitats_regions_MS_level AS A
+INNER JOIN art17rp2_eu.data_habitats_check_list AS B
+               ON ( A.country = B.country )
+                  AND ( A.region = B.region )
+                  AND ( A.habitatcode = B.habitatcode )
+WHERE  ( upper(B.presence) IN ( '1', 'SR TAX', 'LR', 'OP', 'EX' ) )
+       AND A.habitatcode = '{subject}'
+       AND A.country <> 'GR'
+ORDER BY country;
+"""
