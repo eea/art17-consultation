@@ -24,6 +24,11 @@ REASONS = {'a': 'Genuine', 'b': 'Better data', 'c': 'Change in methods',
            'e': 'Change in methods', 'n': 'No change', 'd': 'No data'}
 
 
+def get_arg(kwargs, key):
+    arg = kwargs.get(key)
+    return arg[0] if isinstance(arg, list) else arg
+
+
 @factsheet.app_template_global('get_percentage')
 def get_percentage(total, value):
     if not total:
@@ -131,8 +136,8 @@ class FactSheet(MethodView):
         return '?'.join((base_url, urllib.urlencode(params)))
 
     def get_context_data(self, **kwargs):
-        period = kwargs.get('period')[0]
-        subject = kwargs.get('subject')[0]
+        period = get_arg(kwargs, 'period')
+        subject = get_arg(kwargs, 'subject')
         manual_objects = self.get_manual_objects(period, subject)
         total_range = sum([float(getattr(obj, self.range_field) or 0)
                            for obj in manual_objects])
@@ -183,7 +188,6 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     coverage_query = COVERAGE_QUERY_SPECIES
     summary_view = 'summary.species-summary'
     extra_condition = "AND UPPER(RS3.annex_II) like 'Y%%'"
-
 
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
