@@ -2,30 +2,20 @@
 
 {% block content %}
 
-  <h2>Habitat name: {{ name }}</h2>
+  <h1 class="cover-title"><small>Species name:</small> {{ name }}</h1>
 
-  <table class="complex_datatable">
-    <tbody>
-      <tr>
-        <th>Habitat code</th>
-        <td>{{ code }}</td>
-      </tr>
-      <tr>
-        <th>Habitat group</th>
-        <td>{{ group }}</td>
-      </tr>
-      <tr>
-        <th>Priority</th>
-        <td>{{ priority }}</td>
-      </tr>
-      <tr>
-        <th>Regions</th>
-        <td>{{ format_regions(regions) }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <dl class="cover-summary">
+    <dt>Habitat code</dt>
+    <dd>{{ code }}</dd>
+    <dt>Habitat group</dt>
+    <dd>{{ group }}</dd>
+    <dt>Priority</dt>
+    <dd>{{ priority }}</dd>
+    <dt>Regions</dt>
+    <dd>{{ format_regions(regions) }}</dd>
+  </dl>
 
-  <p>{{ wiki | safe }}</p>
+  {{ wiki | safe }}
 
   <section>
     <header>

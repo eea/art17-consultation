@@ -2,30 +2,20 @@
 
 {% block content %}
 
-  <h2>Species name: {{ name }}</h2>
+  <h1 class="cover-title"><small>Species name:</small> {{ name }}</h1>
 
-  <table class="complex_datatable">
-    <tbody class="thead">
-      <tr>
-        <th>Annex</th>
-        <td>{{ annexes }}</td>
-      </tr>
-      <tr>
-        <th>Priority</th>
-        <td>{{ priority }}</td>
-      </tr>
-      <tr>
-        <th>Species group</th>
-        <td>{{ group }}</td>
-      </tr>
-      <tr>
-        <th>Regions</th>
-        <td>{{ format_regions(regions) }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <dl class="cover-summary">
+    <dt>Annex</dt>
+    <dd>{{ annexes }}</dd>
+    <dt>Priority</dt>
+    <dd>{{ priority }}</dd>
+    <dt>Species group</dt>
+    <dd>{{ group }}</dd>
+    <dt>Regions</dt>
+    <dd>{{ format_regions(regions) }}</dd>
+  </dl>
 
-  <p>{{ wiki | safe }}</p>
+  {{ wiki | safe }}
 
   <section>
     <header>

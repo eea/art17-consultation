@@ -13,13 +13,12 @@
 
   <body>
 
-    <div class="cover-header">
+    <div class="logo">
       <img src="{{ url_for('static', filename='img/eea-logo-print.jpg') }}">
-      <em>European Topic Centre<br>on Biological Diversity</em>
+      <strong>European Environment Agency</strong><br>
+      <i>European Topic Centre <br>on Biological Diversity</i>
     </div>
-
-    <h2>Habitats Directive Article 17 Reporting</h2>
-    <h3>Period 2007-2012</h3>
+    <p>Report under the Article 17 of the Habitats Directive<br>Period {{ period }}</p>
 
     {% block content %}{% endblock %}
   </body>

@@ -9,6 +9,12 @@ h1, h2, h3 {
   color: #005e9c;
   font-weight: normal;
 }
+hr {
+  height: 0;
+  background: 0;
+  border: 0;
+  border-top: 1pt solid;
+}
 a {
   text-decoration: none;
 } a:after {
@@ -23,14 +29,14 @@ a {
   size: A4 portrait;
   margin: .8cm 1.8cm;
 }
-@page :left {
+/*@page :left {
   margin-right: 1.8cm;
   margin-left: .8cm;
 }
 @page :right {
   margin-left: 1.8cm;
   margin-right: .8cm;
-}
+}*/
 
 #page-header {
   display: block;
@@ -262,30 +268,42 @@ header .subtitle {
   text-align: right;
 }
 
-/* Cover summary */
-.cover-summary {
-  border: 1pt solid #ccc;
-  border-spacing: 3pt;
-  text-align: left;
-  border-radius: 3pt;
+/* logo */
+.logo {
+  float: right;
+  font-size: smaller;
 }
-.cover-summary th,
-.cover-summary td {
-  padding: 2pt 4pt;
-  min-width: 120pt;
-}
-.cover-summary thead th {
-  border-bottom: 1pt solid #ccc;
-  text-align: center;
-}
-.cover-summary tbody th {
-  text-transform: capitalize;
-  font-weight: normal;
-}
-.cover-summary tbody td {
-  font-weight: bold;
+.logo img {
+  float: right;
+  margin-left: 1em;
+  height: 4.2em;
+  width: auto;
 }
 
-.page-break {
-  page-break-after: always;
+/* cover title */
+.cover-title {
+  line-height: 1.2;
+  padding-bottom: .3em;
+  margin-bottom: 12pt;
+  border-bottom: 2pt solid #005e9c;
+}
+.cover-title small {
+  display: block;
+  font-size: medium;
+  vertical-align: middle;
+}
+
+/* cover summary */
+.cover-summary {
+  margin-bottom: 24pt;
+} 
+.cover-summary dt {
+  float: left;
+  clear: left;
+  text-align: left;
+  width: 8em;
+  font-weight: bold;
+}
+.cover-summary dd {
+  margin-left: 9em;
 }
