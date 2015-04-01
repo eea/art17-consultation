@@ -28,6 +28,7 @@ DEFAULT_CONFIG = {
     'MAP_SERVICE_HABITATS': 'http://bd.eionet.europa.eu/article17/'
                             'habitatsummary/details/art17ws',
     'PDF_DESTINATION': '.',
+    'FACTSHEET_DEFAULT_PERIOD': '1',
 }
 
 

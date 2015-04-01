@@ -24,9 +24,9 @@ REASONS = {'a': 'Genuine', 'b': 'Better data', 'c': 'Change in methods',
            'e': 'Change in methods', 'n': 'No change', 'd': 'No data'}
 
 
-def get_arg(kwargs, key):
+def get_arg(kwargs, key, default=None):
     arg = kwargs.get(key)
-    return arg[0] if isinstance(arg, list) else arg
+    return arg[0] if isinstance(arg, list) else arg or default
 
 
 @factsheet.app_template_global('get_percentage')
@@ -136,7 +136,8 @@ class FactSheet(MethodView):
         return '?'.join((base_url, urllib.urlencode(params)))
 
     def get_context_data(self, **kwargs):
-        period = get_arg(kwargs, 'period')
+        period = get_arg(kwargs, 'period',
+                         app.config['FACTSHEET_DEFAULT_PERIOD'])
         subject = get_arg(kwargs, 'subject')
         manual_objects = self.get_manual_objects(period, subject)
         total_range = sum([float(getattr(obj, self.range_field) or 0)
@@ -164,7 +165,19 @@ class FactSheet(MethodView):
             'url': self.get_url(subject, period),
         }
 
+    def list_all(self):
+        period = request.args.get('period',
+                                  app.config['FACTSHEET_DEFAULT_PERIOD'])
+        objects = (
+            self.model_cls.query.filter_by(dataset_id=period)
+        )
+        return render_template('factsheet/list_all.html', objects=objects,
+                               subject=self.subject_name,
+                               url_base=self.url_base)
+
     def get(self):
+        if not request.args.get('subject'):
+            return self.list_all()
         context = self.get_context_data(**request.args)
         return render_template(self.template_name, **context)
 
@@ -188,6 +201,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     coverage_query = COVERAGE_QUERY_SPECIES
     summary_view = 'summary.species-summary'
     extra_condition = "AND UPPER(RS3.annex_II) like 'Y%%'"
+    url_base = '.factsheet-species'
 
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
@@ -219,6 +233,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     coverage_query = COVERAGE_QUERY_HABITAT
     summary_view = 'summary.habitat-summary'
     extra_condition = ''
+    url_base = '.factsheet-habitat'
 
     def get_context_data(self, **kwargs):
         context = super(HabitatFactSheet, self).get_context_data(**kwargs)
