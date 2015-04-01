@@ -106,7 +106,7 @@ class FactSheet(MethodView):
 
     def get_coverage(self, subject):
         if not self.engine:
-            return []
+            return {}
         result = self.engine.execute(
             self.coverage_query.format(subject=subject))
         coverage = OrderedDict()
@@ -116,7 +116,7 @@ class FactSheet(MethodView):
 
     def get_measures(self, subject):
         if not self.engine:
-            return []
+            return {}
         return self.engine.execute(MEASURES_QUERY.format(
             subject=subject,
             checklist_table=self.checklist_table,
