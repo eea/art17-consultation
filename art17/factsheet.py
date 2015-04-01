@@ -6,6 +6,7 @@ from flask import (
 )
 from flask.ext.script import Manager
 from flask.views import MethodView
+from art17.common import admin_perm
 
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange
@@ -176,6 +177,7 @@ class FactSheet(MethodView):
                                url_base=self.url_base)
 
     def get(self):
+        admin_perm.test()
         if not request.args.get('subject'):
             return self.list_all()
         context = self.get_context_data(**request.args)
