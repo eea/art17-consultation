@@ -2,17 +2,17 @@
 
 {% block content %}
 
-  <h1 class="cover-title"><small>Species name:</small> {{ name }}</h1>
+  <h1 class="cover-title"><small>Habitat:</small> {{ code }} {{ name }}</h1>
 
   <dl class="cover-summary">
     <dt>Habitat code</dt>
     <dd>{{ code }}</dd>
-    <dt>Habitat group</dt>
-    <dd>{{ group }}</dd>
     <dt>Priority</dt>
     <dd>{{ priority }}</dd>
+    <dt>Habitat group</dt>
+    <dd>{{ group }}</dd>
     <dt>Regions</dt>
-    <dd>{{ format_regions(regions) }}</dd>
+    <dd>{{ regions | join(', ') }}</dd>
   </dl>
 
   {{ wiki | safe }}
@@ -44,7 +44,7 @@
         </tr>
       </thead>
       <tbody>
-      {% for row in manual_objects %}
+      {% for row, area in manual_objects %}
         <tr class="stripe_row">
           <td>{{ row.region }}</td>
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_range, '') }}">
@@ -63,7 +63,7 @@
             <span class="conclusion">{{ row.conclusion_assessment }}</span>
           </td>
           <td>{{ row.conclusion_assessment_trend }}</td>
-          <td>{{ get_percentage(total_range, row.coverage_surface_area) }}</td>
+          <td>{{ get_percentage(total_area, area) }}</td>
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') }}">
              <span class="conclusion">{{ row.conclusion_assessment_prev }}</span>
           </td>

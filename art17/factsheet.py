@@ -1,6 +1,8 @@
 from collections import OrderedDict
 import urllib
 
+from sqlalchemy import and_
+from sqlalchemy.sql import func
 from flask import (
     Blueprint, render_template, request, current_app as app, url_for,
 )
@@ -34,7 +36,7 @@ def get_arg(kwargs, key, default=None):
 def get_percentage(total, value):
     if not total:
         return 0
-    percentage = float(value or 0) / total * 100
+    percentage = (value or 0) / total * 100
     if 0 < percentage < 1:
         return round(percentage, 2)
     else:
@@ -51,11 +53,6 @@ def get_reason_for_change(value):
     if not value:
         return ''
     return REASONS.get(value[0], '')
-
-
-@factsheet.app_template_global('format_regions')
-def format_regions(regions):
-    return ', '.join(['CONT' if r == 'CON' else r for r in regions])
 
 
 class FactSheet(MethodView):
@@ -82,13 +79,26 @@ class FactSheet(MethodView):
         return wiki.body if wiki else ''
 
     def get_manual_objects(self, period, subject):
-        return (self.model_manual_cls.query
-                .filter_by(dataset_id=period, subject=subject, decision='OK')
-                .all())
+        return (
+            db.session.query(
+                self.model_manual_cls,
+                func.sum(self.model_cls.distribution_grid_area))
+            .join(self.model_cls, and_(
+                self.model_manual_cls.subject == self.model_cls.subject,
+                self.model_manual_cls.dataset_id == self.model_cls.dataset_id,
+                self.model_manual_cls.region == self.model_cls.region))
+            .filter(
+                self.model_manual_cls.subject == subject,
+                self.model_manual_cls.dataset_id == period,
+                self.model_manual_cls.decision == 'OK')
+            .group_by(self.model_manual_cls.region)
+            .all())
 
     def get_objects(self, period, subject):
         return (self.model_cls.query
                 .filter_by(dataset_id=period, subject=subject)
+                .order_by(self.model_cls.region,
+                          self.model_cls.eu_country_code)
                 .all())
 
     def get_pressures(self, subject, pressure_type):
@@ -141,8 +151,7 @@ class FactSheet(MethodView):
                          app.config['FACTSHEET_DEFAULT_PERIOD'])
         subject = get_arg(kwargs, 'subject')
         manual_objects = self.get_manual_objects(period, subject)
-        total_range = sum([float(getattr(obj, self.range_field) or 0)
-                           for obj in manual_objects])
+        total_area = sum([obj[1] or 0 for obj in manual_objects])
 
         self.assessment = (self.model_cls.query
                            .filter_by(subject=subject, dataset_id=period)
@@ -157,7 +166,7 @@ class FactSheet(MethodView):
             'priority': self.get_priority(),
             'wiki': self.get_wiki(period, subject),
             'manual_objects': manual_objects,
-            'total_range': total_range,
+            'total_area': total_area,
             'objects': self.get_objects(period, subject),
             'pressures': self.get_pressures(subject, 'p'),
             'threats': self.get_pressures(subject, 't'),

@@ -57,7 +57,7 @@ SELECT  A.country, A.region,
         Round(100*A.natura2000_area_min/A.coverage_surface_area)
       )
     ),
-    'na'
+    'x'
   ) pc
 
 FROM data_habitats_regions_MS_level AS A
@@ -81,26 +81,26 @@ IF(A.natura2000_population_unit = A.population_size_unit,
                IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_minimum_size*A.population_maximum_size)>1,
                   '100*',
                   Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_minimum_size*A.population_maximum_size))),
-               'na'),
+               'x'),
             IF(NOT A.natura2000_population_min IS null,
                IF(A.natura2000_population_min/SQRT(A.population_minimum_size*A.population_maximum_size)>1,
                   '100*',
                   Round(100*A.natura2000_population_min/SQRT(A.population_minimum_size*A.population_maximum_size))),
-               'na')),
-         'na'),
+               'x')),
+         'x'),
        IF(NOT A.population_minimum_size IS null AND NOT IFNULL(A.population_minimum_size, 0)=0,
           IF(NOT A.natura2000_population_max IS null,
              IF(NOT A.natura2000_population_min IS null,
                 IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_minimum_size>1,
                    '100*',
                    Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_minimum_size)),
-                'na'),
+                'x'),
              IF(NOT A.natura2000_population_min IS null,
                 IF(A.natura2000_population_min/A.population_minimum_size>1,
                    '100*',
                    Round(100*A.natura2000_population_min/A.population_minimum_size)),
-                'na')),
-          'na')),
+                'x')),
+          'x')),
    IF(A.natura2000_population_unit = A.population_alt_size_unit,
       IF(NOT A.population_alt_maximum_size IS null AND NOT IFNULL(A.population_alt_maximum_size, 0)=0,
          IF(NOT A.population_alt_minimum_size IS null AND NOT IFNULL(A.population_alt_minimum_size, 0)=0,
@@ -109,27 +109,27 @@ IF(A.natura2000_population_unit = A.population_size_unit,
                   IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size)>1,
                      '100*',
                      Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size))),
-                  'na'),
+                  'x'),
                IF(NOT A.natura2000_population_min IS null,
                   IF(A.natura2000_population_min/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size)>1,
                      '100*',
                      Round(100*A.natura2000_population_min/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size))),
-                  'na')),
-            'na'),
+                  'x')),
+            'x'),
          IF(NOT A.population_alt_minimum_size IS null AND NOT IFNULL(A.population_alt_minimum_size, 0)=0,
             IF(NOT A.natura2000_population_max IS null,
                IF(NOT A.natura2000_population_min IS null,
                   IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_alt_minimum_size>1,
                      '100*',
                      Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_alt_minimum_size)),
-                  'na'),
+                  'x'),
                IF(NOT A.natura2000_population_min IS null,
                   IF(A.natura2000_population_min/A.population_alt_minimum_size>1,
                      '100*',
                      Round(100*A.natura2000_population_min/A.population_alt_minimum_size)),
-                  'na')),
-            'na')),
-      'na'
+                  'x')),
+            'x')),
+      'x'
 )) AS pc
 FROM   data_species_regions_MS_level AS A
        INNER JOIN data_species_check_list AS B
@@ -143,7 +143,8 @@ ORDER BY country;
 """
 
 MEASURES_QUERY = """
-SELECT C.name AS activity,
+SELECT C.code,
+       C.name AS activity,
        Round(100 * A.pl2_num / B.pl2_tot) AS pc
   FROM ((SELECT RS1.measurecode AS level2_code,
        COUNT(RS2.region) AS pl2_num,
@@ -153,7 +154,11 @@ SELECT C.name AS activity,
             ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.{join_column} = RS2.{join_column}))
         INNER JOIN data_measures RS1
             ON (RS1.{regionhash_column} = RS2.regionhash)
- WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX')) {extra} AND (RS3.{subject_column} = '{subject}')
+ WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX'))
+         {extra}
+         AND (RS3.{subject_column} = '{subject}')
+         AND (RS1.rankingcode = 'H')
+         AND (RS1.measurecode <> '1.1')
   GROUP BY RS1.measurecode) AS A
        INNER JOIN
        (SELECT COUNT(RS2.region) AS pl2_tot,

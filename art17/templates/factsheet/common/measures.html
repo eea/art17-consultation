@@ -10,6 +10,7 @@
   <table class='table-simple'>
     <thead>
       <tr>
+        <th>Code</th>
         <th>Measure</th>
         <th>% reports where noted</th>
       </tr>
@@ -17,6 +18,7 @@
     <tbody>
       {% for row in measures %}
         <tr>
+          <td>{{ row['code'] }}</td>
           <td>{{ row['activity'] }}</td>
           <td>{{ row['pc'] }}</td>
         </tr>
