@@ -16,6 +16,7 @@ from art17.common import (
     COUNTRY_ASSESSMENTS,
     MixinView,
     admin_perm,
+    consultation_ended,
 )
 from art17.forms import ProgressFilterForm
 from art17.models import (
@@ -57,6 +58,9 @@ def can_select_assessor():
 
 @progress.app_template_global('can_preview_progress')
 def can_preview_progress():
+    if consultation_ended():
+        return True
+
     if not current_user.is_authenticated():
         return False
 
