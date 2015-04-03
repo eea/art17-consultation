@@ -80,6 +80,7 @@ def inject_static_file(filepath):
     return Markup(data)
 
 
+# See: https://gist.github.com/berlotto/6295018
 _slugify_strip_re = re.compile(r'[^\w\s-]')
 _slugify_hyphenate_re = re.compile(r'[-\s]+')
 
