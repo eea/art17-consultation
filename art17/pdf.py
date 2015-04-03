@@ -41,7 +41,9 @@ class PdfRenderer(object):
 
         dir = self._get_dir()
         self.template_path = (dir / (str(uuid.uuid4()) + '.html'))
-        self.pdf_path = (dir / (str(uuid.uuid4()) + '.pdf'))
+        self.pdf_path = (
+            dir / kwargs.get('pdf_file', str(uuid.uuid4())) + '.pdf'
+        )
         g.is_pdf_process = True
 
     def _get_dir(self):
@@ -63,7 +65,7 @@ class PdfRenderer(object):
                    '-R', self.margin['right'],
                    '--orientation', self.orientation,
                    '--footer-html', self.footer_url,
-                   ]
+        ]
         if self.title:
             command += ['--title', self.title]
 

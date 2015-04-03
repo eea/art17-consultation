@@ -15,6 +15,7 @@ from art17.models import db, Wiki, WikiChange
 from art17.pdf import PdfRenderer
 from art17.queries import (THREATS_QUERY, COVERAGE_QUERY_SPECIES,
                            COVERAGE_QUERY_HABITAT, MEASURES_QUERY)
+from art17.utils import slugify
 
 factsheet = Blueprint('factsheet', __name__)
 factsheet_manager = Manager()
@@ -193,9 +194,10 @@ class FactSheet(MethodView):
     def get_pdf(self, **kwargs):
         context = self.get_context_data(**kwargs)
         title = context.get('name', '(untitled)')
+        pdf_file = slugify(kwargs['subject'])
         footer_url = url_for('factsheet.factsheet-footer', _external=True)
 
-        return PdfRenderer(self.template_name,
+        return PdfRenderer(self.template_name, pdf_file=pdf_file,
                            title=title,
                            height='11.693in', width='8.268in',
                            context=context,
