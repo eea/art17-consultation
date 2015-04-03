@@ -146,8 +146,10 @@ class FactSheet(MethodView):
         return '?'.join((base_url, urllib.urlencode(params)))
 
     def get_context_data(self, **kwargs):
-        period = get_arg(kwargs, 'period',
-                         app.config['FACTSHEET_DEFAULT_PERIOD'])
+        period = (
+            get_arg(kwargs, 'period', None) or
+            app.config['FACTSHEET_DEFAULT_PERIOD']
+        )
         subject = get_arg(kwargs, 'subject')
         manual_objects = self.get_manual_objects(period, subject)
         total_area = sum([obj[1] or 0 for obj in manual_objects])
@@ -174,12 +176,15 @@ class FactSheet(MethodView):
             'url': self.get_url(subject, period),
         }
 
-    def list_all(self):
+    def get_all(self):
         period = request.args.get('period',
                                   app.config['FACTSHEET_DEFAULT_PERIOD'])
-        objects = (
+        return (
             self.model_cls.query.filter_by(dataset_id=period)
         )
+
+    def list_all(self):
+        objects = self.get_all()
         return render_template('factsheet/list_all.html', objects=objects,
                                subject=self.subject_name,
                                url_base=self.url_base)
@@ -259,7 +264,6 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
 
 
 class FactSheetFooter(MethodView):
-
     def get(self):
         return render_template('factsheet/footer.html')
 
@@ -287,3 +291,13 @@ def species(subject, period):
 @factsheet_manager.command
 def habitat(subject, period):
     return _get_pdf(subject, period, HabitatFactSheet)
+
+
+@factsheet_manager.command
+def genall(period):
+    map = {SpeciesFactSheet: species, HabitatFactSheet: habitat}
+    for view_cls, command in map.items():
+        view = view_cls()
+        for o in view.get_all():
+            command(o.subject, period)
+    print("Done")
