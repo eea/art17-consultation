@@ -26,7 +26,7 @@ a {
   text-decoration: underline;
 }
 table tr {
-    page-break-inside: avoid; /* Fix for wkhtmltopdf page break collapse bug */
+  page-break-inside: avoid; /* Fix for wkhtmltopdf page break collapse bug */
 }
 
 /* Page */
@@ -309,7 +309,7 @@ header .subtitle {
 /* cover summary */
 .cover-summary {
   margin-bottom: 24pt;
-} 
+}
 .cover-summary dt {
   float: left;
   clear: left;
@@ -319,4 +319,9 @@ header .subtitle {
 }
 .cover-summary dd {
   margin-left: 9em;
+}
+.page-breaker {
+    display: block;
+    clear: both;
+    page-break-before: always;
 }

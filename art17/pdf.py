@@ -8,6 +8,7 @@ from flask import Response, g
 
 _PAGE_DEFAULT_MARGIN = {'top': '8mm', 'bottom': '16mm',
                         'left': '16mm', 'right': '16mm'}
+_FOOTER_SPACING = '5'
 
 
 def read_file(f):
@@ -38,6 +39,7 @@ class PdfRenderer(object):
         self.orientation = kwargs.get('orientation', 'portrait')
         self.context = kwargs.get('context', {})
         self.footer_url = kwargs.get('footer_url', '')
+        self.footer_spacing = kwargs.get('footer_spacing', _FOOTER_SPACING)
 
         dir = self._get_dir()
         self.template_path = (dir / (str(uuid.uuid4()) + '.html'))
@@ -65,6 +67,7 @@ class PdfRenderer(object):
                    '-R', self.margin['right'],
                    '--orientation', self.orientation,
                    '--footer-html', self.footer_url,
+                   '--footer-spacing', self.footer_spacing,
         ]
         if self.title:
             command += ['--title', self.title]
