@@ -145,6 +145,16 @@ class FactSheet(MethodView):
                   'group': self.assessment.group}
         return '?'.join((base_url, urllib.urlencode(params)))
 
+    def get_countries(self, subject, period):
+        return [country for country, in (
+            self.model_cls.query
+            .with_entities(self.model_cls.eu_country_code)
+            .filter(self.model_cls.subject == subject,
+                    self.model_cls.dataset_id == period,
+                    self.model_cls.distribution_grid_area == None)
+            .distinct()
+            .all())]
+
     def get_context_data(self, **kwargs):
         period = (
             get_arg(kwargs, 'period', None) or
@@ -174,6 +184,7 @@ class FactSheet(MethodView):
             'coverage': self.get_coverage(subject),
             'measures': self.get_measures(subject),
             'url': self.get_url(subject, period),
+            'countries': self.get_countries(subject, period),
         }
 
     def get_all(self):

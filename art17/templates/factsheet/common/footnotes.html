@@ -1,0 +1,11 @@
+<section class="page-breaker">
+  <p><sup>1</sup>
+  {% if countries %}
+    The GIS distribution was not provided from: {{ countries | join(', ') }}.
+  {% else %}
+    All Member States provided the GIS distribution.
+  {% endif %}
+  </p>
+  <p><sup>2</sup>Conservation status is assessed at biogeographical level.
+  Therefore the representation in each grid cell is only illustrative.</p>
+</section>
