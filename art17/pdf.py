@@ -6,7 +6,7 @@ from path import path
 from flask import current_app as app
 from flask import Response, g
 
-_PAGE_DEFAULT_MARGIN = {'top': '8mm', 'bottom': '8mm',
+_PAGE_DEFAULT_MARGIN = {'top': '8mm', 'bottom': '16mm',
                         'left': '16mm', 'right': '16mm'}
 
 
@@ -37,6 +37,7 @@ class PdfRenderer(object):
         self.margin = kwargs.get('margin', _PAGE_DEFAULT_MARGIN)
         self.orientation = kwargs.get('orientation', 'portrait')
         self.context = kwargs.get('context', {})
+        self.footer_url = kwargs.get('footer_url', '')
 
         dir = self._get_dir()
         self.template_path = (dir / (str(uuid.uuid4()) + '.html'))
@@ -60,7 +61,9 @@ class PdfRenderer(object):
                    '-T', self.margin['top'],
                    '-L', self.margin['left'],
                    '-R', self.margin['right'],
-                   '--orientation', self.orientation]
+                   '--orientation', self.orientation,
+                   '--footer-html', self.footer_url,
+                   ]
         if self.title:
             command += ['--title', self.title]
 

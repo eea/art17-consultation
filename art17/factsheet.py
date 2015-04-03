@@ -13,12 +13,10 @@ from art17.common import admin_perm
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange
 from art17.pdf import PdfRenderer
-from art17.queries import (
-    THREATS_QUERY, COVERAGE_QUERY_SPECIES, COVERAGE_QUERY_HABITAT,
-    MEASURES_QUERY,
-)
+from art17.queries import (THREATS_QUERY, COVERAGE_QUERY_SPECIES,
+                           COVERAGE_QUERY_HABITAT, MEASURES_QUERY)
 
-factsheet = Blueprint('factsheets', __name__)
+factsheet = Blueprint('factsheet', __name__)
 factsheet_manager = Manager()
 
 PRIORITY_TEXT = {'0': 'No', '1': 'Yes', '2': 'Yes in Ireland'}
@@ -195,10 +193,13 @@ class FactSheet(MethodView):
     def get_pdf(self, **kwargs):
         context = self.get_context_data(**kwargs)
         title = context.get('name', '(untitled)')
+        footer_url = url_for('factsheet.factsheet-footer', _external=True)
+
         return PdfRenderer(self.template_name,
                            title=title,
                            height='11.693in', width='8.268in',
-                           context=context)
+                           context=context,
+                           footer_url=footer_url)
 
 
 class SpeciesFactSheet(FactSheet, SpeciesMixin):
@@ -255,10 +256,18 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
         return context
 
 
+class FactSheetFooter(MethodView):
+
+    def get(self):
+        return render_template('factsheet/footer.html')
+
+
 factsheet.add_url_rule('/species/factsheet/',
                        view_func=SpeciesFactSheet.as_view('factsheet-species'))
 factsheet.add_url_rule('/habitat/factsheet/',
                        view_func=HabitatFactSheet.as_view('factsheet-habitat'))
+factsheet.add_url_rule('/factsheet/footer/',
+                       view_func=FactSheetFooter.as_view('factsheet-footer'))
 
 
 def _get_pdf(subject, period, view_cls):
