@@ -11,7 +11,7 @@ from flask.views import MethodView
 from art17.common import admin_perm
 
 from art17.mixins import SpeciesMixin, HabitatMixin
-from art17.models import db, Wiki, WikiChange
+from art17.models import db, Wiki, WikiChange, Dataset
 from art17.pdf import PdfRenderer
 from art17.queries import (THREATS_QUERY, COVERAGE_QUERY_SPECIES,
                            COVERAGE_QUERY_HABITAT, MEASURES_QUERY)
@@ -185,6 +185,7 @@ class FactSheet(MethodView):
             'measures': self.get_measures(subject),
             'url': self.get_url(subject, period),
             'countries': self.get_countries(subject, period),
+            'period': Dataset.query.get_or_404(period).name,
         }
 
     def get_all(self):
