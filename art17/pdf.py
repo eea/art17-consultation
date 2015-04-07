@@ -6,9 +6,10 @@ from path import path
 from flask import current_app as app
 from flask import Response, g
 
-_PAGE_DEFAULT_MARGIN = {'top': '8mm', 'bottom': '16mm',
+_PAGE_DEFAULT_MARGIN = {'top': '20mm', 'bottom': '16mm',
                         'left': '16mm', 'right': '16mm'}
 _FOOTER_SPACING = '5'
+_HEADER_SPACING = '5'
 
 
 def read_file(f):
@@ -40,6 +41,8 @@ class PdfRenderer(object):
         self.context = kwargs.get('context', {})
         self.footer_url = kwargs.get('footer_url', '')
         self.footer_spacing = kwargs.get('footer_spacing', _FOOTER_SPACING)
+        self.header_url = kwargs.get('header_url', '')
+        self.header_spacing = kwargs.get('header_spacing', _HEADER_SPACING)
 
         dir = self._get_dir()
         self.template_path = (dir / (str(uuid.uuid4()) + '.html'))
@@ -57,17 +60,20 @@ class PdfRenderer(object):
                 f.write(chunk.encode('utf-8'))
 
     def _generate_pdf(self):
-        command = ['wkhtmltopdf', '-q',
-                   '--encoding', 'utf-8',
-                   '--page-height', self.height,
-                   '--page-width', self.width,
-                   '-B', self.margin['bottom'],
-                   '-T', self.margin['top'],
-                   '-L', self.margin['left'],
-                   '-R', self.margin['right'],
-                   '--orientation', self.orientation,
-                   '--footer-html', self.footer_url,
-                   '--footer-spacing', self.footer_spacing,
+        command = [
+            'wkhtmltopdf', '-q',
+            '--encoding', 'utf-8',
+            '--page-height', self.height,
+            '--page-width', self.width,
+            '-B', self.margin['bottom'],
+            '-T', self.margin['top'],
+            '-L', self.margin['left'],
+            '-R', self.margin['right'],
+            '--orientation', self.orientation,
+            '--header-html', self.header_url,
+            '--header-spacing', self.header_spacing,
+            '--footer-html', self.footer_url,
+            '--footer-spacing', self.footer_spacing,
         ]
         if self.title:
             command += ['--title', self.title]

@@ -213,11 +213,16 @@ class FactSheet(MethodView):
         title = context.get('name', '(untitled)')
         pdf_file = slugify(kwargs['subject'])
         footer_url = url_for('factsheet.factsheet-footer', _external=True)
+        base_header_url = url_for(self.header_endpoint, _external=True)
+        params = {'subject': self.assessment.subject,
+                  'period': self.assessment.dataset_id}
+        header_url = '?'.join((base_header_url, urllib.urlencode(params)))
 
         return PdfRenderer(self.template_name, pdf_file=pdf_file,
                            title=title,
                            height='11.693in', width='8.268in',
                            context=context,
+                           header_url=header_url,
                            footer_url=footer_url)
 
 
@@ -233,6 +238,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     summary_view = 'summary.species-summary'
     extra_condition = "AND UPPER(RS3.annex_II) like 'Y%%'"
     url_base = '.factsheet-species'
+    header_endpoint = 'factsheet.species-header'
 
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
@@ -265,6 +271,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     summary_view = 'summary.habitat-summary'
     extra_condition = ''
     url_base = '.factsheet-habitat'
+    header_endpoint = 'factsheet.habitat-header'
 
     def get_context_data(self, **kwargs):
         context = super(HabitatFactSheet, self).get_context_data(**kwargs)
@@ -275,9 +282,34 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
         return context
 
 
+class FactSheetHeader(MethodView):
+    def get(self):
+        context = self.get_context_data(**request.args)
+        return render_template('factsheet/common/header.html', **context)
+
+
+class SpeciesHeader(FactSheetHeader):
+    def get_context_data(self, **kwargs):
+        subject = get_arg(kwargs, 'subject')
+        return {'label': 'Species name', 'subject': subject}
+
+
+class HabitatHeader(HabitatMixin, FactSheetHeader):
+    def get_context_data(self, **kwargs):
+        subject = get_arg(kwargs, 'subject')
+        period = get_arg(kwargs, 'period')
+
+        assessment = (self.model_cls.query
+                      .filter_by(subject=subject, dataset_id=period)
+                      .first_or_404())
+
+        return {'label': 'Habitat',
+                'subject': '{} {}'.format(subject, assessment.habitat.name)}
+
+
 class FactSheetFooter(MethodView):
     def get(self):
-        return render_template('factsheet/footer.html')
+        return render_template('factsheet/common/footer.html')
 
 
 factsheet.add_url_rule('/species/factsheet/',
@@ -286,6 +318,10 @@ factsheet.add_url_rule('/habitat/factsheet/',
                        view_func=HabitatFactSheet.as_view('factsheet-habitat'))
 factsheet.add_url_rule('/factsheet/footer/',
                        view_func=FactSheetFooter.as_view('factsheet-footer'))
+factsheet.add_url_rule('/species/factsheet/header/',
+                       view_func=SpeciesHeader.as_view('species-header'))
+factsheet.add_url_rule('/habitat/factsheet/header/',
+                       view_func=HabitatHeader.as_view('habitat-header'))
 
 
 def _get_pdf(subject, period, view_cls):

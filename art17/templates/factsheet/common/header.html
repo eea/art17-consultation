@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .header {
+          text-align: right;
+      }
+      .title {
+          font-size: 15pt;
+      }
+      .subtitle {
+          font-size: 10pt;
+      }
+    </style>
+    <script>
+      function subst() {
+        var vars = {};
+
+        var valuePairs = document.location.search.substring(1).split('&');
+        for (var i in valuePairs) {
+          var valuePair = valuePairs[i].split('=', 2);
+          vars[valuePair[0]] = decodeURIComponent(valuePair[1]);
+        }
+        var header = document.getElementsByClassName('header')[0];
+        if (vars['page'] == 1) {
+            header.style.display = 'none';
+        }
+      }
+    </script>
+  </head>
+  <body onload="subst()">
+    <div class="header">
+      <div class="title">{{ label }}: {{ subject }}</div>
+      <div class="subtitle">Report under the Article 17 of the Habitats Directive</div>
+    </div>
+  </body>
+</html>
