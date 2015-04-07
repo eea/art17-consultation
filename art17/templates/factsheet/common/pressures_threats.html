@@ -24,6 +24,7 @@
       </tr>
     </thead>
     <tbody>
+    {% if pressures %}
       {% for pressure in pressures %}
         <tr>
           <td>{{ pressure['code'] }}</td>
@@ -31,6 +32,11 @@
           <td>{{ pressure['pc'] }}</td>
         </tr>
       {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="3">No ‘highly important’ pressures were reported.</td>
+      </tr>
+    {% endif %}
     </tbody>
   </table>
 
@@ -45,6 +51,7 @@
       </tr>
     </thead>
     <tbody>
+    {% if threats %}
       {% for threat in threats %}
         <tr>
           <td>{{ threat['code'] }}</td>
@@ -52,6 +59,11 @@
           <td>{{ threat['pc'] }}</td>
         </tr>
       {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="3">No ‘highly important’ threats were reported.</td>
+      </tr>
+    {% endif %}
     </tbody>
   </table>
 </section>

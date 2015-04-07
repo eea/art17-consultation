@@ -9,6 +9,7 @@
     </tr>
   </thead>
   <tbody>
+  {% if measures.rowcount %}
     {% for row in measures %}
       <tr>
         <td>{{ row['code'] }}</td>
@@ -16,6 +17,11 @@
         <td>{{ row['pc'] }}</td>
       </tr>
     {% endfor %}
+  {% else %}
+    <tr>
+      <td colspan="3">No ‘highly important’ measures were reported.</td>
+    </tr>
+  {% endif %}
   </tbody>
 </table>
 
