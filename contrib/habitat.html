@@ -1,0 +1,58 @@
+<html>
+<body>
+{% for obj,data in objects.items() %}
+{% set info = data.values()[0] %}
+{% set regions = valid_regions(data) %}
+<h1>{{ info.code }} - {{ info.habitat.shortname }}</h1>
+
+<p>Regiune geografică: {{ ", ".join(data.keys()) }}</p>
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>Parametru/Bioregiunea</th>
+    {% for reg in regions %}
+    <th>{{ reg }}</th>
+    {% endfor %}
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <th>Areal (km<sup>2</sup>)</th>
+    {% for reg in regions %}
+      <td>
+        {{ data[reg].range_surface_area|int }}
+        {{ data[reg].conclusion_range }}
+      </td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <th>Suprafață (km<sup>2</sup>)</th>
+    {% for reg in regions %}
+      <td>
+        {{ data[reg].coverage_surface_area|int }}
+        {{ data[reg].conclusion_area }}
+      </td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <th>Structura și funcțiile</th>
+    {% for reg in regions %}
+      <td>
+        {{ data[reg].conclusion_structure }}
+      </td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <th>Perspective viitoare</th>
+    {% for reg in regions %}
+      <td>
+        {{ data[reg].conclusion_future }}
+      </td>
+    {% endfor %}
+  </tr>
+  </tbody>
+</table>
+{% endfor %}
+</body>
+</html>
