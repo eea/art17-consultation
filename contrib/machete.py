@@ -32,10 +32,9 @@ def _get_report(model_cls, template):
     result = render_template(template, objects=data, BIOREGIONS=BIOREGIONS,
                              valid_regions=valid_regions)
     file_out = "out-" + template
-    return result
-    # with open(file_out, "wb") as fh:
-    #     fh.write(result.encode('utf-8'))
-    # print "Done", file_out, "written"
+    with open(file_out, "wb") as fh:
+        fh.write(result.encode('utf-8'))
+    print "Done", file_out, "written"
 
 
 @mgr.command
