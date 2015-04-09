@@ -1,5 +1,5 @@
 # Change `user` and `password` into your MySQL user and password
-SQLALCHEMY_DATABASE_URI = 'mysql://user:password@localhost/art17'
+SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17'
 
 # This is mandatory. Please define a secret key - random sequence of characters
 SECRET_KEY = 'secret'
