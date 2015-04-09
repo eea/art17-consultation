@@ -134,6 +134,9 @@ header .subtitle {
   border: 1pt solid #ccc;
   background: #eee;
 }
+.complex_datatable tbody td {
+  white-space: nowrap;
+}
 .complex_datatable tr:nth-child(3n+0) td {
   border-bottom: 1pt solid #ccc;
 }
