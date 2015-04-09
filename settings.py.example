@@ -2,7 +2,7 @@
 SQLALCHEMY_DATABASE_URI = 'mysql://user:password@localhost/art17'
 
 # This is mandatory. Please define a secret key - random sequence of characters
-SECRET_KEY = ''
+SECRET_KEY = 'secret'
 
 # Fields below are optional. Update and uncomment the ones you need.
 
