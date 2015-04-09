@@ -2,7 +2,7 @@
 alembic==0.6.2
 beautifulsoup4==4.3.2
 colander==0.9.9
-eea.usersdb==1.3.9
+eea.usersdb==1.3.10
 Flask-Assets==0.8
 Flask-Login==0.2.9
 Flask-Mail==0.9.0
