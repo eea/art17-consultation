@@ -32,9 +32,9 @@
         <tr>
           <th rowspan="2">Region</th>
           <th colspan="4">Conservation status (CS) of parameters</th>
-          <th rowspan="2">Current CS</th>
-          <th rowspan="2">Trend in CS</th>
-          <th rowspan="2">% in region<sup>1</sup></th>
+          <th rowspan="2" class="important-cell">Current CS</th>
+          <th rowspan="2" class="important-cell">Trend in CS</th>
+          <th rowspan="2">% in region</th>
           <th rowspan="2">Previous CS</th>
           <th rowspan="2">Reason for<br>change</th>
         </tr>
@@ -61,10 +61,10 @@
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_future, '') }}">
             <span class="conclusion">{{ row.conclusion_future }}</span>
           </td>
-          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment, '') }}">
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment, '') }} important-cell">
             <span class="conclusion">{{ row.conclusion_assessment }}</span>
           </td>
-          <td>{{ row.conclusion_assessment_trend }}</td>
+          <td class="important-cell">{{ row.conclusion_assessment_trend }}</td>
           <td>{{ get_percentage(total_area, area) }}</td>
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') }}">
              <span class="conclusion">{{ row.conclusion_assessment_prev }}</span>
@@ -87,7 +87,9 @@
     [map]
 
     <p>The map shows both Conservation Status and distribution using a 10 km x
-    10 km grid<sup>2</sup></p>
+    10 km grid.</p>
+    <p>Conservation status is assessed at biogeographical level.
+    Therefore the representation in each grid cell is only illustrative.</p>
 
     <table class="complex_datatable">
       <thead>
@@ -178,8 +180,6 @@
 
     {% include 'factsheet/common/measures.html' %}
   </section>
-
-  {% include 'factsheet/common/footnotes.html' %}
 
   <section class="page-breaker">
     <p><sup>i</sup><b>Assessment of conservation status at the European

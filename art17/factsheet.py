@@ -283,28 +283,35 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
 
 
 class FactSheetHeader(MethodView):
+    def get_context_data(self, **kwargs):
+        subject = get_arg(kwargs, 'subject')
+        period = get_arg(kwargs, 'period')
+
+        self.assessment = (self.model_cls.query
+                           .filter_by(subject=subject, dataset_id=period)
+                           .first_or_404())
+        return {'period': self.assessment.dataset.name, 'subject': subject}
+
     def get(self):
         context = self.get_context_data(**request.args)
         return render_template('factsheet/common/header.html', **context)
 
 
-class SpeciesHeader(FactSheetHeader):
+class SpeciesHeader(SpeciesMixin, FactSheetHeader):
     def get_context_data(self, **kwargs):
-        subject = get_arg(kwargs, 'subject')
-        return {'label': 'Species name', 'subject': subject}
+        context = super(SpeciesHeader, self).get_context_data(**kwargs)
+        context.update({'label': 'Species name'})
+        return context
 
 
 class HabitatHeader(HabitatMixin, FactSheetHeader):
     def get_context_data(self, **kwargs):
-        subject = get_arg(kwargs, 'subject')
-        period = get_arg(kwargs, 'period')
-
-        assessment = (self.model_cls.query
-                      .filter_by(subject=subject, dataset_id=period)
-                      .first_or_404())
-
-        return {'label': 'Habitat',
-                'subject': '{} {}'.format(subject, assessment.habitat.name)}
+        context = super(HabitatHeader, self).get_context_data(**kwargs)
+        context.update(
+            {'label': 'Habitat name',
+             'subject': '{} {}'.format(context['subject'],
+                                       self.assessment.habitat.name)})
+        return context
 
 
 class FactSheetFooter(MethodView):

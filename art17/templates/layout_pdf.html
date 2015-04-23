@@ -14,13 +14,6 @@
 
   <body>
 
-    <div class="logo">
-      <img src="{{ url_for('static', filename='img/eea-logo-print.jpg', _external=True) }}">
-      <strong>European Environment Agency</strong><br>
-      <i>European Topic Centre <br>on Biological Diversity</i>
-    </div>
-    <p>Report under the Article 17 of the Habitats Directive<br>Period {{ period }}</p>
-
     {% block content %}{% endblock %}
   </body>
 

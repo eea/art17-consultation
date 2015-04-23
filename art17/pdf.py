@@ -6,10 +6,10 @@ from path import path
 from flask import current_app as app
 from flask import Response, g
 
-_PAGE_DEFAULT_MARGIN = {'top': '20mm', 'bottom': '16mm',
+_PAGE_DEFAULT_MARGIN = {'top': '30mm', 'bottom': '16mm',
                         'left': '16mm', 'right': '16mm'}
 _FOOTER_SPACING = '5'
-_HEADER_SPACING = '5'
+_HEADER_SPACING = '7'
 
 
 def read_file(f):
