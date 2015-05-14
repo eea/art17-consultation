@@ -290,7 +290,10 @@ class FactSheetHeader(MethodView):
         self.assessment = (self.model_cls.query
                            .filter_by(subject=subject, dataset_id=period)
                            .first_or_404())
-        return {'period': self.assessment.dataset.name, 'subject': subject}
+        label = self.subject_name.capitalize()
+        return {'period': self.assessment.dataset.name,
+                'subject': subject,
+                'label': label, }
 
     def get(self):
         context = self.get_context_data(**request.args)
@@ -298,19 +301,14 @@ class FactSheetHeader(MethodView):
 
 
 class SpeciesHeader(SpeciesMixin, FactSheetHeader):
-    def get_context_data(self, **kwargs):
-        context = super(SpeciesHeader, self).get_context_data(**kwargs)
-        context.update({'label': 'Species name'})
-        return context
+    pass
 
 
 class HabitatHeader(HabitatMixin, FactSheetHeader):
     def get_context_data(self, **kwargs):
         context = super(HabitatHeader, self).get_context_data(**kwargs)
-        context.update(
-            {'label': 'Habitat name',
-             'subject': '{} {}'.format(context['subject'],
-                                       self.assessment.habitat.name)})
+        context['subject'] = '{} {}'.format(context['subject'],
+                                            self.assessment.habitat.name)
         return context
 
 
