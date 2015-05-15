@@ -2,7 +2,7 @@ from collections import OrderedDict
 import urllib
 
 from sqlalchemy import and_
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, or_
 from flask import (
     Blueprint, render_template, request, current_app as app, url_for,
 )
@@ -21,7 +21,7 @@ factsheet = Blueprint('factsheet', __name__)
 factsheet_manager = Manager()
 
 PRIORITY_TEXT = {'0': 'No', '1': 'Yes', '2': 'Yes in Ireland'}
-REASONS_MANUAL = {'n': 'Not genuine', 'y': 'Genuine', 'nc': 'No change'}
+REASONS_MANUAL = {'n': 'Not genuine', 'y': 'Genuine', 'nc': ''}
 REASONS = {'a': 'Genuine', 'b': 'Better data', 'c': 'Change in methods',
            'e': 'Change in methods', 'n': 'No change', 'd': 'No data'}
 
@@ -85,8 +85,7 @@ class FactSheet(MethodView):
                 self.model_manual_cls.subject == subject,
                 self.model_manual_cls.dataset_id == period,
                 self.model_manual_cls.decision == 'OK')
-            .group_by(self.model_manual_cls.region)
-            .all())
+            .group_by(self.model_manual_cls.region))
 
     def get_objects(self, period, subject):
         return (self.model_cls.query
@@ -254,6 +253,12 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         )
         return ', '.join(filter(bool, annexes))
 
+    def get_manual_objects(self, period, subject):
+        q = super(SpeciesFactSheet, self).get_manual_objects(period, subject)
+        return q.filter(or_(
+            self.model_cls.species_type == None,
+            self.model_cls.species_type.in_(['IRM', 'OP', 'PEX'])))
+
 
 class HabitatFactSheet(FactSheet, HabitatMixin):
     template_name = 'factsheet/habitat.html'
@@ -275,6 +280,10 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
             'code': self.assessment.code,
         })
         return context
+
+    def get_manual_objects(self, period, subject):
+        q = super(HabitatFactSheet, self).get_manual_objects(period, subject)
+        return q.filter(self.model_cls.habitattype_type_asses == 1)
 
 
 class FactSheetHeader(MethodView):
