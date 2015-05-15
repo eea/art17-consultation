@@ -56,13 +56,8 @@ def get_reason_for_change(value):
 
 class FactSheet(MethodView):
     def get_regions(self, period, subject):
-        regions = (
-            self.model_manual_cls.query
-            .filter_by(subject=subject, dataset_id=period, decision='OK')
-            .with_entities(self.model_manual_cls.region)
-            .distinct().all()
-        )
-        return [region[0] for region in regions]
+        regions = super(FactSheet, self).get_regions(period, subject)[1:]
+        return [name for abbr, name in regions]
 
     def get_priority(self):
         return PRIORITY_TEXT.get(self.assessment.priority, 'Unknown')
