@@ -1,0 +1,25 @@
+<p><strong>Percentage of coverage by Natura 2000 sites in biogeographical/marine
+    region</strong></p>
+
+<table class='table-simple'>
+  <thead>
+    <tr>
+      <th></th>
+      {% for region in regions %}
+        <th>{{ region }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for country, region_pc in coverage.iteritems() %}
+      <tr>
+        <th>{{ country }}</th>
+        {% for region in regions %}
+          <td>{{ region_pc.get(region, '') }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p>See the endnotes for more information<sup>ii</sup></p>

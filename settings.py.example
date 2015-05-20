@@ -1,6 +1,10 @@
 # Change `user` and `password` into your MySQL user and password
 SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17'
 
+#SQLALCHEMY_BINDS = {
+#   'factsheet': 'mysql://user:password@localhost/art17old'
+#}
+
 # This is mandatory. Please define a secret key - random sequence of characters
 SECRET_KEY = 'secret'
 
@@ -27,3 +31,6 @@ SECRET_KEY = 'secret'
 # SECURITY_POST_REGISTER_VIEW = '/article17/'
 
 # SENTRY_DSN = ''
+
+# Destination for PDF reports in the Factsheet module
+# PDF_DESTINATION = './instance/pdf'

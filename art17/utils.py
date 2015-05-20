@@ -2,6 +2,10 @@
 import re
 from decimal import Decimal
 from bs4 import BeautifulSoup
+from markupsafe import Markup
+from path import path
+from flask import current_app as app
+
 
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
 valid_numeric = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
@@ -67,3 +71,31 @@ def na_if_none(s, default='N/A'):
     if s is None:
         return default
     return s
+
+
+def inject_static_file(filepath):
+    data = None
+    with open(path(app.static_folder) / filepath, 'r') as f:
+        data = f.read()
+    return Markup(data)
+
+
+# See: https://gist.github.com/berlotto/6295018
+_slugify_strip_re = re.compile(r'[^\w\s-]')
+_slugify_hyphenate_re = re.compile(r'[-\s]+')
+
+
+def slugify(value):
+    """
+    Normalizes string, converts to lowercase, removes non-alpha characters,
+    and converts spaces to hyphens.
+
+    From Django's "django/template/defaultfilters.py".
+    """
+    import unicodedata
+
+    if not isinstance(value, unicode):
+        value = unicode(value)
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    value = unicode(_slugify_strip_re.sub('', value).strip().lower())
+    return _slugify_hyphenate_re.sub('-', value)

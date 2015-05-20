@@ -1,0 +1,18 @@
+{% extends 'layout_default.html' %}
+
+{% block content %}
+
+  <h1>{{ subject|capitalize }} Factsheets</h1>
+
+  <div>
+    <ul>
+      {% for object in objects %}
+      <li>
+        <a href="{{ url_for(url_base, subject=object.subject) }}">
+          {{ object.subject }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

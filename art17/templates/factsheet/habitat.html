@@ -1,0 +1,207 @@
+{% extends 'layout_pdf.html' %}
+
+{% block content %}
+
+  <h1 class="cover-title">{{ code }} {{ name }}</h1>
+
+  <dl class="cover-summary">
+    <dt>Habitat code</dt>
+    <dd>{{ code }}</dd>
+    <dt>Priority</dt>
+    <dd>{{ priority }}</dd>
+    <dt>Habitat group</dt>
+    <dd>{{ group }}</dd>
+    <dt>Regions</dt>
+    <dd>{{ regions | join(', ') }}</dd>
+  </dl>
+
+  {{ wiki | safe }}
+
+  <section>
+    <header>
+      <h2>Assessment of conservation status at the European biogeographical level</h2>
+      <p class="subtitle">(all biogeographical and marine regions – EU27)</p>
+    </header>
+
+    [map]
+
+    <table class="complex_datatable">
+      <thead>
+        <tr>
+          <th rowspan="2">Region</th>
+          <th colspan="4">Conservation status (CS) of parameters</th>
+          <th rowspan="2" class="important-cell">Current CS</th>
+          <th rowspan="2" class="important-cell">Trend in CS</th>
+          <th rowspan="2">% in region</th>
+          <th rowspan="2">Previous CS</th>
+          <th rowspan="2">Reason for<br>change</th>
+        </tr>
+        <tr>
+          <th>Range</th>
+          <th>Area</th>
+          <th>Structure &amp;<br>Functions</th>
+          <th>Future<br>prospects</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for row, area in manual_objects %}
+        <tr class="stripe_row">
+          <td>{{ row.region }}</td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_range, '') }}">
+            <span class="conclusion">{{ row.conclusion_range }}</span>
+          </td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_area, '') }}">
+            <span class="conclusion">{{ row.conclusion_area}}</span>
+          </td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_structure, '') }}">
+            <span class="conclusion">{{ row.conclusion_structure }}</span>
+          </td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_future, '') }}">
+            <span class="conclusion">{{ row.conclusion_future }}</span>
+          </td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment, '') }} important-cell">
+            <span class="conclusion">{{ row.conclusion_assessment }}</span>
+          </td>
+          <td class="important-cell">{{ row.conclusion_assessment_trend }}</td>
+          <td>{{ get_percentage(total_area, area) }}</td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') }}">
+             <span class="conclusion">{{ row.conclusion_assessment_prev }}</span>
+          </td>
+          <td>{{ get_reason_for_change_manual(row.conclusion_assessment_change) }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <p>See the endnote for more information<sup>i</sup></p>
+  </section>
+
+  <section>
+    <header>
+      <h2>Assessment of conservation status at the Member State level</h2>
+      <p class="subtitle">(all biogeographical and marine regions – EU27)</p>
+    </header>
+
+    [map]
+
+    <p>The map shows both Conservation Status and distribution using a 10 km x
+    10 km grid. Conservation status is assessed at biogeographical level.
+    Therefore the representation in each grid cell is only illustrative.</p>
+
+    <table class="complex_datatable">
+      <thead>
+        <tr>
+          <th rowspan="2">MS</th>
+          <th rowspan="2">Region</th>
+          <th colspan="4">Conservation status parameters</th>
+          <th rowspan="2">Conclusion<br>2007-2012</th>
+          <th rowspan="2">Trend in<br>conservation<br>status</th>
+          <th rowspan="2">% in biogeo.<br>region</th>
+          <th rowspan="2">Conclusion<br>2001-2006</th>
+          <th rowspan="2">Reason for<br>change</th>
+        </tr>
+        <tr>
+          <th>Range</th>
+          <th>Area</th>
+          <th>Structure &amp;<br>functions</th>
+          <th>Future<br>prospects</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for row in objects %}
+        <tr class="stripe_row">
+          <td>{{ row.eu_country_code }}</td>
+          <td>{{ row.region }}</td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_range, '') }}">
+            <span class="conclusion">{{ row.conclusion_range }}</span>
+          </td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_area, '') }}">
+            <span class="conclusion">{{ row.conclusion_area }}</span>
+          </td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_structure, '') }}">
+            <span class="conclusion">{{ row.conclusion_structure }}</span>
+          </td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_future, '') }}">
+            <span class="conclusion">{{ row.conclusion_future }}</span>
+          </td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment, '') }}">
+            <span class="conclusion">{{ row.conclusion_assessment }}</span>
+          </td>
+          <td>{{ row.conclusion_assessment_trend or '' }}</td>
+          <td>{{ (row.percentage_coverage_surface_area or 0) | round(1) }}</td>
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, 'NA') }}">
+            <span class="conclusion">{{ row.conclusion_assessment_prev or '' }}</span>
+          </td>
+          <td>{{ get_reason_for_change(row.conclusion_assessment_change) }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <p>Knowing that not all changes in conservation status between the
+    reporting periods were genuine, Member States were asked to give the
+    reasons for changes in conservation status. Bulgaria and Romania only
+    joined the EU in 2007 and Greece did not report for 2007-12 so no reason is
+    given for change for these countries. Greek data shown above is from
+    2001-06.</p>
+  </section>
+
+  {% with subject = 'habitats' %}
+    {% include 'factsheet/common/pressures_threats.html' %}
+  {% endwith %}
+
+  <section>
+    <header>
+      <h2>Proportion of population covered by the Natura 2000 network</h2>
+    </header>
+
+    <p>Member States were asked to report the area of the habitat which is
+    covered by the Natura 2000 network. The percentage of the habitat area
+    covered by the network was estimated by comparing the area within the
+    network and the total area in the biogeographical/marine region.</p>
+
+    {% include 'factsheet/common/n2000_coverage.html' %}
+  </section>
+
+  <section>
+    <header>
+      <h2>Most frequently reported conservation measures</h2>
+    </header>
+
+    <p>Member States were asked to report up to 20 conservation measures being
+    implemented for this habitat using an agreed list which can be found on the
+    Article 17 Reference Portal. Member States were further requested to
+    highlight up to five most important (‘highly important’) measures; the
+    tables below only show measures classed as ‘high’, for many habitats there
+    were less than ten measures reported as highly important.</p>
+
+    {% include 'factsheet/common/measures.html' %}
+  </section>
+
+  <section class="page-breaker">
+
+    <p><sup>i</sup><b>Assessment of conservation status at the European
+      biogeographical level:</b> Current Conservation Status (Current CS)
+    shows the status for the reporting period 2007-2012, Previous Conservation
+    Status (Previous CS) for the reporting period 2000-2006. Reason for change
+    in conservation status between the reporting periods indicates whether the
+    changes in the status were genuine or not genuine. Previous Conservation
+    Status was not assessed for Steppic, Black Sea and Marine Black Sea
+    regions. For these regions the Previous status is therefore considered as
+    ‘unknown’.  The percentage of the species population occurring within the
+    biogeographical/marine region (% in region) is calculated based on the area
+    of GIS distribution.</p>
+
+    <p><sup>ii</sup><b>Percentage of coverage by Natura 2000 sites in
+      biogeographical/marine region:</b>In some cases the population size
+    within the Natura 2000 network has been estimated using a different
+    methodology to the estimate of overall population size and this can lead to
+    percentage covers greater than 100%. In such case the value has been given
+    as 100% and highlighted with an asterisk (*). The value ‘ ‘x’ indicates
+    that the Member State has not reported the species population and/or the
+    coverage by Natura 2000. No information is available for Greece. The values
+    are only provided for regions, in which the occurrence of the species has
+    been reported by the Member States.</p>
+  </section>
+
+{% endblock %}
