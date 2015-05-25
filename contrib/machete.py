@@ -28,7 +28,13 @@ def _get_report(model_cls, template):
     qs = model_cls.query.filter_by(country=COUNTRY)
     for species in qs:
         data.setdefault(species.subject, {})
-        data[species.subject][species.region] = species
+        region_key = species.region
+        if region_key in data[species.subject]:
+            print "* already exists, switch key: ", (
+                species.code, species.region, species.region_ms
+            )
+            region_key = species.region_ms
+        data[species.subject][region_key] = species
     result = render_template(template, objects=data, BIOREGIONS=BIOREGIONS,
                              valid_regions=valid_regions)
     file_out = "out-" + template
