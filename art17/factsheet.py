@@ -54,6 +54,17 @@ def get_reason_for_change(value):
     return REASONS.get(value[0], '')
 
 
+@factsheet.app_template_global('get_conclusion_assessment_prev_colour')
+def get_conclusion_assessment_prev_colour(obj):
+    if obj.eu_country_code in ('BG', 'RO'):
+        return None
+
+    if not obj.conclusion_assessment_prev:
+        return 'NA'
+
+    return obj.conclusion_assessment_prev[0:2]
+
+
 class FactSheet(MethodView):
     def get_regions(self, period, subject):
         regions = super(FactSheet, self).get_regions(period, subject)[1:]
@@ -91,8 +102,7 @@ class FactSheet(MethodView):
         return (self.model_cls.query
                 .filter_by(dataset_id=period, subject=subject)
                 .order_by(self.model_cls.region,
-                          self.model_cls.eu_country_code)
-                .all())
+                          self.model_cls.eu_country_code))
 
     def get_pressures(self, subject, pressure_type):
         if not self.engine:
@@ -258,6 +268,13 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         return q.filter(or_(
             self.model_cls.species_type == None,
             self.model_cls.species_type.in_(['IRM', 'OP', 'PEX'])))
+
+    def get_objects(self, period, subject):
+        q = super(SpeciesFactSheet, self).get_objects(period, subject)
+        return q.filter(or_(
+            self.model_cls.species_type == None,
+            self.model_cls.species_type.in_(['IRM', 'OP', 'PEX'])))
+
 
 
 class HabitatFactSheet(FactSheet, HabitatMixin):

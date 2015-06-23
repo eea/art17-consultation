@@ -129,7 +129,8 @@
           </td>
           <td class="important-cell">{{ row.conclusion_assessment_trend or '' }}</td>
           <td>{{ (row.percentage_range_surface_area or 0) | round(1) }}</td>
-          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, 'NA') }}">
+          {% set cap_color = get_conclusion_assessment_prev_colour(row) %}
+          <td class="{{ CONCLUSION_CLASSES.get(cap_color, 'NA') }}">
             <span class="conclusion">{{ row.conclusion_assessment_prev or '' }}</span>
           </td>
           <td>{{ get_reason_for_change(row.conclusion_assessment_change) }}</td>
