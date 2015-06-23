@@ -70,6 +70,10 @@ class FactSheet(MethodView):
         regions = super(FactSheet, self).get_regions(period, subject)[1:]
         return [name for abbr, name in regions]
 
+    def get_region_codes(self, period, subject):
+        regions = super(FactSheet, self).get_regions(period, subject)[1:]
+        return [abbr for abbr, name in regions]
+
     def get_priority(self):
         return PRIORITY_TEXT.get(self.assessment.priority, 'Unknown')
 
@@ -178,6 +182,7 @@ class FactSheet(MethodView):
         return {
             'group': self.get_group_for_subject(subject),
             'regions': self.get_regions(period, subject),
+            'region_codes': self.get_region_codes(period, subject),
             'priority': self.get_priority(),
             'wiki': self.get_wiki(period, subject),
             'manual_objects': manual_objects,

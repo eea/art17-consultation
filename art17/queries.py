@@ -145,9 +145,9 @@ FROM   data_species_regions_MS_level AS A
                ON ( A.speciesname = B.speciesname )
                   AND ( A.region = B.region )
                   AND ( A.country = B.country )
-WHERE  ( Ucase(B.presence) IN ( '1', 'SR TAX', 'LR', 'OP', 'EX' ) )
-       AND B.assessment_speciesname = '{subject}'
-       AND A.country <> 'GR'
+WHERE B.assessment_speciesname = '{subject}'
+      AND A.use_for_statistics = True
+      AND A.country <> 'GR'
 ORDER BY country;
 """
 

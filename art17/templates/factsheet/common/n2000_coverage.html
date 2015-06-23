@@ -5,7 +5,7 @@
   <thead>
     <tr>
       <th></th>
-      {% for region in regions %}
+      {% for region in region_codes %}
         <th>{{ region }}</th>
       {% endfor %}
     </tr>
@@ -14,7 +14,7 @@
     {% for country, region_pc in coverage.iteritems() %}
       <tr>
         <th>{{ country }}</th>
-        {% for region in regions %}
+        {% for region in region_codes %}
           <td>{{ region_pc.get(region, '') }}</td>
         {% endfor %}
       </tr>
