@@ -23,7 +23,7 @@ factsheet_manager = Manager()
 PRIORITY_TEXT = {'0': 'No', '1': 'Yes', '2': 'Yes in Ireland'}
 REASONS_MANUAL = {'n': 'Not genuine', 'y': 'Genuine', 'nc': ''}
 REASONS = {'a': 'Genuine', 'b': 'Better data', 'c': 'Change in methods',
-           'e': 'Change in methods', 'n': 'No change', 'd': 'No data'}
+           'e': 'Change in methods', 'n': '', 'd': 'No data'}
 
 
 def get_arg(kwargs, key, default=None):
