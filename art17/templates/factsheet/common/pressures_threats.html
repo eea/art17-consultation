@@ -13,58 +13,62 @@
   and pressures classed as ‘high’, for some {{ subject }} there were less than
   ten threats or pressures reported as highly important.</p>
 
-  <p><strong>Ten most frequently reported 'highly important' pressures</strong>
-  </p>
+  <div class="keep-together">
+    <p><strong>Ten most frequently reported 'highly important' pressures</strong>
+    </p>
 
-  <table class='table-simple'>
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Activity</th>
-        <th>% of reports</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% if pressures %}
-      {% for pressure in pressures %}
+    <table class='table-simple'>
+      <thead>
         <tr>
-          <td>{{ pressure['code'] }}</td>
-          <td>{{ pressure['activity'] }}</td>
-          <td>{{ pressure['pc'] }}</td>
+          <th>Code</th>
+          <th>Activity</th>
+          <th>% of reports</th>
         </tr>
-      {% endfor %}
-    {% else %}
-      <tr>
-        <td colspan="3">No ‘highly important’ pressures were reported.</td>
-      </tr>
-    {% endif %}
-    </tbody>
-  </table>
-
-  <p><strong>Ten most frequently reported 'highly important' threats</strong></p>
-
-  <table class='table-simple'>
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Activity</th>
-        <th>% of reports</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% if threats %}
-      {% for threat in threats %}
+      </thead>
+      <tbody>
+      {% if pressures %}
+        {% for pressure in pressures %}
+          <tr>
+            <td>{{ pressure['code'] }}</td>
+            <td>{{ pressure['activity'] }}</td>
+            <td>{{ pressure['pc'] }}</td>
+          </tr>
+        {% endfor %}
+      {% else %}
         <tr>
-          <td>{{ threat['code'] }}</td>
-          <td>{{ threat['activity'] }}</td>
-          <td>{{ threat['pc'] }}</td>
+          <td colspan="3">No ‘highly important’ pressures were reported.</td>
         </tr>
-      {% endfor %}
-    {% else %}
-      <tr>
-        <td colspan="3">No ‘highly important’ threats were reported.</td>
-      </tr>
-    {% endif %}
-    </tbody>
-  </table>
+      {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="keep-together">
+    <p><strong>Ten most frequently reported 'highly important' threats</strong></p>
+
+    <table class='table-simple'>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Activity</th>
+          <th>% of reports</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if threats %}
+        {% for threat in threats %}
+          <tr>
+            <td>{{ threat['code'] }}</td>
+            <td>{{ threat['activity'] }}</td>
+            <td>{{ threat['pc'] }}</td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="3">No ‘highly important’ threats were reported.</td>
+        </tr>
+      {% endif %}
+      </tbody>
+    </table>
+  </div>
 </section>
