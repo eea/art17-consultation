@@ -8,7 +8,7 @@ FROM ((SELECT   RS4.level2_code,
                 1                   AS pl2_set
        FROM     (SELECT DISTINCT RS2.country AS pl2_ms,
                         RS2.region,
-                        RS2.speciesname,
+                        RS2.{join_column},
                         SUBSTRING_INDEX(pressurecode, '.', 1) AS level2_code
                  FROM ({checklist_table} AS RS3
                         INNER JOIN {regions_MS_table} AS RS2
@@ -27,7 +27,7 @@ FROM ((SELECT   RS4.level2_code,
                             1               AS pl2_set
                      FROM   (SELECT DISTINCT RS2.country AS pl2_ms,
                                     RS2.region,
-                                    RS2.speciesname,
+                                    RS2.{join_column},
                                     SUBSTRING_INDEX(pressurecode, '.', 1) AS level2_code
                              FROM ({checklist_table} AS RS3
                              INNER JOIN {regions_MS_table} AS RS2
@@ -37,7 +37,7 @@ FROM ((SELECT   RS4.level2_code,
                              INNER JOIN data_pressures_threats AS RS1
                                      ON RS3.regionhash = RS1.{regionhash_column}
                              WHERE (((RS2.country<>'GR')
-                                    And (RS3.assessment_speciesname) = '{subject}')
+                                    And (RS3.{subject_column}) = '{subject}')
                                     AND (RS2.use_for_statistics = True)
                                     AND (Not (RS1.pressurecode) In ('U','X'))
                                     AND ((RS1.type_pressure)='{pressure_type}')
@@ -142,10 +142,10 @@ IF(A.natura2000_population_unit = A.population_size_unit,
 )) AS pc
 FROM   data_species_regions_MS_level AS A
        INNER JOIN data_species_check_list AS B
-               ON ( A.speciesname = B.speciesname )
+               ON ( A.{join_column} = B.{join_column} )
                   AND ( A.region = B.region )
                   AND ( A.country = B.country )
-WHERE B.assessment_speciesname = '{subject}'
+WHERE B.{subject_column} = '{subject}'
       AND A.use_for_statistics = True
       AND A.country <> 'GR'
 ORDER BY country;

@@ -31,6 +31,10 @@ def get_arg(kwargs, key, default=None):
     return arg[0] if isinstance(arg, list) else arg or default
 
 
+def _fix_p(text):
+    return text.replace('<p>&nbsp;</p>', '')
+
+
 @factsheet.app_template_global('get_percentage')
 def get_percentage(total, value):
     if not total:
@@ -85,7 +89,7 @@ class FactSheet(MethodView):
                         Wiki.region_code == '',
                         WikiChange.active == 1)
                 .first())
-        return wiki.body if wiki else ''
+        return _fix_p(wiki.body if wiki else '')
 
     def get_manual_objects(self, period, subject):
         return (
@@ -126,7 +130,9 @@ class FactSheet(MethodView):
         if not self.engine:
             return {}
         result = self.engine.execute(
-            self.coverage_query.format(subject=subject))
+            self.coverage_query.format(subject=subject,
+                                       join_column=self.join_column,
+                                       subject_column=self.subject_column))
         coverage = OrderedDict()
         for row in result:
             coverage.setdefault(row['country'], {})[row['region']] = row['pc']
@@ -279,7 +285,6 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         return q.filter(or_(
             self.model_cls.species_type == None,
             self.model_cls.species_type.in_(['IRM', 'OP', 'PEX'])))
-
 
 
 class HabitatFactSheet(FactSheet, HabitatMixin):

@@ -248,8 +248,7 @@ header .subtitle {
 }
 .NA .conclusion,
 .NA.conclusion {
-  color: #000;
-  background-color: #bbbdc0;
+  background-color: transparent;
 }
 .assesm {
   color: #666666 !important;
