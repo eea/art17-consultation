@@ -155,31 +155,36 @@ MEASURES_QUERY = """
 SELECT C.code,
        C.name AS activity,
        Round(100 * A.pl2_num / B.pl2_tot) AS pc
-  FROM ((SELECT RS1.measurecode AS level2_code,
+FROM ((SELECT RS1.measurecode AS level2_code,
        COUNT(RS2.region) AS pl2_num,
        1 AS pl2_set
-  FROM ({checklist_table} AS RS3
+FROM ({checklist_table} AS RS3
         INNER JOIN {regions_MS_table} AS RS2
             ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.{join_column} = RS2.{join_column}))
         INNER JOIN data_measures RS1
             ON (RS1.{regionhash_column} = RS2.regionhash)
- WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX'))
+WHERE (RS2.use_for_statistics = True)
          {extra}
          AND (RS3.{subject_column} = '{subject}')
          AND (RS1.rankingcode = 'H')
-         AND (RS1.measurecode <> '1.1')
-  GROUP BY RS1.measurecode) AS A
-       INNER JOIN
+         AND NOT (RS1.measurecode LIKE '1%%')
+GROUP BY RS1.measurecode) AS A
+INNER JOIN
        (SELECT COUNT(RS2.region) AS pl2_tot,
-       1 AS pl2_set
-  FROM ({checklist_table} AS RS3
+                 1 AS pl2_set
+        FROM ({checklist_table} AS RS3
         INNER JOIN {regions_MS_table} AS RS2
             ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.{join_column} = RS2.{join_column}))
-       INNER JOIN data_measures RS1
+        INNER JOIN data_measures RS1
             ON (RS1.{regionhash_column} = RS2.regionhash)
- WHERE ((UPPER(presence)) In ('1','SR TAX','LR','OP','EX')) {extra} AND (RS3.{subject_column} = '{subject}')) AS B
-          ON (A.pl2_set = B.pl2_set))
-       LEFT JOIN lu_measures AS C
-          ON (C.code = A.level2_code)
-ORDER BY 100 * A.pl2_num / B.pl2_tot DESC LIMIT 10;
+        WHERE (RS2.use_for_statistics = True)
+              {extra}
+              AND (RS3.{subject_column} = '{subject}')
+              AND (RS1.rankingcode = 'H')
+              AND NOT (RS1.measurecode LIKE '1%%')) AS B
+       ON (A.pl2_set = B.pl2_set))
+LEFT JOIN lu_measures AS C
+       ON (C.code = A.level2_code)
+ORDER BY 100 * A.pl2_num / B.pl2_tot DESC
+LIMIT 10;
 """
