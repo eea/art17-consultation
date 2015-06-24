@@ -54,7 +54,7 @@ SELECT  A.country, A.region,
  IF(
     NOT IFNULL(A.coverage_surface_area, 0)=0,
     IF(
-      NOT IFNULL(A.natura2000_area_max, 0),
+      NOT IFNULL(A.natura2000_area_max, 0)=0,
       IF(
         SQRT(A.natura2000_area_min*A.natura2000_area_max)/A.coverage_surface_area>1,
         '100*',
