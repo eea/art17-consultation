@@ -188,3 +188,10 @@ LEFT JOIN lu_measures AS C
 ORDER BY 100 * A.pl2_num / B.pl2_tot DESC
 LIMIT 10;
 """
+
+N2K_QUERY = """
+  SELECT DISTINCT Max(A.annex_II) Like "Y%%" AS cond
+  FROM data_species_check_list A
+  WHERE A.assessment_speciesname = '{subject}'
+  GROUP BY A.assessment_speciesname;
+"""

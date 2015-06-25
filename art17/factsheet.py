@@ -13,8 +13,10 @@ from art17.common import admin_perm
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange, Dataset
 from art17.pdf import PdfRenderer
-from art17.queries import (THREATS_QUERY, COVERAGE_QUERY_SPECIES,
-                           COVERAGE_QUERY_HABITAT, MEASURES_QUERY)
+from art17.queries import (
+    THREATS_QUERY, COVERAGE_QUERY_SPECIES, COVERAGE_QUERY_HABITAT,
+    MEASURES_QUERY, N2K_QUERY,
+)
 from art17.utils import slugify
 
 factsheet = Blueprint('factsheet', __name__)
@@ -255,11 +257,21 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     url_base = '.factsheet-species'
     header_endpoint = 'factsheet.species-header'
 
+    def get_has_n2k(self):
+        if not self.engine:
+            return True
+        result = self.engine.execute(
+            N2K_QUERY.format(subject=self.assessment.subject)
+        )
+        row = result and result.first()
+        return (row or True) and row['cond'] > 0
+
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
         context.update({
             'name': self.assessment.subject,
             'annexes': self.get_annexes(),
+            'has_n2k': self.get_has_n2k(),
         })
         return context
 

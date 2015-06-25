@@ -154,6 +154,7 @@
     {% include 'factsheet/common/pressures_threats.html' %}
   {% endwith %}
 
+  {% if has_n2k %}
   <section>
     <header>
       <h2>Proportion of population covered by the Natura 2000 network</h2>
@@ -181,6 +182,9 @@
 
     {% include 'factsheet/common/measures.html' %}
   </section>
+  {% endif %}
+
+  {% include 'factsheet/common/endp.html' %}
 
   <section class="page-breaker">
 
@@ -196,6 +200,7 @@
     biogeographical/marine region (% in region) is calculated based on the area
     of GIS distribution.</p>
 
+    {% if has_n2k %}
     <p><sup>ii</sup><b>Percentage of coverage by Natura 2000 sites in
       biogeographical/marine region:</b>In some cases the population size
     within the Natura 2000 network has been estimated using a different
@@ -206,6 +211,7 @@
     coverage by Natura 2000. No information is available for Greece. The values
     are only provided for regions, in which the occurrence of the species has
     been reported by the Member States.</p>
+    {% endif %}
   </section>
 
 {% endblock %}
