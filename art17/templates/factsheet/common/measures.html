@@ -5,7 +5,7 @@
   <thead>
     <tr>
       <th>Code</th>
-      <th>Measure</th>
+      <th style="width: 100%; text-align: left">Measure</th>
       <th>Frequency</th>
     </tr>
   </thead>
@@ -15,7 +15,7 @@
       <tr>
         <td>{{ row['code'] }}</td>
         <td>{{ row['activity'] }}</td>
-        <td>{{ row['pc'] }}</td>
+        <td style="text-align: right">{{ row['pc'] }}</td>
       </tr>
     {% endfor %}
   {% else %}

@@ -21,7 +21,7 @@
       <thead>
         <tr>
           <th>Code</th>
-          <th>Activity</th>
+          <th style="width: 100%; text-align: left">Activity</th>
           <th>Frequency</th>
         </tr>
       </thead>
@@ -31,7 +31,7 @@
           <tr>
             <td>{{ pressure['code'] }}</td>
             <td>{{ pressure['activity'] }}</td>
-            <td>{{ pressure['pc'] }}</td>
+            <td style="text-align: right">{{ pressure['pc'] }}</td>
           </tr>
         {% endfor %}
       {% else %}
@@ -50,7 +50,7 @@
       <thead>
         <tr>
           <th>Code</th>
-          <th>Activity</th>
+          <th style="width: 100%; text-align: left">Activity</th>
           <th>Frequency</th>
         </tr>
       </thead>
@@ -60,7 +60,7 @@
           <tr>
             <td>{{ threat['code'] }}</td>
             <td>{{ threat['activity'] }}</td>
-            <td>{{ threat['pc'] }}</td>
+            <td style="text-align: right">{{ threat['pc'] }}</td>
           </tr>
         {% endfor %}
       {% else %}

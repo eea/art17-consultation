@@ -17,7 +17,7 @@
     <tr>
       <th>{{ country }}</th>
       {% for region in region_codes %}
-      <td>{{ region_pc.get(region, '') }}</td>
+        <td style="text-align: center">{{ region_pc.get(region, '') }}</td>
       {% endfor %}
     </tr>
     {% endfor %}

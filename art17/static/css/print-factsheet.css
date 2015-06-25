@@ -85,6 +85,7 @@ header .subtitle {
 /* Table simple */
 .table-simple {
   border-collapse: collapse;
+  margin-right: 1cm;
 }
 .table-simple caption,
 .table-simple th,
