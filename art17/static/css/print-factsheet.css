@@ -3,9 +3,8 @@
 /* Generic */
 body {
   font-family: sans-serif;
-  line-height: 1.4;
-  font-size: 11pt;
-  line-height: 13pt;
+  font-size: 9pt;
+  line-height: 11pt;
   padding: 0;
 }
 h1, h2, h3 {
@@ -112,8 +111,8 @@ header .subtitle {
 /* COMPLEX DATATABLE */
 .complex_datatable {
   border-collapse: collapse;
-  font-size: 9pt;
-  line-height: 1.4;
+  font-size: 7pt;
+  line-height: 1.2;
   margin: 1em 0;
   letter-spacing: -.04em;
 }
@@ -319,4 +318,14 @@ header .subtitle {
 
 .keep-together {
     page-break-inside: avoid;
+}
+
+/* Header */
+.header .title {
+    font-size: 12pt;
+    line-height: 14pt;
+}
+.header .subtitle {
+    font-size: 9pt;
+    font-style: normal;
 }

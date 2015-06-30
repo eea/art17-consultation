@@ -74,6 +74,7 @@ class PdfRenderer(object):
             '--header-spacing', self.header_spacing,
             '--footer-html', self.footer_url,
             '--footer-spacing', self.footer_spacing,
+            '--disable-smart-shrinking',
         ]
         if self.title:
             command += ['--title', self.title]

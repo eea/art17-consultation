@@ -317,6 +317,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
         context.update({
             'name': self.assessment.habitat.name,
             'code': self.assessment.code,
+            'has_n2k': True, # Apparently, they all have
         })
         return context
 
@@ -344,13 +345,16 @@ class FactSheetHeader(MethodView):
 
 
 class SpeciesHeader(SpeciesMixin, FactSheetHeader):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super(SpeciesHeader, self).get_context_data(**kwargs)
+        context['subject'] = u'<em>{}</em>'.format(context['subject'])
+        return context
 
 
 class HabitatHeader(HabitatMixin, FactSheetHeader):
     def get_context_data(self, **kwargs):
         context = super(HabitatHeader, self).get_context_data(**kwargs)
-        context['subject'] = '{} {}'.format(context['subject'],
+        context['subject'] = u'{} <em>{}</em>'.format(context['subject'],
                                             self.assessment.habitat.name)
         return context
 
