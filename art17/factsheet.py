@@ -290,13 +290,13 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         q = super(SpeciesFactSheet, self).get_manual_objects(period, subject)
         return q.filter(or_(
             self.model_cls.species_type == None,
-            self.model_cls.species_type.in_(['IRM', 'OP', 'PEX'])))
+            ~self.model_cls.species_type.in_(['IRM', 'OP', 'PEX'])))
 
     def get_objects(self, period, subject):
         q = super(SpeciesFactSheet, self).get_objects(period, subject)
         return q.filter(or_(
             self.model_cls.species_type == None,
-            self.model_cls.species_type.in_(['IRM', 'OP', 'PEX'])))
+            ~self.model_cls.species_type.in_(['IRM', 'OP', 'PEX'])))
 
 
 class HabitatFactSheet(FactSheet, HabitatMixin):
