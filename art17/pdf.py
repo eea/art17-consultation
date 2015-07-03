@@ -49,6 +49,9 @@ class PdfRenderer(object):
         self.pdf_path = (
             dir / kwargs.get('pdf_file', str(uuid.uuid4())) + '.pdf'
         )
+        le_dir = os.path.dirname(self.pdf_path)
+        if not os.path.exists(le_dir):
+            os.makedirs(le_dir)
         g.is_pdf_process = True
 
     def _get_dir(self):

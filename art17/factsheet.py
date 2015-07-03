@@ -228,7 +228,7 @@ class FactSheet(MethodView):
     def get_pdf(self, **kwargs):
         context = self.get_context_data(**kwargs)
         title = context.get('name', '(untitled)')
-        pdf_file = slugify(kwargs['subject'])
+        pdf_file = self.get_pdf_file_name()
         footer_url = url_for('factsheet.factsheet-footer', _external=True)
         base_header_url = url_for(self.header_endpoint, _external=True)
         params = {'subject': self.assessment.subject,
@@ -256,6 +256,11 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     extra_condition = "AND UPPER(RS3.annex_II) like 'Y%%'"
     url_base = '.factsheet-species'
     header_endpoint = 'factsheet.species-header'
+
+    def get_pdf_file_name(self):
+        file_name = '{0}/{1}'.format(self.assessment.group,
+                                         slugify(self.assessment.subject))
+        return file_name
 
     def get_has_n2k(self):
         if not self.engine:
@@ -312,12 +317,17 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     url_base = '.factsheet-habitat'
     header_endpoint = 'factsheet.habitat-header'
 
+    def get_pdf_file_name(self):
+        file_name = '{0}-{1}'.format(self.assessment.code,
+                                         self.assessment.subject)
+        return slugify(file_name)
+
     def get_context_data(self, **kwargs):
         context = super(HabitatFactSheet, self).get_context_data(**kwargs)
         context.update({
             'name': self.assessment.habitat.name,
             'code': self.assessment.code,
-            'has_n2k': True, # Apparently, they all have
+            'has_n2k': True,  # Apparently, they all have
         })
         return context
 
@@ -355,7 +365,7 @@ class HabitatHeader(HabitatMixin, FactSheetHeader):
     def get_context_data(self, **kwargs):
         context = super(HabitatHeader, self).get_context_data(**kwargs)
         context['subject'] = u'{} <em>{}</em>'.format(context['subject'],
-                                            self.assessment.habitat.name)
+                                                      self.assessment.habitat.name)
         return context
 
 
