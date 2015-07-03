@@ -252,6 +252,12 @@ class EtcDataHabitattypeRegion(Base):
         foreign_keys=habitattype_type,
     )
 
+    lu_factsheets = relationship(
+        'LuHdHabitatFactsheet',
+        primaryjoin='LuHdHabitatFactsheet.habcode==EtcDataHabitattypeRegion.subject',
+        foreign_keys=[habitatcode]
+    )
+
     @property
     def is_assesm(self):
         return self.habitattype_type_asses == 0
@@ -881,6 +887,19 @@ class LuHdHabitat(Base):
         ForeignKey('datasets.id'),
         primary_key=True,
     )
+
+
+class LuHdHabitatFactsheet(Base):
+    __tablename__ = 'lu_hd_habitats_factsheets'
+
+    habcode = Column(String(4), primary_key=True)
+    group = Column(String(40))
+    priority = Column(Integer, nullable=False)
+    name = Column(String(155), nullable=False)
+    shortname = Column(String(155), nullable=False)
+    annex_I_comments = Column(String(30))
+    marine = Column(Integer)
+    nameheader = Column(String(155), nullable=False)
 
 
 class PhotoHabitat(Base):

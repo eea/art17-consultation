@@ -259,7 +259,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
 
     def get_pdf_file_name(self):
         file_name = '{0}/{1}'.format(self.assessment.group,
-                                         slugify(self.assessment.subject))
+                                     slugify(self.assessment.subject))
         return file_name
 
     def get_has_n2k(self):
@@ -318,8 +318,13 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     header_endpoint = 'factsheet.habitat-header'
 
     def get_pdf_file_name(self):
+        name = (
+            (self.assessment.lu_factsheets and
+             self.assessment.lu_factsheets.nameheader)
+            or self.assessment.subject
+        )
         file_name = '{0}-{1}'.format(self.assessment.code,
-                                         self.assessment.subject)
+                                     name)
         return slugify(file_name)
 
     def get_context_data(self, **kwargs):
@@ -364,8 +369,10 @@ class SpeciesHeader(SpeciesMixin, FactSheetHeader):
 class HabitatHeader(HabitatMixin, FactSheetHeader):
     def get_context_data(self, **kwargs):
         context = super(HabitatHeader, self).get_context_data(**kwargs)
-        context['subject'] = u'{} <em>{}</em>'.format(context['subject'],
-                                                      self.assessment.habitat.name)
+        context['subject'] = u'{} <em>{}</em>'.format(
+            context['subject'],
+            self.assessment.lu_factsheets.nameheader
+        )
         return context
 
 
