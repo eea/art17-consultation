@@ -24,7 +24,9 @@
     <th>Areal (km<sup>2</sup>)</th>
     {% for reg in regions %}
       <td>
-        {{ data[reg].range_surface_area|int }}
+        {% if data[reg].range_surface_area != none %}
+        {{ "%.02f" % data[reg].range_surface_area }}
+        {% else %}-{% endif %}
         {{ data[reg].conclusion_range }}
       </td>
     {% endfor %}
@@ -33,7 +35,9 @@
     <th>Suprafață (km<sup>2</sup>)</th>
     {% for reg in regions %}
       <td>
-        {{ data[reg].coverage_surface_area|int }}
+        {% if data[reg].coverage_surface_area != none %}
+        {{ "%.02f" % data[reg].coverage_surface_area }}
+        {% else %}-{% endif %}
         {{ data[reg].conclusion_area }}
       </td>
     {% endfor %}
