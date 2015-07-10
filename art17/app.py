@@ -29,6 +29,9 @@ DEFAULT_CONFIG = {
                             'habitatsummary/details/art17ws',
     'PDF_DESTINATION': '.',
     'FACTSHEET_DEFAULT_PERIOD': '1',
+    'MAPS_STATIC': '',
+    'MAPS_PATH': '',
+    'MAPS_FORMAT': '',
 }
 
 

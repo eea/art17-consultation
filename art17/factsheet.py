@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import urllib
+import os.path
 
 from sqlalchemy import and_
 from sqlalchemy.sql import func, or_
@@ -69,6 +70,17 @@ def get_conclusion_assessment_prev_colour(obj):
         return 'NA'
 
     return obj.conclusion_assessment_prev[0:2]
+
+
+@factsheet.app_template_global('get_maps_url')
+def get_maps_url(which, type, code):
+    filename = app.config['MAPS_FORMAT'].format(which=which, type=type,
+                                                code=code)
+    filepath = os.path.join(app.config['MAPS_PATH'], filename)
+    if not os.path.exists(filepath):
+        return app.config['MAPS_STATIC'][1:] + filename
+    else:
+        return 'img/blank_map0{which}.png'.format(which=which)
 
 
 class FactSheet(MethodView):
@@ -203,6 +215,7 @@ class FactSheet(MethodView):
             'url': self.get_url(subject, period),
             'countries': self.get_countries(subject, period),
             'period': Dataset.query.get_or_404(period).name,
+            'assessment': self.assessment,
         }
 
     def get_all(self):
