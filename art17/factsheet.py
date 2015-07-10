@@ -1,6 +1,6 @@
 from collections import OrderedDict
 import urllib
-import os.path
+from path import path
 
 from sqlalchemy import and_
 from sqlalchemy.sql import func, or_
@@ -9,8 +9,8 @@ from flask import (
 )
 from flask.ext.script import Manager
 from flask.views import MethodView
-from art17.common import admin_perm
 
+from art17.common import admin_perm
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange, Dataset
 from art17.pdf import PdfRenderer
@@ -74,11 +74,11 @@ def get_conclusion_assessment_prev_colour(obj):
 
 @factsheet.app_template_global('get_maps_url')
 def get_maps_url(which, type, code):
-    filename = app.config['MAPS_FORMAT'].format(which=which, type=type,
-                                                code=code)
-    filepath = os.path.join(app.config['MAPS_PATH'], filename)
-    if not os.path.exists(filepath):
-        return app.config['MAPS_STATIC'][1:] + filename
+    maps_format = app.config['MAPS_FORMAT'].get(which)
+    filename = maps_format.format(type=type, code=code)
+    maps_path = path(app.static_folder) / app.config['MAPS_STATIC'] / filename
+    if maps_path.exists():
+        return path(app.config['MAPS_STATIC']) / filename
     else:
         return 'img/blank_map0{which}.png'.format(which=which)
 
@@ -282,7 +282,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
             N2K_QUERY.format(subject=self.assessment.subject)
         )
         row = result and result.first()
-        return (row or True) and row['cond'] > 0
+        return row and row['cond'] > 0
 
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)

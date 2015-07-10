@@ -32,16 +32,14 @@ SECRET_KEY = 'secret'
 
 # SENTRY_DSN = ''
 
-# Destination for PDF reports in the Factsheet module
-# PDF_DESTINATION = './instance/pdf'
+# Destination for PDF reports in the Factsheet module - inside instance folder
+PDF_DESTINATION = 'pdf'
 
 # Static path location of the maps
-MAPS_STATIC = '/maps/'
-
-import os.path
-MAPS_PATH = os.path.join(
-    os.path.dirname(__file__), '../art17/static/', MAPS_STATIC[1:]
-)
+MAPS_STATIC = 'maps'
 
 # Maps file format
-MAPS_FORMAT = 'map0{which}{type}/CODE_map0{which}_{code}_map0{which}_{type}D.png'
+MAPS_FORMAT = {
+    1: 'map01{type}/CODE_map01_{code}_map01_{type}D.png',
+    2: 'map02{type}/CODE{code}_map02_{type}D.png',
+}
