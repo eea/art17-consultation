@@ -24,12 +24,11 @@ RUN pip install -U setuptools
 RUN pip install -r requirements-dev.txt --trusted-host eggshop.eaudeweb.ro
 RUN mkdir instance
 COPY /settings.py.docker instance/settings.py
-RUN ls instance
 
 # Expose needed port
 
-EXPOSE 5000
+EXPOSE ${APP_PORT} 
 
 # Default command
 
-CMD python manage.py runserver -p 5000
+CMD python manage.py runserver -p ${APP_PORT} 
