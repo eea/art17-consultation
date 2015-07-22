@@ -67,8 +67,8 @@ table tr {
 
 /* Section header */
 header {
-  margin-top: 24pt;
-  margin-bottom: 12pt;
+  margin-top: 20pt;
+  margin-bottom: 10pt;
   page-break-inside: avoid;
 }
 header h2,
