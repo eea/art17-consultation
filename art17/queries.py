@@ -195,3 +195,13 @@ N2K_QUERY = """
   WHERE A.assessment_speciesname = '{subject}'
   GROUP BY A.assessment_speciesname;
 """
+
+
+ANNEX_QUERY = """
+  SELECT IF(Max(A.annex_II) LIKE 'Y%%', 'II', '') as annex_II,
+         IF(Max(A.annex_IV) LIKE 'Y%%', 'IV', '') AS annex_IV,
+         IF(Max(A.annex_V) LIKE 'Y%%', 'V', '') AS annex_V
+  FROM data_species_check_list A
+  WHERE A.assessment_speciesname = '{subject}'
+  GROUP BY A.assessment_speciesname;
+"""

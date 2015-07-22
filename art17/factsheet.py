@@ -16,7 +16,7 @@ from art17.models import db, Wiki, WikiChange, Dataset
 from art17.pdf import PdfRenderer
 from art17.queries import (
     THREATS_QUERY, COVERAGE_QUERY_SPECIES, COVERAGE_QUERY_HABITAT,
-    MEASURES_QUERY, N2K_QUERY,
+    MEASURES_QUERY, N2K_QUERY, ANNEX_QUERY
 )
 from art17.utils import slugify
 
@@ -294,15 +294,13 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         return context
 
     def get_annexes(self):
-        annexes = list(
-            self.model_cls.query
-            .filter_by(subject=self.assessment.subject,
-                       dataset_id=self.assessment.dataset_id)
-            .with_entities('annex_II', 'annex_IV', 'annex_V')
-            .distinct()
-            .first()
+        if not self.engine:
+            return ''
+        result = self.engine.execute(
+            ANNEX_QUERY.format(subject=self.assessment.subject)
         )
-        return ', '.join(filter(bool, annexes))
+        row = result and result.first()
+        return ', '.join(filter(bool, row))
 
     def get_manual_objects(self, period, subject):
         q = super(SpeciesFactSheet, self).get_manual_objects(period, subject)
