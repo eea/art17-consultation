@@ -39,7 +39,4 @@ PDF_DESTINATION = 'pdf'
 MAPS_STATIC = 'maps'
 
 # Maps file format
-MAPS_FORMAT = {
-    1: 'map01{type}/CODE_map01_{code}_map01_{type}D.png',
-    2: 'map02{type}/CODE{code}_map02_{type}D.png',
-}
+MAPS_FORMAT = 'map0{which}{type}/{code}_0{which}_{type}.png'
