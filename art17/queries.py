@@ -174,7 +174,8 @@ INNER JOIN
                  1 AS pl2_set
         FROM ({checklist_table} AS RS3
         INNER JOIN {regions_MS_table} AS RS2
-            ON (RS3.country = RS2.country) AND (RS3.region = RS2.region) AND (RS3.{join_column} = RS2.{join_column}))
+            ON (RS3.country = RS2.country) AND (RS3.region = RS2.region)
+              AND (RS3.{join_column} = RS2.{join_column}))
         INNER JOIN data_measures RS1
             ON (RS1.{regionhash_column} = RS2.regionhash)
         WHERE (RS2.use_for_statistics = True)
@@ -198,10 +199,21 @@ N2K_QUERY = """
 
 
 ANNEX_QUERY = """
-  SELECT IF(Max(A.annex_II) LIKE 'Y%%', 'II', '') as annex_II,
-         IF(Max(A.annex_IV) LIKE 'Y%%', 'IV', '') AS annex_IV,
-         IF(Max(A.annex_V) LIKE 'Y%%', 'V', '') AS annex_V
-  FROM data_species_check_list A
-  WHERE A.assessment_speciesname = '{subject}'
-  GROUP BY A.assessment_speciesname;
+SELECT IF(Upper(B.annex_II) LIKE "Y%%"
+          AND ( Upper(B.annex_IV) LIKE "Y%%"
+                 OR Upper(B.annex_V) LIKE "Y%%" ), Concat("II, ",
+       IF(Upper(B.annex_IV) LIKE "Y%%"
+           AND
+          Upper(B.annex_V) LIKE "Y%%",
+            "IV, V",
+          IF(Upper(B.annex_IV) LIKE "Y%%",
+            "IV",
+          "V"))),
+       "II") AS annex
+FROM   (SELECT Max(A.annex_II) AS annex_II,
+               Max(A.annex_IV) AS annex_IV,
+               Max(A.annex_V)  AS annex_V
+        FROM   art17rp2_eu.data_species_check_list A
+        WHERE  A.assessment_speciesname = '{subject}'
+        GROUP  BY A.assessment_speciesname) B
 """
