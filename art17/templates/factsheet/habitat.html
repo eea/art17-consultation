@@ -134,7 +134,7 @@
             <span class="conclusion">{{ row.conclusion_assessment or '' }}</span>
           </td>
           <td>{{ row.conclusion_assessment_trend or '' }}</td>
-          <td>{{ (row.percentage_coverage_surface_area or 0) | round(1) }}</td>
+          <td>{{ (row.percentage_distribution_grid_area or 0) | round(1) }}</td>
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, 'NA') }}">
             <span class="conclusion">{{ row.conclusion_assessment_prev or '' }}</span>
           </td>
