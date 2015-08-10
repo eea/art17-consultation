@@ -148,9 +148,13 @@ class FactSheet(MethodView):
                                        join_column=self.join_column,
                                        subject_column=self.subject_column))
         coverage = OrderedDict()
+        regions = []
         for row in result:
             coverage.setdefault(row['country'], {})[row['region']] = row['pc']
-        return coverage
+            if row['region'] not in regions:
+                regions.append(row['region'])
+        regions.sort()
+        return coverage, regions
 
     def get_measures(self, subject):
         if not self.engine:
@@ -198,11 +202,12 @@ class FactSheet(MethodView):
         self.engine = (
             db.get_engine(app, 'factsheet') if app.config['SQLALCHEMY_BINDS']
             and app.config['SQLALCHEMY_BINDS'].get('factsheet') else None)
+        coverage, regions = self.get_coverage(subject)
 
         return {
             'group': self.get_group_for_subject(subject),
             'regions': self.get_regions(period, subject),
-            'region_codes': self.get_region_codes(period, subject),
+            'region_codes': regions,
             'priority': self.get_priority(),
             'wiki': self.get_wiki(period, subject),
             'manual_objects': manual_objects,
@@ -210,7 +215,7 @@ class FactSheet(MethodView):
             'objects': self.get_objects(period, subject),
             'pressures': self.get_pressures(subject, 'p'),
             'threats': self.get_pressures(subject, 't'),
-            'coverage': self.get_coverage(subject),
+            'coverage': coverage,
             'measures': self.get_measures(subject),
             'url': self.get_url(subject, period),
             'countries': self.get_countries(subject, period),
