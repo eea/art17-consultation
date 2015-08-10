@@ -208,7 +208,7 @@ INNER JOIN
        ON (A.pl2_set = B.pl2_set))
 LEFT JOIN lu_measures AS C
        ON (C.code = A.level2_code)
-ORDER BY 100 * A.pl2_num / B.pl2_tot DESC
+ORDER BY 100 * A.pl2_num / B.pl2_tot DESC, A.level2_code ASC
 LIMIT 10;
 """
 
