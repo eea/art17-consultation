@@ -87,27 +87,37 @@ IF(A.natura2000_population_unit = A.population_size_unit,
       IF(NOT A.population_minimum_size IS null AND NOT IFNULL(A.population_minimum_size, 0)=0,
          IF(NOT A.natura2000_population_max IS null,
             IF(NOT A.natura2000_population_min IS null,
-               IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_minimum_size*A.population_maximum_size)>1,
+               IF(SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                       * A.natura2000_population_max)
+                  / SQRT(A.population_minimum_size*A.population_maximum_size) > 1,
                   '100*',
-                  Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_minimum_size*A.population_maximum_size))),
+                  Round(100*SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                                 * A.natura2000_population_max)
+                        / SQRT(A.population_minimum_size*A.population_maximum_size))),
                'x'),
             IF(NOT A.natura2000_population_min IS null,
-               IF(A.natura2000_population_min/SQRT(A.population_minimum_size*A.population_maximum_size)>1,
+               IF(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                  /SQRT(A.population_minimum_size*A.population_maximum_size)>1,
                   '100*',
-                  Round(100*A.natura2000_population_min/SQRT(A.population_minimum_size*A.population_maximum_size))),
+                  Round(100*IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                        / SQRT(A.population_minimum_size*A.population_maximum_size))),
                'x')),
          'x'),
        IF(NOT A.population_minimum_size IS null AND NOT IFNULL(A.population_minimum_size, 0)=0,
           IF(NOT A.natura2000_population_max IS null,
              IF(NOT A.natura2000_population_min IS null,
-                IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_minimum_size>1,
+                IF(SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                       * A.natura2000_population_max)/A.population_minimum_size>1,
                    '100*',
-                   Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_minimum_size)),
+                   Round(100*SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                         * A.natura2000_population_max)/A.population_minimum_size)),
                 'x'),
              IF(NOT A.natura2000_population_min IS null,
-                IF(A.natura2000_population_min/A.population_minimum_size>1,
+                IF(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                   / A.population_minimum_size>1,
                    '100*',
-                   Round(100*A.natura2000_population_min/A.population_minimum_size)),
+                   Round(100*IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                         / A.population_minimum_size)),
                 'x')),
           'x')),
    IF(A.natura2000_population_unit = A.population_alt_size_unit,
@@ -115,27 +125,39 @@ IF(A.natura2000_population_unit = A.population_size_unit,
          IF(NOT A.population_alt_minimum_size IS null AND NOT IFNULL(A.population_alt_minimum_size, 0)=0,
             IF(NOT A.natura2000_population_max IS null,
                IF(NOT A.natura2000_population_min IS null,
-                  IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size)>1,
+                  IF(SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                          * A.natura2000_population_max)
+                     / SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size)>1,
                      '100*',
-                     Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size))),
+                     Round(100*SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                                    * A.natura2000_population_max)
+                           / SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size))),
                   'x'),
                IF(NOT A.natura2000_population_min IS null,
-                  IF(A.natura2000_population_min/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size)>1,
+                  IF(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                     / SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size)>1,
                      '100*',
-                     Round(100*A.natura2000_population_min/SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size))),
+                     Round(100*IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                           / SQRT(A.population_alt_minimum_size*A.population_alt_maximum_size))),
                   'x')),
             'x'),
          IF(NOT A.population_alt_minimum_size IS null AND NOT IFNULL(A.population_alt_minimum_size, 0)=0,
             IF(NOT A.natura2000_population_max IS null,
                IF(NOT A.natura2000_population_min IS null,
-                  IF(SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_alt_minimum_size>1,
+                  IF(SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                          * A.natura2000_population_max)
+                     / A.population_alt_minimum_size>1,
                      '100*',
-                     Round(100*SQRT(A.natura2000_population_min*A.natura2000_population_max)/A.population_alt_minimum_size)),
+                     Round(100*SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                                    * A.natura2000_population_max)
+                           / A.population_alt_minimum_size)),
                   'x'),
                IF(NOT A.natura2000_population_min IS null,
-                  IF(A.natura2000_population_min/A.population_alt_minimum_size>1,
+                  IF(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                     / A.population_alt_minimum_size>1,
                      '100*',
-                     Round(100*A.natura2000_population_min/A.population_alt_minimum_size)),
+                     Round(100*IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
+                           / A.population_alt_minimum_size)),
                   'x')),
             'x')),
       'x'
