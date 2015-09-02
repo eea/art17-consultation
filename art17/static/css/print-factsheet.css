@@ -322,6 +322,7 @@ header .subtitle {
 
 section {
     page-break-inside: avoid;
+    word-wrap: break-word;
 }
 
 section img {

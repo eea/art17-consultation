@@ -2,20 +2,22 @@
 
 {% block content %}
 
-  <h1 class="cover-title">{{ code }} <em>{{ name }}</em></h1>
+  <section>
+    <h1 class="cover-title">{{ code }} <em>{{ name }}</em></h1>
 
-  <dl class="cover-summary">
-    <dt>Habitat code</dt>
-    <dd>{{ code }}</dd>
-    <dt>Priority</dt>
-    <dd>{{ priority }}</dd>
-    <dt>Habitat group</dt>
-    <dd>{{ group }}</dd>
-    <dt>Regions</dt>
-    <dd>{{ regions | join(', ') }}</dd>
-  </dl>
+    <dl class="cover-summary">
+      <dt>Habitat code</dt>
+      <dd>{{ code }}</dd>
+      <dt>Priority</dt>
+      <dd>{{ priority }}</dd>
+      <dt>Habitat group</dt>
+      <dd>{{ group }}</dd>
+      <dt>Regions</dt>
+      <dd>{{ regions | join(', ') }}</dd>
+    </dl>
 
-  {{ wiki | safe }}
+    {{ wiki | safe }}
+  </section>
 
   <div class="page-breaker">
   </div>
@@ -138,7 +140,7 @@
           <td class="important-cell">{{ row.conclusion_assessment_trend or '' }}</td>
           <td>
             {% if row.percentage_distribution_grid_area %}
-              {{ (row.percentage_distribution_grid_area or 0) | round(1) }}
+              {{ row.percentage_distribution_grid_area | round(1) }}
             {% endif %}
           </td>
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, 'NA') }}">

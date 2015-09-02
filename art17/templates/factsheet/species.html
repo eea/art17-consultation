@@ -2,33 +2,36 @@
 
 {% block content %}
 
-  <h1 class="cover-title">{{ name }}</h1>
+  <section>
+    <h1 class="cover-title">{{ name }}</h1>
 
-  <dl class="cover-summary">
-    <dt>Annex</dt>
-    <dd>{{ annexes }}</dd>
-    <dt>Priority</dt>
-    <dd>{{ priority }}</dd>
-    <dt>Species group</dt>
-    <dd>{{ group }}</dd>
-    <dt>Regions</dt>
-    <dd>{{ regions | join(', ') }}</dd>
-  </dl>
+    <dl class="cover-summary">
+      <dt>Annex</dt>
+      <dd>{{ annexes }}</dd>
+      <dt>Priority</dt>
+      <dd>{{ priority }}</dd>
+      <dt>Species group</dt>
+      <dd>{{ group }}</dd>
+      <dt>Regions</dt>
+      <dd>{{ regions | join(', ') }}</dd>
+    </dl>
 
   {{ wiki | safe }}
+  </section>
 
   <div class="page-breaker">
   </div>
 
   <section>
-    <header>
-      <h2>Assessment of conservation status at the<br/> European biogeographical
-        level</h2>
-      <p class="subtitle">(all biogeographical and marine regions – EU27)</p>
-    </header>
+    <div class="keep-together">
+      <header>
+        <h2>Assessment of conservation status at the<br/> European biogeographical
+          level</h2>
+      </header>
 
-    {% set filename=get_maps_url(which=1, type='S', code=assessment.n2000_species_code) %}
-    <img src="{{ url_for('static', filename=filename, _external=True) }}" width="100%">
+      {% set filename=get_maps_url(which=1, type='S', code=assessment.n2000_species_code) %}
+      <img src="{{ url_for('static', filename=filename, _external=True) }}" width="100%">
+    </div>
 
     <table class="complex_datatable">
       <thead>
@@ -82,14 +85,14 @@
   </section>
 
   <section>
-    <header>
-      <h2>Assessment of conservation status at the Member State level</h2>
-      <p class="subtitle">(all biogeographical and marine regions – EU27)</p>
-    </header>
+    <div class="keep-together">
+      <header>
+        <h2>Assessment of conservation status at the Member State level</h2>
+      </header>
 
-    {% set filename=get_maps_url(which=2, type='S', code=assessment.n2000_species_code) %}
-    <img src="{{ url_for('static', filename=filename, _external=True) }}" width="100%">
-
+      {% set filename=get_maps_url(which=2, type='S', code=assessment.n2000_species_code) %}
+      <img src="{{ url_for('static', filename=filename, _external=True) }}" width="100%">
+    </div>
 
     <p>The map shows both Conservation Status and distribution using a 10 km x
     10 km grid. Conservation status is assessed at biogeographical level.
@@ -135,7 +138,11 @@
             <span class="conclusion">{{ row.conclusion_assessment or '' }}</span>
           </td>
           <td class="important-cell">{{ row.conclusion_assessment_trend or '' }}</td>
-          <td>{{ (row.percentage_distribution_grid_area or 0) | round(1) }}</td>
+          <td>
+            {% if row.percentage_distribution_grid_area %}
+              {{ row.percentage_distribution_grid_area | round(1) }}
+            {% endif %}
+          </td>
           {% set cap_color = get_conclusion_assessment_prev_colour(row) %}
           <td class="{{ CONCLUSION_CLASSES.get(cap_color, 'NA') }}">
             <span class="conclusion">{{ row.conclusion_assessment_prev or '' }}</span>
