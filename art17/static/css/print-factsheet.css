@@ -320,6 +320,14 @@ header .subtitle {
     page-break-inside: avoid;
 }
 
+section {
+    page-break-inside: avoid;
+}
+
+section img {
+    margin-top: 1em;
+}
+
 /* Header */
 .header .title {
     font-size: 12pt;

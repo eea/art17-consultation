@@ -21,13 +21,14 @@
   </div>
 
   <section>
-    <header>
-      <h2>Assessment of conservation status at the<br/> European biogeographical level</h2>
-      <p class="subtitle">(all biogeographical and marine regions – EU27)</p>
-    </header>
+    <div class="keep-together">
+      <header>
+        <h2>Assessment of conservation status at the<br/> European biogeographical level</h2>
+      </header>
 
-    {% set filename=get_maps_url(which=1, type='H', code=code) %}
-    <img src="{{ url_for('static', filename=filename, _external=True) }}" width="100%">
+      {% set filename=get_maps_url(which=1, type='H', code=code) %}
+      <img src="{{ url_for('static', filename=filename, _external=True) }}" width="100%">
+    </div>
 
     <table class="complex_datatable">
       <thead>
@@ -67,7 +68,7 @@
             <span class="conclusion">{{ row.conclusion_assessment or '' }}</span>
           </td>
           <td class="important-cell">{{ row.conclusion_assessment_trend or '' }}</td>
-          <td>{{ get_percentage(total_area, area) }}</td>
+          <td>{{ get_percentage(total_area, area) or '' }}</td>
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') }}">
              <span class="conclusion">{{ row.conclusion_assessment_prev or '' }}</span>
           </td>
@@ -81,14 +82,14 @@
   </section>
 
   <section>
-    <header>
-      <h2>Assessment of conservation status at the Member State level</h2>
-      <p class="subtitle">(all biogeographical and marine regions – EU27)</p>
-    </header>
+    <div class="keep-together">
+      <header>
+        <h2>Assessment of conservation status at the Member State level</h2>
+      </header>
 
-    {% set filename=get_maps_url(which=2, type='H', code=code) %}
-    <img src="{{ url_for('static', filename=filename, _external=True) }}" width="100%">
-
+      {% set filename=get_maps_url(which=2, type='H', code=code) %}
+      <img src="{{ url_for('static', filename=filename, _external=True) }}" width="100%">
+    </div>
 
     <p>The map shows both Conservation Status and distribution using a 10 km x
     10 km grid. Conservation status is assessed at biogeographical level.
@@ -130,11 +131,16 @@
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_future, '') }}">
             <span class="conclusion">{{ row.conclusion_future or '' }}</span>
           </td>
-          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment, '') }}">
+          <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment, '') }}
+              important-cell">
             <span class="conclusion">{{ row.conclusion_assessment or '' }}</span>
           </td>
-          <td>{{ row.conclusion_assessment_trend or '' }}</td>
-          <td>{{ (row.percentage_distribution_grid_area or 0) | round(1) }}</td>
+          <td class="important-cell">{{ row.conclusion_assessment_trend or '' }}</td>
+          <td>
+            {% if row.percentage_distribution_grid_area %}
+              {{ (row.percentage_distribution_grid_area or 0) | round(1) }}
+            {% endif %}
+          </td>
           <td class="{{ CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, 'NA') }}">
             <span class="conclusion">{{ row.conclusion_assessment_prev or '' }}</span>
           </td>

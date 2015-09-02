@@ -56,21 +56,24 @@ SELECT  A.country, A.region,
     IF(
       NOT IFNULL(A.natura2000_area_max, 0)=0,
       IF(
-        SQRT(IF(A.natura2000_area_min=0, 1, A.natura2000_area_min)
-             * A.natura2000_area_max)
-         / A.coverage_surface_area>1,
-        '100*',
-        Round(100*SQRT(IF(A.natura2000_area_min=0, 1, A.natura2000_area_min)
-                       * A.natura2000_area_max)
-             / A.coverage_surface_area)
-      ),
+        A.natura2000_area_min IS NOT NULL,
+        IF(
+          SQRT(A.natura2000_area_min * A.natura2000_area_max)
+               / A.coverage_surface_area > 1,
+          '100*',
+          Round(100 * SQRT(
+                          IF(A.natura2000_area_min=0, 1, A.natura2000_area_min)
+                          * A.natura2000_area_max)
+                / A.coverage_surface_area)),
+          'x'),
       IF(
-        A.natura2000_area_min/A.coverage_surface_area>1,
-        '100*',
-        Round(100*IF(A.natura2000_area_min=0, 1, A.natura2000_area_min)
-              / A.coverage_surface_area)
-      )
-    ),
+        A.natura2000_area_min IS NOT NULL,
+        IF(
+          A.natura2000_area_min / A.coverage_surface_area > 1,
+          '100*',
+          Round(100 * IF(A.natura2000_area_min=0, 1, A.natura2000_area_min)
+                / A.coverage_surface_area)),
+        'x')),
     'x'
   ) pc
 FROM data_habitats_regions_MS_level AS A
