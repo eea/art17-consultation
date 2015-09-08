@@ -31,55 +31,13 @@ table tr {
 /* Page */
 @page {
   size: A4 portrait;
-  /*margin: .8cm 1.8cm;*/
-}
-/*@page :left {
-  margin-right: 1.8cm;
-  margin-left: .8cm;
-}
-@page :right {
-  margin-left: 1.8cm;
-  margin-right: .8cm;
-}*/
-
-#page-header {
-  display: block;
-  position: running(header);
-}
-#page-footer {
-  display: block;
-  position: running(footer);
-}
-
-/* Cover header */
-.cover-header img {
-  height: 1.8cm;
-  width: auto;
-  vertical-align: middle
-}
-.cover-header em {
-  display: inline-block;
-  border-left: 1pt solid #ccc;
-  padding: .25cm .5cm;
-  margin-left: .5cm;
-  vertical-align: middle;
 }
 
 /* Section header */
-header {
-  margin-top: 20pt;
-  margin-bottom: 10pt;
-  page-break-inside: avoid;
-}
-header h2,
-header .subtitle {
+header h2 {
   line-height: 1.2;
   margin-top: 0;
   margin-bottom: 0;
-}
-.subtitle {
-  font-size: larger;
-  font-style: italic;
 }
 /* Table simple */
 .table-simple {
@@ -157,17 +115,12 @@ header .subtitle {
   line-height: 1;
   height: 1em;
   text-align: center;
-  /*border-width: 1pt;
-  border-style: solid;*/
   border-radius: 2pt;
   vertical-align: middle;
   position: relative;
   color: #000;
   width: 20pt;
 }
-/*td .conclusion {
-  min-width: 100%;
-}*/
 .conclusion.inline {
   margin: 0;
   vertical-align: top;
@@ -305,36 +258,23 @@ header .subtitle {
 .cover-summary dd {
   margin-left: 9em;
 }
-.page-breaker {
-    display: block;
-    clear: both;
-    page-break-before: always;
-}
 
 /* misc */
+.page-breaker {
+  display: block;
+  clear: both;
+  page-break-before: always;
+}
 .important-cell {
-    background-color: #eee;
+  background-color: #eee;
 }
-
 .keep-together {
-    page-break-inside: avoid;
+  page-break-inside: avoid;
 }
-
 section {
-    page-break-inside: avoid;
+  page-break-inside: avoid;
     word-wrap: break-word;
 }
-
 section img {
-    margin-top: 1em;
-}
-
-/* Header */
-.header .title {
-    font-size: 12pt;
-    line-height: 14pt;
-}
-.header .subtitle {
-    font-size: 9pt;
-    font-style: normal;
+  margin-top: 1em;
 }
