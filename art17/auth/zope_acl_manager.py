@@ -6,7 +6,7 @@ def check_zope_manager(func):
     def inner(*args, **kwargs):
         if not all(_get_config()):
             return
-        func(args, kwargs)
+        func(*args, **kwargs)
     return inner
 
 
