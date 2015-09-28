@@ -304,7 +304,8 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         result = self.engine.execute(
             ANNEX_QUERY.format(subject=self.assessment.subject)
         )
-        return result and result.first()['annex']
+        row = result and result.first()
+        return ', '.join(filter(bool, row))
 
     def get_manual_objects(self, period, subject):
         q = super(SpeciesFactSheet, self).get_manual_objects(period, subject)
