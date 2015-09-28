@@ -1,31 +1,29 @@
-<div class="keep-together">
-  <p><strong>Percentage of coverage by Natura 2000 sites in
-    biogeographical/marine region</strong></p>
+<p><strong>Percentage of coverage by Natura 2000 sites in
+  biogeographical/marine region</strong></p>
 
-  {% if not region_codes %}
-    <p class="warning">No data available.</p>
-  {% else %}
-  <table class='table-simple'>
-    <thead>
-    <tr>
-      <th></th>
-      {% for region in region_codes %}
-      <th>{{ region }}</th>
-      {% endfor %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for country, region_pc in coverage.iteritems() %}
-    <tr>
-      <th>{{ country }}</th>
-      {% for region in region_codes %}
-        <td style="text-align: center">{{ region_pc.get(region, '') }}</td>
-      {% endfor %}
-    </tr>
+{% if not region_codes %}
+  <p class="warning">No data available.</p>
+{% else %}
+<table class='table-simple'>
+  <thead>
+  <tr>
+    <th></th>
+    {% for region in region_codes %}
+    <th>{{ region }}</th>
     {% endfor %}
-    </tbody>
-  </table>
-  {% endif %}
-</div>
+  </tr>
+  </thead>
+  <tbody>
+  {% for country, region_pc in coverage.iteritems() %}
+  <tr>
+    <th>{{ country }}</th>
+    {% for region in region_codes %}
+      <td style="text-align: center">{{ region_pc.get(region, '') }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
 
 <p>See the endnotes for more information<sup>ii</sup></p>
