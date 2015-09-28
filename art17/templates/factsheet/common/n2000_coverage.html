@@ -1,8 +1,10 @@
 <div class="keep-together">
   <p><strong>Percentage of coverage by Natura 2000 sites in
-    biogeographical/marine
-    region</strong></p>
+    biogeographical/marine region</strong></p>
 
+  {% if not region_codes %}
+    <p class="warning">No data available.</p>
+  {% else %}
   <table class='table-simple'>
     <thead>
     <tr>
@@ -23,6 +25,7 @@
     {% endfor %}
     </tbody>
   </table>
+  {% endif %}
 </div>
 
 <p>See the endnotes for more information<sup>ii</sup></p>
