@@ -227,7 +227,9 @@ class FactSheet(MethodView):
         period = request.args.get('period',
                                   app.config['FACTSHEET_DEFAULT_PERIOD'])
         return (
-            self.model_cls.query.filter_by(dataset_id=period)
+            self.model_cls.query
+            .filter_by(dataset_id=period)
+            .group_by(getattr(self.model_cls, 'subject'))
         )
 
     def list_all(self):
@@ -304,7 +306,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         result = self.engine.execute(
             ANNEX_QUERY.format(subject=self.assessment.subject)
         )
-        row = result and result.first()
+        row = result and result.first() or ''
         return ', '.join(filter(bool, row))
 
     def get_manual_objects(self, period, subject):
@@ -339,8 +341,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
              self.assessment.lu_factsheets.nameheader)
             or self.assessment.subject
         )
-        file_name = '{0}-{1}'.format(self.assessment.code,
-                                     name)
+        file_name = u'{0}-{1}'.format(self.assessment.code, name)
         return slugify(file_name)
 
     def get_context_data(self, **kwargs):
