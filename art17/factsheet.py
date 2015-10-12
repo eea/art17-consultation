@@ -433,8 +433,10 @@ def generate_factsheet_url(category, subject, period):
     period = period or app.config['FACTSHEET_DEFAULT_PERIOD']
     assessment = (
         model_cls.query.filter_by(subject=subject,
-                                  dataset_id=period).first_or_404()
+                                  dataset_id=period).first()
     )
+    if not assessment:
+        return None
     pdf_path = str(
         path(app.config['PDF_DESTINATION'] )
         / fs_cls.get_pdf_file_name(assessment)

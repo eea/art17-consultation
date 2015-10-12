@@ -393,6 +393,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
         return True
 
     def get_context(self):
+        factsheet_url = ''
         map_url = ''
         map_warning = ''
         period = self.dataset.id if self.dataset else 0
@@ -498,6 +499,7 @@ class HabitatSummary(HabitatMixin, Summary):
         return True
 
     def get_context(self):
+        factsheet_url = ''
         map_url = ''
         period = self.dataset.id if self.dataset else 0
         subject = request.args.get('subject')
