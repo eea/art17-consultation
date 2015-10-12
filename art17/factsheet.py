@@ -1,6 +1,5 @@
 from collections import OrderedDict
 import urllib
-import os.path
 from path import path
 
 from sqlalchemy import and_
@@ -348,8 +347,13 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
              assessment.lu_factsheets.nameheader)
             or assessment.subject
         )
+        group = (
+            (assessment.lu_factsheets and assessment.lu_factsheets.group)
+            or (assessment.habitat and assessment.habitat.group)
+            or assessment.group
+        )
         file_name = u'{0}-{1}'.format(assessment.code, name)
-        return slugify(file_name)
+        return u'{0}/{1}'.format(slugify(group), slugify(file_name))
 
     def _get_pdf_file_name(self):
         return self.get_pdf_file_name(self.assessment)
@@ -441,8 +445,8 @@ def generate_factsheet_url(category, subject, period):
         path(app.config['PDF_DESTINATION'] )
         / fs_cls.get_pdf_file_name(assessment)
     ) + '.pdf'
-    real_path = str(path(app.static_folder) / pdf_path)
-    if os.path.exists(real_path):
+    real_path = path(app.static_folder) / pdf_path
+    if real_path.exists():
         return url_for('static', filename=pdf_path)
     return None
 
