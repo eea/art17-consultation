@@ -55,7 +55,7 @@ class PdfRenderer(object):
         g.is_pdf_process = True
 
     def _get_dir(self):
-        return path(app.instance_path) / app.config['PDF_DESTINATION']
+        return path(app.static_folder) / app.config['PDF_DESTINATION']
 
     def _render_template(self):
         with open(self.template_path, 'w+') as f:

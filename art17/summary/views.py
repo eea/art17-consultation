@@ -76,6 +76,7 @@ from art17.summary.conclusion import (
     ConclusionView,
 )
 from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
+from art17.factsheet import generate_factsheet_url
 
 
 @summary.app_context_processor
@@ -392,6 +393,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
         return True
 
     def get_context(self):
+        factsheet_url = ''
         map_url = ''
         map_warning = ''
         period = self.dataset.id if self.dataset else 0
@@ -422,6 +424,11 @@ class SpeciesSummary(SpeciesMixin, Summary):
                     region=region,
                     sensitive=sensitive,
                 )
+                factsheet_url = generate_factsheet_url(
+                    category='species',
+                    subject=subject,
+                    period=period,
+                )
         return {
             'groups_url': url_for('common.species-groups'),
             'subjects_url': url_for('.species-summary-species'),
@@ -444,6 +451,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
+            'factsheet_url': factsheet_url,
             'map_warning': map_warning,
             'get_tooltip': get_tooltip_for_species,
             'favourable_ref_title': favourable_ref_title_species,
@@ -491,6 +499,7 @@ class HabitatSummary(HabitatMixin, Summary):
         return True
 
     def get_context(self):
+        factsheet_url = ''
         map_url = ''
         period = self.dataset.id if self.dataset else 0
         subject = request.args.get('subject')
@@ -501,6 +510,11 @@ class HabitatSummary(HabitatMixin, Summary):
                 category='habitat',
                 subject=subject,
                 region=request.args.get('region', ''),
+            )
+            factsheet_url = generate_factsheet_url(
+                category='habitat',
+                subject=subject,
+                period=period,
             )
         return {
             'groups_url': url_for('common.habitat-groups'),
@@ -524,6 +538,7 @@ class HabitatSummary(HabitatMixin, Summary):
             'get_title_for_country': get_title_for_habitat_country,
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,
+            'factsheet_url': factsheet_url,
             'get_tooltip': get_tooltip_for_habitat,
             'favourable_ref_title': favourable_ref_title_habitat,
         }

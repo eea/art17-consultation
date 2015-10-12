@@ -248,7 +248,7 @@ class FactSheet(MethodView):
     def get_pdf(self, **kwargs):
         context = self.get_context_data(**kwargs)
         title = context.get('name', '(untitled)')
-        pdf_file = self.get_pdf_file_name()
+        pdf_file = self._get_pdf_file_name()
         footer_url = url_for('factsheet.factsheet-footer', _external=True)
         base_header_url = url_for(self.header_endpoint, _external=True)
         params = {'subject': self.assessment.subject,
@@ -277,10 +277,14 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     url_base = '.factsheet-species'
     header_endpoint = 'factsheet.species-header'
 
-    def get_pdf_file_name(self):
-        file_name = '{0}/{1}'.format(self.assessment.group,
-                                     slugify(self.assessment.subject))
+    @classmethod
+    def get_pdf_file_name(cls, assessment):
+        file_name = '{0}/{1}'.format(slugify(assessment.group),
+                                     slugify(assessment.subject))
         return file_name
+
+    def _get_pdf_file_name(self):
+        return self.get_pdf_file_name(self.assessment)
 
     def get_has_n2k(self):
         if not self.engine:
@@ -335,14 +339,24 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     url_base = '.factsheet-habitat'
     header_endpoint = 'factsheet.habitat-header'
 
-    def get_pdf_file_name(self):
+
+    @classmethod
+    def get_pdf_file_name(cls, assessment):
         name = (
-            (self.assessment.lu_factsheets and
-             self.assessment.lu_factsheets.nameheader)
-            or self.assessment.subject
+            (assessment.lu_factsheets and
+             assessment.lu_factsheets.nameheader)
+            or assessment.subject
         )
-        file_name = u'{0}-{1}'.format(self.assessment.code, name)
-        return slugify(file_name)
+        group = (
+            (assessment.lu_factsheets and assessment.lu_factsheets.group)
+            or (assessment.habitat and assessment.habitat.group)
+            or assessment.group
+        )
+        file_name = u'{0}-{1}'.format(assessment.code, name)
+        return u'{0}/{1}'.format(slugify(group), slugify(file_name))
+
+    def _get_pdf_file_name(self):
+        return self.get_pdf_file_name(self.assessment)
 
     def get_context_data(self, **kwargs):
         context = super(HabitatFactSheet, self).get_context_data(**kwargs)
@@ -408,6 +422,33 @@ factsheet.add_url_rule('/species/factsheet/header/',
                        view_func=SpeciesHeader.as_view('species-header'))
 factsheet.add_url_rule('/habitat/factsheet/header/',
                        view_func=HabitatHeader.as_view('habitat-header'))
+
+
+def generate_factsheet_url(category, subject, period):
+    if category == 'species':
+        model_cls = SpeciesMixin.model_cls
+        fs_cls = SpeciesFactSheet
+    elif category == 'habitat':
+        model_cls = HabitatMixin.model_cls
+        fs_cls = HabitatFactSheet
+    else:
+        raise NotImplementedError('Unknown category:', category)
+
+    period = period or app.config['FACTSHEET_DEFAULT_PERIOD']
+    assessment = (
+        model_cls.query.filter_by(subject=subject,
+                                  dataset_id=period).first()
+    )
+    if not assessment:
+        return None
+    pdf_path = str(
+        path(app.config['PDF_DESTINATION'] )
+        / fs_cls.get_pdf_file_name(assessment)
+    ) + '.pdf'
+    real_path = path(app.static_folder) / pdf_path
+    if real_path.exists():
+        return url_for('static', filename=pdf_path)
+    return None
 
 
 def _get_pdf(subject, period, view_cls):

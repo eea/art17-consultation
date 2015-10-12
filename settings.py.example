@@ -32,7 +32,7 @@ SECRET_KEY = 'secret'
 
 # SENTRY_DSN = ''
 
-# Destination for PDF reports in the Factsheet module - inside instance folder
+# Destination for PDF reports in the Factsheet module - inside static folder
 PDF_DESTINATION = 'pdf'
 
 # Static path location of the maps
