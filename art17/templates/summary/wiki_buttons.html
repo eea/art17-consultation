@@ -16,4 +16,20 @@
     {% if map_url %}
         <button type="button" id="show-map" data-url="{{ map_url }}">Map</button>
     {% endif %}
+
+    {% if region != '' %}
+      {% set fs_error = "Please select all bioregions" %}
+    {% elif not factsheet_url %}
+      {% set fs_error = "Factsheet not available" %}
+    {% else %}
+    <a href="{{ factsheet_url }}" id="download-fs" class="button"
+       target="_blank">
+      Download factsheet
+    </a>
+    {% endif %}
+    {% if fs_error %}
+    <span class="disabled button" title="{{ fs_error }}">
+      Download factsheet
+    </span>
+    {% endif %}
 </div>
