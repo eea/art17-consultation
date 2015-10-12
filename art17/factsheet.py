@@ -249,8 +249,13 @@ class FactSheet(MethodView):
         context = self.get_context_data(**kwargs)
         title = context.get('name', '(untitled)')
         pdf_file = self._get_pdf_file_name()
-        footer_url = url_for('factsheet.factsheet-footer', _external=True)
-        base_header_url = url_for(self.header_endpoint, _external=True)
+        footer_url = (
+            app.config['PDF_URL_PREFIX'] + url_for(
+                'factsheet.factsheet-footer')
+        )
+        base_header_url = (
+            app.config['PDF_URL_PREFIX'] + url_for(self.header_endpoint)
+        )
         params = {'subject': self.assessment.subject,
                   'period': self.assessment.dataset_id}
         header_url = '?'.join((base_header_url, urllib.urlencode(params)))
@@ -442,7 +447,7 @@ def generate_factsheet_url(category, subject, period):
     if not assessment:
         return None
     pdf_path = str(
-        path(app.config['PDF_DESTINATION'] )
+        path(app.config['PDF_DESTINATION'])
         / fs_cls.get_pdf_file_name(assessment)
     ) + '.pdf'
     real_path = path(app.static_folder) / pdf_path
@@ -458,18 +463,26 @@ def _get_pdf(subject, period, view_cls):
     print("Generated: " + renderer.pdf_path)
 
 
+def _hack_prefix():
+    if app.config.get('PDF_PREFIX'):
+        app.config['APPLICATION_ROOT'] = app.config['PDF_PREFIX']
+
+
 @factsheet_manager.command
 def species(subject, period):
+    _hack_prefix()
     return _get_pdf(subject, period, SpeciesFactSheet)
 
 
 @factsheet_manager.command
 def habitat(subject, period):
+    _hack_prefix()
     return _get_pdf(subject, period, HabitatFactSheet)
 
 
 @factsheet_manager.command
 def genall(period):
+    _hack_prefix()
     map = {SpeciesFactSheet: species, HabitatFactSheet: habitat}
     for view_cls, command in map.items():
         view = view_cls()
