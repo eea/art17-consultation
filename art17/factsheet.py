@@ -177,7 +177,7 @@ class FactSheet(MethodView):
         params = {'subject': subject,
                   'period': period,
                   'region': '',
-                  'group': self.assessment.group}
+                  'group': self.assessment and self.assessment.group}
         return '?'.join((base_url, urllib.urlencode(params)))
 
     def get_countries(self, subject, period):
