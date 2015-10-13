@@ -75,12 +75,17 @@ def get_conclusion_assessment_prev_colour(obj):
 @factsheet.app_template_global('get_maps_url')
 def get_maps_url(which, type, code):
     maps_format = app.config['MAPS_FORMAT']
-    filename = maps_format.format(which=which, type=type, code=code)
-    maps_path = path(app.static_folder) / app.config['MAPS_STATIC'] / filename
+    filename = (
+        path(app.config['MAPS_STATIC'])
+        / maps_format.format(which=which, type=type, code=code)
+    )
+    maps_path = path(app.static_folder) / filename
     if maps_path.exists():
-        return path(app.config['MAPS_STATIC']) / filename
+        return app.config['PDF_URL_PREFIX'] + url_for('static',
+                                                      filename=filename)
     else:
-        return 'img/blank_map0{which}.png'.format(which=which)
+        return url_for(static, filename='img/blank_map0{which}.png'.format(
+            which=which))
 
 
 class FactSheet(MethodView):
