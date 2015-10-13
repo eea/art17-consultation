@@ -297,7 +297,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         return self.get_pdf_file_name(self.assessment)
 
     def get_has_n2k(self):
-        if not self.engine:
+        if not all((self.engine, self.assessment)):
             return True
         result = self.engine.execute(
             N2K_QUERY.format(subject=self.assessment.subject)
