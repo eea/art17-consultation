@@ -179,7 +179,6 @@ class FactSheet(MethodView):
         base_url = url_for(self.summary_view, _external=True)
         params = {'subject': subject,
                   'period': period,
-                  'region': '',
                   'group': self.assessment and self.assessment.group}
         return '?'.join((base_url, urllib.urlencode(params)))
 
