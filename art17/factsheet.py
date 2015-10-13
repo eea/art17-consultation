@@ -201,9 +201,10 @@ class FactSheet(MethodView):
         manual_objects = self.get_manual_objects(period, subject)
         total_area = sum([obj[1] or 0 for obj in manual_objects])
 
-        self.assessment = (self.model_cls.query
-                           .filter_by(subject=subject, dataset_id=period)
-                           .first())
+        self.assessment = (
+            self.model_cls.query.filter_by(subject=subject, dataset_id=period)
+            .first()
+        )
         self.engine = (
             db.get_engine(app, 'factsheet') if app.config['SQLALCHEMY_BINDS']
             and app.config['SQLALCHEMY_BINDS'].get('factsheet') else None)
