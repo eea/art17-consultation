@@ -1,4 +1,5 @@
 import os
+import logging
 import subprocess
 import uuid
 from path import path
@@ -84,13 +85,16 @@ class PdfRenderer(object):
 
         command += [str(self.template_path), str(self.pdf_path)]
 
-        return subprocess.check_call(command, stdout=subprocess.STDOUT,
-                                     stderr=subprocess.STDOUT)
+        with open(os.devnull, 'w') as FNULL:
+            subprocess.check_call(command, stdout=FNULL,
+                                  stderr=subprocess.STDOUT)
 
     def _generate(self):
         self._render_template()
         try:
             self._generate_pdf()
+        except Exception as e:
+            logging.exception(e)
         finally:
             self.template_path.unlink_p()
             return  # crashes unexpectedly without it
