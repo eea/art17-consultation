@@ -315,7 +315,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         return context
 
     def get_annexes(self):
-        if not self.engine:
+        if not all((self.assessment, self.engine)):
             return ''
         result = self.engine.execute(
             ANNEX_QUERY.format(subject=self.assessment.subject)
