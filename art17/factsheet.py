@@ -80,12 +80,10 @@ def get_maps_url(which, type, code):
         / maps_format.format(which=which, type=type, code=code)
     )
     maps_path = path(app.static_folder) / filename
-    if maps_path.exists():
-        return app.config['PDF_URL_PREFIX'] + url_for('static',
-                                                      filename=filename)
-    else:
-        return url_for('static', filename='img/blank_map0{which}.png'.format(
-            which=which))
+    if not maps_path.exists():
+        filename = 'img/blank_map0{which}.png'.format(which=which)
+
+    return app.config['PDF_URL_PREFIX'] + url_for('static', filename=filename)
 
 
 class FactSheet(MethodView):
