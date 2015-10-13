@@ -1,6 +1,5 @@
 from collections import OrderedDict
 import urllib
-import logging
 from path import path
 
 from sqlalchemy import and_
@@ -202,9 +201,6 @@ class FactSheet(MethodView):
         self.assessment = (self.model_cls.query
                            .filter_by(subject=subject, dataset_id=period)
                            .first())
-        if not self.assessment:
-            logging.debug("Missing assessment: ", subject)
-            return {}
         self.engine = (
             db.get_engine(app, 'factsheet') if app.config['SQLALCHEMY_BINDS']
             and app.config['SQLALCHEMY_BINDS'].get('factsheet') else None)
@@ -253,6 +249,8 @@ class FactSheet(MethodView):
 
     def get_pdf(self, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.assessment:
+            return None
         title = context.get('name', '(untitled)')
         pdf_file = self._get_pdf_file_name()
         footer_url = (
@@ -465,8 +463,11 @@ def generate_factsheet_url(category, subject, period):
 def _get_pdf(subject, period, view_cls):
     view = view_cls()
     renderer = view.get_pdf(subject=subject, period=period)
-    renderer._generate()
-    print("Generated: " + renderer.pdf_path)
+    if not renderer:
+        print("No assessment:", subject)
+    else:
+        renderer._generate()
+        print("Generated: " + renderer.pdf_path)
 
 
 def _hack_prefix():
