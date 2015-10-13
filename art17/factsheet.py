@@ -308,7 +308,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
         context.update({
-            'name': self.assessment.subject,
+            'name': self.assessment and self.assessment.subject,
             'annexes': self.get_annexes(),
             'has_n2k': self.get_has_n2k(),
         })
