@@ -84,8 +84,8 @@ class PdfRenderer(object):
 
         command += [str(self.template_path), str(self.pdf_path)]
 
-        FNULL = open(os.devnull, 'w')
-        subprocess.check_call(command, stdout=FNULL, stderr=subprocess.STDOUT)
+        return subprocess.check_call(command, stdout=subprocess.STDOUT,
+                                     stderr=subprocess.STDOUT)
 
     def _generate(self):
         self._render_template()
@@ -93,6 +93,7 @@ class PdfRenderer(object):
             self._generate_pdf()
         finally:
             self.template_path.unlink_p()
+            return  # crashes unexpectedly without it
 
     def as_attachement(self):
         return self._pdf_file()

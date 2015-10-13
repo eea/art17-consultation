@@ -84,6 +84,8 @@ def get_maps_url(which, type, code):
 
 
 class FactSheet(MethodView):
+    engine = None
+
     def get_regions(self, period, subject):
         regions = super(FactSheet, self).get_regions(period, subject)[1:]
         return [name for abbr, name in regions]
@@ -198,7 +200,10 @@ class FactSheet(MethodView):
 
         self.assessment = (self.model_cls.query
                            .filter_by(subject=subject, dataset_id=period)
-                           .first_or_404())
+                           .first())
+        if not self.assessment:
+            logging.debug("Missing assessment: ", subject)
+            return {}
         self.engine = (
             db.get_engine(app, 'factsheet') if app.config['SQLALCHEMY_BINDS']
             and app.config['SQLALCHEMY_BINDS'].get('factsheet') else None)
