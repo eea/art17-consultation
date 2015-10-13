@@ -176,7 +176,7 @@ class FactSheet(MethodView):
         ))
 
     def get_url(self, subject, period):
-        base_url = url_for(self.summary_view, _external=True)
+        base_url = app.config['PDF_URL_PREFIX'] + url_for(self.summary_view)
         params = {'subject': subject,
                   'period': period,
                   'group': self.assessment and self.assessment.group}
