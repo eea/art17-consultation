@@ -95,7 +95,8 @@ class FactSheet(MethodView):
         return [abbr for abbr, name in regions]
 
     def get_priority(self):
-        return PRIORITY_TEXT.get(self.assessment.priority, 'Unknown')
+        return PRIORITY_TEXT.get(self.assessment and self.assessment.priority,
+                                 'Unknown')
 
     def get_wiki(self, period, subject):
         wiki = (db.session.query(WikiChange)
