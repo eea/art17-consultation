@@ -400,6 +400,10 @@ class FactSheetHeader(MethodView):
 
     def get(self):
         context = self.get_context_data(**request.args)
+        context['logo_url'] = (
+            app.config['PDF_URL_PREFIX']
+            + url_for('static', filename='img/eea-logo-print.jpg')
+        )
         return render_template('factsheet/common/header.html', **context)
 
 
