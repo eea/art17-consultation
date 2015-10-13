@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import urllib
+import logging
 from path import path
 
 from sqlalchemy import and_
