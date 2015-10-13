@@ -84,7 +84,7 @@ def get_maps_url(which, type, code):
         return app.config['PDF_URL_PREFIX'] + url_for('static',
                                                       filename=filename)
     else:
-        return url_for(static, filename='img/blank_map0{which}.png'.format(
+        return url_for('static', filename='img/blank_map0{which}.png'.format(
             which=which))
 
 
