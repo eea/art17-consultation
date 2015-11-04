@@ -229,9 +229,12 @@ class FactSheet(MethodView):
             'assessment': self.assessment,
         }
 
-    def get_all(self):
-        period = request.args.get('period',
-                                  app.config['FACTSHEET_DEFAULT_PERIOD'])
+    def get_all(self, period=None):
+        period = (
+            period or
+            request.args.get('period',
+                             app.config['FACTSHEET_DEFAULT_PERIOD'])
+        )
         return (
             self.model_cls.query
             .filter_by(dataset_id=period)
@@ -501,6 +504,6 @@ def genall(period):
     map = {SpeciesFactSheet: species, HabitatFactSheet: habitat}
     for view_cls, command in map.items():
         view = view_cls()
-        for o in view.get_all():
+        for o in view.get_all(period):
             command(o.subject, period)
     print("Done")
