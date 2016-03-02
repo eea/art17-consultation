@@ -77,10 +77,10 @@ header h2 {
 .complex_datatable td,
 .complex_datatable th,
 .complex_datatable caption {
-  padding: 3pt;
+  padding: 3pt 2pt;
   text-align: center;
 }
-.complex_datatable caption { 
+.complex_datatable caption {
   font-weight: normal;
   text-align: left;
 }
