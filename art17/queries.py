@@ -58,21 +58,24 @@ SELECT  A.country, A.region,
       IF(
         A.natura2000_area_min IS NOT NULL,
         IF(
-          SQRT(A.natura2000_area_min * A.natura2000_area_max)
-               / A.coverage_surface_area > 1,
-          '100*',
-          Round(100 * SQRT(
-                          IF(A.natura2000_area_min=0, 1, A.natura2000_area_min)
-                          * A.natura2000_area_max)
-                / A.coverage_surface_area)),
-          'x'),
+          A.natura2000_area_min=0,
+          'x',
+          IF(
+            SQRT(A.natura2000_area_min * A.natura2000_area_max)
+                 / A.coverage_surface_area > 1,
+            '100*',
+            Round(100 * SQRT(A.natura2000_area_min * A.natura2000_area_max)
+                / A.coverage_surface_area))),
+        'x'),
       IF(
         A.natura2000_area_min IS NOT NULL,
         IF(
           A.natura2000_area_min / A.coverage_surface_area > 1,
           '100*',
-          Round(100 * IF(A.natura2000_area_min=0, 1, A.natura2000_area_min)
-                / A.coverage_surface_area)),
+          IF(
+            A.natura2000_area_min=0,
+            0,
+            Round(100 * A.natura2000_area_min / A.coverage_surface_area))),
         'x')),
     'x'
   ) pc
