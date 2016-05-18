@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 install:
-  - pip install -r requirements-dev.txt --use-mirrors
+  - pip install -r requirements-dev.txt --trusted-host eggshop.eaudeweb.ro
   - pip install pytest-cov==1.8.1 coverage==3.7.1 coveralls==0.5
 before_script:
   - mkdir instance && cp settings.py.example instance/test_settings.py && cp settings.py.example instance/settings.py
