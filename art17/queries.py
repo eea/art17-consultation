@@ -260,3 +260,9 @@ ANNEX_QUERY = """
   WHERE A.assessment_speciesname = '{subject}'
   GROUP BY A.assessment_speciesname;
 """
+
+MAP_QUERY = """
+  SELECT DISTINCT A.assessment_speciescode AS code
+  FROM data_species_check_list A
+  WHERE A.assessment_speciesname='{subject}';
+"""

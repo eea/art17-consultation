@@ -16,7 +16,7 @@ from art17.models import db, Wiki, WikiChange, Dataset
 from art17.pdf import PdfRenderer
 from art17.queries import (
     THREATS_QUERY, COVERAGE_QUERY_SPECIES, COVERAGE_QUERY_HABITAT,
-    MEASURES_QUERY, N2K_QUERY, ANNEX_QUERY
+    MEASURES_QUERY, N2K_QUERY, ANNEX_QUERY, MAP_QUERY
 )
 from art17.utils import slugify
 
@@ -311,12 +311,22 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         row = result and result.first()
         return row and row['cond'] > 0
 
+    def get_map_speciescode(self):
+        if not all((self.engine, self.assessment)):
+            return True
+        result = self.engine.execute(
+            MAP_QUERY.format(subject=self.assessment.subject)
+        )
+        row = result and result.first()
+        return row and row['code']
+
     def get_context_data(self, **kwargs):
         context = super(SpeciesFactSheet, self).get_context_data(**kwargs)
         context.update({
             'name': self.assessment and self.assessment.subject,
             'annexes': self.get_annexes(),
             'has_n2k': self.get_has_n2k(),
+            'speciescode': self.get_map_speciescode(),
         })
         return context
 
@@ -354,7 +364,6 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     extra_condition = ''
     url_base = '.factsheet-habitat'
     header_endpoint = 'factsheet.habitat-header'
-
 
     @classmethod
     def get_pdf_file_name(cls, assessment):

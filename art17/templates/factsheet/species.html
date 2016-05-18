@@ -25,7 +25,7 @@
         <h2>Assessment of conservation status at the<br>European biogeographical level</h2>
       </header>
 
-      {% set map_url=get_maps_url(which=1, type='S', code=assessment.n2000_species_code) %}
+      {% set map_url=get_maps_url(which=1, type='S', code=speciescode) %}
       <img src="{{ map_url }}" width="100%">
     </div>
 
@@ -86,7 +86,7 @@
         <h2>Assessment of conservation status at the Member State level</h2>
       </header>
 
-      {% set map_url=get_maps_url(which=2, type='S', code=assessment.n2000_species_code) %}
+      {% set map_url=get_maps_url(which=2, type='S', code=speciescode) %}
       <img src="{{ map_url }}" width="100%">
     </div>
 
