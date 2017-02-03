@@ -1,4 +1,3 @@
-instance
 gen
 .webassets-cache
 sandbox
@@ -8,3 +7,6 @@ __pycache__
 env.ini
 env
 s
+.secret
+art17.env
+art17.devel.env

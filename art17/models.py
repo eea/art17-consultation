@@ -1325,6 +1325,10 @@ restricted_species_2013 = Table(
 
 db_manager = Manager()
 
+@db_manager.command
+def init():
+    db.create_all()
+    alembic(['stamp', 'head'])
 
 @db_manager.option('alembic_args', nargs=argparse.REMAINDER)
 def alembic(alembic_args):

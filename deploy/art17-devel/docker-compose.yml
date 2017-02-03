@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+
+  art17:
+    image: art17:devel
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    depends_on:
+    - mysql
+    ports:
+    - "5000:5000"
+    env_file:
+    - ../art17.devel.env
+    environment:
+      TZ: Europe/Copenhagen
+    #volumes:
+    #- ../../:/var/local/art17
+    #command: ["runserver", "-h", "0.0.0.0", "-p", "5000"]
+
+  mysql:
+    image: mysql:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "3306:3306"
+    env_file:
+    - ../art17.env
+    environment:
+      TZ: Europe/Copenhagen
+    volumes:
+    - mysqldata:/var/lib/mysql
+    command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+
+volumes:
+  mysqldata:
+    driver: local
