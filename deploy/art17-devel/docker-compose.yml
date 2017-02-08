@@ -25,7 +25,7 @@ services:
     ports:
     - "3306:3306"
     env_file:
-    - ../art17.env
+    - ../art17.devel.env
     environment:
       TZ: Europe/Copenhagen
     volumes:

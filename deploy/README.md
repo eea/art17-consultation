@@ -4,7 +4,7 @@
 
 Clone the repository
 
-    $ git https://github.com/eea/art17-consultation
+    $ git clone https://github.com/eea/art17-consultation
 
 During the first time deployement, create and edit the following files:
 

@@ -16,4 +16,3 @@ Changelog
 1.0 - (2013-01-01)
 ------------------
 * Initial release
-  [chiridra refs #78691]
