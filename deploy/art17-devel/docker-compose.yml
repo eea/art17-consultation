@@ -14,9 +14,9 @@ services:
     - ../art17.devel.env
     environment:
       TZ: Europe/Copenhagen
-    #volumes:
-    #- ../../:/var/local/art17
-    #command: ["runserver", "-h", "0.0.0.0", "-p", "5000"]
+    volumes:
+    - ../../:/var/local/art17
+    command: ["runserver", "-t", "0.0.0.0", "-p", "5000"]
 
   mysql:
     image: mysql:latest

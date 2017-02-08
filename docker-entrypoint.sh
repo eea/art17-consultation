@@ -22,8 +22,8 @@ fi
 
 if [ ! -e .skip-db-init ]; then
   touch .skip-db-init
-  echo "Running DB CMD: ./manage.py db upgrade"
-  python manage.py db upgrade
+  echo "Running DB CMD: ./manage.py db init"
+  python manage.py db init
 fi
 
 if [ -z "$1" ]; then
