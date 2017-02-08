@@ -11,3 +11,4 @@ s
 art17.env
 art17.devel.env
 rsync.key
+.skip-db-init

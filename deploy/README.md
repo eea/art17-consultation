@@ -1,10 +1,17 @@
 # Docker orchestration for Art 17 Consultation Tool
 
-## 1. Usage
-
 Clone the repository
 
     $ git clone https://github.com/eea/art17-consultation
+
+## 1. Production
+
+The production deployment will be done through Rancher. Depending on the
+Rancher environment's version, one of the following will be used:
+
+1. [Rancher Compose](https://docs.rancher.com/rancher/v1.4/en/cattle/rancher-compose/)
+
+2. [Rancher CLI](https://docs.rancher.com/rancher/v1.2/en/cli/)
 
 During the first time deployement, create and edit the following files:
 
@@ -18,28 +25,43 @@ During the first time deployement, create and edit the following files:
     $ cp rsync.key.example rsync.key
     $ vim rsync.key
 
-## 2. Production
-
-The production deployment will be done through Rancher. Depending on the
-Rancher environment's version, one of the following will be used:
-
-1. [Rancher Compose](https://docs.rancher.com/rancher/v1.4/en/cattle/rancher-compose/)
-
-2. [Rancher CLI](https://docs.rancher.com/rancher/v1.2/en/cli/)
-
 _WIP_
 
-## 3. Development
+## 2. Development
 
 1. Install [Docker](https://www.docker.com/).
 
 2. Install [Docker Compose](https://docs.docker.com/compose/).
 
+During the first time deployement, create and edit the following files:
 
-### 3.1 Local build
+    $ cd art17-consultation/deploy
+
+    # edit environment variables values
+    $ cp art17.env.example art17.devel.env
+    $ vim art17.devel.env
+
+A minimal configuration file could be:
+
+    #mysql env
+    MYSQL_ROOT_PASSWORD=art17
+
+    #art17 env
+    DEBUG=True
+    SECRET_KEY=secret
+
+    DB_SCHEMA=mysql
+    DB_USER=art17
+    DB_PASS=art17
+    DB_HOST=mysql
+    DB_NAME=art17
+
+
+### 2.1 Local build
 
 To use a local build, run the following command:
 
+    $ cd art17-consultation/
     $ docker build -t art17:devel .
 
 and in docker-compose.yml use for art17 service:
@@ -54,7 +76,7 @@ Start services
     #show services and their status
     $ docker-compose ps
 
-### 3.2. Art 17 service
+### 2.2. Art 17 service
 
 There is a mapping between your local art17 folder and the folder inside the service.
 Any code change will be automatically detected and the app restarted.
@@ -88,7 +110,7 @@ and from inside the container:
 
 _Note: make sure you have set **DEBUG=True** in the art17.env file._
 
-### 3.3. MySQL service
+### 2.3. MySQL service
 
 If you need to take a closer look at the MySQL database, you can do that like below:
 
