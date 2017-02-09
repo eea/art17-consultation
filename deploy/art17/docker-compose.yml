@@ -2,7 +2,19 @@ version: '2'
 
 services:
 
-  art17:
+  apache:
+    image: eeacms/apache:2.4s
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    depends_on:
+    - art17-app
+    - art17-static
+    environment:
+      TZ: Europe/Copenhagen
+    volumes:
+    - apache:/usr/local/apache2/conf
+
+  art17-app:
     image: art17:devel
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -12,6 +24,18 @@ services:
     - ../art17.env
     environment:
       TZ: Europe/Copenhagen
+    volumes:
+    - staticdata:/var/local/art17/art17/static
+
+  art17-static:
+    image: nginx:alpine
+    depends_on:
+    - art17-app
+    environment:
+      TZ: Europe/Copenhagen
+    volumes:
+    - nginx:/etc/nginx/conf.d
+    - staticdata:/var/local/art17/art17/static:ro
 
   mysql:
     image: mysql:latest
@@ -31,7 +55,8 @@ services:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
-    - art17
+    - apache
+    - art17-app
     - mysql
     ports:
     - "2222:22/tcp"
@@ -44,8 +69,16 @@ services:
     tty: true
     stdin_open: true
     volumes:
+    - apache:/usr/local/apache2/conf
+    - nginx:/etc/nginx/conf.d
     - mysqldata:/var/lib/mysql
 
 volumes:
+  apache:
+    driver: local
+  nginx:
+    driver: local
+  staticdata:
+    driver: local
   mysqldata:
     driver: local
