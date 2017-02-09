@@ -12,6 +12,8 @@ During the first time deployement, create and edit the following file:
     $ cp rsync.key.example rsync.key
     $ vim rsync.key
 
+[Base docker image](https://hub.docker.com/r/eeacms/art17-consultation/)
+
 ## 1. Production
 
 The production deployment will be done through Rancher. Depending on the
