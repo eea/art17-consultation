@@ -1,0 +1,73 @@
+version: '2'
+
+services:
+
+  apache:
+    image: eeacms/apache:2.4s
+    ports:
+    - 80:80
+    depends_on:
+    - art17-app
+    - art17-static
+    volumes:
+    - apache:/usr/local/apache2/conf
+
+  art17-app:
+    image: art17:devel
+    ports:
+    - "5000:5000"
+    depends_on:
+    - mysql
+    env_file:
+    - ../art17.devel.env
+    volumes:
+    - staticdata:/var/local/art17/art17/static
+    - ../../:/var/local/art17
+    command: ["runserver", "-t", "0.0.0.0", "-p", "5000"]
+
+  art17-static:
+    image: nginx:alpine
+    depends_on:
+    - art17-app
+    volumes:
+    - nginx:/etc/nginx/conf.d
+    - staticdata:/var/local/art17/art17/static:ro
+
+  mysql:
+    image: mysql:latest
+    ports:
+    - "3306:3306"
+    env_file:
+    - ../art17.devel.env
+    volumes:
+    - mysqldata:/var/lib/mysql
+    command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+
+  rsync-server:
+    image: eeacms/rsync
+    depends_on:
+    - apache
+    - art17-app
+    - mysql
+    ports:
+    - "2222:22/tcp"
+    command:
+    - server
+    env_file:
+    - ../rsync.key
+    tty: true
+    stdin_open: true
+    volumes:
+    - apache:/usr/local/apache2/conf
+    - nginx:/etc/nginx/conf.d
+    - mysqldata:/var/lib/mysql
+
+volumes:
+  apache:
+    driver: local
+  nginx:
+    driver: local
+  staticdata:
+    driver: local
+  mysqldata:
+    driver: local

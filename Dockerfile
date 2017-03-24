@@ -1,29 +1,18 @@
-# Python image
+FROM python:2.7-slim
+MAINTAINER "EEA: IDM2 C-TEAM" <eea-edw-c-team-alerts@googlegroups.com>
 
-FROM eeacms/python:2.7-slim
+ENV WORK_DIR=/var/local/art17
 
-# Copy code into image
+RUN runDeps="curl vim build-essential netcat mysql-client libmysqlclient-dev python-dev libldap2-dev libsasl2-dev libssl-dev" \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends $runDeps \
+ && rm -vrf /var/lib/apt/lists/*
 
-RUN mkdir /art17-consultation
-COPY alembic /art17-consultation/alembic
-COPY art17 /art17-consultation/art17
-COPY zope_api /art17-consultation/zope_api
-COPY contrib /art17-consultation/contrib
-COPY docs  /art17-consultation/docs
-COPY manage.py requirements.txt requirements-dev.txt /art17-consultation/
-WORKDIR /art17-consultation
+COPY . $WORK_DIR/
+WORKDIR $WORK_DIR
 
-# Install requirements
+RUN pip install -U setuptools \
+ && pip install -r requirements-dep.txt --trusted-host eggshop.eaudeweb.ro \
+ && mv docker-entrypoint.sh /bin/
 
-RUN pip install -U setuptools
-RUN pip install -r requirements-dev.txt --trusted-host eggshop.eaudeweb.ro
-RUN mkdir -p instance
-COPY /settings.py.docker instance/settings.py
-
-# Expose needed port
-
-EXPOSE 5000
-
-# Default command
-
-CMD python manage.py runserver -t 0.0.0.0 -p 5000
+ENTRYPOINT ["docker-entrypoint.sh"]
