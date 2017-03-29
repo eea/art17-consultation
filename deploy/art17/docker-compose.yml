@@ -3,7 +3,7 @@ version: '2'
 services:
 
   apache:
-    image: eeacms/apache:2.4s
+    image: eeacms/apache:latest
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
@@ -15,7 +15,7 @@ services:
     - apache:/usr/local/apache2/conf
 
   art17-app:
-    image: eeacms/art17-consultation:2.0
+    image: eeacms/art17-consultation:latest
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
@@ -50,7 +50,7 @@ services:
     command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
 
   rsync-server:
-    image: eeacms/rsync
+    image: eeacms/rsync:latest
     labels:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -75,10 +75,10 @@ services:
 
 volumes:
   apache:
-    driver: local
+    driver: rancher-nfs
   nginx:
-    driver: local
+    driver: rancher-nfs
   staticdata:
-    driver: local
+    driver: rancher-nfs
   mysqldata:
-    driver: local
+    driver: rancher-nfs
