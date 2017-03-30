@@ -40,17 +40,27 @@ During the first time deployement, create and edit the following files:
 
 Copy conf file and restart container
 
-    $ scp -P 2222 ../conf/apache.conf root@localhost:/usr/local/apache2/conf/extra/vh-my-app.conf
+    $ scp -P 2222 ../conf/apache.conf root@rsync-server-host:/usr/local/apache2/conf/extra/vh-my-app.conf
     $ docker-compose restart apache
 
 ### 1.3. Configure _art17-static_ service
 
 Copy conf file and restart container
 
-    $ scp -P 2222 ../conf/static.conf root@localhost:/etc/nginx/conf.d/default.conf
+    $ scp -P 2222 ../conf/static.conf root@rsync-server-host:/etc/nginx/conf.d/default.conf
     $ docker-compose restart art17-static
 
-### 1.4. Debugging
+### 1.4 Copy _mysql_ data (SQL dump)
+
+    $ scp -P 2222 art17.sql root@rsync-server-host:/var/lib/mysql/art17.sql
+
+Execute shell to _mysql_ container and import the sql file.
+
+    $ mysql -u root -p
+    $ mysql> use art17;
+    $ mysql> source /var/lib/mysql/art17.sql;
+
+### 1.5. Debugging
 
 Please refer to points 2.5. - 2.7. below.
 
@@ -82,7 +92,6 @@ A minimal configuration file could be:
     DB_PASS=art17
     DB_HOST=mysql
     DB_NAME=art17
-
 
 ### 2.1. Local build
 

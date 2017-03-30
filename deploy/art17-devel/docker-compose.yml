@@ -3,32 +3,38 @@ version: '2'
 services:
 
   apache:
-    image: eeacms/apache:2.4s
+    image: eeacms/apache:latest
     ports:
     - 80:80
     depends_on:
     - art17-app
     - art17-static
+    environment:
+      TZ: Europe/Copenhagen
     volumes:
     - apache:/usr/local/apache2/conf
 
   art17-app:
-    image: art17:devel
+    image: eeacms/art17-consultation:latest
     ports:
     - "5000:5000"
     depends_on:
     - mysql
     env_file:
     - ../art17.devel.env
+    environment:
+      TZ: Europe/Copenhagen
     volumes:
     - staticdata:/var/local/art17/art17/static
-    - ../../:/var/local/art17
-    command: ["runserver", "-t", "0.0.0.0", "-p", "5000"]
+    #- ../../:/var/local/art17
+    #command: ["runserver", "-t", "0.0.0.0", "-p", "5000"]
 
   art17-static:
     image: nginx:alpine
     depends_on:
     - art17-app
+    environment:
+      TZ: Europe/Copenhagen
     volumes:
     - nginx:/etc/nginx/conf.d
     - staticdata:/var/local/art17/art17/static:ro
@@ -39,12 +45,14 @@ services:
     - "3306:3306"
     env_file:
     - ../art17.devel.env
+    environment:
+      TZ: Europe/Copenhagen
     volumes:
     - mysqldata:/var/lib/mysql
     command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
 
   rsync-server:
-    image: eeacms/rsync
+    image: eeacms/rsync:latest
     depends_on:
     - apache
     - art17-app
@@ -55,6 +63,8 @@ services:
     - server
     env_file:
     - ../rsync.key
+    environment:
+      TZ: Europe/Copenhagen
     tty: true
     stdin_open: true
     volumes:
