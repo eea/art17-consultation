@@ -1,7 +1,10 @@
 Changelog
 =========
 
-2.0.dev0 - (unreleased)
+2.1.dev0 - (unreleased)
+-----------------------
+
+2.0 - (2017-03-30)
 -----------------------
 * Dockerise Article 17 consultation tool
   - discarded waitress and supervisor and used gunicorn
