@@ -21,7 +21,7 @@ services:
     depends_on:
     - mysql
     env_file:
-    - ../art17.stating.env
+    - ../art17.staging.env
     environment:
       TZ: Europe/Copenhagen
     volumes:
