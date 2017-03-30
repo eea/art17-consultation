@@ -15,34 +15,39 @@ SQLALCHEMY_DATABASE_URI = '{schema}://{user}:{pwd}@{host}/{dbname}'.format(
   host=getenv('DB_HOST', default=''),
   dbname=getenv('DB_NAME', default=''))
 
-#SQLALCHEMY_BINDS = {
-#   'factsheet': 'mysql://user:password@localhost/art17old'
-#}
+SQLALCHEMY_BINDS = {
+   'factsheet': '{schema}://{user}:{pwd}@{host}/{bindname}'.format(
+        schema=getenv('DB_SCHEMA', default='sqlite'),
+        user=getenv('DB_USER', default=''),
+        pwd=getenv('DB_PASS', default=''),
+        host=getenv('DB_HOST', default=''),
+        bindname=getenv('BIND_NAME', default='')
+    )
+}
 
-# Fields below are optional. Update and uncomment the ones you need.
+ASSETS_DEBUG = getenv('ASSETS_DEBUG', type=bool, default=False)
+AUTH_DEBUG = getenv('AUTH_DEBUG', type=bool, default=False)
 
-# ASSETS_DEBUG = False
-# AUTH_DEBUG = False
+AUTH_LOG_FILE = getenv('AUTH_LOG_FILE', default='/var/local/art17/logs/flask-auth.log')
+AUTH_ZOPE = getenv('AUTH_ZOPE', type=bool, default=True)
+AUTH_ZOPE_WHOAMI_URL = getenv('AUTH_ZOPE_WHOAMI_URL', default='http://example.com/art17_api/whoami')
+LAYOUT_ZOPE_URL = getenv('LAYOUT_ZOPE_URL', default='http://example.com/art17_api/layout')
 
-# AUTH_LOG_FILE = '/var/local/art17/logs/flask-auth.log'
-# AUTH_ZOPE = True
-# AUTH_ZOPE_WHOAMI_URL = 'http://example.com/art17_api/whoami'
-# LAYOUT_ZOPE_URL = 'http://example.com/art17_api/layout'
+AUTH_ZOPE_ACL_MANAGER_URL = getenv('AUTH_ZOPE_ACL_MANAGER_URL', default='http://example.com/acl_manager')
+AUTH_ZOPE_ACL_MANAGER_KEY = getenv('AUTH_ZOPE_ACL_MANAGER_KEY', default='')
 
-# AUTH_ZOPE_ACL_MANAGER_URL = 'http://example.com/acl_manager'
-# AUTH_ZOPE_ACL_MANAGER_KEY = ''
-
-# EEA_LDAP_SERVER = ''
+EEA_LDAP_SERVER = getenv('EEA_LDAP_SERVER', default='')
 
 # Set this for correct links in emails.
-# SERVER_NAME = 'example.com'
+SERVER_NAME = getenv('SERVER_NAME', default='example.com')
+SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + SERVER_NAME
 
-# SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + SERVER_NAME
+SECURITY_POST_REGISTER_VIEW = getenv('SECURITY_POST_REGISTER_VIEW', default='/article17/')
 
-# SECURITY_POST_REGISTER_VIEW = '/article17/'
-
-# SENTRY_DSN = ''
+SENTRY_DSN = getenv('SENTRY_DSN', default='')
 
 # Destination for PDF reports in the Factsheet module
-# PDF_DESTINATION = './instance/pdf'
-# PDF_URL_PREFIX = 'http://localhost:5000'
+PDF_DESTINATION = getenv('PDF_DESTINATION', default='./instance/pdf')
+PDF_URL_PREFIX = getenv('PDF_URL_PREFIX', default='http://localhost:5000')
+
+MAPS_STATIC = getenv('MAPS_STATIC', default='maps/')

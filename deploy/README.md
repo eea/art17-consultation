@@ -62,9 +62,48 @@ Execute shell to _mysql_ container and import the sql file.
 
 ### 1.5. Debugging
 
-Please refer to points 2.5. - 2.7. below.
+Please refer to points 3.5. - 3.7. below.
 
-## 2. Development
+## 2. Staging
+
+The production deployment will be done also through Rancher.
+
+During the first time deployement, create and edit the following files:
+
+    $ cd art17-consultation/deploy
+
+    # edit environment variables values
+    $ cp art17.env.example art17.staging.env
+    $ vim art17.staging.env
+
+### 2.1. Start stack
+
+    $ cd art17-consultation/deploy/art17-staging/
+    $ docker-compose up -d
+
+### 2.2. Configure _apache_ service
+
+Please refer to point 1.2.
+
+### 2.3. Configure _art17-static_ service
+
+Please refer to point 1.3.
+
+### 2.4 Copy _mysql_ data (SQL dump)
+
+    $ scp -P 2222 art17_staging.sql root@rsync-server-host:/var/lib/mysql/art17_staging.sql
+
+Execute shell to _mysql_ container and import the sql file.
+
+    $ mysql -u root -p
+    $ mysql> use art17_staging;
+    $ mysql> source /var/lib/mysql/art17_staging.sql;
+
+### 2.5. Debugging
+
+Please refer to points 3.5. - 3.7. below.
+
+## 3. Development
 
 1. Install [Docker](https://www.docker.com/).
 
@@ -93,7 +132,7 @@ A minimal configuration file could be:
     DB_HOST=mysql
     DB_NAME=art17
 
-### 2.1. Local build
+### 3.1. Local build
 
 To use a local build, run the following command:
 
@@ -104,26 +143,26 @@ and in docker-compose.yml use for art17 service:
 
     image: art17:devel
 
-### 2.2. Start stack
+### 3.2. Start stack
 
     $ cd art17-consultation/deploy/art17-devel/
     $ docker-compose up -d
 
-### 2.3. Configure _apache_ service
+### 3.3. Configure _apache_ service
 
 Copy conf file and restart container
 
     $ scp -P 2222 ../conf/apache.devel.conf root@localhost:/usr/local/apache2/conf/extra/vh-my-app.conf
     $ docker-compose restart apache
 
-### 2.4. Configure _art17-static_ service
+### 3.4. Configure _art17-static_ service
 
 Copy conf file and restart container
 
     $ scp -P 2222 ../conf/static.conf root@localhost:/etc/nginx/conf.d/default.conf
     $ docker-compose restart art17-static
 
-### 2.5. View, check status and logs
+### 3.5. View, check status and logs
 
 To use the application, open a browser/tab and got to http://localhost/.
 
@@ -141,7 +180,7 @@ If, for some reason, you want to completely delete the stack and its volumes:
     $ docker-compose rm
     $ docker volume rm art17_apache art17_mysqldata art17_nginx art17_staticdata
 
-### 2.6. _art17-app_ service
+### 3.6. _art17-app_ service
 
 There is a mapping between your local art17 folder and the folder inside the service.
 Any code change will be automatically detected and the app restarted.
@@ -175,7 +214,7 @@ and from inside the container:
 
 _Note: make sure you have set **DEBUG=True** in the art17.devel.env file._
 
-### 2.7. _mysql_ service
+### 3.7. _mysql_ service
 
 If you need to take a closer look at the MySQL database, you can do that like below:
 
