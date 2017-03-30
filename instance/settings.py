@@ -40,7 +40,7 @@ EEA_LDAP_SERVER = getenv('EEA_LDAP_SERVER', default='')
 
 # Set this for correct links in emails.
 if getenv('SERVER_NAME', default=None) is not None:
-    SERVER_NAME = getenv('SERVER_NAME', default='')
+    SERVER_NAME = getenv('SERVER_NAME')
     SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + SERVER_NAME
 
 SECURITY_POST_REGISTER_VIEW = getenv('SECURITY_POST_REGISTER_VIEW', default='/article17/')
