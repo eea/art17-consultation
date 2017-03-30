@@ -26,8 +26,10 @@ services:
       TZ: Europe/Copenhagen
     volumes:
     - staticdata:/var/local/art17/art17/static
-    #- ../../:/var/local/art17
+    #- ../../art17:/var/local/art17/art17
+    #- ../../instance:/var/local/art17/instance
     #command: ["runserver", "-t", "0.0.0.0", "-p", "5000"]
+    #command: /usr/bin/tail -f /dev/null
 
   art17-static:
     image: nginx:alpine

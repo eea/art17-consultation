@@ -39,8 +39,9 @@ AUTH_ZOPE_ACL_MANAGER_KEY = getenv('AUTH_ZOPE_ACL_MANAGER_KEY', default='')
 EEA_LDAP_SERVER = getenv('EEA_LDAP_SERVER', default='')
 
 # Set this for correct links in emails.
-SERVER_NAME = getenv('SERVER_NAME', default='example.com')
-SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + SERVER_NAME
+if getenv('SERVER_NAME', default=None) is not None:
+    SERVER_NAME = getenv('SERVER_NAME', default='')
+    SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + SERVER_NAME
 
 SECURITY_POST_REGISTER_VIEW = getenv('SECURITY_POST_REGISTER_VIEW', default='/article17/')
 
