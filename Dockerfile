@@ -11,6 +11,8 @@ RUN runDeps="curl vim build-essential netcat mysql-client libmysqlclient-dev pyt
 COPY . $WORK_DIR/
 WORKDIR $WORK_DIR
 
+RUN mkdir $WORK_DIR/logs
+
 RUN pip install -U setuptools \
  && pip install -r requirements-dep.txt --trusted-host eggshop.eaudeweb.ro \
  && mv docker-entrypoint.sh /bin/
