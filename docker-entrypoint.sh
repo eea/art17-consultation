@@ -28,7 +28,8 @@ fi
 
 if [ -z "$1" ]; then
   echo "Serving on port 5000"
-  exec gunicorn manage:app \
+  exec gunicorn -e SCRIPT_NAME=$SCRIPT_NAME \
+                manage:app \
                 --name fgas \
                 --bind 0.0.0.0:5000 \
                 --access-logfile - \
