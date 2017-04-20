@@ -1,8 +1,15 @@
 Changelog
 =========
 
-2.1.dev0 - (unreleased)
+2.2.dev0 - (unreleased)
 -----------------------
+
+2.1 - (2017-04-20)
+------------------
+* article17 staging
+  - running gunicorn with -e SCRIPT_NAME=$SCRIPT_NAME to set
+  the prefix (default is /)
+  [chiridra refs #83820]
 
 2.0 - (2017-03-30)
 -----------------------
