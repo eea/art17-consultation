@@ -15,7 +15,7 @@ services:
     - apache:/usr/local/apache2/conf
 
   art17-app:
-    image: eeacms/art17-consultation:latest
+    image: eeacms/art17-consultation:2.1
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
