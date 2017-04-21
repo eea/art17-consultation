@@ -39,7 +39,10 @@ AUTH_ZOPE_ACL_MANAGER_KEY = getenv('AUTH_ZOPE_ACL_MANAGER_KEY', default='')
 EEA_LDAP_SERVER = getenv('EEA_LDAP_SERVER', default='')
 
 # Set this for correct links in emails.
-if getenv('SERVER_NAME', default=None) is not None:
+if getenv('ART17_SERVER_NAME', default=None) is not None:
+    ART17_SERVER_NAME = getenv('ART17_SERVER_NAME')
+    SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + ART17_SERVER_NAME
+elif getenv('SERVER_NAME', default=None) is not None:
     SERVER_NAME = getenv('SERVER_NAME')
     SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + SERVER_NAME
 
@@ -52,3 +55,5 @@ PDF_DESTINATION = getenv('PDF_DESTINATION', default='./instance/pdf')
 PDF_URL_PREFIX = getenv('PDF_URL_PREFIX', default='http://localhost:5000')
 
 MAPS_STATIC = getenv('MAPS_STATIC', default='maps/')
+
+DEMO_SERVER = getenv('DEMO_SERVER', type=bool, default=True)

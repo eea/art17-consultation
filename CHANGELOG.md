@@ -1,8 +1,14 @@
 Changelog
 =========
 
-2.2.dev0 - (unreleased)
+2.3.dev0 - (unreleased)
 -----------------------
+
+2.2 - (2017-04-21)
+------------------
+* Dockerise Article 17 consultation tool
+  - processed two more env variables needed for production deploy
+  [chiridra refs #81735]
 
 2.1 - (2017-04-20)
 ------------------
