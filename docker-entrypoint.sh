@@ -13,11 +13,11 @@ while ! nc -z $MYSQL_ADDR 3306; do
 done
 
 #create database for service
-if ! mysql -h mysql -u root -p$MYSQL_ROOT_PASSWORD -e "use $DB_NAME;"; then
+if ! mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "use $DB_NAME;"; then
   echo "CREATE DATABASE $DB_NAME"
-  mysql -h mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8 COLLATE utf8_general_ci;"
-  mysql -h mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
-  mysql -h mysql -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';"
+  mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8 COLLATE utf8_general_ci;"
+  mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
+  mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';"
 fi
 
 if [ ! -e .skip-db-init ]; then
@@ -30,7 +30,7 @@ if [ -z "$1" ]; then
   echo "Serving on port 5000"
   exec gunicorn -e SCRIPT_NAME=$SCRIPT_NAME \
                 manage:app \
-                --name fgas \
+                --name article17 \
                 --bind 0.0.0.0:5000 \
                 --access-logfile - \
                 --error-logfile -

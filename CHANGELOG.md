@@ -1,8 +1,12 @@
 Changelog
 =========
 
-2.3.dev0 - (unreleased)
------------------------
+2.4 - (unreleased)
+------------------
+
+2.3 - (2017-04-24)
+------------------
+* removed hardcoded values for mysql server [nituacor refs #81735]
 
 2.2 - (2017-04-21)
 ------------------
