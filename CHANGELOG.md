@@ -1,8 +1,14 @@
 Changelog
 =========
 
-2.4 - (unreleased)
+2.5 - (unreleased)
 ------------------
+
+2.4 - (2017-05-05)
+------------------
+* Dockerise Article 17 consultation tool
+  - use SCRIPT_NAME env variable to correctly set the "Recover password" url
+  [chiridra refs #81735]
 
 2.3 - (2017-04-24)
 ------------------
