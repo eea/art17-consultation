@@ -57,3 +57,5 @@ PDF_URL_PREFIX = getenv('PDF_URL_PREFIX', default='http://localhost:5000')
 MAPS_STATIC = getenv('MAPS_STATIC', default='maps/')
 
 DEMO_SERVER = getenv('DEMO_SERVER', type=bool, default=True)
+
+SCRIPT_NAME = getenv('SCRIPT_NAME', default='/article17')

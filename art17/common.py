@@ -189,6 +189,8 @@ def register_permissions_in_template_globals(state):
     app.jinja_env.globals['nat_perm'] = nat_perm
     app.jinja_env.globals['HOMEPAGE_VIEW_NAME'] = HOMEPAGE_VIEW_NAME
     app.jinja_env.globals['DEMO_SERVER'] = app.config.get('DEMO_SERVER', True)
+    app.jinja_env.globals['SCRIPT_NAME'] = app.config.get('SCRIPT_NAME',
+                                                          '/article17')
 
 
 @common.app_context_processor
