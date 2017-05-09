@@ -1,8 +1,15 @@
 Changelog
 =========
 
-2.5 - (unreleased)
+2.6 - (unreleased)
 ------------------
+
+2.5 - (2017-05-09)
+------------------
+* Dockerise Article 17 consultation tool
+  - create also the binds database
+  - cleanup
+  [chiridra refs #81735]
 
 2.4 - (2017-05-05)
 ------------------
