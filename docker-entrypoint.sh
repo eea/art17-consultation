@@ -20,6 +20,13 @@ if ! mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "use $DB_NAME;"; the
   mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';"
 fi
 
+#create binds database for service
+if ! mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "use $BIND_NAME;"; then
+  echo "CREATE DATABASE $BIND_NAME"
+  mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $BIND_NAME CHARACTER SET utf8 COLLATE utf8_general_ci;"
+  mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $BIND_NAME.* TO '$DB_USER'@'%';"
+fi
+
 if [ ! -e .skip-db-init ]; then
   touch .skip-db-init
   echo "Running DB CMD: ./manage.py db upgrade"

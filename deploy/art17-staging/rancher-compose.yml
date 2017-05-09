@@ -2,11 +2,6 @@ version: '2'
 
 services:
 
-  # apache:
-  #   scale: 1
-  #   upgrade_strategy:
-  #     start_first: true
-
   art17-app:
     scale: 1
     upgrade_strategy:
