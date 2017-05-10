@@ -14,7 +14,9 @@ WORKDIR $WORK_DIR
 
 RUN mkdir $WORK_DIR/logs \
 	&& mkdir -p $DATA_DIR/maps \
-	&& mkdir -p $DATA_DIR/factsheets
+	&& mkdir -p $DATA_DIR/factsheets \
+	&& ln -s $DATA_DIR/maps $WORK_DIR/art17/static/maps \
+	&& ln -s $DATA_DIR/factsheets $WORK_DIR/art17/static/factsheets
 
 RUN pip install -U setuptools \
  && pip install -r requirements-dep.txt --trusted-host eggshop.eaudeweb.ro \

@@ -27,11 +27,6 @@ if ! mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "use $BIND_NAME;"; t
   mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $BIND_NAME.* TO '$DB_USER'@'%';"
 fi
 
-#create directory symlink /var/local/maps -> /var/local/art17/art17/static/maps
-if [ ! -d "/var/local/art17/art17/static/maps" && ! -L "/var/local/art17/art17/static/maps" ]; then
-  ln -s /var/local/maps /var/local/art17/art17/static/maps;
-fi
-
 if [ ! -e .skip-db-init ]; then
   touch .skip-db-init
   echo "Running DB CMD: ./manage.py db upgrade"
