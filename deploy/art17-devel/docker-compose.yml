@@ -43,7 +43,7 @@ services:
     - staticdata:/var/local/art17/art17/static:ro
 
   mysql:
-    image: mysql:latest
+    image: mysql:5.6
     ports:
     - "3306:3306"
     env_file:
@@ -75,6 +75,7 @@ services:
     - nginx:/etc/nginx/conf.d
     - mysqldata:/var/lib/mysql
     - maps:/var/local/maps
+
 volumes:
   apache:
     driver: local
