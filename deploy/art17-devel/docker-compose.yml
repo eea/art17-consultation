@@ -41,6 +41,8 @@ services:
     volumes:
     - nginx:/etc/nginx/conf.d
     - staticdata:/var/local/art17/art17/static:ro
+    - maps:/var/local/art17-data/maps:ro
+    - factsheets:/var/local/art17-data/factsheets:ro
 
   mysql:
     image: mysql:5.6
