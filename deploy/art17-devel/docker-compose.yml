@@ -26,8 +26,9 @@ services:
       TZ: Europe/Copenhagen
     volumes:
     - staticdata:/var/local/art17/art17/static
-    #- ../../art17/templates:/var/local/art17/art17/templates
-    #- ../../instance:/var/local/art17/instance
+    - maps:/var/local/art17-data/maps
+    - factsheets:/var/local/art17-data/factsheets
+    #- ../../art17:/var/local/art17/art17/
     #command: ["runserver", "-t", "0.0.0.0", "-p", "5000"]
     #command: /usr/bin/tail -f /dev/null
 
@@ -73,7 +74,7 @@ services:
     - apache:/usr/local/apache2/conf
     - nginx:/etc/nginx/conf.d
     - mysqldata:/var/lib/mysql
-
+    - maps:/var/local/maps
 volumes:
   apache:
     driver: local
@@ -82,4 +83,8 @@ volumes:
   staticdata:
     driver: local
   mysqldata:
+    driver: local
+  maps:
+    driver: local
+  factsheets:
     driver: local
