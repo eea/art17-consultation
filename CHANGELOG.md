@@ -1,8 +1,13 @@
 Changelog
 =========
 
-2.6 - (unreleased)
+2.7 - (unreleased)
 ------------------
+
+2.6 - (2017-05-10)
+------------------
+* Missing factsheets in dockerized article 17 si article 12
+  [chiridra refs #84975]
 
 2.5 - (2017-05-09)
 ------------------
