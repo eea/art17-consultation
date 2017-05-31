@@ -6,10 +6,11 @@ sandbox
 __pycache__
 env.ini
 env
-s
 .secret
 art17.env
 art17.devel.env
 art17.staging.env
 rsync.key
 .skip-db-init
+.DS_Store
+*.sql

@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+
+  art17-app:
+    image: eeacms/apache:latest
+    container_name: art17-app
+    ports:
+    - "5000:5000"
+    depends_on:
+    - mysql
+    env_file:
+    - ../art17.devel.env
+    environment:
+      TZ: Europe/Copenhagen
+    #volumes:
+    #- ../../art17:/var/local/art17/art17/
+    #command: /usr/bin/tail -f /dev/null
+    #command: ["runserver", "-t", "0.0.0.0", "-p", "5000"]
+
+  mysql:
+    image: mysql:5.6
+    container_name: art17-mysql
+    env_file:
+    - ../art17.devel.env
+    environment:
+      TZ: Europe/Copenhagen
+    volumes:
+    - mysqldata:/var/lib/mysql
+    command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+
+volumes:
+  mysqldata:
+    driver: local

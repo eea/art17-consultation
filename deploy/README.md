@@ -131,8 +131,17 @@ A minimal configuration file could be:
     DB_PASS=art17
     DB_HOST=mysql
     DB_NAME=art17
+    BIND_NAME=art17rp2_eu
 
-### 3.1. Local build
+    AUTH_ZOPE=False
+
+
+### 3.1. Local `docker-compose.yml` file
+
+    $ cd art17-consultation/deploy/art17-devel/
+    $ cp docker-compose.yml.example docker-compose.yml
+
+### 3.2. Local build
 
 To use a local build, run the following command:
 
@@ -143,28 +152,35 @@ and in docker-compose.yml use for art17 service:
 
     image: art17:devel
 
-### 3.2. Start stack
+### 3.3. Developing and debugging
 
-    $ cd art17-consultation/deploy/art17-devel/
+In order for your container to see the latest updates made to the code, you
+have to use a volume. Uncomment the following lines in `docker-compose.yml`:
+
+    #volumes:
+    #- ../../art17:/var/local/art17/art17/
+
+To debug the application, first override the command used by the image.
+Uncomment this line:
+
+    #command: /usr/bin/tail -f /dev/null
+
+After starting the stack (see 2.4 below), start the development server from
+inside the container. The execution will stop and wait for your commands every
+time it encounters a breakpoint in your code.
+
+    $ docker exec -it art17-app bash
+    $ ./manage.py runserver -t 0.0.0.0 -p 5000
+
+
+### 3.4. Start stack
+
+    $ cd art17-viewer/deploy/art17-devel/
     $ docker-compose up -d
-
-### 3.3. Configure _apache_ service
-
-Copy conf file and restart container
-
-    $ scp -P 2222 ../conf/apache.devel.conf root@localhost:/usr/local/apache2/conf/extra/vh-my-app.conf
-    $ docker-compose restart apache
-
-### 3.4. Configure _art17-static_ service
-
-Copy conf file and restart container
-
-    $ scp -P 2222 ../conf/static.conf root@localhost:/etc/nginx/conf.d/default.conf
-    $ docker-compose restart art17-static
 
 ### 3.5. View, check status and logs
 
-To use the application, open a browser/tab and got to http://localhost/.
+To use the application, open a browser/tab and got to http://localhost:5000/.
 
 Other command line useful commands:
 
@@ -178,7 +194,7 @@ If, for some reason, you want to completely delete the stack and its volumes:
 
     $ docker-compose stop
     $ docker-compose rm
-    $ docker volume rm art17_apache art17_mysqldata art17_nginx art17_staticdata
+    $ docker volume rm art17_mysqldata
 
 ### 3.6. _art17-app_ service
 
@@ -205,7 +221,7 @@ and after:
     $ docker-compose up -d art17-app
 
     # step into the art17-app container
-    $ docker exec -it art17devel_art17-app_1 bash
+    $ docker exec -it art17-app bash
 
 and from inside the container:
 
@@ -219,7 +235,7 @@ _Note: make sure you have set **DEBUG=True** in the art17.devel.env file._
 If you need to take a closer look at the MySQL database, you can do that like below:
 
     # step into the mysql container
-    $ docker exec -it art17devel_mysql_1 bash
+    $ docker exec -it art17-mysql bash
 
     # start mysql client
     $ mysql -u root -p
@@ -227,6 +243,31 @@ If you need to take a closer look at the MySQL database, you can do that like be
     # runn SQL commands
     mysql> use DB_NAME;
     mysql> show tables;
+
+To import old data, first copy the sql dumps to your mysql container:
+
+    $ docker cp art17.sql art17-mysql:/var/lib/mysql/
+
+    # step into the mysql container
+    $ docker exec -it art17-mysql bash
+
+    # start mysql interpreter
+    $ mysql -u art17 -p
+
+    # import data
+    mysql> use art17;
+    mysql> source /var/lib/mysql/art17.sql
+
+Do the same set of operations for `art17rp2_eu` database.
+
+### 3.8. Factsheets
+
+Create factsheets:
+
+    $ docker exec -it art17-app bash
+    $ ./manage.py factsheet genall [period_id]
+
+_Note: make sure you also have the development server running._
 
 ## Copyright and license
 
