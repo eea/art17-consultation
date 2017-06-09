@@ -65,7 +65,7 @@ def split_layout(header, footer):
 def load_zope_template():
     zope_url = flask.current_app.config['LAYOUT_ZOPE_URL']
     auth_header = flask.request.headers.get('Authorization')
-    resp = requests.get(zope_url, headers={'Authorization': auth_header})
+    resp = requests.get(zope_url, headers={'Authorization': auth_header}, verify=False)
 
     if resp.status_code == 200:
         resp_json = resp.json()

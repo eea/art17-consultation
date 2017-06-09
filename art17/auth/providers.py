@@ -79,6 +79,7 @@ class ZopeAuthProvider(object):
         resp = requests.get(
             self.whoami_url,
             headers={'Authorization': auth_header},
+            verify=False
         )
         resp_data = resp.json()
         if resp_data['user_id']:
