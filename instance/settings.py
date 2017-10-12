@@ -59,3 +59,10 @@ MAPS_STATIC = getenv('MAPS_STATIC', default='maps/')
 DEMO_SERVER = getenv('DEMO_SERVER', type=bool, default=True)
 
 SCRIPT_NAME = getenv('SCRIPT_NAME', default='/article17')
+
+FACTSHEETS_REMOTE_URLS = {
+    "2006": "https://forum.eionet.europa.eu/habitat-art17report/library/2001-2006-reporting/datasheets",
+    "2012": "https://forum.eionet.europa.eu/habitat-art17report/library/2007-2012-reporting/factsheets"
+}
+
+FACTSHEETS_DOWNLOAD_URL = "download/en/1"

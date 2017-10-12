@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import urllib
+import requests
 from path import path
 
 from sqlalchemy import and_
@@ -11,6 +12,7 @@ from flask.ext.script import Manager
 from flask.views import MethodView
 
 from art17.common import admin_perm
+from art17.definitions import REMOTE_FOLDER_2006
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import db, Wiki, WikiChange, Dataset
 from art17.pdf import PdfRenderer
@@ -294,10 +296,22 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     header_endpoint = 'factsheet.species-header'
 
     @classmethod
-    def get_pdf_file_name(cls, assessment):
+    def get_remote_file_name(cls, assessment):
+        return assessment.subject
+
+    @classmethod
+    def get_pdf_file_name(cls, assessment, remote=False):
         file_name = '{0}/{1}'.format(slugify(assessment.group),
                                      slugify(assessment.subject))
         return file_name
+
+    @classmethod
+    def get_pdf_remote_file_name_2006(cls, assessment):
+        group = REMOTE_FOLDER_2006.get(slugify(assessment.group), '')
+        subject = assessment.remote_subject_name or slugify(assessment.subject,
+                                                            '_')
+        file_name = '{0}/{1}'.format(group, subject)
+        return file_name + 'pdf'
 
     def _get_pdf_file_name(self):
         return self.get_pdf_file_name(self.assessment)
@@ -366,7 +380,34 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     header_endpoint = 'factsheet.habitat-header'
 
     @classmethod
-    def get_pdf_file_name(cls, assessment):
+    def get_remote_file_name(cls, assessment):
+        name = (
+            (assessment.lu_factsheets and
+             assessment.lu_factsheets.nameheader)
+            or assessment.subject
+        )
+        file_name = u'{0}-{1}'.format(assessment.code, name)
+        return file_name
+
+    @classmethod
+    def get_pdf_file_name(cls, assessment, remote=False):
+        name = (
+            (assessment.lu_factsheets and
+             assessment.lu_factsheets.nameheader)
+            or assessment.subject
+        )
+        if remote:
+            name = assessment.remote_subject_name or name
+        group = (
+            (assessment.lu_factsheets and assessment.lu_factsheets.group)
+            or (assessment.habitat and assessment.habitat.group)
+            or assessment.group
+        )
+        file_name = u'{0}-{1}'.format(assessment.code, name)
+        return u'{0}/{1}'.format(slugify(group), slugify(file_name))
+
+    @classmethod
+    def get_pdf_remote_file_name_2006(cls, assessment):
         name = (
             (assessment.lu_factsheets and
              assessment.lu_factsheets.nameheader)
@@ -377,8 +418,11 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
             or (assessment.habitat and assessment.habitat.group)
             or assessment.group
         )
-        file_name = u'{0}-{1}'.format(assessment.code, name)
-        return u'{0}/{1}'.format(slugify(group), slugify(file_name))
+        group = REMOTE_FOLDER_2006.get(slugify(group), '')
+        name = assessment.remote_subject_name or name
+        file_name = u'{0}-{1}'.format(assessment.code, slugify(name, '_'))
+        file_name = '{0}/{1}'.format(group, file_name)
+        return file_name + 'pdf'
 
     def _get_pdf_file_name(self):
         return self.get_pdf_file_name(self.assessment)
@@ -458,6 +502,7 @@ def generate_factsheet_url(category, subject, period):
         model_cls = SpeciesMixin.model_cls
         fs_cls = SpeciesFactSheet
     elif category == 'habitat':
+        category = 'habitats'   # used for remote url
         model_cls = HabitatMixin.model_cls
         fs_cls = HabitatFactSheet
     else:
@@ -470,6 +515,33 @@ def generate_factsheet_url(category, subject, period):
     )
     if not assessment:
         return None
+
+    base_remote_url = app.config['FACTSHEETS_REMOTE_URLS']
+    dataset = Dataset.query.get(period)
+    base_remote_url = base_remote_url[dataset.schema]
+
+    factsheets_download_url = app.config['FACTSHEETS_DOWNLOAD_URL']
+    if dataset.schema == '2012':
+        remote_url = "/".join([base_remote_url,
+                               category,
+                               fs_cls.get_pdf_file_name(assessment, remote=True),
+                               factsheets_download_url,
+                               slugify(fs_cls.get_remote_file_name(assessment)) + '.pdf'])
+
+        resp = requests.get(remote_url)
+        if resp.status_code == 200:
+            return remote_url
+    elif dataset.schema == '2006':
+        remote_url = "/".join([base_remote_url,
+                               category,
+                               fs_cls.get_pdf_remote_file_name_2006(assessment),
+                               factsheets_download_url,
+                               fs_cls.get_remote_file_name(assessment) + '.pdf'
+                               ])
+        resp = requests.get(remote_url)
+        if resp.status_code == 200:
+            return remote_url
+
     pdf_path = str(
         path(app.config['PDF_DESTINATION'])
         / fs_cls.get_pdf_file_name(assessment)

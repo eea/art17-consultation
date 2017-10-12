@@ -40,3 +40,10 @@ MAPS_STATIC = 'maps'
 
 # Maps file format
 MAPS_FORMAT = 'map0{which}{type}/{code}_0{which}_{type}.png'
+
+# FACTSHEETS_REMOTE_URLS = {
+#     "2006": "https://forum.eionet.europa.eu/habitat-art17report/library/2001-2006-reporting/datasheets",
+#     "2012": "https://forum.eionet.europa.eu/habitat-art17report/library/2007-2012-reporting/factsheets"
+# }
+
+# FACTSHEETS_DOWNLOAD_URL = "download/en/1"

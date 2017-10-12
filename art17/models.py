@@ -232,6 +232,7 @@ class EtcDataHabitattypeRegion(Base):
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
+    remote_subject_name = Column(String(150), nullable=True)
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -442,6 +443,7 @@ class EtcDataSpeciesRegion(Base):
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
+    remote_subject_name = Column(String(150), nullable=True)
 
     dataset_id = Column(
         'ext_dataset_id',
