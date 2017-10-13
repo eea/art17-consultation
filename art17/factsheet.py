@@ -308,7 +308,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     @classmethod
     def get_pdf_remote_file_name_2006(cls, assessment):
         group = REMOTE_FOLDER_2006.get(slugify(assessment.group), '')
-        subject = assessment.remote_subject_name or slugify(assessment.subject,
+        subject = assessment.remote_subject_name_2006 or slugify(assessment.subject,
                                                             '_')
         file_name = '{0}/{1}'.format(group, subject)
         return file_name + 'pdf'
@@ -397,7 +397,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
             or assessment.subject
         )
         if remote:
-            name = assessment.remote_subject_name or name
+            name = assessment.remote_subject_name_2012 or name
         group = (
             (assessment.lu_factsheets and assessment.lu_factsheets.group)
             or (assessment.habitat and assessment.habitat.group)
@@ -419,7 +419,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
             or assessment.group
         )
         group = REMOTE_FOLDER_2006.get(slugify(group), '')
-        name = assessment.remote_subject_name or name
+        name = assessment.remote_subject_name_2006 or name
         file_name = u'{0}-{1}'.format(assessment.code, slugify(name, '_'))
         file_name = '{0}/{1}'.format(group, file_name)
         return file_name + 'pdf'
