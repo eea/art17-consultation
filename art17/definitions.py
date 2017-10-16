@@ -10,8 +10,15 @@ REMOTE_FOLDER_2006 = {
     "rocky_habitats/rocky_habitats": "/rocky_habitats",
     "sclerophyllous_scrub": "sclerophyllous_scrub/sclerophyllous_scrub",
     "amphibians_reptiles": "amphibians_reptiles/amphibians_reptiles",
+    "amphibians": "amphibians_reptiles/amphibians_reptiles",
+    "reptiles": "amphibians_reptiles/amphibians_reptiles",
     "fish": "fish/fish",
     "invertebrates": "invertebrates/invertebrates",
     "mammals": "mammals/mammals",
-    "plants": "plants/plants"
+    "plants": "plants/plants",
+    "arthropods": "invertebrates/invertebrates",
+    "non-vascular-plants": "plants/plants",
+    "molluscs": "invertebrates/invertebrates",
+    "others": "invertebrates/invertebrates",
+    "vascular-plants": "plants/plants",
 }

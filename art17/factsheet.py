@@ -308,10 +308,12 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     @classmethod
     def get_pdf_remote_file_name_2006(cls, assessment):
         group = REMOTE_FOLDER_2006.get(slugify(assessment.group), '')
-        subject = assessment.remote_subject_name_2006 or slugify(assessment.subject,
-                                                            '_')
+        subject = assessment.remote_subject_name_2006 or slugify(
+            assessment.subject,
+            '_'
+        )
         file_name = '{0}/{1}'.format(group, subject)
-        return file_name + 'pdf'
+        return file_name
 
     def _get_pdf_file_name(self):
         return self.get_pdf_file_name(self.assessment)
