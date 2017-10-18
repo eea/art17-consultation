@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import urllib
+import requests
 from path import path
 
 from sqlalchemy import and_
@@ -470,6 +471,19 @@ def generate_factsheet_url(category, subject, period):
     )
     if not assessment:
         return None
+
+    base_remote_url = app.config.get('FACTSHEETS_REMOTE_URLS')
+    dataset = Dataset.query.get(period)
+
+    if dataset.schema == '2012':
+        remote_url = base_remote_url + assessment.remote_url_2012
+    else:
+        remote_url = base_remote_url + assessment.remote_url_2006
+
+    resp = requests.get(remote_url)
+    if resp.status_code == 200:
+        return remote_url
+
     pdf_path = str(
         path(app.config['PDF_DESTINATION'])
         / fs_cls.get_pdf_file_name(assessment)

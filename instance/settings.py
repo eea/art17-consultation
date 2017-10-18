@@ -59,3 +59,5 @@ MAPS_STATIC = getenv('MAPS_STATIC', default='maps/')
 DEMO_SERVER = getenv('DEMO_SERVER', type=bool, default=True)
 
 SCRIPT_NAME = getenv('SCRIPT_NAME', default='/article17')
+
+FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu/"
