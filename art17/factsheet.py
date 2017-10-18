@@ -472,17 +472,19 @@ def generate_factsheet_url(category, subject, period):
     if not assessment:
         return None
 
-    base_remote_url = app.config.get('FACTSHEETS_REMOTE_URLS')
+    base_remote_url = app.config.get('FACTSHEETS_REMOTE_URLS', '')
     dataset = Dataset.query.get(period)
 
-    if dataset.schema == '2012':
-        remote_url = base_remote_url + assessment.remote_url_2012
-    else:
-        remote_url = base_remote_url + assessment.remote_url_2006
-
-    resp = requests.get(remote_url)
-    if resp.status_code == 200:
-        return remote_url
+    if dataset:
+        if dataset.schema == '2012':
+            assessment_url = assessment.remote_url_2012 or ''
+        else:
+            assessment_url = assessment.remote_url_2006 or ''
+        remote_url = base_remote_url + assessment_url
+        if remote_url:
+            resp = requests.get(remote_url)
+            if resp.status_code == 200:
+                return remote_url
 
     pdf_path = str(
         path(app.config['PDF_DESTINATION'])
