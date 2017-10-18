@@ -1,5 +1,6 @@
 # coding: utf-8
 import argparse
+import os
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer,\
     LargeBinary, SmallInteger, String, Table, Text, Boolean
 from sqlalchemy.orm import relationship
@@ -232,6 +233,8 @@ class EtcDataHabitattypeRegion(Base):
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
+    remote_url_2006 = Column(String(150), nullable=True)
+    remote_url_2012 = Column(String(150), nullable=True)
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -442,6 +445,8 @@ class EtcDataSpeciesRegion(Base):
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
+    remote_url_2006 = Column(String(150), nullable=True)
+    remote_url_2012 = Column(String(150), nullable=True)
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -1346,3 +1351,28 @@ def upgrade(revision='head'):
 @db_manager.command
 def downgrade(revision):
     return alembic(['downgrade', revision])
+
+
+def get_fixture_objects(file):
+    with open(file) as f:
+        import json
+        return json.loads(f.read())
+
+
+@db_manager.command
+def loaddata(fixture):
+    session = db.session
+    if not os.path.isfile(fixture):
+        print("Please provide a fixture file name")
+    else:
+        objects = get_fixture_objects(fixture)
+        for object in objects:
+            kwargs = {
+                object['filter_field']: object[object['filter_field']]
+            }
+            database_objects = eval(object['model']).query.filter_by(**kwargs)
+            for database_object in database_objects:
+                for (field, value) in object['fields'].iteritems():
+                    setattr(database_object, field, value)
+                session.add(database_object)
+        session.commit()

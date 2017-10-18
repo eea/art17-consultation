@@ -14,3 +14,6 @@ rsync.key
 .skip-db-init
 .DS_Store
 *.sql
+docker/app.env
+docker/db.env
+.idea
