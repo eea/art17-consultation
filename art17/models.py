@@ -233,8 +233,8 @@ class EtcDataHabitattypeRegion(Base):
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
-    remote_url_2006 = Column(String(150), nullable=True)
-    remote_url_2012 = Column(String(150), nullable=True)
+    remote_url_2006 = Column(String(350), nullable=True)
+    remote_url_2012 = Column(String(350), nullable=True)
 
     dataset_id = Column(
         'ext_dataset_id',
@@ -445,8 +445,8 @@ class EtcDataSpeciesRegion(Base):
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
-    remote_url_2006 = Column(String(150), nullable=True)
-    remote_url_2012 = Column(String(150), nullable=True)
+    remote_url_2006 = Column(String(350), nullable=True)
+    remote_url_2012 = Column(String(350), nullable=True)
 
     dataset_id = Column(
         'ext_dataset_id',

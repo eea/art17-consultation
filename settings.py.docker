@@ -43,4 +43,4 @@ SECRET_KEY = 'secret'
 # PDF_DESTINATION = './instance/pdf'
 # PDF_URL_PREFIX = 'http://localhost:5000'
 
-# FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu/"
+# FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu"
