@@ -3,183 +3,51 @@ Art 17 Consultation Tool http://bd.eionet.europa.eu/article17/reports2012/
 
 .. contents ::
 
-Project Name
-------------
-The Project Name is Article 17 Consultation.
+Prerequisites
+=============
 
-Prerequisites - System packages
--------------------------------
+1. Install `Docker`_
 
-These packages should be installed as superuser (root).
+.. _`Docker`: https://docs.docker.com/engine/installation/
+2. Install `Docker Compose`_
 
-Debian based systems
-~~~~~~~~~~~~~~~~~~~~
-Install these before setting up an environment::
+.. _`Docker Compose`: https://docs.docker.com/compose/install/
 
-    apt-get install python-setuptools python-dev libmysqlclient-dev \
-    libldap2-dev python-virtualenv mysql-server git
+Installing the application
+==========================
 
+1. Get the source code::
 
-RHEL based systems
-~~~~~~~~~~~~~~~~~~
+        $ git clone https://github.com/eea/art17-consultation.git
+        $ cd art17-consultation
 
-Install Python2.7 with PUIAS: https://gist.github.com/nico4/9616638
+2. Customize env files::
 
-Run these commands::
+        $ cp docker/app.env.example docker/app.env
+        $ cp docker/db.env.example docker/db.env
 
-    curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python2.7 -
+3. Customize docker orchestration::
 
-    pip2.7 install virtualenv
+        $ cp docker-compose.override.yml.example docker-compose.override.yml
 
-    yum install mysql-server mysql git openldap-devel mysql-devel
+4. Start stack, all services should be "Up" ::
 
+        $ docker-compose up -d
+        $ docker-compose ps
 
-Product directory
------------------
+Upgrading the application
+=========================
 
-Create the product directory::
+1. Get the latest version of source code::
 
-    mkdir -p /var/local/art17
-    mkdir /var/local/art17/logs
+        $ cd art17-consultation
+        $ git pull origin master
 
-Create a new user::
+2. Update the application stack, all services should be "Up" ::
 
-    adduser edw
+        $ docker-compose up -d
+        $ docker-compose ps
 
-Change the product directory's owner::
-
-    chown edw:edw /var/local/art17 -R
-
-
-
-Install dependencies
---------------------
-We should use Virtualenv for isolated environments. The following commands will
-be run as an unprivileged user in the product directory::
-
-    su edw
-    cd /var/local/art17
-
-1. Clone the repository::
-
-    git clone https://github.com/eea/art17-consultation.git -o origin flask
-    cd flask
-
-2.1. Create & activate a virtual environment::
-
-    virtualenv --no-site-packages sandbox
-    echo '*' > sandbox/.gitignore
-    source sandbox/bin/activate
-
-2.2 Make sure setuptools >= 0.8 is installed::
-
-    pip install -U setuptools
-
-3. Install dependencies::
-
-    pip install -r requirements-dep.txt
-
-4. Create a configuration file::
-
-    mkdir -p instance
-    cp settings.py.example instance/settings.py
-
-    # Follow instructions in instance/settings.py to adapt it to your needs.
-
-6. Set up the MySQL database::
-
-    # Replace [user] and [password] with your MySQL credentials and [db_name] with the name of the database:
-    mysql -u[user] -p[password] -e 'create database [db_name] CHARACTER SET utf8 COLLATE utf8_general_ci;'
-    ./manage.py db upgrade
-
-7. Import sql data dump in your art17 database, see "data import" below.
-
-8. Create your user and assign admin role to it::
-
-    # for local user
-    ./manage.py user create -e user_email -i user_id -p <password>
-    # for Eionet user
-    ./manage.py user create -i user_id --ldap
-    # make it admin
-    ./manage.py role add -u user_id -r admin
-
-
-Build production
-----------------
-
-Setup the production environment like this (using an unprivileged user)::
-
-    # install dependencies, see above
-    cd /var/local/art17
-    source sandbox/bin/activate
-
-Configure supervisord and set the WSGI server port (by default it is 5000)::
-
-    cp flask/supervisord.conf.example supervisord.conf
-    vim supervisord.conf
-    supervisorctl reload 1>/dev/null || ./bin/supervisord
-
-At this stage, the application is up and running. You should also configure:
-
-    * firewall policy
-    * public webserver (see vhost.conf.example for an example)
-    * start supervisord with the system (see init-svisor.example as an example
-      init script)
-
-
-Build staging
--------------
-
-To setup a staging environment, follow the same steps as above. Create and use
-a different database (for example ``art17staging``).
-
-Configure supervisord and set the WSGI server port (a different one from the
-production, for example 5001)::
-
-    cd /var/local/art17staging
-    source sandbox/bin/activate
-    cp flask/supervisord.conf.example supervisord.conf
-    vim supervisord.conf
-    supervisorctl reload 1>/dev/null || ./bin/supervisord
-
-
-Configuration
--------------
-Details about configurable settings can be found in `settings.py.example`.
-
-Configuring the Zope API
-~~~~~~~~~~~~~~~~~~~~~~~~
-Some functionality (authentication and layout template) is provided by a
-Zope server. Here is how to configure the app to fetch this information.
-
-First, the Zope server needs a few scripts in its object tree. Create a
-folder, for example ``art17_api``, and create `Script (Python)` objects
-inside, using the files in the `zope_api` folder of this repository.
-
-Then, add the following configuration variables to the app, using the
-correct URLs for the Zope server::
-
-    AUTH_ZOPE = True
-    AUTH_ZOPE_WHOAMI_URL = 'http://zope.server.url/art17_api/whoami'
-    LAYOUT_ZOPE_URL = 'http://zope.server.url/art17_api/layout'
-
-
-Data Import
------------
-Initially the application's database is empty. We need to import data
-from a dump (the old 2006 app's database or the new reporting data).
-First we need to load this dump into a separate MySQL databse::
-
-    mysql -e 'create database art17_2006 CHARACTER SET utf8 COLLATE utf8_general_ci;'
-    mysql art17_2006 < art17_2006.sql
-
-Then we can import this data into our app's database. Make sure to
-specify the right schema version, in this case '2006'::
-
-    ./manage.py dataset import -d import-from-2006 -i 'mysql://user:pass@localhost/art17_2006' -s 2006
-
-An optional argument ``-f`` (fallback) exists. When there are no records to import
-in a table, it copies the entire table from the specified dataset.
 
 Development hints
 =================
@@ -244,6 +112,43 @@ If you don't have this version installed, add it to your virtualenv.
          dpkg-deb -x wkhtmltox-0.12.1_<your_distro>.deb sandbox
          cp sandbox/usr/local/bin/wkhtmltopdf sandbox/bin
 
+Development instructions using Docker
+-------------------------------------
+
+Make sure you set DEBUG=True in app.env to reload the changes.
+
+* Start stack, all services should be "Up" ::
+
+        $ docker-compose up -d
+        $ docker-compose ps
+
+* Check application logs::
+
+        $ docker-compose app
+
+* When the image is modified you should update the stack::
+
+        $ docker-compose up -d --build
+
+* Delete the containers and the volumes with::
+
+        $ docker-compose down -v
+
+Debugging
+=========
+
+* Please make sure that `DEBUG=True` in `app.env` file.
+
+* Update docker-compose.override.yml file `app` section with the following so that `docker-entrypoint.sh` is not executed::
+
+        entrypoint: ["/usr/bin/tail", "-f", "/dev/null"]
+
+* Attach to docker container and start the server in debug mode::
+
+        $ docker exec -it art17consultation_app_1 bash
+        # ./manage.py runserver -t 0.0.0.0 -p 5000
+
+* See it in action: http://localhost:5000
 
 Contacts
 ========
