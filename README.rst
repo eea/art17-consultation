@@ -35,6 +35,53 @@ Installing the application
         $ docker-compose up -d
         $ docker-compose ps
 
+* Create your user and assign admin role to it::
+
+        # for local user
+        ./manage.py user create -e user_email -i user_id -p <password>
+        # for Eionet user
+        ./manage.py user create -i user_id --ldap
+        # make it admin
+        ./manage.py role add -u user_id -r admin
+
+Configuration
+-------------
+Details about configurable settings can be found in `settings.py.example`.
+
+Configuring the Zope API
+~~~~~~~~~~~~~~~~~~~~~~~~
+Some functionality (authentication and layout template) is provided by a
+Zope server. Here is how to configure the app to fetch this information.
+
+First, the Zope server needs a few scripts in its object tree. Create a
+folder, for example ``art17_api``, and create `Script (Python)` objects
+inside, using the files in the `zope_api` folder of this repository.
+
+Then, add the following configuration variables to the app, using the
+correct URLs for the Zope server::
+
+    AUTH_ZOPE = True
+    AUTH_ZOPE_WHOAMI_URL = 'http://zope.server.url/art17_api/whoami'
+    LAYOUT_ZOPE_URL = 'http://zope.server.url/art17_api/layout'
+
+
+Data Import
+-----------
+Initially the application's database is empty. We need to import data
+from a dump (the old 2006 app's database or the new reporting data).
+First we need to load this dump into a separate MySQL databse::
+
+    mysql -e 'create database art17_2006 CHARACTER SET utf8 COLLATE utf8_general_ci;'
+    mysql art17_2006 < art17_2006.sql
+
+Then we can import this data into our app's database. Make sure to
+specify the right schema version, in this case '2006'::
+
+    ./manage.py dataset import -d import-from-2006 -i 'mysql://user:pass@localhost/art17_2006' -s 2006
+
+An optional argument ``-f`` (fallback) exists. When there are no records to import
+in a table, it copies the entire table from the specified dataset.
+
 Upgrading the application
 =========================
 
