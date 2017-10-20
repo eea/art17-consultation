@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+
+  app:
+    image: eeacms/art17-consultation:latest
+    depends_on:
+    - db
+    env_file:
+    - ./docker/db.env
+    - ./docker/app.env
+    volumes:
+    - ./art17:/var/local/art17/art17
+    - ./instance:/var/local/art17/instance
+    - ./alembic:/var/local/art17/alembic
+
+  db:
+    image: mariadb:5.5
+    env_file:
+    - ./docker/db.env
