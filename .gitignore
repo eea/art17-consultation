@@ -17,3 +17,4 @@ rsync.key
 docker/app.env
 docker/db.env
 .idea
+docker-compose.override.yml
