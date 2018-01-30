@@ -42,3 +42,5 @@ SECRET_KEY = 'secret'
 # Destination for PDF reports in the Factsheet module
 # PDF_DESTINATION = './instance/pdf'
 # PDF_URL_PREFIX = 'http://localhost:5000'
+
+# FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu"
