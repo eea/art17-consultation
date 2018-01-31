@@ -1,5 +1,5 @@
 FROM python:2.7-slim
-LABEL maintainer="EEA: IDM2 C-TEAM" <eea-edw-c-team-alerts@googlegroups.com>
+LABEL maintainer="EEA: IDM2 C-TEAM <eea-edw-c-team-alerts@googlegroups.com>"
 
 ENV WORK_DIR=/var/local/art17
 ENV DATA_DIR=/var/local/art17-data
