@@ -253,13 +253,15 @@ class EtcDataHabitattypeRegion(Base):
 
     habitattype_type_details = relationship(
         'EtcDicSpeciesType',
-        primaryjoin='EtcDataHabitattypeRegion.habitattype_type==EtcDicSpeciesType.abbrev',
+        primaryjoin=
+        'EtcDataHabitattypeRegion.habitattype_type==EtcDicSpeciesType.abbrev',
         foreign_keys=habitattype_type,
     )
 
     lu_factsheets = relationship(
         'LuHdHabitatFactsheet',
-        primaryjoin='LuHdHabitatFactsheet.habcode==EtcDataHabitattypeRegion.subject',
+        primaryjoin=
+        'LuHdHabitatFactsheet.habcode==EtcDataHabitattypeRegion.subject',
         foreign_keys=[habitatcode]
     )
 

@@ -44,7 +44,7 @@ def can_view_details():
     if not current_user.is_authenticated():
         return False
 
-    #return current_user.has_role('etc') or current_user.has_role('admin')
+    # return current_user.has_role('etc') or current_user.has_role('admin')
     return current_user.has_role('admin')
 
 
@@ -215,14 +215,18 @@ class Progress(views.View):
                                 output['other_decisions'].append(decision)
                             else:
                                 output = save_decision(output)
-                                output = save_conclusion(output, 'A', option, conclusion_type)
+                                output = save_conclusion(output, 'A', option,
+                                                         conclusion_type)
                         else:
-                            output = save_conclusion(output, 'A', option, conclusion_type)
+                            output = save_conclusion(output, 'A', option,
+                                                     conclusion_type)
                     elif decision:
-                        if output['main_decision'] != '' and user_is_expert(output['user_id']):
+                        if output['main_decision'] != '' and user_is_expert(
+                                output['user_id']):
                             output['other_decisions'].append(decision)
                         else:
-                            output = save_conclusion(output, decision, option, conclusion_type)
+                            output = save_conclusion(output, decision, option,
+                                                     conclusion_type)
         if output['main_decision']:
             presence = self.process_presence(presence_info)
             output['title'] = self.process_title(
@@ -474,11 +478,13 @@ progress.add_url_rule('/habitat/progress/compare/',
                       view_func=ComparisonView.as_view('habitat-comparison',
                                                        mixin=HabitatMixin))
 
+
 @progress.route('/species/progress/assessors', endpoint='species-assessors')
 def species_assessors():
     data = SpeciesMixin.get_assessors(
         request.args.get('period'), request.args.get('group'))
     return jsonify(data)
+
 
 @progress.route('/habitat/progress/assessors', endpoint='habitat-assessors')
 def species_assessors():

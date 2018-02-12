@@ -85,79 +85,79 @@ def dataset_app(app):
 
 @pytest.mark.parametrize(
     "url, params, expected", [
-    # Species
-    # get_range_conclusion_value
-    ('/species/summary/',
-    {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 10"'),
-    ('/species/summary/',
-    {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 20"'),
-    # get_population_conclusion_value
-    ('/species/summary/',
-    {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 30"'),
-    ('/species/summary/',
-    {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 40"'),
-    # get_future_conclusion_value
-    ('/species/summary/',
-    {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 50"'),
-    ('/species/summary/',
-    {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 60"'),
-    # get_habitat_conclusion_value
-    ('/species/summary/',
-    {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 70"'),
-    ('/species/summary/',
-    {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 80"'),
-    # get_asssesm_conclusion_value
-    ('/species/summary/',
-    {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 90"'),
-    ('/species/summary/',
-    {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
-    'title=": 100"'),
+        # Species
+        #  get_range_conclusion_value
+        ('/species/summary/',
+         {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 10"'),
+        ('/species/summary/',
+         {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 20"'),
+        # get_population_conclusion_value
+        ('/species/summary/',
+         {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 30"'),
+        ('/species/summary/',
+         {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 40"'),
+        # get_future_conclusion_value
+        ('/species/summary/',
+         {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 50"'),
+        ('/species/summary/',
+         {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 60"'),
+        # get_habitat_conclusion_value
+        ('/species/summary/',
+         {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 70"'),
+        ('/species/summary/',
+         {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 80"'),
+        # get_asssesm_conclusion_value
+        ('/species/summary/',
+         {'period': 1, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 90"'),
+        ('/species/summary/',
+         {'period': 2, 'subject': CANIS_LUPUS, 'region': 'ALP'},
+         'title=": 100"'),
 
-    # Habitats
-    # get_range_conclusion_value
-    ('/habitat/summary/',
-    {'period': 1, 'subject': 110, 'region': 'ALP'},
-    'title=": 1010"'),
-    ('/habitat/summary/',
-    {'period': 2, 'subject': 110, 'region': 'ALP'},
-    'title=": 1020"'),
-    # get_coverage_conclusion_value
-    ('/habitat/summary/',
-    {'period': 1, 'subject': 110, 'region': 'ALP'},
-    'title=": 1030"'),
-    ('/habitat/summary/',
-    {'period': 2, 'subject': 110, 'region': 'ALP'},
-    'title=": 1040"'),
-    # percentage_structure
-    ('/habitat/summary/',
-    {'period': 1, 'subject': 110, 'region': 'ALP'},
-    'title=": 1050"'),
-    ('/habitat/summary/',
-    {'period': 2, 'subject': 110, 'region': 'ALP'},
-    'title=": 1060"'),
-    # percentage_future
-    ('/habitat/summary/',
-    {'period': 1, 'subject': 110, 'region': 'ALP'},
-    'title=": 1070"'),
-    ('/habitat/summary/',
-    {'period': 2, 'subject': 110, 'region': 'ALP'},
-    'title=": 1080"'),
-    # assessment
-    ('/habitat/summary/',
-    {'period': 1, 'subject': 110, 'region': 'ALP'},
-    'title=": 1090"'),
-    ('/habitat/summary/',
-    {'period': 2, 'subject': 110, 'region': 'ALP'},
-    'title=": 1100"'),
+        # Habitats
+        # get_range_conclusion_value
+        ('/habitat/summary/',
+         {'period': 1, 'subject': 110, 'region': 'ALP'},
+         'title=": 1010"'),
+        ('/habitat/summary/',
+         {'period': 2, 'subject': 110, 'region': 'ALP'},
+         'title=": 1020"'),
+        # get_coverage_conclusion_value
+        ('/habitat/summary/',
+         {'period': 1, 'subject': 110, 'region': 'ALP'},
+         'title=": 1030"'),
+        ('/habitat/summary/',
+         {'period': 2, 'subject': 110, 'region': 'ALP'},
+         'title=": 1040"'),
+        # percentage_structure
+        ('/habitat/summary/',
+         {'period': 1, 'subject': 110, 'region': 'ALP'},
+         'title=": 1050"'),
+        ('/habitat/summary/',
+         {'period': 2, 'subject': 110, 'region': 'ALP'},
+         'title=": 1060"'),
+        # percentage_future
+        ('/habitat/summary/',
+         {'period': 1, 'subject': 110, 'region': 'ALP'},
+         'title=": 1070"'),
+        ('/habitat/summary/',
+         {'period': 2, 'subject': 110, 'region': 'ALP'},
+         'title=": 1080"'),
+        # assessment
+        ('/habitat/summary/',
+         {'period': 1, 'subject': 110, 'region': 'ALP'},
+         'title=": 1090"'),
+        ('/habitat/summary/',
+         {'period': 2, 'subject': 110, 'region': 'ALP'},
+         'title=": 1100"'),
     ])
 def test_species_conclusion_values(client, dataset_app, url, params, expected):
     result = client.get(*get_request_params('get', [url, params]))

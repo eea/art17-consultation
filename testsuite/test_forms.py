@@ -7,7 +7,7 @@ from art17.forms import (
     NOT_NUMERIC_VALUES,
     EMPTY_FORM,
 )
-from art17.models import db, EtcDicMethod
+from art17.models import db
 from .factories import DatasetFactory, EtcDicMethodFactory
 
 

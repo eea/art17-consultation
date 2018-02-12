@@ -1,48 +1,40 @@
 import pytest
 
 from art17.models import db
-from .factories import (
-    EtcDataSpeciesRegionFactory,
-    SpeciesManualAssessmentFactory,
-    EtcDataSpeciesAutomaticAssessmentFactory,
-    EtcDicBiogeoregFactory,
-    EtcDataHabitattypeRegionFactory,
-    EtcDataHabitattypeAutomaticAssessmentFactory,
-    HabitattypesManualAssessmentsFactory,
-    EtcDicHdHabitat, EtcDicMethodFactory)
+from . import factories
 
 
 @pytest.fixture(autouse=True)
 def setup(app):
-    EtcDataSpeciesRegionFactory(
+    factories.EtcDataSpeciesRegionFactory(
         group='Mammals',
         assesment_speciesname='Capra ibex',
         speciesname='Capra ibex',
         range_surface_area=12530)
-    SpeciesManualAssessmentFactory(
+    factories.SpeciesManualAssessmentFactory(
         assesment_speciesname='Capra ibex',
         range_surface_area=19850,
         region='ALP',
         method_range='2GD',
         conclusion_range='U1',
         decision='OK')
-    EtcDataSpeciesAutomaticAssessmentFactory(
+    factories.EtcDataSpeciesAutomaticAssessmentFactory(
         assesment_speciesname='Capra ibex',
         assessment_method='1',
         range_surface_area=19850,
         region='ALP',
     )
-    EtcDicBiogeoregFactory()
-    EtcDataHabitattypeRegionFactory(
+    factories.EtcDicBiogeoregFactory()
+    factories.EtcDataHabitattypeRegionFactory(
         range_surface_area=1283,
         habitatcode=1110)
-    EtcDataHabitattypeAutomaticAssessmentFactory(
+    factories.EtcDataHabitattypeAutomaticAssessmentFactory(
         range_surface_area=1283,
         assessment_method='1',
         habitatcode=1110,
         region='ALP',
     )
-    HabitattypesManualAssessmentsFactory(
+    factories.HabitattypesManualAssessmentsFactory(
         range_surface_area=1283,
         habitatcode=1110,
         method_range='2XA',
@@ -50,8 +42,8 @@ def setup(app):
         decision='OK',
         region='ALP',
     )
-    EtcDicHdHabitat()
-    EtcDicMethodFactory()
+    factories.EtcDicHdHabitat()
+    factories.EtcDicMethodFactory()
     db.session.commit()
 
 

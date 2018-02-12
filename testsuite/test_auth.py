@@ -32,8 +32,6 @@ def test_identity_is_set_from_zope_whoami(app, zope_auth, client):
 
 
 def test_self_registration_flow(app, zope_auth, client, outbox, ldap_user_info):
-    from art17.models import RegisteredUser
-    from art17.auth.providers import set_user
     from .factories import DatasetFactory
 
     _set_config(admin_email='admin@example.com')
@@ -164,13 +162,8 @@ def test_admin_creates_ldap(app, zope_auth, client, outbox, ldap_user_info):
     assert '"foo"' in message.body
 
 
-def test_ldap_account_activation_flow(
-        app,
-        zope_auth,
-        client,
-        outbox,
-        ldap_user_info,
-):
+def test_ldap_account_activation_flow(app, zope_auth, client, outbox,
+                                      ldap_user_info):
     from art17.auth.providers import set_user
     from .factories import DatasetFactory
 
@@ -289,13 +282,11 @@ def test_dates(app, zope_auth, client):
 
 
 def test_admin_edit_user_info(app, zope_auth, client, outbox):
-    from art17.models import RegisteredUser
-    from art17.auth.providers import set_user
     from .factories import DatasetFactory
 
     _set_config(admin_email='admin@example.com')
     create_user('ze_admin', ['admin'])
-    foo = create_user('foo', ['etc', 'stakeholder'], name="Foo Person")
+    create_user('foo', ['etc', 'stakeholder'], name="Foo Person")
     DatasetFactory()
     models.db.session.commit()
     zope_auth.update({'user_id': 'ze_admin'})
@@ -318,7 +309,7 @@ def test_admin_edit_user_info(app, zope_auth, client, outbox):
     assert foo_user.qualification == 'Foo is web developer'
     assert not foo_user.is_ldap
 
-    bar = create_user('bar', ['etc'], name="Bar Person")
+    create_user('bar', ['etc'], name="Bar Person")
     models.db.session.commit()
 
     page = client.get(flask.url_for('auth.admin_user', user_id='bar'))
@@ -336,7 +327,7 @@ def test_email_notification_for_role_changes(app, zope_auth, client, outbox):
     from .factories import DatasetFactory
 
     create_user('ze_admin', ['admin'])
-    foo = create_user('foo', ['etc', 'stakeholder'], name="Foo Person")
+    create_user('foo', ['etc', 'stakeholder'], name="Foo Person")
     DatasetFactory()
     models.db.session.commit()
     zope_auth.update({'user_id': 'ze_admin'})
