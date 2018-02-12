@@ -452,7 +452,7 @@ class ProgressFilterForm(Form):
 
     def __init__(self, *args, **kwargs):
         super(ProgressFilterForm, self).__init__(*args, **kwargs)
-        self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
+        self.period.choices = [(d.id, d.name) for d in Dataset.query.filter(Dataset.id != 4).all()]
 
 
 class WikiEditForm(Form):

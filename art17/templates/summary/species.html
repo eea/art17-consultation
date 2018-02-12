@@ -44,7 +44,9 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
           period=dataset.id,
           group=group,
           conclusion='overall assessment') %}
-      <a href="{{ show_all_url }}">Show all {{ group }}</a>
+      {% if dataset.schema != '2012bis' %}
+        <a href="{{ show_all_url }}">Show all {{ group }}</a>
+      {% endif %}
     </caption>
 
     {% include "common/species_table_header.html" with context %}
@@ -74,7 +76,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       </tr>
     {% endfor %}
     </tbody>
-
+    {% if dataset.schema != '2012bis' %}
     <tbody class="thead">
     <tr class="section-header">
       <th class="table-title" colspan="{{ colspan_all }}">
@@ -114,6 +116,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     </tr>
     {% endfor %}
     </tbody>
+    {% endif %}
 
     {# Manual assessments - conclusions #}
     <tbody class="thead" id="manual-thead">

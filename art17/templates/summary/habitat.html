@@ -38,7 +38,9 @@
           period=dataset.id,
           group=group,
           conclusion='overall assessment') %}
-      <a href="{{ show_all_url }}">Show all {{ group }}</a>
+      {% if dataset.schema != '2012bis' %}
+        <a href="{{ show_all_url }}">Show all {{ group }}</a>
+      {% endif %}
       </caption>
 
       {% include 'common/habitat_table_header.html' with context %}
@@ -69,11 +71,12 @@
         </tr>
       {% endfor %}
       </tbody>
-
+      {% if dataset.schema != '2012bis' %}
       <tbody class="thead">
         <tr class="section-header">
           <th class="table-title" colspan="{{ colspan_all }}">
             <div class="table-separator"></div>
+
             Automatic Assessments
             <a class="button btn-gray" data-toggle onclick="$('#automatic_body').toggleClass('hidden')">
               Show,Hide
@@ -96,6 +99,7 @@
       </tr>
       {% endfor %}
       </tbody>
+      {% endif %}
 
       {# Manual assessments #}
 
