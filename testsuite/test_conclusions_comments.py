@@ -23,7 +23,7 @@ def setup(app):
 @pytest.mark.parametrize(
     "request_type, request_args, post_params, user, expect_errors, "
     "status_code, assert_condition",
-    ## Species
+    # Species
     # Anonymous user
     [('post', ['/species/comments/1/Canis lupus/BOR/someuser/',
                {'MS': 'EU27'}],
@@ -69,7 +69,7 @@ def setup(app):
      ('get', ['/species/comments/1/Canis lupus/BOR/someuser/',
       {'MS': 'EU27', 'delete': 1, 'deleted': 0}], {}, ['adminuser', ['admin']],
       False, 200, "'Undelete' in resp.html.text"),
-     ## Habitat
+     # Habitat
      # Anonymous user
      ('post', ['/habitat/comments/1/1110/MATL/someuser/', {'MS': 'EU27', }],
       {'comment': 'I cannot post comments'}, [], True, 403, ""),

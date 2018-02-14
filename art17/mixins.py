@@ -114,7 +114,7 @@ class MixinsCommon(object):
                     cls.model_manual_cls.subject == cls.model_cls.subject)
             )
             .outerjoin(RegisteredUser,
-                cls.model_manual_cls.user_id == RegisteredUser.id)
+                       cls.model_manual_cls.user_id == RegisteredUser.id)
             .with_entities(
                 cls.model_manual_cls.user_id,
                 RegisteredUser.name)
@@ -274,18 +274,18 @@ class HabitatMixin(MixinsCommon):
     def get_progress_fields(cls, conclusion_type):
         if conclusion_type == 'range':
             return (cls.model_manual_cls.method_range,
-                      cls.model_manual_cls.conclusion_range)
+                    cls.model_manual_cls.conclusion_range)
         elif conclusion_type == 'area':
             return (cls.model_manual_cls.method_area,
-                      cls.model_manual_cls.conclusion_area)
+                    cls.model_manual_cls.conclusion_area)
         elif conclusion_type == 'future prospects':
             return (cls.model_manual_cls.method_future,
-                      cls.model_manual_cls.conclusion_future)
+                    cls.model_manual_cls.conclusion_future)
         elif conclusion_type == 'structure':
             return (cls.model_manual_cls.method_structure,
-                      cls.model_manual_cls.conclusion_structure)
+                    cls.model_manual_cls.conclusion_structure)
         elif conclusion_type == 'overall assessment':
             return (cls.model_manual_cls.method_assessment,
-                      cls.model_manual_cls.conclusion_assessment)
+                    cls.model_manual_cls.conclusion_assessment)
         else:
             return {}

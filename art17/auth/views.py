@@ -355,7 +355,6 @@ def admin_user(user_id):
     })
 
 
-
 @auth.route('/auth/users/<user_id>/reset_password', methods=['GET', 'POST'])
 @require_admin
 def admin_user_reset_password(user_id):

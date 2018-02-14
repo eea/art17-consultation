@@ -1,45 +1,32 @@
 import pytest
 
-from .factories import (
-    EtcDicBiogeoregFactory,
-    EtcDataSpeciesRegionFactory,
-    EtcDicMethodFactory,
-    EtcDicConclusionFactory,
-    DatasetFactory,
-    EtcDataHabitattypeRegionFactory,
-    EtcDicHdHabitat,
-    SpeciesManualAssessmentFactory,
-    HabitattypesManualAssessmentsFactory,
-    EtcDataSpeciesAutomaticAssessmentFactory,
-    EtcDataHabitattypeAutomaticAssessmentFactory,
-    EtcDicDecisionFactory,
-)
+from . import factories
 from art17 import models
 from conftest import get_request_params, create_user
 
 
 def setup_common():
-    EtcDicBiogeoregFactory()
-    EtcDataSpeciesRegionFactory(
+    factories.EtcDicBiogeoregFactory()
+    factories.EtcDataSpeciesRegionFactory(
         speciescode='1111',
         assesment_speciesname='Canis lupus')
-    EtcDicMethodFactory(order=4, method='2GD')
-    EtcDicConclusionFactory()
-    DatasetFactory()
-    EtcDataHabitattypeRegionFactory(habitatcode=1110)
-    EtcDicHdHabitat()
+    factories.EtcDicMethodFactory(order=4, method='2GD')
+    factories.EtcDicConclusionFactory()
+    factories.DatasetFactory()
+    factories.EtcDataHabitattypeRegionFactory(habitatcode=1110)
+    factories.EtcDicHdHabitat()
 
 
 @pytest.fixture
 def setup_add(app):
     setup_common()
-    EtcDataSpeciesRegionFactory(
+    factories.EtcDataSpeciesRegionFactory(
         speciescode='1111',
         assesment_speciesname='Canis lupus',
         eu_country_code='FR',
         country='FR',
     )
-    EtcDataHabitattypeRegionFactory(
+    factories.EtcDataHabitattypeRegionFactory(
         habitatcode=1110,
         eu_country_code='FR',
         country='FR',
@@ -50,48 +37,48 @@ def setup_add(app):
 @pytest.fixture
 def setup_edit(app):
     setup_common()
-    SpeciesManualAssessmentFactory(region='ALP')
-    HabitattypesManualAssessmentsFactory(region='ALP')
+    factories.SpeciesManualAssessmentFactory(region='ALP')
+    factories.HabitattypesManualAssessmentsFactory(region='ALP')
     models.db.session.commit()
 
 
 @pytest.fixture
 def setup_decision(app):
     setup_common()
-    SpeciesManualAssessmentFactory(region='ALP')
-    HabitattypesManualAssessmentsFactory(region='ALP')
-    SpeciesManualAssessmentFactory(decision='OK')
-    HabitattypesManualAssessmentsFactory(decision='OK')
-    EtcDicDecisionFactory()
-    EtcDicDecisionFactory(decision='OK')
-    EtcDicDecisionFactory(decision='OK?')
+    factories.SpeciesManualAssessmentFactory(region='ALP')
+    factories.HabitattypesManualAssessmentsFactory(region='ALP')
+    factories.SpeciesManualAssessmentFactory(decision='OK')
+    factories.HabitattypesManualAssessmentsFactory(decision='OK')
+    factories.EtcDicDecisionFactory()
+    factories.EtcDicDecisionFactory(decision='OK')
+    factories.EtcDicDecisionFactory(decision='OK?')
     models.db.session.commit()
 
 
 @pytest.fixture
 def setup_autofill(app):
     setup_common()
-    EtcDataSpeciesAutomaticAssessmentFactory(
+    factories.EtcDataSpeciesAutomaticAssessmentFactory(
         assesment_speciesname='Canis lupus',
         region='ALP',
         assessment_method='2GD',
         range_surface_area=100,
         conclusion_range='FV'
     )
-    EtcDataHabitattypeAutomaticAssessmentFactory(
+    factories.EtcDataHabitattypeAutomaticAssessmentFactory(
         habitatcode='1110',
         region='ALP',
         assessment_method='2GD',
         range_surface_area=100,
         conclusion_range='FV'
     )
-    SpeciesManualAssessmentFactory(
+    factories.SpeciesManualAssessmentFactory(
         region='ALP',
         range_surface_area=100,
         method_range='2GD',
         conclusion_range='FV'
     )
-    HabitattypesManualAssessmentsFactory(
+    factories.HabitattypesManualAssessmentsFactory(
         region='ALP',
         range_surface_area=100,
         method_range='2GD',
@@ -249,8 +236,8 @@ def test_autofill_conclusion_form(app, client, zope_auth, setup_autofill,
     form = resp.forms[1]
 
     assert form['range_surface_area'].value == '100'
-    #assert form['method_range'].value == '2GD'
-    #assert form['conclusion_range'].value == 'FV'
+    # assert form['method_range'].value == '2GD'
+    # assert form['conclusion_range'].value == 'FV'
 
     form['complementary_favourable_range'] = '200~~'
 
@@ -258,8 +245,8 @@ def test_autofill_conclusion_form(app, client, zope_auth, setup_autofill,
     form = resp.forms[1]
 
     assert form['range_surface_area'].value == '100'
-    #assert form['method_range'].value == '2GD'
-    #assert form['conclusion_range'].value == 'FV'
+    # assert form['method_range'].value == '2GD'
+    # assert form['conclusion_range'].value == 'FV'
 
     assert form['complementary_favourable_range'].value == '200~~'
     assert 'form-error-td' in resp.html.find(

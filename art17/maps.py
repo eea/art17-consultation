@@ -12,24 +12,25 @@ maps = flask.Blueprint('maps', __name__)
 def maps_view(page):
     if page == 'species':
         config_url = flask.url_for('.species_config_xml',
-            region=flask.request.args.get('region'),
-            species=base64.b64encode(flask.request.args.get('species')),
-            _external=True,
-        )
+                                   region=flask.request.args.get('region'),
+                                   species=base64.b64encode(
+                                       flask.request.args.get('species')),
+                                   _external=True,
+                                   )
 
     elif page == 'habitats':
         config_url = flask.url_for('.habitats_config_xml',
-            region=flask.request.args.get('region'),
-            habitat=flask.request.args.get('habitat'),
-            _external=True,
-        )
+                                   region=flask.request.args.get('region'),
+                                   habitat=flask.request.args.get('habitat'),
+                                   _external=True,
+                                   )
 
     else:
         flask.abort(404)
 
     return flask.render_template('maps/view.html',
-        config_url=config_url,
-    )
+                                 config_url=config_url,
+                                 )
 
 
 @maps.route('/species/map/config.xml')
@@ -144,12 +145,13 @@ def species_config_xml():
     )
 
     body = flask.render_template('maps/config-species.xml',
-        restricted=restricted,
-        extent=','.join(str(v) for v in extent),
-        assessment_speciesname=assesment_speciesname,
-        countries_style=Markup('&'.join(escape(s) for s in countries_style)),
-        region=region,
-    )
+                                 restricted=restricted,
+                                 extent=','.join(str(v) for v in extent),
+                                 assessment_speciesname=assesment_speciesname,
+                                 countries_style=Markup('&'.join(
+                                     escape(s) for s in countries_style)),
+                                 region=region,
+                                 )
     return flask.Response(body, content_type='text/xml')
 
 
@@ -174,11 +176,10 @@ def habitats_config_xml():
             .filter_by(habitatcode=habitatcode)
         )
 
-
     def getRegions(habitat):
-        regions = ['^%s' % rec.region for rec in select_habitat_regions(habitatcode=habitat)]
+        regions = ['^%s' % rec.region for rec in
+                   select_habitat_regions(habitatcode=habitat)]
         return '|'.join(regions)
-
 
     def select_habitat_countries(region_list, habitatcode):
         """
@@ -205,11 +206,12 @@ def habitats_config_xml():
         )
 
     def background_colour(value):
-        colors = ('#9CB34D','#D16E43','#D16E43','#D16E43','#C22C15','#C22C15','#C22C15','#6F6C66','#FFFFFF')
-        assessments = ('FV','U1','U1-','U1+','U2','U2-','U2+','XX','')
+        colors = ('#9CB34D', '#D16E43', '#D16E43', '#D16E43', '#C22C15',
+                  '#C22C15', '#C22C15', '#6F6C66', '#FFFFFF')
+        assessments = ('FV', 'U1', 'U1-', 'U1+', 'U2', 'U2-', 'U2+', 'XX', '')
 
-        RGBS = dict(zip(assessments,[x for x in colors]))
-        colour = RGBS.get(value,'')
+        RGBS = dict(zip(assessments, [x for x in colors]))
+        colour = RGBS.get(value, '')
         if colour:
             return colour[1:]
         else:
@@ -218,10 +220,12 @@ def habitats_config_xml():
     region = flask.request.args.get('region', '')
     habitat = flask.request.args.get('habitat', '')
     if region == '':
-       region = '/%s/' % getRegions(habitat)
+        region = '/%s/' % getRegions(habitat)
     else:
-       region = "/^%s/" % region
-    results = select_habitat_countries(region_list=region[1:-1].replace('^', '').split('|'), habitatcode=habitat)
+        region = "/^%s/" % region
+    results = select_habitat_countries(
+        region_list=region[1:-1].replace('^', '').split('|'),
+        habitatcode=habitat)
 
     countries_style = []
     countries = []
@@ -232,21 +236,25 @@ def habitats_config_xml():
             country = 'GB'
         else: 
             if res.eu_country_code == 'EL':
-               country = 'GR'
+                country = 'GR'
             else:
-               country = res.eu_country_code
+                country = res.eu_country_code
         habitat_code = res.code
         countries.append(country)
-        countries_style.append('l=%s%s|%s' % (country, res.region, background_colour(res.conclusion_assessment)))
+        countries_style.append('l=%s%s|%s' % (
+            country,
+            res.region,
+            background_colour(res.conclusion_assessment)))
 
     qstring="/%s/" % '|'.join(countries)
     #extent = get_coordinates(region, qstring)
     extent = [2635945.400202,1385857.104555,6084637.867846,5307244.006638]
 
     body = flask.render_template('maps/config-habitats.xml',
-        extent=','.join(str(v) for v in extent),
-        habitat_code=habitat_code,
-        countries_style=Markup('&'.join(escape(s) for s in countries_style)),
-        region=region,
-    )
+                                 extent=','.join(str(v) for v in extent),
+                                 habitat_code=habitat_code,
+                                 countries_style=Markup('&'.join(
+                                     escape(s) for s in countries_style)),
+                                 region=region,
+                                 )
     return flask.Response(body, content_type='text/xml')

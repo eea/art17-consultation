@@ -53,8 +53,8 @@ def can_post_comment(record):
     if sta_cannot_change():
         can_add = False
     elif sta_perm.can() or nat_perm.can():
-        if (record.user.has_role('nat') and record.user_id == current_user.id)\
-            or not record.user or record.user.has_role('stakeholder'):
+        if (record.user.has_role('nat') and record.user_id == current_user.id) \
+                or not record.user or record.user.has_role('stakeholder'):
                 can_add = True
     else:
         can_add = True

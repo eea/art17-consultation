@@ -124,8 +124,8 @@ class Comment(Base):
 class DicCountryCode(Base):
     __tablename__ = 'dic_country_codes'
 
-    code = Column(String(2), primary_key=True)
-    codeEU = Column(String(2), default='')
+    code = Column(String(3), primary_key=True)
+    codeEU = Column(String(3), default='')
     name = Column(String(40))
 
     dataset_id = Column(
@@ -176,6 +176,7 @@ class EtcDataHabitattypeAutomaticAssessment(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
+        default=4,
         primary_key=True,
     )
 
@@ -239,6 +240,7 @@ class EtcDataHabitattypeRegion(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
+        default=4,
         primary_key=True,
     )
     dataset = relationship(Dataset)
@@ -251,13 +253,15 @@ class EtcDataHabitattypeRegion(Base):
 
     habitattype_type_details = relationship(
         'EtcDicSpeciesType',
-        primaryjoin='EtcDataHabitattypeRegion.habitattype_type==EtcDicSpeciesType.abbrev',
+        primaryjoin=
+        'EtcDataHabitattypeRegion.habitattype_type==EtcDicSpeciesType.abbrev',
         foreign_keys=habitattype_type,
     )
 
     lu_factsheets = relationship(
         'LuHdHabitatFactsheet',
-        primaryjoin='LuHdHabitatFactsheet.habcode==EtcDataHabitattypeRegion.subject',
+        primaryjoin=
+        'LuHdHabitatFactsheet.habcode==EtcDataHabitattypeRegion.subject',
         foreign_keys=[habitatcode]
     )
 
@@ -353,6 +357,7 @@ class EtcDataSpeciesAutomaticAssessment(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
+        default=4,
         primary_key=True,
     )
 
@@ -451,6 +456,7 @@ class EtcDataSpeciesRegion(Base):
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
+        default=4,
         primary_key=True,
     )
     dataset = relationship(Dataset)
@@ -1329,6 +1335,7 @@ restricted_species_2013 = Table(
 
 
 db_manager = Manager()
+
 
 @db_manager.option('alembic_args', nargs=argparse.REMAINDER)
 def alembic(alembic_args):

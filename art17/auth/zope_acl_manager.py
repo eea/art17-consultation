@@ -23,7 +23,7 @@ def create(user):
     url, key = _get_config()
     resp = requests.post(
         url + '/create_user',
-        data = {
+        data={
             'username': user.id,
             'password': user.password,
             'api_key': key,
@@ -39,7 +39,7 @@ def delete(user):
     url, key = _get_config()
     resp = requests.post(
         url + '/delete_user',
-        data = {
+        data={
             'username': user.id,
             'api_key': key,
         },
@@ -54,7 +54,7 @@ def edit(user_id, passwd):
     url, key = _get_config()
     resp = requests.post(
         url + '/edit_user',
-        data = {
+        data={
             'username': user_id,
             'password': passwd,
             'api_key': key,

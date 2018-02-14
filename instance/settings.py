@@ -28,12 +28,16 @@ SQLALCHEMY_BINDS = {
 ASSETS_DEBUG = getenv('ASSETS_DEBUG', type=bool, default=False)
 AUTH_DEBUG = getenv('AUTH_DEBUG', type=bool, default=False)
 
-AUTH_LOG_FILE = getenv('AUTH_LOG_FILE', default='/var/local/art17/logs/flask-auth.log')
+AUTH_LOG_FILE = getenv('AUTH_LOG_FILE',
+                       default='/var/local/art17/logs/flask-auth.log')
 AUTH_ZOPE = getenv('AUTH_ZOPE', type=bool, default=True)
-AUTH_ZOPE_WHOAMI_URL = getenv('AUTH_ZOPE_WHOAMI_URL', default='http://example.com/art17_api/whoami')
-LAYOUT_ZOPE_URL = getenv('LAYOUT_ZOPE_URL', default='http://example.com/art17_api/layout')
+AUTH_ZOPE_WHOAMI_URL = getenv('AUTH_ZOPE_WHOAMI_URL',
+                              default='http://example.com/art17_api/whoami')
+LAYOUT_ZOPE_URL = getenv('LAYOUT_ZOPE_URL',
+                         default='http://example.com/art17_api/layout')
 
-AUTH_ZOPE_ACL_MANAGER_URL = getenv('AUTH_ZOPE_ACL_MANAGER_URL', default='http://example.com/acl_manager')
+AUTH_ZOPE_ACL_MANAGER_URL = getenv('AUTH_ZOPE_ACL_MANAGER_URL',
+                                   default='http://example.com/acl_manager')
 AUTH_ZOPE_ACL_MANAGER_KEY = getenv('AUTH_ZOPE_ACL_MANAGER_KEY', default='')
 
 EEA_LDAP_SERVER = getenv('EEA_LDAP_SERVER', default='')
@@ -46,7 +50,8 @@ elif getenv('SERVER_NAME', default=None) is not None:
     SERVER_NAME = getenv('SERVER_NAME')
     SECURITY_EMAIL_SENDER = DEFAULT_MAIL_SENDER = 'noreply@' + SERVER_NAME
 
-SECURITY_POST_REGISTER_VIEW = getenv('SECURITY_POST_REGISTER_VIEW', default='/article17/')
+SECURITY_POST_REGISTER_VIEW = getenv('SECURITY_POST_REGISTER_VIEW',
+                                     default='/article17/')
 
 SENTRY_DSN = getenv('SENTRY_DSN', default='')
 

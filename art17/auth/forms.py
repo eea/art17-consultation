@@ -29,9 +29,8 @@ class CustomEmailTextField(TextField):
 class Art17RegisterFormBase(object):
 
     name = TextField('Full name',
-        validators=[Required("Full name is required")])
-    institution = TextField('Institution',
-        validators=[Optional()])
+                     validators=[Required("Full name is required")])
+    institution = TextField('Institution', validators=[Optional()])
     abbrev = TextField('Abbrev.')
     MS = TextField(widget=HiddenInput())
     country_options = SelectField('Member State')
@@ -42,11 +41,11 @@ class Art17RegisterFormBase(object):
         super(Art17RegisterFormBase, self).__init__(*args, **kwargs)
         dataset = (Dataset.query.order_by(Dataset.id.desc()).first())
         countries = (DicCountryCode.query
-            .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
-            .filter(DicCountryCode.dataset_id == dataset.id)
-            .distinct()
-            .order_by(DicCountryCode.name)
-            .all())
+                     .with_entities(DicCountryCode.codeEU, DicCountryCode.name)
+                     .filter(DicCountryCode.dataset_id == dataset.id)
+                     .distinct()
+                     .order_by(DicCountryCode.name)
+                     .all())
         self.country_options.choices = (
             [('', '')] + countries + [('--', 'Choose another country ...')]
         )

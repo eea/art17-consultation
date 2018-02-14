@@ -19,6 +19,7 @@ from art17.auth.script import user_manager, role_manager
 from art17.dataset import dataset_manager
 from art17.assets import assets_env
 from art17.factsheet import factsheet, factsheet_manager
+from art17.management.import_greece import import_greece
 
 
 DEFAULT_CONFIG = {
@@ -111,6 +112,7 @@ def create_manager(app):
     manager.add_command('db', db_manager)
     manager.add_command('dataset', dataset_manager)
     manager.add_command('user', user_manager)
+    manager.add_command('import_greece', import_greece)
     manager.add_command('role', role_manager)
     manager.add_command('factsheet', factsheet_manager)
     return manager
