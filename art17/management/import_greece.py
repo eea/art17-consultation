@@ -38,5 +38,19 @@ class ImportGreeceCommand(BaseCreateUserCommand):
                 )
                 models.db.session.add(new_hdhabitat)
                 models.db.session.commit()
+
+        etc_dic_methods = models.EtcDicMethod.query.all()
+        for method in etc_dic_methods:
+            if not models.EtcDicMethod.query.filter_by(
+                    method=method.method, dataset_id=4).all():
+                new_method = models.EtcDicMethod(
+                    order=method.order,
+                    method=method.method,
+                    details=method.details,
+                    dataset_id=4,
+                )
+                models.db.session.add(new_method)
+                models.db.session.commit()
+
 import_greece = Manager()
 import_greece.add_command('run', ImportGreeceCommand())
