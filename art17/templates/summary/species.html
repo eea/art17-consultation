@@ -44,9 +44,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
           period=dataset.id,
           group=group,
           conclusion='overall assessment') %}
-      {% if dataset.schema != '2012bis' %}
         <a href="{{ show_all_url }}">Show all {{ group }}</a>
-      {% endif %}
     </caption>
 
     {% include "common/species_table_header.html" with context %}
