@@ -4,23 +4,9 @@ Art 17 Consultation Tool http://bd.eionet.europa.eu/article17/reports2012/
 
 .. |travis| image:: https://travis-ci.org/eea/art17-consultation.svg?branch=master
 
-.. |docker| image:: https://dockerbuildbadges.quelltext.eu/status.svg?organization=eeacms&repository=art17-consultation :target:
-
-|travis| |docker|
-
-
-.. |travis| image:: https://travis-ci.org/eea/art17-consultation.svg?branch=master
-   :target: https://travis-ci.org/eea/art17-consultation
 .. |docker| image:: https://dockerbuildbadges.quelltext.eu/status.svg?organization=eeacms&repository=art17-consultation 
-   :target: https://hub.docker.com/r/eeacms/art17-consultation/
 
 .. contents ::
-|green| |nbsp| |red| |nbsp| |yellow|
-
-.. |green| image:: https://media.readthedocs.org/static/projects/badges/passing.svg
-.. |red| image:: https://media.readthedocs.org/static/projects/badges/failing.svg
-.. |yellow| image:: https://media.readthedocs.org/static/projects/badges/unknown.svg
-.. |nbsp| unicode:: 0xA0
 
 Prerequisites
 =============
