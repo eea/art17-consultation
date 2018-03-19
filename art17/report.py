@@ -14,7 +14,7 @@ from art17.common import (
     favourable_ref_title_habitat,
     generate_map_url,
 )
-from art17.mixins import SpeciesMixin, HabitatMixin
+from art17.mixins import SpeciesMixin, HabitatMixin, MixinsCommon
 from art17.forms import ReportFilterForm
 from art17.models import Dataset
 
@@ -98,6 +98,7 @@ class SpeciesReport(SpeciesMixin, Report):
         return {
             'groups_url': url_for('common.species-groups'),
             'regions_url': url_for('.species-report-regions'),
+            'countries_url': url_for('.species-report-countries'),
             'favourable_ref_title': favourable_ref_title_species,
         }
 
@@ -110,6 +111,7 @@ class HabitatReport(HabitatMixin, Report):
         return {
             'groups_url': url_for('common.habitat-groups'),
             'regions_url': url_for('.habitat-report-regions'),
+            'countries_url': url_for('.habitat-report-countries'),
             'favourable_ref_title': favourable_ref_title_habitat,
         }
 
@@ -121,12 +123,25 @@ def species_regions():
     return jsonify(data)
 
 
+@report.route('/species/report/countries', endpoint='species-report-countries')
+def species_countries():
+    period = request.args['period']
+    data = MixinsCommon.get_countries(period)
+    return jsonify(data)
+
+
 @report.route('/habitat/report/regions', endpoint='habitat-report-regions')
 def habitat_regions():
     period, country = request.args['period'], request.args['country']
     data = HabitatMixin.get_regions_by_country(period, country)
     return jsonify(data)
 
+
+@report.route('/habitat/report/countries', endpoint='habitat-report-countries')
+def habitat_countries():
+    period = request.args['period']
+    data = MixinsCommon.get_countries(period)
+    return jsonify(data)
 
 report.add_url_rule('/species/report/',
                     view_func=SpeciesReport.as_view('species-report'))

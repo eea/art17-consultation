@@ -12,7 +12,7 @@
 
   <div class="box-col">
     {{ report_filter_form.country.label }}
-    {{ report_filter_form.country }}
+    {{ report_filter_form.country(**{'data-href': countries_url }) }}
   </div>
 
   <div class="box-col">

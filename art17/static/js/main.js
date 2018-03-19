@@ -7,6 +7,9 @@ $(function () {
         var group = $('#group');
         group.remoteChained('#period', group.data('href'));
 
+        var country = $('#country');
+        country.remoteChained('#period', country.data('href'));
+
         var subject = $('#subject');
         subject.remoteChained('#period, #group', subject.data('href'));
 
@@ -32,6 +35,7 @@ $(function () {
         group.remoteChained('#period', group.data('href'));
 
         var country = $('#country');
+        country.remoteChained('#period', country.data('href'));
 
         if(country.find('option:selected').val() == '') {
             region.prop('disabled', true);
