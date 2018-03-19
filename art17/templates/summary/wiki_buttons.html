@@ -1,10 +1,15 @@
 <div>
-    <button type="button" id="wikibutton" href="{{ datasheet_url }}">
+    {% if dataset.id == 4 %}
+        <p class="note"><strong>Note</strong>:
+            The related products are not available for the period 2007-2012bis.
+        </p>
+    {% endif %}
+    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.id == 4 %} disabled {% endif %}>
         View data sheet info
         {% if wiki_unread %}({{ wiki_unread }} unread comments){% endif %}
     </button>
 
-    <button type="button" id="wikibutton"
+    <button type="button" id="wikibutton" {% if dataset.id == 4 %} disabled {% endif %}
         href=
             {% if region == '' %}
                 "{{ audittrail_merged_url }}"
@@ -14,7 +19,7 @@
         Audit trail</button>
 
     {% if map_url %}
-        <button type="button" id="show-map" data-url="{{ map_url }}">Map</button>
+        <button type="button" id="show-map" data-url="{{ map_url }}" {% if dataset.id == 4 %} disabled {% endif %}>Map</button>
     {% endif %}
 
     {% if region %}
@@ -22,13 +27,19 @@
     {% elif not factsheet_url %}
       {% set fs_error = "Factsheet not available" %}
     {% else %}
+    {% if dataset.id != 4 %}
     <a href="{{ factsheet_url }}" id="download-fs" class="button"
        target="_blank">
       Download factsheet
     </a>
+    {% else %}
+    <span class="disabled button">
+      Download factsheet
+    </span>
+    {% endif %}
     {% endif %}
     {% if fs_error %}
-    <span class="disabled button" title="{{ fs_error }}">
+    <span class="disabled button" title="{{ fs_error }}" >
       Download factsheet
     </span>
     {% endif %}
