@@ -25,6 +25,7 @@ from art17.models import (
     EtcQaErrorsHabitattypeManualChecked,
     EtcDicMethod,
     EtcDicDecision,
+    RegisteredUser
 )
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.common import (
@@ -77,6 +78,7 @@ from art17.summary.conclusion import (
 )
 from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
 from art17.factsheet import generate_factsheet_url
+from instance.settings import EU_ASSESSMENT_MODE
 
 
 @summary.app_context_processor
@@ -255,7 +257,20 @@ class Summary(ConclusionView, views.View):
                     manual_assessment = self.model_manual_cls(subject=subject)
                     manual_form.populate_obj(manual_assessment)
                     manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
-                    manual_assessment.user_id = current_user.id
+                    if EU_ASSESSMENT_MODE:
+                        user = RegisteredUser.query.filter_by(
+                            id='test_for_eu_assessment').first()
+                        if not user:
+
+                            user = RegisteredUser(id='test_for_eu_assessment',
+                                                  name='Test_for_eu_assessment',
+                                                  account_date=datetime.now())
+                            db.session.add(user)
+                            db.session.commit()
+                        manual_assessment.user_id = user.id
+
+                    else:
+                        manual_assessment.user_id = current_user.id
                     manual_assessment.dataset_id = period
                     db.session.flush()
                     db.session.add(manual_assessment)

@@ -12,6 +12,7 @@ from flask import (
     abort,
 )
 from flask.ext.principal import PermissionDenied
+from instance.settings import EU_ASSESSMENT_MODE
 
 from art17.auth import current_user
 from art17.common import (
@@ -26,9 +27,9 @@ from art17.forms import CommentForm
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
     Dataset, db,
-    Comment, t_comments_read, HabitatComment, t_habitat_comments_read,
-    Wiki, WikiComment, t_wiki_comments_read, WikiChange, WikiTrail,
-    WikiTrailChange,
+    Comment, RegisteredUser, t_comments_read, HabitatComment,
+    t_habitat_comments_read, Wiki, WikiComment, t_wiki_comments_read,
+    WikiChange, WikiTrail, WikiTrailChange,
 )
 
 
@@ -45,6 +46,9 @@ def mark_unread(comment, user):
 
 @comments.app_template_global('can_post_comment')
 def can_post_comment(record):
+
+    if EU_ASSESSMENT_MODE:
+        return True
     if not current_user.is_authenticated():
         return False
     if record.dataset and record.dataset.is_readonly:
@@ -69,7 +73,7 @@ def can_post_comment(record):
 
 @comments.app_template_global('can_edit_comment')
 def can_edit_comment(comment):
-    if not comment or not current_user.is_authenticated():
+    if not comment or (not current_user.is_authenticated() and not EU_ASSESSMENT_MODE):
         return False
     if comment and comment.record and comment.record.dataset and \
             comment.record.dataset.is_readonly:
@@ -135,20 +139,35 @@ class CommentsList(views.View):
             else:
                 if not can_post_comment(self.record):
                     raise PermissionDenied
+                if EU_ASSESSMENT_MODE:
+                    user = RegisteredUser.query.filter_by(
+                        id='test_for_eu_assessment').first()
+                    if not user:
+                        user = RegisteredUser(id='test_for_eu_assessment',
+                                              name='Test_for_eu_assessment',
+                                              account_date=datetime.now())
+                        db.session.add(user)
+                        db.session.commit()
+                    user_id = user.id
+                else:
+                    user_id = current_user.id
                 comment = self.model_comment_cls(
                     subject=self.record.subject,
                     region=self.record.region,
                     user_id=self.record.user_id,
                     MS=self.record.MS,
                     comment=form.comment.data,
-                    author_id=current_user.id,
+                    author_id=user_id,
                     post_date=datetime.now().strftime(DATE_FORMAT),
                     dataset_id=self.record.dataset_id,
                 )
                 db.session.add(comment)
             db.session.commit()
             if not edited_comment:
-                mark_read(comment, current_user)
+                if EU_ASSESSMENT_MODE:
+                    mark_read(comment, user)
+                else:
+                    mark_read(comment, current_user)
                 db.session.commit()
             return True
         else:

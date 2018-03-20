@@ -44,3 +44,5 @@ SECRET_KEY = 'secret'
 # PDF_URL_PREFIX = 'http://localhost:5000'
 
 # FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu"
+
+#EU_ASSESSMENT_MODE = getenv('EU_ASSESSMENT_MODE', type=bool, default=False)

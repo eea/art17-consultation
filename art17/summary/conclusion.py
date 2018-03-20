@@ -13,10 +13,10 @@ from art17.common import (
     consultation_ended,
 )
 from art17.forms import all_fields
-from art17.models import db, EtcDicMethod, EtcDicDecision
+from art17.models import db, EtcDicMethod, EtcDicDecision, RegisteredUser
 from art17.summary.permissions import can_delete, can_update_decision, \
     can_select_MS, must_edit_ref
-
+from instance.settings import EU_ASSESSMENT_MODE
 
 CONC_METHODS = {
     #'conclusion_range': 'method_range',
@@ -216,7 +216,12 @@ class UpdateDecision(MixinView, views.View):
             self.record.decision = decision
             self.record.last_update = self.record.last_update_decision = \
                 datetime.now().strftime(DATE_FORMAT)
-            self.record.user_decision = current_user
+            if EU_ASSESSMENT_MODE:
+                user = RegisteredUser.query.filter_by(
+                    id='test_for_eu_assessment').first()
+            else:
+                user = current_user
+            self.record.user_decision = user
             db.session.commit()
         return jsonify(result)
 
