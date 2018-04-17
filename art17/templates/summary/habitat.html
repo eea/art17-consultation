@@ -16,6 +16,16 @@
   <p>Assessments on the conservation status of the habitat types and species of Community interest have been carried out in EU25 for the period 2001-2006 and in EU 27 for the period 2007-2012, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view.
   Choose a period, a group, then a habitat type belonging to that group.  Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat type.
   </p>
+  {% if dataset.schema == '2012bis' %}
+  <p class="note">IMPORTANT: 2007-2012bis reporting period displays data from the delayed delivery by Greece together with data used for
+     the EU biogeographical assessment in 2014. Only information for Mediterranean and Marine Mediterranean regions can be
+     filtered for 2007-2012bis period. The data from the delayed delivery by Greece have the ‘MS’ code ‘GRb’.
+     The section ‘EU Biogeographical assessment…’ provides together with the official EU biogeographical assessment from 2014
+     (using the substitute data from 2001-2006 period for Greece) also unofficial ad hoc EU Biogeographical assessment using
+     the delayed data from Greece.
+     The map includes the information from the delayed delivery by Greece.
+  </p>
+  {% endif %}
 
   {% include 'summary/filters.html' %}
 

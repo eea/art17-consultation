@@ -24,6 +24,7 @@ from art17.models import (
 )
 from art17.forms import WikiEditForm, CommentForm
 from art17.auth import current_user
+from instance.settings import EU_ASSESSMENT_MODE
 
 
 wiki = Blueprint('wiki', __name__)
@@ -90,13 +91,12 @@ def get_css_class(comment):
 def can_edit_page(dataset):
     if not dataset or dataset.is_readonly:
         return False
-
-    return admin_perm.can() or etc_perm.can()
+    return admin_perm.can() or etc_perm.can() or EU_ASSESSMENT_MODE
 
 
 @wiki.app_template_global('can_manage_revisions')
 def can_manage_revisions():
-    return admin_perm.can() or etc_perm.can()
+    return admin_perm.can() or etc_perm.can() or EU_ASSESSMENT_MODE
 
 
 @wiki.app_template_global('can_change_revision')

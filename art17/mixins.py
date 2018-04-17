@@ -49,15 +49,23 @@ class MixinsCommon(object):
             reg_name_field = EtcDicBiogeoreg.reg_name
         else:
             reg_name_field = EtcDicBiogeoreg.reg_code
-
-        regions = (
-            EtcDicBiogeoreg.query
-            .join(cls.model_cls, reg_code_field == reg_field)
-            .filter(dataset_id_field == period)
-            .with_entities(reg_field, reg_name_field)
-            .distinct()
-            .order_by(reg_field)
-        )
+        if period == '4':
+            regions = (
+                EtcDicBiogeoreg.query.filter_by(dataset_id=period)
+                .join(cls.model_cls, reg_code_field == reg_field)
+                .with_entities(reg_field, reg_name_field)
+                .distinct()
+                .order_by(reg_field)
+            )
+        else:
+            regions = (
+                EtcDicBiogeoreg.query
+                .join(cls.model_cls, reg_code_field == reg_field)
+                .filter_by(dataset_id=period)
+                .with_entities(reg_field, reg_name_field)
+                .distinct()
+                .order_by(reg_field)
+            )
         return regions
 
     @classmethod
@@ -188,6 +196,24 @@ class SpeciesMixin(MixinsCommon):
             .order_by(assesment_field)
             .all()
         )
+        if period == '4':
+            regions = [
+                region.reg_code for region in
+                EtcDicBiogeoreg.query.filter_by(dataset_id=period).all()
+
+            ]
+
+            subjects = (
+                cls.model_cls.query
+                    .filter(assesment_field != None)
+                    .filter(group_field == group)
+                    .filter(cls.model_cls.region.in_(regions))
+                    .filter(dataset_id_field == period)
+                    .with_entities(assesment_field, assesment_field)
+                    .distinct()
+                    .order_by(assesment_field)
+                    .all()
+            )
         return blank_option + subjects
 
     @classmethod
@@ -254,15 +280,39 @@ class HabitatMixin(MixinsCommon):
         dataset_id_field = EtcDicHdHabitat.dataset_id
         code_field = EtcDicHdHabitat.habcode
         name_field = code_field.concat(' ' + EtcDicHdHabitat.name)
-        subjects = (
-            EtcDicHdHabitat.query
-            .filter(name_field != None, group_field == group,
-                    dataset_id_field == period)
-            .with_entities(code_field, name_field)
-            .distinct()
-            .order_by(name_field)
-            .all()
-        )
+
+        if period == '4':
+
+            regions = [
+                region.reg_code for region in
+                EtcDicBiogeoreg.query.filter_by(dataset_id=period).all()
+            ]
+            subjs = (
+                EtcDicHdHabitat.query
+                    .filter(name_field != None, group_field == group,
+                            dataset_id_field == period)
+                    .with_entities(code_field, name_field)
+                    .distinct()
+                    .order_by(name_field)
+                    .all()
+            )
+            subjects = []
+            for subj in subjs:
+                subject = cls.model_cls.query.filter_by(
+                        habitatcode=subj[0]
+                ).first()
+                if subject.region in regions:
+                    subjects.append((subj[0], subj[1]))
+        else:
+            subjects = (
+                EtcDicHdHabitat.query
+                    .filter(name_field != None, group_field == group,
+                            dataset_id_field == period)
+                    .with_entities(code_field, name_field)
+                    .distinct()
+                    .order_by(name_field)
+                    .all()
+            )
         return blank_option + subjects
 
     @classmethod

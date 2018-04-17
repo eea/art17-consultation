@@ -2,7 +2,12 @@
 
 {% block content %}
   {% block text_description %}{% endblock text_description %}
-
+  {% if dataset.schema == '2012bis' %}
+  <p class="note">IMPORTANT: 2007-2012bis reporting period displays together with the official EU biogeographical
+      assessment from 2014 (using the substitute data from 2001-2006 period for Greece) also unofficial ad hoc EU
+      Biogeographical assessment using the delayed data from Greece.
+  </p>
+  {% endif %}
   {% include 'progress/filters.html' %}
 
   {% if not dataset.is_readonly and (not consultation_started and not can_preview_progress()) %}
