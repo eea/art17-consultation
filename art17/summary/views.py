@@ -402,9 +402,17 @@ class SpeciesSummary(SpeciesMixin, Summary):
                     EtcDicMethod.dataset_id == period),
                 )
             ).order_by(EtcDicMethod.order)
-            self.manual_objects = self.model_manual_cls.query.filter_by(
-                **filter_args
-            ).order_by(self.model_manual_cls.decision.desc())
+            if filter_args['dataset_id'] == '4':
+                filter_args.pop('dataset_id')
+                self.manual_objects = self.model_manual_cls.query.filter(
+                    self.model_manual_cls.dataset_id != 1).filter_by(
+                    **filter_args
+                ).order_by(self.model_manual_cls.decision.desc())
+            else:
+                self.manual_objects = self.model_manual_cls.query.filter_by(
+                    **filter_args
+                ).order_by(self.model_manual_cls.decision.desc())
+
         return True
 
     def get_context(self):
@@ -508,9 +516,16 @@ class HabitatSummary(HabitatMixin, Summary):
                     EtcDicMethod.dataset_id == period),
                 )
             ).order_by(EtcDicMethod.order)
-            self.manual_objects = self.model_manual_cls.query.filter_by(
-                **filter_args
-            ).order_by(self.model_manual_cls.decision.desc())
+            if filter_args['dataset_id'] == '4':
+                filter_args.pop('dataset_id')
+                self.manual_objects = self.model_manual_cls.query.filter(
+                    self.model_manual_cls.dataset_id != 1).filter_by(
+                    **filter_args
+                ).order_by(self.model_manual_cls.decision.desc())
+            else:
+                self.manual_objects = self.model_manual_cls.query.filter_by(
+                    **filter_args
+                ).order_by(self.model_manual_cls.decision.desc())
         return True
 
     def get_context(self):

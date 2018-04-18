@@ -142,7 +142,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
       {% if row == manual_assessment %}
         {% include 'summary/species/manual_form.html' %}
       {% else %}
-      <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row">
+      <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset_id == 3 and dataset.id == 4 %}manual_assessment{% endif%}">
         {% include 'summary/common/manual/ms.html' %}
         {% include 'summary/common/manual/range.html' %}
         {% include 'summary/species/manual/population.html' %}
