@@ -404,8 +404,11 @@ class SpeciesSummary(SpeciesMixin, Summary):
             ).order_by(EtcDicMethod.order)
             if filter_args['dataset_id'] == '4':
                 filter_args.pop('dataset_id')
+                regions = [region.reg_code for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)]
                 self.manual_objects = self.model_manual_cls.query.filter(
-                    self.model_manual_cls.dataset_id != 1).filter_by(
+                    self.model_manual_cls.dataset_id != 1).filter(
+                    self.model_manual_cls.region.in_(regions)
+                ).filter_by(
                     **filter_args
                 ).order_by(self.model_manual_cls.decision.desc())
             else:
@@ -518,8 +521,11 @@ class HabitatSummary(HabitatMixin, Summary):
             ).order_by(EtcDicMethod.order)
             if filter_args['dataset_id'] == '4':
                 filter_args.pop('dataset_id')
+                regions = [region.reg_code for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)]
                 self.manual_objects = self.model_manual_cls.query.filter(
-                    self.model_manual_cls.dataset_id != 1).filter_by(
+                    self.model_manual_cls.dataset_id != 1).filter(
+                    self.model_manual_cls.region.in_(regions)
+                ).filter_by(
                     **filter_args
                 ).order_by(self.model_manual_cls.decision.desc())
             else:

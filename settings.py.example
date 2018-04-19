@@ -43,4 +43,4 @@ MAPS_FORMAT = 'map0{which}{type}/{code}_0{which}_{type}.png'
 
 # FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu"
 
-EU_ASSESSMENT_MODE = getenv('EU_ASSESSMENT_MODE', type=bool, default=False)
+# EU_ASSESSMENT_MODE = getenv('EU_ASSESSMENT_MODE', type=bool, default=False)
