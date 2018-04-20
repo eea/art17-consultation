@@ -1,6 +1,6 @@
 # Change `user` and `password` into your MySQL user and password
 #SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17'
-
+from smart_getenv import getenv
 #SQLALCHEMY_BINDS = {
 #   'factsheet': 'mysql://user:password@localhost/art17old'
 #}

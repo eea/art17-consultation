@@ -19,6 +19,11 @@
     by selecting one of the available biogeographical regions for that
     country.
   </p>
+  {% if dataset.schema == '2012bis' %}
+  <p class="note">
+    IMPORTANT: 2007-2012bis reporting period displays data from the delayed delivery by Greece.
+  </p>
+  {% endif %}
 
   {% include 'report/filters.html' %}
 

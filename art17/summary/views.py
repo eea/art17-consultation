@@ -402,9 +402,20 @@ class SpeciesSummary(SpeciesMixin, Summary):
                     EtcDicMethod.dataset_id == period),
                 )
             ).order_by(EtcDicMethod.order)
-            self.manual_objects = self.model_manual_cls.query.filter_by(
-                **filter_args
-            ).order_by(self.model_manual_cls.decision.desc())
+            if filter_args['dataset_id'] == '4':
+                filter_args.pop('dataset_id')
+                regions = [region.reg_code for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)]
+                self.manual_objects = self.model_manual_cls.query.filter(
+                    self.model_manual_cls.dataset_id != 1).filter(
+                    self.model_manual_cls.region.in_(regions)
+                ).filter_by(
+                    **filter_args
+                ).order_by(self.model_manual_cls.decision.desc())
+            else:
+                self.manual_objects = self.model_manual_cls.query.filter_by(
+                    **filter_args
+                ).order_by(self.model_manual_cls.decision.desc())
+
         return True
 
     def get_context(self):
@@ -508,9 +519,19 @@ class HabitatSummary(HabitatMixin, Summary):
                     EtcDicMethod.dataset_id == period),
                 )
             ).order_by(EtcDicMethod.order)
-            self.manual_objects = self.model_manual_cls.query.filter_by(
-                **filter_args
-            ).order_by(self.model_manual_cls.decision.desc())
+            if filter_args['dataset_id'] == '4':
+                filter_args.pop('dataset_id')
+                regions = [region.reg_code for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)]
+                self.manual_objects = self.model_manual_cls.query.filter(
+                    self.model_manual_cls.dataset_id != 1).filter(
+                    self.model_manual_cls.region.in_(regions)
+                ).filter_by(
+                    **filter_args
+                ).order_by(self.model_manual_cls.decision.desc())
+            else:
+                self.manual_objects = self.model_manual_cls.query.filter_by(
+                    **filter_args
+                ).order_by(self.model_manual_cls.decision.desc())
         return True
 
     def get_context(self):
