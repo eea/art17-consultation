@@ -56,9 +56,11 @@ class ImportGreeceCommand(BaseCreateUserCommand):
                 models.db.session.add(new_method)
                 models.db.session.commit()
 
-        print("Importing EtcDicGeoregs...")
+        print("Importing EtcDicBiogeoregs...")
         etc_dic_biogeoregs = models.EtcDicBiogeoreg.query.all()
         for biogeoreg in etc_dic_biogeoregs:
+            if biogeoreg.reg_code not in ['MED', 'MMED']:
+                continue
             if not models.EtcDicBiogeoreg.query.filter_by(
                     reg_code=biogeoreg.reg_code, dataset_id=4).all():
                 new_biogeoreg = models.EtcDicBiogeoreg(
