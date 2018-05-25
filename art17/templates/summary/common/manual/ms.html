@@ -1,17 +1,19 @@
-{% if can_update_decision(row) %}
-  {% if row.user_decision and row.user_decision.name and row.last_update_decision %}
-    {% set title='added by ' + row.user_decision.name + ' <br/>on ' + row.last_update_decision %}
+{% if row.dataset_id != 3 or dataset.id != 4 %}
+  {% if can_update_decision(row) %}
+    {% if row.user_decision and row.user_decision.name and row.last_update_decision %}
+      {% set title='added by ' + row.user_decision.name + ' <br/>on ' + row.last_update_decision %}
+    {% else %}
+      {% set title='' %}
+    {% endif %}
   {% else %}
-    {% set title='' %}
-  {% endif %}
-{% else %}
     {% set title=DECISION_DETAILS.get(row.decision, '') %}
+  {% endif %}
 {% endif %}
 
 
 {% if can_view_decision() %}
 <td {% if title %}title="{{ title }}"{% endif %} class="form_cell text-center-vh">
-  {% if row.dataset.is_readonly or not can_update_decision(row) %}
+  {% if row.dataset.is_readonly or not can_update_decision(row) or (row.dataset_id == 3 and dataset.id == 4) %}
     {{ row.decision or '' }}
   {% else %}
   {% set update_url = url_for(update_endpoint, period=row.dataset_id, subject=row.subject,

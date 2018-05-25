@@ -175,6 +175,7 @@ class CommentsList(views.View):
 
     def dispatch_request(self, period, subject, region, user):
         MS = request.args.get('MS')
+        period_bis = request.args.get('period_bis', None)
         self.record = self.get_manual_record(period, subject, region, user, MS)
         if not self.record:
             abort(404)
@@ -219,6 +220,7 @@ class CommentsList(views.View):
             record=self.record,
             form=form,
             edited_comment=edited_comment,
+            period_bis=period_bis,
             home_url=self.get_home_url(subject=subject, region=region,
                                        user=user, MS=MS, period=period)
         )

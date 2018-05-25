@@ -18,7 +18,7 @@
   {% else %}
 
     <div id="comments">
-    {% if not edited_comment and can_post_comment(record) %}
+    {% if not edited_comment and can_post_comment(record) and not period_bis %}
       <p class="jump"><a href="#theform" title="Add a comment for this conclusion">Add a comment</a> &#8595;</p>
     {% endif %}
 
@@ -89,7 +89,7 @@
     </p>
   {% endif %}
 
-  {% if not edited_comment and can_post_comment(record) %}
+  {% if not edited_comment and can_post_comment(record) and not period_bis %}
     {% include 'comments/add.html' with context %}
   {% endif %}
 </div>

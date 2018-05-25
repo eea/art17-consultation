@@ -3,9 +3,10 @@
 {% block content %}
   {% block text_description %}{% endblock text_description %}
   {% if dataset.schema == '2012bis' %}
-  <p class="note">IMPORTANT: 2007-2012bis reporting period displays together with the official EU biogeographical
-      assessment from 2014 (using the substitute data from 2001-2006 period for Greece) also unofficial ad hoc EU
-      Biogeographical assessment using the delayed data from Greece.
+  <p class="note">IMPORTANT: 2007-2012bis reporting period displays an unofficial ad hoc EU Biogeographical assessments
+      using the delayed data from Greece (for MED and MMED regions only).
+      No assessment is available for habitats or species not present in Greece.
+
   </p>
   {% endif %}
   {% include 'progress/filters.html' %}
