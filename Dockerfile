@@ -4,7 +4,7 @@ LABEL maintainer="EEA: IDM2 C-TEAM <eea-edw-c-team-alerts@googlegroups.com>"
 ENV WORK_DIR=/var/local/art17
 ENV DATA_DIR=/var/local/art17-data
 
-RUN runDeps="curl vim build-essential netcat mysql-client libmysqlclient-dev python-dev libldap2-dev libsasl2-dev libssl-dev libxrender1 libfontconfig1 libxext6" \
+RUN runDeps="curl vim build-essential netcat mysql-client default-libmysqlclient-dev python-dev libldap2-dev libsasl2-dev libssl-dev libxrender1 libfontconfig1 libxext6" \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends $runDeps \
 	&& rm -vrf /var/lib/apt/lists/*
