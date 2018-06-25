@@ -298,11 +298,13 @@ class HabitatMixin(MixinsCommon):
             )
             subjects = []
             for subj in subjs:
-                subject = cls.model_cls.query.filter_by(
-                        habitatcode=subj[0]
-                ).first()
-                if subject.region in regions:
-                    subjects.append((subj[0], subj[1]))
+                subject_objects = cls.model_cls.query.filter_by(
+                        habitatcode=subj[0], dataset_id=4
+                ).all()
+                for subject in subject_objects:
+                    if subject.region in regions:
+                        subjects.append((subj[0], subj[1]))
+                        break
         else:
             subjects = (
                 EtcDicHdHabitat.query
