@@ -70,7 +70,10 @@ class MixinsCommon(object):
 
     @classmethod
     def get_regions(cls, period, subject, short=False):
-        blank_option = [('', 'All bioregions')]
+        if period == '4':
+            blank_option = []
+        else:
+            blank_option = [('', 'All bioregions')]
         regions = (
             cls._get_regions_query(period, short)
             .filter(cls.model_cls.subject == subject).all()
