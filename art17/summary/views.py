@@ -238,7 +238,9 @@ class Summary(ConclusionView, views.View):
         manual_form, manual_assessment = self.get_manual_form(
             request.form, period=period, action=action,
         )
-        manual_form.region.choices = self.get_regions(period, subject, True)[1:]
+        manual_form.region.choices = self.get_regions(period, subject, True)
+        if period != '4':
+            manual_form.region.choices = manual_form.region.choices[1:]
         if not request.form.get('region'):
             manual_form.region.process_data(region or manual_form.region.data)
         if hasattr(manual_form, 'MS'):
@@ -248,7 +250,6 @@ class Summary(ConclusionView, views.View):
         if request.method == 'POST':
             home_url = url_for(self.summary_endpoint, period=period,
                                subject=subject, region=region)
-
             if manual_form.validate(subject=subject, period=period):
                 if not can_touch(manual_assessment):
                     raise PermissionDenied()
