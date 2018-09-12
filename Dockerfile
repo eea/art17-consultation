@@ -24,6 +24,9 @@ RUN mkdir $WORK_DIR/logs \
 	&& ln -s $DATA_DIR/maps $WORK_DIR/art17/static/maps \
 	&& ln -s $DATA_DIR/factsheets $WORK_DIR/art17/static/factsheets
 
+RUN mkdir $WORK_DIR/temp_static \
+    && cp -a $WORK_DIR/art17/static/. $WORK_DIR/temp_static/
+
 RUN pip install -U setuptools \
 	&& pip install -r requirements-dep.txt --trusted-host eggshop.eaudeweb.ro \
 	&& mv docker-entrypoint.sh /bin/
