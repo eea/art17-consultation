@@ -3,6 +3,7 @@ set -e
 
 COMMANDS="shell utils db sync runserver api match"
 
+echo "Refreshing static files..."
 STATIC_DIR="/var/local/art17/art17/static/"
 TEMP_STATIC_DIR="/var/local/art17/temp_static/"
 cp -a $TEMP_STATIC_DIR/. $STATIC_DIR
