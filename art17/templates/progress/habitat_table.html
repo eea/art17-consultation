@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+    {% include 'header_styles.html' %}
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <div class="container">
+    {% set disable_group = 'True' %}
+    {% with disable_group=disable_group %}
+      {% include 'progress/filters.html' %}
+    {% endwith %}
+    <table class="complex_datatable">
+      <caption>
+        <b>Current selection</b>:
+        {{ current_selection|join(', ') }}.
+      </caption>
+      <thead>
+        <tr>
+          <th class="text-left" rowspan="2">
+          {% block first_column_title %}{% endblock first_column_title %}
+          </th>
+          <th colspan="{{ regions|count }}">Regions</th>
+        </tr>
+        <tr>
+          {% for region in regions %}
+          <th>
+            {{ region.reg_code }}
+        </th>
+        {% endfor %}
+      </tr>
+    </thead>
+
+    <tbody class="stripe_3rd">
+      {% for subject in subjects %}
+          {% set subject_name, subject_title = subject %}
+          <tr>
+            <td class="th">
+              <div class="popout-wrapper hover">
+                  <div class="popout compare_data right caret"
+                      id="contentdiv{{ loop.index }}">
+                      <div class="popout-padding">
+                        <a href="#" class="load-comparison no-break"
+                           data-url="{{ url_for(comparison_endpoint,
+                                                subject=subject_name,
+                                                conclusion=conclusion,
+                                                period=dataset.id) }}"
+                           data-container="contentdiv{{ loop.index }}">
+                            Compare periods
+                        </a>
+                      </div>
+                  </div>
+                  {{ subject_title }}
+              </div>
+            </td>
+            {% for region in regions %}
+              {% set data = objects.get(subject_name, {}).get(region.reg_code, '') %}
+              {% set url = url_for(summary_endpoint,
+                            period=dataset.id, subject=subject_name,
+                            region=region.reg_code) %}
+              {% if data %}
+                <td class="{{ CONCLUSION_CLASSES[data['conclusion']] }}"
+                    title="{{ data['title'] }}"
+                    data-tooltip-place="s">
+                      <a href="{{ url }}" class="conclusion">
+                      {% if can_view_details() and extra %}
+                        {{ data['main_decision'] }}
+                        {{ ' '.join(data['other_decisions']) }}
+                        {{ data['method']|methodify }}
+                        <br/>
+                        {{ data['comment_counts'] }}
+                      {% else %}
+                        {{ data['conclusion'] }}
+                      {% endif %}
+                      </a>
+                </td>
+              {% else %}
+                <td></td>
+              {% endif %}
+            {% endfor %}
+          </tr>
+          {% if loop.index % 25 == 0 
+             and loop.length - loop.index >= 10 %}
+              <tr class="thead">
+                <th class="text-center italic large" rowspan="2">
+                  <span class="italic muted">
+                  {{ loop.index }} - 
+                  {% if loop.index + 25 > loop.length %}
+                    {{ loop.length }}
+                  {% else %}
+                    {{ loop.index + 25 }}
+                  {% endif %}
+                  </span>
+                </th>
+                <th colspan="{{ regions|count }}">Regions</th>
+              </tr>
+              <tr class="thead">
+                {% for region in regions %}
+                <th>
+                  {{ region.reg_code }}
+                </th>
+                {% endfor %}
+              </tr>
+          {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

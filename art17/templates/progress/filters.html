@@ -7,7 +7,11 @@
 
   <div class="box-col">
     {{ progress_filter_form.group.label }}
-    {{ progress_filter_form.group(**{'data-href': groups_url}) }}
+    {% if disable_group %}
+      {{ progress_filter_form.group(**{'data-href': groups_url, 'disabled': '' }) }}
+    {% else %}
+      {{ progress_filter_form.group(**{'data-href': groups_url }) }}
+    {% endif %}
   </div>
 
   <div class="box-col">

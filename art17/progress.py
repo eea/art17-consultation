@@ -240,9 +240,9 @@ class Progress(views.View):
 
         return output
 
-    def dispatch_request(self):
-        period = request.args.get('period') or get_default_period()
-        group = request.args.get('group')
+    def dispatch_request(self, period_param=None, group_param=None):
+        period = period_param or request.args.get('period') or get_default_period()
+        group = group_param or request.args.get('group')
         conclusion = request.args.get('conclusion') or DEFAULT_CONCLUSION
         assessor = request.args.get('assessor')
         extra = request.args.get('extra') or ''
@@ -432,6 +432,30 @@ class HabitatProgress(Progress, HabitatMixin):
         }
 
 
+class HabitatProgressTable(HabitatProgress):
+    template_name = 'progress/habitat_table.html'
+
+    def dispatch_request(self):
+        period = request.args.get('period', 3)
+        group = request.args.get('group', 'Forests')
+        return super(HabitatProgressTable, self).dispatch_request(period, group)
+
+    @classmethod
+    def get_groups(cls, period):
+        group_field = EtcDicHdHabitat.group
+        dataset_id_field = EtcDicHdHabitat.dataset_id
+        groups = (
+            EtcDicHdHabitat.query
+            .filter(group_field == 'Forests', dataset_id_field == period)
+            .with_entities(group_field, group_field)
+            .distinct()
+            .order_by(group_field)
+            .all()
+        )
+        groups = [(a.capitalize(), b.capitalize()) for (a, b) in groups]
+        return groups
+
+
 class ComparisonView(MixinView, views.View):
 
     def dispatch_request(self):
@@ -477,7 +501,8 @@ progress.add_url_rule('/species/progress/compare/',
 progress.add_url_rule('/habitat/progress/compare/',
                       view_func=ComparisonView.as_view('habitat-comparison',
                                                        mixin=HabitatMixin))
-
+progress.add_url_rule('/habitat/progress/table/',
+                      view_func=HabitatProgressTable.as_view('habitat-progress-table'))
 
 @progress.route('/species/progress/assessors', endpoint='species-assessors')
 def species_assessors():
