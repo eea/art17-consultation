@@ -446,7 +446,11 @@ def species_groups():
 
 @common.route('/common/habitat/groups', endpoint='habitat-groups')
 def habitat_groups():
-    data = HabitatMixin.get_groups(flask.request.args['period'])
+    from art17.progress import HabitatProgressTable
+    if flask.request.args['table_view']:
+        data = HabitatProgressTable.get_groups(flask.request.args['period'])
+    else:
+        data = HabitatMixin.get_groups(flask.request.args['period'])
     return flask.jsonify(data)
 
 

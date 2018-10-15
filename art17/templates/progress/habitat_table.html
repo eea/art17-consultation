@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<base target="_blank">
 <meta charset="utf-8">
 <html>
   <head>
@@ -11,6 +12,7 @@
     {% with disable_group=disable_group %}
       {% include 'progress/filters.html' %}
     {% endwith %}
+    {% include 'common/table_legend.html' %}
     <table class="complex_datatable">
       <caption>
         <b>Current selection</b>:

@@ -455,6 +455,11 @@ class HabitatProgressTable(HabitatProgress):
         groups = [(a.capitalize(), b.capitalize()) for (a, b) in groups]
         return groups
 
+    def get_context(self):
+        context =  super(HabitatProgressTable, self).get_context()
+        context['groups_url'] += '?table_view=True'
+        return context
+
 
 class ComparisonView(MixinView, views.View):
 
