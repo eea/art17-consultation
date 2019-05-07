@@ -42,8 +42,11 @@
       {% endif %}
       </caption>
 
-      {% include 'common/habitat_table_header.html' with context %}
-
+      {% if dataset.schema == '2019' %}
+        {%  include 'common/habitat_table_header_2019.html' with context %}
+      {% else %}
+        {% include 'common/habitat_table_header.html' with context %}
+      {% endif %}
       <tbody class="stripe_3rd">
       {% for row in objects %}
         {% set visible = can_view(row, restricted_countries) %}

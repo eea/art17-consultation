@@ -1,0 +1,56 @@
+<tr {% if is_form %}class="form_row"{% endif %}>
+  {% if can_view_decision() %}
+    <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
+    <th rowspan="2"><abbr title="Member State / EU 28 (for EU assessments)">MS/EU28</abbr></th>
+  {% else %}
+    <th rowspan="2" colspan="2"><abbr title="Member State / EU 28 (for EU assessments)">MS/EU28</abbr></th>
+  {% endif %}
+
+  {% if not region %}
+    <th rowspan="2" title="Biogeographical or marine region">Region</th>
+  {% endif %}
+
+  <th rowspan="2">Surface</th>
+  <th rowspan="2"><abbr title="Status of Range (colour) 
+Assessment method used (e.g. 2XA)">Status<br/>Range</abbr></th>
+  <th rowspan="2">Trend</th>
+  <th rowspan="2" title="Favourable reference value">FRR</th>
+
+  <th rowspan="2">Min-max</th>
+  <th rowspan="2"><abbr title="Status of Area (colour)
+Assessment method used (e.g. 2XA)">Status<br/>Area</abbr></th>
+  <th rowspan="2">Trend</th>
+  <th rowspan="2">FRA</th>
+
+  <th rowspan="2" title="Status of Structure and functions (colour)
+Assessment method used (e.g. 2XA)">Status Str.<br/>& funct.</th>
+  <th rowspan="2" title="Status of Future prospects (colour)
+Assessment method used (e.g. 2XA)">Status Future<br/>prosp.</th>
+
+  <th rowspan="2" title="Conservation status - current period (colour)
+Assessment method used (e.g. MTX)">Curr. CS</th>
+  <th rowspan="2" title="Overall trend in conservation status - current period">Curr. CS<br\>trend</th>
+  <th rowspan="2" title="Conservation status - previous period">Prev. CS<br/>Concl.</th>
+  <th rowspan="2" title="Main reason for change
+a - Genuine change
+no - Non-genuine change or no information
+nc  - No change">Status<br\>Nat. of ch.</th>
+
+  <th colspan="2" title="Contribution to target 1
+  A= - favourable in both 2000-2006 and 2013-2018 periods 
+  A+ - favourable but unfavourable in 2000-2006 period
+  B1 - improved status (change in conservation status category)
+  B2 - improving status (improving trend)
+  C  - deteriorated status 
+  D  - unfavourable and unknown assessments that did not change
+  E  - status became unknown">Target 1</th>
+  <th rowspan="2" colspan="2"></th>
+    
+  <th rowspan="2" colspan="5">{# padding #}</th>
+</tr>
+
+<tr {% if is_form %}class="form_row"{% endif %}>
+  <th title="Contribution to target ">Contrib.</th>
+  <th>Type</th>
+</tr>
+    

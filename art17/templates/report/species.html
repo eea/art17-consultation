@@ -40,7 +40,11 @@
         {{ current_selection|join(', ') }}.
       </caption>
 
-      {% include "common/species_table_header.html" with context %}
+      {% if dataset.schema == '2019' %}
+        {% include "common/species_table_header_2019.html" with context %}
+      {% else %}
+        {% include "common/species_table_header.html" with context %}
+      {% endif %}
 
       <tbody class="stripe_3rd">
 
@@ -84,7 +88,6 @@
               {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
             </td>
             {% else %}
-
               {% include 'summary/species/content/range.html' with context %}
               {% include 'summary/species/content/population.html' with context %}
               {% include 'summary/species/content/habitat.html' with context %}

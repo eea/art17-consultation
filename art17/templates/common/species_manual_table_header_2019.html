@@ -1,0 +1,30 @@
+<tr {% if is_form %}class="form_row"{% endif %}>
+  {% if can_view_decision() %}
+    <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
+    <th rowspan="2"><abbr title="Member State/EU28">MS/EU28</abbr></th>
+  {% else %}
+    <th rowspan="2" colspan="2"><abbr title="Member State/EU28">MS/EU28</abbr></th>
+  {% endif %}
+  {% if not region %}<th rowspan="2">Region</th>{% endif %}
+  <th rowspan="2">Surface</th>
+  <th rowspan="2">Status<br/>Range</th>
+  <th rowspan="2">Trend</th>
+  <th rowspan="2" title="Favourable reference value">FRR</th>
+
+  <th rowspan="2">Min-max</th>
+  <th rowspan="2">Status<br/>Population</th>
+  <th rowspan="2">Trend</th>
+  <th rowspan="2" title="Favourable reference value">FRP</th>
+
+  <th rowspan="2">Status Hab. for species</th>
+  <th rowspan="2">Trend</th>
+
+  <th rowspan="2">Status Future prosp.</th>
+
+  <th rowspan="2">Curr. CS</th>
+  <th rowspan="2">Curr. CS trend</th>
+  <th rowspan="2" title="Previous conservation status">Prev. CS</th>
+  <th rowspan="2" title="Status Nature of change">Status Nat. of ch.</th>
+
+  <th colspan="2">Target 1</th>
+</tr>
