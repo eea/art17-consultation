@@ -6,6 +6,12 @@
         {{ row.coverage_surface_area|str2num }}
     </td>
 
+    {% if dataset.schema == '2019' %}
+      <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+        {{ row.best_value  or '-' }}
+      </td>
+    {% endif %}
+
     {% set classes=CONCLUSION_CLASSES.get(row.conclusion_area, '') %}
     <td {{ parse_errors(['conclusion_area',
                          'percentage_coverage_surface_area'],

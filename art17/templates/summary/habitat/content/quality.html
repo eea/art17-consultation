@@ -1,6 +1,8 @@
 {% if dataset.schema == '2006' %}
-    <td>{{ row.range_quality }}</td>
-    <td class="border_right">{{ row.coverage_quality }}</td>
+  <td>{{ row.range_quality }}</td>
+  <td class="border_right">{{ row.coverage_quality }}</td>
+{% elif dataset.schema == '2019' %}
+  <td class="border_right" colspan="5"></td>
 {% else %}
-    <td class="border_right" colspan="2"></td>
+  <td class="border_right" colspan="2"></td>
 {% endif %}

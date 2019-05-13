@@ -151,7 +151,11 @@
           {% include 'summary/common/manual/conclusion_details.html' %}
         </tr>
         {% else %}
-          {% include 'summary/habitat/manual_form.html' %}
+          {% if dataset.schema == '2019' %}
+            {% include 'summary/habitat/manual_form_2019.html' %}
+          {% else %}
+            {% include 'summary/habitat/manual_form.html' %}
+          {% endif %}
         {% endif %}
       {% endfor %}
       </tbody>
@@ -160,7 +164,11 @@
       {% if not manual_assessment %}
       <tbody class="form">
         {% if can_add %}
-          {% include 'summary/habitat/manual_form.html' %}
+          {% if dataset.schema == '2019' %}
+            {% include 'summary/habitat/manual_form_2019.html' %}
+          {% else %}
+            {% include 'summary/habitat/manual_form.html' %}
+          {% endif %}        
         {% else %}
         <tr class="form_row">
             <td colspan="{{ colspan_all }}">{{ warning_message }}</td>

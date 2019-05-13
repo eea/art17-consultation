@@ -1,0 +1,115 @@
+{% from '_macros.html' import conclusion_td with context %}
+{% from '_macros.html' import method_conclusion_td with context %}
+{% from '_macros.html' import select_conclusion_td with context %}
+{% from '_macros.html' import size_unit, numval_habitat_title %}
+
+
+{% set form=manual_form %}
+  {% set is_form=true %}
+  <tr class="form_row" id="theform">
+      <td></td>
+    {% if can_select_MS() %}
+      <td {% if form.MS.errors %}class="form-error-td"{% endif %}>
+        {{ form.MS() }}
+      </td>
+    {% else %}
+      <td>
+        {{ manual_assessment.MS or default_ms }}
+      </td>
+    {% endif %}
+    {% if not region %}
+    <td>{{ manual_assessment.region }}</td>
+    {% endif %}
+
+    {% if not edit_ref %}
+      <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}
+          {{ numval_habitat_title(x=False) }}>
+      {{ form.range_surface_area(size=5) }}
+      </td>
+      {{ method_conclusion_td('Status Range', form.method_range, form.conclusion_range) }}
+      <td {% if form.range_trend.errors %}class="form-error-td"{% endif %}>
+      {{ form.range_trend() }}
+      </td>
+      <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
+          {{ numval_habitat_title() }}>
+      {{ form.complementary_favourable_range(size=5) }}
+      </td>
+
+      <td {% if form.coverage_surface_area.errors %}class="form-error-td"{% endif %}
+          {{ numval_habitat_title(x=False) }}>
+      {{ form.coverage_surface_area(size=5) }}
+      </td>
+      <td></td>
+      {{ method_conclusion_td('Status Area', form.method_area, form.conclusion_area) }}
+      <td {% if form.coverage_trend.errors %}class="form-error-td"{% endif %}>
+      {{ form.coverage_trend() }}
+      </td>
+      <td {% if form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}
+          {{ numval_habitat_title() }}>
+      {{ form.complementary_favourable_area(size=5) }}
+      </td>
+
+      {{ method_conclusion_td('Status Structure and Functions', form.method_structure, form.conclusion_structure) }}
+
+      {{ method_conclusion_td('Status Future Prospects', form.method_future, form.conclusion_future) }}
+
+      {{ method_conclusion_td('Current CS Conclusions', form.method_assessment, form.conclusion_assessment) }}
+      <td {% if form.conclusion_assessment_trend.errors %}class="form-error-td"{% endif %}>
+        {{ form.conclusion_assessment_trend() }}
+      </td>
+      {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev) }}
+      </td>
+      <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
+        {{ form.conclusion_assessment_change() }}
+      </td>
+
+      {# Contrib target 1 #}
+      <td {% if form.method_target1.errors %}class="form-error-td"{% endif %}
+          title="A (favorable), B (improvement), C (deterioration), D (same), E (unknown)">
+      {{ form.method_target1() }}
+      </td>
+      <td {% if form.conclusion_target1.errors %}class="form-error-td"{% endif %}
+          title="+ (improvement), - (deterioration), = (no change), x (not known)">
+      {{ form.conclusion_target1() }}
+      </td>
+    {% else %}
+      {# Edit reference values form #}
+      {% set ass = manual_assessment %}
+      <td>{{ ass.range_surface_area }}</td>
+      {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
+      <td>{{ ass.range_trend }}</td>
+      <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
+          {{ numval_habitat_title() }}>
+        {{ form.complementary_favourable_range(size=5) }}
+      </td>
+
+      <td>{{ ass.coverage_surface_area }}</td>
+      {{ conclusion_td(ass.conclusion_area, ass.method_area) }}
+      <td>{{ ass.coverage_trend }}</td>
+      <td {% if form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}
+          {{ numval_habitat_title() }}>
+        {{ form.complementary_favourable_area(size=5) }}
+      </td>
+
+      {{ conclusion_td(ass.conclusion_structure, ass.method_structure) }}
+      {{ conclusion_td(ass.conclusion_future, ass.method_future) }}
+      {{ conclusion_td(ass.conclusion_assessment, ass.method_assessment) }}
+
+      <td>{{ ass.conclusion_assessment_trend }}</td>
+      <td>{{ ass.conclusion_assessment_prev }}</td>
+      <td>{{ ass.conclusion_assessment_change }}</td>
+      <td>{{ ass.method_target1 }}</td>
+      <td>{{ ass.conclusion_target1 }}</td>
+
+    {% endif %}
+
+    {% include 'summary/common/manual/edit_buttons.html' %}
+  </tr>
+  {% if form.errors %}
+  <tr class="form_row">
+    <td colspan="{{ colspan_all - 1 }}" class="form-error-msg regular">
+      Errors:
+        {{ form.all_errors()|safe }}
+    </td>
+  </tr>
+  {% endif %}

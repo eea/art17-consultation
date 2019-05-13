@@ -13,22 +13,23 @@
     {% endif %}
     {% if not region %}<th rowspan="2">Region</th>{% endif %}
       <th colspan="4">Range (km<sup>2</sup>)</th>
-      <th colspan="4">Area (km<sup>2</sup>)</th>
+      <th colspan="5">Area (km<sup>2</sup>)</th>
       <th title="Structure and Functions">Structure and <br/>functions (km<sup>2</sup>)</th>
       <th title="Future prospects">Future <br/>prospects</th>
       <th colspan="4">Overall assessment</th>
-      <th colspan="4" title="Area was calculated in km<sup>2</sup> based on distribution and range spatial data mapped in 10x10km grid."
+      <th colspan="2" title="Area was calculated in km<sup>2</sup> based on distribution and range spatial data mapped in 10x10km grid."
       >Distribution area(km<sup>2</sup>)</th>
       <th rowspan="2" colspan="5"></th>
   </tr>
   <tr>
     <th>Surface</th>
-    <th title="Percentage of surface of the Range per MS per region">Status  % MS)</th>
+    <th title="Percentage of surface of the Range per MS per region">Status<br/>(% MS)</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
     <th title="{{ favourable_ref_title('complementary_favourable_range', dataset.schema) }}">FRR</th>
       
     <th>Min-max</th>
-    <th title="Percentage of surface of the area of the habitat per MS per region">Status  % MS)</th>
+    <th>Best value</th>
+    <th title="Percentage of surface of the area of the habitat per MS per region">Status<br/>(% MS)</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
     <th title="{{ favourable_ref_title('complementary_favourable_area', dataset.schema) }}">FRA</th>
       
@@ -36,12 +37,10 @@
     <th>Status</th>
 
     <th title="Current conservation status">Curr. CS</th>
-    <th title="Overall trend in conservation status {{ TREND_ALL_TOOLTIP }}">Curr. CS trend</th>
+    <th title="Overall trend in conservation status {{ TREND_ALL_TOOLTIP }}">Curr. CS<br/>trend</th>
     <th title="Previous conservation status">Prev. CS</th>
-    <th title="Nature of change {{ NATURE_TOOLTIP }}">Status Nat. of ch.</th>
-  
-    <th>Range</th>
-    <th title="Percentage of the surface of the Range Map, which has been gridded, per MS, per region">% MS</th>
+    <th title="Nature of change {{ NATURE_TOOLTIP }}">Status<br/>Nat.<br/>of ch.</th>
+
     <th title="Distribution">Distrib.</th>
     <th title="Percentage of the surface of the Distribution Map, which has been gridded, per MS, per region">% MS</th>
   </tr>
