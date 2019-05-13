@@ -1,22 +1,39 @@
-<td class="number border_left">
-    {{ row.habitat_surface_area|str2num('')|safe }}
-</td>
+{% if dataset.schema != '2019' %}
+  <td class="number border_left">
+      {{ row.habitat_surface_area|str2num('')|safe }}
+  </td>
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
 
-{% set concl_value = get_tooltip(row, 'method_habitat') %}
+  {% set concl_value = get_tooltip(row, 'method_habitat') %}
 
-<td class="{{ classes }}"
-    {% if concl_value %}title=": {{concl_value}}"{% endif %}>
-    <span class="conclusion">{{ row.method_habitat or '' }}</span>
-</td>
+  <td class="{{ classes }}"
+      {% if concl_value %}title=": {{concl_value}}"{% endif %}>
+      <span class="conclusion">{{ row.method_habitat or '' }}</span>
+  </td>
 
-<td></td>
+  <td></td>
 
-<td class="center">
-    {{ row.habitat_trend or '' }}
-</td>
+  <td class="center">
+      {{ row.habitat_trend or '' }}
+  </td>
 
-<td class="number border_right">
-  {{ row.complementary_suitable_habitat|str2num('')|safe }}
-</td>
+  <td class="number border_right">
+    {{ row.complementary_suitable_habitat|str2num('')|safe }}
+  </td>
+{% else %}
+
+  {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
+
+  {% set concl_value = get_tooltip(row, 'method_habitat') %}
+
+  <td class="{{ classes }} border_left"
+      {% if concl_value %}title=": {{concl_value}}"{% endif %}>
+      <span class="conclusion">{{ row.method_habitat or '' }}</span>
+  </td>
+
+  <td class="center border_right">
+      {{ row.habitat_trend or '' }}
+  </td>
+
+{% endif %}

@@ -1,6 +1,6 @@
 <tbody class="thead">
   <tr class="section-header">
-    <th class="table-title" colspan="19">
+    <th class="table-title" colspan="{{ colspan_all }}">
       Member States reports
     </th>
   </tr>
@@ -14,21 +14,22 @@
       <th rowspan="2" colspan="2" title="Member states">MS</th>
     {% endif %}
     {% if not region %}<th rowspan="2">Region</th>{% endif %}
-    
+
     <th colspan="4">Range (km<sup>2</sup>)</th>
-    <th colspan="4">Population</th>
-    <th colspan="2">Habitat for the species</th>
-    <th colspan="1" title="Future prospects">Future prospects</th>
+    <th colspan="5">Population</th>
+    <th colspan="2">Habitat<br/>for the<br/>species</th>
+    <th colspan="1" title="Future prospects">Future<br/>prospects</th>
     <th colspan="4">Overall<br/>assessment</th>
-    <th colspan="2">Distribution area (km<sup>2</sup>)</th>
+    <th colspan="2">Distribution<br/>area (km<sup>2</sup>)</th>
+    <td colspan="5" rowspan="2"></td>
   </tr>
-  
+
   <tr>
     <th>Surface</th>
     <th>Status<br/>(% MS)</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
     <th title="{{ favourable_ref_title('complementary_favourable_range', dataset.schema) }}">FRR</th>
-  
+
     <th>
       <div class="popout-wrapper hover">
         <div class="popout size_unit_th right caret">
@@ -48,18 +49,19 @@
         Min-max
       </div>
     </th>
-    <th>Status (% MS)</th>
+    <th>Best value</th>
+    <th>Status<br/>(% MS)</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
     <th title="{{ favourable_ref_title('complementary_favourable_population', dataset.schema) }}">FRP</th>
     <th>Status</th>
     <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
-  
-    <th>Status</th>  
+
+    <th>Status</th>
     <th title="Current conservation status">Curr. CS</th>
     <th title="Current conservation status trend">Curr. CS<br/>trend</th>
     <th title="Previous conservation status">Prev. CS</th>
-    <th title="Status Nature of change {{ NATURE_TOOLTIP }}">Status Nat. of ch.</th>
-      
+    <th title="Status Nature of change {{ NATURE_TOOLTIP }}">Status<br/>Nat. of ch.</th>
+
     <th title="Distribution">Distrib.</th>
     <th title="Percentage of the surface of the Distribution Map, which has been gridded, per MS, per region">% MS</th>
   </tr>

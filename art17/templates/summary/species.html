@@ -150,7 +150,11 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     <tbody>
     {% for row in manual_objects %}
       {% if row == manual_assessment %}
-        {% include 'summary/species/manual_form.html' %}
+        {% if dataset.schema == '2019' %}
+          {% include 'summary/species/manual_form_2019.html' %}
+        {% else %}
+          {% include 'summary/species/manual_form.html' %}
+        {% endif %}
       {% else %}
       <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset_id == 3 and dataset.id == 4 %}manual_assessment{% endif%}">
         {% include 'summary/common/manual/ms.html' %}
@@ -173,7 +177,11 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     {% if not manual_assessment %}
     <tbody class="form">
       {% if can_add %}
-        {% include 'summary/species/manual_form.html' %}
+        {% if dataset.schema == '2019' %}
+          {% include 'summary/species/manual_form_2019.html' %}
+        {% else %}
+          {% include 'summary/species/manual_form.html' %}
+        {% endif %}
       {% else %}
         <tr class="form_row">
           <td colspan="{{ colspan_all }}">{{ warning_message }}</td>

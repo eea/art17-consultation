@@ -6,6 +6,12 @@
       {{ population_size_unit(row) }}
     </td>
 
+    {% if dataset.schema == '2019' %}
+      <td class="number center">
+        {{ row.population_best_value or '-' }}
+      </td>
+    {% endif %}
+
     {% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') %}
     <td {{ parse_errors(['conclusion_population',
                          'percentage_population_mean_size'],
