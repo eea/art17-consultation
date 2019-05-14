@@ -10,6 +10,10 @@
       <td class="number center">
         {{ row.population_best_value or '-' }}
       </td>
+
+      <td class="number center">
+        {{ row.population_size_type_estimate or '-' }}
+      </td>
     {% endif %}
 
     {% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') %}

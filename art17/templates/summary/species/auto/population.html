@@ -6,6 +6,11 @@
   <td class="number center">
     {{ row.population_best_value|parse_semicolon|str2num('')|safe }}
   </td>
+
+  <td class="number center">
+    {{ row.population_size_type_estimate|parse_semicolon|str2num('')|safe }}
+  </td>
+
 {% endif %}
 
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}">

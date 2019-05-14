@@ -39,6 +39,8 @@
           {{ numval_habitat_title(x=False) }}>
       {{ form.coverage_surface_area(size=5) }}
       </td>
+      <!-- add best value and type est. -->
+      <td></td>
       <td></td>
       {{ method_conclusion_td('Status Area', form.method_area, form.conclusion_area) }}
       <td {% if form.coverage_trend.errors %}class="form-error-td"{% endif %}>
