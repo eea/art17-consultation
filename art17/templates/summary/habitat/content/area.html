@@ -14,6 +14,10 @@
       <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
         {{ row.type_estimate_area  or '-' }}
       </td>
+
+      <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+        {{ row.method_area or '-' }}
+      </td>
     {% endif %}
 
     {% set classes=CONCLUSION_CLASSES.get(row.conclusion_area, '') %}

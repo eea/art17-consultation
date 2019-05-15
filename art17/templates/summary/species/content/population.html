@@ -14,6 +14,10 @@
       <td class="number center">
         {{ row.population_size_type_estimate or '-' }}
       </td>
+
+      <td class="number center">
+        {{ row.population_method or '-' }}
+      </td>
     {% endif %}
 
     {% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') %}
