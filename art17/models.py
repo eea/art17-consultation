@@ -187,6 +187,7 @@ class EtcDataHabitattypeAutomaticAssessment(Base):
     range_grid_area = Column(String(100))
     percentage_range_grid_area = Column(String(100))
     distribution_grid_area = Column(String(100))
+    distribution_method_area = Column(String(50))
     percentage_distribution_grid_area = Column(String(100))
     assessment_needed = Column(Integer)
 
@@ -253,6 +254,7 @@ class EtcDataHabitattypeRegion(Base):
     range_grid_area = Column(Float(asdecimal=True))
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
+    distribution_method_area = Column(String(50))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
     remote_url_2006 = Column(String(350), nullable=True)
     remote_url_2012 = Column(String(350), nullable=True)
@@ -374,6 +376,7 @@ class EtcDataSpeciesAutomaticAssessment(Base):
     range_grid_area = Column(String(100))
     percentage_range_grid_area = Column(String(100))
     distribution_grid_area = Column(String(100))
+    distribution_method_area = Column(String(50))
     percentage_distribution_grid_area = Column(String(100))
     assessment_needed = Column(Integer)
 
@@ -476,6 +479,7 @@ class EtcDataSpeciesRegion(Base):
     range_grid_area = Column(Float(asdecimal=True))
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
+    distribution_method_area = Column(String(50))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
     remote_url_2006 = Column(String(350), nullable=True)
     remote_url_2012 = Column(String(350), nullable=True)

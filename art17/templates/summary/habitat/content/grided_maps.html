@@ -12,6 +12,12 @@
   {{ row.distribution_grid_area|str1num }}
 </td>
 
+{% if dataset.schema == '2019' %}
+  <td class="center">
+    {{ row.distribution_method_area|str1num }}
+  </td>
+{% endif %}
+
 <td class="center border_right">
   {{ row.percentage_distribution_grid_area|str1num }}
 </td>
