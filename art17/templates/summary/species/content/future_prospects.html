@@ -1,12 +1,21 @@
 {% from '_macros.html' import parse_errors with context %}
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' border' %}
+{% set border = ' border' %}
 
-<td {{ parse_errors(['conclusion_future',
-                     'future_prospects'],
-                      row, qa_errors,
-                      classes=classes) }}>
-  <span class="conclusion">
-    {{ row.future_prospects|str2num }}
-  </span>
+{% if dataset.schema == '2019' %}
+  {% set border = '' %}
+  <td class="center border_left">
+    {{ row.range_future_prospects|str2num }}
+  </td>
+  <td class="center">
+    {{ row.population_future_prospects|str2num }}
+  </td>
+  <td class="center">
+    {{ row.structure_future_prospects|str2num }}
+  </td>
+{% endif %}
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + border %}
+<td {{ parse_errors(['conclusion_future', 'future_prospects'], row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.future_prospects|str2num }}</span>
 </td>
