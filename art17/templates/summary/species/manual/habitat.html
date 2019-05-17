@@ -22,7 +22,8 @@
     {{ row.complementary_suitable_habitat|str2num('')|safe }}
   </td>
 {% else %}
-
+  <td></td>
+  <td></td>
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
 
   {% set concl_value = get_tooltip(row, 'method_habitat') %}

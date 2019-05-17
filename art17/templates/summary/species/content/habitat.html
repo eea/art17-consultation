@@ -1,5 +1,10 @@
 {% from '_macros.html' import parse_errors, reason_title with context %}
 
+    {% if dataset.schema == '2019' %}
+        <td class="center">{{ row.habitat_occupied_sufficiency|str2num }}</td>
+        <td class="center">{{ row.habitat_unoccupied_sufficiency|str2num }}</td>
+    {% endif %}
+
     {% if dataset.schema != '2019' %}
         <td {{ parse_errors('habitat_surface_area', row, qa_errors,
                 title=reason_title(dataset.schema, row.habitat_change_reason),
@@ -19,7 +24,6 @@
     {% if dataset.schema == '2006' %}
         <td></td>
     {% elif dataset.schema == '2019' %}
-
     {% else %}
         {% set title=QUALITIES.get(row.habitat_quality|get_quality|upper, '') %}
         <td {% if title %}title="{{ title }}"{% endif %} class="center">

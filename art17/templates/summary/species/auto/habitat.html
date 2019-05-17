@@ -18,7 +18,9 @@
   </td>
 
 {% else %}
-  <td class="{{ CONCLUSION_CLASSES[row.conclusion_habitat] }} border_left">
+  <td class="center border_left">{{ row.habitat_occupied_sufficiency|str2num }}</td>
+  <td class="center">{{ row.habitat_unoccupied_sufficiency|str2num }}</td>
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_habitat] }}">
     <span class="conclusion">{{ row.percentage_habitat_surface_area|parse_semicolon|str2num('')|safe }}</span>
   </td>
 
