@@ -1,3 +1,13 @@
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} border">
+{% if dataset.schema == '2019' %}
+  <td class="center">{{ row.good_structure|str2num }}</td>
+  <td class="center">{{ row.not_good_structure|str2num }}</td>
+  <td class="center">{{ row.not_known_structure|str2num }}</td>
+{% endif %}
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }}">
   <span class="conclusion">{{ row.percentage_structure|parse_semicolon|str2num('')|safe or '' }}</span>
 </td>
+
+{% if dataset.schema == '2019' %}
+  <td class="center">{{ row.trend_structure|str2num }}</td>
+{% endif %}
