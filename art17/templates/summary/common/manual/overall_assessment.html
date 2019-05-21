@@ -14,8 +14,20 @@
   </td>
   <td class="center">{{ row.conclusion_assessment_trend or 'N/A' }}</td>
   <td class="{{ row.conclusion_assessment_prev or '' }}">
-      <span class="conclusion">{{
-          row.conclusion_assessment_prev or 'N/A' }}</span></td>
-  <td class="center border_right">{{
+    <span class="conclusion">{{ row.conclusion_assessment_prev or 'N/A' }}</span>
+  </td>
+  {% if dataset.schema == '2019' %}
+    <td class="center">
+      {{ row.conclusion_assessment_prev_trend|str1num }}
+    </td>
+  {% endif %}
+
+  <td class="center {% if dataset.schema != '2019' %} border_right {% endif %}">{{
       NATURE_CHOICES.get(row.conclusion_assessment_change, 'N/A') }}</td>
+
+  {% if dataset.schema == '2019' %}
+    <td class="center border_right">
+        {{ row.conclusion_assessment_prev_trend|str1num }}
+    </td>
+  {% endif %}
 {% endif %}

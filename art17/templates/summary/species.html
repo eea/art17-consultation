@@ -28,7 +28,12 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
   {% endif %}
   {% include 'summary/filters.html' %}
 
-  {% set colspan_all=28 if region else 29 %}
+  {% if dataset.schema == '2019' %}
+    {% set colspan_all=32 if region else 33 %}
+  {% else %}
+    {% set colspan_all=28 if region else 29 %}
+  {% endif %}
+
   {% if current_selection %}
 
   {% include 'summary/wiki_buttons.html' %}
