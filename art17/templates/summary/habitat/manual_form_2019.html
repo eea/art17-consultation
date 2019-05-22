@@ -80,11 +80,22 @@
       </td>
       {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev) }}
       </td>
+
+      <!-- todo Add prev cs. trend form field -->
+      <td></td>
+
       <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
         {{ form.conclusion_assessment_change() }}
       </td>
 
+      <!-- todo Add cs trend nat of ch. form field -->
+      <td></td>
+
       {# Contrib target 1 #}
+
+      <!-- todo Add backcasted -->
+      <td></td>
+
       <td {% if form.method_target1.errors %}class="form-error-td"{% endif %}
           title="A (favorable), B (improvement), C (deterioration), D (same), E (unknown)">
       {{ form.method_target1() }}
@@ -119,6 +130,10 @@
       <td>{{ ass.conclusion_assessment_trend }}</td>
       <td>{{ ass.conclusion_assessment_prev }}</td>
       <td>{{ ass.conclusion_assessment_change }}</td>
+      
+      <!-- todo Add backcasted -->
+      <td></td>
+
       <td>{{ ass.method_target1 }}</td>
       <td>{{ ass.conclusion_target1 }}</td>
 
