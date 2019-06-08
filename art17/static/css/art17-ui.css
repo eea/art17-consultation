@@ -40,9 +40,9 @@ table.no-border th {
 .complex_datatable thead,
 .complex_datatable tfoot,
 .complex_datatable tbody {
-  font-family: 'Roboto Condensed';
-  font-weight: 300;
-  font-size: 12px;
+  font-family: 'Roboto Condensed' !important;
+  font-weight: 300 !important;
+  font-size: 12px !important;
 }
 /*LINKS*/
 .complex_datatable a,
@@ -91,8 +91,13 @@ abbr {
   font-size: 14px;
   font-weight: bold;
   line-height: 23px;
-  text-align: left;
+  text-align: left !important;
 }
+
+table {
+ width: unset;
+}
+
 .complex_datatable thead tr:first-child,
 .complex_datatable .thead tr:first-child {
   border-top-width: 2px;
@@ -104,7 +109,7 @@ abbr {
 .complex_datatable .th {
   font-weight: normal;
   color: black;
-  border: 1px solid #bbb;
+  border: 1px solid #bbb !important;
   background: #f6f6f6;
 }
 /* CELLS */
@@ -780,6 +785,7 @@ a.conclusion:hover {
   padding: 0;
   -webkit-box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
   box-shadow: 0 0px 3px 0px rgba(0,0,0,0.25);
+  width: initial;
 }
 .popout.compare_data.caret:before,
 .popout.compare_data.caret:after {
@@ -1096,6 +1102,7 @@ li.select-list {
   border-color: #5c993e;
   color: #fff;
   text-shadow: 0 -1px 0 #5c993e;
+  float: right;
 }
 .button.btn-green:active,
 .btn-green:active {
@@ -1123,8 +1130,8 @@ li.select-list {
   background-image: -moz-linear-gradient(#428be1, #3065a6);
   background-image: -o-linear-gradient(#428be1, #3065a6);
   background-image: linear-gradient(#428be1, #3065a6);
-  border-color: #3065a6;
-  color: #fff;
+  border-color: #3065a6 !important;
+  color: #fff !important;
   text-shadow: 0 -1px 0 #3065a6;
 }
 .button.btn-blue:active,
@@ -1258,11 +1265,11 @@ li.select-list {
   text-align: center;
   font-weight: normal;
   border-radius: 0;
-  color: white;
+  color: white !important;
 }
 .modal-bg .close:hover {
-  background: #222;
-  color: white;
+  background: #222 !important;
+  color: white !important;
 }
 /* BOX (Similar to Bootstrap's well) */
 .box {
@@ -1609,7 +1616,7 @@ td.form-error-td .select:hover {
 
 .offset_top_label {
   float: left;
-  margin-top: 22px;
+  margin-top: 28px;
 }
 
 /* FLASH MESSAGES */
@@ -1679,4 +1686,54 @@ td.form-error-td .select:hover {
 
 [data-template] {
     display: none!important;
+}
+
+
+/* PLONE HEADER FIXES */
+
+body {
+  padding: 0;
+}
+
+li.hasDropDown > i {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+li.hasDropDown i {
+  background: none;
+}
+
+.search-wrapper {
+  margin-top: 16px;
+}
+
+.search-submit {
+  margin-top: 5px;
+  color: black !important;
+  background: none;
+}
+#loginlink {
+  background: none;
+}
+
+#breadcrumbs-home  > i.glyphicon.link-https:after {
+  content: none;
+}
+
+td input {
+  height: 1.8em !important;
+}
+
+.caret {
+  height: auto;
+}
+
+tbody th {
+  text-align: center !important;
+}
+
+.outer-wrapper .container {
+  margin-left: unset;
 }

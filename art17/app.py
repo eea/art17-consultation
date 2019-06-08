@@ -20,6 +20,7 @@ from art17.dataset import dataset_manager
 from art17.assets import assets_env
 from art17.factsheet import factsheet, factsheet_manager
 from art17.management.import_greece import import_greece
+from art17.management.fetch_plone_templates import fetch_plone_templates
 
 
 DEFAULT_CONFIG = {
@@ -113,6 +114,7 @@ def create_manager(app):
     manager.add_command('dataset', dataset_manager)
     manager.add_command('user', user_manager)
     manager.add_command('import_greece', import_greece)
+    manager.add_command('fetch_plone_templates', fetch_plone_templates)
     manager.add_command('role', role_manager)
     manager.add_command('factsheet', factsheet_manager)
     return manager

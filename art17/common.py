@@ -211,12 +211,15 @@ def inject_globals():
     is_public = not current_user.is_authenticated() or is_public_user()
 
     return {
-        'APP_BREADCRUMBS': [('Article 17', flask.url_for(HOMEPAGE_VIEW_NAME))],
+        'APP_BREADCRUMBS': [
+            ('Eionet', flask.current_app.config['LAYOUT_PLONE_URL']),
+            ('Article 17', flask.url_for(HOMEPAGE_VIEW_NAME))],
         'consultation_started': consultation_started,
         'today': today,
         'start_date': cfg.start_date,
         'end_date': cfg.end_date,
         'is_public': is_public,
+        'current_user': current_user,
     }
 
 
