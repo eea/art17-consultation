@@ -128,7 +128,7 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
     ('get', ['/species/summary/datasheet/get_revision/', {
         'revision_id': 1}], {})
 ])
-def test_perms(app, setup, zope_auth, client, request_type, request_args,
+def test_perms(app, setup, plone_auth, client, request_type, request_args,
                post_params):
     resp = getattr(client, request_type)(*get_request_params(
         request_type, request_args, post_params), expect_errors=True)
@@ -154,7 +154,7 @@ def test_perms(app, setup, zope_auth, client, request_type, request_args,
     ('get', ['/species/summary/datasheet/get_revision/', {
         'revision_id': 999}], {})
 ])
-def test_perms_auth_user(app, setup, zope_auth, client, request_type,
+def test_perms_auth_user(app, setup, plone_auth, client, request_type,
                          request_args, post_params):
     create_user('otheruser')
     set_user('otheruser')
@@ -173,7 +173,7 @@ def test_perms_auth_user(app, setup, zope_auth, client, request_type,
     ('get', ['/species/summary/datasheet/manage_comment/', {
         'comment_id': 999, 'toggle': 'read', 'period': '1'}], {}),
 ])
-def test_404_error(app, setup, zope_auth, client, request_type, request_args,
+def test_404_error(app, setup, plone_auth, client, request_type, request_args,
                    post_params):
     create_user('otheruser')
     set_user('otheruser')
@@ -182,7 +182,7 @@ def test_404_error(app, setup, zope_auth, client, request_type, request_args,
     assert resp.status_code == 404
 
 
-def test_change_active_revision(app, setup, zope_auth, client):
+def test_change_active_revision(app, setup, plone_auth, client):
     create_user('otheruser', role_names=['etc'])
     set_user('otheruser')
     client.post(*get_request_params(
@@ -193,7 +193,7 @@ def test_change_active_revision(app, setup, zope_auth, client):
     assert get_instance(WikiChange, id=3).active == 1
 
 
-def test_add_comment(app, setup, zope_auth, client):
+def test_add_comment(app, setup, plone_auth, client):
     create_user('newuser')
     set_user('newuser')
     request_data = ('post', ['/species/summary/datasheet/add_comment/', {
@@ -207,7 +207,7 @@ def test_add_comment(app, setup, zope_auth, client):
     assert request_data[2]['comment'] in [c.comment for c in wiki.comments]
 
 
-def test_edit_page(app, setup, zope_auth, client):
+def test_edit_page(app, setup, plone_auth, client):
     create_user('testuser', role_names=['etc'])
     set_user('testuser')
     client.post(*get_request_params(
@@ -218,7 +218,7 @@ def test_edit_page(app, setup, zope_auth, client):
     assert get_instance(WikiChange, body='Test edit page.').active == 1
 
 
-def test_edit_comment(app, setup, zope_auth, client):
+def test_edit_comment(app, setup, plone_auth, client):
     create_user('testuser', role_names=['stakeholder'])
     set_user('testuser')
     client.post(*get_request_params(
@@ -228,7 +228,7 @@ def test_edit_comment(app, setup, zope_auth, client):
     assert get_instance(WikiComment, id=1).comment == 'Test edit comment.'
 
 
-def test_toggle_del(app, setup, zope_auth, client):
+def test_toggle_del(app, setup, plone_auth, client):
     create_user('testuser')
     set_user('testuser')
     initial_value = get_instance(WikiComment, id=1).deleted or 0
@@ -237,7 +237,7 @@ def test_toggle_del(app, setup, zope_auth, client):
     assert get_instance(WikiComment, id=1).deleted == 1 - initial_value
 
 
-def test_toggle_read(app, setup, zope_auth, client):
+def test_toggle_read(app, setup, plone_auth, client):
     create_user('otheruser')
     set_user('otheruser')
 
@@ -250,7 +250,7 @@ def test_toggle_read(app, setup, zope_auth, client):
     assert get_value() is not initial_value
 
 
-def test_get_revision(app, setup, zope_auth, client):
+def test_get_revision(app, setup, plone_auth, client):
     create_user('testuser', role_names=['etc'])
     set_user('testuser')
 
@@ -264,7 +264,7 @@ def test_get_revision(app, setup, zope_auth, client):
     (['etc']),
     (['admin'])
 ])
-def test_hide_adm_etc_username(app, setup, zope_auth, client, roles):
+def test_hide_adm_etc_username(app, setup, plone_auth, client, roles):
     create_user('testuser', roles, 'Secret Name', 'Test Insitution')
     create_user('otheruser')
     set_user('otheruser')

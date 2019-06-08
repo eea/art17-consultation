@@ -2,7 +2,7 @@ import requests
 import flask
 
 
-def check_zope_manager(func):
+def check_plone_manager(func):
     def inner(*args, **kwargs):
         if not all(_get_config()):
             return
@@ -13,12 +13,12 @@ def check_zope_manager(func):
 def _get_config():
     app = flask.current_app
     return (
-        app.config.get('AUTH_ZOPE_ACL_MANAGER_URL'),
-        app.config.get('AUTH_ZOPE_ACL_MANAGER_KEY'),
+        app.config.get('AUTH_PLONE_ACL_MANAGER_URL'),
+        app.config.get('AUTH_PLONE_ACL_MANAGER_KEY'),
     )
 
 
-@check_zope_manager
+@check_plone_manager
 def create(user):
     url, key = _get_config()
     resp = requests.post(
@@ -34,7 +34,7 @@ def create(user):
         raise RuntimeError("Failed to add user: %s" % resp)
 
 
-@check_zope_manager
+@check_plone_manager
 def delete(user):
     url, key = _get_config()
     resp = requests.post(
@@ -49,7 +49,7 @@ def delete(user):
         raise RuntimeError("Failed to delete user: %s" % resp)
 
 
-@check_zope_manager
+@check_plone_manager
 def edit(user_id, passwd):
     url, key = _get_config()
     resp = requests.post(

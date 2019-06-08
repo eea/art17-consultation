@@ -112,14 +112,14 @@ def setup(app):
       {'MS': 'EU27', 'delete': 1, 'deleted': 0}], {}, ['adminuser', ['admin']],
       False, 200, "'Undelete' in resp.html.text"),
      ])
-def test_comments(app, client, setup, zope_auth, request_type, request_args,
+def test_comments(app, client, setup, plone_auth, request_type, request_args,
                   post_params, user, expect_errors, status_code,
                   assert_condition):
     create_user('testuser')
     if user:
         if user[0] != 'testuser':
             create_user(*user)
-        zope_auth.update({'user_id': user[0]})
+        plone_auth.update({'user_id': user[0]})
 
     resp = getattr(client, request_type)(*get_request_params(
         request_type, request_args, post_params), expect_errors=expect_errors)
@@ -169,7 +169,7 @@ def test_count_read_comments_deleted(app, manual_assessment_cls, comment_cls,
         '/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
                               'subject': 1110, 'region': 'ALP'}]),
 ])
-def test_count_read_comments_view(app, client, zope_auth,
+def test_count_read_comments_view(app, client, plone_auth,
                                   manual_assessment_cls, comment_cls,
                                   request_args):
     DatasetFactory()
@@ -181,7 +181,7 @@ def test_count_read_comments_view(app, client, zope_auth,
     comment.readers.append(user)
     models.db.session.commit()
 
-    zope_auth.update({'user_id': 'someuser'})
+    plone_auth.update({'user_id': 'someuser'})
     resp = client.get(*get_request_params('get', request_args))
 
     assert resp.status_code == 200

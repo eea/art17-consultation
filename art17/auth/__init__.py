@@ -5,7 +5,7 @@ from art17.auth.security import (
     Art17ForgotPasswordForm,
     current_user,
 )
-from art17.auth.providers import DebugAuthProvider, ZopeAuthProvider
+from art17.auth.providers import DebugAuthProvider, PloneAuthProvider
 from art17 import models
 from art17.common import HOMEPAGE_VIEW_NAME
 
@@ -27,8 +27,8 @@ def setup_auth_handlers(state):
     if app.config.get('AUTH_DEBUG'):
         DebugAuthProvider().init_app(app)
 
-    if app.config.get('AUTH_ZOPE'):
-        ZopeAuthProvider().init_app(app)
+    if app.config.get('AUTH_PLONE'):
+        PloneAuthProvider().init_app(app)
 
     app.config.update({
         'SECURITY_CONFIRMABLE': True,

@@ -104,11 +104,11 @@ def ldap_user_info(request):
 
 
 @fixture
-def zope_auth(app, request):
+def plone_auth(app, request):
     from art17.auth import auth
 
-    app.config['AUTH_ZOPE'] = True
-    app.config['AUTH_ZOPE_WHOAMI_URL'] = 'http://example.com/'
+    app.config['AUTH_PLONE'] = True
+    app.config['AUTH_PLONE_WHOAMI_URL'] = 'http://example.com/'
     app.register_blueprint(auth)
 
     requests_patch = patch('art17.auth.providers.requests')

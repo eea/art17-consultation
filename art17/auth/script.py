@@ -7,7 +7,7 @@ from flask.ext.security.script import (
     DeactivateUserCommand,
     ActivateUserCommand,
 )
-from art17.auth import zope_acl_manager
+from art17.auth import plone_acl_manager
 from art17.auth.common import get_ldap_user_info
 from art17 import models
 
@@ -58,7 +58,7 @@ def activate(user_id):
     set_user_active(user, True)
     print "user", user.id, "has been activated"
     if not user.is_ldap:
-        print "user", user.id, "has been created in Zope"
+        print "user", user.id, "has been created in Plone"
 
 
 @user_manager.command
@@ -68,7 +68,7 @@ def deactivate(user_id):
     set_user_active(user, False)
     print "user", user.id, "has been deactivated"
     if not user.is_ldap:
-        print "user", user.id, "has been removed from Zope"
+        print "user", user.id, "has been removed from Plone"
 
 
 @user_manager.command
@@ -100,8 +100,8 @@ def reset_password(user_id):
     models.db.session.commit()
     print "password for %s has been changed" % user_id
     if user.active:
-        zope_acl_manager.edit(user_id, plaintext_password)
-        print "The Zope password has been changed"
+        plone_acl_manager.edit(user_id, plaintext_password)
+        print "The Plone password has been changed"
 
 
 role_manager = Manager()

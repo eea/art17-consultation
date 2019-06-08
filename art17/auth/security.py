@@ -36,7 +36,7 @@ flask_security.views.register = check_dates(flask_security.views.register)
 flask_security.core._get_login_manager = lambda app: None
 password_length.min = 1
 
-# zope uses ldap-style SSHA passwords
+# plone uses ldap-style SSHA passwords
 flask_security.core._allowed_password_hash_schemes[:] = ['ldap_salted_sha1']
 
 

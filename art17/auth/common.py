@@ -9,7 +9,7 @@ from smtplib import SMTPException
 from eea.usersdb import UsersDB, UserNotFound
 from art17 import models
 from art17.common import admin_perm, get_config
-from art17.auth import zope_acl_manager
+from art17.auth import plone_acl_manager
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -53,9 +53,9 @@ def activate_and_notify_admin(app, user, **extra):
 
 
 @security_signals.password_reset.connect
-def save_reset_password_in_zope(app, user, **extra):
+def save_reset_password_in_plone(app, user, **extra):
     if user.is_active:
-        zope_acl_manager.create(user)
+        plone_acl_manager.create(user)
 
 
 def require_admin(view):
@@ -83,9 +83,9 @@ def set_user_active(user, new_active):
     models.db.session.commit()
     if not user.is_ldap:
         if was_active and not new_active:
-            zope_acl_manager.delete(user)
+            plone_acl_manager.delete(user)
         if new_active and not was_active:
-            zope_acl_manager.create(user)
+            plone_acl_manager.create(user)
 
 
 def check_dates(view):

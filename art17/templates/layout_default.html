@@ -22,8 +22,8 @@
     <a href="{{ url_for('auth.debug') }}">Auth debug</a>
   {% endif %}
 
-  {% if config['AUTH_ZOPE'] %}
-    Auth zope: <a href="/loggedin">login</a>, <a href="/loggedout">logout</a>
+  {% if config['AUTH_PLONE'] %}
+    Auth plone: <a href="/loggedin">login</a>, <a href="/loggedout">logout</a>
   {% endif %}
 
   {% if g.identity.id is none %}

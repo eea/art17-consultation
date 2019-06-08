@@ -11,7 +11,7 @@ from werkzeug.datastructures import MultiDict, ImmutableMultiDict
 from art17 import models
 from art17.auth.forms import DatasetForm
 from art17.common import HOMEPAGE_VIEW_NAME, get_config
-from art17.auth import zope_acl_manager, current_user, auth
+from art17.auth import plone_acl_manager, current_user, auth
 from art17.auth.security import (
     Art17LocalRegisterForm,
     Art17LDAPRegisterForm,
@@ -227,7 +227,7 @@ def change_password():
         models.db.session.commit()
         msg = "Your password has been changed. Please log in again."
         flask.flash(msg, 'success')
-        zope_acl_manager.edit(current_user.id, form.new_password.data)
+        plone_acl_manager.edit(current_user.id, form.new_password.data)
         return flask.redirect(flask.url_for(HOMEPAGE_VIEW_NAME))
 
     return flask.render_template('auth/change_password.html', **{
@@ -306,11 +306,11 @@ def admin_user(user_id):
     if flask.request.method == 'POST':
         if flask.request.form.get('btn') == u'delete':
             if user.is_ldap:
-                # delete from Zope
+                # delete from Plone
                 try:
-                    zope_acl_manager.delete(user)
+                    plone_acl_manager.delete(user)
                 except RuntimeError:
-                    flask.flash("Failed to delete user from Zope.", 'error')
+                    flask.flash("Failed to delete user from Plone.", 'error')
                     return flask.redirect(flask.url_ufor('.admin_user', user_id=user_id))
             # delete from local database
             user = models.RegisteredUser.query.get(user_id)
@@ -371,7 +371,7 @@ def admin_user_reset_password(user_id):
         models.db.session.commit()
         msg = "Password successfully reseted."
         flask.flash(msg, 'success')
-        zope_acl_manager.edit(user.id, form.password.data)
+        plone_acl_manager.edit(user.id, form.password.data)
     return flask.render_template('auth/admin_user_reset_password.html', **{
         'user': user,
         'form': form,

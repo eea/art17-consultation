@@ -54,21 +54,21 @@ Configuration
 -------------
 Details about configurable settings can be found in `settings.py.example`.
 
-Configuring the Zope API
+Configuring the Plone API
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Some functionality (authentication and layout template) is provided by a
-Zope server. Here is how to configure the app to fetch this information.
+Plone server. Here is how to configure the app to fetch this information.
 
-First, the Zope server needs a few scripts in its object tree. Create a
+First, the Plone server needs a few scripts in its object tree. Create a
 folder, for example ``art17_api``, and create `Script (Python)` objects
-inside, using the files in the `zope_api` folder of this repository.
+inside, using the files in the `plone_api` folder of this repository.
 
 Then, add the following configuration variables to the app, using the
-correct URLs for the Zope server::
+correct URLs for the Plone server::
 
-    AUTH_ZOPE = True
-    AUTH_ZOPE_WHOAMI_URL = 'http://zope.server.url/art17_api/whoami'
-    LAYOUT_ZOPE_URL = 'http://zope.server.url/art17_api/layout'
+    AUTH_PLONE = True
+    AUTH_PLONE_WHOAMI_URL = 'http://plone.server.url/art17_api/whoami'
+    LAYOUT_PLONE_URL = 'http://plone.server.url/art17_api/layout'
 
 
 Data Import

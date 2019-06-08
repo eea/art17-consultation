@@ -40,11 +40,11 @@ def setup_read(app):
     ('testuser', '/history/species/', False, 200),
     ('testuser', '/history/habitat/', False, 200),
 ])
-def test_view(app, client, zope_auth, user, request_args, expect_errors,
+def test_view(app, client, plone_auth, user, request_args, expect_errors,
               status_code):
     if user:
         create_user(user)
-        zope_auth.update({'user_id': user})
+        plone_auth.update({'user_id': user})
     resp = client.get(request_args, expect_errors=expect_errors)
     assert resp.status_code == status_code
 
@@ -58,10 +58,10 @@ def test_view(app, client, zope_auth, user, request_args, expect_errors,
          ['2014-03-20 18:11', 'someuser', '1110', 'MATL'],
          ['2014-03-20', 'author', 'someuser', '1110', 'MATL', 'False']),
     ])
-def test_data(app, client, zope_auth, setup, user, request_args,
+def test_data(app, client, plone_auth, setup, user, request_args,
               exp_conclusion_fields, exp_comment_fields):
     create_user(user)
-    zope_auth.update({'user_id': user})
+    plone_auth.update({'user_id': user})
     resp = client.get(request_args)
     assert resp.status_code == 200
 
@@ -76,9 +76,9 @@ def test_data(app, client, zope_auth, setup, user, request_args,
     ('testuser', '/history/species/'),
     ('testuser', '/history/habitat/'),
 ])
-def test_deleted(app, client, zope_auth, setup_deleted, user, request_args):
+def test_deleted(app, client, plone_auth, setup_deleted, user, request_args):
     create_user(user)
-    zope_auth.update({'user_id': user})
+    plone_auth.update({'user_id': user})
     resp = client.get(request_args)
     assert resp.status_code == 200
     assert len(resp.html.find_all('td')) == 0
@@ -91,10 +91,10 @@ def test_deleted(app, client, zope_auth, setup_deleted, user, request_args):
         ('testuser', '/history/habitat/', HabitatCommentFactory,
          ['2014-03-20', 'author', 'someuser', '1110', 'ALP', 'True']),
     ])
-def test_read_comments(app, client, zope_auth, setup_read, username,
+def test_read_comments(app, client, plone_auth, setup_read, username,
                        request_args, comment_cls, exp_comment_fields):
     user = create_user(username)
-    zope_auth.update({'user_id': username})
+    plone_auth.update({'user_id': username})
 
     comment = comment_cls(region='ALP', post_date='2014-03-20',
                           author_id='author')
