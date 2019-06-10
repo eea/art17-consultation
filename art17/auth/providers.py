@@ -75,15 +75,18 @@ class PloneAuthProvider(object):
         })
 
     def before_request_handler(self):
-        auth_header = flask.request.headers.get('Authorization')
+        auth_cookie = flask.request.cookies.get('__ac')
         resp = requests.get(
             self.whoami_url,
-            headers={'Authorization': auth_header},
+            cookies={'__ac': auth_cookie},
             verify=False
         )
-        resp_data = resp.json()
-        if resp_data['user_id']:
-            set_user(
-                user_id=resp_data['user_id'],
-                is_ldap_user=resp_data['is_ldap_user'],
-            )
+        try:
+            resp_data = resp.json()
+            if resp_data['user_id']:
+                set_user(
+                    user_id=resp_data['user_id'],
+                    is_ldap_user=resp_data['is_ldap_user'],
+                )
+        except ValueError:
+            pass

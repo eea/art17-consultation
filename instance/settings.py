@@ -33,11 +33,11 @@ AUTH_LOG_FILE = getenv('AUTH_LOG_FILE',
                        default='/var/local/art17/logs/flask-auth.log')
 AUTH_PLONE = getenv('AUTH_PLONE', type=bool, default=True)
 AUTH_PLONE_WHOAMI_URL = getenv('AUTH_PLONE_WHOAMI_URL',
-                              default='https://plone5demo.eionet.europa.eu/art_api/whoami')
-LAYOUT_PLONE=getenv('LAYOUT_PLONE_URL',
-                    default='https://plone5demo.eionet.europa.eu')
+                              default='http://example.com/art_api/whoami')
+PLONE_URL=getenv('PLONE_URL',
+                    default='http://example.com/')
 LAYOUT_PLONE_URL=getenv('LAYOUT_PLONE_URL',
-                        default='https://plone5demo.eionet.europa.eu/external-template-header')
+                        default='http://example.com/external-template-header')
 
 AUTH_PLONE_ACL_MANAGER_URL = getenv('AUTH_PLONE_ACL_MANAGER_URL',
                                    default='http://example.com/acl_manager')

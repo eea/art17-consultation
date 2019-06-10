@@ -33,10 +33,11 @@ class FetchPloneTemplates(BaseCreateUserCommand):
         print("Fetching header and footer from plone..")
 
         plone_url_layout = flask.current_app.config['LAYOUT_PLONE_URL']
-        plone_url = flask.current_app.config['LAYOUT_PLONE']
-        auth_header = flask.request.headers.get('Authorization')
-        resp = requests.get(plone_url_layout, headers={'Authorization': auth_header}, verify=False)
-
+        auth_cookie = flask.request.cookies.get('__ac')
+        resp = requests.get(
+            plone_url_layout,
+            cookies={'__ac': auth_cookie}
+        )
         plone_path = os.path.join(
             flask.current_app.instance_path, 
             '..','art17', 'templates', 'plone'
@@ -90,8 +91,6 @@ class FetchPloneTemplates(BaseCreateUserCommand):
             for template, file_name in zip(files, header_files):
                 with open(os.path.join(plone_path, file_name)) as f:
                     templates[template] = f.read()
-            logger = logging.getLogger('django')
-            logger.info('Plone templates were taken from cache.')
 
         for template_name, content in templates.iteritems():
             template_path = os.path.join(plone_path, template_name)
