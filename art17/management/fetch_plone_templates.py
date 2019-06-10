@@ -32,9 +32,10 @@ class FetchPloneTemplates(BaseCreateUserCommand):
     def run(self, **kwargs):
         print("Fetching header and footer from plone..")
 
-        plone_url = flask.current_app.config['LAYOUT_PLONE_URL']
+        plone_url_layout = flask.current_app.config['LAYOUT_PLONE_URL']
+        plone_url = flask.current_app.config['LAYOUT_PLONE']
         auth_header = flask.request.headers.get('Authorization')
-        resp = requests.get(plone_url, headers={'Authorization': auth_header}, verify=False)
+        resp = requests.get(plone_url_layout, headers={'Authorization': auth_header}, verify=False)
 
         plone_path = os.path.join(
             flask.current_app.instance_path, 
@@ -44,7 +45,7 @@ class FetchPloneTemplates(BaseCreateUserCommand):
         header_files = [
             'head_cached.html',
             'before_login_cached.html',
-            'before_breadcrumbs.html',
+            'before_breadcrumbs_cached.html',
             'header_cached.html',
             'header_before_container_cached.html',
             'header_after_container_cached.html',

@@ -34,6 +34,8 @@ AUTH_LOG_FILE = getenv('AUTH_LOG_FILE',
 AUTH_PLONE = getenv('AUTH_PLONE', type=bool, default=True)
 AUTH_PLONE_WHOAMI_URL = getenv('AUTH_PLONE_WHOAMI_URL',
                               default='https://plone5demo.eionet.europa.eu/art_api/whoami')
+LAYOUT_PLONE=getenv('LAYOUT_PLONE_URL',
+                    default='https://plone5demo.eionet.europa.eu')
 LAYOUT_PLONE_URL=getenv('LAYOUT_PLONE_URL',
                         default='https://plone5demo.eionet.europa.eu/external-template-header')
 
