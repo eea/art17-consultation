@@ -11,7 +11,7 @@
 
 RETVAL=0
 NAME='art17'
-SUCMD='su zope -c'
+SUCMD='su plone -c'
 PREFIX='/var/local/art17'
 SUPERVISORD="$PREFIX/sandbox/bin/supervisord -c $PREFIX/supervisord.conf"
 SUPERVISORCTL="$PREFIX/sandbox/bin/supervisorctl -c $PREFIX/supervisord.conf"

@@ -6,7 +6,7 @@ For editing and actively participating into drawing conclusions, one has to
 prior register for the consultation. There are two ways by which one can do so:
 
 * with an existing EIONET account (LDAP)
-* with a local user (Zope)
+* with a local user (Plone)
 
 The two types of accounts can be achieved by both self-registration and admin
 workaround.

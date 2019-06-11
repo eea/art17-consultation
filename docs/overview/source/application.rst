@@ -34,4 +34,4 @@ Source code summary
 * `docs/` - documentation, user manual and overview
 * `fabfile/` - deployment configuration
 * `testsuite/` - unit testing
-* `zope_api/` - code for Zope integration
+* `plone_api/` - code for Plone integration

@@ -1,7 +1,7 @@
 Authentication
 ==============
 
-The authentication process is done externally, using Zope's builtin
+The authentication process is done externally, using Plone's builtin
 authentication mechanism. This page describes the authentication process for a
 registered user.
 
@@ -12,9 +12,9 @@ registered user.
 
 Backend
 -------
-The authorization is done using the Zope `/loggedin` view, which validates
+The authorization is done using the Plone `/loggedin` view, which validates
 the user credentials using either LDAP or local stored accounts. The validation
-is made entirely by Zope, independent of the Flask application.
+is made entirely by Plone, independent of the Flask application.
 
 An authenticated session uses HTTP Basic Authentication. This means the browser
 sends with every request a HTTP header with the authenticated user credentials.
@@ -43,7 +43,7 @@ one has to prior register for the consultation. As stated in the authentication
 process there are two ways by which one can do so:
 
 #. with an existing EIONET account (LDAP)
-#. with a local user (Zope)
+#. with a local user (Plone)
 
 For either one of the account types mentioned above, a new entry in the local
 database is created.

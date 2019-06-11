@@ -31,15 +31,17 @@ AUTH_DEBUG = getenv('AUTH_DEBUG', type=bool, default=False)
 EU_ASSESSMENT_MODE = getenv('EU_ASSESSMENT_MODE', type=bool, default=False)
 AUTH_LOG_FILE = getenv('AUTH_LOG_FILE',
                        default='/var/local/art17/logs/flask-auth.log')
-AUTH_ZOPE = getenv('AUTH_ZOPE', type=bool, default=True)
-AUTH_ZOPE_WHOAMI_URL = getenv('AUTH_ZOPE_WHOAMI_URL',
-                              default='http://example.com/art17_api/whoami')
-LAYOUT_ZOPE_URL = getenv('LAYOUT_ZOPE_URL',
-                         default='http://example.com/art17_api/layout')
+AUTH_PLONE = getenv('AUTH_PLONE', type=bool, default=True)
+AUTH_PLONE_WHOAMI_URL = getenv('AUTH_PLONE_WHOAMI_URL',
+                              default='http://example.com/art_api/whoami')
+PLONE_URL=getenv('PLONE_URL',
+                    default='http://example.com/')
+LAYOUT_PLONE_URL=getenv('LAYOUT_PLONE_URL',
+                        default='http://example.com/external-template-header')
 
-AUTH_ZOPE_ACL_MANAGER_URL = getenv('AUTH_ZOPE_ACL_MANAGER_URL',
+AUTH_PLONE_ACL_MANAGER_URL = getenv('AUTH_PLONE_ACL_MANAGER_URL',
                                    default='http://example.com/acl_manager')
-AUTH_ZOPE_ACL_MANAGER_KEY = getenv('AUTH_ZOPE_ACL_MANAGER_KEY', default='')
+AUTH_PLONE_ACL_MANAGER_KEY = getenv('AUTH_PLONE_ACL_MANAGER_KEY', default='')
 
 EEA_LDAP_SERVER = getenv('EEA_LDAP_SERVER', default='')
 

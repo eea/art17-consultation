@@ -18,7 +18,7 @@ def set_user(user_id, is_ldap_user=False):
     elif user.is_ldap != is_ldap_user:
         logger.warn(
             "Mix-up between LDAP and non-LDAP users: "
-            "Zope says %r, database says %r",
+            "Plone says %r, database says %r",
             is_ldap_user, user.is_ldap,
         )
     else:
@@ -65,25 +65,28 @@ class DebugAuthProvider(object):
         })
 
 
-class ZopeAuthProvider(object):
+class PloneAuthProvider(object):
 
     def init_app(self, app):
-        self.whoami_url = app.config['AUTH_ZOPE_WHOAMI_URL']
+        self.whoami_url = app.config['AUTH_PLONE_WHOAMI_URL']
         app.before_request(self.before_request_handler)
         app.context_processor(lambda: {
-            'art17_auth_zope': True,
+            'art17_auth_plone': True,
         })
 
     def before_request_handler(self):
-        auth_header = flask.request.headers.get('Authorization')
+        auth_cookie = flask.request.cookies.get('__ac')
         resp = requests.get(
             self.whoami_url,
-            headers={'Authorization': auth_header},
+            cookies={'__ac': auth_cookie},
             verify=False
         )
-        resp_data = resp.json()
-        if resp_data['user_id']:
-            set_user(
-                user_id=resp_data['user_id'],
-                is_ldap_user=resp_data['is_ldap_user'],
-            )
+        try:
+            resp_data = resp.json()
+            if resp_data['user_id']:
+                set_user(
+                    user_id=resp_data['user_id'],
+                    is_ldap_user=resp_data['is_ldap_user'],
+                )
+        except ValueError:
+            pass

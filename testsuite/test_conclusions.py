@@ -188,11 +188,11 @@ def setup_autofill(app):
        'submit': 'update'}, 'otheruser', ['etc'], False, 200,
          'Please fill at least one field'),
      ])
-def test_edit_conclusion(app, client, zope_auth, setup_edit, request_args,
+def test_edit_conclusion(app, client, plone_auth, setup_edit, request_args,
                          post_params, user, roles, expect_errors, status_code,
                          search_text):
     create_user(user, roles)
-    zope_auth.update({'user_id': user})
+    plone_auth.update({'user_id': user})
 
     resp = client.post(*get_request_params('post', request_args, post_params),
                        expect_errors=expect_errors)
@@ -227,10 +227,10 @@ def test_edit_conclusion(app, client, zope_auth, setup_edit, request_args,
        'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
        'edit_region': 'ALP'}], 'someuser')
      ])
-def test_autofill_conclusion_form(app, client, zope_auth, setup_autofill,
+def test_autofill_conclusion_form(app, client, plone_auth, setup_autofill,
                                   request_args, user):
     create_user(user, ['stakeholder'])
-    zope_auth.update({'user_id': user})
+    plone_auth.update({'user_id': user})
 
     resp = client.get(*get_request_params('get', request_args))
     form = resp.forms[1]
@@ -271,10 +271,10 @@ def test_autofill_conclusion_form(app, client, zope_auth, setup_autofill,
        'submit': 'add', 'MS': 'FR'}, 'natuser', 'FR', ['nat'],
       models.HabitattypesManualAssessment),
      ])
-def test_add_conclusion_nat(app, client, zope_auth, setup_add, request_args,
+def test_add_conclusion_nat(app, client, plone_auth, setup_add, request_args,
                             post_params, user, MS, roles, model_cls):
     create_user(user, roles, ms=MS)
-    zope_auth.update({'user_id': user})
+    plone_auth.update({'user_id': user})
 
     resp = client.post(*get_request_params('post', request_args, post_params))
 
@@ -301,10 +301,10 @@ def test_add_conclusion_nat(app, client, zope_auth, setup_add, request_args,
        'conclusion_range': 'FV', 'submit': 'add'}, 'stkuser', 'FR',
       ['stakeholder'], models.HabitattypesManualAssessment),
      ])
-def test_add_conclusion_stk(app, client, zope_auth, setup_add, request_args,
+def test_add_conclusion_stk(app, client, plone_auth, setup_add, request_args,
                             post_params, user, MS, roles, model_cls):
     create_user(user, roles, ms=MS)
-    zope_auth.update({'user_id': user})
+    plone_auth.update({'user_id': user})
 
     resp = client.post(*get_request_params('post', request_args, post_params))
 
@@ -331,10 +331,10 @@ def test_add_conclusion_stk(app, client, zope_auth, setup_add, request_args,
        'submit': 'add', 'MS': 'EU27'}, 'etcuser', 'FR', ['etc'],
       models.HabitattypesManualAssessment),
      ])
-def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
+def test_add_conclusion_etc(app, client, plone_auth, setup_add, request_args,
                             post_params, user, MS, roles, model_cls):
     create_user(user, roles, ms=MS)
-    zope_auth.update({'user_id': user})
+    plone_auth.update({'user_id': user})
 
     resp = client.post(*get_request_params('post', request_args, post_params))
 
@@ -392,11 +392,11 @@ def test_add_conclusion_etc(app, client, zope_auth, setup_add, request_args,
        'delete_user': 'someuser', 'delete_ms': 'EU27'}],
       'someuser', 302, False, models.HabitattypesManualAssessment),
      ])
-def test_delete_conclusion(app, client, zope_auth, setup_edit, request_args,
+def test_delete_conclusion(app, client, plone_auth, setup_edit, request_args,
                            user, status_code, expect_errors, model_cls):
     if user:
         create_user(user)
-        zope_auth.update({'user_id': user})
+        plone_auth.update({'user_id': user})
 
     resp = client.get(*get_request_params('get', request_args),
                       expect_errors=expect_errors)
@@ -483,11 +483,11 @@ def test_delete_conclusion(app, client, zope_auth, setup_edit, request_args,
      (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
       {}, 'testuser', ['stakeholder'], True, 403, '', ''),
      ])
-def test_update_decision(app, client, zope_auth, setup_decision, request_args,
+def test_update_decision(app, client, plone_auth, setup_decision, request_args,
                          post_params, user, roles, expect_errors, status_code,
                          success, message):
     create_user(user, roles)
-    zope_auth.update({'user_id': user})
+    plone_auth.update({'user_id': user})
 
     resp = client.post(*get_request_params('post', request_args, post_params),
                        expect_errors=expect_errors)
