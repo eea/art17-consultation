@@ -31,7 +31,7 @@ class FetchPloneTemplates(BaseCreateUserCommand):
 
     def run(self, **kwargs):
         print("Fetching header and footer from plone..")
-
+        plone_url = flask.current_app.config['PLONE_URL']
         plone_url_layout = flask.current_app.config['LAYOUT_PLONE_URL']
         auth_cookie = flask.request.cookies.get('__ac')
         resp = requests.get(
