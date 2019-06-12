@@ -3,9 +3,12 @@ version: '2'
 services:
 
   app:
-    image: eeacms/art17-consultation:latest
+    image: art17-consultation-test
     depends_on:
     - db
+    environment:
+      - COLLECT_STATIC=yes
+      - MIGRATE=no
     env_file:
     - ./docker/db.env
     - ./docker/app.env

@@ -1,6 +1,8 @@
 import logging
 import logging.handlers
 import flask
+
+from flask_collect import Collect
 from flask.ext.script import Manager
 from flask.ext.mail import Mail
 
@@ -75,10 +77,12 @@ def create_app(config={}, testing=False):
     app.register_blueprint(wiki)
     app.register_blueprint(maps)
     app.register_blueprint(factsheet)
-
     Mail().init_app(app)
-
+    collect = Collect()
+    collect.init_app(app)
     app.add_template_global(inject_static_file)
+    return (app, collect)
+
 
     @app.route('/temp.html')
     def temp():
@@ -108,7 +112,7 @@ def create_url_prefix_middleware(wsgi_app, url_prefix):
     return middleware
 
 
-def create_manager(app):
+def create_manager(app, collect):
     manager = Manager(app)
     manager.add_command('db', db_manager)
     manager.add_command('dataset', dataset_manager)
@@ -117,4 +121,5 @@ def create_manager(app):
     manager.add_command('fetch_plone_templates', fetch_plone_templates)
     manager.add_command('role', role_manager)
     manager.add_command('factsheet', factsheet_manager)
+    collect.init_script(manager)
     return manager

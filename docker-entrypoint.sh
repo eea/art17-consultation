@@ -3,11 +3,6 @@ set -e
 
 COMMANDS="shell utils db sync runserver api match"
 
-echo "Refreshing static files..."
-STATIC_DIR="/var/local/art17/art17/static/"
-TEMP_STATIC_DIR="/var/local/art17/temp_static/"
-cp -a $TEMP_STATIC_DIR/. $STATIC_DIR
-rm -r $TEMP_STATIC_DIR
 
 if [ -z "$MYSQL_ADDR" ]; then
   MYSQL_ADDR="mysql"
@@ -33,10 +28,13 @@ if ! mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "use $BIND_NAME;"; t
   mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $BIND_NAME.* TO '$DB_USER'@'%';"
 fi
 
-if [ ! -e .skip-db-init ]; then
-  touch .skip-db-init
+sif [ "x$MIGRATE" = 'xyes' ]; then
   echo "Running DB CMD: ./manage.py db upgrade"
   python manage.py db upgrade
+fi
+
+if [ "x$COLLECT_STATIC" = 'xyes' ]; then
+  python manage.py collect
 fi
 
 if [ -z "$1" ]; then
