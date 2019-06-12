@@ -28,7 +28,7 @@ if ! mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "use $BIND_NAME;"; t
   mysql -h $MYSQL_ADDR -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $BIND_NAME.* TO '$DB_USER'@'%';"
 fi
 
-sif [ "x$MIGRATE" = 'xyes' ]; then
+if [ "x$MIGRATE" = 'xyes' ]; then
   echo "Running DB CMD: ./manage.py db upgrade"
   python manage.py db upgrade
 fi
