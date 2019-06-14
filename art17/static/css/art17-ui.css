@@ -1733,7 +1733,3 @@ td input {
 tbody th {
   text-align: center !important;
 }
-
-.outer-wrapper .container {
-  margin-left: unset;
-}
