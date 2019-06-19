@@ -1,52 +1,49 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<html>
-
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
   <head>
-    {% include 'header_styles.html' %}
     <title>{% block title %}{% endblock %}</title>
+    {% include 'header_styles.html' %}
   </head>
 
-  <body class="fullscreen">
+  <body>
+    <div class="header">
+      <h1 style="color:#006699; font-weight:600; font-size:28px">
+        Article 17 web tool
+      </h1>
+
+      <div class="login">
+        {% if current_user.is_authenticated() %}
+          <a href="http://www.eionet.europa.eu/directory/user?uid={{ current_user.username }}"
+             id="profilelink">{{ current_user.username }}</a>
+          <a id="loginlink" href="">Log out</a>
+        {% else %}
+          <a id="loginlink" href="{{ url_for('auth.login') }}">Log in</a>
+        {% endif %}
+      </div>
+    </div>
 
     <div class="modal-bg hidden">
       <div class="modal">
         <iframe frameborder="0" width="100%" height="100%"></iframe>
       </div>
-      <!-- <button onclick='backModal()' class="back"><i class="fa fa-times"></i> Back</button> --> <!-- WTF?? -->
       <button onclick='closeModal()' class="close">Close <i class="fa fa-times"></i></button>
     </div>
 
-  <a href="{{ url_for('common.homepage') }}">Home</a>
-  {% if art17_auth_debug %}
-    <a href="{{ url_for('auth.debug') }}">Auth debug</a>
-  {% endif %}
-
-  {% if config['AUTH_PLONE'] %}
-    Auth plone: <a href="/loggedin">login</a>, <a href="/loggedout">logout</a>
-  {% endif %}
-
-  {% if g.identity.id is none %}
-    anonymous
-  {% else %}
-    {{ g.identity.id }}
-  {% endif %}
-
-  <div>
-    {% block breadcrumbs %}
-      {% from '_macros.html' import breadcrumbs %}
-      {{ breadcrumbs(APP_BREADCRUMBS) }}
-    {% endblock %}
-  </div>
-
-  <div id="container">
-    <div id="workarea">
-      {% include 'flash_messages.html' %}
-      {% block content %}{% endblock content %}
-    </div>
+    <div class="breadcrumbs">
+      {% block breadcrumbs %}
+        {% from '_macros.html' import breadcrumbs %}
+        {{ breadcrumbs(APP_BREADCRUMBS) }}
+      {% endblock %}
     </div>
 
-  {% block scripts %}{% endblock %}
-  </body>
+    <div class="container">
+      {% block content%}
+      {% endblock %}
+    </div>
 
+    <script>$('body').addClass('fullscreen')</script>
+
+{% include 'flash_messages.html' %}
+{% block scripts %} {% endblock %}
+</body>
 </html>

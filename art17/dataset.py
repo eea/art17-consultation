@@ -52,7 +52,7 @@ class ImportCommand(Command):
             stdout_write('Unknown schema: %s\n' % schema)
             return
         with app.app_context():
-            input_conn = create_engine(input_db + '?charset=utf8').connect()
+            input_conn = create_engine(input_db + '?charset=utf8', pool_pre_ping=True).connect()
             dataset = models.Dataset(name=dataset_name, schema=schema)
             models.db.session.add(dataset)
             models.db.session.flush()
@@ -126,7 +126,7 @@ class UpdateCommand(Command):
             stdout_write('Unknown schema: %s\n' % schema)
             return
         with app.app_context():
-            input_conn = create_engine(input_db + '?charset=utf8').connect()
+            input_conn = create_engine(input_db + '?charset=utf8', pool_pre_ping=True).connect()
             dataset = models.Dataset.query.get(int(update_dataset))
             if dataset is None:
                 stdout_write('Unknown dataset: %s\n' % update_dataset)
