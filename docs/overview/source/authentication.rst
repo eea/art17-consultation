@@ -1,9 +1,8 @@
 Authentication
 ==============
 
-The authentication process is done externally, using Plone's builtin
-authentication mechanism. This page describes the authentication process for a
-registered user.
+The authentication process is done internally, either through LDAP or locally.
+This page describes the authentication process for a registered user.
 
 .. figure:: images/authentication2.png
    :alt: Authentication Overview

@@ -1,6 +1,6 @@
 from flask_wtf import Form as Form_base
-from wtforms import SelectField, TextField
-from wtforms.validators import Optional
+from wtforms import SelectField, TextField, PasswordField
+from wtforms.validators import Optional, InputRequired
 from wtforms.widgets import HiddenInput
 from flask.ext.security.forms import (
     Required,
@@ -50,3 +50,7 @@ class Art17RegisterFormBase(object):
             [('', '')] + countries + [('--', 'Choose another country ...')]
         )
         self.obj = kwargs.get('obj', None)
+
+class LoginForm(Form_base):
+    username = TextField('Username', [InputRequired()])
+    password = PasswordField('Password', [InputRequired()])

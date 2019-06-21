@@ -1,11 +1,12 @@
 import flask
+from flask.ext.login import LoginManager, current_user
 from flask.ext.security import Security
 from art17.auth.security import (
     UserDatastore,
     Art17ForgotPasswordForm,
-    current_user,
+    current_user
 )
-from art17.auth.providers import DebugAuthProvider, PloneAuthProvider
+from art17.auth.providers import DebugAuthProvider
 from art17 import models
 from art17.common import HOMEPAGE_VIEW_NAME
 
@@ -19,6 +20,7 @@ security_ext = Security(
     ),
 )
 
+login_manager = LoginManager()
 
 @auth.record
 def setup_auth_handlers(state):
@@ -27,13 +29,11 @@ def setup_auth_handlers(state):
     if app.config.get('AUTH_DEBUG'):
         DebugAuthProvider().init_app(app)
 
-    if app.config.get('AUTH_PLONE'):
-        PloneAuthProvider().init_app(app)
-
     app.config.update({
         'SECURITY_CONFIRMABLE': True,
         'SECURITY_POST_CONFIRM_VIEW': HOMEPAGE_VIEW_NAME,
         'SECURITY_PASSWORD_HASH': 'ldap_salted_sha1',
+        'SECURITY_PASSWORD_SALT': 'salted',
         'SECURITY_SEND_PASSWORD_CHANGE_EMAIL': False,
         'SECURITY_EMAIL_SUBJECT_REGISTER': (
             "Please confirm your email address for "

@@ -1,9 +1,9 @@
 import inspect
 import flask
 import flask.ext.security.script
+from flask.ext.login import current_user as c_user
 import flask.ext.security as flask_security
 from flask.ext.security import SQLAlchemyUserDatastore, AnonymousUser
-from flask.ext.security.utils import string_types
 from flask_wtf import Form
 from datetime import datetime
 from werkzeug.local import LocalProxy
@@ -25,7 +25,7 @@ from art17.auth.forms import Art17RegisterFormBase, CustomEmailTextField
 from art17 import models
 
 
-current_user = LocalProxy(lambda: flask.g.get('user') or AnonymousUser())
+current_user = LocalProxy(lambda: AnonymousUser() if not hasattr(c_user, "id")  else c_user)
 flask_security.core.current_user = current_user
 flask_security.forms.current_user = current_user
 flask_security.decorators.current_user = current_user
@@ -36,7 +36,7 @@ flask_security.views.register = check_dates(flask_security.views.register)
 flask_security.core._get_login_manager = lambda app: None
 password_length.min = 1
 
-# plone uses ldap-style SSHA passwords
+# ldap uses ldap-style SSHA passwords
 flask_security.core._allowed_password_hash_schemes[:] = ['ldap_salted_sha1']
 
 
@@ -67,9 +67,9 @@ class UserDatastore(SQLAlchemyUserDatastore):
         return super(UserDatastore, self).create_user(**kwargs)
 
     def _prepare_role_modify_args(self, user, role):
-        if isinstance(user, string_types):
+        if isinstance(user, basestring):
             user = self.find_user(id=user)
-        if isinstance(role, string_types):
+        if isinstance(role, basestring):
             role = self.find_role(role)
         return user, role
 

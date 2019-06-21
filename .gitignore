@@ -20,10 +20,3 @@ docker/db.env
 docker-compose.override.yml
 
 
-art17/templates/plone/head.html
-art17/templates/plone/header.html
-art17/templates/plone/before_login.html
-art17/templates/plone/before_breadcrumbs.html
-art17/templates/plone/header_before_container.html
-art17/templates/plone/header_after_container.html
-art17/templates/plone/footer.html

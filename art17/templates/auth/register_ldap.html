@@ -1,4 +1,4 @@
-{% extends layout_template %}
+{% extends 'layout.html' %}
 
 {% block breadcrumbs %}
   {% from '_macros.html' import breadcrumbs %}
@@ -31,11 +31,16 @@
             Name:
             <b>{{ register_user_form.name.data }}</b>
           </p>
-          <p>
-            Email:
-            <a href="mailto:{{ register_user_form.email.data }}">{{ register_user_form.email.data }}</a>
-          </p>
-
+          {% if register_user_form.email.data %}
+            <p>
+              Email:
+              <a href="mailto:{{ register_user_form.email.data }}">{{ register_user_form.email.data }}</a>
+            </p>
+          {% else %}
+            <div class="form-group">
+              {{ render_field_with_errors(register_user_form.email) }}
+            </div>
+          {% endif %}
 
           {{ register_user_form.hidden_tag() }}
           {{ register_user_form.MS() }}
