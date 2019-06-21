@@ -35,7 +35,9 @@ EU_ASSESSMENT_MODE = getenv('EU_ASSESSMENT_MODE', type=bool, default=False)
 AUTH_LOG_FILE = getenv('AUTH_LOG_FILE',
                        default='/var/local/art17/logs/flask-auth.log')
 
+EEA_LDAP_PROTOCOL = getenv('EEA_LDAP_PROTOCOL', default='')
 EEA_LDAP_SERVER = getenv('EEA_LDAP_SERVER', default='')
+EEA_LDAP_PORT = getenv('EEA_LDAP_PORT', default='')
 
 # Set this for correct links in emails.
 if getenv('ART17_SERVER_NAME', default=None) is not None:

@@ -11,7 +11,7 @@ from flask import (
     g,
     render_template,
     Response,
-    redirect
+    redirect,
     request,
     url_for,
 )
@@ -357,7 +357,7 @@ def admin_user(user_id):
                     send_role_change_notification(user, new_roles)
 
                 flash("User information updated for %s" % user_id, 'success')
-                return redirect(ural_for('.users'))
+                return redirect(url_for('.users'))
     else:
         user_form = Art17AdminEditUserForm(obj=user)
 

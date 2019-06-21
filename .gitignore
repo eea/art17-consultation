@@ -20,3 +20,5 @@ docker/db.env
 docker-compose.override.yml
 
 
+art17/static/factsheets
+art17/static/maps

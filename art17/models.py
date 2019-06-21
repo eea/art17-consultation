@@ -24,7 +24,11 @@ alembic_ignore_tables = ['species_name', 'species_group', 'habitat_group']
 
 
 def get_ldap_connection():
-    ldap_url = ":".join([app.config['EEA_LDAP_SERVER'],app.config['EEA_LDAP_PORT']])
+    ldap_url = "{}://{}:{}".format(
+        app.config['EEA_LDAP_PROTOCOL'],
+        app.config['EEA_LDAP_SERVER'],
+        app.config['EEA_LDAP_PORT']
+    )
     conn = ldap.initialize(ldap_url)
     return conn
 
