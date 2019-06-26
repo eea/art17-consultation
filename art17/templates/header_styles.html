@@ -1,4 +1,4 @@
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 <style>
   .manual_assessment {
     background: #e6f4e6;
@@ -28,5 +28,5 @@
       href="{{ url_for('static', filename='css/art17-ui.css') }}"
       media="screen">
 
-<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed"
+<link href="{{ url_for('static', filename='css/fonts.css') }}"
       rel="stylesheet" type="text/css">
