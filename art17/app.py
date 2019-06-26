@@ -11,7 +11,7 @@ from art17.layout import layout
 from art17.summary import summary
 from art17.progress import progress
 from art17.report import report
-from art17.auth import auth
+from art17.auth import auth, login_manager
 from art17.comments import comments
 from art17.common import common
 from art17.utils import inject_static_file
@@ -22,7 +22,6 @@ from art17.dataset import dataset_manager
 from art17.assets import assets_env
 from art17.factsheet import factsheet, factsheet_manager
 from art17.management.import_greece import import_greece
-from art17.management.fetch_plone_templates import fetch_plone_templates
 
 
 DEFAULT_CONFIG = {
@@ -77,6 +76,8 @@ def create_app(config={}, testing=False):
     app.register_blueprint(wiki)
     app.register_blueprint(maps)
     app.register_blueprint(factsheet)
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
     Mail().init_app(app)
     collect = Collect()
     collect.init_app(app)
@@ -118,7 +119,6 @@ def create_manager(app, collect):
     manager.add_command('dataset', dataset_manager)
     manager.add_command('user', user_manager)
     manager.add_command('import_greece', import_greece)
-    manager.add_command('fetch_plone_templates', fetch_plone_templates)
     manager.add_command('role', role_manager)
     manager.add_command('factsheet', factsheet_manager)
     collect.init_script(manager)

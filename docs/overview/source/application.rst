@@ -34,4 +34,3 @@ Source code summary
 * `docs/` - documentation, user manual and overview
 * `fabfile/` - deployment configuration
 * `testsuite/` - unit testing
-* `plone_api/` - code for Plone integration

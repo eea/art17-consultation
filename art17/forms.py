@@ -1,7 +1,13 @@
 # coding=utf-8
 from flask_wtf import Form as Form_base
-from wtforms import SelectField, TextField, TextAreaField, DateField, \
-    BooleanField
+from wtforms import (
+    BooleanField,
+    DateField,
+    PasswordField,
+    TextAreaField,
+    TextField,
+    SelectField,
+)
 from wtforms.validators import Optional, ValidationError
 
 from art17.common import DEFAULT_MS

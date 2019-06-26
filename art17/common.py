@@ -212,7 +212,6 @@ def inject_globals():
 
     return {
         'APP_BREADCRUMBS': [
-            ('Eionet', flask.current_app.config['PLONE_URL']),
             ('Article 17', flask.url_for(HOMEPAGE_VIEW_NAME))],
         'consultation_started': consultation_started,
         'today': today,

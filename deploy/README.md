@@ -133,8 +133,6 @@ A minimal configuration file could be:
     DB_NAME=art17
     BIND_NAME=art17rp2_eu
 
-    AUTH_PLONE=False
-
 
 ### 3.1. Local `docker-compose.yml` file
 

@@ -1,0 +1,308 @@
+  body {
+      margin: 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: #069
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    line-height: 1.1
+  }
+
+  h1 a,
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    color: #333
+  }
+
+  a {
+    color: #069;
+    text-decoration: none
+  }
+
+  a:focus,
+  a:hover {
+    color: #bf5900;
+    text-decoration: underline
+  }
+
+  p {
+    margin: 0 0 10px
+  }
+
+  #content-header {
+    border-bottom: 1px solid #ddd
+  }
+
+  .header-container {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    visibility: hidden
+  }
+
+  .header-logo {
+    padding-right: 25px
+  }
+
+  .header-logo>a {
+    height: 100%;
+    vertical-align: middle;
+    white-space: nowrap;
+    color: #000 !important
+  }
+
+  .header-logo>a:focus,
+  .header-logo>a:hover {
+    text-decoration: none
+  }
+
+  .header-logo>a #portal-logo {
+    float: none;
+    display: inline-block;
+    vertical-align: middle
+  }
+
+  .header-logo>a .logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: .3em
+  }
+
+  .header-logo img {
+    height: 78px;
+    padding: 7px 0;
+    width: auto
+  }
+
+  .header-right-section {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: end;
+    justify-content: flex-end
+  }
+
+  .right-actions {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-left: 30px
+  }
+
+  .login ul {
+    list-style-type: none;
+    padding-left: 1em;
+    margin-bottom: 5px
+  }
+
+  .login ul>li a {
+    color: #666;
+    font-size: 13px;
+    white-space: nowrap
+  }
+
+  .login ul>li a:hover {
+    color: #bf5900;
+    text-decoration: none
+  }
+
+  .login ul>li a:before {
+    content: "\e161";
+    font-family: 'Glyphicons Halflings';
+    font-size: 11px;
+    display: inline-block;
+    margin-right: .5em;
+    position: relative;
+    top: 1px
+  }
+
+  .right-actions .search-box {
+    position: relative;
+    width: 170px
+  }
+
+  .right-actions .search-box input {
+    border-radius: 15px;
+    height: 27px;
+    line-height: inherit;
+    padding: 0 10px !important
+  }
+
+  .right-actions .search-box button {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    background-color: transparent;
+    border: none !important;
+    color: #6b7427 !important;
+    padding: 0
+  }
+
+  .right-actions .search-box button:hover {
+    box-shadow: none;
+    background: 0 0;
+    border: none;
+    color: #bf5900
+  }
+
+  .right-actions .search-box button i {
+    padding-right: 0;
+    color: inherit;
+    top: 0
+  }
+
+  .header-container.sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    z-index: 8;
+    margin-top: 0;
+    border-top: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2)
+  }
+
+  .header-container.sticky-header .search-wrapper {
+    display: none
+  }
+
+  .collapse-header {
+    margin-top: 35px;
+    position: relative;
+    border-top: 1px solid #ddd
+  }
+
+  .collapse-header .right-actions {
+    position: absolute;
+    top: -31px;
+    right: 30px
+  }
+
+  .collapse-header .right-actions button {
+    top: -2px;
+    right: 2px
+  }
+
+  .collapse-header .right-actions button i {
+    font-size: 14px;
+    top: 3px !important;
+    right: 10px
+  }
+
+  .collapse-header .right-actions input {
+    font-size: 13px;
+    height: 23px
+  }
+
+  @media (max-width:1280px) {
+    .header-logo>a .logo-text {
+      font-size: 16px
+    }
+
+    .header-logo img {
+      height: 58px
+    }
+  }
+
+  @media (max-width:480px) {
+    .header-logo .logo-title {
+      font-size: 16px
+    }
+  }
+
+  @media (max-width:480px) {
+    .logo-text {
+      display: none
+    }
+  }
+
+  #content-header .collapse-nav .current>a:before,
+  #content-header .collapse-nav .selected>a:before {
+    height: 0;
+    width: 0
+  }
+
+
+  #content-header .cloned-menu {
+    position: absolute;
+    left: 0;
+    visibility: hidden
+  }
+
+  #content-header .cloned-menu>li {
+    float: left !important
+  }
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: 1px solid black
+}
+
+.header h1 {
+    flex-grow: 1;
+    flex-basis: 50%;
+}
+
+.header > .login {
+    flex-grow: 1;
+    flex-basis: 50%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.header > .login a {
+    float:right;
+}
+
+.header > .login span {
+  display: block;
+  float: right;
+  margin-right: 20px;
+
+}
+#loginlink:before {
+    content: unset !important;
+}
+
+.breadcrumbs {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.container {
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.top-pad.container {
+  display: flex;
+}
+
+.top-pad.container form {
+  margin: 0 auto;
+}

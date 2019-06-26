@@ -1,11 +1,16 @@
 # coding: utf-8
 import argparse
+import ldap
 import os
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer,\
-    LargeBinary, SmallInteger, String, Table, Text, Boolean
+from sqlalchemy import (
+    Column, DateTime, Float,
+    ForeignKey, Integer, LargeBinary,
+    SmallInteger, String, Table, Text, Boolean
+)
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import or_
+from flask import current_app as app
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
 from flask.ext.security import UserMixin, RoleMixin
@@ -17,6 +22,15 @@ Base = db.Model
 metadata = db.Model.metadata
 alembic_ignore_tables = ['species_name', 'species_group', 'habitat_group']
 
+
+def get_ldap_connection():
+    ldap_url = "{}://{}:{}".format(
+        app.config['EEA_LDAP_PROTOCOL'],
+        app.config['EEA_LDAP_SERVER'],
+        app.config['EEA_LDAP_PORT']
+    )
+    conn = ldap.initialize(ldap_url)
+    return conn
 
 class Dataset(Base):
     __tablename__ = 'datasets'
@@ -990,6 +1004,24 @@ class RegisteredUser(Base, UserMixin):
     def has_role(self, role):
         return role in [r.name for r in self.roles]
 
+    @staticmethod
+    def try_login(username, password):
+        conn = get_ldap_connection()
+        conn.simple_bind_s(
+            'uid=%s,ou=Users,o=EIONET,l=Europe' % username,password
+        )
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
 
 class Role(Base, RoleMixin):
     __tablename__ = 'roles'

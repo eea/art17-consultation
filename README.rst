@@ -54,21 +54,14 @@ Configuration
 -------------
 Details about configurable settings can be found in `settings.py.example`.
 
-Configuring the Plone API
+Configuring the LDAP SERVER
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Some functionality (authentication and layout template) is provided by a
-Plone server. Here is how to configure the app to fetch this information.
+The authentication is provided by a LDAP SERVER.
+Add the following configuration variables to the app, using the
+correct URLs for the LDAP server:
 
-First, the Plone server needs a few scripts in its object tree. Create a
-folder, for example ``art17_api``, and create `Script (Python)` objects
-inside, using the files in the `plone_api` folder of this repository.
-
-Then, add the following configuration variables to the app, using the
-correct URLs for the Plone server::
-
-    AUTH_PLONE = True
-    AUTH_PLONE_WHOAMI_URL = 'http://plone.server.url/art17_api/whoami'
-    LAYOUT_PLONE_URL = 'http://plone.server.url/art17_api/layout'
+    EEA_LDAP_SERVER=ldaps://ldap.example.com
+    EEA_LDAP_PORT=389
 
 
 Data Import

@@ -17,13 +17,16 @@
 {% macro breadcrumbs(page_list) %}
   {%- for label, url in page_list %}
     {%- set id = 'breadcrumbs-current' if loop.last else '' %}
-    <li {% if loop.first %} id='breadcrumbs-home' {% endif %}>
-      {% if id %}
-        <span id="{{ id }}">{{ label }}</span>
-      {% else %}
-        <a href="{{ url }}">{{ label }}</a>
+      {% if not loop.first %}
+       >
       {% endif %}
-    </li>
+
+      {% if id %}
+        <span id="{{ id }}"> {{ label }}</span>
+      {% else %}
+        <a href="{{ url }}"> {{ label }}</a>
+      {% endif %}
+    </span>
   {%- endfor %}
 {%- endmacro %}
 

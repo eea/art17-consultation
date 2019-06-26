@@ -37,8 +37,6 @@ if [ "x$COLLECT_STATIC" = 'xyes' ]; then
   python manage.py collect
 fi
 
-python manage.py fetch_plone_templates run
-
 if [ -z "$1" ]; then
   echo "Serving on port 5000"
   exec gunicorn -e SCRIPT_NAME=$SCRIPT_NAME \
