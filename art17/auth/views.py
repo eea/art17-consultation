@@ -23,7 +23,7 @@ from flask.ext.security import user_registered
 from flask.ext.security.forms import ChangePasswordForm, ResetPasswordForm
 from flask.ext.security.changeable import change_user_password
 from flask.ext.security.registerable import register_user
-from flask.ext.security.utils import verify_password
+from flask.ext.security.utils import verify_password, encrypt_password
 from flask.ext.mail import Message
 
 from werkzeug.datastructures import MultiDict, ImmutableMultiDict
@@ -239,7 +239,7 @@ def change_password():
         return render_template('message.html', message=message)
 
     if current_user.is_ldap:
-        message = 'Your password can be changed only from the EIONET website '  '(http://www.eionet.europa.eu/profile).'
+        message = 'Your password can be changed only from the EIONET website '  '(https://www.eionet.europa.eu/password-reset).'
         return render_template('message.html', message=message)
 
     form = ChangePasswordForm()
@@ -375,7 +375,7 @@ def admin_user_reset_password(user_id):
     user = models.RegisteredUser.query.get_or_404(user_id)
     if user.is_ldap:
         message = 'The password can be changed only from the EIONET website '\
-                  '(http://www.eionet.europa.eu/profile).'
+                  '(https://www.eionet.europa.eu/password-reset).'
         return render_template('message.html', message=message)
 
     form = ResetPasswordForm()
@@ -461,7 +461,7 @@ def login():
         if not user:
             user = models.RegisteredUser(
                 id=username,
-                password=password,
+                password=encrypt_password(password),
                 is_ldap=True,
                 account_date=datetime.now()
             )
@@ -477,7 +477,7 @@ def login():
 
     return render_template('login.html', form=form)
 
-@auth.route('/auth/logout')
+@auth.route('/auth/logout', methods=['GET'])
 @login_required
 def logout():
     logout_user()
