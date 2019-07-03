@@ -28,7 +28,7 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
   {% endif %}
   {% include 'summary/filters.html' %}
 
-  {% if dataset.schema == '2019' %}
+  {% if dataset.schema == '2018' %}
     {% set colspan_all=33 if region else 34 %}
   {% else %}
     {% set colspan_all=28 if region else 29 %}
@@ -61,8 +61,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
         <a href="{{ show_all_url }}">Show all {{ group }}</a>
     </caption>
 
-    {% if dataset.schema == '2019' %}
-      {% include "common/species_table_header_2019.html" with context %}
+    {% if dataset.schema == '2018' %}
+      {% include "common/species_table_header_2018.html" with context %}
     {% else %}
       {% include "common/species_table_header.html" with context %}
     {% endif %}
@@ -138,15 +138,15 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
         <div class="table-separator"></div>
         {% if dataset.schema == '2006' %}
         ETC/BD biogeographical assessment &amp; users proposed corrections
-        {% elif dataset.schema == '2019 '%}
+        {% elif dataset.schema == '2018 '%}
         EU biogeographical assessments and proposed corrections
         {% else %}
         EU Biogeographical assessment and proposed corrections
         {% endif %}
       </th>
     </tr>
-    {% if dataset.schema == '2019' %}
-      {% include 'common/species_manual_table_header_2019.html' %}
+    {% if dataset.schema == '2018' %}
+      {% include 'common/species_manual_table_header_2018.html' %}
     {% else %}
       {% include 'common/species_manual_table_header.html' %}
     {% endif %}
@@ -155,8 +155,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     <tbody>
     {% for row in manual_objects %}
       {% if row == manual_assessment %}
-        {% if dataset.schema == '2019' %}
-          {% include 'summary/species/manual_form_2019.html' %}
+        {% if dataset.schema == '2018' %}
+          {% include 'summary/species/manual_form_2018.html' %}
         {% else %}
           {% include 'summary/species/manual_form.html' %}
         {% endif %}
@@ -182,8 +182,8 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     {% if not manual_assessment %}
     <tbody class="form">
       {% if can_add %}
-        {% if dataset.schema == '2019' %}
-          {% include 'summary/species/manual_form_2019.html' %}
+        {% if dataset.schema == '2018' %}
+          {% include 'summary/species/manual_form_2018.html' %}
         {% else %}
           {% include 'summary/species/manual_form.html' %}
         {% endif %}

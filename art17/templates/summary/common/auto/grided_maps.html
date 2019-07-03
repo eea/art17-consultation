@@ -1,4 +1,4 @@
-{% if dataset.schema != '2019' %}
+{% if dataset.schema != '2018' %}
   <td class="center border_left">
     {{ row.range_grid_area|parse_semicolon|str2num('')|safe }}
   </td>
@@ -8,11 +8,11 @@
   </td>
 {% endif %}
 
-<td class="center {% if dataset.schema == '2019' %} border_left {% endif %}">
+<td class="center {% if dataset.schema == '2018' %} border_left {% endif %}">
   {{ row.distribution_grid_area|parse_semicolon|str2num('')|safe }}
 </td>
 
-{% if dataset.schema == '2019' %}
+{% if dataset.schema == '2018' %}
   <td class="center">
     {{ row.distribution_method_area|parse_semicolon|str2num('')|safe }}
   </td>

@@ -1,4 +1,4 @@
-{% if dataset.schema != '2019' %}
+{% if dataset.schema != '2018' %}
   <td class="center border_left">
     {{ row.range_grid_area|str2num }}
   </td>
@@ -12,7 +12,7 @@
   {{ row.distribution_grid_area|str2num }}
 </td>
 
-{% if dataset.schema == '2019' %}
+{% if dataset.schema == '2018' %}
   <td class="center">
     {{ row.distribution_method_area|str2num }}
   </td>

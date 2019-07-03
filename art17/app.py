@@ -22,6 +22,8 @@ from art17.dataset import dataset_manager
 from art17.assets import assets_env
 from art17.factsheet import factsheet, factsheet_manager
 from art17.management.import_greece import import_greece
+from art17.management.generate_new_period import generate_new_period
+from art17.management.import_new_data import import_new_data
 
 
 DEFAULT_CONFIG = {
@@ -119,6 +121,8 @@ def create_manager(app, collect):
     manager.add_command('dataset', dataset_manager)
     manager.add_command('user', user_manager)
     manager.add_command('import_greece', import_greece)
+    manager.add_command('generate_new_period', generate_new_period)
+    manager.add_command('import_new_data', import_new_data)
     manager.add_command('role', role_manager)
     manager.add_command('factsheet', factsheet_manager)
     collect.init_script(manager)

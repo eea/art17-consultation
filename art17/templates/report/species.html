@@ -40,8 +40,8 @@
         {{ current_selection|join(', ') }}.
       </caption>
 
-      {% if dataset.schema == '2019' %}
-        {% include "common/species_table_header_2019.html" with context %}
+      {% if dataset.schema == '2018' %}
+        {% include "common/species_table_header_2018.html" with context %}
       {% else %}
         {% include "common/species_table_header.html" with context %}
       {% endif %}

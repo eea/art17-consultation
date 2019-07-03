@@ -1,6 +1,6 @@
 {% set concl_value = get_tooltip(row, 'method_structure') %}
 
-{% if dataset.schema == '2019' %}
+{% if dataset.schema == '2018' %}
   <td class="center">{{ row.good_structure|str2num }}</td>
   <td class="center">{{ row.not_good_structure|str2num }}</td>
   <td class="center">{{ row.not_known_structure|str2num }}</td>
@@ -11,6 +11,6 @@
   <span class="conclusion">{{ row.method_structure }}</span>
 </td>
 
-{% if dataset.schema == '2019' %}
+{% if dataset.schema == '2018' %}
   <td class="center">{{ row.trend_structure|str2num }}</td>
 {% endif %}

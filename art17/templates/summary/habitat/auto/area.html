@@ -2,7 +2,7 @@
   {{ row.coverage_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
-{% if dataset.schema == '2019' %}
+{% if dataset.schema == '2018' %}
   <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
     {{ row.best_value  or '-' }}
   </td>

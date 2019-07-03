@@ -1,11 +1,11 @@
 {% from '_macros.html' import parse_errors, reason_title with context %}
 
-    {% if dataset.schema == '2019' %}
+    {% if dataset.schema == '2018' %}
         <td class="center">{{ row.habitat_occupied_sufficiency|str2num }}</td>
         <td class="center">{{ row.habitat_unoccupied_sufficiency|str2num }}</td>
     {% endif %}
 
-    {% if dataset.schema != '2019' %}
+    {% if dataset.schema != '2018' %}
         <td {{ parse_errors('habitat_surface_area', row, qa_errors,
                 title=reason_title(dataset.schema, row.habitat_change_reason),
                 classes='number border_left') }}>
@@ -23,7 +23,7 @@
 
     {% if dataset.schema == '2006' %}
         <td></td>
-    {% elif dataset.schema == '2019' %}
+    {% elif dataset.schema == '2018' %}
     {% else %}
         {% set title=QUALITIES.get(row.habitat_quality|get_quality|upper, '') %}
         <td {% if title %}title="{{ title }}"{% endif %} class="center">
@@ -35,7 +35,7 @@
         {{ row.habitat_trend or 'N/A' }}
     </td>
 
-    {% if dataset.schema != '2019' %}
+    {% if dataset.schema != '2018' %}
         <td {{ parse_errors('complementary_suitable_habitat',
                row, qa_errors,
                classes='number border_right') }}>

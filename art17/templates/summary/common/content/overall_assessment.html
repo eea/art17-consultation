@@ -21,15 +21,15 @@
     <span class="conclusion">{{ row.conclusion_assessment_prev|str1num }}</span>
   </td>
 
-  {% if dataset.schema == '2019' %}
+  {% if dataset.schema == '2018' %}
   <td class="center">
     {{ row.conclusion_assessment_prev_trend|str1num }}
   </td>
   {% endif %}
 
-  <td class="center {% if dataset.schema != '2019' %} border_right {% endif %}">{{ row.conclusion_assessment_change|na_if_none }}</td>
+  <td class="center {% if dataset.schema != '2018' %} border_right {% endif %}">{{ row.conclusion_assessment_change|na_if_none }}</td>
 
-  {% if dataset.schema == '2019' %}
+  {% if dataset.schema == '2018' %}
   <td class="center border_right">
     {{ row.conclusion_assessment_change_trend|str1num }}
   </td>
