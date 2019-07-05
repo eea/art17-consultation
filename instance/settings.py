@@ -63,3 +63,5 @@ DEMO_SERVER = getenv('DEMO_SERVER', type=bool, default=True)
 SCRIPT_NAME = getenv('SCRIPT_NAME', default='/article17')
 
 FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu"
+
+EEA_PASSWORD_RESET = getenv('EEA_PASSWORD_RESET', default='')
