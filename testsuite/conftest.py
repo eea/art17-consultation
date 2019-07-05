@@ -49,11 +49,12 @@ def create_generic_fixtures():
 
 
 def create_testing_app():
-    local_config = create_app().config
+    app, collect = create_app()
+    local_config = app.config
 
     test_config = dict(TEST_CONFIG)
 
-    app = create_app(test_config, testing=True)
+    app, collect = create_app(test_config, testing=True)
     return app
 
 
