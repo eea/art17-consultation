@@ -1,5 +1,6 @@
 import flask
 import ldap
+import os
 
 from datetime import datetime
 from collections import defaultdict
@@ -239,7 +240,12 @@ def change_password():
         return render_template('message.html', message=message)
 
     if current_user.is_ldap:
-        message = 'Your password can be changed only from the EIONET website '  '(https://www.eionet.europa.eu/password-reset).'
+        message = (
+            'Your password can be changed only from the EIONET website '
+            + '('
+            + os.environ.get('EEA_PASSWORD_RESET')
+            + ').'
+        )
         return render_template('message.html', message=message)
 
     form = ChangePasswordForm()
@@ -374,8 +380,12 @@ def admin_user(user_id):
 def admin_user_reset_password(user_id):
     user = models.RegisteredUser.query.get_or_404(user_id)
     if user.is_ldap:
-        message = 'The password can be changed only from the EIONET website '\
-                  '(https://www.eionet.europa.eu/password-reset).'
+        message = (
+            'The password can be changed only from the EIONET website '
+            + '('
+            + os.environ.get('EEA_PASSWORD_RESET')
+            + ').'
+        )
         return render_template('message.html', message=message)
 
     form = ResetPasswordForm()
