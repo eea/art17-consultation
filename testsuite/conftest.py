@@ -5,6 +5,7 @@ from alembic import command, config
 from path import path
 from mock import patch
 from datetime import datetime, date
+
 import urllib
 
 from art17.app import create_app
@@ -15,7 +16,8 @@ TEST_CONFIG = {
     'SERVER_NAME': 'localhost',
     'SECRET_KEY': 'test',
     'ASSETS_DEBUG': True,
-    'EEA_LDAP_SERVER': 'test_ldap_server'
+    'EEA_LDAP_SERVER': 'test_ldap_server',
+    'EEA_PASSWORD_RESET': '',
 }
 
 
@@ -105,11 +107,9 @@ def ldap_user_info(request):
 
 
 @fixture
-def plone_auth(app, request):
+def set_auth(app, request):
     from art17.auth import auth
 
-    app.config['AUTH_PLONE'] = True
-    app.config['AUTH_PLONE_WHOAMI_URL'] = 'http://example.com/'
     app.register_blueprint(auth)
 
     requests_patch = patch('art17.auth.providers.requests')
@@ -148,3 +148,9 @@ def get_request_params(request_type, request_args, post_params=None):
         final_url = '?'.join((request_args[0], query_string))
         request_args = [final_url, post_params]
     return request_args
+
+
+def force_login(client, user_id=None):
+    with client.session_transaction() as sess:
+        sess['user_id'] = user_id
+        sess['_fresh'] = True

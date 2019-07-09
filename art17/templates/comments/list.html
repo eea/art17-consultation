@@ -25,7 +25,7 @@
     <ul class="cmnt-list no-list">
     {% for comment in comments %}
       {% set is_owner = comment.author.id == g.identity.id %}
-      {% set read = comment.read_for(g.user) %}
+      {% set read = comment.read_for(current_user) %}
       {% set deleted = comment.deleted %}
       {% if is_owner %}
         {% if deleted %}

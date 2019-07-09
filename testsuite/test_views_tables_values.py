@@ -55,7 +55,7 @@ def setup(app):
         'group': 'coastal habitats', 'period': '1', 'subject': '1110',
         'region': ''}], {1: '1283', 3: '1283', 5: '1283'}),
 ])
-def test_summary_range_value(app, client, request_args, search_dict):
+def test_summary_range_value(client, set_auth, app, request_args, search_dict):
     resp = client.get(*request_args)
     for tbody_order_nr, search_text in search_dict.iteritems():
         content_tbody = resp.html.find_all('tbody')[tbody_order_nr]
@@ -71,6 +71,6 @@ def test_summary_range_value(app, client, request_args, search_dict):
         'group': 'coastal habitats', 'period': '1',  'conclusion': 'range'}],
      'FV')
 ])
-def test_progress_range_value(app, client, request_args, search_text):
+def test_progress_range_value(client, set_auth, app, request_args, search_text):
     resp = client.get(*request_args)
     assert search_text in resp.html.find('a', {'class': 'conclusion'}).text

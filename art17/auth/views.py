@@ -133,6 +133,7 @@ def _get_initial_ldap_data(user_id):
 @auth.route('/auth/register/ldap', methods=['GET', 'POST'])
 @check_dates
 def register_ldap():
+    #TODO maybe remove as the user is now registered on first LDAP login
     user_credentials = g.get('user_credentials', {})
     user_id = user_credentials.get('user_id')
 

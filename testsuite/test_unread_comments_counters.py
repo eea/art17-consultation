@@ -85,10 +85,10 @@ def setup_deleted(app):
      ('someuser', '/habitat/progress/', {
          'period': '1', 'group': 'coastal habitats', 'conclusion': 'area'}),
      ])
-def test_unread_conclusion_comments(app, client, plone_auth, setup_common,
+def test_unread_conclusion_comments(app, client, set_auth, setup_common,
                                     setup, user, path, args):
     create_user(user)
-    plone_auth.update({'user_id': user})
+    set_auth.update({'user_id': user})
     resp = client.get(path, args)
     assert resp.status_code == 200
     assert 'Unread comments for my conclusions: 2' in resp.text
@@ -105,7 +105,7 @@ def test_unread_conclusion_comments(app, client, plone_auth, setup_common,
          'period': '1', 'group': 'coastal habitats', 'conclusion': 'area'}),
      ])
 def test_unread_conclusion_comments_anonymous_user(
-        app, client, plone_auth, setup, path, args):
+        app, client, set_auth, setup, path, args):
     resp = client.get(path, args)
     assert resp.status_code == 200
     assert 'Unread comments for my conclusions:' not in resp.text
@@ -122,9 +122,9 @@ def test_unread_conclusion_comments_anonymous_user(
          'period': '1', 'group': 'coastal habitats', 'conclusion': 'area'}),
      ])
 def test_unread_conclusion_comments_zero_comments(
-        app, client, plone_auth, setup_common, user, path, args):
+        app, client, set_auth, setup_common, user, path, args):
     create_user(user)
-    plone_auth.update({'user_id': user})
+    set_auth.update({'user_id': user})
     resp = client.get(path, args)
     assert resp.status_code == 200
     assert 'Unread comments for my conclusions: 0' in resp.text
@@ -141,10 +141,10 @@ def test_unread_conclusion_comments_zero_comments(
          'period': '1', 'group': 'coastal habitats', 'conclusion': 'area'}),
      ])
 def test_unread_conclusion_comments_deleted_comments(
-        app, client, plone_auth, setup_common, setup, setup_deleted, user,
+        app, client, set_auth, setup_common, setup, setup_deleted, user,
         path, args):
     create_user(user)
-    plone_auth.update({'user_id': user})
+    set_auth.update({'user_id': user})
     resp = client.get(path, args)
     assert resp.status_code == 200
     assert 'Unread comments for my conclusions: 2' in resp.text
@@ -169,10 +169,10 @@ def test_unread_conclusion_comments_deleted_comments(
          factories.HabitatCommentFactory, 2, False, (3, 5, 2)),
      ])
 def test_unread_conclusion_comments_read_comments(
-        app, client, plone_auth, setup_common, setup, username, path, args,
+        app, client, set_auth, setup_common, setup, username, path, args,
         comment_cls, wiki_id, read, unread_comments):
     user = create_user(username)
-    plone_auth.update({'user_id': username})
+    set_auth.update({'user_id': username})
 
     comment = comment_cls(id=10, author_id='user10', region='ALP')
     comment_other_conclusion = comment_cls(

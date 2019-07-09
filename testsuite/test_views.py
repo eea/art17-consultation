@@ -1,7 +1,8 @@
+from .conftest import get_request_params, force_login
 import pytest
 
 
-def test_homepage(app, client):
+def test_homepage(client, app, set_auth):
     resp = client.get('/')
     assert resp.status_code == 200
 
@@ -67,7 +68,7 @@ def test_homepage(app, client):
         'period': '1', 'group': 'Grasslands', 'country': 'EL', 'region': ''},
      'Forests, IT', False),
 ])
-def test_view(app, client, path, args_dict, search_text, elem_found):
+def test_view(client, app, set_auth, path, args_dict, search_text, elem_found):
     resp = client.get(path, args_dict)
     assert resp.status_code == 200
     assert resp.content_type == 'text/html'

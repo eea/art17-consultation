@@ -1,3 +1,5 @@
+import pytest
+
 from flask import url_for
 from pytest import fixture
 

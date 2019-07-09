@@ -8,7 +8,7 @@ from .factories import (
     CommentFactory,
     HabitatCommentFactory,
 )
-from .conftest import get_request_params
+from .conftest import get_request_params, force_login
 from art17 import models
 
 
@@ -159,13 +159,13 @@ def dataset_app(app):
          {'period': 2, 'subject': 110, 'region': 'ALP'},
          'title=": 1100"'),
     ])
-def test_species_conclusion_values(client, dataset_app, url, params, expected):
+def test_species_conclusion_values(client, set_auth, dataset_app, url, params, expected):
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
     assert expected in result.body
 
 
-def test_get_subject_details(client, dataset_app):
+def test_get_subject_details(client, set_auth, dataset_app):
     EtcDicHdHabitat(dataset_id=1, habcode=HABCODE, name='foo foo')
     EtcDicHdHabitat(dataset_id=2, habcode=HABCODE, name='boo boo')
     models.db.session.commit()
@@ -183,7 +183,7 @@ def test_get_subject_details(client, dataset_app):
     assert 'boo boo' in result.body
 
 
-def test_unread_comments_species(client, dataset_app):
+def test_unread_comments_species(client, set_auth, dataset_app):
     CommentFactory(id=1, dataset_id=1, region='ALP',
                    assesment_speciesname=CANIS_LUPUS)
     models.db.session.commit()
@@ -216,7 +216,7 @@ def test_unread_comments_species(client, dataset_app):
     assert '0/1' in result
 
 
-def test_unread_comments_habitat(client, dataset_app):
+def test_unread_comments_habitat(client, set_auth, dataset_app):
     HabitatCommentFactory(id=1, dataset_id=1, region='ALP',
                           habitat=HABCODE)
     models.db.session.commit()
