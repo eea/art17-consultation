@@ -1,5 +1,9 @@
 Changelog
 =========
+2.11.4 - (2019-07-09)
+--------------------
+* Use Eionet password reset link
+  [dianaboiangiu]
 
 2.11.3 - (2019-06-26)
 -------------------
