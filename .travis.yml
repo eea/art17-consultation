@@ -1,6 +1,9 @@
 language: python
 python:
   - "2.7"
+env:
+  global:
+    - EEA_PASSWORD_RESET=http:www.example.com
 install:
   - pip install -r requirements-dev.txt --trusted-host eggshop.eaudeweb.ro
   - pip install pytest-cov==2.5.0 coverage==3.7.1 coveralls==0.5

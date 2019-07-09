@@ -228,8 +228,7 @@ def test_change_local_password(app, set_auth, client):
     page.form['password'] = 'my old pw'
     page.form['new_password'] = 'the new pw'
     page.form['new_password_confirm'] = 'the new pw'
-    with patch('art17.auth.plone_acl_manager.edit') as edit_user_in_plone:
-        confirmation_page = page.form.submit().follow()
+    confirmation_page = page.form.submit().follow()
 
     assert "password has been changed" in confirmation_page.text
 
