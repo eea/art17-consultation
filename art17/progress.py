@@ -437,7 +437,7 @@ class HabitatProgressTable(HabitatProgress):
 
     def dispatch_request(self):
         period = request.args.get('period', 3)
-        group = request.args.get('group', 'Forests')
+        group = request.args.get('group', 'Bogs, mires & fens')
         return super(HabitatProgressTable, self).dispatch_request(period, group)
 
     @classmethod
@@ -446,7 +446,7 @@ class HabitatProgressTable(HabitatProgress):
         dataset_id_field = EtcDicHdHabitat.dataset_id
         groups = (
             EtcDicHdHabitat.query
-            .filter(group_field == 'Forests', dataset_id_field == period)
+            .filter(dataset_id_field == period)
             .with_entities(group_field, group_field)
             .distinct()
             .order_by(group_field)
