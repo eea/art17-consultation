@@ -1,5 +1,11 @@
 Changelog
 =========
+
+2.11.5 - (2019-07-10)
+--------------------
+* Exposed Progress view now includes all groups
+  [dianaboiangiu]
+
 2.11.4 - (2019-07-09)
 --------------------
 * Use Eionet password reset link
