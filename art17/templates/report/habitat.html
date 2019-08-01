@@ -27,7 +27,12 @@
 
   {% include 'report/filters.html' %}
 
-    {% set colspan_all=22 if region else 23 %}
+    {% if dataset.schema == '2018' %}
+      {% set colspan_all=33 if region else 34 %}
+    {% else %}
+      {% set colspan_all=22 if region else 23 %}
+    {% endif %}
+
     {% if current_selection %}
 
     {% include 'common/note_report.html' %}
@@ -77,14 +82,17 @@
             {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
           </td>
           {% else %}
-
-            {% include 'summary/habitat/content/range.html' with context %}
-            {% include 'summary/habitat/content/area.html' with context %}
-            {% include 'summary/habitat/content/struct_func.html' with context %}
-            {% include 'summary/habitat/content/future_prosp.html' with context %}
-            {% include 'summary/common/content/overall_assessment.html' with context %}
-            {% include 'summary/habitat/content/grided_maps.html' with context %}
-            {% include 'summary/habitat/content/quality.html' with context %}
+            {% if dataset.schema == '2018' %}
+              {% include 'summary/habitat/content/content_2018.html' with context %}
+            {% else %}
+              {% include 'summary/habitat/content/range.html' with context %}
+              {% include 'summary/habitat/content/area.html' with context %}
+              {% include 'summary/habitat/content/struct_func.html' with context %}
+              {% include 'summary/habitat/content/future_prosp.html' with context %}
+              {% include 'summary/common/content/overall_assessment.html' with context %}
+              {% include 'summary/habitat/content/grided_maps.html' with context %}
+              {% include 'summary/habitat/content/quality.html' with context %}
+            {% endif %}
           {% endif %}
         </tr>
       {% endfor %}

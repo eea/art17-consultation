@@ -19,6 +19,8 @@ def str2num(s, default='N/A', number_format='%.2f'):
     """ Check if a string can be represented as integer"""
     if s is None:
         return default
+    if s == 0:
+        return default
     if isinstance(s, Decimal):
         buffer = number_format % s
     else:

@@ -22,20 +22,8 @@
     <span class="conclusion">{{ row.conclusion_assessment_prev|default('', true)|parse_semicolon|safe}}</span>
   </td>
 
-  {% if dataset.schema == '2018' %}
-  <td class="center">
-    {{ row.conclusion_assessment_prev_trend|str1num }}
-  </td>
-  {% endif %}
-
   {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_change, '') %}
   <td class="{{ classes }}">
     <span class="conclusion">{{ row.percentage_assessment_change|default('', true)|parse_semicolon|safe}}</span>
   </td>
-
-  {% if dataset.schema == '2018' %}
-  <td class="center border_right">
-    {{ row.conclusion_assessment_change_trend|str1num }}
-  </td>
-  {% endif %}
 {% endif %}

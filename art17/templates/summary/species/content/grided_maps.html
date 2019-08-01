@@ -1,22 +1,14 @@
-{% if dataset.schema != '2018' %}
-  <td class="center border_left">
-    {{ row.range_grid_area|str2num }}
-  </td>
+<td class="center border_left">
+  {{ row.range_grid_area|str2num }}
+</td>
 
-  <td class="center">
-    {{ row.percentage_range_grid_area|str2num }}
-  </td>
-{% endif %}
+<td class="center">
+  {{ row.percentage_range_grid_area|str2num }}
+</td>
 
 <td class="center">
   {{ row.distribution_grid_area|str2num }}
 </td>
-
-{% if dataset.schema == '2018' %}
-  <td class="center">
-    {{ row.distribution_method_area|str2num }}
-  </td>
-{% endif %}
 
 <td class="center border_right">
   {{ row.percentage_distribution_grid_area|str2num }}

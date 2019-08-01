@@ -1,16 +1,3 @@
-{% if dataset.schema == '2018' %}
-  {% set border = '' %}
-  <td class="center border_left">
-    {{ row.range_future_prospects|str2num }}
-  </td>
-  <td class="center">
-    {{ row.population_future_prospects|str2num }}
-  </td>
-  <td class="center">
-    {{ row.structure_future_prospects|str2num }}
-  </td>
-{% endif %}
-
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} {% if dataset.schema != '2018' %}border {% else %} border_right {% endif %}">
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }}">
   <span class="conclusion">{{ row.percentage_future|parse_semicolon|str2num('')|safe or '' }}</span>
 </td>

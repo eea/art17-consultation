@@ -2,16 +2,7 @@
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_structure, '') %}
 
-{% if dataset.schema == '2018' %}
-  <td class="center">{{ row.good_structure|str2num }}</td>
-  <td class="center">{{ row.not_good_structure|str2num }}</td>
-  <td class="center">{{ row.not_known_structure|str2num }}</td>
-{% endif %}
-
 <td {{ parse_errors(['conclusion_structure'], row, qa_errors, classes=classes) }}>
   <span class="conclusion">{{ row.conclusion_structure|str2num }}</span>
 </td>
 
-{% if dataset.schema == '2018' %}
-  <td class="center">{{ row.trend_structure|str2num }}</td>
-{% endif %}

@@ -1,0 +1,145 @@
+{% from '_macros.html' import parse_errors with context %}
+
+<!-- MS -->
+<td colspan="2" class="border">
+  {{ row.assessment_method }}
+</td>
+
+{% if not region %}
+  <td class="border">{{ row.region }}</td>
+{% endif %}
+
+<!-- Range -->
+<td class="number border_left">
+  {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
+</td>
+      
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
+  <span class="conclusion">
+    {{ row.conclusion_range or row.percentage_range_surface_area|parse_semicolon|str2num('')|safe }}
+    <!--todo set class on this field-->
+  </span>
+</td>
+      
+<td class="center">
+  {{ row.range_trend|parse_semicolon or '' }}
+</td>
+      
+<td class="center border_right">
+  {{ row.complementary_favourable_range|parse_semicolon|str2num('')|safe }}
+</td>
+
+<!--Population-->
+<td class="number border_left">
+  {{ row.population_size_min_max|str2num('') }}
+</td>
+      
+<td class="number center">
+  {{ row.population_size }}
+</td>
+      
+<td class="number center">
+  {{ row.population_size_unit|parse_semicolon|str2num('')|safe }}
+</td>
+      
+<td class="number center">
+  {{ row.population_estimate_type|parse_semicolon|str2num('')|safe }}
+</td>
+      
+<td class="number center">
+  {{ row.population_method|parse_semicolon|str2num('')|safe }}
+</td>
+
+      
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}">
+  <span class="conclusion">{{ row.percentage_population_mean_size|parse_semicolon|str2num('')|safe  or row.conclusion_population }}</span>
+</td>
+
+
+<td class="center">
+  {{ row.population_trend|default('', true)|parse_semicolon }}
+</td>
+      
+<td class="number">
+  {{ row.complementary_favourable_population|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="number border_right">
+  {{ row.complementary_favourable_population_unit|parse_semicolon|str2num('')|safe }}
+</td>
+
+<!-- Habitat for the species -->
+<td class="center border_left">{{ row.habitat_sufficiency_occupied }}</td>
+
+<td class="center">{{ row.habitat_sufficiency_unoccupied }}</td>
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_habitat] }}">
+  <span class="conclusion">{{ row.percentage_habitat_sufficiency or row.conclusion_habitat|parse_semicolon|str2num('')|safe }}</span>
+</td>
+
+<td class="center border_right">
+  {{ row.habitat_trend|parse_semicolon or '' }}
+</td>
+
+<!-- Future prospects -->
+<td class="center border_left">
+  {{ row.future_range|parse_semicolon|str2num('')|safe }}
+</td>
+  
+<td class="center">
+  {{ row.future_population|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="center">
+  {{ row.future_habitat|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} border_right">
+  <span class="conclusion">{{ row.percentage_future or row.conclusion_future|parse_semicolon|str2num('')|safe }}</span>
+</td>
+
+<!-- Overall assessment -->
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
+<td class="{{ classes }}">
+  <span class="conclusion">{{ row.percentage_assessment|default('', true)|parse_semicolon|safe or
+                              row.conclusion_assessment|default('', true)|parse_semicolon|safe }}</span>
+</td>
+
+<td class="center" >
+  <span class="conclusion">{{ row.percentage_assessment_trend|default('', true)|parse_semicolon|safe or
+                              row.conclusion_assessment_trend|default('', true)|parse_semicolon|safe }}</span>
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') %}
+<td class="{{ classes }}">
+  <span class="conclusion">{{ row.conclusion_assessment_prev|default('', true)|parse_semicolon|safe }}</span>
+</td>
+
+<td class="center">
+  {{ row.conclusion_assessment_trend_prev|str1num }}
+</td>
+
+
+<td class="center">
+  <span class="conclusion">{{ row.percentage_assessment_change|default('', true)|parse_semicolon|safe }}</span>
+</td>
+
+<td class="center border_right">
+  {{ row.conclusion_assessment_trend_change|str1num }}
+</td>
+
+<!-- Distribution area -->
+
+<td class="center border_left">
+  {{ row.distribution_grid_area|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="center">
+</td>
+
+<td class="center">
+</td>
+
+<td class="center">
+</td>

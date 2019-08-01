@@ -1,0 +1,141 @@
+{% from '_macros.html' import parse_errors with context %}
+
+<td colspan="2" class="border" title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+  {{ row.assessment_method or 'N/A' }}
+</td>
+
+{% if not region %}
+  <td class="border">
+    {{ row.region or 'N/A' }}
+  </td>
+{% endif %}
+
+<!-- Range -->
+
+<td class="number border_left">
+  {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
+</td>
+      
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
+  <span class="conclusion">
+    {% set range = row.percentage_range_surface_area or row.conclusion_range %}
+    {{ range|parse_semicolon|str2num('')|safe }}
+  </span>
+</td>
+      
+<td class="center">
+  {{ row.range_trend|parse_semicolon or '' }}
+</td>
+      
+<td class="center border_right">
+  {{ row.complementary_favourable_range|parse_semicolon|str2num('')|safe }}
+</td>
+
+<!-- Area -->
+<td class="number border_left">
+  {{ row.coverage_surface_area_min_max|parse_semicolon|str2num('')|safe }}
+</td>
+
+<td class="center">
+  {{ row.coverage_surface_area }}
+</td>
+
+<td class="center">
+  {{ row.coverage_estimate_type }}
+</td>
+
+<td class="center">
+  {{ row.coverage_method }}
+</td>
+     
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}">
+  {% set area = row.percentage_coverage_surface_area or row.conclusion_area %}
+  <span class="conclusion">{{ area|parse_semicolon|str2num('')|safe }}</span>
+</td>
+      
+<td class="center">
+  {{ row.coverage_trend|parse_semicolon or '' }}
+</td>
+      
+<td class="center border_right">
+  {{ row.complementary_favourable_area|parse_semicolon|str2num('')|safe }}
+</td>
+      
+<!-- Structure and functions -->
+<td class="center">
+  {{ row.hab_condition_good|parse_semicolon|safe }}
+</td>
+  
+<td class="center">
+  {{ row.hab_condition_notgood|parse_semicolon|safe  }}
+</td>
+
+<td class="center">
+  {{ row.hab_condition_unknown|parse_semicolon|safe }}
+</td>
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }}">
+  {% set hab = row.percentage_structure or row.conclusion_structure %}
+  <span class="conclusion">{{ hab|parse_semicolon|safe }}</span>
+</td>
+
+<td class="center">
+  {{ row.hab_condition_trend }}
+</td>
+
+<!-- Future prospects -->
+<td class="center border_left">
+  {{ row.future_range|parse_semicolon|safe }}
+</td>
+
+<td class="center">
+  {{ row.future_area|parse_semicolon|safe }}
+</td>
+
+<td class="center">
+  {{ row.future_structure|parse_semicolon|safe }}
+</td>
+
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} border_right">
+  {% set future = row.conclusion_future or row.percentage_future %}
+  <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
+</td>
+
+<!-- Overall assessment -->
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
+<td class="{{ classes }}">
+  {% set overall = row.percentage_assessment or row.conclusion_assessment %}
+  <span class="conclusion">{{ overall|parse_semicolon|safe }}</span>
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_trend, '') %}
+<td class="{{ classes }}">
+  {% set percentage = row.percentage_assessment_trend or row.conclusion_assessment_trend %}
+  <span class="conclusion">{{ percentage|parse_semicolon|safe }}</span>
+</td>
+
+<td class="center">
+  <span class="conclusion">{{ row.conclusion_assessment_prev|default('', true)|parse_semicolon|safe}}</span>
+</td>
+
+<td class="center">
+  {{ row.conclusion_assessment_trend_prev|parse_semicolon|safe }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_change, '') %}
+<td class="{{ classes }}">
+  <span class="conclusion">{{ row.percentage_assessment_change|default('', true)|parse_semicolon|safe}}</span>
+</td>
+
+<td class="center border_right">
+  {{ row.percentage_assessment_trend_change|parse_semicolon|safe }}
+</td>
+
+<!-- Distribution area -->
+<td></td>
+<td></td>
+<td class="border_right">
+  {{ row.distribution_grid_area|parse_semicolon|str2num('')|safe }}
+</td>
+<td></td>

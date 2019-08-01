@@ -2,18 +2,6 @@
   {{ row.coverage_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
-{% if dataset.schema == '2018' %}
-  <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-    {{ row.best_value  or '-' }}
-  </td>
-  <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-    {{ row.type_estimate_area  or '-' }}
-  </td>
-  <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-    {{ row.method_area or '-' }}
-  </td>
-{% endif %}
-
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}">
   <span class="conclusion">{{ row.percentage_coverage_surface_area|parse_semicolon|str2num('')|safe }}</span>
 </td>

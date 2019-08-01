@@ -1,51 +1,35 @@
 {% from '_macros.html' import parse_errors, reason_title with context %}
 
-    <td {{ parse_errors('coverage_surface_area', row, qa_errors,
-                        classes='number border_left',
-                        title=reason_title(dataset.schema, row.coverage_change_reason)) }}>
-        {{ row.coverage_surface_area|str2num }}
-    </td>
+<td {{ parse_errors('coverage_surface_area', row, qa_errors,
+       classes='number border_left', title=reason_title(dataset.schema, row.coverage_change_reason)) }}>
+  {{ row.coverage_surface_area|str2num }}
+</td>
 
-    {% if dataset.schema == '2018' %}
-      <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-        {{ row.best_value  or '-' }}
-      </td>
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_area, '') %}
+<td {{ parse_errors(['conclusion_area', 'percentage_coverage_surface_area'],
+       row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.percentage_coverage_surface_area|str1num }}</span>
+</td>
 
-      <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-        {{ row.type_estimate_area  or '-' }}
-      </td>
+{% set qtitle, qclasses = parse_qa_errors('coverage_yearly_magnitude', row, qa_errors) %}
 
-      <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-        {{ row.method_area or '-' }}
-      </td>
-    {% endif %}
+{% if not qtitle %}
+  {% if row.coverage_yearly_magnitude -%}
+    {% set qtitle = 'Yearly magnitude = ' + row.coverage_yearly_magnitude|string %}
+  {%- endif -%}
+{% endif %}
 
-    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_area, '') %}
-    <td {{ parse_errors(['conclusion_area',
-                         'percentage_coverage_surface_area'],
-                          row, qa_errors,
-                          classes=classes) }}>
-      <span class="conclusion">{{ row.percentage_coverage_surface_area|str1num }}</span>
-    </td>
+<td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+  {{ row.coverage_trend or 'N/A' }}
+</td>
 
-   {% set qtitle, qclasses = parse_qa_errors('coverage_yearly_magnitude', row, qa_errors) %}
-    {% if not qtitle %}
-      {% if row.coverage_yearly_magnitude -%}
-        {% set qtitle = 'Yearly magnitude = ' + row.coverage_yearly_magnitude|string %}
-      {%- endif -%}
-    {% endif %}
-    <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-     {{ row.coverage_trend or 'N/A' }}
-    </td>
-
-    <td {{ parse_errors(['complementary_favourable_area_q',
-                         'complementary_favourable_area'],
-                         row, qa_errors, '', 'number border_right') }}>
-        {% set range_q = row.complementary_favourable_area_q or '' %}
-        {% set range = row.complementary_favourable_area %}
-        {% if range_q or range %}
-          {{ range_q }}{{range|str2num('')}}
-        {% else %}
-          N/A
-        {% endif %}
-    </td>
+<td {{ parse_errors(['complementary_favourable_area_q', 'complementary_favourable_area'],
+       row, qa_errors, '', 'number border_right') }}>
+  {% set range_q = row.complementary_favourable_area_q or '' %}
+  {% set range = row.complementary_favourable_area %}
+  {% if range_q or range %}
+    {{ range_q }}{{range|str2num('')}}
+  {% else %}
+    N/A
+  {% endif %}
+</td>

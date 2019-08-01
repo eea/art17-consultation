@@ -499,18 +499,19 @@ class HabitatSummary(HabitatMixin, Summary):
             HabitatCommentCounter(period, g.identity.id)
             .get_wiki_unread_count(subject, region)
         )
-
         if subject:
             filter_args['habitatcode'] = subject
         else:
             return False
         if region:
             filter_args['region'] = region
+
         if filter_args:
             filter_args['dataset_id'] = period
             self.objects = self.model_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_cls.region, self.model_cls.country)
+
             self.auto_objects = (
                 self.model_auto_cls.query
                 .filter_by(**filter_args)

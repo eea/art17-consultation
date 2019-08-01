@@ -81,13 +81,17 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
             Commission under Article 17
           </td>
         {% else %}
-          {% include 'summary/species/content/range.html' with context %}
-          {% include 'summary/species/content/population.html' with context %}
-          {% include 'summary/species/content/habitat.html' with context %}
-          {% include 'summary/species/content/future_prospects.html' with context %}
-          {% include 'summary/common/content/overall_assessment.html' with context %}
-          {% include 'summary/species/content/grided_maps.html' with context %}
-          {% include 'summary/species/content/quality.html' with context %}
+          {% if dataset.schema == '2018' %}
+            {% include 'summary/species/content/content_2018.html' with context %}
+          {% else %}
+            {% include 'summary/species/content/range.html' with context %}
+            {% include 'summary/species/content/population.html' with context %}
+            {% include 'summary/species/content/habitat.html' with context %}
+            {% include 'summary/species/content/future_prospects.html' with context %}
+            {% include 'summary/common/content/overall_assessment.html' with context %}
+            {% include 'summary/species/content/grided_maps.html' with context %}
+            {% include 'summary/species/content/quality.html' with context %}
+          {% endif %}
         {% endif %}
       </tr>
     {% endfor %}
@@ -106,28 +110,32 @@ Choose a period, a group, then a species belonging to that group. Optionally, fu
     <tbody id="automatic_body" class="stripe_3rd hidden">
     {% for row in auto_objects %}
     <tr>
-      {% include 'summary/common/auto/ms.html' with context %}
+      {% if dataset.schema == '2018' %}
+        {% include 'summary/species/auto/content_2018.html' with context %}
+      {% else %}
+        {% include 'summary/common/auto/ms.html' with context %}
 
-      {# Range #}
-      {% include 'summary/common/auto/range.html' %}
+        {# Range #}
+        {% include 'summary/common/auto/range.html' %}
 
-      {# Population #}
-      {% include 'summary/species/auto/population.html' %}
+        {# Population #}
+        {% include 'summary/species/auto/population.html' %}
 
-      {# Habitat #}
-      {% include 'summary/species/auto/habitat.html' %}
+        {# Habitat #}
+        {% include 'summary/species/auto/habitat.html' %}
 
-      {# Prospects #}
-      {% include 'summary/common/auto/future_prospects.html' %}
+        {# Prospects #}
+        {% include 'summary/common/auto/future_prospects.html' %}
 
-      {# Overall #}
-      {% include 'summary/common/auto/overall_assessment.html' %}
+        {# Overall #}
+        {% include 'summary/common/auto/overall_assessment.html' %}
 
-      {# Grided #}
-      {% include 'summary/common/auto/grided_maps.html' %}
+        {# Grided #}
+        {% include 'summary/common/auto/grided_maps.html' %}
 
-      {# Padding #}
-      <td class="border" colspan="5"></td>
+        {# Padding #}
+        <td class="border" colspan="5"></td>
+      {% endif %}
     </tr>
     {% endfor %}
     </tbody>

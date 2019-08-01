@@ -4,14 +4,6 @@
 
 {% set concl_value = get_tooltip(row, 'method_area') %}
 
-{% if dataset.schema == '2018' %}
-  <td class="center">
-    {{ row.best_value }}
-  </td>
-  <td class="center"></td>
-  <td class="center"></td>
-{% endif %}
-
 <td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}"
     {% if concl_value %}title=": {{concl_value}}"{% endif %}>
   <span class="conclusion">{{ row.method_area or '' }}</span>

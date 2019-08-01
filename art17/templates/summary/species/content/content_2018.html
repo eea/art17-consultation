@@ -1,0 +1,152 @@
+{% from '_macros.html' import parse_errors, reason_title with context %}
+
+<!-- Range  -->
+<td {{ parse_errors('range_surface_area', row, qa_errors,
+        title=reason_title(dataset.schema, row.range_change_reason),
+        classes='number border_left') }}>
+  {{ row.range_surface_area|str2num }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') %}
+<td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'],
+                    row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.percentage_range_surface_area|str1num }}</span>
+</td>
+
+{% set qtitle, qclasses = parse_qa_errors('range_yearly_magnitude', row, qa_errors) %}
+
+<td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+  {{ row.range_trend or 'N/A' }}
+</td>
+
+<td {{ parse_errors(['complementary_favourable_range_q', 'complementary_favourable_range'],
+                     row, qa_errors, '', 'number border_right') }}>
+  {% set range_q = row.complementary_favourable_range_q or '' %}
+  {% set range = row.complementary_favourable_range|str2num %}
+  {{ range_q or range }}
+</td>
+
+<!-- Population -->
+
+<td class="number border_left center">
+  {% set min_size = row.population_minimum_size or 'N/A' %}
+  {% set maximum_size = row.population_maximum_size or 'N/A' %}
+  {{ min_size|str2num }} - {{ maximum_size|str2num }}
+</td>
+
+
+<td class="number center">
+  {% set population_size = row.population_size or 'N/A' %}
+  {{ population_size|str2num }}
+</td>
+
+<td class="number center" {% set title=population_size_unit_title(row, dataset.schema) %}
+  {% if title %}title="{{ title }}"{% endif %}>
+  {{ row.population_size_unit }}
+</td>
+
+<td class="number center">
+  {{ row.population_estimate_type }}
+</td>
+
+<td class="number center">
+  {{ row.population_method }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') %}
+<td {{ parse_errors(['conclusion_population',
+                     'percentage_population_mean_size'],
+                     row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.percentage_population_mean_size|str1num }}</span>
+</td>
+
+{% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude', row, qa_errors) %}
+<td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+  {{ row.population_trend or 'N/A' }}
+</td>
+
+<td {{ parse_errors(['complementary_favourable_population_q',
+                     'complementary_favourable_population',
+                     'filled_complementary_favourable_population'],
+                      row, qa_errors, classes='number center') }}>
+  {{ row.complementary_favourable_population_q or row.complementary_favourable_population|str2num }}
+</td>
+
+<td class="number center border_right">
+  {{ row.complementary_favourable_population_unit }}
+</td>
+
+<!-- Habitat for the species -->
+<td class="center">
+  {{ row.habitat_sufficiency_occupied }}
+</td>
+
+<td class="center">
+  {{ row.habitat_sufficiency_unoccupied }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
+<td {{ parse_errors('conclusion_habitat', row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.conclusion_habitat|str1num }}</span>
+</td>
+
+<td {{ parse_errors('habitat_trend', row, qa_errors, classes='center') }}>
+  {{ row.habitat_trend or 'N/A' }}
+</td>
+
+<!-- Future prospects -->
+<td class="center border_left">
+  {{ row.future_range|str2num }}
+</td>
+
+<td class="center">
+  {{ row.future_population|str2num }}
+</td>
+
+<td class="center">
+  {{ row.future_habitat|str2num }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') %}
+<td {{ parse_errors('conclusion_future', row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.conclusion_future|str2num }}</span>
+</td>
+
+<!-- Overall assessment -->
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
+<td {{ parse_errors('conclusion_assessment', row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.conclusion_assessment|str1num }}</span>
+</td>
+
+<td class="center">{{ row.conclusion_assessment_trend|na_if_none }}</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') %}
+<td class="{{ classes }}">
+  <span class="conclusion">{{ row.conclusion_assessment_prev|str1num }}</span>
+</td>
+
+<td class="center">
+  {{ row.conclusion_assessment_trend_prev }}
+</td>
+
+<td class="center">{{ row.conclusion_assessment_change|na_if_none }}</td>
+
+<td class="center border_right">
+  {{ row.conclusion_assessment_trend_change|str1num }}
+</td>
+
+<!-- Distribution area -->
+
+<td class="center">
+  {{ row.distribution_grid_area|str2num }}
+</td>
+
+<td class="center">
+  {{ row.distribution_method|str2num }}
+</td>
+
+<td class="center border_right">
+  {{ row.percentage_distribution_grid_area|str2num }}
+</td>
+
+<td class="border_right" colspan="5"></td>
