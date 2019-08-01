@@ -102,11 +102,11 @@ class GenerateNewPeriodCommand(Command):
             if not models.EtcDicSpeciesType.query.filter_by(
                 SpeciesTypeID=type.SpeciesTypeID,
                 dataset_id=dataset.id
-            ):
+            ).all():
                 new_type = models.EtcDicSpeciesType(
                     SpeciesTypeID=type.SpeciesTypeID,
                     SpeciesType=type.SpeciesType,
-                    Assessment=type.Assessment,
+                    Assesment=type.Assesment,
                     Note=type.Note,
                     abbrev=type.abbrev,
                     dataset_id=dataset.id
@@ -120,7 +120,7 @@ class GenerateNewPeriodCommand(Command):
             if not models.EtcDicTrend.query.filter_by(
                 id=trend.id,
                 dataset_id=dataset.id
-            ):
+            ).all():
                 new_trend = models.EtcDicTrend(
                     id=trend.id,
                     trend=trend.trend,
@@ -130,5 +130,52 @@ class GenerateNewPeriodCommand(Command):
                 models.db.session.add(new_trend)
                 models.db.session.commit()
 
+        habitatcodes = [
+            data.habitatcode for data in
+            models.EtcDataHabitattypeRegion.query.all()
+            if data.dataset_id == dataset.id
+        ]
+
+        print("Importing EtcDicHdHabitat...")
+        for habitatcode in habitatcodes:
+            hdhabitat = models.EtcDicHdHabitat.query.filter_by(
+                habcode=habitatcode
+            ).first()
+            if not models.EtcDicHdHabitat.query.filter_by(
+                    habcode=hdhabitat.habcode, dataset_id=dataset.id).all():
+                new_hdhabitat = models.EtcDicHdHabitat(
+                    habcode=hdhabitat.habcode,
+                    group=hdhabitat.group,
+                    priority=hdhabitat.priority,
+                    name=hdhabitat.name,
+                    shortname=hdhabitat.shortname,
+                    annex_I_comments=hdhabitat.annex_I_comments,
+                    marine=hdhabitat.marine,
+                    dataset_id=dataset.id,
+                )
+                models.db.session.add(new_hdhabitat)
+                models.db.session.commit()
+
+        print ("Importing DicCountryCode...")
+        countries = models.DicCountryCode.query.all()
+        for country in countries:
+            if not models.DicCountryCode.query.filter_by(
+                code=country.code,
+                dataset_id=dataset.id
+            ).all():
+                new_country = models.DicCountryCode(
+                    code=country.code,
+                    codeEU=country.codeEU,
+                    name=country.name,
+                    dataset_id=dataset.id,
+                )
+                models.db.session.add(new_country)
+                models.db.session.commit()
+
+        habitatcodes = [
+            data.habitatcode for data in
+            models.EtcDataHabitattypeRegion.query.all()
+            if data.dataset_id == dataset.id
+        ]
 generate_new_period = Manager()
 generate_new_period.add_command('run', GenerateNewPeriodCommand())
