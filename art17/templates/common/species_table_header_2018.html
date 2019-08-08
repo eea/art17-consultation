@@ -13,7 +13,7 @@
     {% if not country %}
       <th rowspan="2" colspan="2" title="Member states">MS</th>
     {% endif %}
-    {% if not region %}<th rowspan="2">Region</th>{% endif %}
+    {% if not region %}<th rowspan="2" title="Biogeographical or marine region">Region</th>{% endif %}
 
     <th colspan="4">Range (km<sup>2</sup>)</th>
     <th colspan="9">Population</th>
@@ -25,23 +25,50 @@
   </tr>
 
   <tr>
-    <th>Surface</th>
-    <th>Status<br/>(% MS)</th>
-    <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
-    <th title="{{ favourable_ref_title('complementary_favourable_range', dataset.schema) }}">FRR</th>
-
+    <th title="Main reason for change if current value is different than for the previous period">Surface</th>
+    <th title="Status of Range (colour)
+               Percentage of surface of the range per MS region (figure)">Status<br/>(% MS)</th>
+    <th title="Short-term trend
+               -   - Decreasing
+               +  - Increasing
+               =   - Stable
+               u  - Uncertain
+               x  - Unknown
+               N/A  - Not reported">Trend</th>
+    <th title="Favourable reference range (if only operator was used in MS data current value is inserted automatically)
+               ≈  - Approximately equal to current value
+               <  - Less than current value
+               >  -  More than current value
+               >>  - Much more than current value
+               x  - Unknown">FRR</th>
     <th>
       <div class="popout-wrapper hover">
         <div class="popout size_unit_th right caret">
           <table class="popout-table">
             <tr>
-              <th>Agreed units</th>
-              <th>Other units</th>
+              <th colspan="4" style="text-align: center;">Reporting units</th>
+              <th colspan="4" style="text-align:center;">Alternative units</th>
+            </tr>
+            <tr>
+              <th class="center">Min-max</th>
+              <th>Best value</th>
+              <th>Unit</th>
+              <th>Type of estimate</th>
+              <th>Min-max</th>
+              <th>Best value</th>
+              <th>Unit</th>
+              <th>Type of estimate</th>
             </tr>
             {% for row in objects %}
               <tr>
-                <td>{{ row.population_units_agreed|format_units }}</td>
-                <td>{{ row.population_units_other|format_units }}</td>
+                <td>{{ row.population_minimum_size|str2num  }} - {{ row.population_maximum_size|str2num  }}</td>
+                <td>{{ row.population_size|str2num  }}</td>
+                <td>{{ row.population_size_unit }}</td>
+                <td>{{ row.population_estimate_type }}</td>
+                <td>{{ row.population_alt_size_min|str2num  }} - {{ row.population_alt_size_max|str2num  }}</td>
+                <td>{{ row.population_alt_size|str2num  }}</td>
+                <td>{{ row.population_alt_size_unit }}</td>
+                <td>{{ row.population_alt_size|str2num  }}</td>
               </tr>
             {% endfor %}
           </table>
@@ -49,34 +76,79 @@
         Min-max
       </div>
     </th>
-    <th>Best value</th>
+    <th title="Main reason for change if current value is different than for the previous period">Best value</th>
     <th>Unit</th>
-    <th>Type est.</th>
-    <th>Method</th>
-    <th>Status<br/>(% MS)</th>
-    <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
+    <th title="Type of estimate
+               estimate  - Best estimate
+               interval  - 95% confidence interval
+               mean  - Multi-year mean
+               minimum  - Minimum">Type est.</th>
+    <th title="Method used
+               a  - Complete survey or a statistically robust estimate
+               b  - Based mainly on extrapolation from a limited amount of data
+               c  - Based mainly on expert opinion with very limited data
+               d  - Insufficient or no data available">Method</th>
+    <th title="Status of Population (colour)
+               Percentage of total biogeographical population per MS region (figure)">Status<br/>(% MS)</th>
+    <th title="Short-term trend
+               -   - Decreasing
+               +  - Increasing
+               =   - Stable
+               u  - Uncertain
+               x  - Unknown
+               N/A  - Not reported">Trend</th>
     <th title="{{ favourable_ref_title('complementary_favourable_population', dataset.schema) }}">FRP</th>
     <th>Unit</th>
 
-    <th>Occupied<br/>suff.</th>
-    <th>Unoccupied<br/>suff.</th>
-    <th>Status</th>
-    <th title="Short term trend {{ TREND_TOOLTIP }}">Trend</th>
+    <th title="Are area and quality of occupied habitat sufficient (for long-term survival)? YES/NO/Unknown">Occupied<br/>suff.</th>
+    <th title="Is there a sufficiently large area of unoccupied habitat of suitable quality (for long-term survival)? YES/NO/Unknown">Unoccupied<br/>suff.</th>
+    <th title="Status of Habitat for species">Status</th>
+    <th title="Short-term trend
+               -   - Decreasing
+               +  - Increasing
+               =   - Stable
+               u  - Uncertain
+               x  - Unknown
+               N/A  - Not reported">Trend</th>
 
-    <th>Range<br/>prosp.</th>
-    <th>Population<br/>prosp.</th>
-    <th>Hab. for sp.<br/>prosp.</th>
-    <th>Status</th>
+    <th title="Prospects of parameter Range">Range<br/>prosp.</th>
+    <th title="Prospects of parameter Population">Population<br/>prosp.</th>
+    <th title="Prospects of parameter Habitat for species">Hab. for sp.<br/>prosp.</th>
+    <th title="Status of Future prospects">Status</th>
 
-    <th title="Current conservation status">Curr. CS</th>
-    <th title="Current conservation status trend">Curr. CS<br/>trend</th>
-    <th title="Previous conservation status">Prev. CS</th>
-    <th title="Previous conservation status trend">Prev. CS<br/>trend</th>
-    <th title="Status Nature of change {{ NATURE_TOOLTIP }}">Status<br/>Nat. of ch.</th>
-    <th title="Current status trend of Nature of Change">CS trend<br/>Nat. of ch.</th>
+    <th title="Conservation status - current period">Curr. CS</th>
+    <th title="Overall trend in conservation status - current period
+               -  - Deteriorating
+               +  - Improving
+               =  - Stable
+               x  - Unknown
+               N/A  - Not reported">Curr. CS<br/>trend</th>
+    <th title="Conservation status - previous period">Prev. CS</th>
+    <th title="Overall trend in conservation status - previous period
+               -  - Deteriorating
+               +  - Improving
+               =  - Stable
+               x  - Unknown
+               N/A  - Not reported">Prev. CS<br/>trend</th>
+    <th title="Main reason for change
+               genuine  - Genuine change
+               knowledge  - Improved knowledge/more accurate data
+               method  - Use of different method
+               no change  - No change
+               no info  - No information on the nature of change">Status<br/>Nat. of ch.</th>
+    <th title="Main reason for change
+               genuine  - Genuine change
+               knowledge  - Improved knowledge/more accurate data
+               method  - Use of different method
+               no change  - No change
+               no info  - No information on the nature of change">CS trend<br/>Nat. of ch.</th>
 
-    <th title="Distribution">Distrib.</th>
-    <th>Method</th>
-    <th title="Percentage of the surface of the Distribution Map, which has been gridded, per MS, per region">% MS</th>
+    <th title="Distribution Area was calculated in km2 based on distribution mapped in 10 x1 0km grid">Distrib.</th>
+    <th title="Method used
+               a  - Complete survey or a statistically robust estimate
+               b  - Based mainly on extrapolation from a limited amount of data
+               c  - Based mainly on expert opinion with very limited data
+               d  - Insufficient or no data available">Method</th>
+    <th title="Percentage of surface of the distribution per MS region">% MS</th>
   </tr>
 </tbody>

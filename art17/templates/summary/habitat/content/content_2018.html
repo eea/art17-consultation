@@ -1,8 +1,10 @@
-{% from '_macros.html' import parse_errors, reason_title with context %}
+{% from '_macros.html' import parse_errors, reason_title, set_method_title, set_reason_title with context %}
+
 <!-- Range -->
-<td {{ parse_errors('range_surface_area', row, qa_errors,
-       title=reason_title(dataset.schema, row.range_change_reason)) }}
-       classes='number border_left'>
+
+<td {{ parse_errors('range_surface_area', row, qa_errors) }}
+    {{ set_reason_title(row.range_change_reason) }}
+    classes='number border_left'>
   {{ row.range_surface_area|str2num or 'N/A' }}
 </td>
 
@@ -18,7 +20,9 @@
     {% set qtitle = 'Yearly magnitude = ' + row.range_yearly_magnitude|string %}
   {%- endif -%}
 {% endif %}
-<td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+
+<td class="center {{ qclasses }}"
+    {{ set_method_title(row.range_trend_method) }}>
   {{ row.range_trend or 'N/A' }}
 </td>
 
@@ -39,14 +43,14 @@
 
 <!-- Area -->
 
-<td {{ parse_errors('coverage_surface_area', row, qa_errors, classes='number border_left',
-       title=reason_title(dataset.schema, row.coverage_change_reason)) }}>
+<td {{ parse_errors('coverage_surface_area', row, qa_errors, classes='number border_left') }}>
   {% set min_size = row.coverage_surface_area_min or 'N/A' %}
   {% set maximum_size = row.coverage_surface_area_max or 'N/A' %}
   {{ min_size|str1num }} - {{ maximum_size|str1num }}
 </td>
 
-<td class="center">
+<td class="center"
+    {{ set_reason_title(row.coverage_change_reason) }}>
   {% set coverage_surface_area = row.coverage_surface_area or '' %}
   {{ coverage_surface_area|str1num }}
 </td>
@@ -66,7 +70,8 @@
   <span class="conclusion">{{ row.percentage_coverage_surface_area|str1num('') }}</span>
 </td>
 
-<td class="center">
+<td class="center"
+    {{ set_method_title(row.coverage_trend_method) }}>
   {{ row.coverage_trend or 'N/A' }}
 </td>
 
@@ -87,7 +92,8 @@
 
 <!-- Structure and functions -->
 
-<td class="center">
+<td {{ set_method_title(row.hab_condition_method) }}
+    class="center">
   {{ row.hab_condition_good_min|str2num }} - {{ row.hab_condition_good_max|str2num }}
 </td>
 
@@ -102,9 +108,13 @@
   <span class="conclusion">{{ row.conclusion_structure|str2num }}</span>
 </td>
 
-<td class="center">{{ row.hab_condition_trend|str2num }}</td>
+<td {{ set_method_title(row.hab_condition_trend_method) }}
+    class="center">
+  {{ row.hab_condition_trend|str2num }}
+</td>
 
 <!-- Future prospects -->
+
 <td class="center border_left">
   {{ row.future_range|str2num }}
 </td>

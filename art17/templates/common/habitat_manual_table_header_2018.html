@@ -1,9 +1,9 @@
 <tr {% if is_form %}class="form_row"{% endif %}>
   {% if can_view_decision() %}
     <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
-    <th rowspan="2"><abbr title="Member State / EU 28 (for EU assessments)">MS/EU28</abbr></th>
+    <th rowspan="2" title="Member State / EU 28 (for EU assessments)"><abbr>MS/EU28</abbr></th>
   {% else %}
-    <th rowspan="2" colspan="2"><abbr title="Member State / EU 28 (for EU assessments)">MS/EU28</abbr></th>
+    <th rowspan="2" colspan="2" title="Member State / EU 28 (for EU assessments)"><abbr>MS/EU28</abbr></th>
   {% endif %}
 
   {% if not region %}
@@ -11,8 +11,8 @@
   {% endif %}
 
   <th rowspan="2">Surface</th>
-  <th rowspan="2"><abbr title="Status of Range (colour) 
-Assessment method used (e.g. 2XA)">Status<br/>Range</abbr></th>
+  <th rowspan="2" title="Status of Range (colour)
+  Assessment method used (e.g. 2XA)"><abbr>Status<br/>Range</abbr></th>
   <th rowspan="2">Trend</th>
   <th rowspan="2" title="Favourable reference value">FRR</th>
 
@@ -20,8 +20,8 @@ Assessment method used (e.g. 2XA)">Status<br/>Range</abbr></th>
   <th rowspan="2">Best value</th>
   <th rowspan="2"></th>
   <th rowspan="2"></th>
-  <th rowspan="2"><abbr title="Status of Area (colour)
-Assessment method used (e.g. 2XA)">Status<br/>Area</abbr></th>
+  <th rowspan="2" title="Status of Area (colour)
+  Assessment method used (e.g. 2XA)"><abbr>Status<br/>Area</abbr></th>
   <th rowspan="2">Trend</th>
   <th rowspan="2">FRA</th>
 

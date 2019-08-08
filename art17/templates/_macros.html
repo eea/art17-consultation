@@ -8,6 +8,18 @@
     class="{{ classes }} {{ qclasses }}"
 {% endmacro %}
 
+{% macro set_method_title(method) %}
+  {% if method %}
+    title="Method used: {{ method }} - Based mainly on extrapolation from a limited amount of data"
+  {% endif %}
+{% endmacro %}
+
+{% macro set_reason_title(reason) %}
+  {% if reason %}
+    title="Main reason for change if current value is different than for the previous period: {{ reason }}"
+  {% endif %}
+{% endmacro %}
+
 {% macro conclusion_td(color, content, colspan=1) %}
   <td class="{{ CONCLUSION_CLASSES.get(color, '') }}" colspan="{{ colspan }}">
       <span class="conclusion">{{ content }}</span>
