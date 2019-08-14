@@ -15,13 +15,19 @@
 <td class="number border_left">
   {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
-      
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
-  <span class="conclusion">
-    {% set range = row.percentage_range_surface_area or row.conclusion_range %}
-    {{ range|parse_semicolon|str2num('')|safe }}
-  </span>
-</td>
+
+{% set range = row.percentage_range_surface_area or row.conclusion_range %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
+    <span class="conclusion">{{ range|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% elif range %}
+  <td class="{{ row.percentage_range_surface_area|colorate }}">
+    <span class="conclusion">{{ range|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% else %}
+ <td></td>
+{% endif %}
       
 <td class="center">
   {{ row.range_trend|parse_semicolon or '' }}
@@ -47,12 +53,20 @@
 <td class="center">
   {{ row.coverage_method }}
 </td>
-     
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}">
-  {% set area = row.percentage_coverage_surface_area or row.conclusion_area %}
-  <span class="conclusion">{{ area|parse_semicolon|str2num('')|safe }}</span>
-</td>
-      
+
+{% set area = row.percentage_coverage_surface_area or row.conclusion_area %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}">
+    <span class="conclusion">{{ area|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% elif area %}
+  <td class="{{ row.percentage_coverage_surface_area|colorate }}">
+    <span class="conclusion">{{ area|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% else %}
+ <td></td>
+{% endif %}
+
 <td class="center">
   {{ row.coverage_trend|parse_semicolon or '' }}
 </td>
@@ -74,10 +88,18 @@
   {{ row.hab_condition_unknown|parse_semicolon|safe }}
 </td>
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }}">
-  {% set hab = row.percentage_structure or row.conclusion_structure %}
-  <span class="conclusion">{{ hab|parse_semicolon|safe }}</span>
-</td>
+{% set hab = row.percentage_structure or row.conclusion_structure %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }}">
+    <span class="conclusion">{{ hab|parse_semicolon|safe }}</span>
+  </td>
+{% elif area %}
+  <td class="{{ row.percentage_structure|colorate }}">
+    <span class="conclusion">{{ hab|parse_semicolon|safe }}</span>
+  </td>
+{% else %}
+ <td></td>
+{% endif %}
 
 <td class="center">
   {{ row.hab_condition_trend }}
@@ -96,18 +118,33 @@
   {{ row.future_structure|parse_semicolon|safe }}
 </td>
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} border_right">
-  {% set future = row.conclusion_future or row.percentage_future %}
-  <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
-</td>
+{% set future = row.conclusion_future or row.percentage_future %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} border_right">
+    <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
+  </td>
+{% elif future %}
+  <td class="{{ row.percentage_future|colorate }} border_right">
+    <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
+  </td>
+{% else %}
+ <td class="border_right"></td>
+{% endif %}
 
 <!-- Overall assessment -->
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
-<td class="{{ classes }}">
-  {% set overall = row.percentage_assessment or row.conclusion_assessment %}
-  <span class="conclusion">{{ overall|parse_semicolon|safe }}</span>
-</td>
+{% set overall = row.percentage_assessment or row.conclusion_assessment %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_assessment] }}">
+    <span class="conclusion">{{ overall|parse_semicolon|safe }}</span>
+  </td>
+{% elif overall %}
+  <td class="{{ row.percentage_assessment|colorate }}">
+    <span class="conclusion">{{ overall|parse_semicolon|safe }}</span>
+  </td>
+{% else %}
+ <td></td>
+{% endif %}
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_trend, '') %}
 <td class="{{ classes }}">

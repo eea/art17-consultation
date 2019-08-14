@@ -148,10 +148,10 @@ def get_list(l, index, default=None):
 
 @summary.app_template_filter('colorate')
 def colorate(value):
-    FV = get_list(re.findall(r"(\d+.\d+%)FV", value), 0)
-    U1 = get_list(re.findall(r"(\d+.\d+%)U1", value), 0)
-    U2 = get_list(re.findall(r"(\d+.\d+%)U2", value), 0)
-    XX = get_list(re.findall(r"(\d+.\d+%)XX", value), 0)
+    FV = get_list(re.findall(r"(\d+.?\d+%)FV", value), 0)
+    U1 = get_list(re.findall(r"(\d+.?\d+%)U1", value), 0)
+    U2 = get_list(re.findall(r"(\d+.?\d+%)U2", value), 0)
+    XX = get_list(re.findall(r"(\d+.?\d+%)XX", value), 0)
     if U2 > 25:
         return CONCLUSION_CLASSES['U2']
     if FV >  75:
