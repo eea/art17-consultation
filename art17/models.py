@@ -395,7 +395,7 @@ class EtcDataSpeciesAutomaticAssessment(Base):
     complementary_suitable_habitat = Column(String(100))
     habitat_sufficiency_occupied = Column(String(20))
     habitat_sufficiency_unoccupied = Column(String(20))
-    percentage_habitat_sufficiency = Column(String(20))
+    percentage_habitat_sufficiency = Column(String(100))
     percentage_future = Column(String(100))
     conclusion_range = Column(String(3))
     conclusion_range_gis = Column(String(3))

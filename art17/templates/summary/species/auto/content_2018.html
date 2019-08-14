@@ -13,13 +13,20 @@
 <td class="number border_left">
   {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
-      
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
-  {% set conclusion_range = row.conclusion_range or row.percentage_range_surface_area %}
-  <span class="conclusion">{{ conclusion_range|parse_semicolon|str2num('')|safe }}</span>
-    <!--todo set class on this field-->
-  </span>
-</td>
+
+{% set conclusion_range = row.conclusion_range or row.percentage_range_surface_area %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
+
+    <span class="conclusion">{{ conclusion_range|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% elif conclusion_range %}
+  <td class="{{ row.percentage_range_surface_area|colorate }}">
+    <span class="conclusion">{{ conclusion_range|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% else %}
+ <td></td>
+{% endif %}
       
 <td class="center">
   {{ row.range_trend|parse_semicolon or '' }}
@@ -50,13 +57,18 @@
   {{ row.population_method|parse_semicolon|str2num('')|safe }}
 </td>
 
-      
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}">
-  {% set population_size = row.percentage_population_mean_size or row.conclusion_population %}
-  <span class="conclusion">{{ population_size|parse_semicolon|str2num('')|safe }}</span>
-    <!--todo set class on this field-->
-  </span>
-</td>
+{% set population_size = row.percentage_population_mean_size or row.conclusion_population %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_population] }}">
+    <span class="conclusion">{{ population_size|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% elif population_size %}
+  <td class="{{ row.percentage_population_mean_size|colorate }}">
+    <span class="conclusion">{{ population_size|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% else %}
+ <td></td>
+{% endif %}
 
 
 <td class="center">
@@ -76,12 +88,18 @@
 
 <td class="center">{{ row.habitat_sufficiency_unoccupied }}</td>
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_habitat] }}">
-    {% set population_size = row.percentage_population_mean_size or row.conclusion_population %}
-  <span class="conclusion">{{ population_size|parse_semicolon|str2num('')|safe }}</span>
-    <!--todo set class on this field-->
-  </span>
-</td>
+{% set habitat_sufficiency = row.percentage_habitat_sufficiency or row.conclusion_habitat %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_habitat] }}">
+    <span class="conclusion">{{ habitat_sufficiency|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% elif habitat_sufficiency %}
+  <td class="{{ row.percentage_habitat_sufficiency|colorate }}">
+    <span class="conclusion">{{ habitat_sufficiency|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% else %}
+ <td></td>
+{% endif %}
 
 <td class="center border_right">
   {{ row.habitat_trend|parse_semicolon or '' }}
@@ -100,22 +118,33 @@
   {{ row.future_habitat|parse_semicolon|str2num('')|safe }}
 </td>
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} border_right">
-  {% set percentage_future = row.percentage_future or row.conclusion_future %}
-  <span class="conclusion">{{ percentage_future|parse_semicolon|str2num('')|safe }}</span>
-    <!--todo set class on this field-->
-  </span>
-</td>
+{% set percentage_future = row.percentage_future or row.conclusion_future %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} border_right">
+    <span class="conclusion">{{ percentage_future|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% elif percentage_future %}
+  <td class="{{ row.percentage_future|colorate }} border_right">
+    <span class="conclusion">{{ percentage_future|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% else %}
+ <td class="border_right"></td>
+{% endif %}
 
 <!-- Overall assessment -->
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
-<td class="{{ classes }}">
-  {% set percentage_assessment = row.percentage_assessment or row.conclusion_assessment %}
-  <span class="conclusion">{{ percentage_assessment|parse_semicolon|str2num('')|safe }}</span>
-    <!--todo set class on this field-->
-  </span>
-</td>
+{% set percentage_assessment = row.percentage_assessment or row.conclusion_assessment %}
+{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+  <td class="{{ CONCLUSION_CLASSES[row.conclusion_assessment] }}">
+    <span class="conclusion">{{ percentage_assessment|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% elif percentage_assessment %}
+  <td class="{{ row.percentage_assessment|colorate }}">
+    <span class="conclusion">{{ percentage_assessment|parse_semicolon|str2num('')|safe }}</span>
+  </td>
+{% else %}
+ <td></td>
+{% endif %}
 
 <td class="center" >
   {% set percentage_assessment_trend = row.percentage_assessment_trend or row.conclusion_assessment_trend %}
