@@ -30,16 +30,26 @@
 {% endif %}
       
 <td class="center">
-  {{ row.range_trend|parse_semicolon or '' }}
+  {% if row.assessment_method == '0' %}
+    {{ row.range_trend|parse_semicolon|str2num('')|safe }}
+  {% endif %}
+
+  {% if row.assessment_method == '1' %}
+    {{ row.percentage_range_trend|parse_semicolon|str2num('')|safe }}
+  {% endif %}
 </td>
-      
+
 <td class="center border_right">
   {{ row.complementary_favourable_range|parse_semicolon|str2num('')|safe }}
 </td>
 
 <!-- Area -->
 <td class="number border_left">
-  {{ row.coverage_surface_area_min_max|parse_semicolon|str2num('')|safe }}
+  {{ row.coverage_surface_area_min }}
+</td>
+
+<td class="center">
+  {{ row.coverage_surface_area_max }}
 </td>
 
 <td class="center">
@@ -68,7 +78,13 @@
 {% endif %}
 
 <td class="center">
-  {{ row.coverage_trend|parse_semicolon or '' }}
+  {% if row.assessment_method == '0' %}
+    {{ row.coverage_trend|parse_semicolon|str2num('')|safe }}
+  {% endif %}
+
+  {% if row.assessment_method == '1' %}
+    {{ row.percentage_coverage_trend|parse_semicolon|str2num('')|safe }}
+  {% endif %}
 </td>
       
 <td class="center border_right">
@@ -102,7 +118,13 @@
 {% endif %}
 
 <td class="center">
-  {{ row.hab_condition_trend }}
+  {% if row.assessment_method == '0' %}
+    {{ row.hab_condition_trend }}
+  {% endif %}
+
+  {% if row.assessment_method == '1' %}
+    {{ row.percentage_hab_condition_trend|parse_semicolon|str2num('')|safe }}
+  {% endif %}
 </td>
 
 <!-- Future prospects -->
@@ -147,13 +169,14 @@
 {% endif %}
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_trend, '') %}
-<td class="{{ classes }}">
+<td class="{{ classes }}" title="Trend for unfavourable status:
+                                {{ row.percentage_assessment_trend_unfavourable|parse_semicolon|safe }}">
   {% set percentage = row.percentage_assessment_trend or row.conclusion_assessment_trend %}
   <span class="conclusion">{{ percentage|parse_semicolon|safe }}</span>
 </td>
 
 <td class="center">
-  <span class="conclusion">{{ row.conclusion_assessment_prev|default('', true)|parse_semicolon|safe}}</span>
+  <span class="conclusion">{{ row.conclusion_assessment_prev|default('', true)|parse_semicolon|safe }}</span>
 </td>
 
 <td class="center">

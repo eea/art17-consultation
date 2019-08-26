@@ -29,7 +29,13 @@
 {% endif %}
       
 <td class="center">
-  {{ row.range_trend|parse_semicolon or '' }}
+  {% if row.assessment_method == '0 '%}
+    {{ row.range_trend|parse_semicolon|str2num('')|safe or '' }}
+  {% endif %}
+
+  {% if row.assessment_method == '1' %}
+    {{ row.percentage_range_trend|parse_semicolon|str2num('')|safe or '' }}
+  {% endif %}
 </td>
       
 <td class="center border_right">
@@ -38,7 +44,11 @@
 
 <!--Population-->
 <td class="number border_left">
-  {{ row.population_size_min_max|str2num('') }}
+  {{ row.population_minimum_size }}
+</td>
+
+<td class="number center">
+  {{ row.population_maximum_size }}
 </td>
       
 <td class="number center">
@@ -70,9 +80,14 @@
  <td></td>
 {% endif %}
 
-
 <td class="center">
-  {{ row.population_trend|default('', true)|parse_semicolon }}
+  {% if row.assessment_method == '0 '%}
+    {{ row.population_trend|parse_semicolon|str2num('')|safe }}
+  {% endif %}
+
+  {% if row.assessment_method == '1' %}
+    {{ row.percentage_population_trend|parse_semicolon|str2num('')|safe }}
+  {% endif %}
 </td>
       
 <td class="number">
@@ -146,7 +161,8 @@
  <td></td>
 {% endif %}
 
-<td class="center" >
+<td class="center" title="Trend for unfavourable status:
+                          {{ row.percentage_assessment_trend_unfavourable|parse_semicolon|safe }}">
   {% set percentage_assessment_trend = row.percentage_assessment_trend or row.conclusion_assessment_trend %}
   <span class="conclusion">{{ percentage_assessment_trend|parse_semicolon|str2num('')|safe }}</span>
     <!--todo set class on this field-->

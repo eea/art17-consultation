@@ -43,10 +43,12 @@
 
 <!-- Area -->
 
-<td {{ parse_errors('coverage_surface_area', row, qa_errors, classes='number border_left') }}>
-  {% set min_size = row.coverage_surface_area_min or 'N/A' %}
-  {% set maximum_size = row.coverage_surface_area_max or 'N/A' %}
-  {{ min_size|str1num }} - {{ maximum_size|str1num }}
+<td classes='number border_left')>
+  {{ row.coverage_surface_area_min|str1num or 'N/A' }}
+</td>
+
+<td classes='number center') }}>
+  {{ row.coverage_surface_area_max|str1num or 'N/A' }}
 </td>
 
 <td class="center"

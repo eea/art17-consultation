@@ -14,7 +14,7 @@
 
 <td {{ parse_errors('range_trend', row, qa_errors) }}
     {{ set_method_title(row.range_trend_method) }} class="center">
-  {{ row.range_trend or 'N/A' }}
+  {{ row.range_trend|str2num or 'N/A' }}
 </td>
 
 <td {{ parse_errors(['complementary_favourable_range_q', 'complementary_favourable_range'],
@@ -26,12 +26,13 @@
 
 <!-- Population -->
 
+<td class="number border_left center">
+  {{ row.population_minimum_size|str2num }}
+</td>
+
 <td {{ parse_errors('population_change_reason', row, qa_errors) }}
-    {{ set_reason_title(row.population_change_reason) }}
-    class="number border_left center">
-  {% set min_size = row.population_minimum_size or 'N/A' %}
-  {% set maximum_size = row.population_maximum_size or 'N/A' %}
-  {{ min_size|str2num }} - {{ maximum_size|str2num }}
+    {{ set_reason_title(row.population_change_reason) }} class="center">
+  {{ row.population_maximum_size|str2num }}
 </td>
 
 
@@ -63,7 +64,7 @@
 <td {{ parse_errors('population_trend_method', row, qa_errors) }}
     {{ set_method_title(row.population_trend_method) }}
     class="number border_left center">
-  {{ row.population_trend or 'N/A' }}
+  {{ row.population_trend|str2num or 'N/A' }}
 </td>
 
 <td {{ parse_errors(['complementary_favourable_population_q',

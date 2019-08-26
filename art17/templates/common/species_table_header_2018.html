@@ -16,7 +16,7 @@
     {% if not region %}<th rowspan="2" title="Biogeographical or marine region">Region</th>{% endif %}
 
     <th colspan="4">Range (km<sup>2</sup>)</th>
-    <th colspan="9">Population</th>
+    <th colspan="10">Population</th>
     <th colspan="4">Habitat for the species</th>
     <th colspan="4" title="Future prospects">Future prospects</th>
     <th colspan="6">Overall assessment</th>
@@ -43,29 +43,39 @@
                x  - Unknown">FRR</th>
     <th>
       <div class="popout-wrapper hover">
+        Min
+      </div>
+    </th>
+
+    <th>
+      <div class="popout-wrapper hover">
         <div class="popout size_unit_th right caret">
           <table class="popout-table">
             <tr>
-              <th colspan="4" style="text-align: center;">Reporting units</th>
-              <th colspan="4" style="text-align:center;">Alternative units</th>
+              <th colspan="5" style="text-align: center;">Reporting units</th>
+              <th colspan="5" style="text-align:center;">Alternative units</th>
             </tr>
             <tr>
-              <th class="center">Min-max</th>
+              <th class="center">Min</th>
+              <th>Max</th>
               <th>Best value</th>
               <th>Unit</th>
               <th>Type of estimate</th>
-              <th>Min-max</th>
+              <th>Min</th>
+              <th>Max</th>
               <th>Best value</th>
               <th>Unit</th>
               <th>Type of estimate</th>
             </tr>
             {% for row in objects %}
               <tr>
-                <td>{{ row.population_minimum_size|str2num  }} - {{ row.population_maximum_size|str2num  }}</td>
+                <td>{{ row.population_minimum_size|str2num  }}</td>
+                <td>{{ row.population_maximum_size|str2num }}</td>
                 <td>{{ row.population_size|str2num  }}</td>
                 <td>{{ row.population_size_unit }}</td>
                 <td>{{ row.population_estimate_type }}</td>
-                <td>{{ row.population_alt_size_min|str2num  }} - {{ row.population_alt_size_max|str2num  }}</td>
+                <td>{{ row.population_alt_size_min|str2num }}</td>
+                <td>{{ row.population_alt_size_max|str2num }}</td>
                 <td>{{ row.population_alt_size|str2num  }}</td>
                 <td>{{ row.population_alt_size_unit }}</td>
                 <td>{{ row.population_alt_size|str2num  }}</td>
@@ -73,9 +83,10 @@
             {% endfor %}
           </table>
         </div>
-        Min-max
+        Max
       </div>
     </th>
+
     <th title="Main reason for change if current value is different than for the previous period">Best value</th>
     <th>Unit</th>
     <th title="Type of estimate
