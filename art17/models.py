@@ -41,9 +41,12 @@ class Dataset(Base):
 
     @property
     def is_readonly(self):
-        return self.schema == '2006' or
-               self.schema == '2012' or
-               self.schema == '2012bis'
+        return (
+            self.schema == '2006' or
+            self.schema == '2012' or
+            self.schema == '2012bis'
+        )
+
 
     @property
     def stats(self):
