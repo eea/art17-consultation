@@ -33,7 +33,7 @@ INVALID_MS_REGION_PAIR = "Please select an MS country code that is available " \
 
 NATURE_CHOICES = [('', ''), ('y', 'yes'), ('n', 'no'), ('nc', 'nc')]
 CONTRIB_METHODS = [
-    ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
+    ('A', 'A'), ('A+', 'A+'), ('B1', 'B1'), ('B2', 'B2'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
 ]
 CONTRIB_TYPE = [
     ('+', '+'), ('-', '-'), ('=', '='), ('x', 'x')
@@ -41,6 +41,9 @@ CONTRIB_TYPE = [
 CONCL_TYPE = [
     ('+', '+'), ('-', '-'), ('0', '0'), ('x', 'x')
 ]
+
+PROSPECTS_CHOICES = [('', ''), ('good', 'good'), ('poor', 'poor'), ('bad', 'bad'), ('unk', 'unk')]
+
 ZERO_METHODS = [('00', '00'), ('0', '0')]
 
 
@@ -229,19 +232,23 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     range_trend = OptionalSelectField()
     complementary_favourable_range = TextField(validators=[ref_validation])
 
-    population_size = TextField(validators=[numeric_validation])
-    population_size_unit = OptionalSelectField()
+    population_minimum_size = TextField(validators=[numeric_validation])
+    population_maximum_size = TextField(validators=[numeric_validation])
+    population_best_value = TextField(validators=[numeric_validation])
+    population_unit = OptionalSelectField()
     method_population = OptionalSelectField()
     conclusion_population = OptionalSelectField()
     population_trend = OptionalSelectField()
     complementary_favourable_population = TextField(validators=[ref_validation])
+    complementary_favourable_population_unit = OptionalSelectField()
 
-    habitat_surface_area = TextField(validators=[numeric_validation])
     method_habitat = OptionalSelectField()
     conclusion_habitat = OptionalSelectField()
     habitat_trend = OptionalSelectField()
-    complementary_suitable_habitat = TextField(validators=[numeric_validation])
 
+    future_range = OptionalSelectField()
+    future_population = OptionalSelectField()
+    future_habitat = OptionalSelectField()
     method_future = OptionalSelectField()
     conclusion_future = OptionalSelectField()
 
@@ -249,10 +256,12 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     conclusion_assessment = OptionalSelectField()
     conclusion_assessment_trend = OptionalSelectField()
     conclusion_assessment_prev = OptionalSelectField()
+    conclusion_assessment_trend_prev = OptionalSelectField()
     conclusion_assessment_change = OptionalSelectField()
+    conclusion_assessment_trend_change = OptionalSelectField()
 
     method_target1 = OptionalSelectField()
-    conclusion_target1 = OptionalSelectField()
+    backcasted_2007 = OptionalSelectField()
 
     def setup_choices(self, dataset_id):
         empty = [('', '')]
@@ -272,13 +281,21 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         self.method_range.choices = (
             ZERO_METHODS + self.get_method_options(methods)
         )
+
+        self.population_unit.choices = [('', ''), ('i', 'i')]
+
         self.method_population.choices = (
             ZERO_METHODS + self.get_method_options(methods)
         )
+
+        self.complementary_favourable_population_unit.choices = [('', ''), ('i', 'i')]
         self.method_habitat.choices = (
             ZERO_METHODS + self.get_method_options(methods)
         )
 
+        self.future_range.choices = PROSPECTS_CHOICES
+        self.future_population.choices = PROSPECTS_CHOICES
+        self.future_habitat.choices = PROSPECTS_CHOICES
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
@@ -287,12 +304,12 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
             f.choices = trends
         for f in (self.conclusion_range, self.conclusion_population,
                   self.conclusion_habitat, self.conclusion_future,
-                  self.conclusion_assessment, self.conclusion_assessment_prev):
+                  self.conclusion_assessment, self.conclusion_assessment_prev, self.backcasted_2007):
             f.choices = conclusions
         self.conclusion_assessment_change.choices = NATURE_CHOICES
-        self.population_size_unit.choices = units
+        self.conclusion_assessment_trend_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
-        self.conclusion_target1.choices = empty + CONTRIB_TYPE
+        self.conclusion_assessment_trend_prev.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self, **kwargs):
         method_conclusions = [
@@ -301,7 +318,6 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
             (self.method_habitat, self.conclusion_habitat),
             (self.method_future, self.conclusion_future),
             (self.method_assessment, self.conclusion_assessment),
-            (self.method_target1, self.conclusion_target1),
         ]
         one = False
         for m, c in method_conclusions:
@@ -428,7 +444,10 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 
     complementary_favourable_range = TextField(validators=[ref_validation])
     complementary_favourable_population = TextField(validators=[ref_validation])
+    complementary_favourable_population_unit = OptionalSelectField()
 
+    def setup_choices(self, dataset_id):
+        self.complementary_favourable_population_unit.choices = [('', ''), ('i', 'i')]
 
 class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
 

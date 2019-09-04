@@ -41,7 +41,9 @@ class Dataset(Base):
 
     @property
     def is_readonly(self):
-        return self.schema == '2006'
+        return self.schema == '2006' or
+               self.schema == '2012' or
+               self.schema == '2012bis'
 
     @property
     def stats(self):
@@ -1176,11 +1178,12 @@ class SpeciesManualAssessment(Base):
     population_size_unit = Column(String(6))
     population_minimum_size = Column(String(23))
     population_maximum_size = Column(String(23))
-    population_best_value = Column(Float(asdecimal=True))
+    population_best_value = Column(String(23))
     population_unit = Column(String(20))
     population_trend = Column(String(3))
     population_yearly_magnitude = Column(String(23))
     complementary_favourable_population = Column(String(23))
+    complementary_favourable_population_unit = Column(String(20))
     habitat_surface_area = Column(String(23))
     habitat_trend = Column(String(3))
     complementary_suitable_habitat = Column(String(23))
@@ -1191,19 +1194,21 @@ class SpeciesManualAssessment(Base):
     method_habitat = Column(String(3))
     conclusion_habitat = Column(String(2))
     method_future = Column(String(3))
-    range_future_prospects = Column(String(20))
-    population_future_prospects = Column(String(20))
-    habitat_future_prospects = Column(String(20))
+    future_range = Column(String(20))
+    future_population = Column(String(20))
+    future_habitat = Column(String(20))
     conclusion_future = Column(String(2))
     method_assessment = Column(String(3))
     conclusion_assessment = Column(String(2))
     conclusion_assessment_trend = Column(String(1))
     conclusion_assessment_prev = Column(String(3))
-    conclusion_assessment_prev_trend = Column(String(20))
+    conclusion_assessment_trend_prev = Column(String(20))
     conclusion_assessment_change = Column(String(2))
-    conclusion_assessment_change_trend = Column(String(20))
+    conclusion_assessment_trend_change = Column(String(20))
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
+    backcasted_2007 = Column(String(4))
+
     user_id = Column('user', String(25), primary_key=True, nullable=False,
                      default='')
     last_update = Column(String(16))

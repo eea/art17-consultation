@@ -18,7 +18,7 @@
   {% else %}
 
     <div id="comments">
-    {% if not edited_comment and can_post_comment(record) and not period_bis %}
+    {% if not edited_comment and can_post_comment(record) %}
       <p class="jump"><a href="#theform" title="Add a comment for this conclusion">Add a comment</a> &#8595;</p>
     {% endif %}
 
@@ -50,7 +50,7 @@
               <span class="cmnt-type">{{ comment_type }}</span>
               {% if can_edit_comment(comment) %}
                 <a class="btn-text2"
-                   href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>
+                   href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>&ensp;
               {% endif %}
               {% if can_toggle_read(comment) %}
                 <a class="btn-text2"
@@ -89,7 +89,7 @@
     </p>
   {% endif %}
 
-  {% if not edited_comment and can_post_comment(record) and not period_bis %}
+  {% if not edited_comment and can_post_comment(record) %}
     {% include 'comments/add.html' with context %}
   {% endif %}
 </div>

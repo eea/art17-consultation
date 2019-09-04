@@ -581,9 +581,9 @@ a.conclusion:hover {
 .cmnt-type {
   float: left;
   text-decoration: none;
-  margin: -4px 0.5em -4px -1em;
+  margin: -4px 0.5em 9px 0em;
   padding: 3px 8px;
-  border-width: 1px 1px 1px 0;
+  border-width: 1px 1px 1px 1px;
   border-radius: 0 2px 2px 0;
   border-style: solid;
   border-color: transparent;
@@ -591,12 +591,11 @@ a.conclusion:hover {
 }
 /* CMNT OWNED */
 .cmnt-list > li.cmnt-owned {
-  margin-left: -1em;
-  margin-right: -1em;
+  margin-left: 0em;
+  margin-right: 0em;
   padding-left: 2em;
   padding-right: 2em;
-  border-left: 0;
-  border-right: 0;
+  border-color: #2ca0d2;
 }
 .cmnt-owned .cmnt-type {
   position: static;
@@ -635,9 +634,11 @@ a.conclusion:hover {
 }
 .cmnt-list > li.cmnt-deleted > .cmnt-body {
   text-decoration: line-through;
+  margin-bottom: 5px;
 }
 .cmnt-list > li.cmnt-deleted:hover > .cmnt-body {
   text-decoration: none;
+  margin-bottom: 5px;
 }
 .cmnt-deleted .cmnt-type {
   color: #888;
@@ -769,6 +770,7 @@ a.conclusion:hover {
   right:-1px;
   -webkit-box-shadow: 0 -1px 2px 0px rgba(0,0,0,0.2);
   box-shadow: 0 -1px 2px 0px rgba(0,0,0,0.2);
+  width: auto;
 }
 /* POPOUT ASSESMENT */
 .popout.assesment {
@@ -1102,7 +1104,6 @@ li.select-list {
   border-color: #5c993e;
   color: #fff;
   text-shadow: 0 -1px 0 #5c993e;
-  float: right;
 }
 .button.btn-green:active,
 .btn-green:active {
@@ -1686,4 +1687,9 @@ td.form-error-td .select:hover {
 
 [data-template] {
     display: none!important;
+}
+
+.jump {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
