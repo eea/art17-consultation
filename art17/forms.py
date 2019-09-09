@@ -19,7 +19,7 @@ from art17.models import (
     EtcDataSpeciesRegion,
     EtcDataHabitattypeRegion,
 )
-from art17.utils import validate_field, validate_ref, validate_nonempty
+from art17.utils import validate_field, validate_ref, validate_nonempty, validate_float
 
 EMPTY_FORM = "Please fill at least one field"
 NOT_NUMERIC_VALUES = (
@@ -42,6 +42,10 @@ CONCL_TYPE = [
     ('+', '+'), ('-', '-'), ('0', '0'), ('x', 'x')
 ]
 
+TREND_CHOICES = [
+    ('+', '+'), ('-', '-'), ('=', '='), ('u', 'u'), ('x', 'x'), ('N/A', 'N/A')
+]
+
 PROSPECTS_CHOICES = [('', ''), ('good', 'good'), ('poor', 'poor'), ('bad', 'bad'), ('unk', 'unk')]
 
 ZERO_METHODS = [('00', '00'), ('0', '0')]
@@ -55,6 +59,9 @@ def all_fields(form):
         else:
             yield field
 
+def float_validation(form, field):
+    if not validate_float(field.data):
+        raise ValidationError(NOT_NUMERIC_VALUES)
 
 def numeric_validation(form, field):
     """ Default validation in previous app
@@ -232,9 +239,9 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     range_trend = OptionalSelectField()
     complementary_favourable_range = TextField(validators=[ref_validation])
 
-    population_minimum_size = TextField(validators=[numeric_validation])
-    population_maximum_size = TextField(validators=[numeric_validation])
-    population_best_value = TextField(validators=[numeric_validation])
+    population_minimum_size = TextField(validators=[float_validation])
+    population_maximum_size = TextField(validators=[float_validation])
+    population_best_value = TextField(validators=[float_validation])
     population_unit = OptionalSelectField()
     method_population = OptionalSelectField()
     conclusion_population = OptionalSelectField()
@@ -343,23 +350,32 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
     region = SelectField()
 
-    range_surface_area = TextField(validators=[numeric_validation])
+    range_surface_area = TextField(validators=[float_validation])
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
     range_yearly_magnitude = TextField()
     complementary_favourable_range = TextField(validators=[ref_validation])
 
-    coverage_surface_area = TextField(validators=[numeric_validation])
+    coverage_surface_area = TextField(validators=[float_validation])
+    coverage_surface_area_min = TextField(validators=[float_validation])
+    coverage_surface_area_max = TextField(validators=[float_validation])
     method_area = OptionalSelectField()
     conclusion_area = OptionalSelectField()
     coverage_trend = OptionalSelectField()
     coverage_yearly_magnitude = TextField()
     complementary_favourable_area = TextField(validators=[ref_validation])
 
+    hab_condition_good = TextField(validators=[numeric_validation])
+    hab_condition_notgood = TextField(validators=[numeric_validation])
+    hab_condition_unknown = TextField(validators=[numeric_validation])
     method_structure = OptionalSelectField()
     conclusion_structure = OptionalSelectField()
+    hab_condition_trend = OptionalSelectField()
 
+    future_area = OptionalSelectField()
+    future_range = OptionalSelectField()
+    future_structure = OptionalSelectField()
     method_future = OptionalSelectField()
     conclusion_future = OptionalSelectField()
 
@@ -367,10 +383,12 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
     conclusion_assessment = OptionalSelectField()
     conclusion_assessment_trend = OptionalSelectField()
     conclusion_assessment_prev = OptionalSelectField()
+    conclusion_assessment_trend_prev = OptionalSelectField()
     conclusion_assessment_change = OptionalSelectField()
+    conclusion_assessment_trend_change = OptionalSelectField()
 
     method_target1 = OptionalSelectField()
-    conclusion_target1 = OptionalSelectField()
+    backcasted_2007 = OptionalSelectField()
 
     def setup_choices(self, dataset_id):
         empty = [('', '')]
@@ -403,11 +421,17 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
         for f in (self.conclusion_range, self.conclusion_area,
                   self.conclusion_structure, self.conclusion_future,
                   self.conclusion_assessment,
-                  self.conclusion_assessment_prev):
+                  self.conclusion_assessment_prev,
+                  self.backcasted_2007):
             f.choices = conclusions
+        self.hab_condition_trend.choices = TREND_CHOICES
+        self.future_area.choices = PROSPECTS_CHOICES
+        self.future_range.choices = PROSPECTS_CHOICES
+        self.future_structure.choices = PROSPECTS_CHOICES
         self.conclusion_assessment_change.choices = NATURE_CHOICES
+        self.conclusion_assessment_trend_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
-        self.conclusion_target1.choices = empty + CONTRIB_TYPE
+        self.conclusion_assessment_trend_prev.choices = empty + CONTRIB_TYPE
 
     def custom_validate(self, **kwargs):
         method_conclusions = [
@@ -416,8 +440,8 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
             (self.method_structure, self.conclusion_structure),
             (self.method_future, self.conclusion_future),
             (self.method_assessment, self.conclusion_assessment),
-            (self.method_target1, self.conclusion_target1),
         ]
+
         one = False
         for m, c in method_conclusions:
             mc, cc = m.data, c.data

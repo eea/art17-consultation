@@ -10,7 +10,7 @@
 {% endif %}
 
 <!-- Range -->
-<td class="number border_left">
+<td class="number border_left text-center">
   {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
@@ -28,7 +28,7 @@
  <td></td>
 {% endif %}
       
-<td class="center">
+<td class="center text-center">
   {% if row.assessment_method == '0 '%}
     {{ row.range_trend|parse_semicolon|str2num('')|safe or '' }}
   {% endif %}
@@ -38,32 +38,32 @@
   {% endif %}
 </td>
       
-<td class="center border_right">
+<td class="center border_right text-center">
   {{ row.complementary_favourable_range|parse_semicolon|str2num('')|safe }}
 </td>
 
 <!--Population-->
-<td class="number border_left">
+<td class="number border_left text-center">
   {{ row.population_minimum_size }}
 </td>
 
-<td class="number center">
+<td class="number center text-center">
   {{ row.population_maximum_size }}
 </td>
       
-<td class="number center">
+<td class="number center text-center">
   {{ row.population_size }}
 </td>
       
-<td class="number center">
+<td class="number center text-center">
   {{ row.population_size_unit|parse_semicolon|str2num('')|safe }}
 </td>
       
-<td class="number center">
+<td class="number center text-center">
   {{ row.population_estimate_type|parse_semicolon|str2num('')|safe }}
 </td>
       
-<td class="number center">
+<td class="number center text-center">
   {{ row.population_method|parse_semicolon|str2num('')|safe }}
 </td>
 
@@ -80,7 +80,7 @@
  <td></td>
 {% endif %}
 
-<td class="center">
+<td class="center text-center">
   {% if row.assessment_method == '0 '%}
     {{ row.population_trend|parse_semicolon|str2num('')|safe }}
   {% endif %}
@@ -90,18 +90,18 @@
   {% endif %}
 </td>
       
-<td class="number">
+<td class="number text-center">
   {{ row.complementary_favourable_population|parse_semicolon|str2num('')|safe }}
 </td>
 
-<td class="number border_right">
+<td class="number border_right text-center">
   {{ row.complementary_favourable_population_unit|parse_semicolon|str2num('')|safe }}
 </td>
 
 <!-- Habitat for the species -->
-<td class="center border_left">{{ row.habitat_sufficiency_occupied }}</td>
+<td class="center border_left text-center">{{ row.habitat_sufficiency_occupied }}</td>
 
-<td class="center">{{ row.habitat_sufficiency_unoccupied }}</td>
+<td class="center text-center">{{ row.habitat_sufficiency_unoccupied }}</td>
 
 {% set habitat_sufficiency = row.percentage_habitat_sufficiency or row.conclusion_habitat %}
 {% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
@@ -116,20 +116,20 @@
  <td></td>
 {% endif %}
 
-<td class="center border_right">
+<td class="center border_right text-center">
   {{ row.habitat_trend|parse_semicolon or '' }}
 </td>
 
 <!-- Future prospects -->
-<td class="center border_left">
+<td class="center border_left text-center">
   {{ row.future_range|parse_semicolon|str2num('')|safe }}
 </td>
   
-<td class="center">
+<td class="center text-center">
   {{ row.future_population|parse_semicolon|str2num('')|safe }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.future_habitat|parse_semicolon|str2num('')|safe }}
 </td>
 

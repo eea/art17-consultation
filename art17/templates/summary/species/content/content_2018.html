@@ -1,7 +1,7 @@
 {% from '_macros.html' import parse_errors, reason_title, set_method_title, set_reason_title with context %}
 
 <!-- Range  -->
-<td {{ parse_errors('range_surface_area', row, qa_errors, classes='number border_left') }}
+<td {{ parse_errors('range_surface_area', row, qa_errors, classes='number border_left text-center') }}
     {{ set_reason_title(row.range_change_reason ) }}>
   {{ row.range_surface_area|str2num }}
 </td>
@@ -12,13 +12,13 @@
   <span class="conclusion">{{ row.percentage_range_surface_area|str1num }}</span>
 </td>
 
-<td {{ parse_errors('range_trend', row, qa_errors) }}
-    {{ set_method_title(row.range_trend_method) }} class="center">
+<td {{ parse_errors('range_trend', row, qa_errors, classes="center text-center") }}
+    {{ set_method_title(row.range_trend_method) }}>
   {{ row.range_trend|str2num or 'N/A' }}
 </td>
 
 <td {{ parse_errors(['complementary_favourable_range_q', 'complementary_favourable_range'],
-                     row, qa_errors, '', 'number border_right') }}>
+                     row, qa_errors, '', 'number border_right text-center') }}>
   {% set range_q = row.complementary_favourable_range_q or '' %}
   {% set range = row.complementary_favourable_range|str2num %}
   {{ range_q or range }}
@@ -26,30 +26,30 @@
 
 <!-- Population -->
 
-<td class="number border_left center">
+<td class="number border_left center text-center">
   {{ row.population_minimum_size|str2num }}
 </td>
 
-<td {{ parse_errors('population_change_reason', row, qa_errors) }}
-    {{ set_reason_title(row.population_change_reason) }} class="center">
+<td {{ parse_errors('population_change_reason', row, qa_errors, classes="center text-center") }}
+    {{ set_reason_title(row.population_change_reason) }} >
   {{ row.population_maximum_size|str2num }}
 </td>
 
 
-<td class="number center">
+<td class="number center text-center">
   {% set population_size = row.population_size or 'N/A' %}
   {{ population_size|str2num }}
 </td>
 
-<td class="number center">
+<td class="number center text-center">
   {{ row.population_size_unit }}
 </td>
 
-<td class="number center">
+<td class="number center text-center">
   {{ row.population_estimate_type }}
 </td>
 
-<td class="number center">
+<td class="number center text-center">
   {{ row.population_method }}
 </td>
 
@@ -61,30 +61,29 @@
 </td>
 
 {% set qtitle, qclasses = parse_qa_errors('row.population_trend', row, qa_errors) %}
-<td {{ parse_errors('population_trend_method', row, qa_errors) }}
-    {{ set_method_title(row.population_trend_method) }}
-    class="number border_left center">
+<td {{ parse_errors('population_trend_method', row, qa_errors,  classes="number center text-center") }}
+    {{ set_method_title(row.population_trend_method) }}>
   {{ row.population_trend|str2num or 'N/A' }}
 </td>
 
 <td {{ parse_errors(['complementary_favourable_population_q',
                      'complementary_favourable_population',
                      'filled_complementary_favourable_population'],
-                      row, qa_errors, classes='number center') }}>
+                      row, qa_errors, classes='number center text-center') }}>
   {{ row.complementary_favourable_population_q or row.complementary_favourable_population|str2num }}
 </td>
 
-<td class="number center border_right">
+<td class="number center border_right text-center">
   {{ row.complementary_favourable_population_unit }}
 </td>
 
 <!-- Habitat for the species -->
-<td class="center"
+<td class="center text-center"
     {{ set_method_title(row.habitat_sufficiency_method) }}>
   {{ row.habitat_sufficiency_occupied }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.habitat_sufficiency_unoccupied }}
 </td>
 
@@ -93,21 +92,21 @@
   <span class="conclusion">{{ row.conclusion_habitat|str1num }}</span>
 </td>
 
-<td {{ parse_errors('habitat_trend', row, qa_errors, classes='center') }}
+<td {{ parse_errors('habitat_trend', row, qa_errors, classes='center text-center') }}
     {{ set_method_title(row.habitat_trend_method) }}>
   {{ row.habitat_trend or 'N/A' }}
 </td>
 
 <!-- Future prospects -->
-<td class="center border_left">
+<td class="center border_left text-center">
   {{ row.future_range|str2num }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.future_population|str2num }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.future_habitat|str2num }}
 </td>
 
@@ -122,34 +121,34 @@
   <span class="conclusion">{{ row.conclusion_assessment|str1num }}</span>
 </td>
 
-<td class="center">{{ row.conclusion_assessment_trend|na_if_none }}</td>
+<td class="center text-center">{{ row.conclusion_assessment_trend|na_if_none }}</td>
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') %}
 <td class="{{ classes }}">
   <span class="conclusion">{{ row.conclusion_assessment_prev|str1num }}</span>
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.conclusion_assessment_trend_prev }}
 </td>
 
-<td class="center">{{ row.conclusion_assessment_change|na_if_none }}</td>
+<td class="center text-center">{{ row.conclusion_assessment_change|na_if_none }}</td>
 
-<td class="center border_right">
+<td class="center border_right text-center">
   {{ row.conclusion_assessment_trend_change|str1num }}
 </td>
 
 <!-- Distribution area -->
 
-<td class="center">
+<td class="center text-center">
   {{ row.distribution_grid_area|str2num }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.distribution_method|str2num }}
 </td>
 
-<td class="center border_right">
+<td class="center border_right text-center">
   {{ row.percentage_distribution_grid_area|str2num }}
 </td>
 

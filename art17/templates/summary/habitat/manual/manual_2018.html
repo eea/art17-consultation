@@ -1,0 +1,225 @@
+{% if can_update_decision(row) %}
+  {% if row.user_decision and row.user_decision.name and row.last_update_decision %}
+    {% set title='added by ' + row.user_decision.name + ' <br/>on ' + row.last_update_decision %}
+  {% else %}
+    {% set title='' %}
+  {% endif %}
+{% else %}
+  {% set title=DECISION_DETAILS.get(row.decision, '') %}
+{% endif %}
+
+{% if can_view_decision() %}
+  <td {% if title %}title="{{ title }}"{% endif %} class="form_cell text-center-vh">
+    {% if row.dataset.is_readonly or not can_update_decision(row) %}
+      {{ row.decision or '' }}
+    {% else %}
+      {% set update_url = url_for(update_endpoint, period=row.dataset_id, subject=row.subject,
+                                  region=row.region, user=row.user_id, ms=row.MS) %}
+      <select name="decision" data-href="{{ update_url }}" class="decision-select">
+        {% for decision in DECISION_DETAILS %}
+          <option {% if decision == row.decision %}selected="selected"{% endif %}>
+            {{ decision }}
+          </option>
+        {% endfor %}
+      </select>
+    {% endif %}
+  </td>
+  <td class="border">{{ row.MS }}</td>
+{% else %}
+  <td colspan="2" class="border">{{ row.MS }}</td>
+{% endif %}
+
+{% if not region %}
+  <td class="border">
+    {{ row.region or 'N/A' }}
+  </td>
+{% endif %}
+
+{# Range #}
+<td class="number border_left text-center">
+  {{ row.range_surface_area }}
+</td>
+  
+{% set concl_value = get_tooltip(row, 'method_range') %}
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}" {% if concl_value %}title=": {{concl_value}}"{% endif %}>
+  <span class="conclusion">{{ row.method_range }}</span>
+</td>
+  
+<td class="center text-center">
+  {{ row.range_trend or '' }}
+</td>
+  
+<td class="number border_right text-center">
+  {{ row.complementary_favourable_range|str2num('') }}
+</td>
+
+{# Area #}
+<td class="number border_left text-center">
+  {{ row.coverage_surface_area_min|str2num('') }}
+</td>
+
+<td class="number text-center">
+  {{ row.coverage_surface_area_max|str2num('') }}
+</td>
+
+<td class="number text-center">
+  {{ row.coverage_surface_area|str2num('') }}
+</td>
+
+<td></td>
+
+<td></td>
+
+{% set concl_value = get_tooltip(row, 'method_area') %}
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}" {% if concl_value %}title=": {{concl_value}}"{% endif %}>
+  <span class="conclusion text-center">{{ row.method_area or '' }}</span>
+</td>
+  
+<td class="center text-center">
+  {{ row.coverage_trend }}
+</td>
+  
+<td class="center text-center">
+  {{ row.complementary_favourable_area|str2num('') }}
+</td>
+
+{# Structure and functions #}
+<td class="center border_left text-center">
+  {{ row.hab_condition_good }}
+</td>
+
+<td class="center text-center">
+  {{ row.hab_condition_notgood }}
+</td>
+
+<td class="center text-center">
+  {{ row.hab_condition_unknown }}
+</td>
+
+{% set concl_value = get_tooltip(row, 'method_structure') %}
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }}" {% if concl_value %}title=": {{ concl_value }}"{% endif %}>
+  <span class="conclusion">{{ row.method_structure }}</span>
+</td>
+
+<td class="center text-center">
+  {{ row.hab_condition_trend }}
+</td>
+
+{# Future prospects #}
+
+<td class="border_left text-center">
+  {{ row.future_range }}
+</td>
+
+<td class="text-center">
+  {{ row.future_area }}
+</td>
+
+<td class="text-center">
+  {{ row.future_structure }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') %}
+
+{# Overall assessment #}
+{% set concl_value = get_tooltip(row, 'method_future') %}
+<td class="{{ classes }}" {% if concl_value %}title=": {{concl_value}}"{% endif %}>
+  <span class="conclusion">{{ row.method_future or '' }}</span>
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
+
+{% set concl_value = get_tooltip(row, 'method_assessment') %}
+
+<td class="{{ classes }} border_left" {% if concl_value %}title=": {{concl_value}}"{% endif %}>
+  <span class="conclusion">{{ row.method_assessment or '' }}</span>
+</td>
+
+<td class="center text-center">{{ row.conclusion_assessment_trend or 'N/A' }}</td>
+
+<td class="{{ row.conclusion_assessment_prev or '' }}">
+  <span class="conclusion">{{ row.conclusion_assessment_prev or 'N/A' }}</span>
+</td>
+
+<td class="center text-center">{{ row.conclusion_assessment_trend_prev or 'N/A' }}</td>
+
+<td class="center text-center">
+  {{ NATURE_CHOICES.get(row.conclusion_assessment_change, 'N/A') }}
+</td>
+
+<td class="center text-center">
+  {{ row.conclusion_assessment_trend_change or 'N/A' }}
+</td>
+
+{# Distribution #}
+<td class="{{ row.backcasted_2007 or '' }}">
+  <span class="conclusion">{{ row.backcasted_2007 or 'N/A' }}</span>
+</td>
+      
+<td class="center text-center">
+  {{ row.method_target1 }}
+</td>
+
+<td class="border_left">
+  {% set url=url_for(comments_endpoint, period=row.dataset_id, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
+  <a class="badge-o" href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
+    {{ row.comments_count_read(g.identity.id) }}/{{ row.undeleted_comments(g.identity.id)|count }}
+  </a>
+</td>
+  
+<td class="border_right" colspan="4">
+  <div class="popout-wrapper">
+    <div class="popout details">
+      <span class="close pull-right"><i class="fa fa-times"></i></span>
+      <div>
+        <p class="muted">{{ row.last_update|format_date }}</p>
+        <p class="bold">{{ (row.user.name or row.user_id) | hide_adm_etc_username }}</p>
+        <p>Institution: {{ row.user.institution }}</p>
+        <p>Member State: {{ row.user.MS or '' }}</p>
+      </div>
+      {% if row.deleted and not can_delete(row) %}
+        <hr>
+        <p class="muted italic no-margins">This assesment was deleted.</p>
+      {% endif %}
+  
+      {% if (can_edit(row) or can_delete(row)) and not manual_assessment %}
+        <hr>
+        <div class="btn-toolbar no-break">
+          {% if can_edit(row) %}
+            {% if sta_perm.can() %}
+              {% set title = 'Comment on biogeographical assessment at EU or MS level by proposing a correction' %}
+              {% set text = 'Propose correction' %}
+            {% else %}
+              {% set title = '' %}
+              {% set text = 'Edit assessment' %}
+            {% endif %}
+  
+            {% set edit_url=url_for(edit_endpoint, action='edit', period=row.dataset_id,
+                                    subject=subject, region=region, rowid=loop.index,
+                                    edit_region=row.region, edit_user=row.user_id) + '#theform' %}
+            <a class="button btn-green" href="{{ edit_url }}" title="{{ title }}">{{ text }}</a>
+          {% endif %}
+  
+          {% if can_delete(row) %}
+            {% set url = url_for(delete_endpoint, period=row.dataset_id,
+                                 subject=subject, region=region, delete_region=row.region,
+                                 delete_user=row.user_id, delete_ms=row.MS) %}
+              <a class="button delete-btn" href="{{ url }}#man-row-{{ loop.index }}">{% if row.deleted %}Undelete{% else %}Delete{% endif %}</a>
+              <a class="button btn-red perm-del" href="{{ url }}&perm=1#manual-thead">Permanently delete</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  
+    {% if row.deleted %}
+      <a data-popout="details" class="badge-red" title="This assesment was deleted. View details.">
+        Deleted
+      </a>
+    {% else %}
+      <a class="btn-text" data-popout="details" title="View details">
+        {{ (row.user.name or row.user_id) | hide_adm_etc_username or 'Details' }}
+      </a>
+    {% endif %}
+  </div>
+</td>
+    

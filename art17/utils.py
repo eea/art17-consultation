@@ -7,11 +7,11 @@ from path import path
 from flask import current_app as app
 
 
+
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
-valid_numeric = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
-                           u"|(>|>>|≈|<)?\s*((\d\.)?\d+)" + ")" + "\s*$")
-valid_ref = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
-                       u"|(>|>>|≈|<)?\s*((\d\.)?\d+)?|x" + ")" + "\s*$")
+valid_float = re.compile('^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$')
+valid_numeric = re.compile("^\s*(((\d*\.)?\d+\s*-\s*(\d*\.)?\d+" + u"|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$")
+valid_ref = re.compile("^\s*((\d*\.)?\d+\s*-\s*(\d\.)?\d+" + u"|(>|>>|≈|<)?\s*((\d*\.)?\d+)?|x)\s*$")
 empty_str = re.compile("^\s*$")
 
 
@@ -51,6 +51,12 @@ def validate_field(s):
         return bool(valid_numeric.match(s))
     return True
 
+def validate_float(s):
+    """ Checks if a field is a valid float with 2 decimals
+    """
+    if s:
+        return bool(valid_float.match(s))
+    return True
 
 def validate_ref(s):
     """ Checks if a field is a valid numeric or progress value

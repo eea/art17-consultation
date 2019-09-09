@@ -1,18 +1,18 @@
 {% from '_macros.html' import parse_errors with context %}
 
-<td colspan="2" class="border" title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
+<td colspan="2" class="border text-center" title="{{ ASSESSMENT_DETAILS.get(row.assessment_method, '') }}">
   {{ row.assessment_method or 'N/A' }}
 </td>
 
 {% if not region %}
-  <td class="border">
+  <td class="border text-center">
     {{ row.region or 'N/A' }}
   </td>
 {% endif %}
 
 <!-- Range -->
 
-<td class="number border_left">
+<td class="number border_left text-center">
   {{ row.range_surface_area|parse_semicolon|str2num('')|safe }}
 </td>
 
@@ -29,7 +29,7 @@
  <td></td>
 {% endif %}
       
-<td class="center">
+<td class="center text-center">
   {% if row.assessment_method == '0' %}
     {{ row.range_trend|parse_semicolon|str2num('')|safe }}
   {% endif %}
@@ -39,20 +39,20 @@
   {% endif %}
 </td>
 
-<td class="center border_right">
+<td class="center border_right text-center">
   {{ row.complementary_favourable_range|parse_semicolon|str2num('')|safe }}
 </td>
 
 <!-- Area -->
-<td class="number border_left">
+<td class="number border_left text-center">
   {{ row.coverage_surface_area_min }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.coverage_surface_area_max }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.coverage_surface_area }}
 </td>
 
@@ -60,7 +60,7 @@
   {{ row.coverage_estimate_type }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.coverage_method }}
 </td>
 
@@ -77,7 +77,7 @@
  <td></td>
 {% endif %}
 
-<td class="center">
+<td class="center text-center">
   {% if row.assessment_method == '0' %}
     {{ row.coverage_trend|parse_semicolon|str2num('')|safe }}
   {% endif %}
@@ -87,20 +87,20 @@
   {% endif %}
 </td>
       
-<td class="center border_right">
+<td class="center border_right text-center">
   {{ row.complementary_favourable_area|parse_semicolon|str2num('')|safe }}
 </td>
       
 <!-- Structure and functions -->
-<td class="center">
+<td class="center text-center">
   {{ row.hab_condition_good|parse_semicolon|safe }}
 </td>
   
-<td class="center">
+<td class="center text-center">
   {{ row.hab_condition_notgood|parse_semicolon|safe  }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.hab_condition_unknown|parse_semicolon|safe }}
 </td>
 
@@ -117,7 +117,7 @@
  <td></td>
 {% endif %}
 
-<td class="center">
+<td class="center text-center">
   {% if row.assessment_method == '0' %}
     {{ row.hab_condition_trend }}
   {% endif %}
@@ -128,15 +128,15 @@
 </td>
 
 <!-- Future prospects -->
-<td class="center border_left">
+<td class="center border_left text-center">
   {{ row.future_range|parse_semicolon|safe }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.future_area|parse_semicolon|safe }}
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.future_structure|parse_semicolon|safe }}
 </td>
 
@@ -150,7 +150,7 @@
     <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
   </td>
 {% else %}
- <td class="border_right"></td>
+ <td class="border_right text-center"></td>
 {% endif %}
 
 <!-- Overall assessment -->
@@ -175,11 +175,11 @@
   <span class="conclusion">{{ percentage|parse_semicolon|safe }}</span>
 </td>
 
-<td class="center">
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_assessment_prev] }}">
   <span class="conclusion">{{ row.conclusion_assessment_prev|default('', true)|parse_semicolon|safe }}</span>
 </td>
 
-<td class="center">
+<td class="center text-center">
   {{ row.conclusion_assessment_trend_prev|parse_semicolon|safe }}
 </td>
 
@@ -188,14 +188,17 @@
   <span class="conclusion">{{ row.percentage_assessment_change|default('', true)|parse_semicolon|safe}}</span>
 </td>
 
-<td class="center border_right">
+<td class="center border_right text-center">
   {{ row.percentage_assessment_trend_change|parse_semicolon|safe }}
 </td>
 
 <!-- Distribution area -->
 <td></td>
+
 <td></td>
-<td class="border_right">
+
+<td class="border_right text-center">
   {{ row.distribution_grid_area|parse_semicolon|str2num('')|safe }}
 </td>
-<td></td>
+
+<td colspan="5"></td>

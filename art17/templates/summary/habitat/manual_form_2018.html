@@ -7,7 +7,8 @@
 {% set form=manual_form %}
   {% set is_form=true %}
   <tr class="form_row" id="theform">
-      <td></td>
+    <td></td>
+
     {% if can_select_MS() %}
       <td {% if form.MS.errors %}class="form-error-td"{% endif %}>
         {{ form.MS() }}
@@ -17,130 +18,234 @@
         {{ manual_assessment.MS or default_ms }}
       </td>
     {% endif %}
+
     {% if not region %}
-    <td>{{ manual_assessment.region }}</td>
+      <td>{{ manual_assessment.region }}</td>
     {% endif %}
 
     {% if not edit_ref %}
-      <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}
-          {{ numval_habitat_title(x=False) }}>
-      {{ form.range_surface_area(size=5) }}
-      </td>
-      {{ method_conclusion_td('Status Range', form.method_range, form.conclusion_range) }}
-      <td {% if form.range_trend.errors %}class="form-error-td"{% endif %}>
-      {{ form.range_trend() }}
-      </td>
-      <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
+      {# Range #}
+        <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}
+            {{ numval_habitat_title(x=False) }}>
+          {{ form.range_surface_area(size=5) }}
+        </td>
+
+        {{ method_conclusion_td('Status Range', form.method_range, form.conclusion_range) }}
+
+        <td {% if form.range_trend.errors %}class="form-error-td"{% endif %}>
+          {{ form.range_trend() }}
+        </td>
+
+        <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
+            {{ numval_habitat_title() }}>
+          {{ form.complementary_favourable_range(size=5) }}
+        </td>
+
+      {# Area #}
+        <td {% if form.coverage_surface_area_min.errors %}class="form-error-td"{% endif %}
+            {{ numval_habitat_title(x=False) }}>
+          {{ form.coverage_surface_area_min(size=5) }}
+        </td>
+
+        <td {% if form.coverage_surface_area_max.errors %}class="form-error-td"{% endif %}
+            {{ numval_habitat_title(x=False) }}>
+          {{ form.coverage_surface_area_max(size=5) }}
+        </td>
+
+        <td {% if form.coverage_surface_area.errors %}class="form-error-td"{% endif %}
+            {{ numval_habitat_title(x=False) }}>
+          {{ form.coverage_surface_area(size=5) }}
+        </td>
+
+        <td></td>
+
+        <td></td>
+
+        {{ method_conclusion_td('Status Area', form.method_area, form.conclusion_area) }}
+
+        <td {% if form.coverage_trend.errors %}class="form-error-td"{% endif %}>
+          {{ form.coverage_trend() }}
+        </td>
+
+        <td {% if form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}
           {{ numval_habitat_title() }}>
-      {{ form.complementary_favourable_range(size=5) }}
-      </td>
+          {{ form.complementary_favourable_area(size=5) }}
+        </td>
 
-      <td {% if form.coverage_surface_area.errors %}class="form-error-td"{% endif %}
-          {{ numval_habitat_title(x=False) }}>
-      {{ form.coverage_surface_area(size=5) }}
-      </td>
+      {# Structure and functions #}
+        <td {% if form.hab_condition_good.errors %}class="form-error-td"{% endif %}
+            {{ numval_habitat_title() }}>
+          {{ form.hab_condition_good }}
+        </td>
 
-      <td>
+        <td {% if form.hab_condition_notgood.errors %}class="form-error-td"{% endif %}
+            {{ numval_habitat_title() }}>
+          {{ form.hab_condition_notgood }}
+        </td>
 
-      </td>
+        <td {% if form.hab_condition_unknown.errors %}class="form-error-td"{% endif %}
+            {{ numval_habitat_title() }}>
+          {{ form.hab_condition_unknown }}
+        </td>
 
-      <!-- add best value and type est. -->
-      <td></td>
-      <!-- type est not required here -->
-      <td></td>
+        {{ method_conclusion_td('Status Structure and Functions', form.method_structure, form.conclusion_structure) }}
 
-      <!-- method not required here -->
-      <td></td>
-      {{ method_conclusion_td('Status Area', form.method_area, form.conclusion_area) }}
-      <td {% if form.coverage_trend.errors %}class="form-error-td"{% endif %}>
-      {{ form.coverage_trend() }}
-      </td>
-      <td {% if form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}
-          {{ numval_habitat_title() }}>
-      {{ form.complementary_favourable_area(size=5) }}
-      </td>
-      <!-- todo Add good structure and functions form field -->
-      <td></td>
-      <!-- todo Add not good structure and functions form field -->
-      <td></td>
-      <!-- todo Add not known structure and functions form field -->
-      <td></td>
-      {{ method_conclusion_td('Status Structure and Functions', form.method_structure, form.conclusion_structure) }}
-      <!-- todo Add trend structure and functions form field -->
-      <td></td>
+        <td {% if form.hab_condition_trend.errors %}class="form-error-td"{% endif %}>
+          {{ form.hab_condition_trend() }}
+        </td>
 
-      <!-- todo Add range future prosp form field-->
-      <td></td>
+      {# Future prospects #}
+        <td {% if form.future_range.errors %}class="form-error-td"{% endif %}>
+          {{ form.future_range() }}
+        </td>
 
-      <!-- todo Add area future prosp form field -->
-      <td></td>
+        <td {% if form.future_area.errors %}class="form-error-td"{% endif %}>
+          {{ form.future_area() }}
+        </td>
 
-      <!-- todo Add structure future prosp form field -->
-      <td></td>
-      {{ method_conclusion_td('Status Future Prospects', form.method_future, form.conclusion_future) }}
+        <td {% if form.future_structure.errors %}class="form-error-td"{% endif %}>
+          {{ form.future_structure() }}
+        </td>
 
-      {{ method_conclusion_td('Current CS Conclusions', form.method_assessment, form.conclusion_assessment) }}
-      <td {% if form.conclusion_assessment_trend.errors %}class="form-error-td"{% endif %}>
-        {{ form.conclusion_assessment_trend() }}
-      </td>
-      {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev) }}
-      </td>
+        {{ method_conclusion_td('Status Future Prospects', form.method_future, form.conclusion_future) }}
 
-      <!-- todo Add prev cs. trend form field -->
-      <td></td>
+      {# Overall assessment #}
+        {{ method_conclusion_td('Current CS Conclusions', form.method_assessment, form.conclusion_assessment) }}
 
-      <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
-        {{ form.conclusion_assessment_change() }}
-      </td>
+        <td {% if form.conclusion_assessment_trend.errors %}class="form-error-td"{% endif %}>
+          {{ form.conclusion_assessment_trend() }}
+        </td>
 
-      <!-- todo Add cs trend nat of ch. form field -->
-      <td></td>
+        {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev) }}
+
+        <td {% if form.conclusion_assessment_trend_prev.errors %}class="form-error-td"{% endif %}>
+            {{ form.conclusion_assessment_trend_prev() }}
+        </td>
+
+        <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
+          {{ form.conclusion_assessment_change() }}
+        </td>
+
+        <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
+          {{ form.conclusion_assessment_trend_change() }}
+        </td>
 
       {# Contrib target 1 #}
 
-      <!-- todo Add backcasted -->
-      <td></td>
+      {{ select_conclusion_td('Backcasted 2007', form.backcasted_2007) }}
 
-      <td {% if form.method_target1.errors %}class="form-error-td"{% endif %}
-          title="A (favorable), B (improvement), C (deterioration), D (same), E (unknown)">
-      {{ form.method_target1() }}
+      <td {% if form.method_target1.errors %}class="form-error-td"{% endif %}>
+        {{ form.method_target1() }}
       </td>
-      <td {% if form.conclusion_target1.errors %}class="form-error-td"{% endif %}
-          title="+ (improvement), - (deterioration), = (no change), x (not known)">
-      {{ form.conclusion_target1() }}
-      </td>
+
     {% else %}
       {# Edit reference values form #}
       {% set ass = manual_assessment %}
-      <td>{{ ass.range_surface_area }}</td>
+      {# Range #}
+      <td class="text-center">
+        {{ ass.range_surface_area }}
+      </td>
+
       {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
-      <td>{{ ass.range_trend }}</td>
+
+      <td class="text-center">
+        {{ ass.range_trend }}
+      </td>
+
       <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
           {{ numval_habitat_title() }}>
         {{ form.complementary_favourable_range(size=5) }}
       </td>
 
-      <td>{{ ass.coverage_surface_area }}</td>
+      {# Area #}
+      <td class="text-center">
+        {{ ass.coverage_surface_area_min }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.coverage_surface_area_max }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.coverage_surface_area }}
+      </td>
+
+      <td></td>
+
+      <td></td>
+
       {{ conclusion_td(ass.conclusion_area, ass.method_area) }}
-      <td>{{ ass.coverage_trend }}</td>
+
+      <td class="text-center">
+        {{ ass.coverage_trend }}
+      </td>
+
       <td {% if form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}
           {{ numval_habitat_title() }}>
         {{ form.complementary_favourable_area(size=5) }}
       </td>
 
+      {# Structure #}
+
+      <td class="text-center">
+        {{ ass.hab_condition_good }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.hab_condition_notgood }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.hab_condition_unknown }}
+      </td>
+
       {{ conclusion_td(ass.conclusion_structure, ass.method_structure) }}
+
+      <td class="text-center">
+        {{ ass.hab_condition_trend }}
+      </td>
+
+      {# Future prospects #}
+      <td class="text-center">
+        {{ ass.future_range }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.future_area }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.future_structure }}
+      </td>
+
       {{ conclusion_td(ass.conclusion_future, ass.method_future) }}
+
+      {# Overall #}
       {{ conclusion_td(ass.conclusion_assessment, ass.method_assessment) }}
 
-      <td>{{ ass.conclusion_assessment_trend }}</td>
-      <td>{{ ass.conclusion_assessment_prev }}</td>
-      <td>{{ ass.conclusion_assessment_change }}</td>
-      
-      <!-- todo Add backcasted -->
-      <td></td>
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend }}
+      </td>
 
-      <td>{{ ass.method_target1 }}</td>
-      <td>{{ ass.conclusion_target1 }}</td>
+      {{ conclusion_td(ass.conclusion_assessment_prev , ass.conclusion_assessment_prev ) }}
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend_prev }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_change }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend_change }}
+      </td>
+
+      {{ conclusion_td(ass.backcasted_2007 , ass.backcasted_2007 ) }}
+
+      <td class="text-center">
+        {{ ass.method_target1 }}
+      </td>
 
     {% endif %}
 
