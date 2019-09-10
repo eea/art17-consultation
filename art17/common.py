@@ -353,12 +353,13 @@ def get_original_record_url(row):
     url_scheme = CONVERTER_URLS.get(schema, {})
     url_format = url_scheme.get(page, '')
     info = urlparse(row.envelope)
-    return url_format.format(
+    url_form = url_format.format(
         scheme=info.scheme, host=info.netloc, path=info.path,
         filename=row.filename,
         region=row.region,
         subject=row.speciescode if page == 'species' else row.habitatcode,
     )
+    return url_form
 
 
 def get_title_for_species_country(row):

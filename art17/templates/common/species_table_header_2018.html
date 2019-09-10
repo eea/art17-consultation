@@ -52,10 +52,12 @@
         <div class="popout size_unit_th right caret">
           <table class="popout-table">
             <tr>
-              <th colspan="5" style="text-align: center;">Reporting units</th>
-              <th colspan="5" style="text-align:center;">Alternative units</th>
+              <th rowspan="2" class="text-center">Member State<br> code</th>
+              <th colspan="5" class="text-center">Reporting units</th>
+              <th colspan="5" class="text-center">Alternative units</th>
             </tr>
             <tr>
+
               <th class="center">Min</th>
               <th>Max</th>
               <th>Best value</th>
@@ -69,6 +71,7 @@
             </tr>
             {% for row in objects %}
               <tr>
+                <td>{{ row.eu_country_code }}</td>
                 <td>{{ row.population_minimum_size|str2num  }}</td>
                 <td>{{ row.population_maximum_size|str2num }}</td>
                 <td>{{ row.population_size|str2num  }}</td>
