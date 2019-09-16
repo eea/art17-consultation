@@ -399,13 +399,16 @@ $(document).ready(function () {
 
     // Size and unit
     $('.popout.size_unit').each(function () {
-        var size = "#population_size";
-        var unit = "#population_size_unit";
+        var complementary_favourable_range_q = "#complementary_favourable_range_q";
+        var complementary_favourable_range = "#complementary_favourable_range";
+        var complementary_favourable_population = "#complementary_favourable_population";
+        var complementary_favourable_population_q = "#complementary_favourable_population_q";
+        var complementary_favourable_area = "#complementary_favourable_area";
+        var complementary_favourable_area_q = "#complementary_favourable_area_q";
         var preview = $(this).closest('.popout-wrapper').find(".select");
-        
-        var update = function () {
+        var update = function (size, unit) {
             if ($(size).val() || $(unit).val()) {
-                var concat = $(size).val() + " " + $(unit).val();
+                var concat = $(unit).val() +" " + $(size).val() + " ";
                 $(preview).children('.selected-value').removeClass('hidden').html( concat );
                 $(preview).children('.fa').addClass('hidden');
             } else {
@@ -413,9 +416,62 @@ $(document).ready(function () {
                 $(preview).children('.fa').removeClass('hidden');
             }
         };
-        //update(); // Initialize
-        $(this).on('change', size, update);
-        $(this).on('change', unit, update);
+        $(this).on('change', complementary_favourable_range,
+                             function(){update(complementary_favourable_range, complementary_favourable_range_q);});
+        $(this).on('change', complementary_favourable_range_q,
+                             function(){update(complementary_favourable_range, complementary_favourable_range_q);});
+        $(this).on('change', complementary_favourable_population,
+                             function(){update(complementary_favourable_population, complementary_favourable_population_q);});
+        $(this).on('change', complementary_favourable_population_q,
+                             function(){update(complementary_favourable_population, complementary_favourable_population_q);});
+        $(this).on('change', complementary_favourable_area,
+                             function(){update(complementary_favourable_area, complementary_favourable_area_q);});
+        $(this).on('change', complementary_favourable_area_q,
+                             function(){update(complementary_favourable_area, complementary_favourable_area_q);});
+    });
+
+    // Size and unit
+    $('.popout.size_unit.min_max_best').each(function () {
+        var hab_condition_good_min = "#hab_condition_good_min";
+        var hab_condition_good_max = "#hab_condition_good_max";
+        var hab_condition_good_best = "#hab_condition_good_best";
+        var hab_condition_notgood_min = "#hab_condition_notgood_min";
+        var hab_condition_notgood_max = "#hab_condition_notgood_max";
+        var hab_condition_notgood_best = "#hab_condition_notgood_best";
+        var hab_condition_unknown_min = "#hab_condition_unknown_min";
+        var hab_condition_unknown_max = "#hab_condition_unknown_max";
+        var hab_condition_unknown_best = "#hab_condition_unknown_best";
+        var preview = $(this).closest('.popout-wrapper').find(".select");
+        var update = function (min, max, best) {
+            if ($(min).val() || $(max).val() || $(best).val()) {
+                var concat =  $(min).val() + " | " + $(max).val() + " | " + $(best).val() ;
+                $(preview).children('.selected-value').removeClass('hidden').html( concat );
+                $(preview).children('.fa').addClass('hidden');
+            } else {
+                $(preview).children('.selected-value').addClass('hidden').html("");
+                $(preview).children('.fa').removeClass('hidden');
+            }
+        };
+        $(this).on('change', hab_condition_good_min,
+                                function(){update(hab_condition_good_min, hab_condition_good_max, hab_condition_good_best);});
+        $(this).on('change', hab_condition_good_max,
+                                function(){update(hab_condition_good_min, hab_condition_good_max, hab_condition_good_best);});
+        $(this).on('change', hab_condition_good_best,
+                                function(){update(hab_condition_good_min, hab_condition_good_max, hab_condition_good_best);});
+
+        $(this).on('change', hab_condition_notgood_min,
+                                function(){update(hab_condition_notgood_min, hab_condition_notgood_max, hab_condition_notgood_best);});
+        $(this).on('change', hab_condition_notgood_max,
+                                function(){update(hab_condition_notgood_min, hab_condition_notgood_max, hab_condition_notgood_best);});
+        $(this).on('change', hab_condition_notgood_best,
+                                function(){update(hab_condition_notgood_min, hab_condition_notgood_max, hab_condition_notgood_best);});
+
+        $(this).on('change', hab_condition_unknown_min,
+                                function(){update(hab_condition_unknown_min, hab_condition_unknown_max, hab_condition_unknown_best);});
+        $(this).on('change', hab_condition_unknown_max,
+                                function(){update(hab_condition_unknown_min, hab_condition_unknown_max, hab_condition_unknown_best);});
+        $(this).on('change', hab_condition_unknown_best,
+                                function(){update(hab_condition_unknown_min, hab_condition_unknown_max, hab_condition_unknown_best);});
     });
 });
 

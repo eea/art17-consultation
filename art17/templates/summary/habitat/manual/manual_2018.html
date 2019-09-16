@@ -50,7 +50,7 @@
 </td>
   
 <td class="number border_right text-center">
-  {{ row.complementary_favourable_range|str2num('') }}
+  {{ row.complementary_favourable_range_q|str2num('') }} {{ row.complementary_favourable_range|str2num('') }}
 </td>
 
 {# Area #}
@@ -80,20 +80,20 @@
 </td>
   
 <td class="center text-center">
-  {{ row.complementary_favourable_area|str2num('') }}
+  {{ row.complementary_favourable_area_q|str2num('') }} {{ row.complementary_favourable_area|str2num('') }}
 </td>
 
 {# Structure and functions #}
-<td class="center border_left text-center">
-  {{ row.hab_condition_good }}
+<td class="center text-center border_left" title="Min | Max | Best">
+  {{ row.hab_condition_good_min or '-' }} |   {{ row.hab_condition_good_max or '-' }} |   {{ row.hab_condition_good_best or '-' }}
 </td>
 
-<td class="center text-center">
-  {{ row.hab_condition_notgood }}
+<td class="center text-center" title="Min | Max | Best">
+  {{ row.hab_condition_notgood_min or '-' }} |   {{ row.hab_condition_notgood_max or '-' }} |   {{ row.hab_condition_notgood_best or '-' }}
 </td>
 
-<td class="center text-center">
-  {{ row.hab_condition_unknown }}
+<td class="center text-center" title="Min | Max | Best">
+  {{ row.hab_condition_unknown_min or '-' }} |   {{ row.hab_condition_unknown_max or '-' }} |   {{ row.hab_condition_unknown_best or '-' }}
 </td>
 
 {% set concl_value = get_tooltip(row, 'method_structure') %}
@@ -121,12 +121,12 @@
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') %}
 
-{# Overall assessment #}
 {% set concl_value = get_tooltip(row, 'method_future') %}
 <td class="{{ classes }}" {% if concl_value %}title=": {{concl_value}}"{% endif %}>
   <span class="conclusion">{{ row.method_future or '' }}</span>
 </td>
 
+{# Overall assessment #}
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
 
 {% set concl_value = get_tooltip(row, 'method_assessment') %}

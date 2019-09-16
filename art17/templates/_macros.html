@@ -157,9 +157,9 @@
     </td>
 {% endmacro %}
 
-{% macro select_conclusion_td(title, conclusion_field) %}
+{% macro select_conclusion_td(title, conclusion_field, mouseover_text='') %}
     <td {% if conclusion_field.errors %}class="form-error-td"{% endif %}
-        {{ cm_pair_title() }}>
+        {{ cm_pair_title(mouseover_text) }}>
         {{ select_conclusion_popout(title, conclusion_field) }}
     </td>
 {% endmacro %}
@@ -187,6 +187,55 @@
           <span class="selected-value no-break hidden"></span>
           {% endif %}
       </a>
+  </div>
+{% endmacro %}
+
+{% macro operator_size(operator_field, size_field, size) %}
+  <div class="popout-wrapper">
+    <div class="popout size_unit caret width-120">
+      <a class="close pull-right"><i class="fa fa-times"></i></a>
+      <div class="form-group clearfix no-bottom">
+        <label class="btn-align pull-left no-bottom">Operator</label>
+        <div class="width-2third pull-right">{{ operator_field() }}</div>
+      </div>
+      <div class="form-group clearfix no-bottom">
+        <label class="btn-align pull-left no-bottom">Size</label>
+        <div {{ numval_species_title(x=False) }} class="width-2third pull-right">{{ size_field(size=size) }}</div>
+      </div>
+    </div>
+    <a class="select block" tab-index data-popout="size_unit">
+        <span class="selected-value no-break">
+          {{ operator_field.data }}
+          {% if size_field.data %}
+            {{ size_field.data }}
+          {% endif %}
+        </span>
+    </a>
+  </div>
+{% endmacro %}
+
+{% macro min_max_best(min_field, max_field, best_field, size) %}
+  <div class="popout-wrapper">
+    <div class="popout size_unit min_max_best caret width-120">
+      <a class="close pull-right"><i class="fa fa-times"></i></a>
+      <div class="form-group clearfix no-bottom">
+        <label class="btn-align pull-left no-bottom">Min</label>
+        <div class="width-2third pull-right">{{ min_field(size=size) }}</div>
+      </div>
+      <div class="form-group clearfix no-bottom">
+          <label class="btn-align pull-left no-bottom">Max</label>
+          <div class="width-2third pull-right">{{ max_field(size=size) }}</div>
+      </div>
+      <div class="form-group clearfix no-bottom">
+        <label class="btn-align pull-left no-bottom">Best</label>
+        <div {{ numval_species_title(x=False) }} class="width-2third pull-right">{{ best_field(size=size) }}</div>
+      </div>
+    </div>
+    <a class="select block" tab-index data-popout="size_unit">
+      <span class="selected-value no-break">
+        {{ min_field.data or ' ' }} | {{ max_field.data or ' ' }} | {{ best_field.data or ' ' }}
+      </span>
+    </a>
   </div>
 {% endmacro %}
 
@@ -226,6 +275,6 @@ Mark unknown values with an 'x'.
 "
 {% endmacro %}
 
-{% macro cm_pair_title() %}
-    title="At least one conclusion and method pair shall be added."
+{% macro cm_pair_title(mouseover_text='At least one conclusion and method pair shall be added.') %}
+    title="{{ mouseover_text }}"
 {% endmacro %}

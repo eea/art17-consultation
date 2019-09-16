@@ -49,7 +49,7 @@
 </td>
       
 <td class="number border_right text-center">
-  {{ row.complementary_favourable_range|str2num('') }}
+  {{ row.complementary_favourable_range_q|str2num('') }} {{ row.complementary_favourable_range|str2num('') }}
 </td>
 
 {# Population #}
@@ -82,11 +82,7 @@
 </td>
           
 <td class="number text-center">
-  {{ row.complementary_favourable_population|str2num('') }}
-</td>
-
-<td class="number border_right text-center">
-    {{ row.complementary_favourable_population_unit|str2num('') }}
+  {{row.complementary_favourable_population_q|str2num('') }} {{ row.complementary_favourable_population|str2num('') }}
 </td>
 
 {# Habitat #}

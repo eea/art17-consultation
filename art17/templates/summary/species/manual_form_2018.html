@@ -1,7 +1,7 @@
 {% from '_macros.html' import conclusion_td with context %}
 {% from '_macros.html' import method_conclusion_td with context %}
 {% from '_macros.html' import select_conclusion_td with context %}
-{% from '_macros.html' import size_unit, numval_species_title %}
+{% from '_macros.html' import operator_size, size_unit, numval_species_title %}
 
 
 {% set form=manual_form %}
@@ -36,9 +36,8 @@
       {{ form.range_trend() }}
     </td>
 
-    <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
-        {{ numval_species_title() }}>
-      {{ form.complementary_favourable_range(size=5) }}
+    <td {% if form.complementary_favourable_range_q.errors or form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}>
+      {{ operator_size(form.complementary_favourable_range_q, form.complementary_favourable_range, 5) }}
     </td>
 
     {# Population #}
@@ -69,9 +68,8 @@
       {{ form.population_trend() }}
     </td>
 
-    <td {% if form.complementary_favourable_population.errors %}class="form-error-td"{% endif %}
-        {{ numval_species_title() }}>
-      {{ form.complementary_favourable_population(size=5) }}
+    <td {% if form.complementary_favourable_population_q.errors or form.complementary_favourable_population.errors %}class="form-error-td"{% endif %}>
+      {{ operator_size(form.complementary_favourable_population_q, form.complementary_favourable_population, 5) }}
     </td>
 
     <td {% if form.complementary_favourable_population_unit.errors %}class="form-error-td"{% endif %}>
@@ -113,7 +111,7 @@
       {{ form.conclusion_assessment_trend() }}
     </td>
 
-    {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev) }}
+    {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev, 'At least one conclusion shall be added') }}
 
     <td {% if form.conclusion_assessment_trend_prev.errors %}class="form-error-td"{% endif %}>
       {{ form.conclusion_assessment_trend_prev() }}
@@ -129,7 +127,7 @@
 
     {# Contrib target 1 #}
 
-    {{ select_conclusion_td('Backcaster 2007 CS', form.backcasted_2007) }}
+    {{ select_conclusion_td('Backcaster 2007 CS', form.backcasted_2007, 'At least one conclusion shall be added') }}
 
     <td {% if form.method_target1.errors %}class="form-error-td"{% endif %}>
       {{ form.method_target1() }}
@@ -147,9 +145,8 @@
 
       <td class="text-center">{{ ass.range_trend }}</td>
 
-      <td {% if form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}
-          {{ numval_species_title() }}>
-        {{ form.complementary_favourable_range(size=5) }}
+      <td {% if form.complementary_favourable_range_q.errors or form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}>
+          {{ operator_size(form.complementary_favourable_range_q, form.complementary_favourable_range, 5) }}
       </td>
 
     {# Population #}
@@ -179,13 +176,12 @@
         {{ ass.population_trend }}
       </td>
 
-      <td {% if form.complementary_favourable_population.errors %}class="form-error-td"{% endif %}
-          {{ numval_species_title() }}>
-        {{ form.complementary_favourable_population(size=5) }}
+      <td {% if form.complementary_favourable_population_q.errors or form.complementary_favourable_population.errors %}class="form-error-td"{% endif %}>
+        {{ operator_size(form.complementary_favourable_population_q, form.complementary_favourable_population, 5) }}
       </td>
 
-      <td {% if form.complementary_favourable_population_unit.errors %}class="form-error-td"{% endif %}>
-        {{ form.complementary_favourable_population_unit }}
+      <td class="text-center">
+        {{ ass.complementary_favourable_population_unit }}
       </td>
 
     {# Habitat #}
