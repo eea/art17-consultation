@@ -205,6 +205,9 @@
     </div>
     <a class="select block" tab-index data-popout="size_unit">
         <span class="selected-value no-break">
+          {% if operator_field.data %}
+            {{ operator_size.data }}
+          {% endif %}
           {{ operator_field.data }}
           {% if size_field.data %}
             {{ size_field.data }}

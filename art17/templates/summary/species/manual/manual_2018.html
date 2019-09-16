@@ -82,7 +82,11 @@
 </td>
           
 <td class="number text-center">
-  {{row.complementary_favourable_population_q|str2num('') }} {{ row.complementary_favourable_population|str2num('') }}
+  {{ row.complementary_favourable_population_q|str2num('') }} {{ row.complementary_favourable_population|str2num('') }}
+</td>
+
+<td class="number text-center border_right">
+  {{ row.complementary_favourable_population_unit }}
 </td>
 
 {# Habitat #}
