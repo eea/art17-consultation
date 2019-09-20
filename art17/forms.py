@@ -37,7 +37,7 @@ INVALID_MS_REGION_PAIR = "Please select an MS country code that is available " \
 
 NATURE_CHOICES = [('', ''), ('y', 'yes'), ('n', 'no'), ('nc', 'nc')]
 CONTRIB_METHODS = [
-    ('A', 'A'), ('A+', 'A+'), ('B1', 'B1'), ('B2', 'B2'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
+    ('A=', 'A='), ('A+', 'A+'), ('B1', 'B1'), ('B2', 'B2'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
 ]
 CONTRIB_TYPE = [
     ('+', '+'), ('-', '-'), ('=', '='), ('x', 'x')
@@ -47,13 +47,14 @@ CONCL_TYPE = [
 ]
 
 TREND_CHOICES = [
-    ('-', '-'), ('+', '+'), ('0', '0'), ('u', 'u'), ('x', 'x')
+    ('-', '-'), ('+', '+'), ('=', '='), ('u', 'u'), ('x', 'x')
 ]
 
 PROSPECTS_CHOICES = [('', ''), ('good', 'good'), ('poor', 'poor'), ('bad', 'bad'), ('unk', 'unk')]
 
 ZERO_METHODS = [('00', '00'), ('0', '0')]
 
+OPERATOR_CHOICES =[(u'≈', u'≈'), ('<', '<'), ('>>', '>>'), ('>', '>'), ('x', 'x')]
 
 def all_fields(form):
     for field in form:
@@ -246,9 +247,9 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
     complementary_favourable_range = TextField(validators=[float_validation])
-    complementary_favourable_range_q = TextField(validators=[operator_validation])
+    complementary_favourable_range_q = OptionalSelectField()
     complementary_favourable_population = TextField(validators=[float_validation])
-    complementary_favourable_population_q = TextField(validators=[operator_validation])
+    complementary_favourable_population_q = OptionalSelectField()
     population_minimum_size = TextField(validators=[float_validation])
     population_maximum_size = TextField(validators=[float_validation])
     population_best_value = TextField(validators=[float_validation])
@@ -316,7 +317,8 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
-
+        self.complementary_favourable_range_q.choices = empty + OPERATOR_CHOICES
+        self.complementary_favourable_population_q.choices = empty + OPERATOR_CHOICES
         for f in (self.range_trend, self.population_trend, self.habitat_trend):
             f.choices = trends
         for f in (self.conclusion_range, self.conclusion_population,
@@ -366,7 +368,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
     range_trend = OptionalSelectField()
     range_yearly_magnitude = TextField()
     complementary_favourable_range = TextField(validators=[float_validation])
-    complementary_favourable_range_q = TextField(validators=[operator_validation])
+    complementary_favourable_range_q = OptionalSelectField()
     coverage_surface_area = TextField(validators=[float_validation])
     coverage_surface_area_min = TextField(validators=[float_validation])
     coverage_surface_area_max = TextField(validators=[float_validation])
@@ -375,7 +377,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
     coverage_trend = OptionalSelectField()
     coverage_yearly_magnitude = TextField()
     complementary_favourable_area = TextField(validators=[float_validation])
-    complementary_favourable_area_q = TextField(validators=[operator_validation])
+    complementary_favourable_area_q = OptionalSelectField()
 
     hab_condition_good_min = TextField(validators=[numeric_validation])
     hab_condition_good_max = TextField(validators=[numeric_validation])
@@ -435,6 +437,8 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
 
+        self.complementary_favourable_range_q.choices =  empty +  OPERATOR_CHOICES
+        self.complementary_favourable_area_q.choices  = empty + OPERATOR_CHOICES
         for f in (self.range_trend, self.coverage_trend,
                   self.conclusion_assessment_trend, self.hab_condition_trend):
             f.choices = empty + TREND_CHOICES
@@ -487,10 +491,16 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
     region = SelectField()
 
     complementary_favourable_range = TextField(validators=[float_validation])
-    complementary_favourable_range_q = TextField(validators=[operator_validation])
+    complementary_favourable_range_q = OptionalSelectField()
     complementary_favourable_population = TextField(validators=[float_validation])
-    complementary_favourable_population_q = TextField(validators=[operator_validation])
+    complementary_favourable_population_q = OptionalSelectField()
 
+
+    def __init__(self, *args, **kwargs):
+        super(SummaryManualFormSpeciesRef, self).__init__(*args, **kwargs)
+        empty = [('', '')]
+        self.complementary_favourable_range_q.choices = empty + OPERATOR_CHOICES
+        self.complementary_favourable_population_q.choices = empty +  OPERATOR_CHOICES
 
 class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
 
@@ -502,10 +512,16 @@ class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
     region = SelectField()
 
     complementary_favourable_range = TextField(validators=[float_validation])
-    complementary_favourable_range_q = TextField(validators=[operator_validation])
+    complementary_favourable_range_q = OptionalSelectField()
     complementary_favourable_area = TextField(validators=[float_validation])
-    complementary_favourable_area_q = TextField(validators=[operator_validation])
+    complementary_favourable_area_q = OptionalSelectField()
 
+
+    def __init__(self, *args, **kwargs):
+        super(SummaryManualFormHabitatRef, self).__init__(*args, **kwargs)
+        empty = [('', '')]
+        self.complementary_favourable_range_q.choices = empty + OPERATOR_CHOICES
+        self.complementary_favourable_area_q.choices = empty +  OPERATOR_CHOICES
 
 class SummaryManualFormHabitatRefSTA(SummaryManualFormHabitatRef):
 

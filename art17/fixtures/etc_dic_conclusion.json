@@ -1,0 +1,482 @@
+[
+    {
+        "fields": {
+            "details": "not assessed",
+            "dataset_id": 1,
+            "order": 0,
+            "conclusion": ""
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "not assessed",
+            "dataset_id": 3,
+            "order": 0,
+            "conclusion": ""
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "not assessed",
+            "dataset_id": 4,
+            "order": 0,
+            "conclusion": ""
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "not assessed",
+            "dataset_id": 5,
+            "order": 0,
+            "conclusion": ""
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "favourable (FV)",
+            "dataset_id": 1,
+            "order": 1,
+            "conclusion": "FV"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "favourable (FV)",
+            "dataset_id": 3,
+            "order": 1,
+            "conclusion": "FV"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "favourable (FV)",
+            "dataset_id": 4,
+            "order": 1,
+            "conclusion": "FV"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "favourable (FV)",
+            "dataset_id": 5,
+            "order": 1,
+            "conclusion": "FV"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'favourable' if ignoring data not provided",
+            "dataset_id": 1,
+            "order": null,
+            "conclusion": "FV?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'favourable' if ignoring data not provided",
+            "dataset_id": 3,
+            "order": null,
+            "conclusion": "FV?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'favourable' if ignoring data not provided",
+            "dataset_id": 4,
+            "order": null,
+            "conclusion": "FV?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'favourable' if ignoring data not provided",
+            "dataset_id": 5,
+            "order": null,
+            "conclusion": "FV?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed (NA)",
+            "dataset_id": 1,
+            "order": 6,
+            "conclusion": "NA"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed (NA)",
+            "dataset_id": 3,
+            "order": 6,
+            "conclusion": "NA"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed (NA)",
+            "dataset_id": 4,
+            "order": 6,
+            "conclusion": "NA"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed (NA)",
+            "dataset_id": 5,
+            "order": 6,
+            "conclusion": "NA"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "inadequate (U1)",
+            "dataset_id": 1,
+            "order": 2,
+            "conclusion": "U1"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "inadequate (U1)",
+            "dataset_id": 3,
+            "order": 2,
+            "conclusion": "U1"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "inadequate (U1)",
+            "dataset_id": 4,
+            "order": 2,
+            "conclusion": "U1"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "inadequate (U1)",
+            "dataset_id": 5,
+            "order": 2,
+            "conclusion": "U1"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'inadequate' if ignoring data not provided",
+            "dataset_id": 1,
+            "order": null,
+            "conclusion": "U1?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'inadequate' if ignoring data not provided",
+            "dataset_id": 3,
+            "order": null,
+            "conclusion": "U1?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'inadequate' if ignoring data not provided",
+            "dataset_id": 4,
+            "order": null,
+            "conclusion": "U1?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'inadequate' if ignoring data not provided",
+            "dataset_id": 5,
+            "order": null,
+            "conclusion": "U1?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "bad (U2)",
+            "dataset_id": 1,
+            "order": 3,
+            "conclusion": "U2"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "bad (U2)",
+            "dataset_id": 3,
+            "order": 3,
+            "conclusion": "U2"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "bad (U2)",
+            "dataset_id": 4,
+            "order": 3,
+            "conclusion": "U2"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "bad (U2)",
+            "dataset_id": 5,
+            "order": 3,
+            "conclusion": "U2"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'bad' if ignoring data not provided",
+            "dataset_id": 1,
+            "order": null,
+            "conclusion": "U2?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'bad' if ignoring data not provided",
+            "dataset_id": 3,
+            "order": null,
+            "conclusion": "U2?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'bad' if ignoring data not provided",
+            "dataset_id": 4,
+            "order": null,
+            "conclusion": "U2?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'bad' if ignoring data not provided",
+            "dataset_id": 5,
+            "order": null,
+            "conclusion": "U2?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "unknown but not favourable (XU)",
+            "dataset_id": 1,
+            "order": 4,
+            "conclusion": "XU"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "unknown but not favourable (XU)",
+            "dataset_id": 3,
+            "order": 4,
+            "conclusion": "XU"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "unknown but not favourable (XU)",
+            "dataset_id": 4,
+            "order": 4,
+            "conclusion": "XU"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "unknown but not favourable (XU)",
+            "dataset_id": 5,
+            "order": 4,
+            "conclusion": "XU"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'unknown but not favourable' if ignoring data not provided",
+            "dataset_id": 1,
+            "order": null,
+            "conclusion": "XU?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'unknown but not favourable' if ignoring data not provided",
+            "dataset_id": 3,
+            "order": null,
+            "conclusion": "XU?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'unknown but not favourable' if ignoring data not provided",
+            "dataset_id": 4,
+            "order": null,
+            "conclusion": "XU?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'unknown but not favourable' if ignoring data not provided",
+            "dataset_id": 5,
+            "order": null,
+            "conclusion": "XU?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "unknown (XX)",
+            "dataset_id": 1,
+            "order": 5,
+            "conclusion": "XX"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "unknown (XX)",
+            "dataset_id": 3,
+            "order": 5,
+            "conclusion": "XX"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "unknown (XX)",
+            "dataset_id": 4,
+            "order": 5,
+            "conclusion": "XX"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "unknown (XX)",
+            "dataset_id": 5,
+            "order": 5,
+            "conclusion": "XX"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'unknown' if ignoring data not provided",
+            "dataset_id": 1,
+            "order": null,
+            "conclusion": "XX?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'unknown' if ignoring data not provided",
+            "dataset_id": 3,
+            "order": null,
+            "conclusion": "XX?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'unknown' if ignoring data not provided",
+            "dataset_id": 4,
+            "order": null,
+            "conclusion": "XX?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    },
+    {
+        "fields": {
+            "details": "imposible to be assessed but 'unknown' if ignoring data not provided",
+            "dataset_id": 5,
+            "order": null,
+            "conclusion": "XX?"
+        },
+        "model": "EtcDicConclusion",
+        "filter_fields": "dataset_id,conclusion"
+    }
+]

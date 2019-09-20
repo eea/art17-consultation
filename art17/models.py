@@ -1,5 +1,6 @@
 # coding: utf-8
 import argparse
+import json
 import ldap
 import os
 from sqlalchemy import (
@@ -9,11 +10,15 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import or_
+from sqlalchemy import or_, inspect
 from flask import current_app as app
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
 from flask.ext.security import UserMixin, RoleMixin
+
+import sys
+from datetime import datetime
+
 
 DEFAULT_MS = 'EU28'
 
@@ -736,7 +741,7 @@ class EtcDicPopulationUnit(Base):
     __tablename__ = 'etc_dic_population_units'
 
     order = Column(Integer)
-    population_units = Column(String(6), primary_key=True)
+    population_units = Column(String(16), primary_key=True)
     details = Column(String(40))
     code = Column(String(16))
 
@@ -1537,12 +1542,74 @@ def loaddata(fixture):
     else:
         objects = get_fixture_objects(fixture)
         for object in objects:
-            kwargs = {
-                object['filter_field']: object[object['filter_field']]
-            }
+            filter_fields = object['filter_fields'].split(",")
+            kwargs = {}
+            for filter_field in filter_fields:
+                kwargs.update({filter_field: object['fields'][filter_field]})
             database_objects = eval(object['model']).query.filter_by(**kwargs)
-            for database_object in database_objects:
-                for (field, value) in object['fields'].iteritems():
-                    setattr(database_object, field, value)
-                session.add(database_object)
+            if not database_objects.first():
+                session.add(eval(object['model'])(**object['fields']))
+                session.commit()
+            else:
+                for database_object in database_objects:
+                    for (field, value) in object['fields'].iteritems():
+                        setattr(database_object, field, value)
+                    session.add(database_object)
         session.commit()
+
+
+@db_manager.command
+def dumpdata(model):
+    thismodule = sys.modules[__name__]
+    base_class = getattr(thismodule, model)
+
+    relationship_fields = [
+        rfield for rfield, _ in inspect(base_class).relationships.items()]
+    model_fields = [
+        field for field in inspect(base_class).attrs.keys() if field not in relationship_fields]
+
+    objects = []
+    primary_keys = []
+
+    for field in model_fields:
+        value = getattr(inspect(base_class).attrs, field)
+
+        if value.columns[0].primary_key:
+            primary_keys.append(field)
+    entries = base_class.query.all()
+    for entry in entries:
+        kwargs = {
+            "model": model,
+            "filter_fields": ",".join(primary_keys),
+            "fields": {}
+        }
+
+        for field in model_fields:
+            value = getattr(entry, field)
+
+            if type(value) == datetime:
+                value = value.isoformat()
+
+            kwargs["fields"][field] = value
+
+        for rfield in relationship_fields:
+            class_field = getattr(entry, rfield)
+
+            if isinstance(class_field, sqlalchemy.orm.collections.InstrumentedList):
+                kwargs["fields"][rfield] = []
+                for subfield in class_field:
+                    kwargs["fields"][rfield].append(subfield.id)
+            else:
+                try:
+                    kwargs["fields"][rfield] = class_field.id
+                except AttributeError:
+                    pass
+
+        app_json = json.dumps(kwargs)
+        objects.append(app_json)
+
+    json_dir = os.path.abspath(os.path.dirname('manage.py'))
+    json_name = model + '.json'
+
+    with open(os.path.join(json_dir, json_name), 'w') as f:
+        f.write('[' + ','.join(objects) + ']')
