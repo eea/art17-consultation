@@ -200,15 +200,14 @@
       </div>
       <div class="form-group clearfix no-bottom">
         <label class="btn-align pull-left no-bottom">Size</label>
-        <div {{ numval_species_title(x=False) }} class="width-2third pull-right">{{ size_field(size=size) }}</div>
+        <div {{ numval_species_title(x=False) }} class="width-2third pull-right">{{ size_field }}</div>
       </div>
     </div>
     <a class="select block" tab-index data-popout="size_unit">
         <span class="selected-value no-break">
           {% if operator_field.data %}
-            {{ operator_size.data }}
+            {{ operator_field.data }}
           {% endif %}
-          {{ operator_field.data }}
           {% if size_field.data %}
             {{ size_field.data }}
           {% endif %}

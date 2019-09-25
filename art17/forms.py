@@ -52,7 +52,7 @@ TREND_CHOICES = [
 
 PROSPECTS_CHOICES = [('', ''), ('good', 'good'), ('poor', 'poor'), ('bad', 'bad'), ('unk', 'unk')]
 
-ZERO_METHODS = [('00', '00'), ('0', '0')]
+ZERO_METHODS = [('0MS', '0MS'), ('0EQ', '0EQ')]
 
 OPERATOR_CHOICES =[(u'≈', u'≈'), ('<', '<'), ('>>', '>>'), ('>', '>'), ('x', 'x')]
 
@@ -414,6 +414,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
     def setup_choices(self, dataset_id):
         empty = [('', '')]
+
         methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
         methods = empty + zip(methods, methods)
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
