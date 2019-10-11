@@ -8569,13 +8569,3373 @@
     },
     {
         "fields": {
-            "group": "Freshwater",
-            "name": "Natural euthrophic lakes with Magnopotamion or Hydrocharition-type vegetation",
+            "group": "coastal habitats",
+            "name": "Sandbanks which are slightly covered by sea water all the time",
+            "priority": 0,
+            "habcode": "1110",
+            "dataset_id": 5,
+            "marine": -1,
+            "shortname": "Sandbanks slightly covered by sea water all time",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "coastal habitats",
+            "name": "Posidonia beds (Posidonion oceanicae)",
+            "priority": 1,
+            "habcode": "1120",
+            "dataset_id": 5,
+            "marine": -1,
+            "shortname": "Posidonia beds (Posidonion oceanicae)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "coastal habitats",
+            "name": "Estuaries",
+            "priority": 0,
+            "habcode": "1130",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Estuaries",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "coastal habitats",
+            "name": "Mudflats and sandflats not covered by sea water at low tide",
+            "priority": 0,
+            "habcode": "1140",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mudflats/sandflats not covered by sea water at low tide",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "coastal habitats",
+            "name": "Coastal lagoons",
+            "priority": 1,
+            "habcode": "1150",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Coastal lagoons",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "coastal habitats",
+            "name": "Large shallow inlets and bays",
+            "priority": 0,
+            "habcode": "1160",
+            "dataset_id": 5,
+            "marine": -1,
+            "shortname": "Large shallow inlets and bays",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "coastal habitats",
+            "name": "Reefs",
+            "priority": 0,
+            "habcode": "1170",
+            "dataset_id": 5,
+            "marine": -1,
+            "shortname": "Reefs",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "coastal habitats",
+            "name": "Submarine structures made by leaking gases",
+            "priority": 0,
+            "habcode": "1180",
+            "dataset_id": 5,
+            "marine": -1,
+            "shortname": "Submarine structures made by leaking gases",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "coastal habitats",
+            "name": "Annual vegetation of drift lines",
+            "priority": 0,
+            "habcode": "1210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Annual vegetation of drift lines",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Perennial vegetation of stony banks",
+            "priority": 0,
+            "habcode": "1220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Perennial vegetation of stony banks",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Vegetated sea cliffs of the Atlantic and Baltic Coasts",
+            "priority": 0,
+            "habcode": "1230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Vegetated sea cliffs of the Atlantic and Baltic coasts",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Vegetated sea cliffs of the Mediterranean coasts with endemic Limonium spp.",
+            "priority": 0,
+            "habcode": "1240",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Sea cliffs of Med. coasts with endemic Limonium spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Vegetated sea cliffs with endemic flora of the Macaronesian coasts",
+            "priority": 0,
+            "habcode": "1250",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Sea cliffs with endemic flora of the Macaronesian coast",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Salicornia and other annuals colonizing mud and sand",
+            "priority": 0,
+            "habcode": "1310",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Salicornia and other annuals colonizing mud and sand",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Spartina swards (Spartinion maritimae)",
+            "priority": 0,
+            "habcode": "1320",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Spartina swards (Spartinion maritimae)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Atlantic salt meadows (Glauco-Puccinellietalia maritimae)",
+            "priority": 0,
+            "habcode": "1330",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Atlantic salt meadows (Glauco-Puccinellietalia maritima",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Inland salt meadows",
+            "priority": 1,
+            "habcode": "1340",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Inland salt meadows",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Mediterranean salt meadows (Juncetalia maritimi)",
+            "priority": 0,
+            "habcode": "1410",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mediterranean salt meadows (Juncetalia maritimi)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Mediterranean and thermo-Atlantic halophilous scrubs (Sarcocornetea fruticosi)",
+            "priority": 0,
+            "habcode": "1420",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mediterranean and thermo-Atlantic halophilous scrubs",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Halo-nitrophilous scrubs (Pegano-Salsoletea)",
+            "priority": 0,
+            "habcode": "1430",
+            "dataset_id": 3,
+            "marine": 0,
+            "shortname": "Halo-nitrophilous scrubs (Pegano-Salsoletea)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Mediterranean salt steppes (Limonietalia)",
+            "priority": 1,
+            "habcode": "1510",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mediterranean salt steppes (Limonietalia)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Iberian gypsum vegetation (Gypsophiletalia)",
+            "priority": 1,
+            "habcode": "1520",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Iberian gypsum vegetation (Gypsophiletalia)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Pannonic salt steppes and salt marshes",
+            "priority": 1,
+            "habcode": "1530",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pannonic salt steppes and salt marshes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Baltic esker islands with sandy, rocky and shingle beach vegetation and sublittoral vegetation",
+            "priority": 0,
+            "habcode": "1610",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Baltic esker islands with ... beach and sublitoral veget.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Boreal Baltic islets and small islands",
+            "priority": 0,
+            "habcode": "1620",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Boreal Baltic islets and small islands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Boreal Baltic coastal meadows",
+            "priority": 1,
+            "habcode": "1630",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Boreal Baltic coastal meadows",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Boreal Baltic sandy beaches with perennial vegetation",
+            "priority": 0,
+            "habcode": "1640",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Boreal Baltic sandy beaches with perennial vegetation",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Coastal habitats",
+            "name": "Boreal Baltic narrow inlets",
+            "priority": 0,
+            "habcode": "1650",
+            "dataset_id": 5,
+            "marine": -1,
+            "shortname": "Boreal Baltic narrow inlets",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Embryonic shifting dunes",
+            "priority": 0,
+            "habcode": "2110",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Embryonic shifting dunes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Shifting dunes along the shoreline with Ammophila arenaria (\"white dunes\")",
+            "priority": 0,
+            "habcode": "2120",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Shoreline shifting white dunes with Ammophila arenaria",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Fixed coastal dunes with herbaceous vegetation (\"grey dunes\")",
+            "priority": 1,
+            "habcode": "2130",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fixed coastal grey dunes with herbaceous vegetation",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Decalcified fixed dunes with Empetrum nigrum",
+            "priority": 1,
+            "habcode": "2140",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Decalcified fixed dunes with Empetrum nigrum",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Atlantic decalcified fixed dunes (Calluno-Ulicetea)",
+            "priority": 1,
+            "habcode": "2150",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Atlantic decalcified fixed dunes (Calluno-Ulicetea)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Dunes with Hippopha\u00eb rhamnoides",
+            "priority": 0,
+            "habcode": "2160",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dunes with Hippophae rhamnoides",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Dunes with Salix repens ssp. argentea (Salicion arenariae)",
+            "priority": 0,
+            "habcode": "2170",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dunes with Salix repens ssp.argentea (Salix arenariae)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Wooded dunes of the Atlantic, Continental and Boreal region",
+            "priority": 0,
+            "habcode": "2180",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Wooded dunes of the Atlantic, Continental & Boreal reg.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Humid dune slacks",
+            "priority": 0,
+            "habcode": "2190",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Humid dune slacks",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Machairs (* in Ireland)",
+            "priority": 0,
+            "habcode": "21A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Machairs (* in Ireland)",
+            "annex_I_comments": "(* in Ireland)"
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Crucianellion maritimae fixed beach dunes",
+            "priority": 0,
+            "habcode": "2210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Crucianellion maritimae fixed beach dunes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Dunes with Euphorbia terracina",
+            "priority": 0,
+            "habcode": "2220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dunes with Euphorbia terracina",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Malcolmietalia dune grasslands",
+            "priority": 0,
+            "habcode": "2230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Malcolmietalia dune grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Brachypodietalia dune grasslands with annuals",
+            "priority": 0,
+            "habcode": "2240",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Brachypodietalia dune grasslands with annuals",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Coastal dunes with Juniperus spp.",
+            "priority": 1,
+            "habcode": "2250",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Coastal dunes with Juniperus spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Dunes with Hippopha\u00eb rhamnoides",
+            "priority": 0,
+            "habcode": "2160",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dunes with Hippophae rhamnoides",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Dunes with Salix repens ssp. argentea (Salicion arenariae)",
+            "priority": 0,
+            "habcode": "2170",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dunes with Salix repens ssp.argentea (Salix arenariae)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Wooded dunes of the Atlantic, Continental and Boreal region",
+            "priority": 0,
+            "habcode": "2180",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Wooded dunes of the Atlantic, Continental & Boreal reg.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Humid dune slacks",
+            "priority": 0,
+            "habcode": "2190",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Humid dune slacks",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Machairs (* in Ireland)",
+            "priority": 0,
+            "habcode": "21A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Machairs (* in Ireland)",
+            "annex_I_comments": "(* in Ireland)"
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Crucianellion maritimae fixed beach dunes",
+            "priority": 0,
+            "habcode": "2210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Crucianellion maritimae fixed beach dunes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Dunes with Euphorbia terracina",
+            "priority": 0,
+            "habcode": "2220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dunes with Euphorbia terracina",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Malcolmietalia dune grasslands",
+            "priority": 0,
+            "habcode": "2230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Malcolmietalia dune grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Brachypodietalia dune grasslands with annuals",
+            "priority": 0,
+            "habcode": "2240",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Brachypodietalia dune grasslands with annuals",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Coastal dunes with Juniperus spp.",
+            "priority": 1,
+            "habcode": "2250",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Coastal dunes with Juniperus spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Cisto-Lavenduletalia dune sclerophyllous scrubs",
+            "priority": 0,
+            "habcode": "2260",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Cisto-Lavenduletalia dune sclerophyllous scrubs",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Wooded dunes with Pinus pinea and/or Pinus pinaster",
+            "priority": 1,
+            "habcode": "2270",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Wooded dunes with Pinus pinea and/or Pinus pinaster",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Dry sand heaths with Calluna and Genista",
+            "priority": 0,
+            "habcode": "2310",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dry sand heaths with Calluna and Genista",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Dry sand heaths with Calluna and Empetrum nigrum",
+            "priority": 0,
+            "habcode": "2320",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dry sand heaths with Calluna and Empetrum nigrum",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Inland dunes with open Corynephorus and Agrostis grasslands",
+            "priority": 0,
+            "habcode": "2330",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Inland dunes with open Corynephorus & Agrostis grassl.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Dunes habitats",
+            "name": "Pannonic inland dunes",
+            "priority": 1,
+            "habcode": "2340",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pannonic inland dunes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Oligotrophic waters containing very few minerals of sandy plains (Littorelletalia uniflorae)",
+            "priority": 0,
+            "habcode": "3110",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Oligotrophic waters (Littorelletalia uniflorae)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Oligotrophic waters containing very few minerals generally on sandy soils of the West Mediterranean, with Isoetes spp.",
+            "priority": 0,
+            "habcode": "3120",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Oligotrophic waters of West Med. with Isoetes spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Oligotrophic to mesotrophic standing waters with vegetation of the Littorelletea uniflorae and/or of the Iso\u00ebto-Nanojuncetea",
+            "priority": 0,
+            "habcode": "3130",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Oligo to mesotrophic waters (Littorelletea/Isoeto-Nano)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Hard oligo-mesotrophic waters with benthic vegetation of Chara spp.",
+            "priority": 0,
+            "habcode": "3140",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Hard oligo-mesotrophic waters with benthic Chara spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Natural eutrophic lakes with Magnopotamion or Hydrocharition - type vegetation",
             "priority": 0,
             "habcode": "3150",
             "dataset_id": 5,
             "marine": 0,
             "shortname": "Natural euthrophic lakes Magnopotamion/ Hydrochachition",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Natural dystrophic lakes and ponds",
+            "priority": 0,
+            "habcode": "3160",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Natural dystrophic lakes and ponds",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Mediterranean temporary ponds",
+            "priority": 1,
+            "habcode": "3170",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mediterranean temporary ponds",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Turloughs",
+            "priority": 1,
+            "habcode": "3180",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Turloughs",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Lakes of gypsum karst",
+            "priority": 0,
+            "habcode": "3190",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Lakes of gypsum karst",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Transylvanian hot-spring lotus beds",
+            "priority": 1,
+            "habcode": "31A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Transylvanian hot-spring lotus beds",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Fennoscandian natural rivers",
+            "priority": 0,
+            "habcode": "3210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fennoscandian natural rivers",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Alpine rivers and the herbaceous vegetation along their banks",
+            "priority": 0,
+            "habcode": "3220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alpine rivers & herbaceous veg. along their banks",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Alpine rivers and their ligneous vegetation with Myricaria germanica",
+            "priority": 0,
+            "habcode": "3230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alpine rivers & ligneous veg. with Myricaria germanica",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Alpine rivers and their ligneous vegetation with Salix elaeagnos",
+            "priority": 0,
+            "habcode": "3240",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alpine rivers & ligneous vegetation with Salix eleagnos",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Constantly flowing Mediterranean rivers with Glaucium flavum",
+            "priority": 0,
+            "habcode": "3250",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Constantly flowing Med. rivers with Glaucium flavum",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Water courses of plain to montane levels with the Ranunculion fluitantis and Callitricho-Batrachion vegetation",
+            "priority": 0,
+            "habcode": "3260",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Water courses of plain to montane level (Ranunculion..)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Rivers with muddy banks with Chenopodion rubri p.p. and Bidention p.p. vegetation",
+            "priority": 0,
+            "habcode": "3270",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Rivers with muddy banks (Chenopodion rubri & Bidention)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Constantly flowing Mediterranean rivers with Paspalo-Agrostidion species and hanging curtains of Salix and Populus alba",
+            "priority": 0,
+            "habcode": "3280",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Constantly flowing Med. rivers (Paspalo-Agrostidion ..)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Freshwater habitats",
+            "name": "Intermittently flowing Mediterranean rivers of the Paspalo-Agrostidion",
+            "priority": 0,
+            "habcode": "3290",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Intermittently flowing Med. rivers Paspalo-Agrostidion",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Northern Atlantic wet heaths with Erica tetralix",
+            "priority": 0,
+            "habcode": "4010",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Northern Atlantic wet heaths with Erica tetralix",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Temperate Atlantic wet heaths with Erica ciliaris and Erica tetralix",
+            "priority": 1,
+            "habcode": "4020",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Temperate Atl. wet heaths with Erica ciliaris & E. tetralix",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "European dry heaths",
+            "priority": 0,
+            "habcode": "4030",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "European dry heaths",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Dry Atlantic coastal heaths with Erica vagans",
+            "priority": 1,
+            "habcode": "4040",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dry Atlantic coastal heaths with Erica vagans",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Endemic macaronesian heaths",
+            "priority": 1,
+            "habcode": "4050",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Endemic Macaronesian heaths",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Alpine and Boreal heaths",
+            "priority": 0,
+            "habcode": "4060",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alpine and Boreal heaths",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Bushes with Pinus mugo and Rhododendron hirsutum (Mugo-Rhododendretum hirsuti)",
+            "priority": 1,
+            "habcode": "4070",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Bushes with Pinus mugo and Rhododendron hirsutum",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Sub-Arctic Salix spp. scrub",
+            "priority": 0,
+            "habcode": "4080",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Sub-Arctic Salix spp. scrub",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Endemic oro-Mediterranean heaths with gorse",
+            "priority": 0,
+            "habcode": "4090",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Endemic oro-Mediterranean heaths with gorse",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Subcontinental peri-Pannonic scrub",
+            "priority": 1,
+            "habcode": "40A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Subcontinental peri-Pannonic scrub",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Rhodope Potentilla fruticosa thickets",
+            "priority": 0,
+            "habcode": "40B0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Rhodope Potentilla fruticosa thickets",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Heath & scrub",
+            "name": "Ponto-Sarmatic deciduous thickets",
+            "priority": 1,
+            "habcode": "40C0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Ponto-Sarmatic deciduous thickets",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Stable xerothermophilous formations with Buxus sempervirens on rock slopes (Berberidion p.p.)",
+            "priority": 0,
+            "habcode": "5110",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Stable xerothermophilous formations Buxus sempervirens",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Mountain Cytisus purgans formations",
+            "priority": 0,
+            "habcode": "5120",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mountain Cytisus purgans formations",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Juniperus communis formations on heaths or calcareous grasslands",
+            "priority": 0,
+            "habcode": "5130",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Juniperus communis formations on heaths/calcar. grassl.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Cistus palhinhae formations on maritime wet heaths",
+            "priority": 1,
+            "habcode": "5140",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Cistus palhinhae formations on maritime wet heaths",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Arborescent matorral with Juniperus spp.",
+            "priority": 0,
+            "habcode": "5210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Arborescent matorral with Juniperus spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Arborescent matorral with Zyziphus",
+            "priority": 1,
+            "habcode": "5220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Arborescent matorral with Zyziphus",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Arborescent matorral with Laurus nobilis",
+            "priority": 1,
+            "habcode": "5230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Arborescent matorral with Laurus nobilis",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Laurus nobilis thickets",
+            "priority": 0,
+            "habcode": "5310",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Laurus nobilis thickets",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Low formations of Euphorbia close to cliffs",
+            "priority": 0,
+            "habcode": "5320",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Low formations of Euphorbia close to cliffs",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Thermo-Mediterranean and pre-desert scrub",
+            "priority": 0,
+            "habcode": "5330",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Thermo-Mediterranean and pre-steppe scrub",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "West Mediterranean clifftop phryganas (Astragalo-Plantaginetum subulatae)",
+            "priority": 0,
+            "habcode": "5410",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "West Med. clifftop phryganas Astralago-Plantaginetum..",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Sarcopoterium spinosum phryganas",
+            "priority": 0,
+            "habcode": "5420",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Sarcopoterium spinosum phrygana",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Sclerophyllous scrubs",
+            "name": "Endemic phryganas of the Euphorbio-Verbascion",
+            "priority": 0,
+            "habcode": "5430",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Endemic phryganas of the Euphorbieto-Verbascion",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Rupicolous calcareous or basophilic grasslands of the Alysso-Sedion albi",
+            "priority": 1,
+            "habcode": "6110",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Rupicolous calcareous/basophilic grassl. Alysso-Sedion",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Xeric sand calcareous grasslands",
+            "priority": 1,
+            "habcode": "6120",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Xeric sand calcareous grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Calaminarian grasslands of the Violetalia calaminariae",
+            "priority": 0,
+            "habcode": "6130",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Calaminarian grasslands of the Violetalia calaminariae",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Siliceous Pyrenean Festuca eskia grasslands",
+            "priority": 0,
+            "habcode": "6140",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Siliceous Pyrenean Festuca eskia grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Siliceous alpine and boreal grasslands",
+            "priority": 0,
+            "habcode": "6150",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Siliceous alpine and boreal grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Oro-Iberian Festuca indigesta grasslands",
+            "priority": 0,
+            "habcode": "6160",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Oro-Iberian Festuca indigesta grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Alpine and subalpine calcareous grasslands",
+            "priority": 0,
+            "habcode": "6170",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alpine and subalpine calcareous grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Macaronesian mesophile grasslands",
+            "priority": 0,
+            "habcode": "6180",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Macaronesian mesophile grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Rupicolous pannonic grasslands (Stipo-Festucetalia pallentis)",
+            "priority": 0,
+            "habcode": "6190",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Rupicolous Pann. grassl. Stipo-Festucetalia pallentis",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Semi-natural dry grasslands and scrubland facies on calcareous substrates (Festuco-Brometalia) (* important orchid sites)",
+            "priority": 0,
+            "habcode": "6210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Seminatural dry grassl. & scrubland facies on calc. sub",
+            "annex_I_comments": "(* important orchid sites)"
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Pseudo-steppe with grasses and annuals of the Thero-Brachypodietea",
+            "priority": 1,
+            "habcode": "6220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pseudosteppe with grasses & annuals Thero-Brachypodiete",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Species-rich Nardus grasslands, on siliceous substrates in mountain areas (and submountain areas, in Continental Europe)",
+            "priority": 1,
+            "habcode": "6230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Species-rich Nardus grasslands, on siliceous substrates",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Sub-Pannonic steppic grasslands",
+            "priority": 1,
+            "habcode": "6240",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Sub-continental steppic grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Pannonic loess steppic grasslands",
+            "priority": 1,
+            "habcode": "6250",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pannonic loess steppic grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Pannonic sand steppes",
+            "priority": 1,
+            "habcode": "6260",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pannonic sand steppes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Fennoscandian lowland species-rich dry to mesic grasslands",
+            "priority": 1,
+            "habcode": "6270",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fennoscandian lowland species-rich dry to mesic grassl.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Nordic alvar and precambrian calcareous flatrocks",
+            "priority": 1,
+            "habcode": "6280",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Nordic alvar and precambrian calcareous flatrocks",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Eastern sub-Mediterranean dry grasslands (Scorzoneratalia villosae)",
+            "priority": 0,
+            "habcode": "62A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Eastern sub-med. dry grassl. (Scorzoneratal villosae)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Serpentinophilous grasslands of Cyprus",
+            "priority": 1,
+            "habcode": "62B0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Serpentinophilous grasslands of Cyprus",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Ponto-Sarmatic steppes",
+            "priority": 1,
+            "habcode": "62C0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Ponto-Sarmatic steppes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Oro-Moesian acidophilous grasslands",
+            "priority": 0,
+            "habcode": "62D0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Oro-Moesian acidophilous grasslands",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Dehesas with evergreen Quercus spp.",
+            "priority": 0,
+            "habcode": "6310",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dehesas with evergreen Quercus spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Molinia meadows on calcareous, peaty or clayey-silt-laden soils (Molinion caeruleae)",
+            "priority": 0,
+            "habcode": "6410",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Molinia meadows on calc./peaty/clavey-silt-ladean soils",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Mediterranean tall humid grasslands of the Molinio-Holoschoenion",
+            "priority": 0,
+            "habcode": "6420",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Med. tall humid grassl. of the Molinio-Holoschoenion",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Hydrophilous tall herb fringe communities of plains and of the montane to alpine levels",
+            "priority": 0,
+            "habcode": "6430",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Hydrophilous tall herb fringe comm. of plains & montane",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Alluvial meadows of river valleys of the Cnidion dubii",
+            "priority": 0,
+            "habcode": "6440",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alluvial meadows of river valleys of the Cnidion dubii",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Northern boreal alluvial meadows",
+            "priority": 0,
+            "habcode": "6450",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Northern boreal alluvial meadows",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Peat grasslands of Troodos",
+            "priority": 0,
+            "habcode": "6460",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Peat grasslands of Troodos",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Lowland hay meadows (Alopecurus pratensis, Sanguisorba officinalis)",
+            "priority": 0,
+            "habcode": "6510",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Lowland hay meadows (Alopecurus pratensis, Sanguisorba)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Mountain hay meadows",
+            "priority": 0,
+            "habcode": "6520",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mountain hay meadows",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Fennoscandian wooded meadows",
+            "priority": 1,
+            "habcode": "6530",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fennoscandian wooded meadows",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Active raised bogs",
+            "priority": 1,
+            "habcode": "7110",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Active raised bogs",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Degraded raised bogs still capable of natural regeneration",
+            "priority": 0,
+            "habcode": "7120",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Degraded raised bogs capable of natural regeneration",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Blanket bogs (* if active bog)",
+            "priority": 0,
+            "habcode": "7130",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Blanket bog (*active only)",
+            "annex_I_comments": "(*active only)"
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Transition mires and quaking bogs",
+            "priority": 0,
+            "habcode": "7140",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Transition mires and quaking bogs",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Depressions on peat substrates of the Rhynchosporion",
+            "priority": 0,
+            "habcode": "7150",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Depressions on peat substrates of the Rhynchosporion",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Fennoscandian mineral-rich springs and springfens",
+            "priority": 0,
+            "habcode": "7160",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fennoscandian mineral-rich springs and springfens",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Calcareous fens with Cladium mariscus and species of the Caricion davallianae",
+            "priority": 1,
+            "habcode": "7210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Calc. fens with Cladium mariscus & Caricion davallianae",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Petrifying springs with tufa formation (Cratoneurion)",
+            "priority": 1,
+            "habcode": "7220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Petrifying springs with tufa formation (Cratoneurion)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Alkaline fens",
+            "priority": 0,
+            "habcode": "7230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alkaline fens",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Alpine pioneer formations of Caricion bicoloris-atrofuscae",
+            "priority": 1,
+            "habcode": "7240",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alpine pioneer formations Caricion bicoloris-atrofuscae",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Aapa mires",
+            "priority": 1,
+            "habcode": "7310",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Aapa mires",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Bogs, mires & fens",
+            "name": "Palsa mires",
+            "priority": 1,
+            "habcode": "7320",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Palsa mires",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Siliceous scree of the montane to snow levels (Androsacetalia alpinae and Galeopsietalia ladani)",
+            "priority": 0,
+            "habcode": "8110",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Siliceous scree of the montane to snow levels",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Calcareous and calcshist screes of the montane to alpine levels (Thlaspietea rotundifolii)",
+            "priority": 0,
+            "habcode": "8120",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Calcareous & calcshist screes of montane to alpine lev.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Western Mediterranean and thermophilous scree",
+            "priority": 0,
+            "habcode": "8130",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Western Mediterranean and thermophilous screes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Eastern Mediterranean screes",
+            "priority": 0,
+            "habcode": "8140",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Eastern Mediterranean screes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Medio-European upland siliceous screes",
+            "priority": 0,
+            "habcode": "8150",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Medio-European upland siliceous screes",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Medio-European calcareous scree of hill and montane levels",
+            "priority": 1,
+            "habcode": "8160",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Medio-European calcareous scree of hill & montane level",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Calcareous rocky slopes with chasmophytic vegetation",
+            "priority": 0,
+            "habcode": "8210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Calcareous rocky slopes with chasmophytic vegetation",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Siliceous rocky slopes with chasmophytic vegetation",
+            "priority": 0,
+            "habcode": "8220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Siliceous rocky slopes with chasmophytic vegetation",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Siliceous rock with pioneer vegetation of the Sedo-Scleranthion or of the Sedo albi-Veronicion dillenii",
+            "priority": 0,
+            "habcode": "8230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Siliceous rock with pioneer veg. Sedo-Sclerathion/Veron",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Limestone pavements",
+            "priority": 1,
+            "habcode": "8240",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Limestone pavements",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Caves not open to the public",
+            "priority": 0,
+            "habcode": "8310",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Caves not open to the public",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Fields of lava and natural excavations",
+            "priority": 0,
+            "habcode": "8320",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fields of lava and natural excavations",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Submerged or partially submerged sea caves",
+            "priority": 0,
+            "habcode": "8330",
+            "dataset_id": 5,
+            "marine": -1,
+            "shortname": "Submerged or partially submerged caves",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Rocky habitats",
+            "name": "Permanent glaciers",
+            "priority": 0,
+            "habcode": "8340",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Permanent glaciers",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Western Ta\u00efga",
+            "priority": 1,
+            "habcode": "9010",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Western Taiga",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Fennoscandian hemiboreal natural old broad-leaved deciduous forests (Quercus, Tilia, Acer, Fraxinus or Ulmus) rich in epiphytes",
+            "priority": 1,
+            "habcode": "9020",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fennoscandian old braod-leaved deciduous forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Natural forests of primary succession stages of landupheaval coast",
+            "priority": 1,
+            "habcode": "9030",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Nat forests of primary succession of landupheaval coast",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Nordic subalpine/subarctic forests with Betula pubescens ssp. czerepanovii",
+            "priority": 0,
+            "habcode": "9040",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Nordic subalp/subarctic forests Betula pub. czerepavoni",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Fennoscandian herb-rich forests with Picea abies",
+            "priority": 0,
+            "habcode": "9050",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fennoscandian herb-rich forests with Picea abies",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Coniferous forests on, or connected to, glaciofluvial eskers",
+            "priority": 0,
+            "habcode": "9060",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Conif. forests on,or connected to, glaciofluvial eskers",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Fennoscandian wooded pastures",
+            "priority": 0,
+            "habcode": "9070",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fennoscandian wooded pastures",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Fennoscandian deciduous swamp woods",
+            "priority": 1,
+            "habcode": "9080",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Fennoscandian deciduous swamp woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Luzulo-Fagetum beech forests",
+            "priority": 0,
+            "habcode": "9110",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Luzulo-Fagetum beech forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Atlantic acidophilous beech forests with Ilex and sometimes also Taxus in the shrublayer (Quercion robori-petraeae or Ilici-Fagenion)",
+            "priority": 0,
+            "habcode": "9120",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Atlantic acidophilous beech forests with Ilex ..",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Asperulo-Fagetum beech forests",
+            "priority": 0,
+            "habcode": "9130",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Asperulo-Fagetum beech forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Medio-European subalpine beech woods with Acer and Rumex arifolius",
+            "priority": 0,
+            "habcode": "9140",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Medio-Europ. subalp. beech woods Acer & Rumex arifolius",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Medio-European limestone beech forests of the Cephalanthero-Fagion",
+            "priority": 0,
+            "habcode": "9150",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Medio-Europ. limestone beech forests Cephalanthero-Fagion",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Sub-Atlantic and medio-European oak or oak-hornbeam forests of the Carpinion betuli",
+            "priority": 0,
+            "habcode": "9160",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Sub-Atlantic and medio-Europ. oak/oak-hornbeam forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Galio-Carpinetum oak-hornbeam forests",
+            "priority": 0,
+            "habcode": "9170",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Galio-Carpinetum oak-hornbeam forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Tilio-Acerion forests of slopes, screes and ravines",
+            "priority": 1,
+            "habcode": "9180",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Tilio-Acerion forest of slopes, screes and ravines",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Old acidophilous oak woods with Quercus robur on sandy plains",
+            "priority": 0,
+            "habcode": "9190",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Old acidophilous oak woods with Q. robur on sandy plain",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Old sessile oak woods with Ilex and Blechnum in the British Isles",
+            "priority": 0,
+            "habcode": "91A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Old sessile oak woods with Ilex & Blechnum in British Isl.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Eastern white oak woods",
+            "priority": 1,
+            "habcode": "91AA",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Eastern white oak woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Thermophilous Fraxinus angustifolia woods",
+            "priority": 0,
+            "habcode": "91B0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Thermophilous Fraxinus angustifolia woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Moesian silver fir forests",
+            "priority": 0,
+            "habcode": "91BA",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Moesian silver fir forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Caledonian forest",
+            "priority": 1,
+            "habcode": "91C0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Caledonian forest",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Rhodopide and Balkan Range Scots pine forests",
+            "priority": 0,
+            "habcode": "91CA",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Rhodopide and Balkan Range Scots pine forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Bog woodland",
+            "priority": 1,
+            "habcode": "91D0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Bog woodland",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Alluvial forests with Alnus glutinosa and Fraxinus excelsior (Alno-Padion, Alnion incanae, Salicion albae)",
+            "priority": 1,
+            "habcode": "91E0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alluvial forests with Alnus glutinosa & F. excelsior",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Riparian mixed forests of Quercus robur, Ulmus laevis and Ulmus minor, Fraxinus excelsior or Fraxinus angustifolia, along the great rivers (Ulmenion minori",
+            "priority": 0,
+            "habcode": "91F0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Riparian mixed forest of Quercus robur, Ulmus laevis..",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Pannonic woods with Quercus petraea and Carpinus betulus",
+            "priority": 1,
+            "habcode": "91G0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pannonic woods with Q. petraea & Carpinus betululus",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Pannonian woods with Quercus pubescens",
+            "priority": 1,
+            "habcode": "91H0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pannonian woods with Quercus pubescens",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Euro-Siberian steppic woods with Quercus spp.",
+            "priority": 1,
+            "habcode": "91I0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Euro-Siberian steppic woods with Quercus spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Taxus baccata woods of the British Isles",
+            "priority": 1,
+            "habcode": "91J0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Taxus baccata woods of the British Isles",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Illyrian Fagus sylvatica forests (Aremonio-Fagion)",
+            "priority": 0,
+            "habcode": "91K0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Illyrian Fagus sylvatica forests (Aremonio-Fagion)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Illyrian oak-hornbeam forests (Erythronio-Carpinion)",
+            "priority": 0,
+            "habcode": "91L0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Illyrian oak-hornbeam forests (Erythronio-carpinion)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Pannonian-Balkanic turkey oak-sessile oak forests",
+            "priority": 0,
+            "habcode": "91M0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pannonian-Balkanic turkey oak-sessile oak forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Pannonic inland sand dune thicket (Junipero-Populetum albae)",
+            "priority": 1,
+            "habcode": "91N0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Pann. inland sand dune thicket Junipero-Populetum albae",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Holy Cross fir forests (Abietetum polonicum)",
+            "priority": 0,
+            "habcode": "91P0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Holy Cross fir forests (Abietetum polonicum)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Western Carpathian calcicolous Pinus sylvestris forests",
+            "priority": 0,
+            "habcode": "91Q0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Western Carpathian calcicolous Pinus sylvestris forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Dinaric dolomite Scots pine forests (Genisto januensis-Pinetum)",
+            "priority": 0,
+            "habcode": "91R0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dinaric dolomite Scots pine forests Genisto januensis-Pinetum",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Western Pontic beech forests",
+            "priority": 1,
+            "habcode": "91S0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Western Pontic beech forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Central European lichen Scots pine forests",
+            "priority": 0,
+            "habcode": "91T0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Central European lichen Scots pine forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Sarmatic steppe pine forest",
+            "priority": 0,
+            "habcode": "91U0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Sarmatic steppe pine forest",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Dacian Beech forests (Symphyto-Fagion)",
+            "priority": 0,
+            "habcode": "91V0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dacian Beech forests (Symphyto-Fagion)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Moesian beech forests",
+            "priority": 0,
+            "habcode": "91W0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Moesian beech forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Dobrogean beech forests",
+            "priority": 1,
+            "habcode": "91X0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dobrogean beech forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Dacian oak & hornbeam forests",
+            "priority": 0,
+            "habcode": "91Y0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Dacian oak & hornbeam forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Moesian silver lime woods",
+            "priority": 0,
+            "habcode": "91Z0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Moesian silver lime woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Apennine beech forests with Taxus and Ilex",
+            "priority": 1,
+            "habcode": "9210",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Apennine beech forests with Taxus and Ilex",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Apennine beech forests with Abies alba and beech forests with Abies nebrodensis",
+            "priority": 1,
+            "habcode": "9220",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Apennine beech forests with Abies alba and beech forest",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Galicio-Portuguese oak woods with Quercus robur and Quercus pyrenaica",
+            "priority": 0,
+            "habcode": "9230",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Galicio-Portuguese oak woods Q. robur & Q. pyrenaica",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Quercus faginea and Quercus canariensis Iberian woods",
+            "priority": 0,
+            "habcode": "9240",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Quercus faginea and Quercus canariensis Iberian woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Quercus trojana woods",
+            "priority": 0,
+            "habcode": "9250",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Quercus trojana woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Castanea sativa woods",
+            "priority": 0,
+            "habcode": "9260",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Castanea sativa woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Hellenic beech forests with Abies borisii-regis",
+            "priority": 0,
+            "habcode": "9270",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Hellenic beech forests with Abies borisii-regis",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Quercus frainetto woods",
+            "priority": 0,
+            "habcode": "9280",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Quercus frainetto woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Cupressus forests (Acero-Cupression)",
+            "priority": 0,
+            "habcode": "9290",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Cupressus forests (Acero-Cupression)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Salix alba and Populus alba galleries",
+            "priority": 0,
+            "habcode": "92A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Salix alba and Populus alba galleries",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Riparian formations on intermittent Mediterranean water courses with Rhododendron ponticum, Salix and others",
+            "priority": 0,
+            "habcode": "92B0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Riparian formations on intermittent Med. courses Rhodo..",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Platanus orientalis and Liquidambar orientalis woods (Platanion orientalis)",
+            "priority": 0,
+            "habcode": "92C0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Platanus orientalis and Liquidambar orientalis woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Southern riparian galleries and thickets (Nerio-Tamaricetea and Securinegion tinctoriae)",
+            "priority": 0,
+            "habcode": "92D0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Southern riparian galleries & thickets Nerio-Tamaric..",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Aegean Quercus brachyphylla woods",
+            "priority": 0,
+            "habcode": "9310",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Aegean Quercus brachyphylla woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Olea and Ceratonia forests",
+            "priority": 0,
+            "habcode": "9320",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Olea and Ceratonia forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Quercus suber forests",
+            "priority": 0,
+            "habcode": "9330",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Quercus suber forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Quercus ilex and Quercus rotundifolia forests",
+            "priority": 0,
+            "habcode": "9340",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Quercus ilex and Quercus rotundifolia forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Quercus macrolepis forests",
+            "priority": 0,
+            "habcode": "9350",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Quercus macrolepis forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Macaronesian laurel forests (Laurus, Ocotea)",
+            "priority": 1,
+            "habcode": "9360",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Macaronesian laurel forests (Laurus, Ocotea)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Palm groves of Phoenix",
+            "priority": 1,
+            "habcode": "9370",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Palm groves of Phoenix",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Forests of Ilex aquifolium",
+            "priority": 0,
+            "habcode": "9380",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Forests of Ilex aquifolium",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Scrub and low forest vegetation with Quercus alnifolia",
+            "priority": 1,
+            "habcode": "9390",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Scrub and low forest vegetation with Quercus alnifolia",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Woodlands with Quercus infectoria (Anagyro foetidae-Quercetum infectoriae)",
+            "priority": 0,
+            "habcode": "93A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Woodlands with Q. infectoria (Anagyro foetidae-Q. infec.)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Acidophilous Picea forests of the montane to alpine levels (Vaccinio-Piceetea)",
+            "priority": 0,
+            "habcode": "9410",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Acidophilous Picea forests of montane to alpine levels",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Alpine Larix decidua and/or Pinus cembra forests",
+            "priority": 0,
+            "habcode": "9420",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Alpine Larix decidua and/or Pinus cembra forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Subalpine and montane Pinus uncinata forests (* if on gypsum or limestone)",
+            "priority": 0,
+            "habcode": "9430",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Subalpine and montane Pinus uncinata forests",
+            "annex_I_comments": "(*if on gypsum or limestone)"
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Southern Apennine Abies alba forests",
+            "priority": 1,
+            "habcode": "9510",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Southern Apennine Abies alba forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Abies pinsapo forests",
+            "priority": 0,
+            "habcode": "9520",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Abies pinsapo forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "(Sub-) Mediterranean pine forests with endemic black pines",
+            "priority": 1,
+            "habcode": "9530",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "(Sub-)Mediterranean pine forest with endemic black pine",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Mediterranean pine forests with endemic Mesogean pines",
+            "priority": 0,
+            "habcode": "9540",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mediterranean pine forests with endemic Mesogean pines",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Canarian endemic pine forests",
+            "priority": 0,
+            "habcode": "9550",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Canarian endemic pines forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Endemic forests with Juniperus spp.",
+            "priority": 1,
+            "habcode": "9560",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Endemic forests with Juniperus spp.",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Tetraclinis articulata forests",
+            "priority": 1,
+            "habcode": "9570",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Tetraclinis articulata forests",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Mediterranean Taxus baccata woods",
+            "priority": 1,
+            "habcode": "9580",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Mediterranean Taxus baccata woods",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "Cedrus brevifolia forests (Cedrosetum brevifoliae)",
+            "priority": 1,
+            "habcode": "9590",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Cedrus brevifolia forests (Cedrosetum brevifoliae)",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Forests",
+            "name": "High oro-Mediterranean pine forests",
+            "priority": 0,
+            "habcode": "95A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "High oro-Mediterranean pine forests",
             "annex_I_comments": null
         },
         "model": "EtcDicHdHabitat",

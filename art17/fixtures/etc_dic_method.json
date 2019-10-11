@@ -618,5 +618,15 @@
             "details": "Other method was used, explanations provided in Audit trail",
             "dataset_id": 5
         }
+    },
+    {
+        "model":"EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields":{
+            "order": 2,
+            "method": "method1",
+            "details": "",
+            "dataset_id": 5
+        }
     }
 ]

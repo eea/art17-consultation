@@ -349,6 +349,8 @@ def get_original_record_url(row):
         schema = row.dataset.schema
     else:
         schema = 0
+    if schema == '2018':
+        return '{}#{}'.format(row.filename, row.habitatcode)
 
     url_scheme = CONVERTER_URLS.get(schema, {})
     url_format = url_scheme.get(page, '')

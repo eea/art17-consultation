@@ -162,8 +162,8 @@ class DicCountryCode(Base):
 class EtcDataHabitattypeAutomaticAssessment(Base):
     __tablename__ = 'etc_data_habitattype_automatic_assessment'
 
-    country = Column(String(3))
-    assessment_method = Column(String(3), primary_key=True, nullable=False)
+    country = Column(String(4))
+    assessment_method = Column(String(10), primary_key=True, nullable=False)
     order = Column(Integer)
     habitatcode = Column(String(4), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
@@ -234,7 +234,7 @@ class EtcDataHabitattypeRegion(Base):
     eu_country_code = Column(String(2))
     delivery = Column(Integer, nullable=False)
     envelope = Column(String(50), nullable=False)
-    filename = Column(String(60), nullable=False)
+    filename = Column(String(300), nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     region_ms = Column(String(4)) # region_orig for period 2018
     region_changed = Column(Integer)
@@ -717,7 +717,7 @@ class EtcDicMethod(Base):
     __tablename__ = 'etc_dic_method'
 
     order = Column(Integer)
-    method = Column(String(3), primary_key=True)
+    method = Column(String(10), primary_key=True)
     details = Column(String(125))
 
     dataset_id = Column(
