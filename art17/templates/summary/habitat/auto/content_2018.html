@@ -17,7 +17,7 @@
 </td>
 
 {% set range = row.percentage_range_surface_area or row.conclusion_range %}
-{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+{% if row.assessment_method == '0' or row.assessment_method ==  'method1' %}
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
     <span class="conclusion">{{ range|parse_semicolon|str2num('')|safe }}</span>
   </td>
@@ -34,7 +34,7 @@
     {{ row.range_trend|parse_semicolon|str2num('')|safe }}
   {% endif %}
 
-  {% if row.assessment_method == '1' %}
+  {% if row.assessment_method == 'method1' %}
     {{ row.percentage_range_trend|parse_semicolon|str2num('')|safe }}
   {% endif %}
 </td>
@@ -65,7 +65,7 @@
 </td>
 
 {% set area = row.percentage_coverage_surface_area or row.conclusion_area %}
-{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+{% if row.assessment_method == '0' or row.assessment_method ==  'method1' %}
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_area] }}">
     <span class="conclusion">{{ area|parse_semicolon|str2num('')|safe }}</span>
   </td>
@@ -82,7 +82,7 @@
     {{ row.coverage_trend|parse_semicolon|str2num('')|safe }}
   {% endif %}
 
-  {% if row.assessment_method == '1' %}
+  {% if row.assessment_method == 'method1' %}
     {{ row.percentage_coverage_trend|parse_semicolon|str2num('')|safe }}
   {% endif %}
 </td>
@@ -105,7 +105,7 @@
 </td>
 
 {% set hab = row.percentage_structure or row.conclusion_structure %}
-{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+{% if row.assessment_method == '0' or row.assessment_method ==  'method1' %}
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }}">
     <span class="conclusion">{{ hab|parse_semicolon|safe }}</span>
   </td>
@@ -122,7 +122,7 @@
     {{ row.hab_condition_trend }}
   {% endif %}
 
-  {% if row.assessment_method == '1' %}
+  {% if row.assessment_method == 'method1' %}
     {{ row.percentage_hab_condition_trend|parse_semicolon|str2num('')|safe }}
   {% endif %}
 </td>
@@ -141,7 +141,7 @@
 </td>
 
 {% set future = row.conclusion_future or row.percentage_future %}
-{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+{% if row.assessment_method == '0' or row.assessment_method ==  'method1' %}
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} border_right">
     <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
   </td>
@@ -156,7 +156,7 @@
 <!-- Overall assessment -->
 
 {% set overall = row.percentage_assessment or row.conclusion_assessment %}
-{% if row.assessment_method == '0' or row.assessment_method ==  '1' %}
+{% if row.assessment_method == '0' or row.assessment_method ==  'method1' %}
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_assessment] }}">
     <span class="conclusion">{{ overall|parse_semicolon|safe }}</span>
   </td>
