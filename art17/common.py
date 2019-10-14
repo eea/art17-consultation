@@ -338,8 +338,10 @@ def get_tooltip_for_habitat(row, method_field):
 def get_original_record_url(row):
     if isinstance(row, EtcDataSpeciesRegion):
         page = 'species'
+        code = row.speciescode
     elif isinstance(row, EtcDataHabitattypeRegion):
         page = 'habitat'
+        code = row.habitatcode
     else:
         raise NotImplementedError
 
@@ -350,7 +352,7 @@ def get_original_record_url(row):
     else:
         schema = 0
     if schema == '2018':
-        return '{}#{}'.format(row.filename, row.habitatcode)
+        return '{}#{}'.format(row.filename, code)
 
     url_scheme = CONVERTER_URLS.get(schema, {})
     url_format = url_scheme.get(page, '')
