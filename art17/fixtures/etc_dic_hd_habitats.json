@@ -9563,6 +9563,20 @@
     },
     {
         "fields": {
+            "group": "freshwater habitats",
+            "name": "Tufa cascades of karstic rivers in the Dinaric Alps",
+            "priority": 0,
+            "habcode": "32A0",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Tufa cascades of karstic rivers in the Dinaric Alps",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
             "group": "Freshwater habitats",
             "name": "Alpine rivers and their ligneous vegetation with Myricaria germanica",
             "priority": 0,
@@ -10438,6 +10452,20 @@
             "dataset_id": 5,
             "marine": 0,
             "shortname": "Fennoscandian wooded meadows",
+            "annex_I_comments": null
+        },
+        "model": "EtcDicHdHabitat",
+        "filter_fields": "dataset_id,habcode"
+    },
+    {
+        "fields": {
+            "group": "Grasslands",
+            "name": "Sub-Mediterranean grasslands of the Molinio-Hordeion secalini",
+            "priority": 1,
+            "habcode": "6540",
+            "dataset_id": 5,
+            "marine": 0,
+            "shortname": "Sub-Mediterranean grasslands of the Molinio-Hordeion secalini",
             "annex_I_comments": null
         },
         "model": "EtcDicHdHabitat",
