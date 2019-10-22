@@ -4,7 +4,7 @@ Art 17 Consultation Tool http://bd.eionet.europa.eu/article17/reports2012/
 
 .. |travis| image:: https://travis-ci.org/eea/art17-consultation.svg?branch=master 
    :target: https://travis-ci.org/eea/art17-consultation
-.. |docker| image:: https://dockerbuildbadges.quelltext.eu/status.svg?organization=eeacms&repository=art17-consultation 
+.. |docker| image:: https://img.shields.io/docker/build/eeacms/art17-consultation
    :target: https://hub.docker.com/r/eeacms/art17-consultation/
 
 .. contents ::
