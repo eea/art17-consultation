@@ -13,7 +13,7 @@ Flask-Script==0.6.6
 Flask-Security==1.7.1
 Flask-SQLAlchemy==1.0
 Flask-WTF==0.9.4
-Flask==0.10.1
+Flask==1.0
 inflect==0.2.4
 itsdangerous==0.23
 Jinja2==2.7.2
