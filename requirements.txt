@@ -35,6 +35,6 @@ Sphinx==1.2.2
 SQLAlchemy==1.2.0
 translationstring==1.1
 webassets==0.9
-Werkzeug==0.9.4
+Werkzeug==0.15.3
 WTForms==1.0.5
 smart_getenv==1.1.0
