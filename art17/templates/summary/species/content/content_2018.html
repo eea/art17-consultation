@@ -9,7 +9,7 @@
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') %}
 <td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'],
                     row, qa_errors, classes=classes) }}>
-  <span class="conclusion">{{ row.percentage_range_surface_area|str1num }}</span>
+  <span class="conclusion">{{ row.percentage_range_surface_area|str2num(0) }}</span>
 </td>
 
 <td {{ parse_errors('range_trend', row, qa_errors, classes="center text-center") }}
@@ -57,7 +57,7 @@
 <td {{ parse_errors(['conclusion_population',
                      'percentage_population_mean_size'],
                      row, qa_errors, classes=classes) }}>
-  <span class="conclusion">{{ row.percentage_population_mean_size|str1num }}</span>
+  <span class="conclusion">{{ row.percentage_population_mean_size|str2num(0) }}</span>
 </td>
 
 {% set qtitle, qclasses = parse_qa_errors('row.population_trend', row, qa_errors) %}
@@ -149,7 +149,7 @@
 </td>
 
 <td class="center border_right text-center">
-  {{ row.percentage_distribution_grid_area|str2num }}
+  {{ row.percentage_distribution_grid_area|str2num(0) }}
 </td>
 
 <td class="border_right" colspan="5"></td>

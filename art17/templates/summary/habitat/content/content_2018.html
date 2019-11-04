@@ -10,7 +10,7 @@
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') %}
 <td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'], row, qa_errors, classes=classes) }}>
-  <span class="conclusion text-center">{{ row.percentage_range_surface_area|str2num }}</span>
+  <span class="conclusion text-center">{{ row.percentage_range_surface_area|str2num(0) }}</span>
 </td>
 
 {% set qtitle, qclasses = parse_qa_errors('range_yearly_magnitude', row,
@@ -69,7 +69,7 @@
 <td {{ parse_errors(['conclusion_area',
                      'percentage_coverage_surface_area'],
                      row, qa_errors, classes=classes) }}>
-  <span class="conclusion">{{ row.percentage_coverage_surface_area|str1num('') }}</span>
+  <span class="conclusion">{{ row.percentage_coverage_surface_area|str2num(0) }}</span>
 </td>
 
 <td class="center text-center"
@@ -89,7 +89,7 @@
 
   {% if range %}
     {{ range|str2num }}
-  {% endif %}        
+  {% endif %}
 </td>
 
 <!-- Structure and functions -->
@@ -169,7 +169,7 @@
 </td>
 
 <td class="center border_right text-center">
-  {{ row.percentage_distribution_grid_area|str1num }}
+  {{ row.percentage_distribution_grid_area|str2num(0) }}
 </td>
 
 <td class="border_right" colspan="5"></td>
