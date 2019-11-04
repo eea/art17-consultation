@@ -147,7 +147,7 @@
   </td>
 {% elif future %}
   <td class="{{ row.percentage_future|colorate }} border_right">
-    <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
+    <span class="conclusion">{{ row.percentage_future|parse_semicolon|safe }}</span>
   </td>
 {% else %}
  <td class="border_right text-center"></td>
