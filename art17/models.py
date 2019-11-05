@@ -1486,7 +1486,10 @@ class LuHabitatManual2007(Base):
 
     subject = Column('habitatcode', String(50), primary_key=True)
     region = Column(String(4), primary_key=True)
-    conclusion_assessment = Column(String(2), nullable=True)
+    conclusion_assessment = Column(String(2), nullable=True) # used for period 2007
+    conclusion_assessment_prev = Column(String(3), nullable=True) # used for period 2013
+    conclusion_assessment_trend_prev = Column(String(20), nullable=True) # used for period 2013
+    backcasted_2007 = Column(String(4), nullable=True) # used for period 2013
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),

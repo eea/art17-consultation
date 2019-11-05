@@ -91,15 +91,15 @@ class ConclusionView(object):
         )
         best.sort(cmp=cmpf)
         values = {}
-        for f in all_fields(self.manual_form_cls()):
-            attr = f.name
-            for ass in filter(lambda a: getattr(a, attr, None), best):
-                if attr not in EXCLUDE_FIELDS:
-                    values[attr] = split_semicolon(attr, getattr(ass, attr))
-                if attr in CONC_METHODS:
-                    method = getattr(ass, 'assessment_method')
-                    values[CONC_METHODS[attr]] = method
-                break
+        # for f in all_fields(self.manual_form_cls()):
+        #     attr = f.name
+        #     for ass in filter(lambda a: getattr(a, attr, None), best):
+        #         if attr not in EXCLUDE_FIELDS:
+        #             values[attr] = split_semicolon(attr, getattr(ass, attr))
+        #         if attr in CONC_METHODS:
+        #             method = getattr(ass, 'assessment_method')
+        #             values[CONC_METHODS[attr]] = method
+        #         break
         # Special case: conclusion_assessment_prev
         prev_lu = (
             self.prev_lu_cls.query
@@ -107,7 +107,12 @@ class ConclusionView(object):
             .first()
         )
         if prev_lu:
-            values['conclusion_assessment_prev'] = prev_lu.conclusion_assessment
+            if period == '3':
+                values['conclusion_assessment_prev'] = prev_lu.conclusion_assessment
+            if period == '5':
+                values['conclusion_assessment_prev'] = prev_lu.conclusion_assessment_prev
+                values['conclusion_assessment_trend_prev'] = prev_lu.conclusion_assessment_trend_prev
+                values['backcasted_2007'] = prev_lu.backcasted_2007
         return values
 
     def get_form_cls(self):
