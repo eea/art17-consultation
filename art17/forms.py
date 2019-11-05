@@ -35,7 +35,7 @@ METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
 INVALID_MS_REGION_PAIR = "Please select an MS country code that is available " \
     "for the selected region"
 
-NATURE_CHOICES = [('', ''), ('y', 'yes'), ('n', 'no'), ('nc', 'nc')]
+NATURE_CHOICES = [('', ''), ('g', 'gen'), ('n', 'nong'), ('nc', 'nc')]
 CONTRIB_METHODS = [
     ('A=', 'A='), ('A+', 'A+'), ('B1', 'B1'), ('B2', 'B2'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
 ]
@@ -308,7 +308,7 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         )
 
         self.method_habitat.choices = (
-            ZERO_METHODS + self.get_method_options(methods)
+            ZERO_METHODS + self.get_sf_options(methods)
         )
 
         self.future_range.choices = PROSPECTS_CHOICES
@@ -433,7 +433,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
             ZERO_METHODS + self.get_method_options(methods)
         )
 
-        self.method_structure.choices = ZERO_METHODS + self.get_sf_options(methods)
+        self.method_structure.choices = ZERO_METHODS + self.get_method_options(methods)
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
