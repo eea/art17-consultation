@@ -355,7 +355,7 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
 class SummaryManualFormSpeciesSTA(SummaryManualFormSpecies):
 
-    MS = SelectField(default='', validators=[species_ms_validator])
+    MS = SelectField(default=DEFAULT_MS, validators=[species_ms_validator])
 
 
 class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
@@ -483,7 +483,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
 class SummaryManualFormHabitatSTA(SummaryManualFormHabitat):
 
-    MS = SelectField(default='', validators=[habitat_ms_validator])
+    MS = SelectField(default=DEFAULT_MS, validators=[habitat_ms_validator])
 
 
 
@@ -505,7 +505,7 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 
 class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
 
-    MS = SelectField(default='', validators=[Optional(), species_ms_validator])
+    MS = SelectField(default=DEFAULT_MS, validators=[Optional(), species_ms_validator])
 
 
 class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
@@ -526,7 +526,7 @@ class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
 
 class SummaryManualFormHabitatRefSTA(SummaryManualFormHabitatRef):
 
-    MS = SelectField(default='', validators=[Optional(), habitat_ms_validator])
+    MS = SelectField(default=DEFAULT_MS, validators=[Optional(), habitat_ms_validator])
 
 
 class ProgressFilterForm(Form):
