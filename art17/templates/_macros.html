@@ -235,7 +235,9 @@
     </div>
     <a class="select block" tab-index data-popout="size_unit">
       <span class="selected-value no-break">
-        {{ min_field.data or ' ' }} | {{ max_field.data or ' ' }} | {{ best_field.data or ' ' }}
+        {% if min_field.data or max_field.data or best_field.data %}
+          {{ min_field.data or ' ' }} | {{ max_field.data or ' ' }} | {{ best_field.data or ' ' }}
+        {% endif %}
       </span>
     </a>
   </div>

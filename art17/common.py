@@ -353,7 +353,6 @@ def get_original_record_url(row):
         schema = 0
     if schema == '2018':
         return '{}#{}'.format(row.filename, code)
-
     url_scheme = CONVERTER_URLS.get(schema, {})
     url_format = url_scheme.get(page, '')
     info = urlparse(row.envelope)

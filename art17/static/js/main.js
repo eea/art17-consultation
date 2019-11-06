@@ -473,6 +473,16 @@ $(document).ready(function () {
         $(this).on('change', hab_condition_unknown_best,
                                 function(){update(hab_condition_unknown_min, hab_condition_unknown_max, hab_condition_unknown_best);});
     });
+    var inputs = document.querySelectorAll('.extend-input input');
+    if (inputs) {
+      for(var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('input', resizeInput);
+        resizeInput.call(inputs[i]);
+      }
+      function resizeInput() {
+        this.style.width = (this.value.length + 2) + "ch";
+      }
+    }
 });
 
 

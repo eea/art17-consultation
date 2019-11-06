@@ -25,9 +25,9 @@
 
     {% if not edit_ref %}
       {# Range #}
-        <td {% if form.range_surface_area.errors %}class="form-error-td"{% endif %}
+        <td {% if form.range_surface_area.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
             {{ numval_habitat_title(x=False) }}>
-          {{ form.range_surface_area(size=5) }}
+          {{ form.range_surface_area(size=5, class="selected-value no-break") }}
         </td>
 
         {{ method_conclusion_td('Status Range', form.method_range, form.conclusion_range) }}
@@ -41,17 +41,17 @@
         </td>
 
       {# Area #}
-        <td {% if form.coverage_surface_area_min.errors %}class="form-error-td"{% endif %}
+        <td {% if form.coverage_surface_area_min.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
             {{ numval_habitat_title(x=False) }}>
           {{ form.coverage_surface_area_min(size=5) }}
         </td>
 
-        <td {% if form.coverage_surface_area_max.errors %}class="form-error-td"{% endif %}
+        <td {% if form.coverage_surface_area_max.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
             {{ numval_habitat_title(x=False) }}>
           {{ form.coverage_surface_area_max(size=5) }}
         </td>
 
-        <td {% if form.coverage_surface_area.errors %}class="form-error-td"{% endif %}
+        <td {% if form.coverage_surface_area.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
             {{ numval_habitat_title(x=False) }}>
           {{ form.coverage_surface_area(size=5) }}
         </td>
