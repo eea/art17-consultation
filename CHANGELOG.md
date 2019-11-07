@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.0.1 - (2019-11-07)
+--------------------
+* Mody text for period 2013
+  [dianaboiangiu]
+
 3.0.0 - (2019-11-07)
 --------------------
 * Release new period 2013-2018
