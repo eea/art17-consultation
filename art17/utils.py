@@ -7,17 +7,20 @@ from path import path
 from flask import current_app as app
 
 
+
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
-valid_numeric = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
-                           u"|(>|>>|≈|<)?\s*((\d\.)?\d+)" + ")" + "\s*$")
-valid_ref = re.compile("^\s*" + "(" + "(\d\.)?\d+\s*-\s*(\d\.)?\d+" +
-                       u"|(>|>>|≈|<)?\s*((\d\.)?\d+)?|x" + ")" + "\s*$")
+valid_float = re.compile('^\s*((?=.*[1-9])\d*(?:\.\d{1,2})?|x)\s*$')
+valid_numeric = re.compile("^\s*(((\d*\.)?\d+\s*-\s*(\d*\.)?\d+" + u"|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$")
+valid_ref = re.compile("^\s*((\d*\.)?\d+\s*-\s*(\d\.)?\d+" + u"|(>|>>|≈|<)?\s*((\d*\.)?\d+)?|x)\s*$")
 empty_str = re.compile("^\s*$")
+operator = re.compile("^\s*" + u"(>|>>|≈|<|x)?\s*$")
 
 
 def str2num(s, default='N/A', number_format='%.2f'):
     """ Check if a string can be represented as integer"""
     if s is None:
+        return default
+    if s == 0:
         return default
     if isinstance(s, Decimal):
         buffer = number_format % s
@@ -49,6 +52,12 @@ def validate_field(s):
         return bool(valid_numeric.match(s))
     return True
 
+def validate_float(s):
+    """ Checks if a field is a valid float with 2 decimals
+    """
+    if s:
+        return bool(valid_float.match(s))
+    return True
 
 def validate_ref(s):
     """ Checks if a field is a valid numeric or progress value
@@ -57,6 +66,12 @@ def validate_ref(s):
         return bool(valid_ref.match(s))
     return True
 
+def validate_operator(s):
+    """ Checks if the field is (>,>>,<, x , ≈ )
+    """
+    if s:
+        return bool(operator.match(s))
+    return True
 
 def validate_nonempty(s):
     """ Checks if a ckeditor text is empty (whitespaces only)

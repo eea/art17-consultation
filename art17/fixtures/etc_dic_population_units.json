@@ -1,0 +1,806 @@
+[
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 0,
+            "population_units": "",
+            "details": "NULL",
+            "code": "NULL",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 2,
+            "population_units": "males",
+            "details": "Number of breeding males",
+            "code": "Breeding",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 6,
+            "population_units": "indiv.",
+            "details": "Number of individuals",
+            "code": "Individuals",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 8,
+            "population_units": "pairs",
+            "details": "Number of pairs",
+            "code": "Pairs",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 9,
+            "population_units": "shoots",
+            "details": "Number of shoots",
+            "code": "Shoots",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 1,
+            "population_units": "area",
+            "details": "Area covered by population",
+            "code": "Area",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 7,
+            "population_units": "loc.",
+            "details": "Number of localities",
+            "code": "Localities",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 4,
+            "population_units": "flowr.",
+            "details": "Number of flowering stems",
+            "code": "Flowering",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 10,
+            "population_units": "tuffs",
+            "details": "Number of tuffs",
+            "code": "Tuffs",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 5,
+            "population_units": "grids",
+            "details": "Number of map grid cells",
+            "code": "Grids",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 3,
+            "population_units": "colony",
+            "details": "Number of colonies",
+            "code": "Colonies",
+            "dataset_id": 1
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 19,
+            "population_units": "grid5",
+            "details": "number of map 5x5 km grid cells",
+            "code": "grids5x5",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 18,
+            "population_units": "grids",
+            "details": "number of map 1x1 km grid cells",
+            "code": "grids",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 1,
+            "population_units": "indiv.",
+            "details": "number of individuals",
+            "code": "i",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 17,
+            "population_units": "length",
+            "details": "length of inhabited feature in km",
+            "code": "length",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 20,
+            "population_units": "grids1",
+            "details": "number of map 10x10 km grid cells",
+            "code": "grids10x10",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 11,
+            "population_units": "locali",
+            "details": "number of localities",
+            "code": "localities",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 9,
+            "population_units": "tufts",
+            "details": "number of tufts",
+            "code": "tufts",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 14,
+            "population_units": "trees",
+            "details": "number of inhabited trees ",
+            "code": "trees",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 3,
+            "population_units": "subadu",
+            "details": "number of subadults",
+            "code": "subadults",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 15,
+            "population_units": "stones",
+            "details": "number of inhabited stones/boulders",
+            "code": "stones",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 8,
+            "population_units": "shoots",
+            "details": "number of shoots",
+            "code": "shoots",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 7,
+            "population_units": "pairs",
+            "details": "number of pairs",
+            "code": "p",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 6,
+            "population_units": "males",
+            "details": "number of males",
+            "code": "males",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 8,
+            "population_units": "logs",
+            "details": "number of inhabited logs",
+            "code": "logs",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 10,
+            "population_units": "fstems",
+            "details": "number of flowering stems",
+            "code": "fstems",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 12,
+            "population_units": "coloni",
+            "details": "number of colonies",
+            "code": "colonies",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 4,
+            "population_units": "bfemal",
+            "details": "number of breeding females",
+            "code": "bfemales",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 16,
+            "population_units": "area m",
+            "details": "area coverd by population in m2",
+            "code": "area",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 5,
+            "population_units": "cmales",
+            "details": "number of calling males",
+            "code": "cmales",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 2,
+            "population_units": "adults",
+            "details": "number of adults",
+            "code": "adults",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 0,
+            "population_units": "",
+            "details": "NULL",
+            "code": "NULL",
+            "dataset_id": 3
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 1,
+            "population_units": "area",
+            "details": "Area covered by population",
+            "code": "Area",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 19,
+            "population_units": "grids5",
+            "details": "number of map 5x5 km grid cells",
+            "code": "grids5x5",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 3,
+            "population_units": "colony",
+            "details": "Number of colonies",
+            "code": "Colonies",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 12,
+            "population_units": "coloni",
+            "details": "number of colonies",
+            "code": "colonies",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 5,
+            "population_units": "grids",
+            "details": "Number of map grid cells",
+            "code": "Grids",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 6,
+            "population_units": "indiv.",
+            "details": "Number of individuals",
+            "code": "Individuals",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 14,
+            "population_units": "trees",
+            "details": "number of inhabited trees",
+            "code": "trees",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 20,
+            "population_units": "grids1",
+            "details": "number of map 10x10 km grid cells",
+            "code": "grids10x10",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 5,
+            "population_units": "cmales",
+            "details": "number of calling males",
+            "code": "cmales",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 10,
+            "population_units": "fstems",
+            "details": "number of flowering stems",
+            "code": "fstems",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 4,
+            "population_units": "flowr.",
+            "details": "Number of flowering stems",
+            "code": "Flowering",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 17,
+            "population_units": "length",
+            "details": "length of inhabited feature in km",
+            "code": "length",
+            "dataset_id": 4
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 0,
+            "population_units": "",
+            "details": "NULL",
+            "code": "NULL",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 1,
+            "population_units": "adults",
+            "details": "number of adults",
+            "code": "adults",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 2,
+            "population_units": "area",
+            "details": "area covered by population in m2",
+            "code": "area",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 3,
+            "population_units": "bfemales",
+            "details": "number of breeding females",
+            "code": "bfemales",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 4,
+            "population_units": "cmales",
+            "details": "number of calling males",
+            "code": "cmales",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 5,
+            "population_units": "colonies",
+            "details": "number of colonies",
+            "code": "colonies",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 6,
+            "population_units": "fstems",
+            "details": "number of flowering stems",
+            "code": "fstems",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 7,
+            "population_units": "grids10x10",
+            "details": "number of map 10x10 km grid cells",
+            "code": "grids10x10",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 8,
+            "population_units": "grids1x1",
+            "details": "number of map 1x1 km grid cells",
+            "code": "grids1x1",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 9,
+            "population_units": "grids5x5",
+            "details": "number of map 5x5 km grid cells",
+            "code": "grids5x5",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 10,
+            "population_units": "i",
+            "details": "number of individuals",
+            "code": "i",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 11,
+            "population_units": "length",
+            "details": "length of inhabited feature in km",
+            "code": "length",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 12,
+            "population_units": "localities",
+            "details": "number of localities",
+            "code": "localities",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 13,
+            "population_units": "logs",
+            "details": "number of inhabited logs",
+            "code": "logs",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 14,
+            "population_units": "males",
+            "details": "number of inhabited logs",
+            "code": "males",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 15,
+            "population_units": "p",
+            "details": "number of pairs",
+            "code": "p",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 16,
+            "population_units": "shoots",
+            "details": "number of shoots",
+            "code": "shoots",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 17,
+            "population_units": "stones",
+            "details": "number of inhabited stones/boulders",
+            "code": "stones",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 18,
+            "population_units": "subadults",
+            "details": "number of subadults",
+            "code": "subadults",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 19,
+            "population_units": "trees",
+            "details": "number of inhabited trees",
+            "code": "trees",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 20,
+            "population_units": "tufts",
+            "details": "number of tufts",
+            "code": "tufts",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 21,
+            "population_units": "grids2x2",
+            "details": "number of map 2x2 km grid cells",
+            "code": "grids2x2",
+            "dataset_id": 5
+        
+        }
+    },
+    {
+        "model":"EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields":{
+            "order": 22,
+            "population_units": "iwintering",
+            "details": "number of wintering individuals",
+            "code": "iwintering",
+            "dataset_id": 5
+        
+        }
+    }
+]

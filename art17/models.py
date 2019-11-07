@@ -1,5 +1,6 @@
 # coding: utf-8
 import argparse
+import json
 import ldap
 import os
 from sqlalchemy import (
@@ -9,13 +10,17 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import or_
+from sqlalchemy import or_, inspect
 from flask import current_app as app
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
 from flask.ext.security import UserMixin, RoleMixin
 
-DEFAULT_MS = 'EU27'
+import sys
+from datetime import datetime
+
+
+DEFAULT_MS = 'EU28'
 
 db = SQLAlchemy()
 Base = db.Model
@@ -41,7 +46,12 @@ class Dataset(Base):
 
     @property
     def is_readonly(self):
-        return self.schema == '2006'
+        return (
+            self.schema == '2006' or
+            self.schema == '2012' or
+            self.schema == '2012bis'
+        )
+
 
     @property
     def stats(self):
@@ -152,47 +162,65 @@ class DicCountryCode(Base):
 class EtcDataHabitattypeAutomaticAssessment(Base):
     __tablename__ = 'etc_data_habitattype_automatic_assessment'
 
-    assessment_method = Column(String(3), primary_key=True, nullable=False)
+    country = Column(String(4))
+    assessment_method = Column(String(10), primary_key=True, nullable=False)
+    order = Column(Integer)
     habitatcode = Column(String(4), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
-    order = Column(Integer)
     range_surface_area = Column(String(100))
     percentage_range_surface_area = Column(String(100))
     range_trend = Column(String(100))
+    percentage_range_trend = Column(String(100))
     range_yearly_magnitude = Column(String(100))
     complementary_favourable_range = Column(String(100))
+    coverage_surface_area_min = Column(String(100))
+    coverage_surface_area_max = Column(String(100))
     coverage_surface_area = Column(String(100))
+    coverage_estimate_type = Column(String(50))
+    coverage_method = Column(String(50))
     percentage_coverage_surface_area = Column(String(100))
     coverage_trend = Column(String(100))
+    percentage_coverage_trend = Column(String(100))
     coverage_yearly_magnitude = Column(String(100))
     complementary_favourable_area = Column(String(100))
+    hab_condition_good = Column(String(50))
+    hab_condition_notgood = Column(String(50))
+    hab_condition_unknown = Column(String(50))
+    hab_condition_trend = Column(String(10))
+    percentage_hab_condition_trend = Column(String(100))
     conclusion_range = Column(String(3))
     conclusion_range_gis = Column(String(3))
     conclusion_area = Column('conclusion_coverage', String(3))
     conclusion_area_gis = Column('conclusion_coverage_gis', String(3))
     percentage_structure = Column(String(100))
     conclusion_structure = Column(String(3))
+    future_range = Column(String(100))
+    future_area = Column(String(100))
+    future_structure = Column(String(100))
     percentage_future = Column(String(100))
     conclusion_future = Column(String(3))
     percentage_assessment = Column(String(100))
     conclusion_assessment = Column(String(3))
     percentage_assessment_trend = Column(String(100))
     conclusion_assessment_trend = Column(String(1))
-    percentage_assessment_change = Column(String(100))
+    percentage_assessment_trend_unfavourable = Column(String(100))
     conclusion_assessment_change = Column(String(2))
     conclusion_assessment_prev = Column(String(3))
+    conclusion_assessment_trend_prev = Column(String(20))
     range_grid_area = Column(String(100))
     percentage_range_grid_area = Column(String(100))
     distribution_grid_area = Column(String(100))
     percentage_distribution_grid_area = Column(String(100))
+    percentage_assessment_change = Column(String(100))
+    percentage_assessment_trend_change = Column(String(100))
     assessment_needed = Column(Integer)
-
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
         default=4,
         primary_key=True,
     )
+    use_for_statistics = Column(Boolean)
 
     @hybrid_property
     def subject(self):
@@ -203,12 +231,12 @@ class EtcDataHabitattypeRegion(Base):
     __tablename__ = 'etc_data_habitattype_regions'
 
     country = Column(String(3), primary_key=True, nullable=False)
-    eu_country_code = Column(String(2), nullable=False)
+    eu_country_code = Column(String(2))
     delivery = Column(Integer, nullable=False)
     envelope = Column(String(50), nullable=False)
-    filename = Column(String(60), nullable=False)
+    filename = Column(String(300), nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
-    region_ms = Column(String(4))
+    region_ms = Column(String(4)) # region_orig for period 2018
     region_changed = Column(Integer)
     group = Column(String(21))
     annex = Column(String(11))
@@ -216,22 +244,46 @@ class EtcDataHabitattypeRegion(Base):
     priority = Column(String(1))
     code = Column(String(4))
     habitatcode = Column(String(4), primary_key=True)
+    presence_new = Column(String(60)) # presence
     habitattype_type = Column(String(10))
     habitattype_type_asses = Column(Integer)
     range_surface_area = Column(Float(asdecimal=True))
     range_change_reason = Column(String(150))
     percentage_range_surface_area = Column(Float(asdecimal=True))
-    range_trend = Column(String(1))
+    range_trend = Column(String(10))
+    range_trend_method = Column(String(50))
     range_yearly_magnitude = Column(Float(asdecimal=True))
     complementary_favourable_range_q = Column(String(2))
     complementary_favourable_range = Column(Float(asdecimal=True))
+    coverage_surface_area_min = Column(Float(asdecimal=True))
+    coverage_surface_area_max = Column(Float(asdecimal=True))
     coverage_surface_area = Column(Float(asdecimal=True))
+    coverage_etc = Column(Float(asdecimal=True))
+    coverage_estimate_type = Column(String(50))
+    coverage_method = Column(String(50))
     coverage_change_reason = Column(String(150))
     percentage_coverage_surface_area = Column(Float(asdecimal=True))
     coverage_trend = Column(String(1))
+    coverage_trend_method = Column(String(50))
     coverage_yearly_magnitude = Column(Float(asdecimal=True))
     complementary_favourable_area_q = Column(String(2))
     complementary_favourable_area = Column(Float(asdecimal=True))
+    hab_condition_good_min = Column(Float(asdecimal=True))
+    hab_condition_good_max = Column(Float(asdecimal=True))
+    hab_condition_notgood_min = Column(Float(asdecimal=True))
+    hab_condition_notgood_max = Column(Float(asdecimal=True))
+    hab_condition_unknown_min = Column(Float(asdecimal=True))
+    hab_condition_unknown_max = Column(Float(asdecimal=True))
+    hab_condition_method = Column(String(50))
+    hab_condition_good = Column(Float(asdecimal=True))
+    hab_condition_notgood = Column(Float(asdecimal=True))
+    hab_condition_unknown = Column(Float(asdecimal=True))
+    percentage_hab_condition_good = Column(Float(asdecimal=True))
+    hab_condition_trend = Column(String(50))
+    hab_condition_trend_method = Column(String(50))
+    future_range = Column(String(20))
+    future_area = Column(String(20))
+    future_structure = Column(String(20))
     conclusion_range = Column(String(3))
     conclusion_area = Column(String(3))
     conclusion_structure = Column(String(3))
@@ -239,7 +291,9 @@ class EtcDataHabitattypeRegion(Base):
     conclusion_assessment = Column(String(3))
     conclusion_assessment_trend = Column(String(1))
     conclusion_assessment_prev = Column(String(3))
-    conclusion_assessment_change = Column(String(2))
+    conclusion_assessment_trend_prev = Column(String(20))
+    conclusion_assessment_change = Column(String(20))
+    conclusion_assessment_trend_change = Column(String(20))
     range_quality = Column(String(13))
     coverage_quality = Column(String(13))
     complementary_other_information = Column(Text)
@@ -247,10 +301,8 @@ class EtcDataHabitattypeRegion(Base):
     range_grid_area = Column(Float(asdecimal=True))
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
+    distribution_method = Column(String(50))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
-    remote_url_2006 = Column(String(350), nullable=True)
-    remote_url_2012 = Column(String(350), nullable=True)
-
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
@@ -258,6 +310,11 @@ class EtcDataHabitattypeRegion(Base):
         primary_key=True,
     )
     dataset = relationship(Dataset)
+
+    remote_url_2006 = Column(String(350), nullable=True)
+    remote_url_2012 = Column(String(350), nullable=True)
+
+    use_for_statistics = Column(Boolean)
 
     habitat = relationship(
         'EtcDicHdHabitat',
@@ -328,25 +385,37 @@ class EtcDataHcoverageThreat(Base):
 class EtcDataSpeciesAutomaticAssessment(Base):
     __tablename__ = 'etc_data_species_automatic_assessment'
 
+    country = Column(String(10))
     assessment_method = Column(String(3), primary_key=True, nullable=False)
     order = Column(Integer)
-    assesment_speciesname = Column(String(60), primary_key=True,
-                                   nullable=False)
+    assessment_speciescode = Column(Integer)
+    assesment_speciesname = Column(String(60), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     range_surface_area = Column(String(100))
     percentage_range_surface_area = Column(String(100))
     range_trend = Column(String(100))
+    percentage_range_trend = Column(String(100))
     range_yearly_magnitude = Column(String(100))
     complementary_favourable_range = Column(String(100))
+    population_minimum_size = Column(String(100))
+    population_maximum_size = Column(String(100))
     population_size = Column(String(100))
+    population_size_unit = Column(String(20))
+    population_estimate_type = Column(String(50))
+    population_method = Column(String(50))
     percentage_population_mean_size = Column(String(100))
     population_trend = Column(String(100))
+    percentage_population_trend = Column(String(100))
     population_yearly_magnitude = Column(String(100))
     complementary_favourable_population = Column(String(100))
+    complementary_favourable_population_unit = Column(String(20))
     habitat_surface_area = Column(String(100))
     percentage_habitat_surface_area = Column(String(100))
     habitat_trend = Column(String(100))
     complementary_suitable_habitat = Column(String(100))
+    habitat_sufficiency_occupied = Column(String(20))
+    habitat_sufficiency_unoccupied = Column(String(20))
+    percentage_habitat_sufficiency = Column(String(100))
     percentage_future = Column(String(100))
     conclusion_range = Column(String(3))
     conclusion_range_gis = Column(String(3))
@@ -354,26 +423,32 @@ class EtcDataSpeciesAutomaticAssessment(Base):
     conclusion_population_gis = Column(String(3))
     conclusion_habitat = Column(String(3))
     conclusion_habitat_gis = Column(String(3))
+    future_range = Column(String(200))
+    future_population = Column(String(200))
+    future_habitat = Column(String(200))
     conclusion_future = Column(String(3))
     percentage_assessment = Column(String(100))
     conclusion_assessment = Column(String(3))
     percentage_assessment_trend = Column(String(100))
+    percentage_assessment_trend_unfavourable = Column(String(100))
     conclusion_assessment_trend = Column(String(1))
-    percentage_assessment_change = Column(String(100))
-    conclusion_assessment_change = Column(String(2))
+    conclusion_assessment_change = Column(String(20))
     conclusion_assessment_prev = Column(String(3))
+    conclusion_assessment_trend_prev = Column(String(20))
     range_grid_area = Column(String(100))
     percentage_range_grid_area = Column(String(100))
     distribution_grid_area = Column(String(100))
     percentage_distribution_grid_area = Column(String(100))
     assessment_needed = Column(Integer)
-
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
         default=4,
         primary_key=True,
     )
+    percentage_assessment_change = Column(String(100))
+    percentage_assessment_trend_change = Column(String(200))
+    use_for_statistics = Column(Boolean)
 
     @hybrid_property
     def subject(self):
@@ -387,9 +462,9 @@ class EtcDataSpeciesRegion(Base):
     eu_country_code = Column(String(2), nullable=False)
     delivery = Column(Integer, nullable=False)
     envelope = Column(String(50), nullable=False)
-    filename = Column(String(60), nullable=False)
+    filename = Column(String(300), nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
-    region_ms = Column(String(4))
+    region_ms = Column(String(4)) # region_orig for period 2018
     region_was_changed = Column(Integer)
     group_old = Column('group', String(21))
     group = Column('tax_group', String(20))
@@ -411,50 +486,75 @@ class EtcDataSpeciesRegion(Base):
     species_name_different = Column(Integer)
     eunis_species_code = Column(Integer)
     valid_speciesname = Column(String(50))
-    n2000_species_code = Column(Integer)
+    n2000_species_code = Column(Integer) 
+    speciescode_IRM =Column(String(10)) # 2018 n2000_species_code
+    assessment_speciescode =  Column(Integer)
     assesment_speciesname = Column(String(60))
-    assesment_speciesname_changed = Column(Integer)
+    assessment_speciesname_changed = Column(Integer)
+    presence_new = Column(String(60)) # presence
     grouped_assesment = Column(Integer)
     species_type = Column(String(10))
     species_type_asses = Column(Integer)
     range_surface_area = Column(Float(asdecimal=True))
     range_change_reason = Column(String(150))
-    percentage_range_surface_area = Column(Float(asdecimal=True))
     range_trend = Column(String(1))
+    range_trend_method = Column(String(50))
     range_yearly_magnitude = Column(Float(asdecimal=True))
     complementary_favourable_range_q = Column(String(2))
     complementary_favourable_range = Column(Float(asdecimal=True))
     population_minimum_size = Column(Float(asdecimal=True))
-    percentage_population_minimum_size = Column(Float(asdecimal=True))
     population_maximum_size = Column(Float(asdecimal=True))
+    population_size_unit = Column(String(10))
+    population_size = Column(Float(asdecimal=True)) # best value
+    percentage_range_surface_area = Column(Float(asdecimal=True))
+    population_estimate_type = Column(String(50))
+    population_method = Column(String(50))
+    population_alt_size = Column(Float(asdecimal=True))
+    population_alt_size_min = Column(Float(asdecimal=True))
+    population_alt_size_max = Column(Float(asdecimal=True))
+    population_alt_size_unit = Column(String(10))
+    population_alt_estimate_type = Column(String(50))
+    percentage_population_minimum_size = Column(Float(asdecimal=True))
     percentage_population_maximum_size = Column(Float(asdecimal=True))
     filled_population = Column(String(3))
-    population_size_unit = Column(String(10))
     population_units_agreed = Column(String(50))
+    population_units_change = Column(Boolean)
     population_units_other = Column(String(50))
     population_change_reason = Column(String(150))
     number_of_different_population_units = Column(Integer)
     different_population_percentage = Column(Integer)
     percentage_population_mean_size = Column(Float(asdecimal=True))
+    popsize_etc = Column(Float(asdecimal=True))
     population_trend = Column(String(1))
+    population_trend_method = Column(String(50))
     population_yearly_magnitude = Column(Float(asdecimal=True))
-    complementary_favourable_population_q = Column(String(2))
+    complementary_favourable_population_q = Column(String(4))
     complementary_favourable_population = Column(Float(asdecimal=True))
+    complementary_favourable_population_unit = Column(String(50))
     filled_complementary_favourable_population = Column(String(3))
     habitat_surface_area = Column(Float(asdecimal=True))
     habitat_change_reason = Column(String(150))
+    habitat_sufficiency_occupied = Column(String(20))
+    habitat_sufficiency_method = Column(String(20))
+    habitat_sufficiency_unoccupied = Column(String(20))
     percentage_habitat_surface_area = Column(Float(asdecimal=True))
     habitat_trend = Column(String(1))
+    habitat_trend_method = Column(String(50))
     complementary_suitable_habitat = Column(Float(asdecimal=True))
+    future_range = Column(String(20))
+    future_population = Column(String(20))
+    future_habitat = Column(String(20))
     future_prospects = Column(String(4))
     conclusion_range = Column(String(3))
     conclusion_population = Column(String(3))
     conclusion_habitat = Column(String(3))
     conclusion_future = Column(String(3))
     conclusion_assessment = Column(String(3))
-    conclusion_assessment_trend = Column(String(1))
+    conclusion_assessment_trend = Column(String(4))
     conclusion_assessment_prev = Column(String(3))
-    conclusion_assessment_change = Column(String(2))
+    conclusion_assessment_trend_prev = Column(String(20))
+    conclusion_assessment_change = Column(String(20))
+    conclusion_assessment_trend_change = Column(String(20))
     range_quality = Column(String(13))
     population_quality = Column(String(13))
     habitat_quality = Column(String(13))
@@ -463,10 +563,8 @@ class EtcDataSpeciesRegion(Base):
     range_grid_area = Column(Float(asdecimal=True))
     percentage_range_grid_area = Column(Float(asdecimal=True))
     distribution_grid_area = Column(Float(asdecimal=True))
+    distribution_method = Column(String(50))
     percentage_distribution_grid_area = Column(Float(asdecimal=True))
-    remote_url_2006 = Column(String(350), nullable=True)
-    remote_url_2012 = Column(String(350), nullable=True)
-
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
@@ -474,7 +572,11 @@ class EtcDataSpeciesRegion(Base):
         primary_key=True,
     )
     dataset = relationship(Dataset)
+    use_for_statistics = Column(Boolean)
+    population_unit = Column(String(20)) # this is actually population_size_unit
 
+    remote_url_2006 = Column(String(350), nullable=True)
+    remote_url_2012 = Column(String(350), nullable=True)
     species_type_details = relationship(
         'EtcDicSpeciesType',
         primaryjoin=(
@@ -615,7 +717,7 @@ class EtcDicMethod(Base):
     __tablename__ = 'etc_dic_method'
 
     order = Column(Integer)
-    method = Column(String(3), primary_key=True)
+    method = Column(String(10), primary_key=True)
     details = Column(String(125))
 
     dataset_id = Column(
@@ -639,7 +741,7 @@ class EtcDicPopulationUnit(Base):
     __tablename__ = 'etc_dic_population_units'
 
     order = Column(Integer)
-    population_units = Column(String(6), primary_key=True)
+    population_units = Column(String(16), primary_key=True)
     details = Column(String(40))
     code = Column(String(16))
 
@@ -824,25 +926,45 @@ class HabitattypesManualAssessment(Base):
     range_trend = Column(String(3))
     range_yearly_magnitude = Column(String(23))
     complementary_favourable_range = Column(String(23))
+    complementary_favourable_range_q = Column(String(2))
     coverage_surface_area = Column(String(23))
+    coverage_surface_area_min = Column(String(23))
+    coverage_surface_area_max = Column(String(23))
     coverage_trend = Column(String(3))
     coverage_yearly_magnitude = Column(String(23))
     complementary_favourable_area = Column(String(23))
+    complementary_favourable_area_q = Column(String(2))
     method_range = Column(String(3))
     conclusion_range = Column(String(2))
     method_area = Column(String(3))
     conclusion_area = Column(String(2))
+    hab_condition_good_min = Column(String(23))
+    hab_condition_good_max = Column(String(23))
+    hab_condition_good_best = Column(String(23))
+    hab_condition_notgood_min = Column(String(23))
+    hab_condition_notgood_max = Column(String(23))
+    hab_condition_notgood_best = Column(String(23))
+    hab_condition_unknown_min = Column(String(23))
+    hab_condition_unknown_max = Column(String(23))
+    hab_condition_unknown_best = Column(String(23))
+    hab_condition_trend =  Column(String(5))
     method_structure = Column(String(3))
     conclusion_structure = Column(String(2))
     method_future = Column(String(3))
+    future_range = Column(String(20))
+    future_area = Column(String(20))
+    future_structure = Column(String(20))
     conclusion_future = Column(String(2))
     method_assessment = Column(String(3))
     conclusion_assessment = Column(String(2))
     conclusion_assessment_trend = Column(String(1))
     conclusion_assessment_prev = Column(String(3))
-    conclusion_assessment_change = Column(String(2))
+    conclusion_assessment_trend_prev = Column(String(20))
+    conclusion_assessment_change = Column(String(20))
+    conclusion_assessment_trend_change = Column(String(20))
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
+    backcasted_2007 = Column(String(4))
     user_id = Column('user', String(25), primary_key=True, nullable=False,
                      default='')
     last_update = Column(String(16))
@@ -1068,11 +1190,18 @@ class SpeciesManualAssessment(Base):
     range_trend = Column(String(3))
     range_yearly_magnitude = Column(String(23))
     complementary_favourable_range = Column(String(23))
+    complementary_favourable_range_q = Column(String(2))
     population_size = Column(String(23))
     population_size_unit = Column(String(6))
+    population_minimum_size = Column(String(23))
+    population_maximum_size = Column(String(23))
+    population_best_value = Column(String(23))
+    population_unit = Column(String(20))
     population_trend = Column(String(3))
     population_yearly_magnitude = Column(String(23))
     complementary_favourable_population = Column(String(23))
+    complementary_favourable_population_q = Column(String(2))
+    complementary_favourable_population_unit = Column(String(20))
     habitat_surface_area = Column(String(23))
     habitat_trend = Column(String(3))
     complementary_suitable_habitat = Column(String(23))
@@ -1083,14 +1212,21 @@ class SpeciesManualAssessment(Base):
     method_habitat = Column(String(3))
     conclusion_habitat = Column(String(2))
     method_future = Column(String(3))
+    future_range = Column(String(20))
+    future_population = Column(String(20))
+    future_habitat = Column(String(20))
     conclusion_future = Column(String(2))
     method_assessment = Column(String(3))
     conclusion_assessment = Column(String(2))
     conclusion_assessment_trend = Column(String(1))
     conclusion_assessment_prev = Column(String(3))
+    conclusion_assessment_trend_prev = Column(String(20))
     conclusion_assessment_change = Column(String(2))
+    conclusion_assessment_trend_change = Column(String(20))
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
+    backcasted_2007 = Column(String(4))
+
     user_id = Column('user', String(25), primary_key=True, nullable=False,
                      default='')
     last_update = Column(String(16))
@@ -1350,7 +1486,10 @@ class LuHabitatManual2007(Base):
 
     subject = Column('habitatcode', String(50), primary_key=True)
     region = Column(String(4), primary_key=True)
-    conclusion_assessment = Column(String(2), nullable=True)
+    conclusion_assessment = Column(String(2), nullable=True) # used for period 2007
+    conclusion_assessment_prev = Column(String(3), nullable=True) # used for period 2013
+    conclusion_assessment_trend_prev = Column(String(20), nullable=True) # used for period 2013
+    backcasted_2007 = Column(String(4), nullable=True) # used for period 2013
     dataset_id = Column(
         'ext_dataset_id',
         ForeignKey('datasets.id'),
@@ -1406,12 +1545,74 @@ def loaddata(fixture):
     else:
         objects = get_fixture_objects(fixture)
         for object in objects:
-            kwargs = {
-                object['filter_field']: object[object['filter_field']]
-            }
+            filter_fields = object['filter_fields'].split(",")
+            kwargs = {}
+            for filter_field in filter_fields:
+                kwargs.update({filter_field: object['fields'][filter_field]})
             database_objects = eval(object['model']).query.filter_by(**kwargs)
-            for database_object in database_objects:
-                for (field, value) in object['fields'].iteritems():
-                    setattr(database_object, field, value)
-                session.add(database_object)
+            if not database_objects.first():
+                session.add(eval(object['model'])(**object['fields']))
+                session.commit()
+            else:
+                for database_object in database_objects:
+                    for (field, value) in object['fields'].iteritems():
+                        setattr(database_object, field, value)
+                    session.add(database_object)
         session.commit()
+
+
+@db_manager.command
+def dumpdata(model):
+    thismodule = sys.modules[__name__]
+    base_class = getattr(thismodule, model)
+
+    relationship_fields = [
+        rfield for rfield, _ in inspect(base_class).relationships.items()]
+    model_fields = [
+        field for field in inspect(base_class).attrs.keys() if field not in relationship_fields]
+
+    objects = []
+    primary_keys = []
+
+    for field in model_fields:
+        value = getattr(inspect(base_class).attrs, field)
+
+        if value.columns[0].primary_key:
+            primary_keys.append(field)
+    entries = base_class.query.all()
+    for entry in entries:
+        kwargs = {
+            "model": model,
+            "filter_fields": ",".join(primary_keys),
+            "fields": {}
+        }
+
+        for field in model_fields:
+            value = getattr(entry, field)
+
+            if type(value) == datetime:
+                value = value.isoformat()
+
+            kwargs["fields"][field] = value
+
+        for rfield in relationship_fields:
+            class_field = getattr(entry, rfield)
+
+            if isinstance(class_field, sqlalchemy.orm.collections.InstrumentedList):
+                kwargs["fields"][rfield] = []
+                for subfield in class_field:
+                    kwargs["fields"][rfield].append(subfield.id)
+            else:
+                try:
+                    kwargs["fields"][rfield] = class_field.id
+                except AttributeError:
+                    pass
+
+        app_json = json.dumps(kwargs)
+        objects.append(app_json)
+
+    json_dir = os.path.abspath(os.path.dirname('manage.py'))
+    json_name = model + '.json'
+
+    with open(os.path.join(json_dir, json_name), 'w') as f:
+        f.write('[' + ','.join(objects) + ']')

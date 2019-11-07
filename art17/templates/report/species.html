@@ -40,7 +40,11 @@
         {{ current_selection|join(', ') }}.
       </caption>
 
-      {% include "common/species_table_header.html" with context %}
+      {% if dataset.schema == '2018' %}
+        {% include "common/species_table_header_2018.html" with context %}
+      {% else %}
+        {% include "common/species_table_header.html" with context %}
+      {% endif %}
 
       <tbody class="stripe_3rd">
 
@@ -84,14 +88,17 @@
               {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
             </td>
             {% else %}
-
-              {% include 'summary/species/content/range.html' with context %}
-              {% include 'summary/species/content/population.html' with context %}
-              {% include 'summary/species/content/habitat.html' with context %}
-              {% include 'summary/species/content/future_prospects.html' with context %}
-              {% include 'summary/common/content/overall_assessment.html' with context %}
-              {% include 'summary/species/content/grided_maps.html' with context %}
-              {% include 'summary/species/content/quality.html' with context %}
+              {% if dataset.schema == '2018' %}
+                {% include 'summary/species/content/content_2018.html' with context %}
+              {% else %}
+                {% include 'summary/species/content/range.html' with context %}
+                {% include 'summary/species/content/population.html' with context %}
+                {% include 'summary/species/content/habitat.html' with context %}
+                {% include 'summary/species/content/future_prospects.html' with context %}
+                {% include 'summary/common/content/overall_assessment.html' with context %}
+                {% include 'summary/species/content/grided_maps.html' with context %}
+                {% include 'summary/species/content/quality.html' with context %}
+              {% endif %}
             {% endif %}
           </tr>
         {% endfor %}

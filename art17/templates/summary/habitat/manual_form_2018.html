@@ -1,0 +1,258 @@
+{% from '_macros.html' import conclusion_td with context %}
+{% from '_macros.html' import method_conclusion_td with context %}
+{% from '_macros.html' import select_conclusion_td with context %}
+{% from '_macros.html' import numval_habitat_title, operator_size, size_unit, min_max_best %}
+
+
+{% set form=manual_form %}
+  {% set is_form=true %}
+  <tr class="form_row" id="theform">
+    <td></td>
+
+    {% if can_select_MS() %}
+      <td {% if form.MS.errors %}class="form-error-td"{% endif %}>
+        {{ form.MS() }}
+      </td>
+    {% else %}
+      <td>
+        {{ manual_assessment.MS or default_ms }}
+      </td>
+    {% endif %}
+
+    {% if not region %}
+      <td>{{ manual_assessment.region }}</td>
+    {% endif %}
+
+    {% if not edit_ref %}
+      {# Range #}
+        <td {% if form.range_surface_area.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+            {{ numval_habitat_title(x=False) }}>
+          {{ form.range_surface_area(size=5, class="selected-value no-break") }}
+        </td>
+
+        {{ method_conclusion_td('Status Range', form.method_range, form.conclusion_range) }}
+
+        <td {% if form.range_trend.errors %}class="form-error-td"{% endif %}>
+          {{ form.range_trend() }}
+        </td>
+
+        <td {% if form.complementary_favourable_range_q.errors or form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}>
+            {{ operator_size(form.complementary_favourable_range_q, form.complementary_favourable_range, 5) }}
+        </td>
+
+      {# Area #}
+        <td {% if form.coverage_surface_area_min.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+            {{ numval_habitat_title(x=False) }}>
+          {{ form.coverage_surface_area_min(size=5) }}
+        </td>
+
+        <td {% if form.coverage_surface_area_max.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+            {{ numval_habitat_title(x=False) }}>
+          {{ form.coverage_surface_area_max(size=5) }}
+        </td>
+
+        <td {% if form.coverage_surface_area.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+            {{ numval_habitat_title(x=False) }}>
+          {{ form.coverage_surface_area(size=5) }}
+        </td>
+
+        <td></td>
+
+        <td></td>
+
+        {{ method_conclusion_td('Status Area', form.method_area, form.conclusion_area) }}
+
+        <td {% if form.coverage_trend.errors %}class="form-error-td"{% endif %}>
+          {{ form.coverage_trend() }}
+        </td>
+
+        <td {% if form.complementary_favourable_area_q.errors or form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}>
+            {{ operator_size(form.complementary_favourable_area_q, form.complementary_favourable_area, 5) }}
+        </td>
+
+      {# Structure and functions #}
+
+        <td {% if form.hab_condition_good_min.errors or form.hab_condition_good_max.errors
+                  or form.hab_condition_good_best.errors %}class="form-error-td"{% endif %} title="Min | Max | Best">
+            {{ min_max_best(form.hab_condition_good_min, form.hab_condition_good_max, form.hab_condition_good_best, 5) }}
+        </td>
+
+        <td {% if form.hab_condition_unknown_min.errors or form.hab_condition_unknown_max.errors
+          or form.hab_condition_unknown_best.errors %}class="form-error-td"{% endif %} title="Min | Max | Best">
+          {{ min_max_best(form.hab_condition_notgood_min, form.hab_condition_notgood_max, form.hab_condition_notgood_best, 5) }}
+        </td>
+
+        <td {% if form.hab_condition_unknown_min.errors or form.hab_condition_unknown_max.errors
+          or form.hab_condition_unknown_best.errors %}class="form-error-td"{% endif %} title="Min | Max | Best">
+          {{ min_max_best(form.hab_condition_unknown_min, form.hab_condition_unknown_max, form.hab_condition_unknown_best, 5) }}
+        </td>
+
+        {{ method_conclusion_td('Status Structure and Functions', form.method_structure, form.conclusion_structure) }}
+
+        <td {% if form.hab_condition_trend.errors %}class="form-error-td"{% endif %}>
+          {{ form.hab_condition_trend() }}
+        </td>
+
+      {# Future prospects #}
+        <td {% if form.future_range.errors %}class="form-error-td"{% endif %}>
+          {{ form.future_range() }}
+        </td>
+
+        <td {% if form.future_area.errors %}class="form-error-td"{% endif %}>
+          {{ form.future_area() }}
+        </td>
+
+        <td {% if form.future_structure.errors %}class="form-error-td"{% endif %}>
+          {{ form.future_structure() }}
+        </td>
+
+        {{ method_conclusion_td('Status Future Prospects', form.method_future, form.conclusion_future) }}
+
+      {# Overall assessment #}
+        {{ method_conclusion_td('Current CS Conclusions', form.method_assessment, form.conclusion_assessment) }}
+
+        <td {% if form.conclusion_assessment_trend.errors %}class="form-error-td"{% endif %}>
+          {{ form.conclusion_assessment_trend() }}
+        </td>
+
+        {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev, 'At least one conclusion shall be added') }}
+
+        <td {% if form.conclusion_assessment_trend_prev.errors %}class="form-error-td"{% endif %}>
+            {{ form.conclusion_assessment_trend_prev() }}
+        </td>
+
+        <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
+          {{ form.conclusion_assessment_change() }}
+        </td>
+
+        <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
+          {{ form.conclusion_assessment_trend_change() }}
+        </td>
+
+      {# Contrib target 1 #}
+
+      {{ select_conclusion_td('Backcasted 2007', form.backcasted_2007, 'At least one conclusion shall be added') }}
+
+      <td {% if form.method_target1.errors %}class="form-error-td"{% endif %}>
+        {{ form.method_target1() }}
+      </td>
+
+    {% else %}
+      {# Edit reference values form #}
+      {% set ass = manual_assessment %}
+      {# Range #}
+      <td class="text-center">
+        {{ ass.range_surface_area }}
+      </td>
+
+      {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
+
+      <td class="text-center">
+        {{ ass.range_trend }}
+      </td>
+
+      <td {% if form.complementary_favourable_range_q.errors or form.complementary_favourable_range.errors %}class="form-error-td"{% endif %}>
+          {{ operator_size(form.complementary_favourable_range_q, form.complementary_favourable_range, 5) }}
+      </td>
+
+      {# Area #}
+      <td class="text-center">
+        {{ ass.coverage_surface_area_min }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.coverage_surface_area_max }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.coverage_surface_area }}
+      </td>
+
+      <td></td>
+
+      <td></td>
+
+      {{ conclusion_td(ass.conclusion_area, ass.method_area) }}
+
+      <td class="text-center">
+        {{ ass.coverage_trend }}
+      </td>
+
+      <td {% if form.complementary_favourable_area_q.errors or form.complementary_favourable_area.errors %}class="form-error-td"{% endif %}>
+          {{ operator_size(form.complementary_favourable_area_q, form.complementary_favourable_area, 5) }}
+      </td>
+
+      {# Structure #}
+
+      <td class="text-center" title="Min | Max | Best">
+          {{ ass.hab_condition_good_min or '-' }} | {{ ass.hab_condition_good_max or '-' }} | {{ ass.hab_condition_good_best or '-' }}
+      </td>
+
+      <td class="text-center" title="Min | Max | Best">
+        {{ ass.hab_condition_notgood_min or '-' }} | {{ ass.hab_condition_notgood_max or '-' }} | {{ ass.hab_condition_notgood_best or '-' }}
+      </td>
+
+      <td class="text-center" title="Min | Max | Best">
+        {{ ass.hab_condition_unknown_min or '-' }} | {{ ass.hab_condition_unknown_max or '-' }} | {{ ass.hab_condition_unknown_best or '-' }}
+      </td>
+
+      {{ conclusion_td(ass.conclusion_structure, ass.method_structure) }}
+
+      <td class="text-center">
+        {{ ass.hab_condition_trend }}
+      </td>
+
+      {# Future prospects #}
+      <td class="text-center">
+        {{ ass.future_range }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.future_area }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.future_structure }}
+      </td>
+
+      {{ conclusion_td(ass.conclusion_future, ass.method_future) }}
+
+      {# Overall #}
+      {{ conclusion_td(ass.conclusion_assessment, ass.method_assessment) }}
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend }}
+      </td>
+
+      {{ conclusion_td(ass.conclusion_assessment_prev , ass.conclusion_assessment_prev) }}
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend_prev }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_change }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend_change }}
+      </td>
+
+      {{ conclusion_td(ass.backcasted_2007 , ass.backcasted_2007) }}
+
+      <td class="text-center">
+        {{ ass.method_target1 }}
+      </td>
+
+    {% endif %}
+
+    {% include 'summary/common/manual/edit_buttons.html' %}
+  </tr>
+  {% if form.errors %}
+  <tr class="form_row">
+    <td colspan="{{ colspan_all - 1 }}" class="form-error-msg regular">
+      Errors:
+        {{ form.all_errors()|safe }}
+    </td>
+  </tr>
+  {% endif %}

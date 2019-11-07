@@ -1,34 +1,28 @@
 {% from '_macros.html' import parse_errors with context %}
 
-    <td class="number border_left"
-      {% set title=population_size_unit_title(row, dataset.schema) %}
-      {% if title %}title="{{ title }}"{% endif %}>
-      {{ population_size_unit(row) }}
-    </td>
+<td class="number border_left" {% set title=population_size_unit_title(row, dataset.schema) %}
+    {% if title %}title="{{ title }}"{% endif %}>
+  {{ population_size_unit(row) }}
+</td>
 
-    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') %}
-    <td {{ parse_errors(['conclusion_population',
-                         'percentage_population_mean_size'],
-                          row, qa_errors,
-                          classes=classes) }}>
-      <span class="conclusion">{{ row.percentage_population_mean_size|str1num }}</span>
-    </td>
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_population, '') %}
+<td {{ parse_errors(['conclusion_population', 'percentage_population_mean_size'],
+       row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.percentage_population_mean_size|str1num }}</span>
+</td>
 
-    {% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude',
-                                              row, qa_errors) %}
-    {% if not qtitle %}
-      {% if row.population_yearly_magnitude -%}
-        {% set qtitle = 'Yearly magnitude = ' + row.population_yearly_magnitude|string %}
-      {%- endif -%}
-    {% endif %}
-    <td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
-      {{ row.population_trend or 'N/A' }}
-    </td>
+{% set qtitle, qclasses = parse_qa_errors('population_yearly_magnitude', row, qa_errors) %}
+{% if not qtitle %}
+  {% if row.population_yearly_magnitude -%}
+    {% set qtitle = 'Yearly magnitude = ' + row.population_yearly_magnitude|string %}
+  {%- endif -%}
+{% endif %}
 
-    <td {{ parse_errors(['complementary_favourable_population_q',
-                         'complementary_favourable_population',
-                         'filled_complementary_favourable_population'],
-                          row, qa_errors,
-                          classes='number border_right') }}>
-      {{ population_ref(row) }}
-    </td>
+<td class="center {{ qclasses }}" {% if qtitle %}title="{{ qtitle }}"{% endif %}>
+  {{ row.population_trend or 'N/A' }}
+</td>
+
+<td {{ parse_errors(['complementary_favourable_population_q', 'complementary_favourable_population',
+       'filled_complementary_favourable_population'], row, qa_errors, classes='number border_right') }}>
+  {{ population_ref(row) }}
+</td>

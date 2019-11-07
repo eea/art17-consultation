@@ -1,7 +1,8 @@
 {% from '_macros.html' import parse_errors with context %}
 
-{% set classes=CONCLUSION_CLASSES.get(row.conclusion_structure, '') + ' border' %}
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_structure, '') %}
 
 <td {{ parse_errors(['conclusion_structure'], row, qa_errors, classes=classes) }}>
   <span class="conclusion">{{ row.conclusion_structure|str2num }}</span>
 </td>
+

@@ -1,34 +1,30 @@
 {% from '_macros.html' import parse_errors, reason_title with context %}
 
-    <td {{ parse_errors('habitat_surface_area', row, qa_errors,
-            title=reason_title(dataset.schema, row.habitat_change_reason),
-            classes='number border_left') }}>
-        {{ row.habitat_surface_area|str2num }}
-    </td>
+<td {{ parse_errors('habitat_surface_area', row, qa_errors,
+       title=reason_title(dataset.schema, row.habitat_change_reason), classes='number border_left') }}>
+  {{ row.habitat_surface_area|str2num }}
+</td>
 
-    {% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
-    <td {{ parse_errors(['conclusion_habitat',
-                         'percentage_habitat_surface_area'],
-                          row, qa_errors,
-                          classes=classes) }}>
-      <span class="conclusion">{{ row.percentage_habitat_surface_area|str1num }}</span>
-    </td>
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_habitat, '') %}
+<td {{ parse_errors(['conclusion_habitat', 'percentage_habitat_surface_area'],
+       row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.percentage_habitat_surface_area|str1num }}</span>
+</td>
 
-    {% if dataset.schema == '2006' %}
-        <td></td>
-    {% else %}
-        {% set title=QUALITIES.get(row.habitat_quality|get_quality|upper, '') %}
-        <td {% if title %}title="{{ title }}"{% endif %} class="center">
-            {{ row.habitat_quality|get_quality }}
-        </td>
-    {% endif %}
+{% if dataset.schema == '2006' %}
+  <td></td>
+{% else %}
+  {% set title=QUALITIES.get(row.habitat_quality|get_quality|upper, '') %}
+  <td {% if title %}title="{{ title }}"{% endif %} class="center">
+    {{ row.habitat_quality|get_quality }}
+  </td>
+{% endif %}
 
-    <td {{ parse_errors('habitat_trend', row, qa_errors, classes='center') }}>
-        {{ row.habitat_trend or 'N/A' }}
-    </td>
+<td {{ parse_errors('habitat_trend', row, qa_errors, classes='center') }}>
+  {{ row.habitat_trend or 'N/A' }}
+</td>
 
-    <td {{ parse_errors('complementary_suitable_habitat',
-                        row, qa_errors,
-                        classes='number border_right') }}>
-      <span>{{ row.complementary_suitable_habitat|str2num }}</span>
-    </td>
+<td {{ parse_errors('complementary_suitable_habitat',
+       row, qa_errors, classes='number border_right') }}>
+  <span>{{ row.complementary_suitable_habitat|str2num }}</span>
+</td>

@@ -45,7 +45,9 @@ class DebugAuthProvider(object):
     def before_request_handler(self):
         user_id = flask.session.get('user_id')
         if user_id:
-            set_user(user_id=user_id)
+            user = models.RegisteredUser.query.get(user_id)
+            if user:
+                set_user(user_id=user_id, is_ldap_user=user.is_ldap)
 
     def view(self):
         auth_debug_allowed = bool(flask.current_app.config.get('AUTH_DEBUG'))

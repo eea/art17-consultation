@@ -568,6 +568,15 @@ CONVERTER_URLS = {
                    'file={path}/{filename}&conv=350&source=remote' +
                    '#{subject}{region}',
     },
+    '2018': {
+        'species': '{scheme}://{host}/Converters/run_conversion?' +
+                   'file={path}/{filename}&conv=593&source=remote' +
+                   '#{subject}{region}',
+        'habitat': '{scheme}://{host}/Converters/run_conversion?' +
+                   'file={path}/{filename}&conv=589&source=remote' +
+                   '#{subject}{region}',
+    },
+
 
 }
 

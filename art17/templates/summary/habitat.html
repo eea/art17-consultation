@@ -14,153 +14,182 @@
   <h2>Habitat assessments at EU biogeographical level</h2>
 
   <p>Assessments on the conservation status of the habitat types and species of Community interest have been carried out in EU25 for the period 2001-2006 and in EU 27 for the period 2007-2012, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view.
-  Choose a period, a group, then a habitat type belonging to that group.  Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat type.
+     Choose a period, a group, then a habitat type belonging to that group.  Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat type.
   </p>
   {% if dataset.schema == '2012bis' %}
-  <p class="note">IMPORTANT: '2007-2012bis' reporting period displays data from the delayed delivery by Greece together
-                  with the data from other Member States for the Mediterranean and Marine Mediterranean regions. To consult
-                  the full set of data from 2007-2012 reporting with EU biogeographical assessments as provided in the State
-                  of Nature Report, filter Period = '2007-2012'.
-                  <br>
-                  Data from the delayed delivery by Greece have the ‘MS’ code ‘GRb’.
-  </p>
+    <p class="note">IMPORTANT: '2007-2012bis' reporting period displays data from the delayed delivery by Greece together
+                    with the data from other Member States for the Mediterranean and Marine Mediterranean regions. To consult
+                    the full set of data from 2007-2012 reporting with EU biogeographical assessments as provided in the State
+                    of Nature Report, filter Period = '2007-2012'.
+                    <br>
+                    Data from the delayed delivery by Greece have the ‘MS’ code ‘GRb’.
+    </p>
   {% endif %}
 
   {% include 'summary/filters.html' %}
 
-    {% set colspan_all=26 if region else 27 %}
-    {% if current_selection %}
+  {% if dataset.schema == '2018' %}
+    {% set colspan_all=40 if region else 41 %}
+  {% else %}
+    {% set colspan_all=34 if region else 35 %}
+  {% endif %}
+
+  {% if current_selection %}
 
     {% include 'summary/wiki_buttons.html' %}
     {% include 'common/note.html' %}
     {% include 'common/table_legend.html' %}
 
     <form class="form" method="post" action="#theform">
-    <table class="complex_datatable">
-      <caption>
-      <b>Current selection</b>:
-      {{ current_selection|join(', ') }}.
-      {% if annexes %}
-          <b>Annexes</b> {{ annexes|join(', ') }}.
-      {% endif %}
-      {% set show_all_url=url_for(progress_endpoint,
-          period=dataset.id,
-          group=group,
-          conclusion='overall assessment') %}
-        <a href="{{ show_all_url }}">Show all {{ group }}</a>
-      </caption>
+      <div style="overflow-x:auto;">
+        <table class="complex_datatable">
+          <caption>
+            <b>Current selection</b>:
+            {{ current_selection|join(', ') }}.
+            {% if annexes %}
+              <b>Annexes</b> {{ annexes|join(', ') }}.
+            {% endif %}
+            {% set show_all_url=url_for(progress_endpoint, period=dataset.id,
+                                        group=group, conclusion='overall assessment') %}
+            <a href="{{ show_all_url }}">Show all {{ group }}</a>
+          </caption>
 
-      {% include 'common/habitat_table_header.html' with context %}
-
-      <tbody>
-      {% for row in objects %}
-        {% set visible = can_view(row, restricted_countries) %}
-        {% set qa_errors = record_errors(row) %}
-        <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-
-          {% include 'summary/common/content/ms_region.html' %}
-
-          {% if not visible %}
-          <td colspan="4">
-            {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
-          </td>
+          {% if dataset.schema == '2018' %}
+            {%  include 'common/habitat_table_header_2018.html' with context %}
           {% else %}
-
-            {% include 'summary/habitat/content/range.html' with context %}
-            {% include 'summary/habitat/content/area.html' with context %}
-            {% include 'summary/habitat/content/struct_func.html' with context %}
-            {% include 'summary/habitat/content/future_prosp.html' with context %}
-            {% include 'summary/common/content/overall_assessment.html' with context %}
-            {% include 'summary/habitat/content/grided_maps.html' with context %}
-            {% include 'summary/habitat/content/quality.html' with context %}
-
+            {% include 'common/habitat_table_header.html' with context %}
           {% endif %}
-        </tr>
-      {% endfor %}
-      </tbody>
 
-      <tbody class="thead">
-        <tr class="section-header">
-          <th class="table-title" colspan="{{ colspan_all }}">
-            <div class="table-separator"></div>
+          <tbody>
+            {% for row in objects %}
+              {% set visible = can_view(row, restricted_countries) %}
+              {% set qa_errors = record_errors(row) %}
+              <tr {% if row.is_assesm %}class="assesm"{% endif %}>
+                {% include 'summary/common/content/ms_region.html' %}
 
-            Automatic Assessments
-            <a class="button btn-gray" data-toggle onclick="$('#automatic_body').toggleClass('hidden')">
-              Show,Hide
-            </a>
-          </th>
-        </tr>
-      </tbody>
-      <tbody id="automatic_body" class="stripe_3rd hidden">
-      {% for row in auto_objects %}
-      <tr>
-        {% include 'summary/common/auto/ms.html' with context %}
+                {% if not visible %}
+                  <td colspan="4">
+                    {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
+                  </td>
+                {% else %}
+                  {% if dataset.schema == '2018' %}
+                    {% include 'summary/habitat/content/content_2018.html' with context %}
+                  {% else %}
+                    {% include 'summary/habitat/content/range.html' with context %}
+                    {% include 'summary/habitat/content/area.html' with context %}
+                    {% include 'summary/habitat/content/struct_func.html' with context %}
+                    {% include 'summary/habitat/content/future_prosp.html' with context %}
+                    {% include 'summary/common/content/overall_assessment.html' with context %}
+                    {% include 'summary/habitat/content/grided_maps.html' with context %}
+                    {% include 'summary/habitat/content/quality.html' with context %}
+                  {% endif %}
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
 
-        {% include 'summary/common/auto/range.html' with context %}
-        {% include 'summary/habitat/auto/area.html' with context %}
-        {% include 'summary/habitat/auto/struct_funct.html' with context %}
-        {% include 'summary/common/auto/future_prospects.html' with context %}
-        {% include 'summary/common/auto/overall_assessment.html' with context %}
-        {% include 'summary/common/auto/grided_maps.html' %}
-        <td class="border" colspan="7">{# padding #}</td>
-      </tr>
-      {% endfor %}
-      </tbody>
+          <tbody class="thead">
+            <tr class="section-header">
+              <th class="table-title" colspan="{{ colspan_all }}">
+                <div class="table-separator"></div>
+                Automatic Assessments
+                <a class="button btn-gray" data-toggle onclick="$('#automatic_body').toggleClass('hidden')">
+                  Show,Hide
+                </a>
+              </th>
+            </tr>
+          </tbody>
 
-      {# Manual assessments #}
+          <tbody id="automatic_body" class="stripe_3rd hidden">
+            {% for row in auto_objects %}
+              <tr>
+                {% if dataset.schema == '2018' %}
+                  {% include 'summary/habitat/auto/content_2018.html' with context %}
+                {% else %}
+                  {% include 'summary/common/auto/ms.html' with context %}
+                  {% include 'summary/common/auto/range.html' with context %}
+                  {% include 'summary/habitat/auto/area.html' with context %}
+                  {% include 'summary/habitat/auto/struct_funct.html' with context %}
+                  {% include 'summary/common/auto/future_prospects.html' with context %}
+                  {% include 'summary/common/auto/overall_assessment.html' with context %}
+                  {% include 'summary/common/auto/grided_maps.html' %}
+                  <td class="border" colspan="7">{# padding #}</td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
 
-      <tbody class="thead" id="manual-thead">
-      <tr class="section-header">
-        <th class="table-title" colspan="{{ colspan_all }}">
-          <div class="table-separator"></div>
-          {% if dataset.schema == '2006' %}
-          ETC/BD biogeographical assessment &amp; users proposed corrections
-          {% else %}
-          EU Biogeographical assessment and proposed corrections
+          {# Manual assessments #}
+          <tbody class="thead" id="manual-thead">
+            <tr class="section-header">
+              <th class="table-title" colspan="{{ colspan_all }}">
+                <div class="table-separator"></div>
+                {% if dataset.schema == '2006' %}
+                  ETC/BD biogeographical assessment &amp; users proposed corrections
+                {% elif dataset.schema == '2018' %}
+                  EU biogeographical assessments
+                {% else %}
+                  EU Biogeographical assessment and proposed corrections
+                {% endif %}
+              </th>
+            </tr>
+            {% if dataset.schema == '2018' %}
+              {% include 'common/habitat_manual_table_header_2018.html' %}
+            {% else %}
+              {% include 'common/habitat_manual_table_header.html' %}
+            {% endif %}
+          </tbody>
+
+          <tbody>
+            {% for row in manual_objects %}
+              {% if row != manual_assessment %}
+                <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset_id == 3 and dataset.id == 4 %}manual_assessment{% endif%}">
+                  {# MS and region #}
+                  {% if dataset.schema == '2018' %}
+                    {% include 'summary/habitat/manual/manual_2018.html' %}
+                  {% else %}
+                    {% include 'summary/common/manual/ms.html' %}
+                    {% include 'summary/common/manual/range.html' %}
+                    {% include 'summary/habitat/manual/area.html' %}
+                    {% include 'summary/habitat/manual/struct_func.html' %}
+                    {% include 'summary/common/manual/future_prospects.html' %}
+                    {% include 'summary/common/manual/overall_assessment.html' %}
+                    {% include 'summary/common/manual/contrib_target1.html' %}
+                    {% include 'summary/common/manual/actions.html' with context%}
+                    {% include 'summary/common/manual/conclusion_details.html' %}
+                  {% endif %}
+                </tr>
+              {% else %}
+                {% if dataset.schema == '2018' %}
+                  {% include 'summary/habitat/manual_form_2018.html' %}
+                {% else %}
+                  {% include 'summary/habitat/manual_form.html' %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </tbody>
+
+          {# Add manual assessment form #}
+          {% set can_add, warning_message = can_add_conclusion(dataset, 'habitat', subject, region) %}
+          {% if not manual_assessment %}
+            <tbody class="form">
+              {% if can_add %}
+                {% if dataset.schema == '2018' %}
+                  {% include 'summary/habitat/manual_form_2018.html' %}
+                {% else %}
+                  {% include 'summary/habitat/manual_form.html' %}
+                {% endif %}
+              {% else %}
+                <tr class="form_row">
+                  <td colspan="{{ colspan_all }}">{{ warning_message }}</td>
+                </tr>
+              {% endif %}
+            </tbody>
           {% endif %}
-        </th>
-      </tr>
-      {% include 'common/habitat_manual_table_header.html' %}
-      </tbody>
-
-      <tbody>
-      {% for row in manual_objects %}
-        {% if row != manual_assessment %}
-        <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset_id == 3 and dataset.id == 4 %}manual_assessment{% endif%}">
-          {# MS and region #}
-          {% include 'summary/common/manual/ms.html' %}
-
-          {% include 'summary/common/manual/range.html' %}
-          {% include 'summary/habitat/manual/area.html' %}
-          {% include 'summary/habitat/manual/struct_func.html' %}
-          {% include 'summary/common/manual/future_prospects.html' %}
-          {% include 'summary/common/manual/overall_assessment.html' %}
-          {% include 'summary/common/manual/contrib_target1.html' %}
-
-          {% include 'summary/common/manual/actions.html' with context%}
-          {% include 'summary/common/manual/conclusion_details.html' %}
-        </tr>
-        {% else %}
-          {% include 'summary/habitat/manual_form.html' %}
-        {% endif %}
-      {% endfor %}
-      </tbody>
-      {# Add manual assessment form #}
-      {% set can_add, warning_message = can_add_conclusion(dataset, 'habitat', subject, region) %}
-      {% if not manual_assessment %}
-      <tbody class="form">
-        {% if can_add %}
-          {% include 'summary/habitat/manual_form.html' %}
-        {% else %}
-        <tr class="form_row">
-            <td colspan="{{ colspan_all }}">{{ warning_message }}</td>
-        </tr>
-        {% endif %}
-      </tbody>
-      {% endif %}
-    </table>
+        </table>
+      </div>
     </form>
-    {% else %}
+  {% else %}
     <p><b>Please select a group and a habitat type.</b></p>
-    {% endif %}
+  {% endif %}
 {% endblock %}

@@ -1,4 +1,6 @@
 from datetime import datetime
+import re
+
 from flask import (
     views,
     request,
@@ -136,6 +138,27 @@ def _parse_semicolon(value, sep='<br/>'):
 def _na_if_none(value, default='N/A'):
     return na_if_none(value, default=default)
 
+def get_list(l, index, default=None):
+    if index < len(l):
+        try:
+            return float(l[index].replace('%', '').strip())
+        except ValueError:
+            pass
+    return default
+
+@summary.app_template_filter('colorate')
+def colorate(value):
+    FV = get_list(re.findall(r"(\d+.?\d+%)FV", value), 0)
+    U1 = get_list(re.findall(r"(\d+.?\d+%)U1", value), 0)
+    U2 = get_list(re.findall(r"(\d+.?\d+%)U2", value), 0)
+    XX = get_list(re.findall(r"(\d+.?\d+%)XX", value), 0)
+    if U2 > 25:
+        return CONCLUSION_CLASSES['U2']
+    if FV >  75:
+        return CONCLUSION_CLASSES['FV']
+    if XX > 25:
+        return CONCLUSION_CLASSES['XX']
+    return CONCLUSION_CLASSES['U1']
 
 @summary.app_template_filter('get_quality')
 def get_quality(value, default='N/A'):
@@ -499,18 +522,19 @@ class HabitatSummary(HabitatMixin, Summary):
             HabitatCommentCounter(period, g.identity.id)
             .get_wiki_unread_count(subject, region)
         )
-
         if subject:
             filter_args['habitatcode'] = subject
         else:
             return False
         if region:
             filter_args['region'] = region
+
         if filter_args:
             filter_args['dataset_id'] = period
             self.objects = self.model_cls.query.filter_by(
                 **filter_args
             ).order_by(self.model_cls.region, self.model_cls.country)
+
             self.auto_objects = (
                 self.model_auto_cls.query
                 .filter_by(**filter_args)

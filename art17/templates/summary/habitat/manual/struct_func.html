@@ -1,6 +1,6 @@
 {% set concl_value = get_tooltip(row, 'method_structure') %}
 
-<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }} border"
+<td class="{{ CONCLUSION_CLASSES[row.conclusion_structure] }}"
     {% if concl_value %}title=": {{ concl_value }}"{% endif %}>
   <span class="conclusion">{{ row.method_structure }}</span>
 </td>

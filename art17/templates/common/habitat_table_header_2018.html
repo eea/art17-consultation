@@ -1,0 +1,152 @@
+<tbody class="thead">
+  <tr class="section-header">
+    <th class="table-title" colspan="{{ colspan_all }}">
+      Member States reports
+    </th>
+  </tr>
+  <tr>
+    {% if show_report_headers %}
+      <th rowspan="2">Habitat</th>
+    {% endif %}
+    {% if not country %}
+      <th colspan="2" rowspan="2" title="Member state">MS</th>
+    {% endif %}
+    {% if not region %}<th rowspan="2" title="Biogeographical or marine region">Region</th>{% endif %}
+      <th colspan="4">Range (km<sup>2</sup>)</th>
+      <th colspan="8">Area (km<sup>2</sup>)</th>
+      <th colspan="5" title="Structure and Functions">Structure and functions (km<sup>2</sup>)</th>
+      <th colspan="4" title="Future prospects">Future prospects</th>
+      <th colspan="6">Overall assessment</th>
+      <th colspan="3" title="Area was calculated in km<sup>2</sup> based on distribution and range spatial data mapped in 10x10km grid."
+      >Distribution area(km<sup>2</sup>)</th>
+      <th rowspan="2" colspan="5"></th>
+  </tr>
+  <tr>
+    <th title="Main reason for change if current value is different than for the previous period">Surface</th>
+    <th title="Status of Range (colour)
+               Percentage of surface of the range per MS region (figure)">Status<br/>(% MS)</th>
+    <th title="Short-term trend
+               -   - Decreasing
+               +  - Increasing
+               =   - Stable
+               u  - Uncertain
+               x  - Unknown
+               N/A  - Not reported">Trend</th>
+    <th title="Favourable reference range
+               (if only operator was used in MS data current value is inserted automatically)
+               ≈  - Approximately equal to current value
+               <  - Less than current value
+               >  -  More than current value
+               >>  - Much more than current value
+               x  - Unknown">FRR</th>
+      
+    <th>Min</th>
+    <th>Max</th>
+    <th title="Main reason for change if current value is different than for the previous period">Best value</th>
+    <th title="Type of estimate
+                estimate  - Best estimate
+                interval  - 95% confidence interval
+                mean  - Multi-year mean
+                minimum  - Minimum">Type est.</th>
+    <th title="Method used
+                a  - Complete survey or a statistically robust estimate
+                b  - Based mainly on extrapolation from a limited amount of data
+                c  - Based mainly on expert opinion with very limited data
+                d  - Insufficient or no data available">Method</th>
+    <th title="Status of Area (colour)
+               Percentage of surface of the area of habitat per MS region (figure)">Status<br/>(% MS)</th>
+    <th title="Short-term trend
+                -   - Decreasing
+                +  - Increasing
+                =   - Stable
+                u  - Uncertain
+                x  - Unknown
+                N/A  - Not reported">Trend</th>
+    <th title="Favourable reference area
+               (if only operator was used in MS data current value is inserted automatically)
+                ≈  - Approximately equal to current value
+                <  - Less than current value
+                >  -  More than current value
+                >>  - Much more than current value
+                x  - Unknown">FRA</th>
+
+    <th>
+      <div class="popout-wrapper hover">
+        <div class="popout size_unit_th right caret">
+          <table class="popout-table">
+            <tr>
+              <th colspan="3" style="text-align: center;">Area in good condition (km2)</th>
+            </tr>
+            <tr>
+              <th>Good<br>(adjusted mean value)</th>
+              <th>Not good<br>(adjusted mean value)</th>
+              <th>Not Known<br>(adjusted mean value)</th>
+            </tr>
+            {% for row in objects %}
+              <tr>
+                <td>{{ row.hab_condition_good|str2num }}</td>
+                <td>{{ row.hab_condition_notgood|str2num }}</td>
+                <td>{{ row.hab_condition_unknown|str2num }}</td>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
+        Good
+      </div>
+    </th>
+
+
+
+    <th title="Area in not-good condition (km2)">Not good</th>
+    <th title="Area where condition is not known (km2)">Not known</th>
+    <th title="Status of Structure and functions  including typical species">Status</th>
+    <th title="Short-term trend
+                -   - Decreasing
+                +  - Increasing
+                =   - Stable
+                u  - Uncertain
+                x  - Unknown
+                N/A  - Not reported">Trend</th>
+
+    <th title="Prospects of parameter Range">Range<br/>prosp.</th>
+    <th title="Prospects of parameter Area">Area<br/>prosp.</th>
+    <th title="Prospects of parameter Structure and functions">S & f<br/>prosp.</th>
+    <th title="Status of Future prospects">Status</th>
+
+    <th title="Conservation status - current period">Curr. CS</th>
+    <th title="Overall trend in conservation status - current period
+                -  - Deteriorating
+                +  - Improving
+                =  - Stable
+                x  - Unknown
+                N/A  - Not reported">Curr. CS<br/>trend</th>
+    <th title="Conservation status - previous period">Prev. CS</th>
+    <th title="Overall trend in conservation status - previous period
+               -  - Deteriorating
+               +  - Improving
+               =  - Stable
+               x  - Unknown
+               N/A  - Not reported">Prev. CS<br/>trend</th>
+    <th title="Main reason for change
+                genuine  - Genuine change
+                knowledge  - Improved knowledge/more accurate data
+                method  - Use of different method
+                no change  - No change
+                no info  - No information on the nature of change">Status<br/>Nat.<br/>of ch.</th>
+    <th title="Main reason for change
+                genuine  - Genuine change
+                knowledge  - Improved knowledge/more accurate data
+                method  - Use of different method
+                no change  - No change
+                no info  - No information on the nature of change">CS trend<br/>Nat. of ch.</th>
+
+    <th title="Distribution
+               Area was calcualted in km2 based on distribution mapped in 10 x1 0km grid">Distrib.</th>
+    <th title="Method used
+                a  - Complete survey or a statistically robust estimate
+                b  - Based mainly on extrapolation from a limited amount of data
+                c  - Based mainly on expert opinion with very limited data
+                d  - Insufficient or no data available">Method</th>
+    <th title="Percentage of surface of the distribution per MS region">% MS</th>
+  </tr>
+</tbody>

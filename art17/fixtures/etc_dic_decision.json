@@ -1,0 +1,442 @@
+[
+    {
+        "fields": {
+            "details": "no decision",
+            "dataset_id": 1,
+            "order": 0,
+            "decision": ""
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "no decision",
+            "dataset_id": 3,
+            "order": 0,
+            "decision": ""
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "no decision",
+            "dataset_id": 4,
+            "order": 0,
+            "decision": ""
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "no decision",
+            "dataset_id": 5,
+            "order": 0,
+            "decision": ""
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "further atention is still needed with this conclusion",
+            "dataset_id": 1,
+            "order": 5,
+            "decision": "!!"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "further atention is still needed with this conclusion",
+            "dataset_id": 3,
+            "order": 5,
+            "decision": "!!"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "further atention is still needed with this conclusion",
+            "dataset_id": 4,
+            "order": 5,
+            "decision": "!!"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "further atention is still needed with this conclusion",
+            "dataset_id": 5,
+            "order": 5,
+            "decision": "!!"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "questionable conclusion",
+            "dataset_id": 1,
+            "order": 4,
+            "decision": "??"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "questionable conclusion",
+            "dataset_id": 3,
+            "order": 4,
+            "decision": "??"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "questionable conclusion",
+            "dataset_id": 4,
+            "order": 4,
+            "decision": "??"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "questionable conclusion",
+            "dataset_id": 5,
+            "order": 4,
+            "decision": "??"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "conclusion where correction is needed",
+            "dataset_id": 1,
+            "order": 3,
+            "decision": "CO"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "conclusion where correction is needed",
+            "dataset_id": 3,
+            "order": 3,
+            "decision": "CO"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "conclusion where correction is needed",
+            "dataset_id": 4,
+            "order": 3,
+            "decision": "CO"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "conclusion where correction is needed",
+            "dataset_id": 5,
+            "order": 3,
+            "decision": "CO"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment integrated into Data Sheet Information",
+            "dataset_id": 1,
+            "order": 9,
+            "decision": "IDS"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment integrated into Data Sheet Information",
+            "dataset_id": 3,
+            "order": 9,
+            "decision": "IDS"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment integrated into Data Sheet Information",
+            "dataset_id": 4,
+            "order": 9,
+            "decision": "IDS"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment integrated into Data Sheet Information",
+            "dataset_id": 5,
+            "order": 9,
+            "decision": "IDS"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment integrated into EU Assessment",
+            "dataset_id": 1,
+            "order": 7,
+            "decision": "IEU"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment integrated into EU Assessment",
+            "dataset_id": 3,
+            "order": 7,
+            "decision": "IEU"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment integrated into EU Assessment",
+            "dataset_id": 4,
+            "order": 7,
+            "decision": "IEU"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment integrated into EU Assessment",
+            "dataset_id": 5,
+            "order": 7,
+            "decision": "IEU"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "National Data Coordinator comment at MS level integrated into MS data",
+            "dataset_id": 1,
+            "order": 8,
+            "decision": "IMS"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "National Data Coordinator comment at MS level integrated into MS data",
+            "dataset_id": 3,
+            "order": 8,
+            "decision": "IMS"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "National Data Coordinator comment at MS level integrated into MS data",
+            "dataset_id": 4,
+            "order": 8,
+            "decision": "IMS"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "National Data Coordinator comment at MS level integrated into MS data",
+            "dataset_id": 5,
+            "order": 8,
+            "decision": "IMS"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "invalid conclusion",
+            "dataset_id": 1,
+            "order": 2,
+            "decision": "NO"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "invalid conclusion",
+            "dataset_id": 3,
+            "order": 2,
+            "decision": "NO"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "invalid conclusion",
+            "dataset_id": 4,
+            "order": 2,
+            "decision": "NO"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "invalid conclusion",
+            "dataset_id": 5,
+            "order": 2,
+            "decision": "NO"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "ETC/BD manualy verified or re-assessed conclusion",
+            "dataset_id": 1,
+            "order": 1,
+            "decision": "OK"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "ETC/BD manualy verified or re-assessed conclusion",
+            "dataset_id": 3,
+            "order": 1,
+            "decision": "OK"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "ETC/BD manualy verified or re-assessed conclusion",
+            "dataset_id": 4,
+            "order": 1,
+            "decision": "OK"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "ETC/BD manualy verified or re-assessed conclusion",
+            "dataset_id": 5,
+            "order": 1,
+            "decision": "OK"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "changes made in the OK record",
+            "dataset_id": 1,
+            "order": 6,
+            "decision": "OK?"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "changes made in the OK record",
+            "dataset_id": 3,
+            "order": 6,
+            "decision": "OK?"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "changes made in the OK record",
+            "dataset_id": 4,
+            "order": 6,
+            "decision": "OK?"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "changes made in the OK record",
+            "dataset_id": 5,
+            "order": 6,
+            "decision": "OK?"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment not integrated, reason provided as comment",
+            "dataset_id": 1,
+            "order": 10,
+            "decision": "REJ"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment not integrated, reason provided as comment",
+            "dataset_id": 3,
+            "order": 10,
+            "decision": "REJ"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment not integrated, reason provided as comment",
+            "dataset_id": 4,
+            "order": 10,
+            "decision": "REJ"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    },
+    {
+        "fields": {
+            "details": "Stakeholder comment not integrated, reason provided as comment",
+            "dataset_id": 5,
+            "order": 10,
+            "decision": "REJ"
+        },
+        "model": "EtcDicDecision",
+        "filter_fields": "dataset_id,decision"
+    }
+]

@@ -1,0 +1,453 @@
+[
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 1,
+            "reg_name": "Alpine",
+            "reg_code": "ALP",
+            "order": 1
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 1,
+            "reg_name": "Alpine",
+            "reg_code": "ALP",
+            "order": 1
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 1,
+            "reg_name": "Alpine",
+            "reg_code": "ALP",
+            "order": 1
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 2,
+            "reg_name": "Atlantic",
+            "reg_code": "ATL",
+            "order": 2
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 2,
+            "reg_name": "Atlantic",
+            "reg_code": "ATL",
+            "order": 2
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 2,
+            "reg_name": "Atlantic",
+            "reg_code": "ATL",
+            "order": 2
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 3,
+            "reg_name": "Black Sea",
+            "reg_code": "BLS",
+            "order": 3
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 3,
+            "reg_name": "Black Sea",
+            "reg_code": "BLS",
+            "order": 3
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 3,
+            "reg_name": "Boreal",
+            "reg_code": "BOR",
+            "order": 3
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 4,
+            "reg_name": "Boreal",
+            "reg_code": "BOR",
+            "order": 4
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 3,
+            "reg_name": "Boreal",
+            "reg_code": "BOR",
+            "order": 3
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 4,
+            "reg_name": "Continental",
+            "reg_code": "CON",
+            "order": 4
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 5,
+            "reg_name": "Continental",
+            "reg_code": "CON",
+            "order": 5
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 4,
+            "reg_name": "Continental",
+            "reg_code": "CON",
+            "order": 4
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 5,
+            "reg_name": "Macaronesian",
+            "reg_code": "MAC",
+            "order": 5
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 6,
+            "reg_name": "Macaronesian",
+            "reg_code": "MAC",
+            "order": 6
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 5,
+            "reg_name": "Macaronesian",
+            "reg_code": "MAC",
+            "order": 5
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 8,
+            "reg_name": "Marine Atlantic",
+            "reg_code": "MATL",
+            "order": 8
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 10,
+            "reg_name": "Marine Atlantic",
+            "reg_code": "MATL",
+            "order": 10
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 8,
+            "reg_name": "Marine Atlantic",
+            "reg_code": "MATL",
+            "order": 8
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 9,
+            "reg_name": "Marine Baltic",
+            "reg_code": "MBAL",
+            "order": 9
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 11,
+            "reg_name": "Marine Baltic",
+            "reg_code": "MBAL",
+            "order": 11
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 9,
+            "reg_name": "Marine Baltic",
+            "reg_code": "MBAL",
+            "order": 9
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 12,
+            "reg_name": "Marine Black Sea",
+            "reg_code": "MBLS",
+            "order": 12
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 12,
+            "reg_name": "Marine Black Sea",
+            "reg_code": "MBLS",
+            "order": 12
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 6,
+            "reg_name": "Mediterranean",
+            "reg_code": "MED",
+            "order": 6
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 7,
+            "reg_name": "Mediterranean",
+            "reg_code": "MED",
+            "order": 7
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 4,
+            "ordine": 6,
+            "reg_name": "Mediterranean",
+            "reg_code": "MED",
+            "order": 6
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 6,
+            "reg_name": "Mediterranean",
+            "reg_code": "MED",
+            "order": 6
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 10,
+            "reg_name": "Marine Macaronesian",
+            "reg_code": "MMAC",
+            "order": 10
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 13,
+            "reg_name": "Marine Macaronesian",
+            "reg_code": "MMAC",
+            "order": 13
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 10,
+            "reg_name": "Marine Macaronesian",
+            "reg_code": "MMAC",
+            "order": 10
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 11,
+            "reg_name": "Marine Mediterranean",
+            "reg_code": "MMED",
+            "order": 11
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 14,
+            "reg_name": "Marine Mediterranean",
+            "reg_code": "MMED",
+            "order": 14
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 4,
+            "ordine": 11,
+            "reg_name": "Marine Mediterranean",
+            "reg_code": "MMED",
+            "order": 11
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 11,
+            "reg_name": "Marine Mediterranean",
+            "reg_code": "MMED",
+            "order": 11
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "ordine": 7,
+            "reg_name": "Pannonian",
+            "reg_code": "PAN",
+            "order": 7
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 8,
+            "reg_name": "Pannonian",
+            "reg_code": "PAN",
+            "order": 8
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 7,
+            "reg_name": "Pannonian",
+            "reg_code": "PAN",
+            "order": 7
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "ordine": 9,
+            "reg_name": "Steppic",
+            "reg_code": "STE",
+            "order": 9
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "ordine": 9,
+            "reg_name": "Steppic",
+            "reg_code": "STE",
+            "order": 9
+        },
+        "model": "EtcDicBiogeoreg",
+        "filter_fields": "dataset_id,reg_code"
+    }
+]

@@ -1,0 +1,832 @@
+[
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "HU",
+            "name": "Hungary",
+            "codeEU": "HU"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "DK",
+            "name": "Denmark",
+            "codeEU": "DK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "NL",
+            "name": "Netherlands",
+            "codeEU": "NL"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "EE",
+            "name": "Estonia",
+            "codeEU": "EE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "MT",
+            "name": "Malta",
+            "codeEU": "MT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "ES",
+            "name": "Spain",
+            "codeEU": "ES"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "LV",
+            "name": "Latvia",
+            "codeEU": "LV"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "FI",
+            "name": "Finland",
+            "codeEU": "FI"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "LU",
+            "name": "Luxembourg",
+            "codeEU": "LU"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "FR",
+            "name": "France",
+            "codeEU": "FR"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "LT",
+            "name": "Lithuania",
+            "codeEU": "LT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "GB",
+            "name": "United Kingdom",
+            "codeEU": "UK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "IT",
+            "name": "Italy",
+            "codeEU": "IT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "GR",
+            "name": "Greece",
+            "codeEU": "GR"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "IE",
+            "name": "Ireland",
+            "codeEU": "IE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "PL",
+            "name": "Poland",
+            "codeEU": "PL"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "AT",
+            "name": "Austria",
+            "codeEU": "AT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "BG",
+            "name": "Bulgaria",
+            "codeEU": "BG"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "SE",
+            "name": "Sweden",
+            "codeEU": "SE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "CY",
+            "name": "Cyprus",
+            "codeEU": "CY"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "BE",
+            "name": "Belgium",
+            "codeEU": "BE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "SK",
+            "name": "Slovakia",
+            "codeEU": "SK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "RO",
+            "name": "Romania",
+            "codeEU": "RO"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "CZ",
+            "name": "Czech Republic",
+            "codeEU": "CZ"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "PT",
+            "name": "Portugal",
+            "codeEU": "PT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "DE",
+            "name": "Germany",
+            "codeEU": "DE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 1,
+            "code": "SI",
+            "name": "Slovenia",
+            "codeEU": "SI"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "IE",
+            "name": "Ireland",
+            "codeEU": "IE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "SK",
+            "name": "Slovakia",
+            "codeEU": "SK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "HU",
+            "name": "Hungary",
+            "codeEU": "HU"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "IT",
+            "name": "Italy",
+            "codeEU": "IT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "SI",
+            "name": "Slovenia",
+            "codeEU": "SI"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "LT",
+            "name": "Lithuania",
+            "codeEU": "LT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "SE",
+            "name": "Sweden",
+            "codeEU": "SE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "LU",
+            "name": "Luxembourg",
+            "codeEU": "LU"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "LV",
+            "name": "Latvia",
+            "codeEU": "LV"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "RO",
+            "name": "Romania",
+            "codeEU": "RO"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "MT",
+            "name": "Malta",
+            "codeEU": "MT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "PT",
+            "name": "Portugal",
+            "codeEU": "PT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "NL",
+            "name": "Netherlands",
+            "codeEU": "NL"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "PL",
+            "name": "Poland",
+            "codeEU": "PL"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "DE",
+            "name": "Germany",
+            "codeEU": "DE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "DK",
+            "name": "Denmark",
+            "codeEU": "DK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "CZ",
+            "name": "Czech Republic",
+            "codeEU": "CZ"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "EE",
+            "name": "Estonia",
+            "codeEU": "EE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "CY",
+            "name": "Cyprus",
+            "codeEU": "CY"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "ES",
+            "name": "Spain",
+            "codeEU": "ES"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "FI",
+            "name": "Finland",
+            "codeEU": "FI"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "BG",
+            "name": "Bulgaria",
+            "codeEU": "BG"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "FR",
+            "name": "France",
+            "codeEU": "FR"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "BE",
+            "name": "Belgium",
+            "codeEU": "BE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "GB",
+            "name": "United Kingdom",
+            "codeEU": "UK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "AT",
+            "name": "Austria",
+            "codeEU": "AT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 3,
+            "code": "GR",
+            "name": "Greece",
+            "codeEU": "GR"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 4,
+            "code": "GRb",
+            "name": "Greece bis",
+            "codeEU": "GRb"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "PL",
+            "name": "Poland",
+            "codeEU": "PL"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "CZ",
+            "name": "Czechia",
+            "codeEU": "CZ"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "HR",
+            "name": "Croatia",
+            "codeEU": "HR"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "SK",
+            "name": "Slovakia",
+            "codeEU": "SK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "PT",
+            "name": "Portugal",
+            "codeEU": "PT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "CY",
+            "name": "Cyprus",
+            "codeEU": "CY"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "AT",
+            "name": "Austria",
+            "codeEU": "AT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "SI",
+            "name": "Slovenia",
+            "codeEU": "SI"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "RO",
+            "name": "Romania",
+            "codeEU": "RO"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "BG",
+            "name": "Bulgaria",
+            "codeEU": "BG"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "SE",
+            "name": "Sweden",
+            "codeEU": "SE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "BE",
+            "name": "Belgium",
+            "codeEU": "BE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "DE",
+            "name": "Germany",
+            "codeEU": "DE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "GR",
+            "name": "Greece",
+            "codeEU": "GR"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "IE",
+            "name": "Ireland",
+            "codeEU": "IE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "GB",
+            "name": "United Kingdom",
+            "codeEU": "UK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "IT",
+            "name": "Italy",
+            "codeEU": "IT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "FR",
+            "name": "France",
+            "codeEU": "FR"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "LT",
+            "name": "Lithuania",
+            "codeEU": "LT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "FI",
+            "name": "Finland",
+            "codeEU": "FI"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "LU",
+            "name": "Luxembourg",
+            "codeEU": "LU"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "ES",
+            "name": "Spain",
+            "codeEU": "ES"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "LV",
+            "name": "Latvia",
+            "codeEU": "LV"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "EE",
+            "name": "Estonia",
+            "codeEU": "EE"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "MT",
+            "name": "Malta",
+            "codeEU": "MT"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "DK",
+            "name": "Denmark",
+            "codeEU": "DK"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "NL",
+            "name": "Netherlands",
+            "codeEU": "NL"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    },
+    {
+        "fields": {
+            "dataset_id": 5,
+            "code": "HU",
+            "name": "Hungary",
+            "codeEU": "HU"
+        },
+        "model": "DicCountryCode",
+        "filter_fields": "dataset_id,code"
+    }
+]

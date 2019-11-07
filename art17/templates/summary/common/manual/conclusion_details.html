@@ -1,10 +1,6 @@
 
 <td class="border_left">
-  {% if row.dataset_id == 3 and dataset.id == 4 %}
-    {% set url=url_for(comments_endpoint, period=row.dataset_id, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS, period_bis=dataset.id) %}
-  {% else %}
-    {% set url=url_for(comments_endpoint, period=row.dataset_id, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS, period_bis=dataset.id) %}
-  {% endif %}
+  {% set url=url_for(comments_endpoint, period=row.dataset_id, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
   <a class="badge-o" href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
   {{ row.comments_count_read(g.identity.id) }}/{{ row.undeleted_comments(g.identity.id)|count }}
   </a>
@@ -28,7 +24,6 @@
 			{% if (can_edit(row) or can_delete(row)) and not manual_assessment %}
 			<hr>
 			<div class="btn-toolbar no-break">
-        {% if row.dataset_id != 3 or dataset.id != 4 %}
           {% if can_edit(row) %}
             {% if sta_perm.can() %}
               {% set title = 'Comment on biogeographical assessment at EU or MS level by proposing a correction' %}
@@ -43,9 +38,7 @@
                                     edit_region=row.region, edit_user=row.user_id) + '#theform' %}
             <a class="button btn-green" href="{{ edit_url }}" title="{{ title }}">{{ text }}</a>
           {% endif %}
-        {% endif %}
 
-        {% if row.dataset_id != 3 or dataset.id != 4 %}
           {% if can_delete(row) %}
             {% set url = url_for(delete_endpoint, period=row.dataset_id,
                subject=subject, region=region, delete_region=row.region,
@@ -53,7 +46,6 @@
             <a class="button delete-btn" href="{{ url }}#man-row-{{ loop.index }}">{% if row.deleted %}Undelete{% else %}Delete{% endif %}</a>
             <a class="button btn-red perm-del" href="{{ url }}&perm=1#manual-thead">Permanently delete</a>
           {% endif %}
-        {% endif %}
 			</div>
 			{% endif %}
 		</div>
