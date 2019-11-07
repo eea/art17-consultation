@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.0.0 - (2019-11-07)
+--------------------
+* Release new period 2013-2018
+  [dianaboiangiu]
+
 2.11.5 - (2019-07-10)
 --------------------
 * Exposed Progress view now includes all groups
