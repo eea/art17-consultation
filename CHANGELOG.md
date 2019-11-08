@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.0.3 - (2019-11-08)
+--------------------
+*  Fix Dockerfile wkhtmltopdf
+  [dianaboiangiu]
+
 3.0.2 - (2019-11-08)
 --------------------
 * Mody species text for period 2013
