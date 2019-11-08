@@ -4,16 +4,11 @@ LABEL maintainer="EEA: IDM2 C-TEAM <eea-edw-c-team-alerts@googlegroups.com>"
 ENV WORK_DIR=/var/local/art17
 ENV DATA_DIR=/var/local/art17-data
 
-RUN runDeps="curl gcc vim build-essential netcat default-libmysqlclient-dev default-mysql-client python-dev libldap2-dev libsasl2-dev libssl-dev libxrender1 libfontconfig1 libxext6" \
+RUN runDeps="curl gcc vim build-essential netcat default-libmysqlclient-dev default-mysql-client python-dev libldap2-dev libsasl2-dev libssl-dev libxrender1 libfontconfig1 libxext6 wkhtmltopdf" \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends $runDeps \
 	&& rm -vrf /var/lib/apt/lists/*
 
-RUN curl -OL https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
-	&& tar -xvf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
-	&& cp -r wkhtmltox/* /usr/local/ \
-	&& rm -R wkhtmltox \
-	&& rm wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
 
 COPY . $WORK_DIR/
 WORKDIR $WORK_DIR
