@@ -13,17 +13,28 @@
 
   <h2>Species assessments at EU biogeographical level</h2>
 
-  <p>Assessments on the conservation status of the habitat types and species of Community interest have been carried out in EU25 for the period 2001-2006 and in EU 27 for the period 2007-2012, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view.
-     Choose a period, a group, then a species belonging to that group. Optionally, further refine your query by selecting one of the available biogeographical regions for that species.
-  </p>
-
   {% if dataset.schema == '2012bis' %}
+    <p>Assessments on the conservation status of the habitat types and species of Community interest have been carried out in EU25 for the period 2001-2006 and in EU 27 for the period 2007-2012, compiled as part of the Habitats Directive - Article 17 reporting process. The data summary sheet for species conservation status provides an overview per biogeographical region. Once a selection has been made the conservation status can be visualised in a map view.
+      Choose a period, a group, then a habitat type belonging to that group.  Optionally, further refine your query by selecting one of the available biogeographical regions for that habitat type.
+    </p>
     <p class="note">IMPORTANT: '2007-2012bis' reporting period displays data from the delayed delivery by Greece together
                     with the data from other Member States for the Mediterranean and Marine Mediterranean regions. To consult
                     the full set of data from 2007-2012 reporting with EU biogeographical assessments as provided in the State
                     of Nature Report, filter Period = '2007-2012'.
                     <br>
                     Data from the delayed delivery by Greece have the ‘MS’ code ‘GRb’.
+    </p>
+  {% else %}
+    <p>The Article 17 web tool provides an access to EU biogeographical and Member States’ assessments of
+        conservation status of the habitat types and species of Community interest compiled as part of
+        the <br> Habitats Directive - Article 17 reporting process. These assessments have been carried out
+        in EU25 for the period 2001-2006, in EU 27 for the period 2007-2012 and in EU28 for the period 2013-2018.
+      <br>The EU biogeographical assessment for the period 2013-2018 is currently in preparation.
+    </p>
+    <p>
+      Choose a period, a group, then a habitat type belonging to that group.<br>Optionally, further
+      refine your query by selecting one of the available biogeographical regions for that habitat
+      type.<br>Once a selection has been made the conservation status can be visualised in a map view.
     </p>
   {% endif %}
 
