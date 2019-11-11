@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.0.4 - (2019-11-11)
+--------------------
+* Add species lu new fields
+  [dianaboiangiu]
+
 3.0.3 - (2019-11-08)
 --------------------
 *  Fix Dockerfile wkhtmltopdf
