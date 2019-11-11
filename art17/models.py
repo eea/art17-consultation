@@ -1313,6 +1313,7 @@ class WikiChange(Base):
     wiki_id = Column(ForeignKey('wiki.id'), nullable=False)
     body = Column(String(6000), nullable=False)
     editor = Column(String(60), nullable=False)
+    revised = Column(Boolean)
     changed = Column(DateTime, nullable=False,
                      server_default=u'CURRENT_TIMESTAMP')
     active = Column(Integer, default=0)
@@ -1326,7 +1327,7 @@ class WikiChange(Base):
         primaryjoin="and_(WikiChange.wiki_id==Wiki.id,"
         "WikiChange.dataset_id==Wiki.dataset_id)",
         foreign_keys=[wiki_id, dataset_id],
-        backref='changes',
+        backref=db.backref('changes', lazy='dynamic'),
     )
 
 
