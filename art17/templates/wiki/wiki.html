@@ -10,45 +10,59 @@
   {% endif %}
   <h2 class="no-margins pull-left">{{ page_title }}</h2>
   <div class="pull-right">
-      {% if can_edit_page(dataset) and not merged %}
+    {% if can_edit_page(dataset) and not merged %}
       <button class="edit-btn btn-green {% if edit_page_form %}disabled{% endif %}"
-          href="{{ edit_page_url }}">Edit {{ page_title }}</button>
+              href="{{ edit_page_url }}">Edit {{ page_title }}</button>
+    {% endif %}
 
-      {% endif %}
-{% if can_manage_revisions() and revisions %}
-    <button {% if edit_page_form %}
-              class="disabled"
-            {% else %}
-              onclick="toggleHistory()"
-            {% endif %}>Page history</button>
-{% endif %}
+    {% if can_manage_revisions() and revisions %}
+      <button {% if edit_page_form %}
+                class="disabled"
+              {% else %}
+                onclick="toggleHistory()"
+              {% endif %}>Page history</button>
+    {% endif %}
   </div>
 </div>
 
-<div class="wiki">
-
-    <div id="active-wiki">
-        {% if edit_page_form %}
-            {% include 'wiki/editpage.html' %}
-         {% elif merged and not wiki_body %}
-            <p>Please select a region in order to add an Audit Trail record.</p>
-         {% else %}
-            {% if merged %}
-                <p>Please select a region in order to edit.</p>
-            {% endif %}
-            {% for region, region_url, body in wiki_body %}
-                <h3><a href="{{ region_url }}&merged=merged">{{ region }}</a></h3>
-                {{ body | safe }}
-            {% endfor %}
-         {% endif %}
-    </div>
-    <div id="preview-wiki" style="display: none;">
-    </div>
-
-{% if can_manage_revisions() %}
-  {% include 'wiki/pagehistory.html' %}
+{% if can_manage_revisions() and revisions  %}
+  <div style="margin-bottom: 20px;">
+    {% if wiki_revised == False %}
+      <form method="post">
+        <p>This page is not revised.</p>
+        <label for="checkbox_id">Revise</label>
+        {{ wiki_revised_form.revised }}
+        <input type="submit" value="Submit" style="vertical-align: text-bottom;" />
+      </form>
+    {% elif wiki_revised == True %}
+      <p>Revised ✓</p>
+    {% endif %}
+  </div>
 {% endif %}
 
+<div class="wiki">
+  <div id="active-wiki">
+    {% if edit_page_form %}
+      {% include 'wiki/editpage.html' %}
+    {% elif merged and not wiki_body %}
+      <p>Please select a region in order to add an Audit Trail record.</p>
+    {% else %}
+      {% if merged %}
+        <p>Please select a region in order to edit.</p>
+      {% endif %}
+
+      {% for region, region_url, body in wiki_body %}
+        <h3><a href="{{ region_url }}&merged=merged">{{ region }}</a></h3>
+          {{ body | safe }}
+      {% endfor %}
+    {% endif %}
+  </div>
+  <div id="preview-wiki" style="display: none;">
+  </div>
+
+  {% if can_manage_revisions() %}
+    {% include 'wiki/pagehistory.html' %}
+  {% endif %}
 </div>
 
 {% if comments is defined %}

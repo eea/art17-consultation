@@ -557,6 +557,9 @@ class CommentForm(Form):
     def custom_validate(self):
         return validate_nonempty(self.comment.data)
 
+class RevisedForm(Form):
+    revised = BooleanField()
+
 
 class ConfigForm(Form):
     start_date = DateField(label="Start date (YYYY-MM-DD)",

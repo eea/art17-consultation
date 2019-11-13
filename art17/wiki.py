@@ -22,7 +22,7 @@ from art17.models import (
     Dataset,
     db,
 )
-from art17.forms import WikiEditForm, CommentForm
+from art17.forms import WikiEditForm, CommentForm, RevisedForm
 from art17.auth import current_user
 from instance.settings import EU_ASSESSMENT_MODE
 
@@ -174,6 +174,8 @@ class CommonSection(object):
         return {
             'wiki_body': [('', '', active_change.body)]
             if active_change else [],
+            'wiki_revised': getattr(active_change,'revised', None),
+            'wiki_revised_form': RevisedForm(),
             'revisions': revisions,
             'page': self.page,
             'dataset': dataset,
@@ -268,6 +270,21 @@ class WikiView(views.View):
 
     def __init__(self, section):
         self.section = section()
+
+    def process_post_request(self):
+        form = RevisedForm(request.form)
+        if not form.validate():
+            flash("Something went wrong.")
+            return False
+        wiki_change = self.section.get_wiki_changes().filter_by(
+            active=True).first()
+        wiki_change.revised = form.revised.data
+        wiki_change.editor = current_user.id
+        db.session.commit()
+
+        flash("Comment successfully modified.")
+
+        return True
 
     def get_context(self):
         return {}
