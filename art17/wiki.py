@@ -282,7 +282,7 @@ class WikiView(views.View):
         wiki_change.editor = current_user.id
         db.session.commit()
 
-        flash("Comment successfully modified.")
+        flash("Data sheet revised!")
 
         return True
 
