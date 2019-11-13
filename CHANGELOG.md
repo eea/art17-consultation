@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.0.5 - (2019-11-13)
+--------------------
+* Add revision for datasheets
+  [dianaboiangiu]
+
 3.0.4 - (2019-11-11)
 --------------------
 * Add species lu new fields
