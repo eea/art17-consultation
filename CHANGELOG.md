@@ -1,5 +1,9 @@
 Changelog
 =========
+3.0.6 - (2019-11-13)
+--------------------
+* Fix automatic species method
+  [dianaboiangiu]
 
 3.0.5 - (2019-11-13)
 --------------------
