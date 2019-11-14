@@ -43,18 +43,18 @@
 
 <!-- Area -->
 
-<td classes='number border_left text-center')>
-  {{ row.coverage_surface_area_min|str1num or 'N/A' }}
+<td class='number border_left text-center')>
+  {{ row.coverage_surface_area_min|str2num or 'N/A' }}
 </td>
 
-<td classes='number center text-center') }}>
-  {{ row.coverage_surface_area_max|str1num or 'N/A' }}
+<td class='number center text-center') }}>
+  {{ row.coverage_surface_area_max|str2num or 'N/A' }}
 </td>
 
 <td class="center text-center"
     {{ set_reason_title(row.coverage_change_reason) }}>
   {% set coverage_surface_area = row.coverage_surface_area or '' %}
-  {{ coverage_surface_area|str1num }}
+  {{ coverage_surface_area|str2num }}
 </td>
 
 <td class="center text-center">
