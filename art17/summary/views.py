@@ -160,6 +160,10 @@ def colorate(value):
         return CONCLUSION_CLASSES['XX']
     return CONCLUSION_CLASSES['U1']
 
+@summary.app_template_filter('format_info')
+def format_info(value):
+    return value.replace('||', '||<br>')
+
 @summary.app_template_filter('get_quality')
 def get_quality(value, default='N/A'):
     if value and value[0].upper() in QUALITIES:

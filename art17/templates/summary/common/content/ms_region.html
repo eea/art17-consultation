@@ -10,7 +10,7 @@
             recommended: "{{ s_name|safe }}"<br/>
         {% endif %}
         {% if s_info %}
-            {{ s_info|safe }}</br>
+            {{ s_info|format_info|safe }}</br>
         {% endif %}
         {% if s_type %}
             </br>Presence status in the reported check-list: {{ s_type|safe }}
