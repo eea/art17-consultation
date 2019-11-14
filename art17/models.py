@@ -386,7 +386,7 @@ class EtcDataSpeciesAutomaticAssessment(Base):
     __tablename__ = 'etc_data_species_automatic_assessment'
 
     country = Column(String(10))
-    assessment_method = Column(String(3), primary_key=True, nullable=False)
+    assessment_method = Column(String(10), primary_key=True, nullable=False)
     order = Column(Integer)
     assessment_speciescode = Column(Integer)
     assesment_speciesname = Column(String(60), primary_key=True, nullable=False)
