@@ -1,5 +1,11 @@
 Changelog
 =========
+3.0.7 - (2019-11-15)
+--------------------
+* Set order for methods
+* Display min, max, best values with 2 decimals
+* Add newlines for MS value
+
 3.0.6 - (2019-11-13)
 --------------------
 * Fix automatic species method
