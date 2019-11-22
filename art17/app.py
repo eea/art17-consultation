@@ -30,9 +30,9 @@ from art17.management.import_new_data import import_new_data
 
 DEFAULT_CONFIG = {
     'WTF_CSRF_ENABLED': False,
-    'MAP_SERVICE_SPECIES': 'http://bd.eionet.europa.eu/article17/'
+    'MAP_SERVICE_SPECIES': 'http://nature-art17.eionet.europa.eu/article17/'
                            'speciessummary/details/art17ws',
-    'MAP_SERVICE_HABITATS': 'http://bd.eionet.europa.eu/article17/'
+    'MAP_SERVICE_HABITATS': 'https://nature-art17.eionet.europa.eu/article17/'
                             'habitatsummary/details/art17ws',
     'PDF_DESTINATION': 'factsheets',
     'PDF_URL_PREFIX': '',

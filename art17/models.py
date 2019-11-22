@@ -43,6 +43,9 @@ class Dataset(Base):
     id = Column(Integer, primary_key=True, unique=True)
     name = Column(String(255), nullable=False)
     schema = Column(String(4))
+    species_map_url = Column(db.String(255), nullable=True)
+    sensitive_species_map_url = Column(db.String(255), nullable=True)
+    habitat_map_url = Column(db.String(255), nullable=True)
 
     @property
     def is_readonly(self):
@@ -591,6 +594,8 @@ class EtcDataSpeciesRegion(Base):
 
     @property
     def mapcode(self):
+        if self.dataset.schema == '2018':
+            return self.speciescode
         if self.speciescode in ('1033', '1763', '2016', '2527'):
             return self.speciescode
         return unicode(self.n2000_species_code)
@@ -1464,9 +1469,6 @@ class Config(Base):
     end_date = Column(db.Date)
     admin_email = Column(db.String(255))
     default_dataset_id = Column(Integer, default=1)
-    species_map_url = Column(db.String(255))
-    sensitive_species_map_url = Column(db.String(255))
-    habitat_map_url = Column(db.String(255))
 
 
 class LuSpeciesManual2007(Base):

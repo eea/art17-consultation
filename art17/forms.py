@@ -570,12 +570,6 @@ class ConfigForm(Form):
                             validators=[Optional()])
     default_dataset_id = SelectField(label="Default period")
 
-    species_map_url = TextField(label="URL for species map",
-                                validators=[Optional()])
-    sensitive_species_map_url = TextField(
-        label="URL for sensitive species map", validators=[Optional()])
-    habitat_map_url = TextField(label="URL for habitat map",
-                                validators=[Optional()])
 
     def __init__(self, *args, **kwargs):
         super(ConfigForm, self).__init__(*args, **kwargs)

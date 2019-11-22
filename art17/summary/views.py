@@ -473,6 +473,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
                     sensitive = True
             if speciescode:
                 map_url = generate_map_url(
+                    dataset_id=period,
                     category='species',
                     subject=speciescode,
                     region=region,
@@ -572,6 +573,7 @@ class HabitatSummary(HabitatMixin, Summary):
         url_kwargs = dict(period=period, subject=subject, region=region)
         if subject:
             map_url = generate_map_url(
+                dataset_id=period,
                 category='habitat',
                 subject=subject,
                 region=request.args.get('region', ''),

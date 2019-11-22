@@ -7,6 +7,7 @@ from art17.dataset import CONVERTER_URLS
 from art17.mixins import SpeciesMixin, HabitatMixin
 from art17.models import (
     db,
+    Dataset,
     EtcDataSpeciesAutomaticAssessment,
     EtcDataHabitattypeAutomaticAssessment,
     EtcDataSpeciesRegion,
@@ -393,17 +394,16 @@ def get_title_for_habitat_country(row):
     return s_name, s_info, s_type
 
 
-def generate_map_url(category, subject, region, sensitive=False):
-    config = get_config()
-
+def generate_map_url(dataset_id, category, subject, region, sensitive=False):
+    dataset = Dataset.query.get(dataset_id)
     if category == 'species':
         if sensitive:
-            map_href = config.sensitive_species_map_url
+            map_href = dataset.sensitive_species_map_url
         else:
-            map_href = config.species_map_url
+            map_href = dataset.species_map_url
 
     elif category == 'habitat':
-        map_href = config.habitat_map_url
+        map_href = dataset.habitat_map_url
 
     else:
         raise RuntimeError('unknown category %r' % category)
@@ -412,7 +412,10 @@ def generate_map_url(category, subject, region, sensitive=False):
         return ''
 
     if region:
-        return map_href + '&CodeReg=' + subject + region
+        if dataset.schema == '2018':
+            return map_href + '?Codereg=' + subject + region
+        else:
+            return map_href + '&CodeReg=' + subject + region
     else:
         return map_href + '&CCode=' + subject
 
