@@ -1,5 +1,11 @@
 Changelog
 =========
+
+3.0.9 - (2019-11-22)
+--------------------
+* Add maps urls for new period
+  [dianaboiangiu]
+
 3.0.8 - (2019-11-18)
 --------------------
 * Fix Greece original link
