@@ -15,6 +15,20 @@ def setup_common():
     factories.DatasetFactory()
     factories.EtcDataHabitattypeRegionFactory(habitatcode=1110)
     factories.EtcDicHdHabitat()
+    lu_habitat = models.LuHabitatManual2007(
+        dataset_id=5, subject='1110', region='ALP',
+        conclusion_assessment_prev='FV', conclusion_assessment_trend_prev='FV',
+        backcasted_2007='FV'
+    )
+    lu_species = models.LuSpeciesManual2007(
+        dataset_id=5,subject='Canis lupus',
+        region='ALP', conclusion_assessment_prev='FV',
+        conclusion_assessment_trend_prev='FV',
+        backcasted_2007='FV'
+    )
+    models.db.session.add(lu_habitat)
+    models.db.session.add(lu_species)
+    models.db.session.commit()
 
 
 @pytest.fixture
@@ -63,6 +77,7 @@ def setup_autofill(app):
         region='ALP',
         assessment_method='2GD',
         range_surface_area=100,
+        conclusion_assessment_prev='FV',
         conclusion_range='FV'
     )
     factories.EtcDataHabitattypeAutomaticAssessmentFactory(
@@ -70,17 +85,20 @@ def setup_autofill(app):
         region='ALP',
         assessment_method='2GD',
         range_surface_area=100,
+        conclusion_assessment_prev='FV',
         conclusion_range='FV'
     )
     factories.SpeciesManualAssessmentFactory(
         region='ALP',
         range_surface_area=100,
+        conclusion_assessment_prev= 'FV',
         method_range='2GD',
         conclusion_range='FV'
     )
     factories.HabitattypesManualAssessmentsFactory(
         region='ALP',
         range_surface_area=100,
+        conclusion_assessment_prev='FV',
         method_range='2GD',
         conclusion_range='FV'
     )
@@ -93,7 +111,7 @@ def setup_autofill(app):
     # Species
     # STK editing his own conclusion
     [(['/species/summary/', {
-        'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+        'period': 5, 'group': 'Mammals', 'subject': 'Canis lupus',
         'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
         'edit_region': 'ALP'}],
      {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
@@ -101,7 +119,7 @@ def setup_autofill(app):
         ['stakeholder'], False, 302, 'Conclusion edited successfully'),
      # Editing inexistent conclusion
      (['/species/summary/', {
-         'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+         'period': 5, 'group': 'Mammals', 'subject': 'Canis lupus',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'otheruser',
          'edit_region': 'ALP'}],
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
@@ -109,7 +127,7 @@ def setup_autofill(app):
       'otheruser', ['stakeholder'], True, 404, ''),
      # STK editing another user's conclusion
      (['/species/summary/', {
-         'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+         'period': 5, 'group': 'Mammals', 'subject': 'Canis lupus',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
@@ -117,7 +135,7 @@ def setup_autofill(app):
       'otheruser', ['stakeholder'], True, 403, ''),
      # ETC editing his own conclusion
      (['/species/summary/', {
-         'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+         'period': 5, 'group': 'Mammals', 'subject': 'Canis lupus',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'region': 'ALP', 'method_population': '2GD',
@@ -125,24 +143,24 @@ def setup_autofill(app):
       'someuser', ['etc'], False, 302, 'Conclusion edited successfully'),
      # ETC editing another user's conclusion - Ref fields
      (['/species/summary/', {
-         'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+         'period': 5, 'group': 'Mammals', 'subject': 'Canis lupus',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'complementary_favourable_range': '100'},
       'otheruser', ['etc'], False, 302, 'Conclusion edited successfully'),
      # ETC editing another user's conclusion - non-ref fields
      (['/species/summary/', {
-         'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+         'period': 5, 'group': 'Mammals', 'subject': 'Canis lupus',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'method_population': '2GD', 'conclusion_population': 'FV',
-       'submit': 'update'}, 'otheruser', ['etc'], False, 200,
-         'Please fill at least one field'),
+       'submit': 'update'}, 'otheruser', ['etc'], False, 302,
+         'Conclusion edited successfully'),
 
      # Habitat
      # STK editing his own conclusion
      (['/habitat/summary/', {
-         'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+         'period': 5, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
@@ -150,7 +168,7 @@ def setup_autofill(app):
          ['stakeholder'], False, 302, 'Conclusion edited successfully'),
      # Editing inexistent conclusion
      (['/habitat/summary/', {
-         'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+         'period': 5, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'otheruser',
          'edit_region': 'ALP'}],
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
@@ -158,7 +176,7 @@ def setup_autofill(app):
       'otheruser', ['stakeholder'], True, 404, ''),
      # STK editing another user's conclusion
      (['/habitat/summary/', {
-         'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+         'period': 5, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
@@ -166,7 +184,7 @@ def setup_autofill(app):
       'otheruser', ['stakeholder'], True, 403, ''),
      # ETC editing his own conclusion
      (['/habitat/summary/', {
-         'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+         'period': 5, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'method_population': '2GD', 'conclusion_population': 'FV',
@@ -174,19 +192,19 @@ def setup_autofill(app):
          'Conclusion edited successfully'),
      # ETC editing another user's conclusion - Ref fields
      (['/habitat/summary/', {
-         'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+         'period': 5, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'complementary_favourable_range': '100', 'submit': 'update'},
       'otheruser', ['etc'], False, 302, 'Conclusion edited successfully'),
      # ETC editing another user's conclusion - non-ref fields
      (['/habitat/summary/', {
-         'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+         'period': 5, 'group': 'coastal habitats', 'subject': '1110',
          'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
          'edit_region': 'ALP'}],
       {'method_population': '2GD', 'conclusion_population': 'FV',
-       'submit': 'update'}, 'otheruser', ['etc'], False, 200,
-         'Please fill at least one field'),
+       'submit': 'update'}, 'otheruser', ['etc'], False, 302,
+         'Conclusion edited successfully'),
      ])
 def test_edit_conclusion(app, client, set_auth, setup_edit, request_args,
                          post_params, user, roles, expect_errors, status_code,
@@ -211,61 +229,44 @@ def test_edit_conclusion(app, client, set_auth, setup_edit, request_args,
     # Species
     # Add conclusion
     [(['/species/summary/', {
-        'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+        'period': 5, 'group': 'Mammals', 'subject': 'Canis lupus',
         'region': 'ALP'}], 'newuser'),
      # Edit conclusion
      (['/species/summary/', {
-       'period': 1, 'group': 'Mammals', 'subject': 'Canis lupus',
+       'period': 5, 'group': 'Mammals', 'subject': 'Canis lupus',
        'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
        'edit_region': 'ALP'}], 'someuser'),
      # Habitat
      (['/habitat/summary/', {
-       'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+       'period': 5, 'group': 'coastal habitats', 'subject': '1110',
        'region': 'ALP'}], 'newuser'),
      (['/habitat/summary/', {
-       'period': 1, 'group': 'coastal habitats', 'subject': '1110',
+       'period': 5, 'group': 'coastal habitats', 'subject': '1110',
        'region': 'ALP', 'action': 'edit', 'edit_user': 'someuser',
        'edit_region': 'ALP'}], 'someuser')
      ])
+
 def test_autofill_conclusion_form(app, client, set_auth, setup_autofill,
                                   request_args, user):
     create_user(user, ['stakeholder'])
     force_login(client, user)
 
     resp = client.get(*get_request_params('get', request_args))
-    form = resp.forms[1]
-
-    assert form['range_surface_area'].value == '100'
-    # assert form['method_range'].value == '2GD'
-    # assert form['conclusion_range'].value == 'FV'
-
-    form['complementary_favourable_range'] = '200~~'
-
-    resp = form.submit()
-    form = resp.forms[1]
-
-    assert form['range_surface_area'].value == '100'
-    # assert form['method_range'].value == '2GD'
-    # assert form['conclusion_range'].value == 'FV'
-
-    assert form['complementary_favourable_range'].value == '200~~'
-    assert 'form-error-td' in resp.html.find(
-        id='complementary_favourable_range').parent.get('class')
-    assert resp.html.find('li', {'class': 'flashmessage'}).text == \
-        'Please correct the errors below and try again.'
+    form = resp.context['manual_form']
+    assert form.conclusion_assessment_prev.data == 'FV'
 
 
 @pytest.mark.parametrize(
     "request_args, post_params, user, MS, roles, model_cls",
     # Species
-    [(['/species/summary/', {'period': 1, 'group': 'Mammals',
+    [(['/species/summary/', {'period': 5, 'group': 'Mammals',
                              'subject': 'Canis lupus', 'region': 'ALP'}],
      {'region': 'ALP', 'method_population': '2GD',
       'conclusion_population': 'FV', 'submit': 'add', 'MS': 'FR'},
       'natuser', 'FR', ['nat'], models.SpeciesManualAssessment),
 
      # Habitat
-     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
+     (['/habitat/summary/', {'period': 5, 'group': 'coastal habitats',
                              'subject': '1110', 'region': 'ALP'}],
       {'region': 'ALP', 'method_range': '2GD', 'conclusion_range': 'FV',
        'submit': 'add', 'MS': 'FR'}, 'natuser', 'FR', ['nat'],
@@ -288,14 +289,14 @@ def test_add_conclusion_nat(app, client, set_auth, setup_add, request_args,
 @pytest.mark.parametrize(
     "request_args, post_params, user, MS, roles, model_cls",
     # Species
-    [(['/species/summary/', {'period': 1, 'group': 'Mammals',
+    [(['/species/summary/', {'period': 5, 'group': 'Mammals',
                              'subject': 'Canis lupus', 'region': 'ALP'}],
      {'region': 'ALP', 'MS': 'AT', 'method_population': '2GD',
       'conclusion_population': 'FV', 'submit': 'add'}, 'stkuser', 'FR',
      ['stakeholder'], models.SpeciesManualAssessment),
 
      # Habitat
-     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
+     (['/habitat/summary/', {'period': 5, 'group': 'coastal habitats',
                              'subject': '1110', 'region': 'ALP'}],
       {'region': 'ALP', 'MS': 'AT', 'method_range': '2GD',
        'conclusion_range': 'FV', 'submit': 'add'}, 'stkuser', 'FR',
@@ -318,17 +319,17 @@ def test_add_conclusion_stk(app, client, set_auth, setup_add, request_args,
 @pytest.mark.parametrize(
     "request_args, post_params, user, MS, roles, model_cls",
     # Species
-    [(['/species/summary/', {'period': 1, 'group': 'Mammals',
+    [(['/species/summary/', {'period': 5, 'group': 'Mammals',
                              'subject': 'Canis lupus', 'region': 'ALP'}],
      {'region': 'ALP', 'method_population': '2GD',
-      'conclusion_population': 'FV', 'submit': 'add', 'MS': 'EU27'},
+      'conclusion_population': 'FV', 'submit': 'add', 'MS': 'EU28'},
       'etcuser', 'FR', ['etc'], models.SpeciesManualAssessment),
 
      # Habitat
-     (['/habitat/summary/', {'period': 1, 'group': 'coastal habitats',
+     (['/habitat/summary/', {'period': 5, 'group': 'coastal habitats',
                              'subject': '1110', 'region': 'ALP'}],
       {'region': 'ALP', 'method_range': '2GD', 'conclusion_range': 'FV',
-       'submit': 'add', 'MS': 'EU27'}, 'etcuser', 'FR', ['etc'],
+       'submit': 'add', 'MS': 'EU28'}, 'etcuser', 'FR', ['etc'],
       models.HabitattypesManualAssessment),
      ])
 def test_add_conclusion_etc(app, client, set_auth, setup_add, request_args,
@@ -337,12 +338,11 @@ def test_add_conclusion_etc(app, client, set_auth, setup_add, request_args,
     force_login(client, user)
 
     resp = client.post(*get_request_params('post', request_args, post_params))
-
     assert resp.status_code == 200
 
     post_params.pop('submit', None)
     manual_ass = model_cls.query.filter_by(**post_params).one()
-    assert manual_ass.MS == 'EU27'
+    assert manual_ass.MS == 'EU28'
 
 
 @pytest.mark.parametrize(
@@ -350,46 +350,46 @@ def test_add_conclusion_etc(app, client, set_auth, setup_add, request_args,
     # Species
     # Inexistent record
     [(['/species/conc/delete/', {
-        'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
+        'period': 5, 'subject': 'Canis lupus', 'region': 'ALP',
         'delete_region': 'ALP', 'delete_user': 'someuser', 'delete_ms': 'FR'}],
       'someuser', 404, True, None),
      # Anonymous user
      (['/species/conc/delete/', {
-       'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
+       'period': 5, 'subject': 'Canis lupus', 'region': 'ALP',
        'delete_region': 'ALP', 'delete_user': 'someuser',
-       'delete_ms': 'EU27'}], '', 403, True, None),
+       'delete_ms': 'EU28'}], '', 403, True, None),
      # Trying to delete another user's conclusion
      (['/species/conc/delete/', {
-       'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
+       'period': 5, 'subject': 'Canis lupus', 'region': 'ALP',
        'delete_region': 'ALP', 'delete_user': 'someuser',
-       'delete_ms': 'EU27'}], 'otheruser', 403, True, None),
+       'delete_ms': 'EU28'}], 'otheruser', 403, True, None),
      # Successfully deleting its own conclusion
      (['/species/conc/delete/', {
-       'period': 1, 'subject': 'Canis lupus', 'region': 'ALP',
+       'period': 5, 'subject': 'Canis lupus', 'region': 'ALP',
        'delete_region': 'ALP', 'delete_user': 'someuser',
-       'delete_ms': 'EU27'}], 'someuser', 302, False,
+       'delete_ms': 'EU28'}], 'someuser', 302, False,
       models.SpeciesManualAssessment),
 
      # Habitat
      # Inexistent record
      (['/habitat/conc/delete/', {
-       'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
+       'period': 5, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
        'delete_user': 'someuser', 'delete_ms': 'FR'}],
       'someuser', 404, True, None),
      # Anonymous user
      (['/habitat/conc/delete/', {
-       'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
-       'delete_user': 'someuser', 'delete_ms': 'EU27'}],
+       'period': 5, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
+       'delete_user': 'someuser', 'delete_ms': 'EU28'}],
       '', 403, True, None),
      # Trying to delete another user's conclusion
      (['/habitat/conc/delete/', {
-       'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
-       'delete_user': 'someuser', 'delete_ms': 'EU27'}],
+       'period': 5, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
+       'delete_user': 'someuser', 'delete_ms': 'EU28'}],
       'otheruser', 403, True, None),
      # Successfully deleting its own conclusion
      (['/habitat/conc/delete/', {
-       'period': 1, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
-       'delete_user': 'someuser', 'delete_ms': 'EU27'}],
+       'period': 5, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
+       'delete_user': 'someuser', 'delete_ms': 'EU28'}],
       'someuser', 302, False, models.HabitattypesManualAssessment),
      ])
 def test_delete_conclusion(app, client, set_auth, setup_edit, request_args,
@@ -422,65 +422,65 @@ def test_delete_conclusion(app, client, set_auth, setup_edit, request_args,
     "success, message",
     # Species
     # ETC successfully updating decision
-    [(['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU27'}],
+    [(['/species/conc/update/5/Canis lupus/ALP/someuser/', {'ms': 'EU28'}],
       {'decision': 'CO'}, 'testuser', ['etc'], False, 200, True, ''),
      # ADM successfully updating decision
-     (['/species/conc/update/1/Canis lupus/ALP/someuser/', {'ms': 'EU27'}],
+     (['/species/conc/update/5/Canis lupus/ALP/someuser/', {'ms': 'EU28'}],
       {'decision': 'CO'}, 'testuser', ['admin'], False, 200, True, ''),
      # ETC changing a final decision (OK) into another final decision (OK)
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
+     (['/species/conc/update/5/Canis lupus/BOR/someuser/', {'ms': 'EU28'}],
       {'decision': 'OK'}, 'testuser', ['etc'], False, 200, False,
       'Another final decision already exists'),
      # ETC selecting invalid decision
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
+     (['/species/conc/update/5/Canis lupus/BOR/someuser/', {'ms': 'EU28'}],
       {'decision': 'WTF'}, 'testuser', ['etc'], False, 200, False,
       "'WTF' is not a valid decision."),
      # ETC selecting 'OK?' decision
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
+     (['/species/conc/update/5/Canis lupus/BOR/someuser/', {'ms': 'EU28'}],
       {'decision': 'OK?'}, 'testuser', ['etc'], False, 200, False,
       "You are not allowed to select 'OK?'Please select another value."),
      # ETC updating decision - inexistent assessment
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'RAND'}],
+     (['/species/conc/update/5/Canis lupus/BOR/someuser/', {'ms': 'RAND'}],
       {'decision': 'CO'}, 'testuser', ['etc'], True, 404, '', ''),
      # No decision sent in request
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
+     (['/species/conc/update/5/Canis lupus/BOR/someuser/', {'ms': 'EU28'}],
       {}, 'testuser', ['etc'], True, 401, '', ''),
      # NAT trying to update decision
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
+     (['/species/conc/update/5/Canis lupus/BOR/someuser/', {'ms': 'EU28'}],
       {}, 'testuser', ['nat'], True, 403, '', ''),
      # STK trying to update decision
-     (['/species/conc/update/1/Canis lupus/BOR/someuser/', {'ms': 'EU27'}],
+     (['/species/conc/update/5/Canis lupus/BOR/someuser/', {'ms': 'EU28'}],
       {}, 'testuser', ['stakeholder'], True, 403, '', ''),
      # Habitat
      # ETC successfully updating decision
-     (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/5/1110/ALP/someuser/', {'ms': 'EU28'}],
       {'decision': 'CO'}, 'testuser', ['etc'], False, 200, True, ''),
      # ADM successfully updating decision
-     (['/habitat/conc/update/1/1110/ALP/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/5/1110/ALP/someuser/', {'ms': 'EU28'}],
       {'decision': 'CO'}, 'testuser', ['admin'], False, 200, True, ''),
      # ETC changing a final decision (OK) into another final decision (OK)
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/5/1110/MATL/someuser/', {'ms': 'EU28'}],
       {'decision': 'OK'}, 'testuser', ['etc'], False, 200, False,
       'Another final decision already exists'),
      # ETC selecting invalid decision
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/5/1110/MATL/someuser/', {'ms': 'EU28'}],
       {'decision': 'WTF'}, 'testuser', ['etc'], False, 200, False,
       "'WTF' is not a valid decision."),
      # ETC selecting 'OK?' decision
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/5/1110/MATL/someuser/', {'ms': 'EU28'}],
       {'decision': 'OK?'}, 'testuser', ['etc'], False, 200, False,
       "You are not allowed to select 'OK?'Please select another value."),
      # ETC updating decision - inexistent assessment
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'RAND'}],
+     (['/habitat/conc/update/5/1110/MATL/someuser/', {'ms': 'RAND'}],
       {'decision': 'CO'}, 'testuser', ['etc'], True, 404, '', ''),
      # No decision sent in request
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/5/1110/MATL/someuser/', {'ms': 'EU28'}],
       {}, 'testuser', ['etc'], True, 401, '', ''),
      # NAT trying to update decision
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/5/1110/MATL/someuser/', {'ms': 'EU28'}],
       {}, 'testuser', ['nat'], True, 403, '', ''),
      # STK trying to update decision
-     (['/habitat/conc/update/1/1110/MATL/someuser/', {'ms': 'EU27'}],
+     (['/habitat/conc/update/5/1110/MATL/someuser/', {'ms': 'EU28'}],
       {}, 'testuser', ['stakeholder'], True, 403, '', ''),
      ])
 def test_update_decision(app, client, set_auth, setup_decision, request_args,
@@ -488,7 +488,6 @@ def test_update_decision(app, client, set_auth, setup_decision, request_args,
                          success, message):
     create_user(user, roles)
     force_login(client, user)
-
     resp = client.post(*get_request_params('post', request_args, post_params),
                        expect_errors=expect_errors)
 

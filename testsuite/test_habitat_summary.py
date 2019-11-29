@@ -22,7 +22,7 @@ def setup(app):
 
 
 def test_filter_groups_view(app, client):
-    url = url_for('common.habitat-groups', period='1')
+    url = url_for('common.habitat-groups', period='5')
     resp = client.get(url)
 
     assert resp.status_code == 200
@@ -32,7 +32,7 @@ def test_filter_groups_view(app, client):
 
 
 def test_filter_species_view(app, client):
-    url = url_for('summary.habitat-summary-species', period='1',
+    url = url_for('summary.habitat-summary-species', period='5',
                   group='coastal habitats')
     resp = client.get(url)
     assert resp.status_code == 200
@@ -42,7 +42,7 @@ def test_filter_species_view(app, client):
 
 
 def test_filter_regions_view(app, client):
-    url = url_for('summary.habitat-summary-regions', period='1',
+    url = url_for('summary.habitat-summary-regions', period='5',
                   subject='1110')
     resp = client.get(url)
     assert resp.status_code == 200

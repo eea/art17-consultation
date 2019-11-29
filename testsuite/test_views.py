@@ -1,6 +1,17 @@
 from .conftest import get_request_params, force_login
 import pytest
 
+from art17.models import db
+from .factories import (
+    DatasetFactory,
+)
+
+
+@pytest.fixture(autouse=True)
+def setup(app):
+    DatasetFactory()
+    db.session.commit()
+
 
 def test_homepage(client, app, set_auth):
     resp = client.get('/')
@@ -11,61 +22,61 @@ def test_homepage(client, app, set_auth):
     ('/species/summary/', {}, 'Please select ', True),
 
     ('/species/summary/', {
-        'group': 'Mammals', 'period': '1', 'subject': 'Canis lupus',
+        'group': 'Mammals', 'period': '5', 'subject': 'Canis lupus',
         'region': ''}, 'Canis lupus', True),
 
     ('/species/summary/', {
-        'group': 'Mammals', 'period': '1', 'subject': 'Capra ibex',
+        'group': 'Mammals', 'period': '5', 'subject': 'Capra ibex',
         'region': ''}, 'Canis lupus', False),
 
     ('/species/progress/', {}, 'Please select ', True),
 
     ('/species/progress/', {
-        'period': '1', 'group': 'Mammals', 'conclusion': 'population'},
+        'period': '5', 'group': 'Mammals', 'conclusion': 'population'},
      'Mammals, population', True),
 
     ('/species/progress/', {
-        'period': '1', 'group': 'Fish', 'conclusion': 'range'},
+        'period': '5', 'group': 'Fish', 'conclusion': 'range'},
      'Mammals, population', False),
 
     ('/species/report/', {}, 'Please select ', True),
 
     ('/species/report/', {
-        'period': '1', 'group': 'Mammals', 'country': 'IT', 'region': ''},
+        'period': '5', 'group': 'Mammals', 'country': 'IT', 'region': ''},
      'Mammals, IT', True),
 
     ('/species/report/', {
-        'period': '1', 'group': 'Fish', 'country': 'EL', 'region': ''},
+        'period': '5', 'group': 'Fish', 'country': 'EL', 'region': ''},
      'Mammals, IT', False),
 
     ('/habitat/summary/', {}, 'Please select ', True),
 
     ('/habitat/summary/', {
-        'period': '1', 'group': 'forests', 'subject': '9010', 'region': ''},
+        'period': '5', 'group': 'forests', 'subject': '9010', 'region': ''},
      'forests, 9010', True),
 
     ('/habitat/summary/', {
-        'period': '1', 'group': 'grasslands', 'subject': '6110', 'region': ''},
+        'period': '5', 'group': 'grasslands', 'subject': '6110', 'region': ''},
      'forests, 9010', False),
 
     ('/habitat/progress/', {}, 'Please select ', True),
 
     ('/habitat/progress/', {
-        'period': 1, 'group': 'Forests', 'conclusion': 'range'},
+        'period': 5, 'group': 'Forests', 'conclusion': 'range'},
      'Forests, range', True),
 
     ('/habitat/progress/', {
-        'period': 1, 'group': 'Grasslands', 'conclusion': 'area'},
+        'period': 5, 'group': 'Grasslands', 'conclusion': 'area'},
      'Forests, range', False),
 
     ('/habitat/report/', {}, 'Please select ', True),
 
     ('/habitat/report/', {
-        'period': '1', 'group': 'Forests', 'country': 'IT', 'region': ''},
+        'period': '5', 'group': 'Forests', 'country': 'IT', 'region': ''},
      'Forests, IT', True),
 
     ('/habitat/report/', {
-        'period': '1', 'group': 'Grasslands', 'country': 'EL', 'region': ''},
+        'period': '5', 'group': 'Grasslands', 'country': 'EL', 'region': ''},
      'Forests, IT', False),
 ])
 def test_view(client, app, set_auth, path, args_dict, search_text, elem_found):

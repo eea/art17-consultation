@@ -6,20 +6,25 @@ from . import factories
 
 @pytest.fixture(autouse=True)
 def setup(app):
+    factories.DatasetFactory(id=5, schema='2018', name='2013-2018',
+                             habitat_map_url='', species_map_url='')
     factories.EtcDataSpeciesRegionFactory(
         group='Mammals',
+        dataset_id=5,
         assesment_speciesname='Capra ibex',
         speciesname='Capra ibex',
         range_surface_area=12530)
     factories.SpeciesManualAssessmentFactory(
         assesment_speciesname='Capra ibex',
         range_surface_area=19850,
+        dataset_id=5,
         region='ALP',
         method_range='2GD',
         conclusion_range='U1',
         decision='OK')
     factories.EtcDataSpeciesAutomaticAssessmentFactory(
         assesment_speciesname='Capra ibex',
+        dataset_id=5,
         assessment_method='1',
         range_surface_area=19850,
         region='ALP',
@@ -27,16 +32,19 @@ def setup(app):
     factories.EtcDicBiogeoregFactory()
     factories.EtcDataHabitattypeRegionFactory(
         range_surface_area=1283,
+        dataset_id=5,
         habitatcode=1110)
     factories.EtcDataHabitattypeAutomaticAssessmentFactory(
         range_surface_area=1283,
         assessment_method='1',
+        dataset_id=5,
         habitatcode=1110,
         region='ALP',
     )
     factories.HabitattypesManualAssessmentsFactory(
         range_surface_area=1283,
         habitatcode=1110,
+        dataset_id=5,
         method_range='2XA',
         conclusion_range='FV',
         decision='OK',
@@ -49,10 +57,10 @@ def setup(app):
 
 @pytest.mark.parametrize("request_args,search_dict", [
     (['/species/summary/', {
-        'group': 'Mammals', 'period': '1', 'subject': 'Capra ibex',
+        'group': 'Mammals', 'period': '5', 'subject': 'Capra ibex',
         'region': ''}], {1: '12530', 3: '19850', 5: '19850'}),
     (['/habitat/summary/', {
-        'group': 'coastal habitats', 'period': '1', 'subject': '1110',
+        'group': 'coastal habitats', 'period': '5', 'subject': '1110',
         'region': ''}], {1: '1283', 3: '1283', 5: '1283'}),
 ])
 def test_summary_range_value(client, set_auth, app, request_args, search_dict):
@@ -65,10 +73,10 @@ def test_summary_range_value(client, set_auth, app, request_args, search_dict):
 
 @pytest.mark.parametrize("request_args,search_text", [
     (['/species/progress/', {
-        'group': 'Mammals', 'period': '1',  'conclusion': 'range'}],
+        'group': 'Mammals', 'period': '5',  'conclusion': 'range'}],
      'U1'),
     (['/habitat/progress/', {
-        'group': 'coastal habitats', 'period': '1',  'conclusion': 'range'}],
+        'group': 'coastal habitats', 'period': '5',  'conclusion': 'range'}],
      'FV')
 ])
 def test_progress_range_value(client, set_auth, app, request_args, search_text):

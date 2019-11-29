@@ -45,7 +45,7 @@ def create_generic_fixtures():
         "values ('nat', 'National expert')"
     )
     models.db.session.execute(
-        "insert into config(default_dataset_id, start_date) values (1, '%s')" %
+        "insert into config(default_dataset_id, start_date) values (5, '%s')" %
         date.today()
     )
 

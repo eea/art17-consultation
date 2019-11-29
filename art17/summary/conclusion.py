@@ -106,6 +106,7 @@ class ConclusionView(object):
             .filter_by(subject=subject, region=region, dataset_id=period)
             .first()
         )
+
         if prev_lu:
             if period == '3':
                 values['conclusion_assessment_prev'] = prev_lu.conclusion_assessment

@@ -16,7 +16,7 @@ from conftest import create_user, get_request_params, force_login
 
 @pytest.fixture
 def setup(app):
-    DatasetFactory(id=1, schema='2012')
+    DatasetFactory(id=5, schema='2018', name='2013-2018')
     WikiFactory()
     WikiChangeFactory()
     WikiFactory(
@@ -68,13 +68,13 @@ def get_instance(models_cls, **kwargs):
 
 @pytest.mark.parametrize("request_args", [
     (['/species/summary/datasheet/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}]),
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}]),
     (['/species/summary/audittrail/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}]),
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}]),
     (['/habitat/summary/datasheet/', {
-        'period': '1', 'subject': '9010', 'region': ''}]),
+        'period': '5', 'subject': '9010', 'region': ''}]),
     (['/habitat/summary/audittrail/', {
-        'period': '1', 'subject': '9010', 'region': ''}])
+        'period': '5', 'subject': '9010', 'region': ''}])
 ])
 def test_empty_view(app, client, request_args):
     resp = client.get(*request_args)
@@ -85,19 +85,19 @@ def test_empty_view(app, client, request_args):
 
 @pytest.mark.parametrize("request_args, search_text", [
     (['/species/summary/datasheet/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         "The wolf was the world's most widely distributed mammal."
      ),
     (['/species/summary/audittrail/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': 'CON'}],
+        'period': '5', 'subject': 'Canis lupus', 'region': 'CON'}],
         'For Poland: present range, population and habitat'
      ),
     (['/habitat/summary/datasheet/', {
-        'period': '1', 'subject': '1110', 'region': ''}],
+        'period': '5', 'subject': '1110', 'region': ''}],
         'The conservation status in the marine Baltic region'
      ),
     (['/habitat/summary/audittrail/', {
-        'period': '1', 'subject': '1110', 'region': 'MBAL'}],
+        'period': '5', 'subject': '1110', 'region': 'MBAL'}],
         'Method 1 was used to evaluate the subconclusion'
      )
 ])
@@ -112,19 +112,19 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
 
 @pytest.mark.parametrize("request_type, request_args, post_params", [
     ('post', ['/species/summary/datasheet/page_history/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         {'revision_id': 1}),
     ('post', ['/species/summary/datasheet/add_comment/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         {'text': 'Test add comment.'}),
     ('post', ['/species/summary/datasheet/edit_page/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         {'text': 'Test edit page.'}),
     ('post', ['/species/summary/datasheet/edit_comment/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': '',
+        'period': '5', 'subject': 'Canis lupus', 'region': '',
         'comment_id': 1}], {'text': 'Test edit comment.'}),
     ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'read', 'period': '1'}], {}),
+        'comment_id': 1, 'toggle': 'read', 'period': '5'}], {}),
     ('get', ['/species/summary/datasheet/get_revision/', {
         'revision_id': 1}], {})
 ])
@@ -138,17 +138,17 @@ def test_perms(app, setup, set_auth, client, request_type, request_args,
 @pytest.mark.parametrize("request_type, request_args, post_params", [
     # Test (un-)deleting someone else's comment
     ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'del', 'period': '1'}], {}),
+        'comment_id': 1, 'toggle': 'del', 'period': '5'}], {}),
     # Test marking as (un-)read current user's comment
     ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 2, 'toggle': 'read', 'period': '1'}], {}),
+        'comment_id': 2, 'toggle': 'read', 'period': '5'}], {}),
     # Test editing someone else's comment
     ('post', ['/species/summary/datasheet/edit_comment/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': '',
+        'period': '5', 'subject': 'Canis lupus', 'region': '',
         'comment_id': 1}], {'text': 'Test edit comment.'}),
     # Test adding more a second comment
     ('post', ['/species/summary/datasheet/add_comment/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         {'text': 'Test add comment.'}),
     # Getting revision info, unavailable to public
     ('get', ['/species/summary/datasheet/get_revision/', {
@@ -165,13 +165,13 @@ def test_perms_auth_user(app, setup, set_auth, client, request_type,
 
 @pytest.mark.parametrize("request_type, request_args, post_params", [
     ('post', ['/species/summary/datasheet/page_history/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         {'revision_id': 999}),
     ('post', ['/species/summary/datasheet/edit_comment/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': '',
+        'period': '5', 'subject': 'Canis lupus', 'region': '',
         'comment_id': 999}], {'text': 'Test edit comment.'}),
     ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 999, 'toggle': 'read', 'period': '1'}], {}),
+        'comment_id': 999, 'toggle': 'read', 'period': '5'}], {}),
 ])
 def test_404_error(app, setup, set_auth, client, request_type, request_args,
                    post_params):
@@ -189,7 +189,7 @@ def test_change_active_revision(app, setup, set_auth, client):
     force_login(client, 'otheruser')
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/page_history/', {
-            'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+            'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         {'revision_id': 3}))
     assert get_instance(WikiChange, id=1).active == 0
     assert get_instance(WikiChange, id=3).active == 1
@@ -200,7 +200,7 @@ def test_add_comment(app, setup, set_auth, client):
     set_user('newuser')
     force_login(client, 'newuser')
     request_data = ('post', ['/species/summary/datasheet/add_comment/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+        'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         {'comment': 'Test add comment.'})
     client.post(*get_request_params(*request_data))
     request_args = request_data[1][1]
@@ -216,7 +216,7 @@ def test_edit_page(app, setup, set_auth, client):
     force_login(client, 'testuser')
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/edit_page/', {
-            'period': '1', 'subject': 'Canis lupus', 'region': ''}],
+            'period': '5', 'subject': 'Canis lupus', 'region': ''}],
         {'text': 'Test edit page.'}))
     assert get_instance(WikiChange, id=1).active == 0
     assert get_instance(WikiChange, body='Test edit page.').active == 1
@@ -228,7 +228,7 @@ def test_edit_comment(app, setup, set_auth, client):
     force_login(client, 'testuser')
     client.post(*get_request_params(
         'post', ['/species/summary/datasheet/edit_comment/', {
-            'period': '1', 'subject': 'Canis lupus', 'region': '',
+            'period': '5', 'subject': 'Canis lupus', 'region': '',
             'comment_id': 1}], {'comment': 'Test edit comment.'}))
     assert get_instance(WikiComment, id=1).comment == 'Test edit comment.'
 
@@ -239,7 +239,7 @@ def test_toggle_del(app, setup, set_auth, client):
     force_login(client, 'testuser')
     initial_value = get_instance(WikiComment, id=1).deleted or 0
     client.get('/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'del', 'period': '1'})
+        'comment_id': 1, 'toggle': 'del', 'period': '5'})
     assert get_instance(WikiComment, id=1).deleted == 1 - initial_value
 
 
@@ -254,7 +254,7 @@ def test_toggle_read(app, setup, set_auth, client):
             RegisteredUser, id='otheruser').read_comments
     initial_value = get_value()
     client.get('/species/summary/datasheet/manage_comment/', {
-        'comment_id': 1, 'toggle': 'read', 'period': '1'})
+        'comment_id': 1, 'toggle': 'read', 'period': '5'})
     assert get_value() is not initial_value
 
 
@@ -280,5 +280,5 @@ def test_hide_adm_etc_username(app, setup, set_auth, client, roles):
     force_login(client, 'otheruser')
 
     resp = client.get('/species/summary/datasheet/', {
-        'period': '1', 'subject': 'Canis lupus', 'region': ''})
+        'period': '5', 'subject': 'Canis lupus', 'region': ''})
     assert 'Secret Name' not in resp.html.name

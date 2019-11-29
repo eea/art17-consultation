@@ -11,8 +11,13 @@ class DatasetFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.Dataset
     FACTORY_SESSION = models.db.session
 
-    id = 1
+    id = 5
+    schema = '2018'
     name = 'import-from-2006'
+    habitat_map_url=''
+    species_map_url=''
+    sensitive_species_map_url=''
+
 
 
 class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
@@ -21,7 +26,7 @@ class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
     FACTORY_SESSION = models.db.session
 
     speciescode = 1110
-    dataset_id = 1
+    dataset_id = 5
     country = 'AT'
     eu_country_code = 'AT'
     delivery = 2
@@ -35,7 +40,7 @@ class EtcDicBiogeoregFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDicBiogeoreg
     FACTORY_SESSION = models.db.session
 
-    dataset_id = 1
+    dataset_id = 5
     reg_code = 'ALP'
     reg_name = 'Alpine'
 
@@ -45,7 +50,7 @@ class EtcDicHdHabitat(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDicHdHabitat
     FACTORY_SESSION = models.db.session
 
-    dataset_id = 1
+    dataset_id = 5
     habcode = 1110
     group = 'coastal habitats'
     priority = 0
@@ -59,7 +64,7 @@ class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
     FACTORY_SESSION = models.db.session
 
     habitatcode = 1110
-    dataset_id = 1
+    dataset_id = 5
     country = 'AT2'
     eu_country_code = 'AT'
     delivery = 2
@@ -75,7 +80,7 @@ class EtcDicMethodFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDicMethod
     FACTORY_SESSION = models.db.session
 
-    dataset_id = 1
+    dataset_id = 5
     method = '1'
 
 
@@ -84,11 +89,11 @@ class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.SpeciesManualAssessment
     FACTORY_SESSION = models.db.session
 
-    dataset_id = 1
+    dataset_id = 5
     assesment_speciesname = 'Canis lupus'
     region = 'BOR'
     user_id = 'someuser'
-    MS = 'EU27'
+    MS = 'EU28'
 
 
 class EtcDataSpeciesAutomaticAssessmentFactory(SQLAlchemyModelFactory):
@@ -96,7 +101,7 @@ class EtcDataSpeciesAutomaticAssessmentFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDataSpeciesAutomaticAssessment
     FACTORY_SESSION = models.db.session
 
-    dataset_id = 1
+    dataset_id = 5
 
 
 class EtcDataHabitattypeAutomaticAssessmentFactory(SQLAlchemyModelFactory):
@@ -104,7 +109,7 @@ class EtcDataHabitattypeAutomaticAssessmentFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.EtcDataHabitattypeAutomaticAssessment
     FACTORY_SESSION = models.db.session
 
-    dataset_id = 1
+    dataset_id = 5
 
 
 class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
@@ -112,11 +117,11 @@ class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = models.HabitattypesManualAssessment
     FACTORY_SESSION = models.db.session
 
-    dataset_id = 1
+    dataset_id = 5
     habitatcode = '1110'
     region = 'MATL'
     user_id = 'someuser'
-    MS = 'EU27'
+    MS = 'EU28'
 
 
 class WikiFactory(SQLAlchemyModelFactory):
@@ -127,7 +132,7 @@ class WikiFactory(SQLAlchemyModelFactory):
     id = 1
     region_code = ''
     assesment_speciesname = 'Canis lupus'
-    dataset_id = 1
+    dataset_id = 5
 
 
 class WikiChangeFactory(SQLAlchemyModelFactory):
@@ -141,7 +146,7 @@ class WikiChangeFactory(SQLAlchemyModelFactory):
     editor = 'testuser'
     changed = datetime.strptime('10-02-2014 14:22:23', '%d-%m-%Y %H:%M:%S')
     active = 1
-    dataset_id = 1
+    dataset_id = 5
 
 
 class WikiTrailFactory(SQLAlchemyModelFactory):
@@ -152,7 +157,7 @@ class WikiTrailFactory(SQLAlchemyModelFactory):
     id = 1
     region_code = 'CON'
     assesment_speciesname = 'Canis lupus'
-    dataset_id = 1
+    dataset_id = 5
 
 
 class WikiTrailChangeFactory(SQLAlchemyModelFactory):
@@ -166,7 +171,7 @@ class WikiTrailChangeFactory(SQLAlchemyModelFactory):
     editor = 'testuser'
     changed = datetime.now()
     active = 1
-    dataset_id = 1
+    dataset_id = 5
 
 
 class WikiCommentFactory(SQLAlchemyModelFactory):
@@ -179,7 +184,7 @@ class WikiCommentFactory(SQLAlchemyModelFactory):
     comment = 'This is a comment'
     author_id = 'testuser'
     posted = datetime.now()
-    dataset_id = 1
+    dataset_id = 5
 
 
 class CommentFactory(SQLAlchemyModelFactory):
@@ -193,9 +198,9 @@ class CommentFactory(SQLAlchemyModelFactory):
     assesment_speciesname = 'Canis lupus'
     region = 'BOR'
     user_id = 'someuser'
-    MS = 'EU27'
+    MS = 'EU28'
     post_date = datetime.now().strftime(DATE_FORMAT)
-    dataset_id = 1
+    dataset_id = 5
 
 
 class HabitatCommentFactory(SQLAlchemyModelFactory):
@@ -209,9 +214,9 @@ class HabitatCommentFactory(SQLAlchemyModelFactory):
     habitat = '1110'
     region = 'MATL'
     user_id = 'someuser'
-    MS = 'EU27'
+    MS = 'EU28'
     post_date = datetime.now().strftime(DATE_FORMAT)
-    dataset_id = 1
+    dataset_id = 5
 
 
 class EtcDicConclusionFactory(SQLAlchemyModelFactory):
@@ -221,7 +226,7 @@ class EtcDicConclusionFactory(SQLAlchemyModelFactory):
 
     order = 1
     conclusion = 'FV'
-    dataset_id = 1
+    dataset_id = 5
 
 
 class EtcDicDecisionFactory(SQLAlchemyModelFactory):
@@ -231,4 +236,4 @@ class EtcDicDecisionFactory(SQLAlchemyModelFactory):
 
     order = 1
     decision = 'CO'
-    dataset_id = 1
+    dataset_id = 5

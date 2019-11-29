@@ -30,7 +30,7 @@ def setup(app):
 ])
 def test_basic_errors(app, data, error, field):
     form = SummaryManualFormSpecies(MultiDict(data))
-    form.setup_choices(dataset_id=1)
+    form.setup_choices(dataset_id=5)
     form.validate()
 
     field = getattr(form, field)

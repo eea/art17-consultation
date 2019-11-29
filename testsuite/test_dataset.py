@@ -18,8 +18,8 @@ HABCODE = 110
 
 @pytest.fixture
 def dataset_app(app):
-    DatasetFactory()
-    DatasetFactory(id=2, name='2007-2012')
+    DatasetFactory(id=1, name='2001-2006', schema='2006')
+    DatasetFactory(id=2, name='2007-2012', schema='2012')
     EtcDicMethodFactory(dataset_id=1, method='1')
     EtcDicMethodFactory(dataset_id=2, method='1')
     # Species
