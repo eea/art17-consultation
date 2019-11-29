@@ -1,5 +1,7 @@
-Art 17 Consultation Tool http://bd.eionet.europa.eu/article17/reports2012/
-==========================================================================
+Art 17 Consultation Tool
+=========================
+https://nature-art17.eionet.europa.eu/article17/reports2012
+
 |travis| |docker|
 
 .. |travis| image:: https://travis-ci.org/eea/art17-consultation.svg?branch=master 
