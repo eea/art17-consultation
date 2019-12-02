@@ -1,16 +1,16 @@
-from flask.ext.script import Manager, Option
-from flask.ext.security.script import Command
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_script import Manager, Option
+from flask_security.script import Command
+from flask_sqlalchemy import SQLAlchemy
 
 from art17.models import db, Wiki, WikiChange
 
 
 class PreFillWikiChangesHabitat(Command):
 
-    option_list = Command.option_list + [
+    option_list = Command.option_list + (
         Option('-d', '--dataset', dest='dataset_id', required=True),
         Option('-fd', '--from-dataset', dest="from_dataset_id", required=True)
-    ]
+    )
 
     def run(self, **kwargs):
         wikis =Wiki.query.filter_by(dataset_id=kwargs['from_dataset_id']).filter(Wiki.habitatcode.isnot(None))

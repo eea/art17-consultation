@@ -19,7 +19,7 @@
       <div class="warning">You have submitted an invalid CSRF token</div>
     {% endif %}
 
-    <input type="hidden" name="csrf_token" value="">
+    {{ form.csrf_token }}
 
     <div class="form-group">
       {{ render_field_with_errors(form.institution) }}

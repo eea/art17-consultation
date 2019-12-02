@@ -15,7 +15,7 @@ from instance.settings import EU_ASSESSMENT_MODE
 def can_delete(record):
     if EU_ASSESSMENT_MODE:
         return True
-    if current_user.is_anonymous():
+    if current_user.is_anonymous:
         return False
 
     if record.dataset.is_readonly:
@@ -42,7 +42,7 @@ def can_view(record, countries):
 def can_edit(record):
     if EU_ASSESSMENT_MODE:
         return True
-    if current_user.is_anonymous():
+    if current_user.is_anonymous:
         return False
 
     if record.deleted:
@@ -110,7 +110,7 @@ def can_select_MS():
 
 
 def can_touch(assessment):
-    if current_user.is_anonymous() and not EU_ASSESSMENT_MODE:
+    if current_user.is_anonymous and not EU_ASSESSMENT_MODE:
         return False
     if not assessment:
         return EU_ASSESSMENT_MODE or admin_perm.can() or nat_perm.can() or etc_perm.can() or (
@@ -120,7 +120,7 @@ def can_touch(assessment):
 
 
 def must_edit_ref(assessment):
-    if not current_user.is_authenticated() or not assessment:
+    if not current_user.is_authenticated or not assessment:
         return False
     if assessment.user_id == current_user.id:
         return False

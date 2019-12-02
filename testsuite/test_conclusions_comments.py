@@ -157,7 +157,6 @@ def test_count_read_comments_deleted(app, manual_assessment_cls, comment_cls,
     user = create_user('someuser')
     comment.readers.append(user)
     models.db.session.commit()
-
     assert record.comments_count_read('someuser') == expected_result
 
 

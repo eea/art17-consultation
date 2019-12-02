@@ -12,7 +12,7 @@
       </h1>
 
       <div class="login">
-        {% if current_user.is_authenticated() %}
+        {% if current_user.is_authenticated %}
 
           <a id="loginlink" href="{{ url_for('auth.logout') }}">Log out</a>
           <span id="profilelink">You are logged in as <b>{{ current_user.id }}</b></span>

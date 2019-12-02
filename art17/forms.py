@@ -1,11 +1,11 @@
 # coding=utf-8
-from flask_wtf import Form as Form_base
+from flask_wtf import FlaskForm as Form_base
 from wtforms import (
     BooleanField,
     DateField,
     PasswordField,
     TextAreaField,
-    TextField,
+    StringField,
     SelectField,
 )
 from wtforms.validators import Optional, ValidationError
@@ -220,7 +220,7 @@ class OptionsBaseHabitat(_OptionsBase):
 
 class SummaryFormMixin(object):
 
-    form_errors = TextField(validators=[form_validation])
+    form_errors = StringField(validators=[form_validation])
 
     def setup_choices(self, dataset_id):
         pass
@@ -241,18 +241,18 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
     region = SelectField(default='')
 
-    range_surface_area = TextField(default=None,
+    range_surface_area = StringField(default=None,
                                    validators=[numeric_validation])
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
-    complementary_favourable_range = TextField(validators=[float_validation])
+    complementary_favourable_range = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_population = TextField(validators=[float_validation])
+    complementary_favourable_population = StringField(validators=[float_validation])
     complementary_favourable_population_q = OptionalSelectField()
-    population_minimum_size = TextField(validators=[float_validation])
-    population_maximum_size = TextField(validators=[float_validation])
-    population_best_value = TextField(validators=[float_validation])
+    population_minimum_size = StringField(validators=[float_validation])
+    population_maximum_size = StringField(validators=[float_validation])
+    population_best_value = StringField(validators=[float_validation])
     population_unit = OptionalSelectField()
     method_population = OptionalSelectField()
     conclusion_population = OptionalSelectField()
@@ -362,34 +362,34 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
     region = SelectField()
 
-    range_surface_area = TextField(validators=[float_validation])
+    range_surface_area = StringField(validators=[float_validation])
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
-    range_yearly_magnitude = TextField()
-    complementary_favourable_range = TextField(validators=[float_validation])
+    range_yearly_magnitude = StringField()
+    complementary_favourable_range = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    coverage_surface_area = TextField(validators=[float_validation])
-    coverage_surface_area_min = TextField(validators=[float_validation])
-    coverage_surface_area_max = TextField(validators=[float_validation])
+    coverage_surface_area = StringField(validators=[float_validation])
+    coverage_surface_area_min = StringField(validators=[float_validation])
+    coverage_surface_area_max = StringField(validators=[float_validation])
     method_area = OptionalSelectField()
     conclusion_area = OptionalSelectField()
     coverage_trend = OptionalSelectField()
-    coverage_yearly_magnitude = TextField()
-    complementary_favourable_area = TextField(validators=[float_validation])
+    coverage_yearly_magnitude = StringField()
+    complementary_favourable_area = StringField(validators=[float_validation])
     complementary_favourable_area_q = OptionalSelectField()
 
-    hab_condition_good_min = TextField(validators=[numeric_validation])
-    hab_condition_good_max = TextField(validators=[numeric_validation])
-    hab_condition_good_best = TextField(validators=[numeric_validation])
+    hab_condition_good_min = StringField(validators=[numeric_validation])
+    hab_condition_good_max = StringField(validators=[numeric_validation])
+    hab_condition_good_best = StringField(validators=[numeric_validation])
 
-    hab_condition_notgood_min = TextField(validators=[numeric_validation])
-    hab_condition_notgood_max = TextField(validators=[numeric_validation])
-    hab_condition_notgood_best = TextField(validators=[numeric_validation])
+    hab_condition_notgood_min = StringField(validators=[numeric_validation])
+    hab_condition_notgood_max = StringField(validators=[numeric_validation])
+    hab_condition_notgood_best = StringField(validators=[numeric_validation])
 
-    hab_condition_unknown_min = TextField(validators=[numeric_validation])
-    hab_condition_unknown_max = TextField(validators=[numeric_validation])
-    hab_condition_unknown_best = TextField(validators=[numeric_validation])
+    hab_condition_unknown_min = StringField(validators=[numeric_validation])
+    hab_condition_unknown_max = StringField(validators=[numeric_validation])
+    hab_condition_unknown_best = StringField(validators=[numeric_validation])
 
     method_structure = OptionalSelectField()
     conclusion_structure = OptionalSelectField()
@@ -491,9 +491,9 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
 
     region = SelectField()
 
-    complementary_favourable_range = TextField(validators=[float_validation])
+    complementary_favourable_range = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_population = TextField(validators=[float_validation])
+    complementary_favourable_population = StringField(validators=[float_validation])
     complementary_favourable_population_q = OptionalSelectField()
 
 
@@ -512,9 +512,9 @@ class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
 
     region = SelectField()
 
-    complementary_favourable_range = TextField(validators=[float_validation])
+    complementary_favourable_range = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_area = TextField(validators=[float_validation])
+    complementary_favourable_area = StringField(validators=[float_validation])
     complementary_favourable_area_q = OptionalSelectField()
 
 
@@ -566,10 +566,12 @@ class ConfigForm(Form):
                            validators=[Optional()])
     end_date = DateField(label="End date (YYYY-MM-DD)",
                          validators=[Optional()])
-    admin_email = TextField(label="Administrator email (space separated list)",
+    admin_email = StringField(label="Administrator email (space separated list)",
                             validators=[Optional()])
     default_dataset_id = SelectField(label="Default period")
 
+    class Meta:
+         csrf = True
 
     def __init__(self, *args, **kwargs):
         super(ConfigForm, self).__init__(*args, **kwargs)
@@ -580,7 +582,10 @@ class ConfigForm(Form):
 
 
 class ChangeDetailsForm(Form):
-    institution = TextField(label="Institution", validators=[Optional()])
-    abbrev = TextField(label="Abbreviation", validators=[Optional()])
-    MS = TextField(label="MS", validators=[Optional()])
-    qualification = TextField(label="Qualification", validators=[Optional()])
+    institution = StringField(label="Institution", validators=[Optional()])
+    abbrev = StringField(label="Abbreviation", validators=[Optional()])
+    MS = StringField(label="MS", validators=[Optional()])
+    qualification = StringField(label="Qualification", validators=[Optional()])
+
+    class Meta:
+         csrf = True

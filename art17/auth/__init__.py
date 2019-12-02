@@ -1,6 +1,6 @@
 import flask
-from flask.ext.login import LoginManager, current_user
-from flask.ext.security import Security
+from flask_login import LoginManager
+from flask_security import Security
 from art17.auth.security import (
     UserDatastore,
     Art17ForgotPasswordForm,
@@ -12,13 +12,6 @@ from art17.common import HOMEPAGE_VIEW_NAME
 
 
 auth = flask.Blueprint('auth', __name__)
-security_ext = Security(
-    datastore=UserDatastore(
-        models.db,
-        models.RegisteredUser,
-        models.Role,
-    ),
-)
 
 login_manager = LoginManager()
 
@@ -33,6 +26,8 @@ def setup_auth_handlers(state):
         'SECURITY_CONFIRMABLE': True,
         'SECURITY_POST_CONFIRM_VIEW': HOMEPAGE_VIEW_NAME,
         'SECURITY_PASSWORD_HASH': 'ldap_salted_sha1',
+        'SECURITY_PASSWORD_HASH': 'ldap_salted_sha1',
+        'SECURITY_PASSWORD_SCHEMES': ['ldap_salted_sha1'],
         'SECURITY_PASSWORD_SALT': 'salted',
         'SECURITY_SEND_PASSWORD_CHANGE_EMAIL': False,
         'SECURITY_EMAIL_SUBJECT_REGISTER': (
@@ -56,8 +51,13 @@ def setup_auth_handlers(state):
     })
 
     app.jinja_env.globals['AUTH_BLUEPRINT_INSTALLED'] = True
-
-    security_ext.init_app(app)
+    security_ext = Security(
+        datastore=UserDatastore(
+            models.db,
+            models.RegisteredUser,
+            models.Role,
+        ), app=app
+    )
 
     security_state = app.extensions['security']
     security_state.pwd_context.update(ldap_salted_sha1__salt_size=7)

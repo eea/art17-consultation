@@ -11,7 +11,7 @@ from flask import (
     flash,
     abort,
 )
-from flask.ext.principal import PermissionDenied
+from flask_principal import PermissionDenied
 from instance.settings import EU_ASSESSMENT_MODE
 
 from art17.auth import current_user
@@ -49,7 +49,7 @@ def can_post_comment(record):
 
     if EU_ASSESSMENT_MODE:
         return True
-    if not current_user.is_authenticated():
+    if not current_user.is_authenticated:
         return False
     if record.dataset and record.dataset.is_readonly:
         return False
@@ -73,7 +73,7 @@ def can_post_comment(record):
 
 @comments.app_template_global('can_edit_comment')
 def can_edit_comment(comment):
-    if not comment or (not current_user.is_authenticated() and not EU_ASSESSMENT_MODE):
+    if not comment or (not current_user.is_authenticated and not EU_ASSESSMENT_MODE):
         return False
     if comment and comment.record and comment.record.dataset and \
             comment.record.dataset.is_readonly:
@@ -84,7 +84,7 @@ def can_edit_comment(comment):
 
 @comments.app_template_global('can_toggle_read')
 def can_toggle_read(comment):
-    if not comment or not current_user.is_authenticated():
+    if not comment or not current_user.is_authenticated:
         return False
 
     if comment.author_id == current_user.id:
@@ -95,7 +95,7 @@ def can_toggle_read(comment):
 
 @comments.app_template_global('can_delete_comment')
 def can_delete_comment(comment):
-    if not comment or not current_user.is_authenticated():
+    if not comment or not current_user.is_authenticated:
         return False
 
     if comment.author_id == current_user.id:
@@ -251,7 +251,7 @@ class UserSummary(views.View):
     template = 'history/history.html'
 
     def dispatch_request(self):
-        if not current_user.is_authenticated():
+        if not current_user.is_authenticated:
             raise PermissionDenied
         period = request.args.get('period') or get_default_period()
         period_obj = Dataset.query.get(period)

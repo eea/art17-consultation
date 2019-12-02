@@ -1,5 +1,5 @@
 import sys
-from flask.ext.script import Manager, Command, Option
+from flask_script import Manager, Command, Option
 from sqlalchemy import create_engine
 from art17 import models
 

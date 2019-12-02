@@ -8,8 +8,9 @@ DATE_FORMAT = '%Y-%m-%d'
 
 class DatasetFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.Dataset
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.Dataset
+        sqlalchemy_session = models.db.session
 
     id = 5
     schema = '2018'
@@ -22,8 +23,9 @@ class DatasetFactory(SQLAlchemyModelFactory):
 
 class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDataSpeciesRegion
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDataSpeciesRegion
+        sqlalchemy_session = models.db.session
 
     speciescode = 1110
     dataset_id = 5
@@ -37,8 +39,9 @@ class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
 
 class EtcDicBiogeoregFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDicBiogeoreg
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDicBiogeoreg
+        sqlalchemy_session = models.db.session
 
     dataset_id = 5
     reg_code = 'ALP'
@@ -47,8 +50,9 @@ class EtcDicBiogeoregFactory(SQLAlchemyModelFactory):
 
 class EtcDicHdHabitat(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDicHdHabitat
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDicHdHabitat
+        sqlalchemy_session = models.db.session
 
     dataset_id = 5
     habcode = 1110
@@ -60,8 +64,9 @@ class EtcDicHdHabitat(SQLAlchemyModelFactory):
 
 class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDataHabitattypeRegion
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDataHabitattypeRegion
+        sqlalchemy_session = models.db.session
 
     habitatcode = 1110
     dataset_id = 5
@@ -77,8 +82,9 @@ class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
 
 class EtcDicMethodFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDicMethod
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDicMethod
+        sqlalchemy_session = models.db.session
 
     dataset_id = 5
     method = '1'
@@ -86,8 +92,10 @@ class EtcDicMethodFactory(SQLAlchemyModelFactory):
 
 class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.SpeciesManualAssessment
-    FACTORY_SESSION = models.db.session
+
+    class Meta:
+        model = models.SpeciesManualAssessment
+        sqlalchemy_session = models.db.session
 
     dataset_id = 5
     assesment_speciesname = 'Canis lupus'
@@ -98,24 +106,27 @@ class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
 
 class EtcDataSpeciesAutomaticAssessmentFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDataSpeciesAutomaticAssessment
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDataSpeciesAutomaticAssessment
+        sqlalchemy_session = models.db.session
 
     dataset_id = 5
 
 
 class EtcDataHabitattypeAutomaticAssessmentFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDataHabitattypeAutomaticAssessment
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDataHabitattypeAutomaticAssessment
+        sqlalchemy_session = models.db.session
 
     dataset_id = 5
 
 
 class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.HabitattypesManualAssessment
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.HabitattypesManualAssessment
+        sqlalchemy_session = models.db.session
 
     dataset_id = 5
     habitatcode = '1110'
@@ -126,8 +137,9 @@ class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
 
 class WikiFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.Wiki
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.Wiki
+        sqlalchemy_session = models.db.session
 
     id = 1
     region_code = ''
@@ -137,8 +149,9 @@ class WikiFactory(SQLAlchemyModelFactory):
 
 class WikiChangeFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.WikiChange
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.WikiChange
+        sqlalchemy_session = models.db.session
 
     id = 1
     wiki_id = 1
@@ -151,8 +164,9 @@ class WikiChangeFactory(SQLAlchemyModelFactory):
 
 class WikiTrailFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.WikiTrail
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.WikiTrail
+        sqlalchemy_session = models.db.session
 
     id = 1
     region_code = 'CON'
@@ -162,8 +176,9 @@ class WikiTrailFactory(SQLAlchemyModelFactory):
 
 class WikiTrailChangeFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.WikiTrailChange
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.WikiTrailChange
+        sqlalchemy_session = models.db.session
 
     id = 1
     wiki_id = 1
@@ -176,8 +191,9 @@ class WikiTrailChangeFactory(SQLAlchemyModelFactory):
 
 class WikiCommentFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.WikiComment
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.WikiComment
+        sqlalchemy_session = models.db.session
 
     id = 1
     wiki_id = 1
@@ -189,8 +205,9 @@ class WikiCommentFactory(SQLAlchemyModelFactory):
 
 class CommentFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.Comment
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.Comment
+        sqlalchemy_session = models.db.session
 
     id = 1
     comment = 'This is a comment'
@@ -205,8 +222,9 @@ class CommentFactory(SQLAlchemyModelFactory):
 
 class HabitatCommentFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.HabitatComment
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.HabitatComment
+        sqlalchemy_session = models.db.session
 
     id = 1
     comment = 'This is a comment'
@@ -221,8 +239,9 @@ class HabitatCommentFactory(SQLAlchemyModelFactory):
 
 class EtcDicConclusionFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDicConclusion
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDicConclusion
+        sqlalchemy_session = models.db.session
 
     order = 1
     conclusion = 'FV'
@@ -231,8 +250,9 @@ class EtcDicConclusionFactory(SQLAlchemyModelFactory):
 
 class EtcDicDecisionFactory(SQLAlchemyModelFactory):
 
-    FACTORY_FOR = models.EtcDicDecision
-    FACTORY_SESSION = models.db.session
+    class Meta:
+        model = models.EtcDicDecision
+        sqlalchemy_session = models.db.session
 
     order = 1
     decision = 'CO'

@@ -142,7 +142,7 @@
           <li><a href="{{ url_for('common.config') }}">Settings</a></li>
         </ul>
   {% endif %}
-  {% if current_user.is_authenticated() %}
+  {% if current_user.is_authenticated %}
       <h2>My account</h2>
         <ul>
           <li><a href="{{ url_for('common.change_details') }}">Change details</a></li>

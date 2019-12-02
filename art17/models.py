@@ -12,9 +12,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import or_, inspect
 from flask import current_app as app
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.script import Manager
-from flask.ext.security import UserMixin, RoleMixin
+from flask_sqlalchemy import SQLAlchemy
+from flask_script import Manager
+from flask_security import UserMixin, RoleMixin
 
 import sys
 from datetime import datetime
@@ -998,6 +998,7 @@ class HabitattypesManualAssessment(Base):
     def comments_count_read(self, user):
         if not self.comments:
             return 0
+        from sqlalchemy.sql import text
         return (db.session.query(HabitatComment.id)
                 .join(t_habitat_comments_read)
                 .filter(HabitatComment.habitat == self.habitatcode)
@@ -1005,7 +1006,7 @@ class HabitattypesManualAssessment(Base):
                 .filter(HabitatComment.MS == self.MS)
                 .filter(HabitatComment.user_id == self.user_id)
                 .filter(HabitatComment.dataset_id == self.dataset_id)
-                .filter('habitat_comments_read.reader_user_id="%s"' % user)
+                .filter(text('habitat_comments_read.reader_user_id="%s"' % user))
                 .filter(or_(HabitatComment.deleted == 0,
                             HabitatComment.deleted == None))
                 .count())
@@ -1138,12 +1139,14 @@ class RegisteredUser(Base, UserMixin):
             'uid=%s,ou=Users,o=EIONET,l=Europe' % username,password
         )
 
+    @property
     def is_authenticated(self):
         return True
 
     def is_active(self):
         return True
 
+    @property
     def is_anonymous(self):
         return False
 
@@ -1260,6 +1263,7 @@ class SpeciesManualAssessment(Base):
     def comments_count_read(self, user):
         if not self.comments:
             return 0
+        from sqlalchemy.sql import text
         return (db.session.query(Comment.id)
                 .join(t_comments_read)
                 .filter(Comment.assesment_speciesname == self.assesment_speciesname)
@@ -1267,7 +1271,7 @@ class SpeciesManualAssessment(Base):
                 .filter(Comment.MS == self.MS)
                 .filter(Comment.user_id == self.user_id)
                 .filter(Comment.dataset_id == self.dataset_id)
-                .filter('comments_read.reader_user_id="%s"' % user)
+                .filter(text('comments_read.reader_user_id="%s"' % user))
                 .filter(or_(Comment.deleted == 0, Comment.deleted == None))
                 .count())
 

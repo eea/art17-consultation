@@ -1,12 +1,12 @@
 import csv
 import sys
 
-from flask.ext.script import Manager, Option
-from flask.ext.security.script import Command
+from flask_script import Manager, Option
+from flask_security.script import Command
 
 from art17 import models
 
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from art17.models import db
 
 def get_model(self, name):
@@ -15,10 +15,10 @@ SQLAlchemy.get_model = get_model
 
 class ImportNewDataCommand(Command):
 
-    option_list = Command.option_list + [
+    option_list = Command.option_list + (
         Option('-f', '--file', dest='file', required=True),
         Option('-m', '--model', dest="model", required=True)
-    ]
+    )
 
     def run(self, **kwargs):
         with open(kwargs['file']) as file:

@@ -77,7 +77,7 @@ def validate_nonempty(s):
     """ Checks if a ckeditor text is empty (whitespaces only)
     """
     if s:
-        soup = BeautifulSoup(s)
+        soup = BeautifulSoup(s, 'html.parser')
         return not bool(empty_str.match(soup.text.replace(u'\xa0', ' ')))
     return False
 

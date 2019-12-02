@@ -3,8 +3,8 @@ import logging.handlers
 import flask
 
 from flask_collect import Collect
-from flask.ext.script import Manager
-from flask.ext.mail import Mail
+from flask_script import Manager
+from flask_mail import Mail
 
 from art17.models import db, db_manager
 from art17.layout import layout

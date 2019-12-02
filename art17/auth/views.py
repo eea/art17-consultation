@@ -17,15 +17,15 @@ from flask import (
     url_for,
 )
 
-from flask.ext.principal import PermissionDenied
-from flask.ext.login import login_user,login_required, logout_user
-from flask.ext.login import current_user as c_user
-from flask.ext.security import user_registered
-from flask.ext.security.forms import ChangePasswordForm, ResetPasswordForm
-from flask.ext.security.changeable import change_user_password
-from flask.ext.security.registerable import register_user
-from flask.ext.security.utils import verify_password, encrypt_password
-from flask.ext.mail import Message
+from flask_principal import PermissionDenied
+from flask_login import login_user,login_required, logout_user
+from flask_login import current_user as c_user
+from flask_security import user_registered
+from flask_security.forms import ChangePasswordForm, ResetPasswordForm
+from flask_security.changeable import change_user_password
+from flask_security.registerable import register_user
+from flask_security.utils import verify_password, encrypt_password
+from flask_mail import Message
 
 from werkzeug.datastructures import MultiDict, ImmutableMultiDict
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -236,7 +236,7 @@ def me():
 
 @auth.route('/auth/change_password', methods=['GET', 'POST'])
 def change_password():
-    if current_user.is_anonymous():
+    if current_user.is_anonymous:
         message = "You must log in before changing your password."
         return render_template('message.html', message=message)
 
@@ -447,7 +447,7 @@ def try_local_login(username, password, form):
 
 @auth.route('/auth/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         flash('You are already logged in.')
         return redirect(url_for(HOMEPAGE_VIEW_NAME))
 
@@ -461,7 +461,7 @@ def login():
         except ldap.INVALID_CREDENTIALS:
 
             try_local_login(username, password, form)
-            if not current_user.is_authenticated():
+            if not current_user.is_authenticated:
                 flash(
                     'Invalid username or password. Please try again.',
                     'danger')

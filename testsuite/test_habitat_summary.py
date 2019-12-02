@@ -27,8 +27,9 @@ def test_filter_groups_view(app, client):
 
     assert resp.status_code == 200
     assert resp.content_type == 'application/json'
-    assert resp.json[''] == '-'
-    assert resp.json['Coastal habitats'] == 'Coastal habitats'
+
+    assert resp.json[0][1] == '-'
+    assert resp.json[1][1] == 'Coastal habitats'
 
 
 def test_filter_species_view(app, client):
@@ -37,8 +38,8 @@ def test_filter_species_view(app, client):
     resp = client.get(url)
     assert resp.status_code == 200
     assert resp.content_type == 'application/json'
-    assert resp.json[''] == '-'
-    assert resp.json['1110'].startswith('1110 Sandbanks')
+    assert resp.json[0][1] == '-'
+    assert resp.json[1][1].startswith('1110 Sandbanks')
 
 
 def test_filter_regions_view(app, client):
@@ -47,6 +48,6 @@ def test_filter_regions_view(app, client):
     resp = client.get(url)
     assert resp.status_code == 200
     assert resp.content_type == 'application/json'
-    assert resp.json[''] == 'All bioregions'
+    assert resp.json[0][1] == 'All bioregions'
     print resp.json
-    assert resp.json['ALP'] == 'Alpine'
+    assert resp.json[1][1] == 'Alpine'

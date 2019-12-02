@@ -8,7 +8,7 @@ from sqlalchemy.sql import func, or_
 from flask import (
     Blueprint, render_template, request, current_app as app, url_for,
 )
-from flask.ext.script import Manager
+from flask_script import Manager
 from flask.views import MethodView
 
 from art17.common import admin_perm

@@ -1,18 +1,18 @@
 import csv
 
-from flask.ext.script import Manager, Option
-from flask.ext.security.script import Command
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_script import Manager, Option
+from flask_security.script import Command
+from flask_sqlalchemy import SQLAlchemy
 
 from art17.models import db, Wiki, WikiChange
 
 
 class PreFillWikiChangesSpecies(Command):
 
-    option_list = Command.option_list + [
+    option_list = Command.option_list + (
         Option('-d', '--dataset', dest='dataset_id', required=True),
         Option('-f', '--file', dest='file', required=True),
-    ]
+    )
 
     def run(self, **kwargs):
         with open(kwargs['file']) as file:

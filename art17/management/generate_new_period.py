@@ -1,15 +1,15 @@
-from flask.ext.script import Manager, Option
-from flask.ext.security.script import Command
+from flask_script import Manager, Option
+from flask_security.script import Command
 
 from art17 import models
 
 
 class GenerateNewPeriodCommand(Command):
 
-    option_list = Command.option_list + [
+    option_list = Command.option_list + (
         Option('-s', '--schema', dest='schema', required=True),
         Option('-n', '--name', dest='name', required=True)
-    ]
+    )
 
     def run(self, **kwargs):
 

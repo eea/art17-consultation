@@ -3,8 +3,8 @@ import ldap
 from datetime import date
 from functools import wraps
 import flask
-from flask.ext.security import signals as security_signals
-from flask.ext.mail import Message
+from flask_security import signals as security_signals
+from flask_mail import Message
 from smtplib import SMTPException
 from eea.usersdb import UsersDB, UserNotFound
 from art17 import models

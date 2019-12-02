@@ -211,8 +211,7 @@ def inject_globals():
             consultation_started = cfg.start_date <= today
     else:
         consultation_started = False
-
-    is_public = not current_user.is_authenticated() or is_public_user()
+    is_public = not current_user.is_authenticated or is_public_user()
 
     return {
         'APP_BREADCRUMBS': [
@@ -417,7 +416,10 @@ def generate_map_url(dataset_id, category, subject, region, sensitive=False):
         else:
             return map_href + '&CodeReg=' + subject + region
     else:
-        return map_href + '&CCode=' + subject
+        if dataset.schema == '2018':
+            return map_href + '?CCode=' + subject
+        else:
+            return map_href + '&CCode=' + subject
 
 
 @common.app_template_global('is_sensitive')
@@ -431,7 +433,7 @@ def get_sensitive_records(speciescode):
 
 @common.route('/')
 def homepage():
-    from art17.auth.security import current_user
+    from art17.auth import current_user
 
     return flask.render_template('homepage.html', **{
         'current_user': current_user,
@@ -471,7 +473,7 @@ def config():
     from art17.forms import ConfigForm
     admin_perm.test()
     row = get_config()
-    form = ConfigForm(flask.request.form, row)
+    form = ConfigForm(flask.request.form, obj=row)
 
     if form.validate_on_submit():
         form.populate_obj(row)
@@ -486,20 +488,18 @@ def config():
 def change_details():
     from art17.auth import current_user
 
-    if current_user.is_anonymous():
+    if current_user.is_anonymous:
         flask.flash('You need to login to access this page.')
         return flask.redirect(flask.url_for(HOMEPAGE_VIEW_NAME))
     else:
         from art17.forms import ChangeDetailsForm
-        form = ChangeDetailsForm(flask.request.form, current_user)
+        form = ChangeDetailsForm(flask.request.form, obj=current_user)
         if form.validate_on_submit():
             flask.flash('Details updated successfully!', 'success')
             form.populate_obj(current_user)
             db.session.commit()
 
-    return flask.render_template('change_details.html', **{
-        'form': form,
-    })
+    return flask.render_template('change_details.html', form=form)
 
 
 @common.app_template_filter('ugly_fix')

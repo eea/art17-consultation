@@ -10,7 +10,7 @@ from flask import (
     flash,
     g,
 )
-from flask.ext.principal import PermissionDenied
+from flask_principal import PermissionDenied
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from werkzeug.datastructures import MultiDict
@@ -468,7 +468,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
             sensitive = False
             sensitive_records = get_sensitive_records(speciescode)
             if sensitive_records:
-                if current_user.is_anonymous():
+                if current_user.is_anonymous:
                     map_warning = ', '.join([s.eu_country_code for s in
                                              sensitive_records])
                 else:

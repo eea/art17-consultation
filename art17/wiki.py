@@ -7,7 +7,7 @@ from flask import (
     url_for,
     abort,
     redirect)
-from flask.ext.principal import PermissionDenied
+from flask_principal import PermissionDenied
 from datetime import datetime
 from sqlalchemy import or_
 
@@ -111,7 +111,7 @@ def can_add_comment(comments, revisions, dataset):
     if not dataset or dataset.is_readonly or sta_cannot_change():
         return False
     is_author = current_user in [cmnt.author for cmnt in comments]
-    return not (current_user.is_anonymous() or is_author) and revisions
+    return not (current_user.is_anonymous or is_author) and revisions
 
 
 @wiki.app_template_global('can_edit_comment')
@@ -126,7 +126,7 @@ def can_edit_comment(comment):
 def can_manage_comment(dataset):
     if not dataset or dataset.is_readonly:
         return False
-    return not current_user.is_anonymous()
+    return not current_user.is_anonymous
 
 
 class CommonSection(object):

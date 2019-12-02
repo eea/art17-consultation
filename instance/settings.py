@@ -24,6 +24,7 @@ SQLALCHEMY_BINDS = {
         bindname=getenv('BIND_NAME', default='')
     )
 }
+SQLALCHEMY_TRACK_MODIFICATIONS=False
 
 COLLECT_STATIC_ROOT =  getenv('STATIC_ROOT', default='/static')
 COLLECT_STORAGE = 'flask_collect.storage.file'

@@ -1,8 +1,8 @@
-from flask_wtf import Form as Form_base
-from wtforms import SelectField, TextField, PasswordField
+from flask_wtf import FlaskForm as Form_base
+from wtforms import SelectField, StringField, PasswordField
 from wtforms.validators import Optional, InputRequired
 from wtforms.widgets import HiddenInput
-from flask.ext.security.forms import (
+from flask_security.forms import (
     Required,
 )
 from art17.dataset import IMPORT_SCHEMA
@@ -13,20 +13,20 @@ SCHEMAS = IMPORT_SCHEMA.keys()
 
 
 class DatasetForm(Form_base):
-    name = TextField()
+    name = StringField()
     schema = SelectField(choices=zip(SCHEMAS, SCHEMAS))
-    species_map_url = TextField(label="URL for species map",
+    species_map_url = StringField(label="URL for species map",
                                 validators=[Optional()])
-    sensitive_species_map_url = TextField(
+    sensitive_species_map_url = StringField(
         label="URL for sensitive species map", validators=[Optional()])
-    habitat_map_url = TextField(label="URL for habitat map",
+    habitat_map_url = StringField(label="URL for habitat map",
                                 validators=[Optional()])
 
 
-class CustomEmailTextField(TextField):
+class CustomEmailStringField(StringField):
 
     def process_formdata(self, valuelist):
-        super(CustomEmailTextField, self).process_formdata(valuelist)
+        super(CustomEmailStringField, self).process_formdata(valuelist)
         # if comma or semicolon addresses are provided, consider the first one
         if self.data:
             self.data = self.data.replace(',', ' ').replace(';', ' ').split()[0]
@@ -34,14 +34,14 @@ class CustomEmailTextField(TextField):
 
 class Art17RegisterFormBase(object):
 
-    name = TextField('Full name',
+    name = StringField('Full name',
                      validators=[Required("Full name is required")])
-    institution = TextField('Institution', validators=[Optional()])
-    abbrev = TextField('Abbrev.')
-    MS = TextField(widget=HiddenInput())
+    institution = StringField('Institution', validators=[Optional()])
+    abbrev = StringField('Abbrev.')
+    MS = StringField(widget=HiddenInput())
     country_options = SelectField('Member State')
-    other_country = TextField('Other country')
-    qualification = TextField('Qualification', validators=[Optional()])
+    other_country = StringField('Other country')
+    qualification = StringField('Qualification', validators=[Optional()])
 
     def __init__(self, *args, **kwargs):
         super(Art17RegisterFormBase, self).__init__(*args, **kwargs)
@@ -58,5 +58,8 @@ class Art17RegisterFormBase(object):
         self.obj = kwargs.get('obj', None)
 
 class LoginForm(Form_base):
-    username = TextField('Username', [InputRequired()])
+    username = StringField('Username', [InputRequired()])
     password = PasswordField('Password', [InputRequired()])
+
+    class Meta:
+         csrf = True

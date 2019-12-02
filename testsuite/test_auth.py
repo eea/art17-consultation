@@ -216,7 +216,7 @@ def test_view_requires_admin(app, set_auth, client):
 
 
 def test_change_local_password(app, set_auth, client):
-    from flask.ext.security.utils import encrypt_password
+    from flask_security.utils import encrypt_password
     foo = create_user('foo')
     old_enc_password = encrypt_password('my old pw')
     foo.password = old_enc_password

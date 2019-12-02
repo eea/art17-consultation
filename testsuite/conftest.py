@@ -1,5 +1,5 @@
 import flask
-from flask.ext.webtest import TestApp
+from flask_webtest import TestApp
 from pytest import fixture
 from alembic import command, config
 from path import path
@@ -18,6 +18,8 @@ TEST_CONFIG = {
     'ASSETS_DEBUG': True,
     'EEA_LDAP_SERVER': 'test_ldap_server',
     'EEA_PASSWORD_RESET': '',
+    'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
+    'SQLALCHEMY_TRACK_MODIFICATIONS': False,
 }
 
 
@@ -66,7 +68,7 @@ def app(request):
 
     @app.before_request
     def set_identity():
-        from flask.ext.principal import AnonymousIdentity
+        from flask_principal import AnonymousIdentity
         flask.g.identity = AnonymousIdentity()
 
     app_context = app.app_context()
