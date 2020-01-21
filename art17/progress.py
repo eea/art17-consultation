@@ -154,9 +154,15 @@ class Progress(views.View):
     def process_title(self, subject, region, conclusion_type, cell, presence,
                       comment_counts):
         title = []
-        title.append(
-            'Species: {species}, Region: {region}'.format(
-                species=subject, region=region))
+        try:
+            title.append(
+                'Species: {species}, Region: {region}'.format(
+                    species=subject, region=region))
+        except:
+            subject = unicode.encode(subject, 'utf-8')
+            title.append(
+                'Species: {species}, Region: {region}'.format(
+                    species=subject, region=region))
         if presence['present']:
             title.append('Reported as present by: ' + presence['present'])
         if presence['occasional']:
