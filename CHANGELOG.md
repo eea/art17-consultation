@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.1.1 - (2020-01-21)
+--------------------
+* Fix unicode error on progress page
+* Change Forbidden error message on progress page
+  [dianaboiangiu]
+
 3.1.0 - (2019-12-04)
 -------------------
 * Fix security issues
