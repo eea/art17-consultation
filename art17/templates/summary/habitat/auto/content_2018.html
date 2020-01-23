@@ -23,7 +23,7 @@
   </td>
 {% elif range %}
   <td class="{{ row.percentage_range_surface_area|colorate }}">
-    <span class="conclusion">{{ range|parse_semicolon|str2num('')|safe }}</span>
+    <span class="conclusion">{{ row.percentage_range_surface_area|parse_semicolon|str2num('')|safe }}</span>
   </td>
 {% else %}
  <td></td>

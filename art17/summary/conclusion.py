@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from flask import views, request, url_for, abort, jsonify
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
@@ -13,7 +13,7 @@ from art17.common import (
     consultation_ended,
 )
 from art17.forms import all_fields
-from art17.models import db, EtcDicMethod, EtcDicDecision, RegisteredUser
+from art17.models import db, Config,EtcDicMethod, EtcDicDecision, RegisteredUser
 from art17.summary.permissions import can_delete, can_update_decision, \
     can_select_MS, must_edit_ref
 from art17.utils import validate_float
@@ -165,8 +165,12 @@ class ConclusionView(object):
         if admin_perm.can() or etc_perm.can():
             return conclusions
         conclusions = list(conclusions)
-        ok_conclusions = filter(lambda c: c.decision in ['OK', 'END'],
-                                conclusions)
+        start_date = Config.query.first().start_date
+        if start_date:
+            ok_conclusions = filter(lambda c: c.decision in ['OK', 'END'] and start_date <= date.today(),
+                                    conclusions)
+        else:
+            ok_conclusions = []
         user_or_expert = (
             lambda c:
             not c.user.has_role('admin') and not c.user.has_role('etc')
