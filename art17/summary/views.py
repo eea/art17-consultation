@@ -381,7 +381,22 @@ class Summary(ConclusionView, views.View):
         )
         if not annexes_results:
             return []
+
         annexes = list(annexes_results)
+        if period == '5':
+            idx_to_annex = {
+                0: 'II',
+                1: 'IV',
+                2: 'V',
+            }
+
+            for idx in range(0,3):
+                if annexes[idx]:
+                    if annexes[idx].startswith('N'):
+                        annexes[idx] = ''
+                    elif annexes[idx].startswith('Y'):
+                        annexes[idx] = idx_to_annex[idx]
+
         try:
             priority = int(annexes.pop())
         except (ValueError, TypeError):

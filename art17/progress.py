@@ -187,6 +187,13 @@ class Progress(views.View):
                 "Unread comments for all conclusions: {all}\n" +
                 "Unread comments for data sheet info: {wiki}").format(**comms)
             )
+        try:
+            title = '\n'.join(title)
+        except:
+            for idx, text in enumerate(title):
+                if type(text) == unicode:
+                    title[idx] = unicode.encode(text, 'utf-8')
+
         return '\n'.join(title)
 
     def process_cell(self, subject, region, cell_options, conclusion_type,
