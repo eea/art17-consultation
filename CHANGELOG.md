@@ -1,6 +1,15 @@
 Changelog
 =========
 
+3.1.3 - (2020-01-23)
+--------------------
+* Show correct empty value for Range on Automatic Assessments
+* Update mouseover text for Target1
+* Update Trend field dropdown
+* Fix Unknown coloration for value N/A
+* Add new abbreviations for manual form
+  [dianaboiangiu]
+
 3.1.2 - (2020-01-23)
 --------------------
 * Fix 500 error on report pages
