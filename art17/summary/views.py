@@ -391,10 +391,11 @@ class Summary(ConclusionView, views.View):
             }
 
             for idx in range(0,3):
-                if annexes[idx].startswith('N'):
-                    annexes[idx] = ''
-                elif annexes[idx].startswith('Y'):
-                    annexes[idx] = idx_to_annex[idx]
+                if annexes[idx]:
+                    if annexes[idx].startswith('N'):
+                        annexes[idx] = ''
+                    elif annexes[idx].startswith('Y'):
+                        annexes[idx] = idx_to_annex[idx]
 
         try:
             priority = int(annexes.pop())
