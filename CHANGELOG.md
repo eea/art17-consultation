@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.1.2 - (2020-01-23)
+--------------------
+* Fix 500 error on report pages
+* Fix annexes display for period 2018
+  [dianaboiangiu]
+
 3.1.1 - (2020-01-21)
 --------------------
 * Fix unicode error on progress page
