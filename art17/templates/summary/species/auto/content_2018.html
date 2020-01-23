@@ -11,7 +11,7 @@
 
 <!-- Range -->
 <td class="number border_left text-center">
-  {{ row.range_surface_area|str2num }}
+  {{ row.range_surface_area|str2num('') }}
 </td>
 
 {% set conclusion_range = row.conclusion_range or row.percentage_range_surface_area %}

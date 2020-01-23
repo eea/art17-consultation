@@ -148,8 +148,10 @@ def get_list(l, index, default=None):
 
 @summary.app_template_filter('colorate')
 def colorate(value):
-    if not value:
+    if not value or value == 'N/A':
         value = ''
+        return CONCLUSION_CLASSES['XX']
+
     FV = get_list(re.findall(r"(\d+.?\d+%)FV", value), 0)
     U1 = get_list(re.findall(r"(\d+.?\d+%)U1", value), 0)
     U2 = get_list(re.findall(r"(\d+.?\d+%)U2", value), 0)

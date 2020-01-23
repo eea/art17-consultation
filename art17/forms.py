@@ -47,7 +47,7 @@ CONCL_TYPE = [
 ]
 
 TREND_CHOICES = [
-    ('-', '-'), ('+', '+'), ('=', '='), ('u', 'u'), ('x', 'x')
+    ('+', '+'), ('-', '-'), ('=', '='), ('x', 'x')
 ]
 
 PROSPECTS_CHOICES = [('', ''), ('good', 'good'), ('poor', 'poor'), ('bad', 'bad'), ('unk', 'unk')]
