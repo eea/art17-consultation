@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.5 - (2020-01-23)
+--------------------
+* Fix conclusion showing for older periods
+  [dianaboiangiu]
+
 3.1.4 - (2020-01-23)
 --------------------
 * Stop publishing EU lines before start date
