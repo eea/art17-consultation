@@ -161,16 +161,19 @@ class ConclusionView(object):
         form.setup_choices(dataset_id=period)
         return form, manual_assessment
 
+    def check_conclusion(self, conclusion):
+        start_date = Config.query.first().start_date
+        dataset_id = Config.query.first().default_dataset_id
+        if conclusion.dataset.id == dataset_id:
+            if not start_date or start_date > date.today():
+                return False
+        return conclusion.decision in ['OK', 'END']
+
     def filter_conclusions(self, conclusions):
         if admin_perm.can() or etc_perm.can():
             return conclusions
         conclusions = list(conclusions)
-        start_date = Config.query.first().start_date
-        if start_date:
-            ok_conclusions = filter(lambda c: c.decision in ['OK', 'END'] and start_date <= date.today(),
-                                    conclusions)
-        else:
-            ok_conclusions = []
+        ok_conclusions = [conclusion for conclusion in conclusions if self.check_conclusion(conclusion)]
         user_or_expert = (
             lambda c:
             not c.user.has_role('admin') and not c.user.has_role('etc')
