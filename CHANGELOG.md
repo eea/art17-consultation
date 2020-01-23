@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.4 - (2020-01-23)
+--------------------
+* Stop publishing EU lines before start date
+  [dianaboiangiu]
+
 3.1.3 - (2020-01-23)
 --------------------
 * Show correct empty value for Range on Automatic Assessments
