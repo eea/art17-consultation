@@ -1,6 +1,13 @@
 Changelog
 =========
 
+3.1.6 - (2020-01-27)
+--------------------
+* Fix showing 2018 manual assessments
+* Fix mouseover for population - best values
+* Remove form submission on input keydown
+  [dianaboiangiu]
+
 3.1.5 - (2020-01-23)
 --------------------
 * Fix conclusion showing for older periods
