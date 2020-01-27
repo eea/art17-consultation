@@ -30,13 +30,13 @@
   {{ row.population_minimum_size|str2num }}
 </td>
 
-<td {{ parse_errors('population_change_reason', row, qa_errors, classes="center text-center") }}
-    {{ set_reason_title(row.population_change_reason) }} >
+<td class="number center text-center">
   {{ row.population_maximum_size|str2num }}
 </td>
 
 
-<td class="number center text-center">
+<td {{ parse_errors('population_change_reason', row, qa_errors, classes="center text-center") }}
+{{ set_reason_title(row.population_change_reason) }}>
   {% set population_size = row.population_size or 'N/A' %}
   {{ population_size|str2num }}
 </td>

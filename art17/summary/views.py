@@ -572,7 +572,7 @@ class HabitatSummary(HabitatMixin, Summary):
                 filter_args.pop('dataset_id')
                 regions = [region.reg_code for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)]
                 self.manual_objects = self.model_manual_cls.query.filter(
-                    self.model_manual_cls.dataset_id.in_([3, 4]).filter(
+                    self.model_manual_cls.dataset_id.in_([3, 4])).filter(
                     self.model_manual_cls.region.in_(regions)
                 ).filter_by(
                     **filter_args
