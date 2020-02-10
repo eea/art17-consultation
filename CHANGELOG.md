@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.1.7 - (2020-02-10)
+--------------------
+* Change maps settings for period 2018
+* Fix reason for change acronym translation
+  [dianaboiangiu]
+
 3.1.6 - (2020-01-27)
 --------------------
 * Fix showing 2018 manual assessments
