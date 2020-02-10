@@ -522,6 +522,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
                 page='species',
                 **url_kwargs),
             'progress_endpoint': 'progress.species-progress',
+            'speciescode': speciescode,
             'get_title_for_country': get_title_for_species_country,
             'wiki_unread': self.wiki_unread,
             'map_url': map_url,

@@ -19,7 +19,7 @@
         Audit trail</button>
 
     {% if map_url %}
-        <button type="button" id="show-map" data-url="{{ map_url }}" {% if dataset.id == 4 %} disabled {% endif %}>Map</button>
+        <button type="button" id="show-map" data-url="{{ map_url }}" {% if dataset.id == 4 or dataset.id == 3 and is_sensitive(speciescode) %} disabled {% endif %}>Map</button>
     {% endif %}
 
     {% if region %}

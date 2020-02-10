@@ -412,12 +412,12 @@ def generate_map_url(dataset_id, category, subject, region, sensitive=False):
 
     if region:
         if dataset.schema == '2018':
-            return map_href + '?Codereg=' + subject + region
+            return map_href + '&CodeReg=' + subject + region + "&zoomto=true"
         else:
             return map_href + '&CodeReg=' + subject + region
     else:
         if dataset.schema == '2018':
-            return map_href + '?CCode=' + subject
+            return map_href + '&CCode=' + subject + "&zoomto=true"
         else:
             return map_href + '&CCode=' + subject
 
