@@ -473,6 +473,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
         subject = request.args.get('subject')
         region = request.args.get('region')
         url_kwargs = dict(period=period, subject=subject, region=region)
+        speciescode = None
         if subject:
             speciescode_row = (
                 EtcDataSpeciesRegion.query
