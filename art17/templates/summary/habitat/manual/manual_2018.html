@@ -144,11 +144,11 @@
 <td class="center text-center">{{ row.conclusion_assessment_trend_prev or 'N/A' }}</td>
 
 <td class="center text-center">
-  {{ NATURE_CHOICES.get(row.conclusion_assessment_change, 'N/A') }}
+  {{ row.conclusion_assessment_change }}
 </td>
 
 <td class="center text-center">
-  {{ row.conclusion_assessment_trend_change or 'N/A' }}
+  {{ row.conclusion_assessment_trend_change }}
 </td>
 
 {# Distribution #}

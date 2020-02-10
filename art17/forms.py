@@ -35,7 +35,7 @@ METH_CONCL_PAIR_MANDATORY = "You cannot add a conclusion without a method, " \
 INVALID_MS_REGION_PAIR = "Please select an MS country code that is available " \
     "for the selected region"
 
-NATURE_CHOICES = [('', ''), ('g', 'gen'), ('n', 'nong'), ('nc', 'nc')]
+NATURE_CHOICES = [('', ''), ('gen', 'gen'), ('nong', 'nong'), ('nc', 'nc')]
 CONTRIB_METHODS = [
     ('A=', 'A='), ('A+', 'A+'), ('B1', 'B1'), ('B2', 'B2'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
 ]

@@ -23,6 +23,7 @@ from art17.assets import assets_env
 from art17.factsheet import factsheet, factsheet_manager
 from art17.management.import_greece import import_greece
 from art17.management.generate_new_period import generate_new_period
+from art17.management.fix_manual import fix_manual
 from art17.management.pre_fill_wiki_changes_habitat import pre_fill_wiki_changes_habitat
 from art17.management.pre_fill_wiki_changes_species import pre_fill_wiki_changes_species
 from art17.management.import_new_data import import_new_data
@@ -124,6 +125,7 @@ def create_manager(app, collect):
     manager.add_command('user', user_manager)
     manager.add_command('import_greece', import_greece)
     manager.add_command('generate_new_period', generate_new_period)
+    manager.add_command('fix_manual', fix_manual)
     manager.add_command('pre_fill_wiki_changes_habitat', pre_fill_wiki_changes_habitat)
     manager.add_command('pre_fill_wiki_changes_species', pre_fill_wiki_changes_species)
     manager.add_command('import_new_data', import_new_data)
