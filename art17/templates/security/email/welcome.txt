@@ -2,7 +2,7 @@ Dear {{ user.name }},
 
 Your email address {{ user.email }} has been associated with a Biological Diversity website account. If you authorized this, click the following link or copy and paste it into your browser to confirm.
 
-{{ confirmation_link|ugly_fix }}
+{{ confirmation_link }}
 
 After the verification is complete, you can login with username {{ user.id }}.
 
