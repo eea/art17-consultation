@@ -68,7 +68,7 @@
       <table class="complex_datatable">
 
         <caption>
-          {% if dataset.id == 3 and is_sensitive(speciescode) %}
+          {% if (dataset.id == 3 or dataset.id == 5) and is_sensitive(speciescode) %}
             <p>Sensitive spatial information for this species is not shown in the map.</p>
           {% endif %}
           <b>Current selection</b>:
