@@ -1,6 +1,13 @@
 Changelog
 =========
 
+3.1.8 - (2020-02-11)
+--------------------
+* Fix message for sensitive species map
+* Fix password reset
+* Add mail configuration 
+  [dianaboiangiu]
+
 3.1.7 - (2020-02-10)
 --------------------
 * Change maps settings for period 2018
