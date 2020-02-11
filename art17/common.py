@@ -423,7 +423,7 @@ def generate_map_url(dataset_id, category, subject, region, sensitive=False):
 
 
 @common.app_template_global('is_sensitive')
-def get_sensitive_records(speciescode):
+def get_sensitive_records(speciescode=''):
     return (
         db.session.query(restricted_species_2013)
         .filter_by(speciescode=speciescode)
