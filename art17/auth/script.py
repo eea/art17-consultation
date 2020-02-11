@@ -85,7 +85,7 @@ def info(user_id):
 
 @user_manager.command
 def reset_password(user_id):
-    from flask.ext.security.utils import encrypt_password
+    from flask_security.utils import encrypt_password
     user = models.RegisteredUser.query.get(user_id)
     if user.is_ldap:
         print "Can't change password for EIONET users"

@@ -42,9 +42,12 @@
 
     {% else %}
       <h2>
-        The consultation is open for registered users only.
-        To register:
+        The public consultation for the Article 17 biogeographical assessments of conservation status
+        of species and habitats is now open until 08 March 2020.
       </h2>
+      <p>While you can view the assessments (Data reported by Member States and EU biogeographical assessments)
+          without being registered for consultation it is necessary <br> to register if you would like to add comments.
+          Below are two links allowing you to actively participate in this process; whether you have an existing Eionet account or not.</p>
 
       <ul>
         {% if g.identity.id %}
@@ -79,10 +82,12 @@
   {% if start_date %}
     {% if end_date and end_date >= today %}
       <p>
-        There is no need to register if you just want to view the data.
-        You just click on one of the links below. If you want as well to
-        indicate how the assessments should be changed, than you will need
-        to register.
+        Any personal data you submit in the context of this consultation will be processed in accordance with the personal data protection,
+        <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?toc=OJ%3AL%3A2018%3A295%3ATOC&uri=uriserv%3AOJ.L_.2018.295.01.0039.01.ENG">Regulation (EU) 2018/1725</a> of 23 October 2018.<br>Please find below a <a href="">Privacy Statement</a> for your consideration.
+      </p>
+      <p>
+        The <a href="">guidelines for consultation</a> provide essential information on methods for EU biogeographical assessments,
+        use of this viewing tool and guidance for those who<br>wish to participate in the public consultation.
       </p>
     {% endif %}
   {% endif %}

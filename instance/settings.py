@@ -66,3 +66,11 @@ SCRIPT_NAME = getenv('SCRIPT_NAME', default='/article17')
 FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu"
 
 EEA_PASSWORD_RESET = getenv('EEA_PASSWORD_RESET', default='')
+
+# MAIL SERVER
+MAIL_SERVER= getenv('MAIL_SERVER')
+MAIL_PORT= getenv('MAIL_PORT')
+MAIL_USE_TLS= getenv('MAIL_USE_TLS')
+MAIL_USE_SSL= getenv('MAIL_USE_SSL')
+MAIL_USERNAME= getenv('MAIL_USERNAME')
+MAIL_PASSWORD= getenv('MAIL_PASSWORD')

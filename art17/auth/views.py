@@ -24,6 +24,7 @@ from flask_security import user_registered
 from flask_security.forms import ChangePasswordForm, ResetPasswordForm
 from flask_security.changeable import change_user_password
 from flask_security.registerable import register_user
+
 from flask_security.utils import verify_password, encrypt_password
 from flask_mail import Message
 
@@ -252,7 +253,8 @@ def change_password():
     form = ChangePasswordForm()
 
     if form.validate_on_submit():
-        change_user_password(current_user, form.new_password.data)
+        current_user.password = encrypt_password(form.new_password.data)
+        models.db.session.commit()
         models.db.session.commit()
         msg = "Your password has been changed. Please log in again."
         flash(msg, 'success')
@@ -392,7 +394,7 @@ def admin_user_reset_password(user_id):
     form = ResetPasswordForm()
 
     if form.validate_on_submit():
-        change_user_password(user, form.password.data)
+        user.password = encrypt_password(form.password.data)
         models.db.session.commit()
         msg = "Password successfully reseted."
         flash(msg, 'success')
