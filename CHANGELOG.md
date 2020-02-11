@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.9 - (2020-02-11)
+--------------------
+* Fix site link in the e-mail notifications
+  [dianaboiangiu]
+
 3.1.8 - (2020-02-11)
 --------------------
 * Fix message for sensitive species map
