@@ -24,7 +24,7 @@
       {% else %}
         {% set sensitive_species = False %}
       {% endif %}
-      <button type="button" id="show-map" data-url="{{ map_url }}" {% if dataset.id == 4 or (dataset.id == 3 or dataset.id == 5 and sensitive_species) %} disabled {% endif %}>Map</button>
+      <button type="button" id="show-map" data-url="{{ map_url }}" {% if dataset.id == 4 %} disabled {% endif %}>Map</button>
     {% endif %}
 
     {% if region %}
