@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.1.10 - (2020-02-13)
+--------------------
+* Fix map disabled buttons
+* Bring LDAP information on user first login
+  [dianaboiangiu]
+
 3.1.9 - (2020-02-11)
 --------------------
 * Fix site link in the e-mail notifications
