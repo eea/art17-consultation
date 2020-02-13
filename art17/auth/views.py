@@ -472,8 +472,13 @@ def login():
         user = models.RegisteredUser.query.filter_by(id=username).first()
 
         if not user:
+            data = _get_initial_ldap_data(username)
             user = models.RegisteredUser(
                 id=username,
+                name=data['name'],
+                qualification=data['qualification'],
+                email=data['email'],
+                institution=data['institution'],
                 password=encrypt_password(password),
                 is_ldap=True,
                 account_date=datetime.now()
