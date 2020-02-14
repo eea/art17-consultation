@@ -1,10 +1,15 @@
 Changelog
 =========
+3.1.12 - (2020-02-14)
+---------------------
+* Hide comments for public in period 2018
+  [dianaboiangiu]
 
 3.1.11 - (2020-02-14)
 --------------------
 * Fix User registration password issue
 * Change EU27 to EU28 on Homepage
+  [dianaboiangiu]
 
 3.1.10 - (2020-02-13)
 --------------------
