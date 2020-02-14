@@ -1,5 +1,11 @@
 Changelog
 =========
+
+3.2.0 - (2020-02-14)
+---------------------
+* Add guidelines and privacy statements for consultation 2020
+  [dianaboiangiu]
+
 3.1.12 - (2020-02-14)
 ---------------------
 * Hide comments for public in period 2018
