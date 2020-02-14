@@ -72,7 +72,12 @@ def register_local():
     form = Art17LocalRegisterForm(request.form)
 
     if form.validate_on_submit():
-        register_user(**form.to_dict())
+        datastore = current_app.extensions['security'].datastore
+        user = register_user(**form.to_dict())
+        password = form.to_dict().get('password')
+        encrypted_password = encrypt_password(password)
+        user.password = encrypted_password
+        datastore.commit()
         return render_template('message.html', message="")
 
     return render_template('auth/register_local.html', **{
