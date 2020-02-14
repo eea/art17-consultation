@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.11 - (2020-02-14)
+--------------------
+* Fix User registration password issue
+* Change EU27 to EU28 on Homepage
+
 3.1.10 - (2020-02-13)
 --------------------
 * Fix map disabled buttons
