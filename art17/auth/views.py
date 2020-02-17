@@ -25,7 +25,7 @@ from flask_security.forms import ChangePasswordForm, ResetPasswordForm
 from flask_security.changeable import change_user_password
 from flask_security.registerable import register_user
 from flask_security.recoverable import reset_password_token_status
-from flask_security.utils import encrypt_password, get_message, get_url, verify_password
+from flask_security.utils import encrypt_password, get_message, get_url, verify_password, config_value
 from flask_mail import Message
 
 from werkzeug.datastructures import MultiDict, ImmutableMultiDict
@@ -540,5 +540,4 @@ def reset_password(token):
         config_value('RESET_PASSWORD_TEMPLATE'),
         reset_password_form=form,
         reset_password_token=token,
-        **_ctx('reset_password')
-    )
+        **_security._run_ctx_processor('reset_password'))
