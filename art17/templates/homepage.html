@@ -159,4 +159,8 @@
     <p>Forgot your Eionet account password? <a href="{{ EEA_PASSWORD_RESET }}">Recover Eionet account password</a></p>
   {% endif %}
 
+  {% if security.recoverable %}
+    <li><a href="{{ url_for_security('forgot_password') }}">Forgot password</a><br/></li>
+  {% endif %}
+
 {% endblock content %}

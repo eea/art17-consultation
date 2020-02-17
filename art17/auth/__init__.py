@@ -46,8 +46,9 @@ def setup_auth_handlers(state):
             "You have successfully reset your password.",
             'success',
         ),
+        'SECURITY_RESET_PASSWORD_TEMPLATE': 'auth/reset_password_local.html',
+        'SECURITY_POST_RESET_VIEW': HOMEPAGE_VIEW_NAME,
         'SECURITY_FORGOT_PASSWORD_TEMPLATE': 'auth/forgot_password.html',
-        'SECURITY_RESET_PASSWORD_TEMPLATE': 'auth/reset_password.html',
     })
 
     app.jinja_env.globals['AUTH_BLUEPRINT_INSTALLED'] = True

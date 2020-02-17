@@ -24,11 +24,12 @@ from flask_security import user_registered
 from flask_security.forms import ChangePasswordForm, ResetPasswordForm
 from flask_security.changeable import change_user_password
 from flask_security.registerable import register_user
-
-from flask_security.utils import verify_password, encrypt_password
+from flask_security.recoverable import reset_password_token_status
+from flask_security.utils import encrypt_password, get_message, get_url, verify_password
 from flask_mail import Message
 
 from werkzeug.datastructures import MultiDict, ImmutableMultiDict
+from werkzeug.local import LocalProxy
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from art17 import models
@@ -505,3 +506,39 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for(HOMEPAGE_VIEW_NAME))
+
+@auth.route('/auth/reset/<token>', methods=['POST'])
+def reset_password(token):
+    """View function that handles a reset password request."""
+    _security = LocalProxy(lambda: current_app.extensions['security'])
+
+    expired, invalid, user = reset_password_token_status(token)
+
+    if not user or invalid:
+        invalid = True
+        flask.flash(*get_message('INVALID_RESET_PASSWORD_TOKEN'))
+
+    if expired:
+        send_reset_password_instructions(user)
+        flask.flash(*get_message('PASSWORD_RESET_EXPIRED', email=user.email,
+                              within=_security.reset_password_within))
+    if invalid or expired:
+        return redirect(url_for('forgot_password'))
+
+    form = _security.reset_password_form()
+
+    if form.validate_on_submit():
+        datastore = current_app.extensions['security'].datastore
+        encrypted_password = encrypt_password(form.password.data)
+        user.password = encrypted_password
+        datastore.commit()
+        flask.flash(*get_message('PASSWORD_RESET'))
+        return redirect(get_url(_security.post_reset_view) or
+                        get_url(_security.login_url))
+
+    return _security.render_template(
+        config_value('RESET_PASSWORD_TEMPLATE'),
+        reset_password_form=form,
+        reset_password_token=token,
+        **_ctx('reset_password')
+    )
