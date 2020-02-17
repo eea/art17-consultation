@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.1 - (2020-02-17)
+--------------------
+* Add reset password option for local users
+  [dianaboiangiu]
+
 3.2.0 - (2020-02-14)
 ---------------------
 * Add guidelines and privacy statements for consultation 2020
