@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.2 - (2020-02-18)
+--------------------
+* Add helpdesk email on homepage
+  [dianaboiangiu]
+
 3.2.1 - (2020-02-17)
 --------------------
 * Add reset password option for local users
