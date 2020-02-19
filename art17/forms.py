@@ -586,6 +586,15 @@ class ChangeDetailsForm(Form):
     abbrev = StringField(label="Abbreviation", validators=[Optional()])
     MS = StringField(label="MS", validators=[Optional()])
     qualification = StringField(label="Qualification", validators=[Optional()])
+    role = OptionalSelectField()
 
     class Meta:
          csrf = True
+
+    def __init__(self, *args, **kwargs):
+        super(ChangeDetailsForm, self).__init__(*args, **kwargs)
+        self.role.choices = [
+            ('', ''),
+            ('stakeholder','Stakeholder'),
+            ('nat','National expert'),
+        ]

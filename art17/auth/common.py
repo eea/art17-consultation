@@ -62,6 +62,7 @@ def require_admin(view):
 def get_ldap_user_info(user_id):
     ldap_server = flask.current_app.config.get('EEA_LDAP_SERVER', '')
     users_db = UsersDB(ldap_server=ldap_server)
+    # roles = users_db.member_roles_info('user', user_id)
     try:
         return users_db.user_info(user_id)
     except UserNotFound:

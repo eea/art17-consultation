@@ -497,6 +497,15 @@ def change_details():
         if form.validate_on_submit():
             flask.flash('Details updated successfully!', 'success')
             form.populate_obj(current_user)
+            role = form.data['role']
+            if role:
+                datastore = flask.current_app.extensions['security'].datastore
+                datastore.add_role_to_user(current_user, role)
+                current_user_roles = [r.name for r in current_user.roles]
+                expandable_roles = filter(lambda k: k not in [role], current_user_roles)
+                for role in expandable_roles:
+                    datastore.remove_role_from_user(current_user, role)
+                datastore.commit()
             db.session.commit()
 
     return flask.render_template('change_details.html', form=form)

@@ -117,6 +117,7 @@ def admin_create_local():
         user.password = encrypted_password
         datastore.commit()
         send_welcome_email(user, plaintext_password)
+        add_default_role(user)
         flash("User %s created successfully." % kwargs['id'], 'success')
         return redirect(url_for('.users'))
 
@@ -182,8 +183,8 @@ def register_ldap():
                 % user_id,
                 'success',
             )
-            activate_and_notify_admin(_app_ctx_stack.top.app, user)
             add_default_role(user)
+            activate_and_notify_admin(_app_ctx_stack.top.app, user)
             return render_template('auth/register_ldap_done.html')
 
     return render_template('auth/register_ldap.html', **{
@@ -224,6 +225,7 @@ def admin_create_ldap():
             set_user_active(user, True)
             datastore.commit()
             send_welcome_email(user)
+            add_default_role(user)
             flash(
                 "User %s created successfully." % kwargs['id'],
                 'success',
@@ -490,6 +492,7 @@ def login():
                 account_date=datetime.now()
             )
             models.db.session.add(user)
+            add_default_role(user)
             models.db.session.commit()
         login_user(user)
         g.user = user
