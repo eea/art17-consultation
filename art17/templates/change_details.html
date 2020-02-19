@@ -43,7 +43,11 @@
 
     <div class="form-group">
       {{ render_field_with_errors(form.role) }}
-      <small>*Your current role is {{ current_user.roles.0.description }}</small><br>
+      {% if current_user.roles %}
+        <small>*Your current role is {{ current_user.roles.0.description }}</small><br>
+      {% else %}
+        <small>*Your user has no role assigned. </small><br>
+      {% endif %}
       <small>*Leave the role field empty if you don't want to change your role.</small>
     </div>
 
