@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.2.3 - (2020-02-19)
+--------------------
+* Allow users to change between the role of stakeholder and national expert
+* Allow etc users to edit other user's assessment backcasted value
+  [dianaboiangiu]
+
 3.2.2 - (2020-02-18)
 --------------------
 * Add helpdesk email on homepage
