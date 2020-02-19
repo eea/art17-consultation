@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.4 - (2020-02-19)
+--------------------
+* Fix error for user with no role
+  [dianaboiangiu]
+
 3.2.3 - (2020-02-19)
 --------------------
 * Allow users to change between the role of stakeholder and national expert
