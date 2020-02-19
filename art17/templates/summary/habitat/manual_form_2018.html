@@ -238,7 +238,7 @@
         {{ ass.conclusion_assessment_trend_change }}
       </td>
 
-      {{ conclusion_td(ass.backcasted_2007 , ass.backcasted_2007) }}
+      {{ select_conclusion_td('Backcasted 2007', form.backcasted_2007, 'At least one conclusion shall be added') }}
 
       <td class="text-center">
         {{ ass.method_target1 }}

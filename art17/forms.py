@@ -487,7 +487,7 @@ class SummaryManualFormHabitatSTA(SummaryManualFormHabitat):
 
 
 
-class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
+class SummaryManualFormSpeciesRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
     region = SelectField()
 
@@ -495,7 +495,14 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin):
     complementary_favourable_range_q = OptionalSelectField()
     complementary_favourable_population = StringField(validators=[float_validation])
     complementary_favourable_population_q = OptionalSelectField()
+    backcasted_2007 = OptionalSelectField()
 
+    def setup_choices(self, dataset_id):
+        empty = [('', '')]
+        conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
+        conclusions = empty + zip(conclusions, conclusions)
+        conclusions = self.filter_conclusions(conclusions)
+        self.backcasted_2007.choices = conclusions
 
     def __init__(self, *args, **kwargs):
         super(SummaryManualFormSpeciesRef, self).__init__(*args, **kwargs)
@@ -508,7 +515,7 @@ class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
     MS = SelectField(default=DEFAULT_MS, validators=[Optional(), species_ms_validator])
 
 
-class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
+class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
     region = SelectField()
 
@@ -516,7 +523,14 @@ class SummaryManualFormHabitatRef(Form, SummaryFormMixin):
     complementary_favourable_range_q = OptionalSelectField()
     complementary_favourable_area = StringField(validators=[float_validation])
     complementary_favourable_area_q = OptionalSelectField()
+    backcasted_2007 = OptionalSelectField()
 
+    def setup_choices(self, dataset_id):
+        empty = [('', '')]
+        conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
+        conclusions = empty + zip(conclusions, conclusions)
+        conclusions = self.filter_conclusions(conclusions)
+        self.backcasted_2007.choices = conclusions
 
     def __init__(self, *args, **kwargs):
         super(SummaryManualFormHabitatRef, self).__init__(*args, **kwargs)
