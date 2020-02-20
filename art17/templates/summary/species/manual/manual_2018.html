@@ -155,7 +155,7 @@
 
 {# Edit buttons #}
 <td class="border_left">
-  {% if current_user.is_authenticated %}
+  {% if can_view_comments(row) %}
     {% set url=url_for(comments_endpoint, period=row.dataset_id, subject=row.subject, region=row.region, user=row.user_id, MS=row.MS) %}
       <a class="badge-o" href="#" onclick="openModal('{{ url }}');return false;" title="Comments: Read/Total">
         {{ row.comments_count_read(g.identity.id) }}/{{ row.undeleted_comments(g.identity.id)|count }}

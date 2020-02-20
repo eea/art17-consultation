@@ -18,6 +18,7 @@ from art17.auth import current_user
 from art17.common import (
     get_default_period,
     admin_perm,
+    is_public_user,
     sta_perm,
     nat_perm,
     sta_cannot_change,
@@ -70,6 +71,19 @@ def can_post_comment(record):
 
     return not record.deleted and can_add
 
+
+@comments.app_template_global('can_view_comments')
+def can_view_comments(record):
+    if EU_ASSESSMENT_MODE:
+        return True
+    if not current_user.is_authenticated:
+        return False
+    if is_public_user():
+        return False
+    if sta_perm.can() or nat_perm.can():
+        if record.user.has_role('etc') or record.user.has_role('admin'):
+            return False
+    return True
 
 @comments.app_template_global('can_edit_comment')
 def can_edit_comment(comment):
