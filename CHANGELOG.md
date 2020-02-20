@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.2.5 - (2020-02-19)
+--------------------
+* Allow only ETC/Admin users to see their assessment comments
+* Nat/Stakeholders users can see their assessment comments and comment on them
+  [dianaboiangiu]
+
 3.2.4 - (2020-02-19)
 --------------------
 * Fix error for user with no role
