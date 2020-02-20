@@ -176,7 +176,7 @@ def test_count_read_comments_view(app, client, set_auth,
     comment = comment_cls(region='ALP')
     models.db.session.commit()
 
-    user = create_user('someuser')
+    user = create_user('someuser', ['etc',])
     comment.readers.append(user)
     models.db.session.commit()
 
