@@ -189,12 +189,12 @@ class Progress(views.View):
             )
         try:
             title = '\n'.join(title)
+            return title
         except:
             for idx, text in enumerate(title):
                 if type(text) == unicode:
                     title[idx] = unicode.encode(text, 'utf-8')
-
-        return '\n'.join(title)
+            return '\n'.join(title)
 
     def process_cell(self, subject, region, cell_options, conclusion_type,
                      presence_info, comment_counts):
