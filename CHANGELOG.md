@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.6 - (2020-03-02)
+--------------------
+* Fix display for progress cell title
+  [dianaboiangiu]
+
 3.2.5 - (2020-02-19)
 --------------------
 * Allow only ETC/Admin users to see their assessment comments
