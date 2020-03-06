@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.7 - (2020-03-06)
+--------------------
+* Allow ETC users to change MS in conclusions
+  [dianaboiangiu]
+
 3.2.6 - (2020-03-02)
 --------------------
 * Fix display for progress cell title
