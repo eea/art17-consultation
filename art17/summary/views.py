@@ -234,7 +234,7 @@ class Summary(ConclusionView, views.View):
 
     def get_user_MS(self, subject, region, period):
         member_states = []
-        if admin_perm.can() or sta_perm.can():
+        if admin_perm.can() or sta_perm.can() or etc_perm.can():
             member_states = self.get_MS(subject, region, period)
         elif nat_perm.can() and current_user.MS:
             member_states = [(current_user.MS, current_user.MS)]
