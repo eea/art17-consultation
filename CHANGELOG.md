@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.9 - (2020-03-27)
+--------------------
+* Fix method used description on mouse over
+  [dianaboiangiu]
+
 3.2.8 - (2020-03-27)
 --------------------
 * Allow reset to default for pre-filled fields
