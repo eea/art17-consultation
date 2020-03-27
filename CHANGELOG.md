@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.8 - (2020-03-27)
+--------------------
+* Allow reset to default for pre-filled fields
+  [dianaboiangiu]
+
 3.2.7 - (2020-03-06)
 --------------------
 * Allow ETC users to change MS in conclusions
