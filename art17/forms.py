@@ -285,7 +285,7 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
         methods = empty + zip(methods, methods)
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
-        conclusions = empty + zip(conclusions, conclusions)
+        conclusions = [('Not selected', '')] + zip(conclusions, conclusions)
         conclusions = self.filter_conclusions(conclusions)
         #trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
         #trends = empty + zip(trends, trends)

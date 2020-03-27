@@ -61,7 +61,7 @@
     <li class="clearfix">
         <label  class="radio-label {{ css_class }} conclusion inline width-third pull-right"
                 for="radio-{{ name }}-{{ css_class|lower }}">
-                <input  id="radio-{{ name }}-{{ css_class|lower }}"
+                <input  id="{{ name }}"
                         type="radio"
                         name="{{ name }}"
                         value="{{ css_class }}"
@@ -71,7 +71,7 @@
                         secondClick="true"
                         {% endif %}>
                 {{ css_class }}
-            </label> {{ COUNTRY_ASSESSMENTS.get(conclusion, '') }}
+            </label> {{ COUNTRY_ASSESSMENTS.get(conclusion, 'Not selected') }}
     </li>
 {% endmacro %}
 
@@ -126,10 +126,8 @@
           <p class="bold btn-align">Conclusion</p>
           <ul class="select-list no-list">
               {% for conclusion, c in conclusion_field.choices %}
-                {% if conclusion %}
                   {{ conclusion_li(conclusion, conclusion_field.name,
                                    conclusion_field.data == conclusion) }}
-                {% endif %}
               {% endfor %}
           </ul>
       </div>
