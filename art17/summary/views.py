@@ -128,6 +128,15 @@ def _str2num(value, default='N/A'):
 def _str1num(value, default='N/A'):
     return str1num(value, default=default)
 
+@summary.app_template_filter('get_method_name')
+def get_method_name(method):
+    method_text = {
+        "a":"Complete survey or a statistically robust estimate",
+        "b":"Based mainly on extrapolation from a limited amount of data",
+        "c":"Based mainly on expert opinion with very limited data",
+        "d":"Insufficient or no data available",
+    }
+    return "{} - {}".format(method, method_text.get(method,''))
 
 @summary.app_template_filter('parse_semicolon')
 def _parse_semicolon(value, sep='<br/>'):

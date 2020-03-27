@@ -21,7 +21,7 @@
 {% endif %}
 
 <td class="center text-center {{ qclasses }}"
-    {{ set_method_title(row.range_trend_method) }}>
+    {{ set_method_title(row.range_trend_method|get_method_name) }}>
   {{ row.range_trend or 'N/A' }}
 </td>
 
@@ -72,7 +72,7 @@
 </td>
 
 <td class="center text-center"
-    {{ set_method_title(row.coverage_trend_method) }}>
+    {{ set_method_title(row.coverage_trend_method|get_method_name) }}>
   {{ row.coverage_trend or 'N/A' }}
 </td>
 
@@ -93,7 +93,7 @@
 
 <!-- Structure and functions -->
 
-<td {{ set_method_title(row.hab_condition_method) }}
+<td {{ set_method_title(row.hab_condition_method|get_method_name) }}
     class="center text-center">
   {{ row.hab_condition_good_min|str2num }} - {{ row.hab_condition_good_max|str2num }}
 </td>
@@ -109,7 +109,7 @@
   <span class="conclusion">{{ row.conclusion_structure|str2num }}</span>
 </td>
 
-<td {{ set_method_title(row.hab_condition_trend_method) }}
+<td {{ set_method_title(row.hab_condition_trend_method|get_method_name) }}
     class="center text-center">
   {{ row.hab_condition_trend|str2num }}
 </td>

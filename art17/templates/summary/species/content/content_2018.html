@@ -13,7 +13,7 @@
 </td>
 
 <td {{ parse_errors('range_trend', row, qa_errors, classes="center text-center") }}
-    {{ set_method_title(row.range_trend_method) }}>
+    {{ set_method_title(row.range_trend_method|get_method_name) }}>
   {{ row.range_trend|str2num or 'N/A' }}
 </td>
 
@@ -62,7 +62,7 @@
 
 {% set qtitle, qclasses = parse_qa_errors('row.population_trend', row, qa_errors) %}
 <td {{ parse_errors('population_trend_method', row, qa_errors,  classes="number center text-center") }}
-    {{ set_method_title(row.population_trend_method) }}>
+    {{ set_method_title(row.population_trend_method|get_method_name) }}>
   {{ row.population_trend|str2num or 'N/A' }}
 </td>
 
@@ -93,7 +93,7 @@
 </td>
 
 <td {{ parse_errors('habitat_trend', row, qa_errors, classes='center text-center') }}
-    {{ set_method_title(row.habitat_trend_method) }}>
+    {{ set_method_title(row.habitat_trend_method|get_method_name) }}>
   {{ row.habitat_trend or 'N/A' }}
 </td>
 
