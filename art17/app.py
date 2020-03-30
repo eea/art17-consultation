@@ -27,6 +27,7 @@ from art17.management.fix_manual import fix_manual
 from art17.management.pre_fill_wiki_changes_habitat import pre_fill_wiki_changes_habitat
 from art17.management.pre_fill_wiki_changes_species import pre_fill_wiki_changes_species
 from art17.management.import_new_data import import_new_data
+from art17.management.fix_bg_cdr_link import fix_bg_link
 
 
 DEFAULT_CONFIG = {
@@ -129,6 +130,7 @@ def create_manager(app, collect):
     manager.add_command('pre_fill_wiki_changes_habitat', pre_fill_wiki_changes_habitat)
     manager.add_command('pre_fill_wiki_changes_species', pre_fill_wiki_changes_species)
     manager.add_command('import_new_data', import_new_data)
+    manager.add_command('fix_bg_link', fix_bg_link)
     manager.add_command('role', role_manager)
     manager.add_command('factsheet', factsheet_manager)
     collect.init_script(manager)
