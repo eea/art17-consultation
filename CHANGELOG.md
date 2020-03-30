@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.10 - (2020-03-30)
+--------------------
+* Update the link to MS envelope
+  [dianaboiangiu]
+
 3.2.9 - (2020-03-27)
 --------------------
 * Fix method used description on mouse over
