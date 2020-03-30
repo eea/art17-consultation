@@ -25,8 +25,7 @@ class FixBgLinkCommand(Command):
         #     db.session.commit()
         
         for habitat in habitats:
-            filename = link + u'/BG' + habitat.filename.split('/BG')[1]
-            habitat.filename = filename
+            habitat.filename = link
             db.session.add(habitat)
             db.session.commit()
 
