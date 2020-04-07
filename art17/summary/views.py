@@ -138,6 +138,18 @@ def get_method_name(method):
     }
     return "{} - {}".format(method, method_text.get(method,''))
 
+
+@summary.app_template_filter('set_correct_sufficiency_occupied')
+def set_correct_sufficiency_occupied(value):
+    sufficiency_occupied_values = {
+        "absentData": "Insufficient or no data available",
+        "completeSurvey": "Complete survey or a statistically robust estimate",
+        "estimateExpert": "Based mainly on expert opinion with very limited data",
+        "estimatePartial": "Based mainly on extrapolation from a limited amount of data",
+    }
+    return "{} - {}".format(value, sufficiency_occupied_values.get(value, ''))
+
+
 @summary.app_template_filter('parse_semicolon')
 def _parse_semicolon(value, sep='<br/>'):
     return parse_semicolon(value, sep=sep)

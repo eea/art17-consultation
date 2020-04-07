@@ -79,7 +79,7 @@
 
 <!-- Habitat for the species -->
 <td class="center text-center"
-    {{ set_method_title(row.habitat_sufficiency_method) }}>
+    {{ set_method_title(row.habitat_sufficiency_method|set_correct_sufficiency_occupied) }}>
   {{ row.habitat_sufficiency_occupied }}
 </td>
 

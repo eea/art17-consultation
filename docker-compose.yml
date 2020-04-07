@@ -3,7 +3,7 @@ version: '2'
 services:
 
   app:
-    image: art17-consultation-test
+    image: eeacms/art17-consultation:latest
     depends_on:
     - db
     environment:
