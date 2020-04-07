@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.11 - (2020-04-07)
+--------------------
+* Link occupied sufficiency methods to descriptions
+  [dianaboiangiu]
+
 3.2.10 - (2020-03-30)
 --------------------
 * Update the link to MS envelope
