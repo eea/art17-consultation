@@ -19,7 +19,6 @@ def test_homepage(client, app, set_auth):
 
 
 @pytest.mark.parametrize("path,args_dict,search_text,elem_found", [
-    ('/species/summary/', {}, 'Please select ', True),
 
     ('/species/summary/', {
         'group': 'Mammals', 'period': '5', 'subject': 'Canis lupus',
@@ -29,8 +28,6 @@ def test_homepage(client, app, set_auth):
         'group': 'Mammals', 'period': '5', 'subject': 'Capra ibex',
         'region': ''}, 'Canis lupus', False),
 
-    ('/species/progress/', {}, 'Please select ', True),
-
     ('/species/progress/', {
         'period': '5', 'group': 'Mammals', 'conclusion': 'population'},
      'Mammals, population', True),
@@ -38,8 +35,6 @@ def test_homepage(client, app, set_auth):
     ('/species/progress/', {
         'period': '5', 'group': 'Fish', 'conclusion': 'range'},
      'Mammals, population', False),
-
-    ('/species/report/', {}, 'Please select ', True),
 
     ('/species/report/', {
         'period': '5', 'group': 'Mammals', 'country': 'IT', 'region': ''},
@@ -49,8 +44,6 @@ def test_homepage(client, app, set_auth):
         'period': '5', 'group': 'Fish', 'country': 'EL', 'region': ''},
      'Mammals, IT', False),
 
-    ('/habitat/summary/', {}, 'Please select ', True),
-
     ('/habitat/summary/', {
         'period': '5', 'group': 'forests', 'subject': '9010', 'region': ''},
      'forests, 9010', True),
@@ -59,8 +52,6 @@ def test_homepage(client, app, set_auth):
         'period': '5', 'group': 'grasslands', 'subject': '6110', 'region': ''},
      'forests, 9010', False),
 
-    ('/habitat/progress/', {}, 'Please select ', True),
-
     ('/habitat/progress/', {
         'period': 5, 'group': 'Forests', 'conclusion': 'range'},
      'Forests, range', True),
@@ -68,8 +59,6 @@ def test_homepage(client, app, set_auth):
     ('/habitat/progress/', {
         'period': 5, 'group': 'Grasslands', 'conclusion': 'area'},
      'Forests, range', False),
-
-    ('/habitat/report/', {}, 'Please select ', True),
 
     ('/habitat/report/', {
         'period': '5', 'group': 'Forests', 'country': 'IT', 'region': ''},

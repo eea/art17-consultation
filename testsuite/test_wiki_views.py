@@ -170,8 +170,8 @@ def test_perms_auth_user(app, setup, set_auth, client, request_type,
     ('post', ['/species/summary/datasheet/edit_comment/', {
         'period': '5', 'subject': 'Canis lupus', 'region': '',
         'comment_id': 999}], {'text': 'Test edit comment.'}),
-    ('get', ['/species/summary/datasheet/manage_comment/', {
-        'comment_id': 999, 'toggle': 'read', 'period': '5'}], {}),
+    # ('get', ['/species/summary/datasheet/manage_comment/', {
+    #     'comment_id': 999, 'toggle': 'read', 'period': '5'}], {}),
 ])
 def test_404_error(app, setup, set_auth, client, request_type, request_args,
                    post_params):
@@ -182,8 +182,8 @@ def test_404_error(app, setup, set_auth, client, request_type, request_args,
         request_type, request_args, post_params), expect_errors=True)
     assert resp.status_code == 404
 
-
-def test_change_active_revision(app, setup, set_auth, client):
+@pytest.mark.xfail
+def test_change_active_revision(app, setup, set_auth, client): # can't modify when dataset is readonly
     create_user('otheruser', role_names=['etc'])
     set_user('otheruser')
     force_login(client, 'otheruser')
@@ -194,8 +194,8 @@ def test_change_active_revision(app, setup, set_auth, client):
     assert get_instance(WikiChange, id=1).active == 0
     assert get_instance(WikiChange, id=3).active == 1
 
-
-def test_add_comment(app, setup, set_auth, client):
+@pytest.mark.xfail
+def test_add_comment(app, setup, set_auth, client): # can't modify when dataset is readonly
     create_user('newuser')
     set_user('newuser')
     force_login(client, 'newuser')
@@ -210,7 +210,8 @@ def test_add_comment(app, setup, set_auth, client):
     assert request_data[2]['comment'] in [c.comment for c in wiki.comments]
 
 
-def test_edit_page(app, setup, set_auth, client):
+@pytest.mark.xfail
+def test_edit_page(app, setup, set_auth, client): # can't modify when dataset is readonly
     create_user('testuser', role_names=['etc'])
     set_user('testuser')
     force_login(client, 'testuser')
@@ -221,8 +222,8 @@ def test_edit_page(app, setup, set_auth, client):
     assert get_instance(WikiChange, id=1).active == 0
     assert get_instance(WikiChange, body='Test edit page.').active == 1
 
-
-def test_edit_comment(app, setup, set_auth, client):
+@pytest.mark.xfail
+def test_edit_comment(app, setup, set_auth, client): # can't modify when dataset is readonly
     create_user('testuser', role_names=['stakeholder'])
     set_user('testuser')
     force_login(client, 'testuser')
@@ -233,6 +234,7 @@ def test_edit_comment(app, setup, set_auth, client):
     assert get_instance(WikiComment, id=1).comment == 'Test edit comment.'
 
 
+@pytest.mark.xfail
 def test_toggle_del(app, setup, set_auth, client):
     create_user('testuser')
     set_user('testuser')
@@ -242,7 +244,7 @@ def test_toggle_del(app, setup, set_auth, client):
         'comment_id': 1, 'toggle': 'del', 'period': '5'})
     assert get_instance(WikiComment, id=1).deleted == 1 - initial_value
 
-
+@pytest.mark.xfail
 def test_toggle_read(app, setup, set_auth, client):
     create_user('otheruser')
     set_user('otheruser')

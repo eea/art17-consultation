@@ -363,12 +363,11 @@ def test_add_conclusion_etc(app, client, set_auth, setup_add, request_args,
        'period': 5, 'subject': 'Canis lupus', 'region': 'ALP',
        'delete_region': 'ALP', 'delete_user': 'someuser',
        'delete_ms': 'EU28'}], 'otheruser', 403, True, None),
-     # Successfully deleting its own conclusion
+     # Successfully deleting its own conclusion - cannot for a read-only period
      (['/species/conc/delete/', {
        'period': 5, 'subject': 'Canis lupus', 'region': 'ALP',
        'delete_region': 'ALP', 'delete_user': 'someuser',
-       'delete_ms': 'EU28'}], 'someuser', 302, False,
-      models.SpeciesManualAssessment),
+       'delete_ms': 'EU28'}], 'someuser', 403, True, None),
 
      # Habitat
      # Inexistent record
@@ -386,11 +385,11 @@ def test_add_conclusion_etc(app, client, set_auth, setup_add, request_args,
        'period': 5, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
        'delete_user': 'someuser', 'delete_ms': 'EU28'}],
       'otheruser', 403, True, None),
-     # Successfully deleting its own conclusion
+     # Successfully deleting its own conclusion - cannot for a read-only period
      (['/habitat/conc/delete/', {
        'period': 5, 'subject': '1110', 'region': 'ALP', 'delete_region': 'ALP',
        'delete_user': 'someuser', 'delete_ms': 'EU28'}],
-      'someuser', 302, False, models.HabitattypesManualAssessment),
+      'someuser', 403, True, None),
      ])
 def test_delete_conclusion(app, client, set_auth, setup_edit, request_args,
                            user, status_code, expect_errors, model_cls):

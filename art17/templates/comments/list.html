@@ -6,7 +6,7 @@
   <h3 class="pull-left">Assessment comments</h3>
   <div class="pull-right" style="padding: 4px">
     Region: <em>{{ record.region }}</em>
-    User: <em>{{ (record.user.name or record.user_id) | hide_adm_etc_username}} {% if not is_name_changed(record.user.name) %}from {{ record.user.institution }}{% endif %}</em>
+    User: <em>{{ (record.user.name or record.user_id) | hide_adm_etc_username}} {% if not is_name_changed(record.user.name or record.user_id) %}from {{ record.user.institution }}{% endif %}</em>
     MS: <em>{{ record.MS }}</em>
   </div>
 </div>
@@ -75,7 +75,7 @@
           <div class="small clearfix">
             <div class="pull-left">
               <strong>by {{ comment.author.name | hide_adm_etc_username }}</strong>
-              {% if not is_name_changed(record.user.name) %}from {{ comment.author.institution or '-' }}{% endif %}
+              {% if not is_name_changed(comment.user.name or comment.user_id) %}from {{ comment.author.institution or '-' }}{% endif %}
             </div>
             <span class="muted pull-right" title="{{ comment.posted | format_time_cmnt }}">
               {{ comment.post_date }}
