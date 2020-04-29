@@ -52,7 +52,8 @@ class Dataset(Base):
         return (
             self.schema == '2006' or
             self.schema == '2012' or
-            self.schema == '2012bis'
+            self.schema == '2012bis' or
+            self.schema == '2018'
         )
 
 

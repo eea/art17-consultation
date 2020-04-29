@@ -6,7 +6,7 @@
   <h3 class="pull-left">Assessment comments</h3>
   <div class="pull-right" style="padding: 4px">
     Region: <em>{{ record.region }}</em>
-    User: <em>{{ (record.user.name or record.user_id) | hide_adm_etc_username}} from {{ record.user.institution }}</em>
+    User: <em>{{ (record.user.name or record.user_id) | hide_adm_etc_username}} {% if not is_name_changed(record.user.name) %}from {{ record.user.institution }}{% endif %}</em>
     MS: <em>{{ record.MS }}</em>
   </div>
 </div>
@@ -47,7 +47,10 @@
             {% if edited_comment == comment %}
               {% include 'comments/edit.html' with context %}
             {% else %}
+            {% if current_user.is_authenticated %}
+
               <span class="cmnt-type">{{ comment_type }}</span>
+            {% endif %}
               {% if can_edit_comment(comment) %}
                 <a class="btn-text2"
                    href="?edit={{ comment.id }}#comment-{{ comment.id }}">Edit</a>&ensp;
@@ -71,8 +74,8 @@
 
           <div class="small clearfix">
             <div class="pull-left">
-              <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>
-              from {{ comment.author.institution or '-' }}
+              <strong>by {{ comment.author.name | hide_adm_etc_username }}</strong>
+              {% if not is_name_changed(record.user.name) %}from {{ comment.author.institution or '-' }}{% endif %}
             </div>
             <span class="muted pull-right" title="{{ comment.posted | format_time_cmnt }}">
               {{ comment.post_date }}

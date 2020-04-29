@@ -67,8 +67,34 @@ def hide_adm_etc_username(name):
                 name = 'EEA-ETC/BD'
             elif author.has_role('admin'):
                 name = 'Admin'
+    if author:
+        if  author.has_role('stakeholder') or author.has_role('nat'):
+            if not current_user.has_role('admin'):
+                name = author.institution
     return name
 
+@wiki.app_template_global('is_name_changed')
+def is_name_changed(name):
+    is_changed = False
+    author = (
+        RegisteredUser.query
+        .filter(or_(
+            RegisteredUser.name == name,
+            RegisteredUser.id == name,
+        ))
+        .first()
+    )
+    if not (current_user.has_role('etc') or current_user.has_role('admin')):
+        if author:
+            if author.has_role('etc'):
+                is_changed = True
+            elif author.has_role('admin'):
+                is_changed = True
+    if author:
+        if  author.has_role('stakeholder') or author.has_role('nat'):
+            if not current_user.has_role('admin'):
+                is_changed = True
+    return is_changed
 
 @wiki.app_template_global('is_read')
 def is_read(comment):

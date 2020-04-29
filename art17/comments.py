@@ -76,6 +76,8 @@ def can_post_comment(record):
 def can_view_comments(record):
     if EU_ASSESSMENT_MODE:
         return True
+    if record.user.has_role('stakeholder'):
+        return True
     if not current_user.is_authenticated:
         return False
     if is_public_user():

@@ -164,7 +164,7 @@ class ConclusionView(object):
     def check_conclusion(self, conclusion):
         start_date = Config.query.first().start_date
         dataset_id = Config.query.first().default_dataset_id
-        if conclusion.dataset.id == dataset_id:
+        if conclusion.dataset.id == dataset_id and not conclusion.dataset.is_readonly:
             if not start_date or start_date > date.today():
                 return False
         return conclusion.decision in ['OK', 'END']
