@@ -30,9 +30,11 @@
     {% if wiki_revised == False %}
       <form method="post">
         <p>This page is not revised.</p>
-        <label for="checkbox_id">Revise</label>
-        {{ wiki_revised_form.revised }}
-        <input type="submit" value="Submit" style="vertical-align: text-bottom;" />
+        {% if not dataset.is_readonly %}
+          <label for="checkbox_id">Revise</label>
+          {{ wiki_revised_form.revised }}
+          <input type="submit" value="Submit" style="vertical-align: text-bottom;" />
+        {% endif %}
       </form>
     {% elif wiki_revised == True %}
       <p>Revised ✓</p>
