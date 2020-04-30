@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.2.12 - (2020-04-30)
+--------------------
+* Prepare text for webtool post-consultation phase
+* Set assessment line rules for post consultation phase
+  [dianaboiangiu]
+
 3.2.11 - (2020-04-07)
 --------------------
 * Link occupied sufficiency methods to descriptions
