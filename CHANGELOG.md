@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.13 - (2020-04-30)
+--------------------
+* Fix species text
+  [dianaboiangiu]
+
 3.2.12 - (2020-04-30)
 --------------------
 * Prepare text for webtool post-consultation phase
