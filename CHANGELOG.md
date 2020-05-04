@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.14 - (2020-05-04)
+--------------------
+* Fix datasheet view for unauthenticated users
+  [dianaboiangiu]
+
 3.2.13 - (2020-04-30)
 --------------------
 * Fix species text
