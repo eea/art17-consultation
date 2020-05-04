@@ -6,7 +6,9 @@
     {% endif %}
     <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.id == 4 %} disabled {% endif %}>
         View data sheet info
-        {% if wiki_unread %}({{ wiki_unread }} unread comments){% endif %}
+        {% if current_user.is_authenticated %}
+          {% if wiki_unread %}({{ wiki_unread }} unread comments){% endif %}
+        {% endif %}
     </button>
 
     <button type="button" id="wikibutton" {% if dataset.id == 4 %} disabled {% endif %}

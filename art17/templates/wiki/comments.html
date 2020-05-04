@@ -69,7 +69,9 @@
         <div class="pull-left">
           <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>
           {% if comment.author.institution %}
-            from {{ comment.author.institution }}
+            {% if not is_name_changed(comment.author.name) %}
+              from {{ comment.author.institution }}
+            {% endif %}
           {% endif %}
         </div>
         {% endif %}
