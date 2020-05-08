@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.15 - (2020-05-08)
+--------------------
+* Add available soon to the methodologies link
+  [dianaboiangiu]
+
 3.2.14 - (2020-05-04)
 --------------------
 * Fix datasheet view for unauthenticated users
