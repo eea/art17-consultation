@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.0 - (2020-07-07)
+--------------------
+* Add methodology and step guide documents
+  [dianaboiangiu]
+
 3.2.15 - (2020-05-08)
 --------------------
 * Add available soon to the methodologies link
