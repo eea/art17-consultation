@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.3.1 - (2020-10-02)
+--------------------
+* Add 2013 disclaimer
+* Update methodology document
+  [dianaboiangiu]
+
 3.3.0 - (2020-07-07)
 --------------------
 * Add methodology and step guide documents
