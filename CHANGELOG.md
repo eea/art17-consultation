@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.2 - (2020-10-02)
+--------------------
+* Fix disclaimer text/set italic
+  [dianaboiangiu]
+
 3.3.1 - (2020-10-02)
 --------------------
 * Add 2013 disclaimer
