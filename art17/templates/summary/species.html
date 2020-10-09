@@ -45,6 +45,15 @@
 
   {% include 'summary/filters.html' %}
 
+  {% if dataset.id == 5 and subject == None or subject == '' %}
+    <p>
+      The distribution data for France (2013 – 2018 reporting) were corrected after the official submission of the Art 17 reports by France.
+      The maps displayed via this web tool take into account these corrections, while the values under Distribution area (km2) used for the EU
+      biogeographical assessment are based on the original Article 17 report submitted by France. More details are provided in the feedback part
+      of the reporting envelope on <a href="https://cdr.eionet.europa.eu/fr/eu/art17/envxrm6jq/">CDR</a>.
+    </p>
+  {% endif %}
+
   {% if dataset.schema == '2018' %}
     {% if request.args.get('action') == 'edit' %}
       {% set colspan_all=40 if region else 41 %}
@@ -235,6 +244,15 @@
         </table>
       </div>
   </form>
+
+  {% if dataset.id == 5 and subject != None and subject != '' %}
+    <p>
+      The distribution data for France (2013 – 2018 reporting) were corrected after the official submission of the Art 17 reports by France.
+      The maps displayed via this web tool take into account these corrections, while the values under Distribution area (km2) used for the EU
+      biogeographical assessment are based on the original Article 17 report submitted by France. More details are provided in the feedback part
+      of the reporting envelope on <a href="https://cdr.eionet.europa.eu/fr/eu/art17/envxrm6jq/">CDR</a>.
+    </p>
+  {% endif %}
 {% endif %}
 
 {% endblock %}
