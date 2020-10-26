@@ -45,7 +45,7 @@
 
   {% include 'summary/filters.html' %}
 
-  {% if dataset.id == 5 and subject == None or subject == '' %}
+  {% if period_selected == '5' and (subject == None or subject == '') %}
     <p class="italic">
       The distribution data for France (2013 – 2018 reporting) were corrected after the official submission of the Article 17 reports by France.
       The maps displayed via this web tool take into account these corrections, while the values under Distribution area (km2) used for the EU
@@ -245,7 +245,7 @@
       </div>
   </form>
 
-  {% if dataset.id == 5 and subject != None and subject != '' %}
+  {% if period_selected == '5' and subject != None and subject != '' %}
     <p class="italic">
       The distribution data for France (2013 – 2018 reporting) were corrected after the official submission of the Article 17 reports by France.
       The maps displayed via this web tool take into account these corrections, while the values under Distribution area (km2) used for the EU

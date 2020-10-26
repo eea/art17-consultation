@@ -373,6 +373,7 @@ class Summary(ConclusionView, views.View):
             'subject': subject,
             'region': region,
             'period_name': period_name,
+            'period_selected': request.args.get('period'),
             'dataset': self.dataset,
             'default_ms': default_ms,
             'fresh_new_record': fresh_new_record,
