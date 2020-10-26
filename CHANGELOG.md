@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.3 - (2020-10-26)
+--------------------
+* Remove default footnote
+  [dianaboiangiu]
+
 3.3.2 - (2020-10-02)
 --------------------
 * Fix disclaimer text/set italic
