@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.4 - (2020-11-02)
+--------------------
+* Remove default footnote when no subject is selected
+  [dianaboiangiu]
+
 3.3.3 - (2020-10-26)
 --------------------
 * Remove default footnote
