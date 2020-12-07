@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.5 - (2020-12-07)
+--------------------
+* Allow edit datasheet for ETC/Admin users on period 2013
+  [dianaboiangiu]
+
 3.3.4 - (2020-11-02)
 --------------------
 * Remove default footnote when no subject is selected
