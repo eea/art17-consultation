@@ -1,7 +1,7 @@
 <div class="comment-section">
   <h3>Comments</h3>
 
-  {% if can_add_comment(comments, revisions, dataset) %}
+  {% if can_add_comment(comments, revisions, dataset, datasheet) %}
     <div class="btn-toolbar">
         <button class='edit-btn {% if add_cmnt_form %}disabled{% endif %}'
             href="{{ add_comment_url }}">Add comment</button>
@@ -42,7 +42,7 @@
       {% endif %}
 
         <li class="{{ get_css_class(comment) }}" id="{{comment.id}}">
-        {% if can_manage_comment(dataset) %}
+        {% if can_manage_comment(dataset, datasheet) %}
 	      <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
             {% if not(edit_comment_form or ('elete' in btn_text and sta_cannot_change())) %}

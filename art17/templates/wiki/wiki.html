@@ -10,7 +10,7 @@
   {% endif %}
   <h2 class="no-margins pull-left">{{ page_title }}</h2>
   <div class="pull-right">
-    {% if can_edit_page(dataset) and not merged %}
+    {% if can_edit_page(dataset, datasheet) and not merged %}
       <button class="edit-btn btn-green {% if edit_page_form %}disabled{% endif %}"
               href="{{ edit_page_url }}">Edit {{ page_title }}</button>
     {% endif %}
@@ -30,11 +30,11 @@
     {% if wiki_revised == False %}
       <form method="post">
         <p>This page is not revised.</p>
-        {% if not dataset.is_readonly %}
+        <!-- {% if not dataset.is_readonly %} -->
           <label for="checkbox_id">Revise</label>
           {{ wiki_revised_form.revised }}
           <input type="submit" value="Submit" style="vertical-align: text-bottom;" />
-        {% endif %}
+        <!-- {% endif %} -->
       </form>
     {% elif wiki_revised == True %}
       <p>Revised ✓</p>
