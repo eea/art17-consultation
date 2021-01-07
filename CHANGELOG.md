@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.6 - (2021-01-07)
+--------------------
+* Fix EU biogeographical assessments comment display
+  [dianaboiangiu]
+
 3.3.5 - (2020-12-07)
 --------------------
 * Allow edit datasheet for ETC/Admin users on period 2013
