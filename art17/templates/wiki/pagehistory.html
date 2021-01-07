@@ -1,27 +1,26 @@
 <div id="history" class="hidden">
-    <div class="history-header clearfix">
-        <strong class="pull-left">{{ revisions | length }} revisions</strong>
-        <button onclick="toggleHistory()"
-                class="btn-text pull-right">Close</button>
-    </div>
-    <ul class="history-list">
-
+  <div class="history-header clearfix">
+    <strong class="pull-left">{{ revisions | length }} revisions</strong>
+      <button onclick="toggleHistory()"
+              class="btn-text pull-right">Close</button>
+  </div>
+  <ul class="history-list">
     {% for revision in revisions %}
-        <li id="{{ revision.id }}"
-            href="{{ url_for(get_rvs_endpoint, page=page, revision_id=revision.id, section=section)}}"
-            class="{% if revision.active %}active{% endif %}">
+      <li id="{{ revision.id }}"
+          href="{{ url_for(get_rvs_endpoint, page=page, revision_id=revision.id, section=section)}}"
+          class="{% if revision.active %}active{% endif %}">
 
         {{ revision.changed | format_date_cmnt }}
         {% if revision.active %}<em class="white">Active</em>{% endif %}
         <br/>by {{ revision.editor | hide_adm_etc_username }}
 
         {% if can_change_revision(revision) %}
-        <form method="post" action="{{ page_history_url }}">
+          <form method="post" action="{{ page_history_url }}">
             <input type="hidden" name="revision_id" value="{{ revision.id }}"/>
             <button class="btn-text" type="submit">Restore version</button>
-        </form>
+          </form>
         {% endif %}
-        </li>
+      </li>
     {% endfor %}
-    </ul>
+  </ul>
 </div>

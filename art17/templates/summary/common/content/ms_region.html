@@ -5,25 +5,25 @@
     <div class="tooltip-html hidden">
       <div class="extra-padding">
         <p class="br width-600 margin-small">
-        {% if s_name %}
+          {% if s_name %}
             Scientific name used in original MS report if different than
             recommended: "{{ s_name|safe }}"<br/>
-        {% endif %}
-        {% if s_info %}
+          {% endif %}
+          {% if s_info %}
             {{ s_info|format_info|safe }}</br>
-        {% endif %}
-        {% if s_type %}
+          {% endif %}
+          {% if s_type %}
             </br>Presence status in the reported check-list: {{ s_type|safe }}
-        {% endif %}
+          {% endif %}
         </p>
         {% if not row.is_assesm %}
-        <p class="margin-small">
-          <a href="{{ original_url }}">Open Original Report</a>
-          &nbsp;
-          <span class="muted large">
-            <i class="fa fa-external-link"></i>
-          </span>
-        </p>
+          <p class="margin-small">
+            <a href="{{ original_url }}">Open Original Report</a>
+            &nbsp;
+            <span class="muted large">
+              <i class="fa fa-external-link"></i>
+            </span>
+          </p>
         {% endif %}
       </div>
     </div>

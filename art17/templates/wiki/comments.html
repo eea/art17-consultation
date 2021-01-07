@@ -43,7 +43,7 @@
 
         <li class="{{ get_css_class(comment) }}" id="{{comment.id}}">
         {% if can_manage_comment(dataset, datasheet) %}
-	      <div class="clearfix">
+        <div class="clearfix">
             <span class="cmnt-type">{{ comment_type }}</span>
             {% if not(edit_comment_form or ('elete' in btn_text and sta_cannot_change())) %}
               <button class="btn-text" href="{{ href }}">{{ btn_text }}</button>

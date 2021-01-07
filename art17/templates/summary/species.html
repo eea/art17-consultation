@@ -220,7 +220,6 @@
 
         {# Add manual assessment form #}
         {% set can_add, warning_message = can_add_conclusion(dataset, 'species', subject, region) %}
-
         {% if not manual_assessment %}
           <tbody class="form">
             {% if can_add %}

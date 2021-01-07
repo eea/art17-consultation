@@ -7,23 +7,23 @@
 </td>
 
 <td class="border_right" colspan="4">
-	<div class="popout-wrapper">
-		<div class="popout details">
-			<span class="close pull-right"><i class="fa fa-times"></i></span>
-			<div>
-				<p class="muted">{{ row.last_update|format_date }}</p>
-				<p class="bold">{{ (row.user.name or row.user_id) | hide_adm_etc_username }}</p>
-				<p>Institution: {{ row.user.institution }}</p>
-				<p>Member State: {{ row.user.MS or '' }}</p>
-			</div>
-			{% if row.deleted and not can_delete(row) %}
-			<hr>
-			<p class="muted italic no-margins">This assesment was deleted.</p>
-			{% endif %}
+  <div class="popout-wrapper">
+    <div class="popout details">
+      <span class="close pull-right"><i class="fa fa-times"></i></span>
+      <div>
+        <p class="muted">{{ row.last_update|format_date }}</p>
+        <p class="bold">{{ (row.user.name or row.user_id) | hide_adm_etc_username }}</p>
+        <p>Institution: {{ row.user.institution }}</p>
+        <p>Member State: {{ row.user.MS or '' }}</p>
+      </div>
+      {% if row.deleted and not can_delete(row) %}
+        <hr>
+        <p class="muted italic no-margins">This assesment was deleted.</p>
+      {% endif %}
 
-			{% if (can_edit(row) or can_delete(row)) and not manual_assessment %}
-			<hr>
-			<div class="btn-toolbar no-break">
+      {% if (can_edit(row) or can_delete(row)) and not manual_assessment %}
+      <hr>
+      <div class="btn-toolbar no-break">
           {% if can_edit(row) %}
             {% if sta_perm.can() %}
               {% set title = 'Comment on biogeographical assessment at EU or MS level by proposing a correction' %}
@@ -46,19 +46,19 @@
             <a class="button delete-btn" href="{{ url }}#man-row-{{ loop.index }}">{% if row.deleted %}Undelete{% else %}Delete{% endif %}</a>
             <a class="button btn-red perm-del" href="{{ url }}&perm=1#manual-thead">Permanently delete</a>
           {% endif %}
-			</div>
-			{% endif %}
-		</div>
+      </div>
+      {% endif %}
+    </div>
 
-		{% if row.deleted %}
-		<a data-popout="details" class="badge-red" title="This assesment was deleted. View details.">
-			Deleted
-		</a>
-		{% else %}
-		<a class="btn-text" data-popout="details" title="View details">
-      {{ (row.user.name or row.user_id) | hide_adm_etc_username or 'Details' }}
-    </a>
+    {% if row.deleted %}
+      <a data-popout="details" class="badge-red" title="This assesment was deleted. View details.">
+        Deleted
+      </a>
+    {% else %}
+      <a class="btn-text" data-popout="details" title="View details">
+        {{ (row.user.name or row.user_id) | hide_adm_etc_username or 'Details' }}
+      </a>
     {% endif %}
 
-	</div>
+  </div>
 </td>

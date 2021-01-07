@@ -1,10 +1,10 @@
 <form name="edit_comment_form" method="post" >
-    {{ edit_comment_form.comment(class='ckeditor') }}
+  {{ edit_comment_form.comment(class='ckeditor') }}
 
-    <div class="btn-toolbar">
-    	<button class="btn-green" type="submit" >Submit</button>
-    	<a class="button" href="{{ home_url ~ '#' ~ comment.id }}">Cancel</a>
-  	</div>
+  <div class="btn-toolbar">
+    <button class="btn-green" type="submit" >Submit</button>
+    <a class="button" href="{{ home_url ~ '#' ~ comment.id }}">Cancel</a>
+  </div>
 </form>
 
 <script type=text/javascript src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
