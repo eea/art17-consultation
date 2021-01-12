@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.7 - (2021-01-08)
+--------------------
+* Rearange migrations
+  [dianaboiangiu]
+
 3.3.6 - (2021-01-07)
 --------------------
 * Fix EU biogeographical assessments comment display
