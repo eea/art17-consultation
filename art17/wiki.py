@@ -134,7 +134,9 @@ def can_change_revision(revision):
 
 @wiki.app_template_global('can_add_comment')
 def can_add_comment(comments, revisions, dataset, datasheet=False):
-    if (not dataset or dataset.is_readonly or sta_cannot_change()) and (dataset.id != 5 or not datasheet or not(etc_perm.can() or admin_perm.can())):
+    if not dataset:
+        return False
+    if (dataset.is_readonly or sta_cannot_change()) and (dataset.id != 5 or not datasheet or not(etc_perm.can() or admin_perm.can())):
         return False
     is_author = current_user in [cmnt.author for cmnt in comments]
     return not (current_user.is_anonymous or is_author) and revisions
