@@ -34,18 +34,18 @@
     {% elif not factsheet_url %}
       {% set fs_error = "Factsheet not available" %}
     {% else %}
-    {% if dataset.id != 4 %}
-    <a href="{{ factsheet_url }}" id="download-fs" class="button"
-       target="_blank">
-      Download factsheet
-    </a>
-    {% else %}
-    <span class="disabled button">
-      Download factsheet
-    </span>
+    {% if dataset.id == 4 %}
+      <span class="disabled button">
+        Download factsheet
+      </span>
+    {% elif dataset.id != 5 %}
+      <a href="{{ factsheet_url }}" id="download-fs" class="button"
+        target="_blank">
+        Download factsheet
+      </a>
     {% endif %}
     {% endif %}
-    {% if fs_error %}
+    {% if fs_error and dataset.id != 4 and dataset.id != 5 %}
     <span class="disabled button" title="{{ fs_error }}" >
       Download factsheet
     </span>
