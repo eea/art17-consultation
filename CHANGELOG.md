@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.8 - (2021-02-09)
+--------------------
+* Remove "Download factsheets"
+  [dianaboiangiu]
+
 3.3.7 - (2021-01-08)
 --------------------
 * Rearange migrations
