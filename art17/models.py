@@ -43,9 +43,9 @@ class Dataset(Base):
     id = Column(Integer, primary_key=True, unique=True)
     name = Column(String(255), nullable=False)
     schema = Column(String(4))
-    species_map_url = Column(db.String(255), nullable=True)
-    sensitive_species_map_url = Column(db.String(255), nullable=True)
-    habitat_map_url = Column(db.String(255), nullable=True)
+    species_map_url = Column(db.String(400), nullable=True)
+    sensitive_species_map_url = Column(db.String(400), nullable=True)
+    habitat_map_url = Column(db.String(400), nullable=True)
 
     @property
     def is_readonly(self):

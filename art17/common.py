@@ -396,12 +396,14 @@ def get_title_for_habitat_country(row):
 def generate_map_url(dataset_id, category, subject, region, sensitive=False):
     dataset = Dataset.query.get(dataset_id)
     if category == 'species':
+        field_2018 = 'speciescode'
         if sensitive:
             map_href = dataset.sensitive_species_map_url
         else:
             map_href = dataset.species_map_url
 
     elif category == 'habitat':
+        field_2018 = 'habitatcode'
         map_href = dataset.habitat_map_url
 
     else:
@@ -412,12 +414,12 @@ def generate_map_url(dataset_id, category, subject, region, sensitive=False):
 
     if region:
         if dataset.schema == '2018':
-            return map_href + '&CodeReg=' + subject + region + "&zoomto=true"
+            return ",".join([map_href, 'CO_RE', subject + '_' + region])
         else:
             return map_href + '&CodeReg=' + subject + region
     else:
         if dataset.schema == '2018':
-            return map_href + '&CCode=' + subject + "&zoomto=true"
+            return ",".join([map_href, field_2018, subject])
         else:
             return map_href + '&CCode=' + subject
 
