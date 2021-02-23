@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.9 - (2021-02-23)
+--------------------
+* Update 2013-2018 maps
+  [dianaboiangiu]
+
 3.3.8 - (2021-02-09)
 --------------------
 * Remove "Download factsheets"
