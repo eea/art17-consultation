@@ -414,12 +414,12 @@ def generate_map_url(dataset_id, category, subject, region, sensitive=False):
 
     if region:
         if dataset.schema == '2018':
-            return ",".join([map_href, 'CO_RE', subject + '_' + region])
+            return "&".join([map_href, field_2018 + "=" + subject, 'ZoomTo=true'])
         else:
             return map_href + '&CodeReg=' + subject + region
     else:
         if dataset.schema == '2018':
-            return ",".join([map_href, field_2018, subject])
+            return "&".join([map_href, field_2018 + "=" + subject, 'ZoomTo=true'])
         else:
             return map_href + '&CCode=' + subject
 
