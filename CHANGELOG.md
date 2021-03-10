@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.11 - (2021-03-09)
+---------------------
+* Change maps for period 2013-2018
+  [dianaboiangiu]
+
 3.3.10 - (2021-03-01)
 ---------------------
 * Set new maps for period 2013-2018
