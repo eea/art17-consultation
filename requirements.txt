@@ -16,7 +16,7 @@ Flask-WTF==0.14.2
 Flask==1.1.1
 inflect==3.0.2
 itsdangerous==1.1.0
-Jinja2==2.10.3
+Jinja2==2.11.3
 jsmin==2.2.2
 Mako==1.1.0
 MarkupSafe==1.1.1
