@@ -2,11 +2,10 @@ import logging
 import logging.handlers
 import flask
 
-from flask_collect import Collect
-from flask_script import Manager
 from flask_mail import Mail
+from flask_migrate import Migrate
 
-from art17.models import db, db_manager
+from art17.models import db
 from art17.layout import layout
 from art17.summary import summary
 from art17.progress import progress
@@ -69,8 +68,11 @@ def create_app(config={}, testing=False):
     else:
         app.config.from_pyfile('settings.py')
     app.config.update(config)
+    create_cli_commands(app)
     assets_env.init_app(app)
+    migrate = Migrate()
     db.init_app(app)
+    migrate.init_app(app, db)
     app.register_blueprint(layout)
     app.register_blueprint(summary)
     app.register_blueprint(report)
@@ -85,10 +87,8 @@ def create_app(config={}, testing=False):
     login_manager.init_app(app)
     login_manager.login_view = 'login'
     Mail().init_app(app)
-    collect = Collect()
-    collect.init_app(app)
     app.add_template_global(inject_static_file)
-    return (app, collect)
+    return app
 
 
     @app.route('/temp.html')
@@ -119,19 +119,16 @@ def create_url_prefix_middleware(wsgi_app, url_prefix):
     return middleware
 
 
-def create_manager(app, collect):
-    manager = Manager(app)
-    manager.add_command('db', db_manager)
-    manager.add_command('dataset', dataset_manager)
-    manager.add_command('user', user_manager)
-    manager.add_command('import_greece', import_greece)
-    manager.add_command('generate_new_period', generate_new_period)
-    manager.add_command('fix_manual', fix_manual)
-    manager.add_command('pre_fill_wiki_changes_habitat', pre_fill_wiki_changes_habitat)
-    manager.add_command('pre_fill_wiki_changes_species', pre_fill_wiki_changes_species)
-    manager.add_command('import_new_data', import_new_data)
-    manager.add_command('fix_bg_link', fix_bg_link)
-    manager.add_command('role', role_manager)
-    manager.add_command('factsheet', factsheet_manager)
-    collect.init_script(manager)
-    return manager
+def create_cli_commands(app):
+    app.cli.add_command(dataset_manager)
+    app.cli.add_command(user_manager)
+    app.cli.add_command(role_manager)
+    app.cli.add_command(factsheet_manager)
+
+    app.cli.add_command(import_greece)
+    app.cli.add_command(generate_new_period)
+    app.cli.add_command(fix_manual)
+    app.cli.add_command(pre_fill_wiki_changes_habitat)
+    app.cli.add_command(pre_fill_wiki_changes_species)
+    app.cli.add_command(import_new_data)
+    app.cli.add_command(fix_bg_link)

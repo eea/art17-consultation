@@ -55,7 +55,7 @@ from art17.auth.security import (
 from art17.common import HOMEPAGE_VIEW_NAME, get_config
 
 
-def user_registered_sighandler(app, user, confirm_token):
+def user_registered_sighandler(app, user, confirm_token, form_data=None):
     add_default_role(user)
 
 
@@ -74,8 +74,9 @@ def register_local():
 
     if form.validate_on_submit():
         datastore = current_app.extensions['security'].datastore
-        user = register_user(**form.to_dict())
-        password = form.to_dict().get('password')
+        
+        user = register_user(form)
+        password = form.to_dict(only_user=True).get('password')
         encrypted_password = encrypt_password(password)
         user.password = encrypted_password
         datastore.commit()
@@ -107,7 +108,7 @@ def admin_create_local():
     form = Art17LocalRegisterForm(request.form)
 
     if form.validate_on_submit():
-        kwargs = form.to_dict()
+        kwargs = form.to_dict(only_user=True)
         plaintext_password = kwargs['password']
         encrypted_password = encrypt_password(plaintext_password)
         datastore = current_app.extensions['security'].datastore
@@ -216,7 +217,7 @@ def admin_create_ldap():
         form.name.data = initial_data.get('name', '')
         form.email.data = initial_data.get('email', '') or form.email.data
         if form.validate():
-            kwargs = form.to_dict()
+            kwargs = form.to_dict(only_user=True)
             kwargs['id'] = user_id
             kwargs['is_ldap'] = True
             datastore = current_app.extensions['security'].datastore
@@ -259,9 +260,10 @@ def change_password():
         return render_template('message.html', message=message)
 
     form = ChangePasswordForm()
-
     if form.validate_on_submit():
+        
         current_user.password = encrypt_password(form.new_password.data)
+        models.db.session.add(current_user)
         models.db.session.commit()
         models.db.session.commit()
         msg = "Your password has been changed. Please log in again."

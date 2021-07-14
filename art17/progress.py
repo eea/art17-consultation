@@ -290,9 +290,9 @@ class Progress(views.View):
                                                 assessor)
         comment_counts = self.get_comment_counts(period)
         ret_dict = {}
-        for subject, region in data_dict.iteritems():
+        for subject, region in data_dict.items():
             ret_dict[subject] = {}
-            for region, cell_options in region.iteritems():
+            for region, cell_options in region.items():
                 presence_info = presence.get(subject, {}).get(region, {})
                 cell = self.process_cell(
                     subject, region, cell_options, conclusion, presence_info,
@@ -526,11 +526,11 @@ progress.add_url_rule('/habitat/progress/table/',
 def species_assessors():
     data = SpeciesMixin.get_assessors(
         request.args.get('period'), request.args.get('group'))
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 @progress.route('/habitat/progress/assessors', endpoint='habitat-assessors')
 def species_assessors():
     data = HabitatMixin.get_assessors(
         request.args.get('period'), request.args.get('group'))
-    return jsonify(data)
+    return jsonify([list(row) for row in data])

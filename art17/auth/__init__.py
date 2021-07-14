@@ -28,6 +28,7 @@ def setup_auth_handlers(state):
         'SECURITY_PASSWORD_HASH': 'ldap_salted_sha1',
         'SECURITY_PASSWORD_HASH': 'ldap_salted_sha1',
         'SECURITY_PASSWORD_SCHEMES': ['ldap_salted_sha1'],
+        'SECURITY_PASSWORD_SINGLE_HASH': ['ldap_salted_sha1'],
         'SECURITY_PASSWORD_SALT': 'salted',
         'SECURITY_SEND_PASSWORD_CHANGE_EMAIL': True,
         'SECURITY_EMAIL_SUBJECT_REGISTER': (

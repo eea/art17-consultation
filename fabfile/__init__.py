@@ -5,10 +5,10 @@ from fabric.operations import require, run
 from fabric.context_managers import cd, prefix
 from fabric.api import env
 
-from path import path
+from path import Path
 
 
-LOCAL_PATH = path(__file__).abspath().parent
+LOCAL_PATH = Path(__file__).abspath().parent
 USED_FOR_MSG = """deployment. You need to prefix the task with the location,
     i.e: fab staging deploy."""
 
@@ -17,7 +17,7 @@ def enviroment(location='staging'):
     config = ConfigParser.RawConfigParser()
     config.read(LOCAL_PATH / 'env.ini')
     env.update(config.items(section=location))
-    env.sandbox_activate = path(env.sandbox) / 'bin' / 'activate'
+    env.sandbox_activate = Path(env.sandbox) / 'bin' / 'activate'
     env.deployment_location = location
 
 
@@ -42,5 +42,5 @@ def deploy():
         run('python manage.py db upgrade')
         run('supervisorctl -c %(supervisord_conf)s restart flask' % env)
         for doc_type in ('overview', 'user'):
-            with cd(path('docs') / doc_type):
+            with cd(Path('docs') / doc_type):
                 run('make html')

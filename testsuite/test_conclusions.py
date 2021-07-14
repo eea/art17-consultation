@@ -2,7 +2,7 @@ import pytest
 
 from . import factories
 from art17 import models
-from conftest import get_request_params, create_user, force_login
+from .conftest import get_request_params, create_user, force_login
 
 
 def setup_common():

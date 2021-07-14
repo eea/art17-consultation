@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from urlparse import urlparse
+from urllib.parse import urlparse
 from datetime import date
 import flask
 from flask_principal import Permission, RoleNeed
@@ -457,7 +457,7 @@ def ping():
 @common.route('/common/species/groups', endpoint='species-groups')
 def species_groups():
     data = SpeciesMixin.get_groups(flask.request.args['period'])
-    return flask.jsonify(data)
+    return flask.jsonify([list(row) for row in data])
 
 
 @common.route('/common/habitat/groups', endpoint='habitat-groups')
@@ -467,7 +467,7 @@ def habitat_groups():
         data = HabitatProgressTable.get_groups(flask.request.args['period'])
     else:
         data = HabitatMixin.get_groups(flask.request.args['period'])
-    return flask.jsonify(data)
+    return flask.jsonify([list(row) for row in data])
 
 
 @common.route('/config', methods=['GET', 'POST'])

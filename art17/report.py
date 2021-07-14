@@ -120,28 +120,28 @@ class HabitatReport(HabitatMixin, Report):
 def species_regions():
     period, country = request.args['period'], request.args['country']
     data = SpeciesMixin.get_regions_by_country(period, country)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 @report.route('/species/report/countries', endpoint='species-report-countries')
 def species_countries():
     period = request.args['period']
     data = MixinsCommon.get_countries(period)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 @report.route('/habitat/report/regions', endpoint='habitat-report-regions')
 def habitat_regions():
     period, country = request.args['period'], request.args['country']
     data = HabitatMixin.get_regions_by_country(period, country)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 @report.route('/habitat/report/countries', endpoint='habitat-report-countries')
 def habitat_countries():
     period = request.args['period']
     data = MixinsCommon.get_countries(period)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 report.add_url_rule('/species/report/',
                     view_func=SpeciesReport.as_view('species-report'))

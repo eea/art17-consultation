@@ -227,7 +227,7 @@ class SummaryFormMixin(object):
 
     def all_errors(self):
         errors = []
-        for field_name, field_errors in self.errors.iteritems():
+        for field_name, field_errors in self.errors.items():
             errors.extend(field_errors)
         errors = set(errors)
         text = '<ul>'
@@ -283,9 +283,9 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     def setup_choices(self, dataset_id):
         empty = [('', '')]
         methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
-        methods = empty + zip(methods, methods)
+        methods = empty + list(zip(methods, methods))
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
-        conclusions = [('Not selected', '')] + zip(conclusions, conclusions)
+        conclusions = [('Not selected', '')] + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
         #trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
         #trends = empty + zip(trends, trends)
@@ -416,9 +416,9 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
         empty = [('', '')]
 
         methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
-        methods = empty + zip(methods, methods)
+        methods = empty + list(zip(methods, methods))
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
-        conclusions = empty + zip(conclusions, conclusions)
+        conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
         #trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
         #trends = empty + zip(trends, trends)
@@ -500,7 +500,7 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin, OptionsBaseSpecies):
     def setup_choices(self, dataset_id):
         empty = [('', '')]
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
-        conclusions = empty + zip(conclusions, conclusions)
+        conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
         self.backcasted_2007.choices = conclusions
 
@@ -528,7 +528,7 @@ class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
     def setup_choices(self, dataset_id):
         empty = [('', '')]
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
-        conclusions = empty + zip(conclusions, conclusions)
+        conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
         self.backcasted_2007.choices = conclusions
 

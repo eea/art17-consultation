@@ -1,6 +1,6 @@
 import inspect
 import flask
-import flask_security.script
+import flask_security.utils
 from flask_login import current_user as c_user
 import flask_security as flask_security
 from flask_security import SQLAlchemyUserDatastore, AnonymousUser
@@ -13,7 +13,7 @@ from flask_security.forms import (
     ConfirmRegisterForm,
     RegisterFormMixin,
     ForgotPasswordForm,
-    password_length,
+    # password_length,
     Required,
     email_validator,
     unique_user_email,
@@ -31,9 +31,9 @@ flask_security.forms.current_user = current_user
 flask_security.decorators.current_user = current_user
 flask_security.views.current_user = current_user
 flask_security.views.logout_user = lambda: None
-flask_security.views.login_user = lambda new_user: None
+flask_security.views.login_user = lambda new_user, authn_via: None
 flask_security.views.register = check_dates(flask_security.views.register)
-password_length.min = 1
+# password_length.min = 1
 
 # ldap uses ldap-style SSHA passwords
 # flask_security.core._allowed_password_hash_schemes = ['ldap_salted_sha1']
@@ -51,7 +51,7 @@ def verify(password, user):
 
 # override encrypt_password with our simplified version
 flask_security.registerable.encrypt_password = encrypt_password
-flask_security.script.encrypt_password = encrypt_password
+flask_security.utils.encrypt_password = encrypt_password
 flask_security.recoverable.encrypt_password = encrypt_password
 flask_security.utils.encrypt_password = encrypt_password
 flask_security.changeable.encrypt_password = encrypt_password
@@ -66,9 +66,9 @@ class UserDatastore(SQLAlchemyUserDatastore):
         return super(UserDatastore, self).create_user(**kwargs)
 
     def _prepare_role_modify_args(self, user, role):
-        if isinstance(user, basestring):
+        if isinstance(user, str):
             user = self.find_user(id=user)
-        if isinstance(role, basestring):
+        if isinstance(role, str):
             role = self.find_role(role)
         return user, role
 

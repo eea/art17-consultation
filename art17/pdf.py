@@ -2,7 +2,7 @@ import os
 import logging
 import subprocess
 import uuid
-from path import path
+from path import Path
 
 from flask import current_app as app
 from flask import Response, g
@@ -56,7 +56,7 @@ class PdfRenderer(object):
         g.is_pdf_process = True
 
     def _get_dir(self):
-        return path(app.static_folder) / app.config['PDF_DESTINATION']
+        return Path(app.static_folder) / app.config['PDF_DESTINATION']
 
     def _render_template(self):
         with open(self.template_path, 'w+') as f:

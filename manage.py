@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 
 import logging
-from art17.app import create_app, create_manager
+from art17.app import create_app, create_cli_commands
 
-app, collect = create_app()
+app = create_app()
 
 def main():
-    logging.basicConfig(loglevel=logging.DEBUG)
+    logging.basicConfig(level=logging.DEBUG)
     logging.getLogger('werkzeug').setLevel(logging.INFO)
     logging.getLogger('alembic').setLevel(logging.INFO)
     if app.config.get('DEBUG_SQL'):
         logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-    manager = create_manager(app, collect)
+    manager = create_cli_commands(app)
     manager.run()
 
 

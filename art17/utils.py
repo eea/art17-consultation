@@ -3,7 +3,7 @@ import re
 from decimal import Decimal
 from bs4 import BeautifulSoup
 from markupsafe import Markup
-from path import path
+from path import Path
 from flask import current_app as app
 
 
@@ -25,7 +25,7 @@ def str2num(s, default='N/A', number_format='%.2f'):
     if isinstance(s, Decimal):
         buffer = number_format % s
     else:
-        buffer = unicode(s)
+        buffer = str(s)
     if buffer:
         return re.sub(patt, r"\1", buffer)
     else:
@@ -90,7 +90,7 @@ def na_if_none(s, default='N/A'):
 
 def inject_static_file(filepath):
     data = None
-    with open(path(app.static_folder) / filepath, 'r') as f:
+    with open(Path(app.static_folder) / filepath, 'r') as f:
         data = f.read()
     return Markup(data)
 
@@ -108,9 +108,11 @@ def slugify(value):
     From Django's "django/template/defaultfilters.py".
     """
     import unicodedata
-
-    if not isinstance(value, unicode):
-        value = unicode(value)
-    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
-    value = unicode(_slugify_strip_re.sub('', value).strip().lower())
-    return _slugify_hyphenate_re.sub('-', value)
+    if not value:
+        return ''
+    if not isinstance(value, str):
+        value = str(value)
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode()
+    value = _slugify_strip_re.sub('', value).strip().lower()
+    value = _slugify_hyphenate_re.sub('-', value)
+    return value

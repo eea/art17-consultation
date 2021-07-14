@@ -65,7 +65,7 @@ def setup(app):
 ])
 def test_summary_range_value(client, set_auth, app, request_args, search_dict):
     resp = client.get(*request_args)
-    for tbody_order_nr, search_text in search_dict.iteritems():
+    for tbody_order_nr, search_text in search_dict.items():
         content_tbody = resp.html.find_all('tbody')[tbody_order_nr]
         range_area_td = content_tbody.find_all('td', {'class': 'number'})[0]
         assert search_text in range_area_td.text

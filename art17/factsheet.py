@@ -1,14 +1,15 @@
 from collections import OrderedDict
 import urllib
 import requests
-from path import path
+from path import Path
 
 from sqlalchemy import and_
 from sqlalchemy.sql import func, or_
 from flask import (
     Blueprint, render_template, request, current_app as app, url_for,
 )
-from flask_script import Manager
+from flask.cli import AppGroup
+
 from flask.views import MethodView
 
 from art17.common import admin_perm
@@ -22,7 +23,7 @@ from art17.queries import (
 from art17.utils import slugify
 
 factsheet = Blueprint('factsheet', __name__)
-factsheet_manager = Manager()
+factsheet_manager = AppGroup('factsheet')
 
 PRIORITY_TEXT = {'0': 'No', '1': 'Yes', '2': 'Yes in Ireland'}
 REASONS_MANUAL = {'n': 'Not genuine', 'y': 'Genuine', 'nc': ''}
@@ -77,10 +78,10 @@ def get_conclusion_assessment_prev_colour(obj):
 def get_maps_url(which, type, code):
     maps_format = app.config['MAPS_FORMAT']
     filename = (
-        path(app.config['MAPS_STATIC'])
+        Path(app.config['MAPS_STATIC'])
         / maps_format.format(which=which, type=type, code=code)
     )
-    maps_path = path(app.static_folder) / filename
+    maps_path = Path(app.static_folder) / filename
     if not maps_path.exists():
         filename = 'img/blank_map0{which}.png'.format(which=which)
 
@@ -487,10 +488,10 @@ def generate_factsheet_url(category, subject, period):
                 return remote_url
 
     pdf_path = str(
-        path(app.config['PDF_DESTINATION'])
+        Path(app.config['PDF_DESTINATION'])
         / fs_cls.get_pdf_file_name(assessment)
     ) + '.pdf'
-    real_path = path(app.static_folder) / pdf_path
+    real_path = Path(app.static_folder) / pdf_path
     if real_path.exists():
         return url_for('static', filename=pdf_path)
     return None

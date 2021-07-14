@@ -1,6 +1,6 @@
 import pytest
 
-from conftest import create_user, force_login
+from .conftest import create_user, force_login
 from .factories import (
     SpeciesManualAssessmentFactory,
     CommentFactory,

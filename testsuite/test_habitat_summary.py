@@ -1,5 +1,3 @@
-import pytest
-
 from flask import url_for
 from pytest import fixture
 
@@ -49,5 +47,5 @@ def test_filter_regions_view(app, client):
     assert resp.status_code == 200
     assert resp.content_type == 'application/json'
     assert resp.json[0][1] == 'All bioregions'
-    print resp.json
+    print(resp.json)
     assert resp.json[1][1] == 'Alpine'

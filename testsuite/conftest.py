@@ -2,7 +2,8 @@ import flask
 from flask_webtest import TestApp
 from pytest import fixture
 from alembic import command, config
-from path import path
+from path import Path
+
 from mock import patch
 from datetime import datetime, date
 
@@ -23,7 +24,7 @@ TEST_CONFIG = {
 }
 
 
-alembic_cfg_path = path(__file__).dirname() / '..' / 'alembic.ini'
+alembic_cfg_path = Path((__file__)).dirname() / '..' / 'alembic.ini'
 alembic_cfg = config.Config(alembic_cfg_path.abspath())
 
 
@@ -53,12 +54,12 @@ def create_generic_fixtures():
 
 
 def create_testing_app():
-    app, collect = create_app()
+    app = create_app()
     local_config = app.config
 
     test_config = dict(TEST_CONFIG)
 
-    app, collect = create_app(test_config, testing=True)
+    app = create_app(test_config, testing=True)
     return app
 
 
@@ -144,9 +145,9 @@ def create_user(user_id, role_names=[], name='', institution='', ms=''):
 
 
 def get_request_params(request_type, request_args, post_params=None):
-    request_args[0] = urllib.quote(request_args[0])
+    request_args[0] = urllib.parse.quote(request_args[0])
     if request_type == 'post':
-        query_string = urllib.urlencode(request_args[1])
+        query_string = urllib.parse.urlencode(request_args[1])
         final_url = '?'.join((request_args[0], query_string))
         request_args = [final_url, post_params]
     return request_args
@@ -154,5 +155,5 @@ def get_request_params(request_type, request_args, post_params=None):
 
 def force_login(client, user_id=None):
     with client.session_transaction() as sess:
-        sess['user_id'] = user_id
+        sess['_user_id'] = user_id
         sess['_fresh'] = True

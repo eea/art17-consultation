@@ -11,7 +11,7 @@ from .factories import (
     WikiCommentFactory,
 )
 from art17.auth.providers import set_user
-from conftest import create_user, get_request_params, force_login
+from .conftest import create_user, get_request_params, force_login
 
 
 @pytest.fixture

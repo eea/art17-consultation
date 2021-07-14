@@ -8,7 +8,7 @@ from .factories import (
     DatasetFactory,
 )
 from art17 import models
-from conftest import get_request_params, create_user, force_login
+from .conftest import get_request_params, create_user, force_login
 
 
 @pytest.fixture

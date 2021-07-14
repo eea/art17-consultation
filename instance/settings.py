@@ -26,9 +26,6 @@ SQLALCHEMY_BINDS = {
 }
 SQLALCHEMY_TRACK_MODIFICATIONS=False
 
-COLLECT_STATIC_ROOT =  getenv('STATIC_ROOT', default='/static')
-COLLECT_STORAGE = 'flask_collect.storage.file'
-
 ASSETS_DEBUG = getenv('ASSETS_DEBUG', type=bool, default=False)
 AUTH_DEBUG = getenv('AUTH_DEBUG', type=bool, default=False)
 

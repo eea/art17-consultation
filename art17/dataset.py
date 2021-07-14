@@ -1,24 +1,24 @@
 import sys
-from flask_script import Manager, Command, Option
 from sqlalchemy import create_engine
 from art17 import models
+from flask.cli import AppGroup
 
-dataset_manager = Manager()
 
+dataset_manager = AppGroup("dataset")
 
-@dataset_manager.command
+@dataset_manager.command("ls")
 def ls():
     """ List datasets """
     for dataset in models.Dataset.query:
-        print "{d.id}: {d.name}".format(d=dataset)
+        print(f"{dataset.id}: {dataset.name}")
 
 
-@dataset_manager.command
+@dataset_manager.command('rm')
 def rm(dataset_id):
     """ Remove a dataset """
     dataset = models.Dataset.query.get(int(dataset_id))
     if dataset is None:
-        print "No such dataset"
+        print("No such dataset")
         return
     for table_name in CLEANUP_TABLES:
         models.db.session.execute(
@@ -34,150 +34,150 @@ def stdout_write(msg):
     sys.stdout.flush()
 
 
-class ImportCommand(Command):
-    """ Import dataset from another SQL database """
+# class ImportCommand(Command):
+#     """ Import dataset from another SQL database """
 
-    def get_options(self):
-        return [
-            Option('-i', '--input_db', required=True),
-            Option('-s', '--schema', required=True),
-            Option('-d', '--dataset_name', required=True),
-            Option('-n', '--no_commit', action='store_true'),
-            Option('-f', '--fallback_dataset', type=int),
-        ]
+#     def get_options(self):
+#         return [
+#             Option('-i', '--input_db', required=True),
+#             Option('-s', '--schema', required=True),
+#             Option('-d', '--dataset_name', required=True),
+#             Option('-n', '--no_commit', action='store_true'),
+#             Option('-f', '--fallback_dataset', type=int),
+#         ]
 
-    def handle(self, app, input_db, schema,
-               dataset_name, no_commit, fallback_dataset):
-        if schema not in IMPORT_SCHEMA:
-            stdout_write('Unknown schema: %s\n' % schema)
-            return
-        with app.app_context():
-            input_conn = create_engine(input_db + '?charset=utf8', pool_pre_ping=True).connect()
-            dataset = models.Dataset(name=dataset_name, schema=schema)
-            models.db.session.add(dataset)
-            models.db.session.flush()
+#     def handle(self, app, input_db, schema,
+#                dataset_name, no_commit, fallback_dataset):
+#         if schema not in IMPORT_SCHEMA:
+#             stdout_write('Unknown schema: %s\n' % schema)
+#             return
+#         with app.app_context():
+#             input_conn = create_engine(input_db + '?charset=utf8', pool_pre_ping=True).connect()
+#             dataset = models.Dataset(name=dataset_name, schema=schema)
+#             models.db.session.add(dataset)
+#             models.db.session.flush()
 
-            output_conn = models.db.session.connection()
+#             output_conn = models.db.session.connection()
 
-            for table_name, columns in IMPORT_SCHEMA[schema]:
-                stdout_write(table_name + ' ... ')
-                out_columns = columns + ['ext_dataset_id']
-                columns_sql = ", ".join('`%s`' % c for c in columns)
-                out_columns_sql = ", ".join('`%s`' % c for c in out_columns)
-                out_values_sql = ", ".join('%s' for c in out_columns)
-                query = "SELECT " + columns_sql + " FROM `%s`" % table_name
-                loaded_from_fallback = False
+#             for table_name, columns in IMPORT_SCHEMA[schema]:
+#                 stdout_write(table_name + ' ... ')
+#                 out_columns = columns + ['ext_dataset_id']
+#                 columns_sql = ", ".join('`%s`' % c for c in columns)
+#                 out_columns_sql = ", ".join('`%s`' % c for c in out_columns)
+#                 out_values_sql = ", ".join('%s' for c in out_columns)
+#                 query = "SELECT " + columns_sql + " FROM `%s`" % table_name
+#                 loaded_from_fallback = False
 
-                values = [
-                    list(row) + [dataset.id]
-                    for row in input_conn.execute(query)
-                ]
-                if values:
-                    rv = output_conn.execute(
-                        "INSERT INTO `%s` (%s) VALUES (%s)"
-                        % (table_name, out_columns_sql, out_values_sql),
-                        values,
-                    )
+#                 values = [
+#                     list(row) + [dataset.id]
+#                     for row in input_conn.execute(query)
+#                 ]
+#                 if values:
+#                     rv = output_conn.execute(
+#                         "INSERT INTO `%s` (%s) VALUES (%s)"
+#                         % (table_name, out_columns_sql, out_values_sql),
+#                         values,
+#                     )
 
-                elif fallback_dataset and table_name in FALLBACK_TABLES:
-                    values = [
-                        list(row) + [dataset.id]
-                        for row in output_conn.execute(
-                            query +
-                            " WHERE ext_dataset_id = %d" % fallback_dataset
-                        )
-                    ]
-                    if values:
-                        rv = output_conn.execute(
-                            "INSERT INTO `%s` (%s) VALUES (%s)"
-                            % (table_name, out_columns_sql, out_values_sql),
-                            values,
-                        )
-                        loaded_from_fallback = True
+#                 elif fallback_dataset and table_name in FALLBACK_TABLES:
+#                     values = [
+#                         list(row) + [dataset.id]
+#                         for row in output_conn.execute(
+#                             query +
+#                             " WHERE ext_dataset_id = %d" % fallback_dataset
+#                         )
+#                     ]
+#                     if values:
+#                         rv = output_conn.execute(
+#                             "INSERT INTO `%s` (%s) VALUES (%s)"
+#                             % (table_name, out_columns_sql, out_values_sql),
+#                             values,
+#                         )
+#                         loaded_from_fallback = True
 
-                stdout_write(str(len(values)))
-                if loaded_from_fallback:
-                    stdout_write(" (copied from dataset %d)"
-                                 % fallback_dataset)
-                stdout_write("\n")
+#                 stdout_write(str(len(values)))
+#                 if loaded_from_fallback:
+#                     stdout_write(" (copied from dataset %d)"
+#                                  % fallback_dataset)
+#                 stdout_write("\n")
 
-                models.db.session.flush()
+#                 models.db.session.flush()
 
-            if not no_commit:
-                models.db.session.commit()
+#             if not no_commit:
+#                 models.db.session.commit()
 
-dataset_manager.add_command('import', ImportCommand())
-
-
-class UpdateCommand(Command):
-    """ Update particular tables data """
-
-    def get_options(self):
-        return [
-            Option('-i', '--input_db', required=True),
-            Option('-s', '--schema', required=True),
-            Option('-u', '--update_dataset', required=True),
-            Option('-t', '--tables', nargs='*', required=True),
-            Option('-n', '--no_commit', action='store_true'),
-        ]
-
-    def handle(self, app, input_db, schema, update_dataset, tables, no_commit):
-        if schema not in IMPORT_SCHEMA:
-            stdout_write('Unknown schema: %s\n' % schema)
-            return
-        with app.app_context():
-            input_conn = create_engine(input_db + '?charset=utf8', pool_pre_ping=True).connect()
-            dataset = models.Dataset.query.get(int(update_dataset))
-            if dataset is None:
-                stdout_write('Unknown dataset: %s\n' % update_dataset)
-                return
-            else:
-                stdout_write('Updating dataset: %s\n' % dataset.name)
-            output_conn = models.db.session.connection()
-
-            IMPORT_TABLES = []
-            for table_name in tables:
-                ts = [
-                    columns
-                    for (tn, columns) in IMPORT_SCHEMA[schema]
-                    if tn == table_name
-                ]
-                if not ts:
-                    stdout_write('Unknown table_name: %s\n' % table_name)
-                    return
-                IMPORT_TABLES.append((table_name, ts[0]))
-
-            for table_name, columns in IMPORT_TABLES:
-                stdout_write(table_name + ' ... ')
-                models.db.session.execute(
-                    "DELETE FROM `%s` WHERE ext_dataset_id = %d"
-                    % (table_name, dataset.id)
-                )
-                out_columns = columns + ['ext_dataset_id']
-                columns_sql = ", ".join('`%s`' % c for c in columns)
-                out_columns_sql = ", ".join('`%s`' % c for c in out_columns)
-                out_values_sql = ", ".join('%s' for c in out_columns)
-                query = "SELECT " + columns_sql + " FROM `%s`" % table_name
-
-                values = [
-                    list(row) + [dataset.id]
-                    for row in input_conn.execute(query)
-                ]
-                if values:
-                    rv = output_conn.execute(
-                        "INSERT INTO `%s` (%s) VALUES (%s)"
-                        % (table_name, out_columns_sql, out_values_sql),
-                        values,
-                    )
-                stdout_write(str(len(values)))
-                stdout_write("\n")
-
-                models.db.session.flush()
-            if not no_commit:
-                models.db.session.commit()
+# dataset_manager.add_command('import', ImportCommand())
 
 
-dataset_manager.add_command('update', UpdateCommand())
+# class UpdateCommand(Command):
+#     """ Update particular tables data """
+
+#     def get_options(self):
+#         return [
+#             Option('-i', '--input_db', required=True),
+#             Option('-s', '--schema', required=True),
+#             Option('-u', '--update_dataset', required=True),
+#             Option('-t', '--tables', nargs='*', required=True),
+#             Option('-n', '--no_commit', action='store_true'),
+#         ]
+
+#     def handle(self, app, input_db, schema, update_dataset, tables, no_commit):
+#         if schema not in IMPORT_SCHEMA:
+#             stdout_write('Unknown schema: %s\n' % schema)
+#             return
+#         with app.app_context():
+#             input_conn = create_engine(input_db + '?charset=utf8', pool_pre_ping=True).connect()
+#             dataset = models.Dataset.query.get(int(update_dataset))
+#             if dataset is None:
+#                 stdout_write('Unknown dataset: %s\n' % update_dataset)
+#                 return
+#             else:
+#                 stdout_write('Updating dataset: %s\n' % dataset.name)
+#             output_conn = models.db.session.connection()
+
+#             IMPORT_TABLES = []
+#             for table_name in tables:
+#                 ts = [
+#                     columns
+#                     for (tn, columns) in IMPORT_SCHEMA[schema]
+#                     if tn == table_name
+#                 ]
+#                 if not ts:
+#                     stdout_write('Unknown table_name: %s\n' % table_name)
+#                     return
+#                 IMPORT_TABLES.append((table_name, ts[0]))
+
+#             for table_name, columns in IMPORT_TABLES:
+#                 stdout_write(table_name + ' ... ')
+#                 models.db.session.execute(
+#                     "DELETE FROM `%s` WHERE ext_dataset_id = %d"
+#                     % (table_name, dataset.id)
+#                 )
+#                 out_columns = columns + ['ext_dataset_id']
+#                 columns_sql = ", ".join('`%s`' % c for c in columns)
+#                 out_columns_sql = ", ".join('`%s`' % c for c in out_columns)
+#                 out_values_sql = ", ".join('%s' for c in out_columns)
+#                 query = "SELECT " + columns_sql + " FROM `%s`" % table_name
+
+#                 values = [
+#                     list(row) + [dataset.id]
+#                     for row in input_conn.execute(query)
+#                 ]
+#                 if values:
+#                     rv = output_conn.execute(
+#                         "INSERT INTO `%s` (%s) VALUES (%s)"
+#                         % (table_name, out_columns_sql, out_values_sql),
+#                         values,
+#                     )
+#                 stdout_write(str(len(values)))
+#                 stdout_write("\n")
+
+#                 models.db.session.flush()
+#             if not no_commit:
+#                 models.db.session.commit()
+
+
+# dataset_manager.add_command('update', UpdateCommand())
 
 
 IMPORT_SCHEMA = {

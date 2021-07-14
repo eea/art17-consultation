@@ -82,6 +82,7 @@ from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
 from art17.factsheet import generate_factsheet_url
 from instance.settings import EU_ASSESSMENT_MODE
 
+from sqlalchemy.sql import text
 
 @summary.app_context_processor
 def inject_fuctions():
@@ -159,7 +160,7 @@ def _parse_semicolon(value, sep='<br/>'):
 def _na_if_none(value, default='N/A'):
     return na_if_none(value, default=default)
 
-def get_list(l, index, default=None):
+def get_list(l, index, default=0):
     if index < len(l):
         try:
             return float(l[index].replace('%', '').strip())
@@ -397,7 +398,7 @@ class Summary(ConclusionView, views.View):
     def get_annexes(self, species, period):
         annexes_results = (
             EtcDataSpeciesRegion.query
-            .with_entities('annex_II', 'annex_IV', 'annex_V', 'priority')
+            .with_entities(text('annex_II'), text('annex_IV'), text('annex_V'), text('priority'))
             .filter(EtcDataSpeciesRegion.subject == species,
                     EtcDataSpeciesRegion.dataset_id == period)
             .distinct()
@@ -676,35 +677,35 @@ summary.add_url_rule('/habitat/summary/',
 def _species():
     period, group = request.args['period'], request.args['group']
     data = SpeciesMixin.get_subjects(period, group)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 @summary.route('/species/summary/regions', endpoint='species-summary-regions')
 def _regions():
     period, subject = request.args['period'], request.args['subject']
     data = SpeciesMixin.get_regions(period, subject)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 @summary.route('/species/summary/countries', endpoint='species-summary-countries')
 def _countries():
     period, group = request.args['period'], request.args['group']
     data = SpeciesMixin.get_countries(period, group)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 @summary.route('/habitat/summary/habitat', endpoint='habitat-summary-species')
 def _species_habitat():
     period, group = request.args['period'], request.args['group']
     data = HabitatMixin.get_subjects(period, group)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 @summary.route('/habitat/summary/regions', endpoint='habitat-summary-regions')
 def _regions_habitat():
     period, subject = request.args['period'], request.args['subject']
     data = HabitatMixin.get_regions(period, subject)
-    return jsonify(data)
+    return jsonify([list(row) for row in data])
 
 
 summary.add_url_rule('/species/conc/delete/',

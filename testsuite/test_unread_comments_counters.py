@@ -2,7 +2,7 @@ import pytest
 
 from . import factories
 from art17 import models
-from conftest import create_user
+from .conftest import create_user
 
 
 @pytest.fixture

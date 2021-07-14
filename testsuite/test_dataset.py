@@ -162,7 +162,7 @@ def dataset_app(app):
 def test_species_conclusion_values(client, set_auth, dataset_app, url, params, expected):
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
-    assert expected in result.body
+    assert expected in result.body.decode()
 
 
 def test_get_subject_details(client, set_auth, dataset_app):
@@ -175,12 +175,12 @@ def test_get_subject_details(client, set_auth, dataset_app):
 
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
-    assert 'foo foo' in result.body
+    assert 'foo foo' in result.body.decode()
 
     params['period'] = 2
     result = client.get(*get_request_params('get', [url, params]))
     assert result.status_code == 200
-    assert 'boo boo' in result.body
+    assert 'boo boo' in result.body.decode()
 
 
 def test_unread_comments_species(client, set_auth, dataset_app):

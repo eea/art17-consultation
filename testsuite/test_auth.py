@@ -4,7 +4,7 @@ import os
 from mock import patch
 
 from art17 import models
-from conftest import create_user, force_login
+from .conftest import create_user, force_login
 
 
 def _set_config(**kwargs):

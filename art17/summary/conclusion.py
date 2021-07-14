@@ -1,8 +1,9 @@
 from datetime import datetime, date
+import operator
 from flask import views, request, url_for, abort, jsonify
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
-
+from functools import cmp_to_key
 from art17.auth import current_user
 from art17.common import (
     admin_perm,
@@ -56,6 +57,8 @@ def split_semicolon(field, value):
             value = ' '.join(value.split(' ')[:-1])
     return value
 
+def cmp(a, b):
+    return (a > b) - (a < b)
 
 class ConclusionView(object):
 
@@ -89,7 +92,7 @@ class ConclusionView(object):
             lambda x, y:
             -1 if x.assessment_method == '00' else cmp(x.order, y.order)
         )
-        best.sort(cmp=cmpf)
+        best.sort(key=cmp_to_key(cmpf))
         values = {}
         # for f in all_fields(self.manual_form_cls()):
         #     attr = f.name
@@ -186,7 +189,7 @@ class ConclusionView(object):
             if c.user else False
         )
         if ok_conclusions:
-            return ok_conclusions + filter(user_or_expert, conclusions)
+            return ok_conclusions + list(filter(user_or_expert, conclusions))
         else:
             return filter(user_iurmax, conclusions)
 

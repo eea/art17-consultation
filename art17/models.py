@@ -13,7 +13,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import or_, inspect
 from flask import current_app as app
 from flask_sqlalchemy import SQLAlchemy
-from flask_script import Manager
 from flask_security import UserMixin, RoleMixin
 
 import sys
@@ -599,7 +598,7 @@ class EtcDataSpeciesRegion(Base):
             return self.speciescode
         if self.speciescode in ('1033', '1763', '2016', '2527'):
             return self.speciescode
-        return unicode(self.n2000_species_code)
+        return str(self.n2000_species_code)
 
     @hybrid_property
     def subject(self):
@@ -1152,7 +1151,7 @@ class RegisteredUser(Base, UserMixin):
         return False
 
     def get_id(self):
-        return unicode(self.id)
+        return str(self.id)
 
 class Role(Base, RoleMixin):
     __tablename__ = 'roles'
@@ -1515,40 +1514,6 @@ restricted_species_2013 = Table(
     Column('speciescode', String(20), nullable=False),
 )
 
-
-db_manager = Manager()
-
-
-@db_manager.option('alembic_args', nargs=argparse.REMAINDER)
-def alembic(alembic_args):
-    from alembic.config import CommandLine
-    CommandLine().main(argv=alembic_args)
-
-
-@db_manager.command
-def revision(message=None):
-    if message is None:
-        message = raw_input('revision name: ')
-    return alembic(['revision', '--autogenerate', '-m', message])
-
-
-@db_manager.command
-def upgrade(revision='head'):
-    return alembic(['upgrade', revision])
-
-
-@db_manager.command
-def downgrade(revision):
-    return alembic(['downgrade', revision])
-
-
-def get_fixture_objects(file):
-    with open(file) as f:
-        import json
-        return json.loads(f.read())
-
-
-@db_manager.command
 def loaddata(fixture):
     session = db.session
     if not os.path.isfile(fixture):
@@ -1566,13 +1531,11 @@ def loaddata(fixture):
                 session.commit()
             else:
                 for database_object in database_objects:
-                    for (field, value) in object['fields'].iteritems():
+                    for (field, value) in object['fields'].items():
                         setattr(database_object, field, value)
                     session.add(database_object)
         session.commit()
 
-
-@db_manager.command
 def dumpdata(model):
     thismodule = sys.modules[__name__]
     base_class = getattr(thismodule, model)
