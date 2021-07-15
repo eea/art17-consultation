@@ -1,4 +1,5 @@
 from flask.cli import AppGroup
+
 # from flask_security.script import (
 #     CreateUserCommand as BaseCreateUserCommand,
 #     CreateRoleCommand,
@@ -26,7 +27,7 @@ from art17 import models
 #         if is_ldap_user:
 #             ldap_user_info = get_ldap_user_info(user_id)
 #             if ldap_user_info is None:
-#                 print(f"No such LDAP user: {user_id}") 
+#                 print(f"No such LDAP user: {user_id}")
 #                 return
 #             kwargs['password'] = 'password is ignored'
 #             kwargs['email'] = ldap_user_info['email']
@@ -45,6 +46,7 @@ from art17 import models
 
 user_manager = AppGroup("user")
 
+
 @user_manager.command
 def ls():
     for user in models.RegisteredUser.query:
@@ -54,6 +56,7 @@ def ls():
 @user_manager.command
 def activate(user_id):
     from art17.auth.common import set_user_active
+
     user = models.RegisteredUser.query.get(user_id)
     set_user_active(user, True)
     print(f"user {user.id} has been activated")
@@ -62,6 +65,7 @@ def activate(user_id):
 @user_manager.command
 def deactivate(user_id):
     from art17.auth.common import set_user_active
+
     user = models.RegisteredUser.query.get(user_id)
     set_user_active(user, False)
     print("user {user.id} has been deactivated")
@@ -87,11 +91,12 @@ def info(user_id):
 @user_manager.command
 def reset_password(user_id):
     from flask_security.utils import encrypt_password
+
     user = models.RegisteredUser.query.get(user_id)
     if user.is_ldap:
         print("Can't change password for EIONET users")
         return
-    plaintext_password = raw_input("new password: ").decode('utf-8')
+    plaintext_password = input("new password: ").decode("utf-8")
     user.password = encrypt_password(plaintext_password)
     models.db.session.commit()
     print(f"password for {user_id} has been changed")
@@ -104,6 +109,7 @@ def reset_password(user_id):
 
 role_manager = AppGroup("role")
 
+
 @role_manager.command
 def ls():
     for role in models.Role.query:
@@ -114,7 +120,7 @@ def ls():
 def members(role):
     role_ob = models.Role.query.filter_by(name=role).first()
     if role_ob is None:
-        print(f'No such role {role}')
+        print(f"No such role {role}")
         return
     for user in role_ob.users:
         print(f"{user.id} <{user.email}>")

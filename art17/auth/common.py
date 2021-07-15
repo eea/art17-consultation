@@ -1,27 +1,32 @@
-import logging
-import ldap
 from datetime import date
 from functools import wraps
+import ldap
+import logging
+
 import flask
-from flask_security import signals as security_signals
 from flask_mail import Message
+from flask_security import signals as security_signals
+
 from smtplib import SMTPException
 from eea.usersdb import UsersDB, UserNotFound
+
 from art17 import models
 from art17.common import admin_perm, get_config
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-DEFAULT_ROLE = 'stakeholder'
+DEFAULT_ROLE = "stakeholder"
 
 
 def safe_send_mail(app, msg):
     try:
-        app.extensions['mail'].send(msg)
+        app.extensions["mail"].send(msg)
     except SMTPException:
-        flask.flash("The mail could not be sent to the specified email address."
-                    "Please contact the administrator.")
+        flask.flash(
+            "The mail could not be sent to the specified email address."
+            "Please contact the administrator."
+        )
 
 
 @security_signals.user_confirmed.connect
@@ -36,14 +41,14 @@ def activate_and_notify_admin(app, user, **extra):
     else:
         msg = Message(
             subject="User has registered",
-            sender=app.extensions['security'].email_sender,
+            sender=app.extensions["security"].email_sender,
             recipients=admin_email.split(),
         )
         msg.body = flask.render_template(
-            'auth/email_admin_new_user.txt',
+            "auth/email_admin_new_user.txt",
             user=user,
             activation_link=flask.url_for(
-                'auth.admin_user',
+                "auth.admin_user",
                 user_id=user.id,
                 _external=True,
             ),
@@ -56,11 +61,12 @@ def require_admin(view):
     def wrapper(*args, **kwargs):
         admin_perm.test()
         return view(*args, **kwargs)
+
     return wrapper
 
 
 def get_ldap_user_info(user_id):
-    ldap_server = flask.current_app.config.get('EEA_LDAP_SERVER', '')
+    ldap_server = flask.current_app.config.get("EEA_LDAP_SERVER", "")
     users_db = UsersDB(ldap_server=ldap_server)
     # roles = users_db.member_roles_info('user', user_id)
     try:
@@ -72,7 +78,6 @@ def get_ldap_user_info(user_id):
 
 
 def set_user_active(user, new_active):
-    was_active = user.active
     user.active = new_active
     models.db.session.commit()
 
@@ -84,11 +89,11 @@ def check_dates(view):
 
         if config.start_date and config.start_date > date.today():
             message = "Registration has not started yet"
-            return flask.render_template('message.html', message=message)
+            return flask.render_template("message.html", message=message)
 
         if config.end_date and config.end_date < date.today():
             message = "Registration has finished"
-            return flask.render_template('message.html', message=message)
+            return flask.render_template("message.html", message=message)
 
         return view(*args, **kwargs)
 
@@ -96,7 +101,7 @@ def check_dates(view):
 
 
 def add_default_role(user):
-    datastore = flask.current_app.extensions['security'].datastore
+    datastore = flask.current_app.extensions["security"].datastore
     default_role = datastore.find_role(DEFAULT_ROLE)
     datastore.add_role_to_user(user, default_role)
     models.db.session.commit()
