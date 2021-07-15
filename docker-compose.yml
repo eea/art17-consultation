@@ -7,7 +7,6 @@ services:
     depends_on:
     - db
     environment:
-      - COLLECT_STATIC=yes
       - MIGRATE=no
     env_file:
     - ./docker/db.env
@@ -16,6 +15,7 @@ services:
     - ./art17:/var/local/art17/art17
     - ./instance:/var/local/art17/instance
     - ./alembic:/var/local/art17/alembic
+    - ./migrations:/var/local/art17/migrations
 
   db:
     image: mariadb:5.5

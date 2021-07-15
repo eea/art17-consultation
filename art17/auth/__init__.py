@@ -5,7 +5,7 @@ from flask_security import Security
 from art17.common import HOMEPAGE_VIEW_NAME
 from art17.models import db, RegisteredUser, Role
 from art17.auth.providers import DebugAuthProvider
-from art17.auth.security import UserDatastore, Art17ForgotPasswordForm
+from art17.auth.security import UserDatastore, Art17ForgotPasswordForm, current_user
 
 
 auth = flask.Blueprint("auth", __name__)

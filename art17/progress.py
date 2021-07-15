@@ -10,7 +10,7 @@ from flask import (
 )
 from sqlalchemy import and_
 from werkzeug.datastructures import MultiDict
-from art17.auth import current_user
+from art17.auth.security import current_user
 from art17.common import (
     get_default_period,
     COUNTRY_ASSESSMENTS,

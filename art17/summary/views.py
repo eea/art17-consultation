@@ -15,7 +15,7 @@ from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
-from art17.auth import current_user
+from art17.auth.security import current_user
 from art17.models import (
     EtcDicBiogeoreg,
     EtcDataSpeciesRegion,

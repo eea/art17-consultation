@@ -1,12 +1,12 @@
 language: python
 python:
-  - "2.7"
+  - "3.8"
 env:
   global:
     - EEA_PASSWORD_RESET=http:www.example.com
 install:
   - pip install -r requirements-dev.txt --trusted-host eggshop.eaudeweb.ro
-  - pip install pytest-cov==2.5.0 coverage==3.7.1 coveralls==0.5
+  - pip install pytest-cov==2.12.1 coverage==5.5 coveralls==3.1.0
 before_script:
   - cp settings.py.example instance/test_settings.py && cp settings.py.example instance/settings.py
 script:  py.test --cov=art17 testsuite

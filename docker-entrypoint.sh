@@ -30,11 +30,7 @@ fi
 
 if [ "x$MIGRATE" = 'xyes' ]; then
   echo "Running DB CMD: ./manage.py db upgrade"
-  python manage.py db upgrade
-fi
-
-if [ "x$COLLECT_STATIC" = 'xyes' ]; then
-  python manage.py collect
+  python -m flask db upgrade
 fi
 
 if [ -z "$1" ]; then
@@ -48,7 +44,7 @@ if [ -z "$1" ]; then
 fi
 
 if [[ $COMMANDS == *"$1"* ]]; then
-  exec python manage.py "$@"
+  exec python -m flask "$@"
 fi
 
 exec "$@"

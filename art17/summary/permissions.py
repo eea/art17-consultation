@@ -1,4 +1,4 @@
-from art17.auth import current_user
+from art17.auth.security import current_user
 from art17.common import (
     admin_perm,
     etc_perm,

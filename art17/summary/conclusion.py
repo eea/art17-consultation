@@ -3,7 +3,7 @@ from flask import views, request, url_for, abort, jsonify
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
 from functools import cmp_to_key
-from art17.auth import current_user
+from art17.auth.security import current_user
 from art17.common import (
     admin_perm,
     get_default_period,

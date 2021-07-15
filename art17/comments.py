@@ -18,7 +18,7 @@ from werkzeug.utils import redirect
 
 from instance.settings import EU_ASSESSMENT_MODE
 
-from art17.auth import current_user
+from art17.auth.security import current_user
 from art17.forms import CommentForm
 from art17.common import (
     get_default_period,

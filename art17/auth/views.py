@@ -39,7 +39,8 @@ from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.local import LocalProxy
 
 from art17 import models
-from art17.auth import auth, login_manager, current_user
+from art17.auth import auth, login_manager
+from art17.auth.security import current_user
 from art17.auth.common import (
     require_admin,
     set_user_active,

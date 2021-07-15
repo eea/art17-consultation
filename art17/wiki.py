@@ -24,7 +24,7 @@ from art17.models import (
     db,
 )
 from art17.forms import WikiEditForm, CommentForm, RevisedForm
-from art17.auth import current_user
+from art17.auth.security import current_user
 from instance.settings import EU_ASSESSMENT_MODE
 
 
