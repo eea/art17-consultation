@@ -1,8 +1,9 @@
 import flask
 from flask_webtest import TestApp
 from pytest import fixture
-from alembic import command, config
-from path import path
+from alembic import config
+from path import Path
+
 from mock import patch
 from datetime import datetime, date
 
@@ -13,17 +14,17 @@ from art17 import models
 
 
 TEST_CONFIG = {
-    'SERVER_NAME': 'localhost',
-    'SECRET_KEY': 'test',
-    'ASSETS_DEBUG': True,
-    'EEA_LDAP_SERVER': 'test_ldap_server',
-    'EEA_PASSWORD_RESET': '',
-    'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
-    'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+    "SERVER_NAME": "localhost",
+    "SECRET_KEY": "test",
+    "ASSETS_DEBUG": True,
+    "EEA_LDAP_SERVER": "test_ldap_server",
+    "EEA_PASSWORD_RESET": "",
+    "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+    "SQLALCHEMY_TRACK_MODIFICATIONS": False,
 }
 
 
-alembic_cfg_path = path(__file__).dirname() / '..' / 'alembic.ini'
+alembic_cfg_path = Path((__file__)).dirname() / ".." / "alembic.ini"
 alembic_cfg = config.Config(alembic_cfg_path.abspath())
 
 
@@ -31,34 +32,28 @@ def create_generic_fixtures():
     models.db.drop_all()
     models.db.create_all()
     models.db.session.execute(
-        "insert into roles (name, description) "
-        "values ('admin', 'Administrator')"
+        "insert into roles (name, description) " "values ('admin', 'Administrator')"
     )
     models.db.session.execute(
         "insert into roles (name, description) "
         "values ('etc', 'European topic center')"
     )
     models.db.session.execute(
-        "insert into roles (name, description) "
-        "values ('stakeholder', 'Stakeholder')"
+        "insert into roles (name, description) " "values ('stakeholder', 'Stakeholder')"
     )
     models.db.session.execute(
-        "insert into roles (name, description) "
-        "values ('nat', 'National expert')"
+        "insert into roles (name, description) " "values ('nat', 'National expert')"
     )
     models.db.session.execute(
-        "insert into config(default_dataset_id, start_date) values (5, '%s')" %
-        date.today()
+        "insert into config(default_dataset_id, start_date) values (5, '%s')"
+        % date.today()
     )
 
 
 def create_testing_app():
-    app, collect = create_app()
-    local_config = app.config
-
+    app = create_app()
     test_config = dict(TEST_CONFIG)
-
-    app, collect = create_app(test_config, testing=True)
+    app = create_app(test_config, testing=True)
     return app
 
 
@@ -69,6 +64,7 @@ def app(request):
     @app.before_request
     def set_identity():
         from flask_principal import AnonymousIdentity
+
         flask.g.identity = AnonymousIdentity()
 
     app_context = app.app_context()
@@ -78,6 +74,7 @@ def app(request):
     @request.addfinalizer
     def fin():
         app_context.pop()
+
     return app
 
 
@@ -89,7 +86,7 @@ def client(app):
 
 @fixture
 def outbox(app, request):
-    outbox_ctx = app.extensions['mail'].record_messages()
+    outbox_ctx = app.extensions["mail"].record_messages()
 
     @request.addfinalizer
     def cleanup():
@@ -101,7 +98,7 @@ def outbox(app, request):
 @fixture
 def ldap_user_info(request):
     library = {}
-    ldap_patch = patch('art17.auth.common.UsersDB')
+    ldap_patch = patch("art17.auth.common.UsersDB")
     mock = ldap_patch.start()
     mock.return_value.user_info.side_effect = library.get
     request.addfinalizer(ldap_patch.stop)
@@ -114,23 +111,23 @@ def set_auth(app, request):
 
     app.register_blueprint(auth)
 
-    requests_patch = patch('art17.auth.providers.requests')
+    requests_patch = patch("art17.auth.providers.requests")
     requests = requests_patch.start()
     request.addfinalizer(requests_patch.stop)
 
-    whoami_data = {'user_id': None, 'is_ldap_user': False}
+    whoami_data = {"user_id": None, "is_ldap_user": False}
     requests.get.return_value.json.return_value = whoami_data
 
     return whoami_data
 
 
-def create_user(user_id, role_names=[], name='', institution='', ms=''):
+def create_user(user_id, role_names=[], name="", institution="", ms=""):
     user = models.RegisteredUser(
         id=user_id,
-        account_date=datetime.utcnow().strftime('%Y-%m-%d %H:%M'),
+        account_date=datetime.utcnow().strftime("%Y-%m-%d %H:%M"),
         active=True,
         name=name,
-        email='%s@example.com' % user_id,
+        email="%s@example.com" % user_id,
         institution=institution,
         MS=ms,
     )
@@ -144,15 +141,15 @@ def create_user(user_id, role_names=[], name='', institution='', ms=''):
 
 
 def get_request_params(request_type, request_args, post_params=None):
-    request_args[0] = urllib.quote(request_args[0])
-    if request_type == 'post':
-        query_string = urllib.urlencode(request_args[1])
-        final_url = '?'.join((request_args[0], query_string))
+    request_args[0] = urllib.parse.quote(request_args[0])
+    if request_type == "post":
+        query_string = urllib.parse.urlencode(request_args[1])
+        final_url = "?".join((request_args[0], query_string))
         request_args = [final_url, post_params]
     return request_args
 
 
 def force_login(client, user_id=None):
     with client.session_transaction() as sess:
-        sess['user_id'] = user_id
-        sess['_fresh'] = True
+        sess["_user_id"] = user_id
+        sess["_fresh"] = True

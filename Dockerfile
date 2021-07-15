@@ -1,4 +1,4 @@
-FROM python:2.7-slim
+FROM python:3.8-slim
 LABEL maintainer="EEA: IDM2 C-TEAM <eea-edw-c-team-alerts@googlegroups.com>"
 
 ENV WORK_DIR=/var/local/art17
@@ -25,7 +25,8 @@ RUN mkdir $WORK_DIR/temp_static \
 RUN sed '/st_mysql_options options;/a unsigned int reconnect;' /usr/include/mysql/mysql.h -i.bkp
 
 RUN pip install -U setuptools \
-	&& pip install -r requirements-dep.txt --trusted-host eggshop.eaudeweb.ro \
-	&& mv docker-entrypoint.sh /bin/
+	&& pip install -r requirements-dep.txt --trusted-host eggrepo.eea.europa.eu
+
+RUN mv docker-entrypoint.sh /bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]

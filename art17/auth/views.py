@@ -1,39 +1,46 @@
-import flask
+from collections import defaultdict
+from datetime import datetime
 import ldap
 import os
 
-from datetime import datetime
-from collections import defaultdict
-
+import flask
 from flask import (
     _app_ctx_stack,
     current_app,
     flash,
     g,
-    render_template,
-    Response,
     redirect,
+    render_template,
     request,
+    Response,
     url_for,
 )
 
 from flask_principal import PermissionDenied
-from flask_login import login_user,login_required, logout_user
+from flask_login import login_user, login_required, logout_user
 from flask_login import current_user as c_user
+
 from flask_security import user_registered
 from flask_security.forms import ChangePasswordForm, ResetPasswordForm
-from flask_security.changeable import change_user_password
 from flask_security.registerable import register_user
-from flask_security.recoverable import reset_password_token_status
-from flask_security.utils import encrypt_password, get_message, get_url, verify_password, config_value
+from flask_security.recoverable import (
+    reset_password_token_status,
+    send_reset_password_instructions,
+)
+from flask_security.utils import (
+    encrypt_password,
+    get_message,
+    get_url,
+    config_value,
+)
 from flask_mail import Message
 
-from werkzeug.datastructures import MultiDict, ImmutableMultiDict
+from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.local import LocalProxy
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from art17 import models
-from art17.auth import auth, login_manager, current_user
+from art17.auth import auth, login_manager
+from art17.auth.security import current_user
 from art17.auth.common import (
     require_admin,
     set_user_active,
@@ -50,12 +57,12 @@ from art17.auth.security import (
     Art17AdminEditUserForm,
     AnonymousUser,
     encrypt_password,
-    verify
+    verify,
 )
 from art17.common import HOMEPAGE_VIEW_NAME, get_config
 
 
-def user_registered_sighandler(app, user, confirm_token):
+def user_registered_sighandler(app, user, confirm_token, form_data=None):
     add_default_role(user)
 
 
@@ -64,53 +71,60 @@ user_registered.connect(user_registered_sighandler)
 
 @auth.app_errorhandler(PermissionDenied)
 def handle_permission_denied(error):
-    html = render_template('auth/permission_denied.html')
+    html = render_template("auth/permission_denied.html")
     return Response(html, status=403)
 
 
-@auth.route('/auth/register/local', methods=['GET', 'POST'])
+@auth.route("/auth/register/local", methods=["GET", "POST"])
 def register_local():
     form = Art17LocalRegisterForm(request.form)
 
     if form.validate_on_submit():
-        datastore = current_app.extensions['security'].datastore
-        user = register_user(**form.to_dict())
-        password = form.to_dict().get('password')
+        datastore = current_app.extensions["security"].datastore
+
+        user = register_user(form)
+        password = form.to_dict(only_user=True).get("password")
         encrypted_password = encrypt_password(password)
         user.password = encrypted_password
         datastore.commit()
-        return render_template('message.html', message="")
+        return render_template("message.html", message="")
 
-    return render_template('auth/register_local.html', **{
-        'register_user_form': form,
-    })
+    return render_template(
+        "auth/register_local.html",
+        **{
+            "register_user_form": form,
+        }
+    )
 
 
 def send_welcome_email(user, plaintext_password=None):
     app = current_app
     msg = Message(
         subject="Role update on the Biological Diversity website",
-        sender=app.extensions['security'].email_sender,
+        sender=app.extensions["security"].email_sender,
         recipients=[user.email],
     )
-    msg.body = render_template('auth/email_user_welcome.txt', **{
-        'user': user,
-        'plaintext_password': plaintext_password,
-        'home_url': url_for(HOMEPAGE_VIEW_NAME, _external=True),
-    })
+    msg.body = render_template(
+        "auth/email_user_welcome.txt",
+        **{
+            "user": user,
+            "plaintext_password": plaintext_password,
+            "home_url": url_for(HOMEPAGE_VIEW_NAME, _external=True),
+        }
+    )
     safe_send_mail(app, msg)
 
 
-@auth.route('/auth/create_local', methods=['GET', 'POST'])
+@auth.route("/auth/create_local", methods=["GET", "POST"])
 @require_admin
 def admin_create_local():
     form = Art17LocalRegisterForm(request.form)
 
     if form.validate_on_submit():
-        kwargs = form.to_dict()
-        plaintext_password = kwargs['password']
+        kwargs = form.to_dict(only_user=True)
+        plaintext_password = kwargs["password"]
         encrypted_password = encrypt_password(plaintext_password)
-        datastore = current_app.extensions['security'].datastore
+        datastore = current_app.extensions["security"].datastore
         user = datastore.create_user(**kwargs)
         user.confirmed_at = datetime.utcnow()
         set_user_active(user, True)
@@ -118,12 +132,15 @@ def admin_create_local():
         datastore.commit()
         send_welcome_email(user, plaintext_password)
         add_default_role(user)
-        flash("User %s created successfully." % kwargs['id'], 'success')
-        return redirect(url_for('.users'))
+        flash("User %s created successfully." % kwargs["id"], "success")
+        return redirect(url_for(".users"))
 
-    return render_template('auth/register_local.html', **{
-        'register_user_form': form,
-    })
+    return render_template(
+        "auth/register_local.html",
+        **{
+            "register_user_form": form,
+        }
+    )
 
 
 def _get_initial_ldap_data(user_id):
@@ -131,95 +148,100 @@ def _get_initial_ldap_data(user_id):
     if ldap_user_info is None:
         return None
     return {
-        'name': ldap_user_info.get('full_name'),
-        'institution': ldap_user_info.get('organisation'),
-        'qualification': ldap_user_info.get('job_title'),
-        'email': ldap_user_info.get('email'),
+        "name": ldap_user_info.get("full_name"),
+        "institution": ldap_user_info.get("organisation"),
+        "qualification": ldap_user_info.get("job_title"),
+        "email": ldap_user_info.get("email"),
     }
 
 
-@auth.route('/auth/register/ldap', methods=['GET', 'POST'])
+@auth.route("/auth/register/ldap", methods=["GET", "POST"])
 @check_dates
 def register_ldap():
-    #TODO maybe remove as the user is now registered on first LDAP login
-    user_credentials = g.get('user_credentials', {})
-    user_id = user_credentials.get('user_id')
+    # TODO maybe remove as the user is now registered on first LDAP login
+    user_credentials = g.get("user_credentials", {})
+    user_id = user_credentials.get("user_id")
 
-    if not user_credentials.get('is_ldap_user'):
+    if not user_credentials.get("is_ldap_user"):
         if user_id:
             message = "You are already logged in."
-            return render_template('message.html', message=message)
+            return render_template("message.html", message=message)
 
         else:
             message = (
                 'First log into your EIONET account by clicking "login" '
-                'at the top of the page.'
+                "at the top of the page."
             )
-            return render_template('message.html', message=message)
+            return render_template("message.html", message=message)
 
     if user_id and g.identity.id:
-        return render_template('auth/register_ldap_exists.html', **{
-            'admin_email': get_config().admin_email,
-        })
+        return render_template(
+            "auth/register_ldap_exists.html",
+            **{
+                "admin_email": get_config().admin_email,
+            }
+        )
     initial_data = _get_initial_ldap_data(user_id)
     form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = Art17LDAPRegisterForm(request.form)
-        form.name.data = initial_data.get('name', '')
-        form.email.data = initial_data.get('email', '')
+        form.name.data = initial_data.get("name", "")
+        form.email.data = initial_data.get("email", "")
         if form.validate():
-            datastore = current_app.extensions['security'].datastore
+            datastore = current_app.extensions["security"].datastore
             user = datastore.create_user(
                 id=user_id,
                 is_ldap=True,
-                password='',
+                password="",
                 confirmed_at=datetime.utcnow(),
                 **form.to_dict()
             )
             datastore.commit()
             flash(
-                "Eionet account %s has been activated"
-                % user_id,
-                'success',
+                "Eionet account %s has been activated" % user_id,
+                "success",
             )
             add_default_role(user)
             activate_and_notify_admin(_app_ctx_stack.top.app, user)
-            return render_template('auth/register_ldap_done.html')
+            return render_template("auth/register_ldap_done.html")
 
-    return render_template('auth/register_ldap.html', **{
-        'already_registered': g.get('user') is not None,
-        'user_id': user_id,
-        'register_user_form': form,
-    })
+    return render_template(
+        "auth/register_ldap.html",
+        **{
+            "already_registered": g.get("user") is not None,
+            "user_id": user_id,
+            "register_user_form": form,
+        }
+    )
 
 
-@auth.route('/auth/create_ldap', methods=['GET', 'POST'])
+@auth.route("/auth/create_ldap", methods=["GET", "POST"])
 @require_admin
 def admin_create_ldap():
-    user_id = request.form.get('user_id')
+    user_id = request.form.get("user_id")
     if user_id is None:
-        return render_template('auth/register_ldap_enter_user_id.html')
+        return render_template("auth/register_ldap_enter_user_id.html")
 
     if models.RegisteredUser.query.get(user_id) is not None:
-        flash('User "%s" already registered.' % user_id, 'error')
-        return redirect(url_for('.admin_create_ldap'))
+        flash('User "%s" already registered.' % user_id, "error")
+        return redirect(url_for(".admin_create_ldap"))
 
     initial_data = _get_initial_ldap_data(user_id)
-    if '_fields_from_ldap' in request.form:
+    if "_fields_from_ldap" in request.form:
         if initial_data is None:
-            flash('User "%s" not found in Eionet.' % user_id, 'error')
-            return redirect(url_for('.admin_create_ldap'))
+            flash('User "%s" not found in Eionet.' % user_id, "error")
+            return redirect(url_for(".admin_create_ldap"))
         form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
     else:
         form = Art17LDAPRegisterForm(request.form)
-        form.name.data = initial_data.get('name', '')
-        form.email.data = initial_data.get('email', '') or form.email.data
+        form.name.data = initial_data.get("name", "")
+        form.email.data = initial_data.get("email", "") or form.email.data
         if form.validate():
-            kwargs = form.to_dict()
-            kwargs['id'] = user_id
-            kwargs['is_ldap'] = True
-            datastore = current_app.extensions['security'].datastore
+            kwargs = form.to_dict(only_user=True)
+            kwargs["id"] = user_id
+            kwargs["is_ldap"] = True
+            datastore = current_app.extensions["security"].datastore
             user = datastore.create_user(**kwargs)
             user.confirmed_at = datetime.utcnow()
             set_user_active(user, True)
@@ -227,62 +249,66 @@ def admin_create_ldap():
             send_welcome_email(user)
             add_default_role(user)
             flash(
-                "User %s created successfully." % kwargs['id'],
-                'success',
+                "User %s created successfully." % kwargs["id"],
+                "success",
             )
-            return redirect(url_for('.users'))
+            return redirect(url_for(".users"))
 
-    return render_template('auth/register_ldap.html', **{
-        'user_id': user_id,
-        'register_user_form': form,
-    })
+    return render_template(
+        "auth/register_ldap.html",
+        **{
+            "user_id": user_id,
+            "register_user_form": form,
+        }
+    )
 
 
-@auth.route('/auth/me')
+@auth.route("/auth/me")
 def me():
-    return render_template('auth/me.html')
+    return render_template("auth/me.html")
 
 
-@auth.route('/auth/change_password', methods=['GET', 'POST'])
+@auth.route("/auth/change_password", methods=["GET", "POST"])
 def change_password():
     if current_user.is_anonymous:
         message = "You must log in before changing your password."
-        return render_template('message.html', message=message)
+        return render_template("message.html", message=message)
 
     if current_user.is_ldap:
         message = (
-            'Your password can be changed only from the EIONET website '
-            + '('
-            + os.environ.get('EEA_PASSWORD_RESET')
-            + ').'
+            "Your password can be changed only from the EIONET website "
+            + "("
+            + os.environ.get("EEA_PASSWORD_RESET")
+            + ")."
         )
-        return render_template('message.html', message=message)
+        return render_template("message.html", message=message)
 
     form = ChangePasswordForm()
-
     if form.validate_on_submit():
+
         current_user.password = encrypt_password(form.new_password.data)
+        models.db.session.add(current_user)
         models.db.session.commit()
         models.db.session.commit()
         msg = "Your password has been changed. Please log in again."
-        flash(msg, 'success')
+        flash(msg, "success")
         return redirect(url_for(HOMEPAGE_VIEW_NAME))
 
-    return render_template('auth/change_password.html', **{
-        'form': form,
-    })
+    return render_template(
+        "auth/change_password.html",
+        **{
+            "form": form,
+        }
+    )
 
 
 def get_roles_for_all_users():
-    roles_query = (
-        models.db.session.query(
-            models.roles_users.c.registered_users_user,
-            models.Role.name,
-        )
-        .join(
-            models.Role,
-            models.roles_users.c.role_id == models.Role.id,
-        )
+    roles_query = models.db.session.query(
+        models.roles_users.c.registered_users_user,
+        models.Role.name,
+    ).join(
+        models.Role,
+        models.roles_users.c.role_id == models.Role.id,
     )
 
     rv = defaultdict(list)
@@ -296,59 +322,62 @@ def send_role_change_notification(user, new_roles):
     role_description = {row.name: row.description for row in models.Role.query}
     msg = Message(
         subject="Role update on the Biological Diversity website",
-        sender=app.extensions['security'].email_sender,
+        sender=app.extensions["security"].email_sender,
         recipients=[user.email],
     )
-    msg.body = render_template('auth/email_user_role_change.txt', **{
-        'user': user,
-        'new_roles': [role_description[r] for r in new_roles],
-    })
+    msg.body = render_template(
+        "auth/email_user_role_change.txt",
+        **{
+            "user": user,
+            "new_roles": [role_description[r] for r in new_roles],
+        }
+    )
     safe_send_mail(app, msg)
 
 
-@auth.route('/auth/users')
+@auth.route("/auth/users")
 @require_admin
 def users():
     user_query = models.RegisteredUser.query.order_by(models.RegisteredUser.id)
-    dataset = (models.Dataset.query.order_by(models.Dataset.id.desc()).first())
+    dataset = models.Dataset.query.order_by(models.Dataset.id.desc()).first()
     countries = (
-        models.DicCountryCode.query
-        .with_entities(
-            models.DicCountryCode.codeEU,
-            models.DicCountryCode.name
+        models.DicCountryCode.query.with_entities(
+            models.DicCountryCode.codeEU, models.DicCountryCode.name
         )
         .filter(models.DicCountryCode.dataset_id == dataset.id)
         .distinct()
         .order_by(models.DicCountryCode.name)
         .all()
     )
-    return render_template('auth/users.html', **{
-        'user_list': user_query.all(),
-        'role_map': get_roles_for_all_users(),
-        'countries': dict(countries),
-    })
+    return render_template(
+        "auth/users.html",
+        **{
+            "user_list": user_query.all(),
+            "role_map": get_roles_for_all_users(),
+            "countries": dict(countries),
+        }
+    )
 
 
-@auth.route('/auth/users/<user_id>', methods=['GET', 'POST'])
+@auth.route("/auth/users/<user_id>", methods=["GET", "POST"])
 @require_admin
 def admin_user(user_id):
     user = models.RegisteredUser.query.get_or_404(user_id)
     current_user_roles = [r.name for r in user.roles]
     all_roles = (
-        models.Role.query
-        .with_entities(models.Role.name, models.Role.description)
+        models.Role.query.with_entities(models.Role.name, models.Role.description)
         .order_by(models.Role.id)
         .all()
     )
 
-    if request.method == 'POST':
-        if request.form.get('btn') == u'delete':
+    if request.method == "POST":
+        if request.form.get("btn") == u"delete":
             # delete from local database
             user = models.RegisteredUser.query.get(user_id)
             models.db.session.delete(user)
             models.db.session.commit()
-            flash("User %s has successfully been deleted" % user_id, 'success')
-            return redirect(url_for('.users'))
+            flash("User %s has successfully been deleted" % user_id, "success")
+            return redirect(url_for(".users"))
         else:
             user_form = Art17AdminEditUserForm(request.form, obj=user)
             if user_form.validate():
@@ -356,9 +385,11 @@ def admin_user(user_id):
                 set_user_active(user, user_form.active.data)
 
                 # manage roles
-                datastore = current_app.extensions['security'].datastore
-                new_roles = request.form.getlist('roles')
-                expandable_roles = filter(lambda k: k not in new_roles, current_user_roles)
+                datastore = current_app.extensions["security"].datastore
+                new_roles = request.form.getlist("roles")
+                expandable_roles = filter(
+                    lambda k: k not in new_roles, current_user_roles
+                )
                 for role in new_roles:
                     datastore.add_role_to_user(user_id, role)
                 for role in expandable_roles:
@@ -370,34 +401,37 @@ def admin_user(user_id):
                 models.db.session.commit()
 
                 # manage role notifications
-                if request.form.get('notify_user', type=bool):
+                if request.form.get("notify_user", type=bool):
                     send_role_change_notification(user, new_roles)
 
-                flash("User information updated for %s" % user_id, 'success')
-                return redirect(url_for('.users'))
+                flash("User information updated for %s" % user_id, "success")
+                return redirect(url_for(".users"))
     else:
         user_form = Art17AdminEditUserForm(obj=user)
 
-    return render_template('auth/admin_user.html', **{
-        'user': user,
-        'user_form': user_form,
-        'current_user_roles': current_user_roles,
-        'all_roles': dict(all_roles),
-    })
+    return render_template(
+        "auth/admin_user.html",
+        **{
+            "user": user,
+            "user_form": user_form,
+            "current_user_roles": current_user_roles,
+            "all_roles": dict(all_roles),
+        }
+    )
 
 
-@auth.route('/auth/users/<user_id>/reset_password', methods=['GET', 'POST'])
+@auth.route("/auth/users/<user_id>/reset_password", methods=["GET", "POST"])
 @require_admin
 def admin_user_reset_password(user_id):
     user = models.RegisteredUser.query.get_or_404(user_id)
     if user.is_ldap:
         message = (
-            'The password can be changed only from the EIONET website '
-            + '('
-            + os.environ.get('EEA_PASSWORD_RESET')
-            + ').'
+            "The password can be changed only from the EIONET website "
+            + "("
+            + os.environ.get("EEA_PASSWORD_RESET")
+            + ")."
         )
-        return render_template('message.html', message=message)
+        return render_template("message.html", message=message)
 
     form = ResetPasswordForm()
 
@@ -405,77 +439,80 @@ def admin_user_reset_password(user_id):
         user.password = encrypt_password(form.password.data)
         models.db.session.commit()
         msg = "Password successfully reseted."
-        flash(msg, 'success')
-    return render_template('auth/admin_user_reset_password.html', **{
-        'user': user,
-        'form': form,
-    })
+        flash(msg, "success")
+    return render_template(
+        "auth/admin_user_reset_password.html",
+        **{
+            "user": user,
+            "form": form,
+        }
+    )
 
 
-@auth.route('/admin/dataset/')
+@auth.route("/admin/dataset/")
 @require_admin
 def dataset_list():
     ds = models.Dataset.query.all()
-    return render_template('admin/dataset_list.html', datasets=ds)
+    return render_template("admin/dataset_list.html", datasets=ds)
 
 
-@auth.route('/admin/dataset/<dataset_id>', methods=['GET', 'POST'])
+@auth.route("/admin/dataset/<dataset_id>", methods=["GET", "POST"])
 @require_admin
 def dataset_edit(dataset_id):
     dataset = models.Dataset.query.get_or_404(dataset_id)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = DatasetForm(request.form)
         if form.validate():
             form.populate_obj(dataset)
             models.db.session.commit()
             flash("Dataset updated")
-            return redirect(url_for('.dataset_list'))
+            return redirect(url_for(".dataset_list"))
     else:
         form = DatasetForm(obj=dataset)
-    return render_template('admin/dataset_edit.html',
-                           dataset=dataset, form=form)
+    return render_template("admin/dataset_edit.html", dataset=dataset, form=form)
+
 
 @login_manager.user_loader
 def load_user(id=None):
     return models.RegisteredUser.query.get(id)
 
+
 @auth.before_request
 def get_current_user():
-    g.user = AnonymousUser() if not hasattr(c_user, "id")  else c_user
+    g.user = AnonymousUser() if not hasattr(c_user, "id") else c_user
+
 
 def try_local_login(username, password, form):
     user = models.RegisteredUser.query.filter_by(id=username).first()
     if not user or not verify(password, user):
-        flash('Please check your login details and try again.')
-        return render_template('login.html', form=form)
+        flash("Please check your login details and try again.")
+        return render_template("login.html", form=form)
     login_user(user)
     g.user = user
-    flash('You have successfully logged in.', 'success')
+    flash("You have successfully logged in.", "success")
     return redirect(url_for(HOMEPAGE_VIEW_NAME))
 
 
-@auth.route('/auth/login', methods=['GET', 'POST'])
+@auth.route("/auth/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        flash('You are already logged in.')
+        flash("You are already logged in.")
         return redirect(url_for(HOMEPAGE_VIEW_NAME))
 
     form = LoginForm(request.form)
 
-    if request.method == 'POST' and form.validate():
-        username = request.form.get('username')
-        password = request.form.get('password')
+    if request.method == "POST" and form.validate():
+        username = request.form.get("username")
+        password = request.form.get("password")
         try:
             models.RegisteredUser.try_login(username, password)
         except ldap.INVALID_CREDENTIALS:
 
             try_local_login(username, password, form)
             if not current_user.is_authenticated:
-                flash(
-                    'Invalid username or password. Please try again.',
-                    'danger')
-                return render_template('login.html', form=form)
+                flash("Invalid username or password. Please try again.", "danger")
+                return render_template("login.html", form=form)
 
         user = models.RegisteredUser.query.filter_by(id=username).first()
 
@@ -483,64 +520,73 @@ def login():
             data = _get_initial_ldap_data(username)
             user = models.RegisteredUser(
                 id=username,
-                name=data['name'],
-                qualification=data['qualification'],
-                email=data['email'],
-                institution=data['institution'],
+                name=data["name"],
+                qualification=data["qualification"],
+                email=data["email"],
+                institution=data["institution"],
                 password=encrypt_password(password),
                 is_ldap=True,
-                account_date=datetime.now()
+                account_date=datetime.now(),
             )
             models.db.session.add(user)
             add_default_role(user)
             models.db.session.commit()
         login_user(user)
         g.user = user
-        flash('You have successfully logged in.', 'success')
+        flash("You have successfully logged in.", "success")
         return redirect(url_for(HOMEPAGE_VIEW_NAME))
 
     if form.errors:
-        flash(form.errors, 'danger')
+        flash(form.errors, "danger")
 
-    return render_template('login.html', form=form)
+    return render_template("login.html", form=form)
 
-@auth.route('/auth/logout', methods=['GET'])
+
+@auth.route("/auth/logout", methods=["GET"])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for(HOMEPAGE_VIEW_NAME))
 
-@auth.route('/auth/reset/<token>', methods=['POST'])
+
+@auth.route("/auth/reset/<token>", methods=["POST"])
 def reset_password(token):
     """View function that handles a reset password request."""
-    _security = LocalProxy(lambda: current_app.extensions['security'])
+    _security = LocalProxy(lambda: current_app.extensions["security"])
 
     expired, invalid, user = reset_password_token_status(token)
 
     if not user or invalid:
         invalid = True
-        flask.flash(*get_message('INVALID_RESET_PASSWORD_TOKEN'))
+        flask.flash(*get_message("INVALID_RESET_PASSWORD_TOKEN"))
 
     if expired:
         send_reset_password_instructions(user)
-        flask.flash(*get_message('PASSWORD_RESET_EXPIRED', email=user.email,
-                              within=_security.reset_password_within))
+        flask.flash(
+            *get_message(
+                "PASSWORD_RESET_EXPIRED",
+                email=user.email,
+                within=_security.reset_password_within,
+            )
+        )
     if invalid or expired:
-        return redirect(url_for('forgot_password'))
+        return redirect(url_for("forgot_password"))
 
     form = _security.reset_password_form()
 
     if form.validate_on_submit():
-        datastore = current_app.extensions['security'].datastore
+        datastore = current_app.extensions["security"].datastore
         encrypted_password = encrypt_password(form.password.data)
         user.password = encrypted_password
         datastore.commit()
-        flask.flash(*get_message('PASSWORD_RESET'))
-        return redirect(get_url(_security.post_reset_view) or
-                        get_url(_security.login_url))
+        flask.flash(*get_message("PASSWORD_RESET"))
+        return redirect(
+            get_url(_security.post_reset_view) or get_url(_security.login_url)
+        )
 
     return _security.render_template(
-        config_value('RESET_PASSWORD_TEMPLATE'),
+        config_value("RESET_PASSWORD_TEMPLATE"),
         reset_password_form=form,
         reset_password_token=token,
-        **_security._run_ctx_processor('reset_password'))
+        **_security._run_ctx_processor("reset_password")
+    )
