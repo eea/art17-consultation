@@ -193,7 +193,7 @@ class CommonSection(object):
         return self.wiki_change_cls.query.filter_by(wiki=self.get_wiki())
 
     def get_active_change(self):
-        return self.get_wiki_changes().filter_by(active=1).first()
+        return self.get_wiki_changes().filter_by(active=True).first()
 
     def get_context(self):
         active_change = self.get_active_change()

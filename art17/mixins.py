@@ -108,6 +108,7 @@ class MixinsCommon(object):
         )
         if not region:
             ms_qs = ms_qs.distinct(cls.model_cls.eu_country_code)
+            return ms_qs.order_by(cls.model_cls.eu_country_code).all()
 
         return ms_qs.order_by(
             cls.model_cls.presence, cls.model_cls.eu_country_code

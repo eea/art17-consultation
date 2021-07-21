@@ -311,7 +311,7 @@ class UserSummary(views.View):
             self.model_manual_cls.query.filter_by(dataset_id=period)
             .filter(
                 or_(
-                    self.model_manual_cls.deleted == 0,
+                    self.model_manual_cls.deleted == False,
                     self.model_manual_cls.deleted == None,
                 )
             )
@@ -322,7 +322,7 @@ class UserSummary(views.View):
             self.model_comment_cls.query.filter_by(dataset_id=period)
             .filter(
                 or_(
-                    self.model_comment_cls.deleted == 0,
+                    self.model_comment_cls.deleted == False,
                     self.model_comment_cls.deleted == None,
                 )
             )
@@ -339,7 +339,7 @@ class UserSummary(views.View):
         datasheets = (
             WikiChange.query.filter(
                 WikiChange.dataset_id == period,
-                WikiChange.active == 1,
+                WikiChange.active == True,
                 WikiChange.wiki_id.in_(wikis[Wiki]),
             )
             .order_by(WikiChange.changed.desc())
@@ -349,7 +349,7 @@ class UserSummary(views.View):
         audittrails = (
             WikiTrailChange.query.filter(
                 WikiTrailChange.dataset_id == period,
-                WikiTrailChange.active == 1,
+                WikiTrailChange.active == True,
                 WikiTrailChange.wiki_id.in_(wikis[WikiTrail]),
             )
             .order_by(WikiTrailChange.changed.desc())
@@ -359,7 +359,7 @@ class UserSummary(views.View):
         ds_comments = (
             WikiComment.query.filter(
                 WikiComment.dataset_id == period,
-                or_(WikiComment.deleted == 0, WikiComment.deleted == None),
+                or_(WikiComment.deleted == False, WikiComment.deleted == None),
                 WikiComment.wiki_id.in_(wikis[Wiki]),
             )
             .order_by(WikiComment.posted.desc())
@@ -406,7 +406,7 @@ class _CommentCounterBase(object):
             .filter(self.comment_cls.dataset_id == self.dataset_id)
             .filter(
                 or_(
-                    self.comment_cls.deleted == 0,
+                    self.comment_cls.deleted == False,
                     self.comment_cls.deleted == None,
                 )
             )
@@ -435,7 +435,7 @@ class _CommentCounterBase(object):
             .filter(Wiki.dataset_id == self.dataset_id)
             .filter(
                 or_(
-                    WikiComment.deleted == 0,
+                    WikiComment.deleted == False,
                     WikiComment.deleted == None,
                 )
             )

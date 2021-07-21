@@ -109,7 +109,7 @@ class Comment(Base):
     region = Column(String(4), nullable=False)
     assesment_speciesname = Column(String(50), nullable=False)
     user_id = Column("user", String(25), nullable=False)
-    MS = Column(String(4), nullable=False, default=DEFAULT_MS)
+    MS = Column("ms", String(4), nullable=False, default=DEFAULT_MS)
     comment = Column(String)
     author_id = Column("author", String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
@@ -162,7 +162,7 @@ class DicCountryCode(Base):
     __tablename__ = "dic_country_codes"
 
     code = Column(String(3), primary_key=True)
-    codeEU = Column(String(3), default="")
+    codeEU = Column("codeeu", String(3), default="")
     name = Column(String(40))
 
     dataset_id = Column(
@@ -253,7 +253,7 @@ class EtcDataHabitattypeRegion(Base):
     region_changed = Column(Integer)
     group = Column(String(21))
     annex = Column(String(11))
-    annex_I = Column(String(5))
+    annex_I = Column("annex_i", String(5))
     priority = Column(String(1))
     code = Column(String(4))
     habitatcode = Column(String(4), primary_key=True)
@@ -481,13 +481,13 @@ class EtcDataSpeciesRegion(Base):
     mid_group = Column(String(20))
     family = Column(String(30))
     annex = Column(String(11))
-    annex_II = Column(String(5))
-    annex_II_exception = Column(Integer)
+    annex_II = Column("annex_ii", String(5))
+    annex_II_exception = Column("annex_ii_exception", Integer)
     priority = Column(String(1))
-    annex_IV = Column(String(5))
-    annex_IV_exception = Column(Integer)
-    annex_V = Column(String(5))
-    annex_V_addition = Column(Integer)
+    annex_IV = Column("annex_iv", String(5))
+    annex_IV_exception = Column("annex_iv_exception", Integer)
+    annex_V = Column("annex_v", String(5))
+    annex_V_addition = Column("annex_v_addition", Integer)
     code = Column(String(50))
     speciescode = Column(String(32), primary_key=True)
     speciesname = Column(String(50))
@@ -495,7 +495,7 @@ class EtcDataSpeciesRegion(Base):
     eunis_species_code = Column(Integer)
     valid_speciesname = Column(String(50))
     n2000_species_code = Column(Integer)
-    speciescode_IRM = Column(String(10))  # 2018 n2000_species_code
+    speciescode_IRM = Column("speciescode_irm", String(10))  # 2018 n2000_species_code
     assessment_speciescode = Column(Integer)
     assesment_speciesname = Column(String(60))
     assessment_speciesname_changed = Column(Integer)
@@ -714,7 +714,7 @@ class EtcDicHdHabitat(Base):
     priority = Column(Integer, nullable=False)
     name = Column(String(255), nullable=False)
     shortname = Column(String(70))
-    annex_I_comments = Column(String(30))
+    annex_I_comments = Column("annex_i_comments", String(30))
     marine = Column(Integer)
 
     dataset_id = Column(
@@ -773,10 +773,10 @@ class EtcDicPopulationUnit(Base):
 class EtcDicSpeciesType(Base):
     __tablename__ = "etc_dic_species_type"
 
-    SpeciesTypeID = Column(Integer, primary_key=True)
-    SpeciesType = Column(String(50))
-    Assesment = Column(String(50))
-    Note = Column(String(255))
+    SpeciesTypeID = Column("speciestypeid", Integer, primary_key=True)
+    SpeciesType = Column("speciestype", String(50))
+    Assesment = Column("assesment", String(50))
+    Note = Column("note", String(255))
     abbrev = Column(String(5))
 
     dataset_id = Column(
@@ -815,8 +815,8 @@ class EtcQaErrorsHabitattypeManualChecked(Base):
     suspect_value = Column(String(150), nullable=False, default="")
     error_code = Column(Integer, primary_key=True, nullable=False)
     error_description = Column(Text)
-    field = Column("FlagField", String(40))
-    text = Column("FlagText", String(65))
+    field = Column("flagfield", String(40))
+    text = Column("flagtext", String(65))
 
     dataset_id = Column(
         "ext_dataset_id",
@@ -840,8 +840,8 @@ class EtcQaErrorsSpeciesManualChecked(Base):
     suspect_value = Column(String(150), nullable=False, default="")
     error_code = Column(Integer, primary_key=True, nullable=False)
     error_description = Column(Text)
-    field = Column("FlagField", String(40))
-    text = Column("FlagText", String(65))
+    field = Column("flagfield", String(40))
+    text = Column("flagtext", String(65))
 
     dataset_id = Column(
         "ext_dataset_id",
@@ -869,7 +869,7 @@ class HabitatComment(Base):
     region = Column(String(4), nullable=False)
     habitat = Column(String(50), nullable=False)
     user_id = Column("user", String(25), nullable=False)
-    MS = Column(String(4), nullable=False, default=DEFAULT_MS)
+    MS = Column("ms", String(4), nullable=False, default=DEFAULT_MS)
     comment = Column(String)
     author_id = Column("author", String(25), nullable=False)
     post_date = Column(String(16), nullable=False)
@@ -932,7 +932,7 @@ t_habitat_group = Table(
 class HabitattypesManualAssessment(Base):
     __tablename__ = "habitattypes_manual_assessment"
 
-    MS = Column(String(4), primary_key=True, nullable=False, default=DEFAULT_MS)
+    MS = Column("ms", String(4), primary_key=True, nullable=False, default=DEFAULT_MS)
     region = Column(String(4), primary_key=True, nullable=False)
     habitatcode = Column(String(50), primary_key=True, nullable=False)
     range_surface_area = Column(String(23))
@@ -1015,8 +1015,8 @@ class HabitattypesManualAssessment(Base):
             .filter(HabitatComment.MS == self.MS)
             .filter(HabitatComment.user_id == self.user_id)
             .filter(HabitatComment.dataset_id == self.dataset_id)
-            .filter(text('habitat_comments_read.reader_user_id="%s"' % user))
-            .filter(or_(HabitatComment.deleted == 0, HabitatComment.deleted == None))
+            .filter(text("habitat_comments_read.reader_user_id='%s'" % user))
+            .filter(or_(HabitatComment.deleted == False, HabitatComment.deleted == None))
             .count()
         )
 
@@ -1046,7 +1046,7 @@ class LuHdHabitat(Base):
     group = Column(String(40))
     priority = Column(Integer, nullable=False)
     name = Column(String(160), nullable=False)
-    annex_I_comments = Column(String(30))
+    annex_I_comments = Column("annex_i_comments", String(30))
     marine = Column(Integer)
 
     dataset_id = Column(
@@ -1064,7 +1064,7 @@ class LuHdHabitatFactsheet(Base):
     priority = Column(Integer, nullable=False)
     name = Column(String(155), nullable=False)
     shortname = Column(String(155), nullable=False)
-    annex_I_comments = Column(String(30))
+    annex_I_comments = Column("annex_i_comments", String(30))
     marine = Column(Integer)
     nameheader = Column(String(155), nullable=False)
 
@@ -1128,7 +1128,7 @@ class RegisteredUser(Base, UserMixin):
     name = Column(String(255))
     institution = Column(String(45))
     abbrev = Column(String(10))
-    MS = Column(String(255))
+    MS = Column("ms", String(255))
     email = Column(String(255))
     qualification = Column(String(255))
     account_date = Column(String(16), nullable=False)
@@ -1206,7 +1206,7 @@ t_species_group = Table(
 class SpeciesManualAssessment(Base):
     __tablename__ = "species_manual_assessment"
 
-    MS = Column(String(4), primary_key=True, nullable=False, default=DEFAULT_MS)
+    MS = Column("ms", String(4), primary_key=True, nullable=False, default=DEFAULT_MS)
     region = Column(String(4), primary_key=True, nullable=False)
     assesment_speciesname = Column(String(60), primary_key=True, nullable=False)
     range_surface_area = Column(String(23))
@@ -1287,8 +1287,8 @@ class SpeciesManualAssessment(Base):
             .filter(Comment.MS == self.MS)
             .filter(Comment.user_id == self.user_id)
             .filter(Comment.dataset_id == self.dataset_id)
-            .filter(text('comments_read.reader_user_id="%s"' % user))
-            .filter(or_(Comment.deleted == 0, Comment.deleted == None))
+            .filter(text("comments_read.reader_user_id='%s'" % user))
+            .filter(or_(Comment.deleted == False, Comment.deleted == None))
             .count()
         )
 
