@@ -9,8 +9,8 @@ services:
     environment:
       - MIGRATE=no
     env_file:
-    - ./docker/db.env
     - ./docker/app.env
+    - ./docker/db.env
     volumes:
     - ./art17:/var/local/art17/art17
     - ./instance:/var/local/art17/instance
@@ -22,6 +22,8 @@ services:
     container_name: art17.db 
     environment:
       TZ: Europe/Copenhagen
+    env_file:
+    - ./docker/db.env
     volumes:
     - psqldata:/var/lib/postgresql/data
     - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
