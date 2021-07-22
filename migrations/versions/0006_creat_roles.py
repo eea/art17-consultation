@@ -1,8 +1,7 @@
-revision = '0006'
-down_revision = '0005'
+revision = "0006"
+down_revision = "0005"
 
 from alembic import op
-from sqlalchemy.dialects import mysql
 
 
 def upgrade():
@@ -17,6 +16,5 @@ def upgrade():
 
 def downgrade():
     op.execute(
-        "DELETE FROM roles WHERE name IN "
-        "('admin', 'etc', 'nat', 'stakeholder')"
+        "DELETE FROM roles WHERE name IN " "('admin', 'etc', 'nat', 'stakeholder')"
     )

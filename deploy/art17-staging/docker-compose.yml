@@ -7,7 +7,7 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
-    - mysql
+    - db
     env_file:
     - ../art17.staging.env
     environment:
@@ -29,17 +29,15 @@ services:
     - maps:/var/local/art17-data/maps:ro
     - factsheets:/var/local/art17-data/factsheets:ro
 
-  mysql:
-    image: mysql:5.6
+  db:
+    image: postgres:13
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    env_file:
-    - ../art17.staging.env
     environment:
       TZ: Europe/Copenhagen
     volumes:
-    - mysqldata:/var/lib/mysql
-    command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+    - psqldata:/var/lib/postgresql/data
+    - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   rsync-server:
     image: eeacms/rsync:latest
@@ -48,7 +46,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
     - art17-app
-    - mysql
+    - db
     ports:
     - "2222:22/tcp"
     command:
@@ -61,7 +59,7 @@ services:
     stdin_open: true
     volumes:
     - nginx:/etc/nginx/conf.d
-    - mysqldata:/var/lib/mysql
+    - psqldata:/var/lib/postgresql/data
     - maps:/var/local/maps
 
 volumes:
@@ -69,7 +67,7 @@ volumes:
     driver: rancher-nfs
   staticdata:
     driver: rancher-nfs
-  mysqldata:
+  psqldata:
     driver: rancher-nfs
   maps:
     driver: rancher-nfs

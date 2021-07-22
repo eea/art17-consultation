@@ -50,15 +50,13 @@ Copy conf file and restart container
     $ scp -P 2222 ../conf/static.conf root@rsync-server-host:/etc/nginx/conf.d/default.conf
     $ docker-compose restart art17-static
 
-### 1.4 Copy _mysql_ data (SQL dump)
+### 1.4 Copy _db_ data (SQL dump)
 
-    $ scp -P 2222 art17.sql root@rsync-server-host:/var/lib/mysql/art17.sql
+    $ scp -P 2222 art17.sql root@rsync-server-host:/var/lib/postgresql/data/art17.sql
 
-Execute shell to _mysql_ container and import the sql file.
+Execute shell to _db_ container and import the sql file.
 
-    $ mysql -u root -p
-    $ mysql> use art17;
-    $ mysql> source /var/lib/mysql/art17.sql;
+    $ postgres -U user art17 < path/dump.sql
 
 ### 1.5. Debugging
 
@@ -89,15 +87,13 @@ Please refer to point 1.2.
 
 Please refer to point 1.3.
 
-### 2.4 Copy _mysql_ data (SQL dump)
+### 2.4 Copy _db_ data (SQL dump)
 
-    $ scp -P 2222 art17_staging.sql root@rsync-server-host:/var/lib/mysql/art17_staging.sql
+    $ scp -P 2222 art17_staging.sql root@rsync-server-host:/var/lib/postgresql/data/art17_staging.sql
 
-Execute shell to _mysql_ container and import the sql file.
+Execute shell to _db_ container and import the sql file.
 
-    $ mysql -u root -p
-    $ mysql> use art17_staging;
-    $ mysql> source /var/lib/mysql/art17_staging.sql;
+    $ pg_dump -U art17 art17_staging > art17_staging.sql;
 
 ### 2.5. Debugging
 
@@ -119,17 +115,14 @@ During the first time deployement, create and edit the following files:
 
 A minimal configuration file could be:
 
-    #mysql env
-    MYSQL_ROOT_PASSWORD=art17
-
     #art17 env
     DEBUG=True
     SECRET_KEY=secret
 
-    DB_SCHEMA=mysql
+    DB_SCHEMA=postgresql
     DB_USER=art17
     DB_PASS=art17
-    DB_HOST=mysql
+    DB_HOST=db
     DB_NAME=art17
     BIND_NAME=art17rp2_eu
 
@@ -190,9 +183,7 @@ Other command line useful commands:
 
 If, for some reason, you want to completely delete the stack and its volumes:
 
-    $ docker-compose stop
-    $ docker-compose rm
-    $ docker volume rm art17_mysqldata
+    $ docker-compose down -v
 
 ### 3.6. _art17-app_ service
 
@@ -228,33 +219,30 @@ and from inside the container:
 
 _Note: make sure you have set **DEBUG=True** in the art17.devel.env file._
 
-### 3.7. _mysql_ service
+### 3.7. db service
 
-If you need to take a closer look at the MySQL database, you can do that like below:
+If you need to take a closer look at the Postgres database, you can do that like below:
 
-    # step into the mysql container
-    $ docker exec -it art17-mysql bash
+    # step into the db container
+    $ docker exec -it art17.db bash
 
-    # start mysql client
-    $ mysql -u root -p
+    $ psql -U art17 database_name
 
-    # runn SQL commands
-    mysql> use DB_NAME;
-    mysql> show tables;
+    # run SQL commands
+    psql>\dt;
 
-To import old data, first copy the sql dumps to your mysql container:
+To import old data, first copy the sql dumps to your db container:
 
-    $ docker cp art17.sql art17-mysql:/var/lib/mysql/
+    $ docker cp art17.sql art17.db:art17.sql
 
-    # step into the mysql container
-    $ docker exec -it art17-mysql bash
+    # step into the db container
+    $ docker exec -it art17.db bash
 
-    # start mysql interpreter
-    $ mysql -u art17 -p
+    # start db interpreter
+    $psql -U art17 database_name
 
     # import data
-    mysql> use art17;
-    mysql> source /var/lib/mysql/art17.sql
+    psql -U art17 database_name < art17.sql
 
 Do the same set of operations for `art17rp2_eu` database.
 

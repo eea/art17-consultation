@@ -8,9 +8,6 @@ Flask-Login==0.5.0
 Flask-Mail==0.9.1
 Flask-Migrate==3.0.1
 Flask-Principal==0.4.0
-mysqlclient==2.0.3
-mysqldbModel==1.1.0
-PyMySQL==1.0.2
 Flask-Security-Too==3.4.5
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==0.15.1
@@ -22,7 +19,6 @@ jsmin==2.2.2
 Mako==1.1.4
 MarkupSafe==2.0.1
 mock==4.0.3
-Flask-MySQL==1.5.2
 path==16.0.0
 passlib==1.7.4
 phonenumbers==8.12.26

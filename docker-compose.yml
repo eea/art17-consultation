@@ -18,6 +18,10 @@ services:
     - ./migrations:/var/local/art17/migrations
 
   db:
-    image: mariadb:5.5
-    env_file:
-    - ./docker/db.env
+    image: postgres:13
+    container_name: art17.db 
+    environment:
+      TZ: Europe/Copenhagen
+    volumes:
+    - psqldata:/var/lib/postgresql/data
+    - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql

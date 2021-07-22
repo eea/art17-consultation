@@ -8,7 +8,7 @@ services:
     ports:
     - "5000:5000"
     depends_on:
-    - mysql
+    - db
     env_file:
     - ../art17.devel.env
     environment:
@@ -18,17 +18,15 @@ services:
     #command: /usr/bin/tail -f /dev/null
     #command: ["runserver", "-t", "0.0.0.0", "-p", "5000"]
 
-  mysql:
-    image: mysql:5.6
-    container_name: art17-mysql
-    env_file:
-    - ../art17.devel.env
+  db:
+    image: postgres:13
+    container_name: art17.db 
     environment:
       TZ: Europe/Copenhagen
     volumes:
-    - mysqldata:/var/lib/mysql
-    command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+    - psqldata:/var/lib/postgresql/data
+    - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
-  mysqldata:
+  psqldata:
     driver: local

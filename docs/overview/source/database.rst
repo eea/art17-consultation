@@ -29,7 +29,7 @@ Each of the tables in the first three categories contain a column named
 Backend
 -------
 
-We're using a single database on a MySQL server running on localhost. Each
+We're using a single database on a Postgres server running on localhost. Each
 table has a corresponding class in ``models``, and the rows in the table are
 instances of that class.
 
@@ -37,7 +37,7 @@ Management
 ----------
 
 The ``manage.py dataset`` command can be used to manage bulk data. Usually, a
-dataset is another MySQL database on the same machine. The following commands
+dataset is another Postges database on the same machine. The following commands
 are available:
 
 * ``dataset ls`` - list all datasets in the application database

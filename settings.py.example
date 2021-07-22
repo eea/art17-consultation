@@ -1,8 +1,8 @@
-# Change `user` and `password` into your MySQL user and password
-#SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/art17'
+# Change `user` and `password` into your Postgres user and password
+#SQLALCHEMY_DATABASE_URI = 'postgresql://root@localhost/art17'
 from smart_getenv import getenv
 #SQLALCHEMY_BINDS = {
-#   'factsheet': 'mysql://user:password@localhost/art17old'
+#   'factsheet': 'postgresql://user:password@localhost/art17old'
 #}
 
 # This is mandatory. Please define a secret key - random sequence of characters

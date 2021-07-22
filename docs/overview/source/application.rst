@@ -1,7 +1,7 @@
 Application
 ===========
 
-The consultation tool is a Flask web application, running on a MySQL database
+The consultation tool is a Flask web application, running on a Postgres database
 using SQLAlchemy as the ORM.
 
 It runs in an isolated environment, using Virtualenv. The WSGI server used in

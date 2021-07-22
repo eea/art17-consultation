@@ -18,8 +18,3 @@ services:
     - ./requirements.txt:/var/local/art17/requirements.txt
     - ./requirements-dev.txt:/var/local/art17/requirements-dev.txt
     entrypoint: ["/usr/bin/tail", "-f", "/dev/null"]
-
-  db:
-    environment:
-      TZ: Europe/Copenhagen
-    command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"

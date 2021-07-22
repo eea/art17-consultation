@@ -12,5 +12,3 @@ services:
     upgrade_strategy:
       start_first: true
 
-  mysql:
-    scale: 1

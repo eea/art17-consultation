@@ -70,7 +70,7 @@ Data Import
 -----------
 Initially the application's database is empty. We need to import data
 from a dump (the old 2006 app's database or the new reporting data).
-First we need to load this dump into a separate MySQL databse::
+First we need to load this dump into a separate database::
 
     mysql -e 'create database art17_2006 CHARACTER SET utf8 COLLATE utf8_general_ci;'
     mysql art17_2006 < art17_2006.sql
@@ -227,7 +227,7 @@ Recommended:
 Software
 --------
 Any recent Linux version.
-apache2, local MySQL server
+apache2, local Postgres server
 
 
 Copyright and license

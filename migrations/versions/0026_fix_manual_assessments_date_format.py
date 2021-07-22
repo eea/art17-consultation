@@ -1,5 +1,5 @@
-revision = '0026'
-down_revision = '0025'
+revision = "0026"
+down_revision = "0025"
 
 from alembic import op
 
@@ -21,8 +21,8 @@ def get_update_query(table_name):
 
 
 def upgrade():
-    op.execute(get_update_query('species_manual_assessment'))
-    op.execute(get_update_query('habitattypes_manual_assessment'))
+    op.execute(get_update_query("species_manual_assessment"))
+    op.execute(get_update_query("habitattypes_manual_assessment"))
 
 
 def downgrade():
