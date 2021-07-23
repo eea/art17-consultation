@@ -8,8 +8,8 @@ if [ -z "$POSTGRES_ADDR" ]; then
   export POSTGRES_ADDR="postgres"
 fi
 
-while ! nc -z $POSTGRES_ADDR 3306; do
-  echo "Waiting for Postgres server at '$POSTGRES_ADDR' to accept connections on port 3306..."
+while ! nc -z $POSTGRES_ADDR 5432; do
+  echo "Waiting for Postgres server at '$POSTGRES_ADDR' to accept connections on port 5432..."
   sleep 3s
 done
 
