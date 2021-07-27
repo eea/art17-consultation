@@ -1,3 +1,5 @@
+import uuid
+
 import flask
 from flask_webtest import TestApp
 from pytest import fixture
@@ -121,7 +123,7 @@ def set_auth(app, request):
     return whoami_data
 
 
-def create_user(user_id, role_names=[], name="", institution="", ms=""):
+def create_user(user_id, app, role_names=[], name="", institution="", ms=""):
     user = models.RegisteredUser(
         id=user_id,
         account_date=datetime.utcnow().strftime("%Y-%m-%d %H:%M"),
@@ -131,6 +133,12 @@ def create_user(user_id, role_names=[], name="", institution="", ms=""):
         institution=institution,
         MS=ms,
     )
+    try:
+        datastore = app.extensions["security"].datastore
+        datastore.set_uniquifier(user)
+    except KeyError:
+        user.fs_uniquifier = uuid.uuid4().hex
+
     models.db.session.add(user)
     for name in role_names:
         role = models.Role.query.filter_by(name=name).first()
@@ -149,7 +157,7 @@ def get_request_params(request_type, request_args, post_params=None):
     return request_args
 
 
-def force_login(client, user_id=None):
+def force_login(client, fs_uniquifier=None):
     with client.session_transaction() as sess:
-        sess["_user_id"] = user_id
+        sess["_user_id"] = fs_uniquifier
         sess["_fresh"] = True

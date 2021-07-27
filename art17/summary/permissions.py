@@ -10,6 +10,7 @@ from art17.common import (
 from instance.settings import EU_ASSESSMENT_MODE
 from art17.summary import summary
 
+
 @summary.app_template_global("can_delete")
 def can_delete(record):
     if EU_ASSESSMENT_MODE:

@@ -359,7 +359,7 @@ class MergedRegionsView(views.View):
         for wiki in wikis:
             change = self.section.wiki_change_cls.query.filter_by(
                 wiki=wiki,
-                active=1,
+                active=True,
             ).first()
             if change:
                 region_change_url = url_for(
@@ -456,7 +456,7 @@ class EditPage(WikiView):
             if active_change.body == form.text.data:
                 flash("No changes were made.")
                 return False
-            active_change.active = 0
+            active_change.active = False
         else:
             self.section.insert_inexistent_wiki()
 
@@ -466,7 +466,7 @@ class EditPage(WikiView):
             body=form.text.data,
             editor=current_user.id,
             changed=datetime.now(),
-            active=1,
+            active=True,
             dataset_id=dataset.id,
         )
         db.session.add(new_change)
@@ -529,7 +529,6 @@ class ManageComment(WikiView):
             datasheet = False
         if not can_manage_comment(dataset, datasheet):
             raise PermissionDenied
-
         comment_id = request.args.get("comment_id")
         comment = self.section.wiki_comment_cls.query.filter_by(
             id=comment_id

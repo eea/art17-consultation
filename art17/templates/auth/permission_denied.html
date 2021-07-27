@@ -13,7 +13,7 @@
   <h1>Permission denied</h1>
 
   <p>
-    User <tt>{{ g.identity.id }}</tt>
+    User <tt>{{ current_user.id }}</tt>
     doesn't have permission to access this page.
   </p>
 {% endblock content %}

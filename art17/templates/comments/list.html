@@ -12,7 +12,7 @@
 </div>
 
 <div class="comment-section">
-  {% set comments = record.undeleted_comments(g.identity.id)%}
+  {% set comments = record.undeleted_comments(current_user.id)%}
   {% if not comments %}
     <p>No comments were added</p>
   {% else %}
@@ -24,7 +24,7 @@
 
     <ul class="cmnt-list no-list">
     {% for comment in comments %}
-      {% set is_owner = comment.author.id == g.identity.id %}
+      {% set is_owner = comment.author.id == current_user.id %}
       {% set read = comment.read_for(current_user) %}
       {% set deleted = comment.deleted %}
       {% if is_owner %}

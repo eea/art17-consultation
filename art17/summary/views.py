@@ -455,7 +455,7 @@ class SpeciesSummary(SpeciesMixin, Summary):
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}
         self.wiki_unread = SpeciesCommentCounter(
-            period, g.identity.id
+            period, current_user.id
         ).get_wiki_unread_count(subject, region)
         if subject:
             filter_args["assesment_speciesname"] = subject
@@ -583,7 +583,7 @@ class HabitatSummary(HabitatMixin, Summary):
     def setup_objects_and_data(self, period, subject, region):
         filter_args = {}
         self.wiki_unread = HabitatCommentCounter(
-            period, g.identity.id
+            period, current_user.id
         ).get_wiki_unread_count(subject, region)
         if subject:
             filter_args["habitatcode"] = subject

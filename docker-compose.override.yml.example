@@ -11,7 +11,6 @@ services:
     volumes:
     - ./art17:/var/local/art17/art17
     - ./instance:/var/local/art17/instance
-    - ./alembic:/var/local/art17/alembics
     - ./testsuite:/var/local/art17/testsuite
     - ./test_data:/var/local/art17/test_data
     - ./manage.py:/var/local/art17/manage.py

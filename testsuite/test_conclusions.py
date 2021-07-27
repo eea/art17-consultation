@@ -436,8 +436,8 @@ def test_edit_conclusion(
     status_code,
     search_text,
 ):
-    create_user(user, roles)
-    force_login(client, user)
+    user_obj = create_user(user, app, roles)
+    force_login(client, user_obj.fs_uniquifier)
 
     resp = client.post(
         *get_request_params("post", request_args, post_params),
@@ -519,8 +519,8 @@ def test_edit_conclusion(
 def test_autofill_conclusion_form(
     app, client, set_auth, setup_autofill, request_args, user
 ):
-    create_user(user, ["stakeholder"])
-    force_login(client, user)
+    user_obj = create_user(user, app, ["stakeholder"])
+    force_login(client, user_obj.fs_uniquifier)
 
     resp = client.get(*get_request_params("get", request_args))
     form = resp.context["manual_form"]
@@ -590,8 +590,8 @@ def test_add_conclusion_nat(
     roles,
     model_cls,
 ):
-    create_user(user, roles, ms=MS)
-    force_login(client, user)
+    user = create_user(user, app, roles, ms=MS)
+    force_login(client, user.fs_uniquifier)
 
     resp = client.post(*get_request_params("post", request_args, post_params))
 
@@ -665,8 +665,8 @@ def test_add_conclusion_stk(
     roles,
     model_cls,
 ):
-    create_user(user, roles, ms=MS)
-    force_login(client, user)
+    user = create_user(user, app, roles, ms=MS)
+    force_login(client, user.fs_uniquifier)
 
     resp = client.post(*get_request_params("post", request_args, post_params))
 
@@ -740,8 +740,8 @@ def test_add_conclusion_etc(
     roles,
     model_cls,
 ):
-    create_user(user, roles, ms=MS)
-    force_login(client, user)
+    user_obj = create_user(user, app, roles, ms=MS)
+    force_login(client, user_obj.fs_uniquifier)
 
     resp = client.post(*get_request_params("post", request_args, post_params))
     assert resp.status_code == 200
@@ -914,8 +914,8 @@ def test_delete_conclusion(
     model_cls,
 ):
     if user:
-        create_user(user)
-        force_login(client, user)
+        user_obj = create_user(user, app)
+        force_login(client, user_obj.fs_uniquifier)
 
     resp = client.get(
         *get_request_params("get", request_args), expect_errors=expect_errors
@@ -1157,8 +1157,8 @@ def test_update_decision(
     success,
     message,
 ):
-    create_user(user, roles)
-    force_login(client, user)
+    user_obj = create_user(user, app, roles)
+    force_login(client, user_obj.fs_uniquifier)
     resp = client.post(
         *get_request_params("post", request_args, post_params),
         expect_errors=expect_errors

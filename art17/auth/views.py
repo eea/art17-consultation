@@ -62,7 +62,9 @@ from art17.auth.security import (
 from art17.common import HOMEPAGE_VIEW_NAME, get_config
 
 
-def user_registered_sighandler(app, user, confirm_token, form_data=None):
+def user_registered_sighandler(
+    app, user, confirm_token, confirmation_token, form_data=None
+):
     add_default_role(user)
 
 
@@ -174,7 +176,7 @@ def register_ldap():
             )
             return render_template("message.html", message=message)
 
-    if user_id and g.identity.id:
+    if user_id and current_user.id:
         return render_template(
             "auth/register_ldap_exists.html",
             **{
@@ -391,9 +393,9 @@ def admin_user(user_id):
                     lambda k: k not in new_roles, current_user_roles
                 )
                 for role in new_roles:
-                    datastore.add_role_to_user(user_id, role)
+                    datastore.add_role_to_user(user, role)
                 for role in expandable_roles:
-                    datastore.remove_role_from_user(user_id, role)
+                    datastore.remove_role_from_user(user, role)
                 datastore.commit()
 
                 # manage user info
@@ -480,7 +482,7 @@ def load_user(id=None):
 
 @auth.before_request
 def get_current_user():
-    g.user = AnonymousUser() if not hasattr(c_user, "id") else c_user
+    g.user = AnonymousUser() if not c_user.is_authenticated else c_user
 
 
 def try_local_login(username, password, form):

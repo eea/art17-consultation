@@ -18,7 +18,7 @@ def _set_config(**kwargs):
 
 
 def test_identity_is_set_from_plone_whoami(app, set_auth, client):
-    create_user("ze_admin", ["admin"])
+    user_obj = create_user("ze_admin", app, ["admin"])
 
     @app.route("/identity")
     def get_identity():
@@ -28,18 +28,19 @@ def test_identity_is_set_from_plone_whoami(app, set_auth, client):
             provides=sorted(list(identity.provides)),
         )
 
-    force_login(client, "ze_admin")
+    force_login(client, user_obj.fs_uniquifier)
 
     identity = client.get("/identity").json
-    assert identity["id"] == "ze_admin"
-    assert identity["provides"] == [["id", "ze_admin"], ["role", "admin"]]
+    assert identity["id"] == user_obj.fs_uniquifier
+    assert identity["provides"] == [["id", user_obj.fs_uniquifier], ["role", "admin"]]
 
 
 def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
     from .factories import DatasetFactory
 
     _set_config(admin_email="admin@example.com")
-    create_user("ze_admin", ["admin"])
+    user_obj = create_user("ze_admin", app, ["admin"])
+    fs_uniquifier = user_obj.fs_uniquifier
     DatasetFactory()
     models.db.session.commit()
 
@@ -78,7 +79,7 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
     url = admin_message.body.split()[-1]
     assert url == "http://localhost/auth/users/foo"
 
-    force_login(client, "ze_admin")
+    force_login(client, fs_uniquifier)
     activation_page = client.get(url)
     activation_page.form["active"] = False
     activation_page.form.submit()
@@ -91,8 +92,8 @@ def test_admin_creates_local(app, set_auth, client, outbox, ldap_user_info):
     from .factories import DatasetFactory
 
     _set_config(admin_email="admin@example.com")
-    create_user("ze_admin", ["admin"])
-    force_login(client, "ze_admin")
+    user_obj = create_user("ze_admin", app, ["admin"])
+    force_login(client, user_obj.fs_uniquifier)
     DatasetFactory()
     models.db.session.commit()
 
@@ -125,8 +126,8 @@ def test_admin_creates_ldap(app, set_auth, client, outbox, ldap_user_info):
     from .factories import DatasetFactory
 
     _set_config(admin_email="admin@example.com")
-    create_user("ze_admin", ["admin"])
-    force_login(client, "ze_admin")
+    user_obj = create_user("ze_admin", app, ["admin"])
+    force_login(client, user_obj.fs_uniquifier)
     DatasetFactory()
     models.db.session.commit()
 
@@ -166,7 +167,7 @@ def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_i
 
     _set_config(admin_email="admin@example.com")
     ldap_user_info["foo"] = {"email": "foo@example.com", "full_name": "foo"}
-    create_user("ze_admin", ["admin"])
+    user_obj = create_user("ze_admin", app, ["admin"])
     DatasetFactory()
     models.db.session.commit()
 
@@ -193,7 +194,7 @@ def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_i
     url = admin_message.body.split()[-1]
     assert url == "http://localhost/auth/users/foo"
 
-    force_login(client, "ze_admin")
+    force_login(client, user_obj.fs_uniquifier)
     activation_page = client.get(url)
     activation_page.form["active"] = False
     activation_page.form.submit()
@@ -205,28 +206,29 @@ def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_i
 def test_view_requires_admin(app, set_auth, client):
     from .factories import DatasetFactory
 
-    create_user("ze_admin", ["admin"])
-    create_user("foo")
+    user_obj = create_user("ze_admin", app, ["admin"])
+    fs_uniquifier = user_obj.fs_uniquifier
+    create_user("foo", app)
     DatasetFactory()
     models.db.session.commit()
     admin_user_url = flask.url_for("auth.admin_user", user_id="foo")
 
     assert client.get(admin_user_url, expect_errors=True).status_code == 403
 
-    force_login(client, "ze_admin")
+    force_login(client, fs_uniquifier)
     assert client.get(admin_user_url).status_code == 200
 
 
 def test_change_local_password(app, set_auth, client):
     from flask_security.utils import encrypt_password
 
-    foo = create_user("foo")
+    foo = create_user("foo", app)
     old_enc_password = encrypt_password("my old pw")
     foo.password = old_enc_password
     models.db.session.commit()
 
     set_auth.update({"user_id": "foo"})
-    force_login(client, "foo")
+    force_login(client, foo.fs_uniquifier)
     page = client.get(flask.url_for("auth.change_password"))
     page.form["password"] = "my old pw"
     page.form["new_password"] = "the new pw"
@@ -245,10 +247,10 @@ def test_change_anonymous_password(app, set_auth, client):
 
 
 def test_change_ldap_password(app, set_auth, client):
-    foo = create_user("foo")
+    foo = create_user("foo", app)
     foo.is_ldap = True
     models.db.session.commit()
-    force_login(client, "foo")
+    force_login(client, foo.fs_uniquifier)
     page = client.get(flask.url_for("auth.change_password"))
     assert os.environ.get("EEA_PASSWORD_RESET") in page
 
@@ -277,11 +279,11 @@ def test_admin_edit_user_info(app, set_auth, client, outbox):
     from .factories import DatasetFactory
 
     _set_config(admin_email="admin@example.com")
-    create_user("ze_admin", ["admin"])
-    create_user("foo", ["etc", "stakeholder"], name="Foo Person")
+    user_obj = create_user("ze_admin", app, ["admin"])
+    create_user("foo", app, ["etc", "stakeholder"], name="Foo Person")
     DatasetFactory()
     models.db.session.commit()
-    force_login(client, "ze_admin")
+    force_login(client, user_obj.fs_uniquifier)
 
     page = client.get(flask.url_for("auth.admin_user", user_id="foo"))
     page.form["name"] = "Foo Person"
@@ -301,7 +303,7 @@ def test_admin_edit_user_info(app, set_auth, client, outbox):
     assert foo_user.qualification == "Foo is web developer"
     assert not foo_user.is_ldap
 
-    create_user("bar", ["etc"], name="Bar Person")
+    create_user("bar", app, ["etc"], name="Bar Person")
     models.db.session.commit()
 
     page = client.get(flask.url_for("auth.admin_user", user_id="bar"))
@@ -318,11 +320,11 @@ def test_admin_edit_user_info(app, set_auth, client, outbox):
 def test_email_notification_for_role_changes(app, set_auth, client, outbox):
     from .factories import DatasetFactory
 
-    create_user("ze_admin", ["admin"])
-    create_user("foo", ["etc", "stakeholder"], name="Foo Person")
+    user_obj = create_user("ze_admin", app, ["admin"])
+    create_user("foo", app, ["etc", "stakeholder"], name="Foo Person")
     DatasetFactory()
     models.db.session.commit()
-    force_login(client, "ze_admin")
+    force_login(client, user_obj.fs_uniquifier)
     page = client.get(flask.url_for("auth.admin_user", user_id="foo"))
     page.form["roles"] = ["stakeholder", "nat"]
     page.form["name"] = "Foo Person"

@@ -349,11 +349,15 @@ def test_comments(
     status_code,
     assert_condition,
 ):
-    create_user("testuser")
+    user_obj = create_user("testuser", app)
     if user:
         if user[0] != "testuser":
-            create_user(*user)
-        force_login(client, user[0])
+            if len(user) > 1:
+                roles = user[1]
+            else:
+                roles = []
+            user_obj = create_user(user[0], app, roles)
+        force_login(client, user_obj.fs_uniquifier)
 
     resp = getattr(client, request_type)(
         *get_request_params(request_type, request_args, post_params),
@@ -396,7 +400,7 @@ def test_count_read_comments_deleted(
     comment = comment_cls(deleted=deleted)
     models.db.session.commit()
 
-    user = create_user("someuser")
+    user = create_user("someuser", app)
     comment.readers.append(user)
     models.db.session.commit()
     assert record.comments_count_read("someuser") == expected_result
@@ -443,6 +447,7 @@ def test_count_read_comments_view(
 
     user = create_user(
         "someuser",
+        app,
         [
             "etc",
         ],
@@ -450,7 +455,7 @@ def test_count_read_comments_view(
     comment.readers.append(user)
     models.db.session.commit()
 
-    force_login(client, "someuser")
+    force_login(client, user.fs_uniquifier)
     resp = client.get(*get_request_params("get", request_args))
 
     assert resp.status_code == 200

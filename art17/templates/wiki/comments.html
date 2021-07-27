@@ -19,7 +19,7 @@
       {% set edit_cmnt_url = url_for('.ds-edit-comment', page=page,
              comment_id=comment.id, period=request.args['period'],
              subject=request.args['subject'], region=request.args['region']) %}
-      {% if g.identity.id == comment.author_id %}
+      {% if current_user.id == comment.author_id %}
         {% set href = url_for('.ds-manage-comment', comment_id=comment.id,
                               toggle='del', page=page, period=request.args['period']) %}
         {% if comment.deleted %}
@@ -65,7 +65,7 @@
         </div>
 
       <div class="small clearfix">
-        {% if g.identity.id != comment.author_id %}
+        {% if current_user.id != comment.author_id %}
         <div class="pull-left">
           <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>
           {% if comment.author.institution %}

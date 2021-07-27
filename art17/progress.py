@@ -376,7 +376,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
         return zip(conclusions, conclusions)
 
     def get_comment_counts(self, period):
-        return SpeciesCommentCounter(period, g.identity.id).get_counts()
+        return SpeciesCommentCounter(period, current_user.id).get_counts()
 
     def setup_objects_and_data(self, period, group, conclusion_type, user_id):
         fields = self.get_progress_fields(conclusion_type)
@@ -445,7 +445,7 @@ class HabitatProgress(Progress, HabitatMixin):
         return zip(conclusions, conclusions)
 
     def get_comment_counts(self, period):
-        return HabitatCommentCounter(period, g.identity.id).get_counts()
+        return HabitatCommentCounter(period, current_user.id).get_counts()
 
     def setup_objects_and_data(self, period, group, conclusion_type, user_id):
         fields = self.get_progress_fields(conclusion_type)

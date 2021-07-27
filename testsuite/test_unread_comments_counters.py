@@ -88,7 +88,7 @@ def setup_deleted(app):
 def test_unread_conclusion_comments(
     app, client, set_auth, setup_common, setup, user, path, args
 ):
-    create_user(user)
+    create_user(user, app)
     set_auth.update({"user_id": user})
     resp = client.get(path, args)
     assert resp.status_code == 200
@@ -140,7 +140,7 @@ def test_unread_conclusion_comments_anonymous_user(
 def test_unread_conclusion_comments_zero_comments(
     app, client, set_auth, setup_common, user, path, args
 ):
-    create_user(user)
+    create_user(user, app)
     set_auth.update({"user_id": user})
     resp = client.get(path, args)
     assert resp.status_code == 200
@@ -168,7 +168,7 @@ def test_unread_conclusion_comments_zero_comments(
 def test_unread_conclusion_comments_deleted_comments(
     app, client, set_auth, setup_common, setup, setup_deleted, user, path, args
 ):
-    create_user(user)
+    create_user(user, app)
     set_auth.update({"user_id": user})
     resp = client.get(path, args)
     assert resp.status_code == 200
@@ -233,7 +233,7 @@ def test_unread_conclusion_comments_read_comments(
     read,
     unread_comments,
 ):
-    user = create_user(username)
+    user = create_user(username, app)
     set_auth.update({"user_id": username})
 
     comment = comment_cls(id=10, author_id="user10", region="ALP")

@@ -45,8 +45,8 @@ def setup_read(app):
 )
 def test_view(app, client, set_auth, user, request_args, expect_errors, status_code):
     if user:
-        create_user(user)
-        force_login(client, user)
+        user_obj = create_user(user, app)
+        force_login(client, user_obj.fs_uniquifier)
     resp = client.get(request_args, expect_errors=expect_errors)
     assert resp.status_code == status_code
 
@@ -78,8 +78,8 @@ def test_data(
     exp_conclusion_fields,
     exp_comment_fields,
 ):
-    create_user(user)
-    force_login(client, user)
+    user_obj = create_user(user, app)
+    force_login(client, user_obj.fs_uniquifier)
     resp = client.get(request_args)
     assert resp.status_code == 200
 
@@ -98,8 +98,8 @@ def test_data(
     ],
 )
 def test_deleted(app, client, set_auth, setup_deleted, user, request_args):
-    create_user(user)
-    force_login(client, user)
+    user_obj = create_user(user, app)
+    force_login(client, user_obj.fs_uniquifier)
     resp = client.get(request_args)
     assert resp.status_code == 200
     assert len(resp.html.find_all("td")) == 0
@@ -132,8 +132,8 @@ def test_read_comments(
     comment_cls,
     exp_comment_fields,
 ):
-    user = create_user(username)
-    force_login(client, username)
+    user = create_user(username, app)
+    force_login(client, user.fs_uniquifier)
 
     comment = comment_cls(region="ALP", post_date="2014-03-20", author_id="author")
     models.db.session.commit()

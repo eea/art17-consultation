@@ -1016,7 +1016,9 @@ class HabitattypesManualAssessment(Base):
             .filter(HabitatComment.user_id == self.user_id)
             .filter(HabitatComment.dataset_id == self.dataset_id)
             .filter(text("habitat_comments_read.reader_user_id='%s'" % user))
-            .filter(or_(HabitatComment.deleted == False, HabitatComment.deleted == None))
+            .filter(
+                or_(HabitatComment.deleted == False, HabitatComment.deleted == None)
+            )
             .count()
         )
 
@@ -1125,6 +1127,7 @@ class RegisteredUser(Base, UserMixin):
     __tablename__ = "registered_users"
 
     id = Column("user", String(50), primary_key=True)
+    fs_uniquifier = Column(String(255), unique=True, nullable=False)
     name = Column(String(255))
     institution = Column(String(45))
     abbrev = Column(String(10))

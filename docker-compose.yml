@@ -14,7 +14,6 @@ services:
     volumes:
     - ./art17:/var/local/art17/art17
     - ./instance:/var/local/art17/instance
-    - ./alembic:/var/local/art17/alembic
     - ./migrations:/var/local/art17/migrations
 
   db:

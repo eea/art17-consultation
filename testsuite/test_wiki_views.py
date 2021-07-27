@@ -113,8 +113,8 @@ def test_empty_view(app, client, request_args):
     ],
 )
 def test_non_auth_view(app, setup, client, request_args, search_text):
-    create_user("testuser")
-    create_user("otheruser")
+    create_user("testuser", app)
+    create_user("otheruser", app)
     resp = client.get(*request_args)
     assert resp.status_code == 200
     assert resp.content_type == "text/html"
@@ -230,8 +230,8 @@ def test_perms(app, setup, set_auth, client, request_type, request_args, post_pa
 def test_perms_auth_user(
     app, setup, set_auth, client, request_type, request_args, post_params
 ):
-    create_user("otheruser")
-    set_user("otheruser")
+    create_user("otheruser", app)
+    set_user("otheruser", app)
     resp = getattr(client, request_type)(
         *get_request_params(request_type, request_args, post_params), expect_errors=True
     )
@@ -269,9 +269,9 @@ def test_perms_auth_user(
 def test_404_error(
     app, setup, set_auth, client, request_type, request_args, post_params
 ):
-    create_user("otheruser")
-    set_user("otheruser")
-    force_login(client, "otheruser")
+    otheruser = create_user("otheruser", app)
+    set_user("otheruser", app)
+    force_login(client, otheruser.fs_uniquifier)
     resp = getattr(client, request_type)(
         *get_request_params(request_type, request_args, post_params), expect_errors=True
     )
@@ -282,9 +282,9 @@ def test_404_error(
 def test_change_active_revision(
     app, setup, set_auth, client
 ):  # can't modify when dataset is readonly
-    create_user("otheruser", role_names=["etc"])
+    otheruser = create_user("otheruser", app, role_names=["etc"])
     set_user("otheruser")
-    force_login(client, "otheruser")
+    force_login(client, otheruser.fs_uniquifier)
     client.post(
         *get_request_params(
             "post",
@@ -303,9 +303,9 @@ def test_change_active_revision(
 def test_add_comment(
     app, setup, set_auth, client
 ):  # can't modify when dataset is readonly
-    create_user("newuser")
+    newuser = create_user("newuser", app)
     set_user("newuser")
-    force_login(client, "newuser")
+    force_login(client, newuser.fs_uniquifier)
     request_data = (
         "post",
         [
@@ -329,9 +329,9 @@ def test_add_comment(
 def test_edit_page(
     app, setup, set_auth, client
 ):  # can't modify when dataset is readonly
-    create_user("testuser", role_names=["etc"])
+    testuser = create_user("testuser", app, role_names=["etc"])
     set_user("testuser")
-    force_login(client, "testuser")
+    force_login(client, testuser.fs_uniquifier)
     client.post(
         *get_request_params(
             "post",
@@ -350,9 +350,9 @@ def test_edit_page(
 def test_edit_comment(
     app, setup, set_auth, client
 ):  # can't modify when dataset is readonly
-    create_user("testuser", role_names=["stakeholder"])
+    testuser = create_user("testuser", app, role_names=["stakeholder"])
     set_user("testuser")
-    force_login(client, "testuser")
+    force_login(client, testuser.fs_uniquifier)
     client.post(
         *get_request_params(
             "post",
@@ -373,9 +373,9 @@ def test_edit_comment(
 
 @pytest.mark.xfail
 def test_toggle_del(app, setup, set_auth, client):
-    create_user("testuser")
+    testuser = create_user("testuser", app)
     set_user("testuser")
-    force_login(client, "testuser")
+    force_login(client, testuser.fs_uniquifier)
     initial_value = get_instance(WikiComment, id=1).deleted or 0
     client.get(
         "/species/summary/datasheet/manage_comment/",
@@ -386,9 +386,9 @@ def test_toggle_del(app, setup, set_auth, client):
 
 @pytest.mark.xfail
 def test_toggle_read(app, setup, set_auth, client):
-    create_user("otheruser")
+    otheruser = create_user("otheruser", app)
     set_user("otheruser")
-    force_login(client, "otheruser")
+    force_login(client, otheruser.fs_uniquifier)
 
     def get_value():
         return (
@@ -405,9 +405,9 @@ def test_toggle_read(app, setup, set_auth, client):
 
 
 def test_get_revision(app, setup, set_auth, client):
-    create_user("testuser", role_names=["etc"])
+    testuser = create_user("testuser", app, role_names=["etc"])
     set_user("testuser")
-    force_login(client, "testuser")
+    force_login(client, testuser.fs_uniquifier)
 
     resp = client.get("/species/summary/datasheet/get_revision/", {"revision_id": 1})
     assert (
@@ -417,10 +417,10 @@ def test_get_revision(app, setup, set_auth, client):
 
 @pytest.mark.parametrize("roles", [(["etc"]), (["admin"])])
 def test_hide_adm_etc_username(app, setup, set_auth, client, roles):
-    create_user("testuser", roles, "Secret Name", "Test Insitution")
-    create_user("otheruser")
+    create_user("testuser", app, roles, "Secret Name", "Test Insitution")
+    otheruser = create_user("otheruser", app)
     set_user("otheruser")
-    force_login(client, "otheruser")
+    force_login(client, otheruser.fs_uniquifier)
 
     resp = client.get(
         "/species/summary/datasheet/",

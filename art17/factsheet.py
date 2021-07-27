@@ -127,7 +127,7 @@ class FactSheet(MethodView):
                 Wiki.dataset_id == period,
                 getattr(Wiki, self.wiki_subject_column) == subject,
                 Wiki.region_code == "",
-                WikiChange.active == 1,
+                WikiChange.active == True,
             )
             .first()
         )
