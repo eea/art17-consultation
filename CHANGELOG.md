@@ -1,6 +1,13 @@
 Changelog
 =========
 
+3.4.0 - (2021-07-28)
+--------------------
+* Upgrade all packages
+* Add black/flake8 formatting
+* Switch from using Mysql to Postgres database
+  [dianaboiangiu]
+
 3.3.11 - (2021-03-09)
 ---------------------
 * Change maps for period 2013-2018
