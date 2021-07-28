@@ -36,7 +36,7 @@ instances of that class.
 Management
 ----------
 
-The ``manage.py dataset`` command can be used to manage bulk data. Usually, a
+The ``flask dataset`` command can be used to manage bulk data. Usually, a
 dataset is another Postges database on the same machine. The following commands
 are available:
 

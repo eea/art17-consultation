@@ -161,7 +161,7 @@ inside the container. The execution will stop and wait for your commands every
 time it encounters a breakpoint in your code.
 
     $ docker exec -it art17-app bash
-    $ ./manage.py runserver -t 0.0.0.0 -p 5000
+    $ python -m flask run -h 0.0.0.0 -p 5000
 
 
 ### 3.4. Start stack
@@ -215,7 +215,7 @@ and after:
 and from inside the container:
 
     # manually start the app
-    $ python manage.py runserver -t 0.0.0.0 -p 5000
+    $ python -m flask run -h 0.0.0.0 -p 5000
 
 _Note: make sure you have set **DEBUG=True** in the art17.devel.env file._
 
@@ -251,7 +251,7 @@ Do the same set of operations for `art17rp2_eu` database.
 Create factsheets:
 
     $ docker exec -it art17-app bash
-    $ ./manage.py factsheet genall [period_id]
+    $ python -m flask factsheet genall [period_id]
 
 _Note: make sure you also have the development server running._
 

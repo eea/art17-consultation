@@ -14,7 +14,7 @@ while ! nc -z $POSTGRES_ADDR 5432; do
 done
 
 if [ "x$MIGRATE" = 'xyes' ]; then
-  echo "Running DB CMD: ./manage.py db upgrade"
+  echo "Running DB CMD: python -m flask db upgrade"
   python -m flask db upgrade
 fi
 

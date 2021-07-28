@@ -1135,7 +1135,7 @@ class RegisteredUser(Base, UserMixin):
     email = Column(String(255))
     qualification = Column(String(255))
     account_date = Column(String(16), nullable=False)
-    show_assessment = Column(Integer, nullable=False, default=1)
+    show_assessment = Column(Integer, nullable=False, default=True)
     active = Column(Boolean)
     confirmed_at = db.Column(db.DateTime())
     is_ldap = db.Column(Boolean, nullable=False, default=False)
