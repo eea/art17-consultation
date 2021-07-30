@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.1 - (2021-07-30)
+--------------------
+* Add legal text for personal information
+  [dianaboiangiu]
+
 3.4.0 - (2021-07-28)
 --------------------
 * Upgrade all packages
