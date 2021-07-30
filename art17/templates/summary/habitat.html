@@ -42,7 +42,12 @@
       The ‘Audit trail’ includes the methods used for the EU biogeographical assessments and justifications for decisions made by the assessors.
     </p>
   {% endif %}
-
+  {% if dataset.schema == '2012' %}
+    <p class="note">IMPORTANT: Due to late delivery by Greece of the Article 17 report for 2007-2012 period,
+                    2000-2006 Greek data have been used for EU biogeographical assessment and are displayed
+                    on this page. To consult 2007-2012 data from Greece filter 'Period' = '2007-2012bis'.
+    </p>
+  {% endif %}
 
   {% include 'summary/filters.html' %}
 
@@ -210,6 +215,10 @@
     </form>
   {% endif %}
   {% if period_selected == '5' and subject != None and subject != '' %}
+    <p class="italic">
+      <b>Legal notice:</b> A minimum amount of personal data (including cases of submitted comments during the public consultation) is stored
+      in the web tool. These data are necessary for the functioning of the tool and are only accessible to tool administrators.
+    </p>
     <p class="italic">
       The distribution data for France (2013 – 2018 reporting) were corrected after the official submission of the Article 17 reports by France.
       The maps displayed via this web tool take into account these corrections, while the values under Distribution area (km2) used for the EU

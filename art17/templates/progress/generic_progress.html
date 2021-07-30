@@ -9,6 +9,12 @@
 
   </p>
   {% endif %}
+  {% if dataset.schema == '2012' %}
+    <p class="note">IMPORTANT: Where relevant, the EU biogeographical assessments for Mediterranean and Marine Mediterranean regions
+                    have been revised taking into account the late delivery by Greece of the Article 17 report for 2007-2012 period.
+                    To consult the revised assessments filter 'Period' = '2007-2012bis'.
+    </p>
+  {% endif %}
   {% include 'progress/filters.html' %}
 
   {% if not dataset.is_readonly and (not consultation_started and not can_preview_progress()) %}

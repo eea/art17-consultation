@@ -20,9 +20,16 @@
     country.
   </p>
   {% if dataset.schema == '2012bis' %}
-  <p class="note">
-    IMPORTANT: 2007-2012bis reporting period displays data from the delayed delivery by Greece.
-  </p>
+    <p class="note">
+      IMPORTANT: 2007-2012bis reporting period displays data from the delayed delivery by Greece.
+    </p>
+  {% endif %}
+
+  {% if dataset.schema == '2012' %}
+    <p class="note">IMPORTANT Due to late delivery by Greece of the Article 17 report for 2007-2012 period,
+                    2000-2006 Greek data have been used for EU biogeographical assessment and are displayed
+                    on this page. To consult 2007-2012 data from Greece filter 'Period'= '2007-2012bis'.
+    </p>
   {% endif %}
 
   {% include 'report/filters.html' %}
