@@ -1031,7 +1031,10 @@ class HabitattypesManualAssessment(Base):
         self.habitatcode = value
 
     def undeleted_comments(self, user_id):
-        user = RegisteredUser.query.filter_by(id=user_id).first()
+        if not user_id:
+            user = None
+        else:
+            user = RegisteredUser.query.filter_by(id=user_id).first()
         return [
             c
             for c in self.comments
@@ -1304,7 +1307,10 @@ class SpeciesManualAssessment(Base):
         self.assesment_speciesname = value
 
     def undeleted_comments(self, user_id):
-        user = RegisteredUser.query.filter_by(id=user_id).first()
+        if not user_id:
+            user = None
+        else:
+            user = RegisteredUser.query.filter_by(id=user_id).first()
         return [
             c
             for c in self.comments

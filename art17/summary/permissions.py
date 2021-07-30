@@ -34,6 +34,8 @@ def can_update_decision(conclusion):
 
 @summary.app_template_global("can_view")
 def can_view(record, countries):
+    if not countries:
+        countries = []
     return admin_perm.can() or etc_perm.can() or record.eu_country_code not in countries
 
 
