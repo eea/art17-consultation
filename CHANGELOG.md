@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.4.2 - (2021-08-30)
+--------------------
+* Fix missing ldap package
+* Fix missing display of marine habitats
+  [dianaboiangiu]
+
 3.4.1 - (2021-07-30)
 --------------------
 * Add legal text for personal information
