@@ -140,10 +140,14 @@ class Comment(Base):
     user = relationship(
         "RegisteredUser",
         primaryjoin="Comment.user_id==RegisteredUser.id",
+        overlaps="comments,record",
         foreign_keys=user_id,
     )
     readers = relationship(
-        "RegisteredUser", secondary=t_comments_read, backref="read_species_comments"
+        "RegisteredUser",
+        secondary=t_comments_read,
+        backref="read_species_comments",
+        overlaps="comments, record",
     )
 
     def read_for(self, user):
@@ -344,6 +348,7 @@ class EtcDataHabitattypeRegion(Base):
     lu_factsheets = relationship(
         "LuHdHabitatFactsheet",
         primaryjoin="LuHdHabitatFactsheet.habcode==EtcDataHabitattypeRegion.subject",
+        overlaps="habitat",
         foreign_keys=[habitatcode],
     )
 
@@ -900,6 +905,7 @@ class HabitatComment(Base):
     user = relationship(
         "RegisteredUser",
         primaryjoin="HabitatComment.user_id==RegisteredUser.id",
+        overlaps="comments,record",
         foreign_keys=user_id,
     )
     readers = relationship(
@@ -1367,7 +1373,8 @@ class WikiChange(Base):
         primaryjoin="and_(WikiChange.wiki_id==Wiki.id,"
         "WikiChange.dataset_id==Wiki.dataset_id)",
         foreign_keys=[wiki_id, dataset_id],
-        backref=db.backref("changes", lazy="dynamic"),
+        overlaps="dataset",
+        backref=db.backref("changes", lazy="dynamic", overlaps="dataset"),
     )
 
 
@@ -1462,6 +1469,7 @@ class WikiTrailChange(Base):
         primaryjoin="and_(WikiTrailChange.wiki_id==WikiTrail.id,"
         "WikiTrailChange.dataset_id==WikiTrail.dataset_id)",
         foreign_keys=[wiki_id, dataset_id],
+        overlaps="dataset",
         backref="changes",
     )
 

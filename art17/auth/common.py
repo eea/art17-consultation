@@ -36,7 +36,7 @@ def activate_and_notify_admin(app, user, **extra):
     admin_email = get_config().admin_email
 
     if not admin_email:
-        logger.warn("No admin_email is configured; not sending email")
+        logger.warning("No admin_email is configured; not sending email")
 
     else:
         msg = Message(

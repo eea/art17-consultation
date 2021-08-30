@@ -1,4 +1,5 @@
 from sqlalchemy import and_
+from sqlalchemy import func
 
 from art17.models import (
     EtcDataSpeciesRegion,
@@ -162,7 +163,8 @@ class SpeciesMixin(MixinsCommon):
         qs = (
             db.session.query(assessment_field)
             .filter(assessment_field != None)
-            .filter_by(group=group, dataset_id=period)
+            .filter(func.lower(self.model_cls.group) == func.lower(group))
+            .filter_by(dataset_id=period)
             .distinct()
             .order_by(assessment_field)
         )
@@ -175,8 +177,8 @@ class SpeciesMixin(MixinsCommon):
         groups = (
             cls.model_cls.query.filter(group_field != None, dataset_id_field == period)
             .with_entities(group_field, group_field)
-            .distinct()
-            .order_by(group_field)
+            .distinct(func.lower(group_field))
+            .order_by(func.lower(group_field))
             .all()
         )
         return [("", "-")] + groups
@@ -191,7 +193,7 @@ class SpeciesMixin(MixinsCommon):
         assesment_field = cls.model_cls.subject
         subjects = (
             cls.model_cls.query.filter(assesment_field != None)
-            .filter(group_field == group)
+            .filter(func.lower(group_field) == func.lower(group))
             .filter(dataset_id_field == period)
             .with_entities(assesment_field, assesment_field)
             .distinct()
@@ -206,7 +208,7 @@ class SpeciesMixin(MixinsCommon):
 
             subjects = (
                 cls.model_cls.query.filter(assesment_field != None)
-                .filter(group_field == group)
+                .filter(func.lower(group_field) == func.lower(group))
                 .filter(cls.model_cls.region.in_(regions))
                 .filter(dataset_id_field == period)
                 .with_entities(assesment_field, assesment_field)
@@ -262,7 +264,10 @@ class HabitatMixin(MixinsCommon):
         qs = (
             db.session.query(EtcDicHdHabitat)
             .with_entities(EtcDicHdHabitat.habcode, EtcDicHdHabitat.shortname)
-            .filter_by(group=group, dataset_id=period)
+            .filter(
+                func.lower(EtcDicHdHabitat.group) == func.lower(group),
+                EtcDicHdHabitat.dataset_id == period,
+            )
             .distinct()
         )
         return [(row[0], " - ".join(row)) for row in qs if row[0]]
@@ -276,8 +281,8 @@ class HabitatMixin(MixinsCommon):
                 group_field != None, dataset_id_field == period
             )
             .with_entities(group_field, group_field)
-            .distinct()
-            .order_by(group_field)
+            .distinct(func.lower(group_field))
+            .order_by(func.lower(group_field))
             .all()
         )
         groups = [(a.capitalize(), b.capitalize()) for (a, b) in groups]
@@ -292,7 +297,6 @@ class HabitatMixin(MixinsCommon):
         dataset_id_field = EtcDicHdHabitat.dataset_id
         code_field = EtcDicHdHabitat.habcode
         name_field = code_field.concat(" " + EtcDicHdHabitat.name)
-
         if period == "4":
 
             regions = [
@@ -301,7 +305,9 @@ class HabitatMixin(MixinsCommon):
             ]
             subjs = (
                 EtcDicHdHabitat.query.filter(
-                    name_field != None, group_field == group, dataset_id_field == period
+                    name_field != None,
+                    func.lower(group_field) == func.lower(group),
+                    dataset_id_field == period,
                 )
                 .with_entities(code_field, name_field)
                 .distinct()
@@ -320,7 +326,9 @@ class HabitatMixin(MixinsCommon):
         else:
             subjects = (
                 EtcDicHdHabitat.query.filter(
-                    name_field != None, group_field == group, dataset_id_field == period
+                    name_field != None,
+                    func.lower(group_field) == func.lower(group),
+                    dataset_id_field == period,
                 )
                 .with_entities(code_field, name_field)
                 .distinct()

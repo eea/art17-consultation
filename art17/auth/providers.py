@@ -16,9 +16,9 @@ def set_user(user_id, is_ldap_user=False):
         "is_ldap_user": is_ldap_user,
     }
     if user is None:
-        logger.warn("Autheticated user %r not found in database", user_id)
+        logger.warning("Autheticated user %r not found in database", user_id)
     elif user.is_ldap != is_ldap_user:
-        logger.warn(
+        logger.warning(
             "Mix-up between LDAP and non-LDAP users: " "Ldap says %r, database says %r",
             is_ldap_user,
             user.is_ldap,
@@ -27,7 +27,7 @@ def set_user(user_id, is_ldap_user=False):
         if user.is_active():
             flask.g.user = user
         else:
-            logger.warn("User %r is marked as inactive", user_id)
+            logger.warning("User %r is marked as inactive", user_id)
 
 
 class DebugAuthProvider(object):
