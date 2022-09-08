@@ -22,7 +22,7 @@ RUN mkdir $WORK_DIR/logs \
 RUN mkdir $WORK_DIR/temp_static \
     && cp -a $WORK_DIR/art17/static/. $WORK_DIR/temp_static/
 
-RUN pip install -U setuptools \
+RUN pip install -U setuptools==57.5.0\
 	&& pip install -r requirements-dep.txt --trusted-host eggrepo.eea.europa.eu
 
 RUN mv docker-entrypoint.sh /bin/
