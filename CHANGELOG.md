@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.4.3 - (2022-09-08)
+--------------------
+* Fix email in footer
+* Fix Dockerfile
+  [dianaboiangiu]
+
 3.4.2 - (2021-08-30)
 --------------------
 * Fix missing ldap package
