@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.4 - (2023-02-06)
+--------------------
+* Fix display of 2006 habitat report records
+  [dianaboiangiu]
+
 3.4.3 - (2022-09-08)
 --------------------
 * Fix email in footer
