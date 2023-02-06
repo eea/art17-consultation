@@ -7,6 +7,7 @@ from flask import (
     jsonify,
 )
 from werkzeug.datastructures import MultiDict
+from sqlalchemy import func
 
 from art17.common import (
     get_default_period,
@@ -27,7 +28,6 @@ class Report(views.View):
         group = request.args.get("group")
         country = request.args.get("country")
         region = request.args.get("region")
-
         self.objects = []
         self.setup_objects_and_data(period, group, country, region)
 
@@ -77,13 +77,12 @@ class Report(views.View):
         filter_args = {}
         if not group:
             return
-        filter_args["group"] = group
         filter_args["dataset_id"] = period
         if country:
             filter_args["eu_country_code"] = country
         if region:
             filter_args["region"] = region
-        self.objects = self.model_cls.query.filter_by(**filter_args).order_by(
+        self.objects = self.model_cls.query.filter(func.lower(self.model_cls.group) == func.lower(group)).filter_by(**filter_args).order_by(
             self.model_cls.subject
         )
 
