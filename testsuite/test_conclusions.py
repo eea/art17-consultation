@@ -1,8 +1,9 @@
 import pytest
 
-from . import factories
 from art17 import models
-from .conftest import get_request_params, create_user, force_login
+
+from . import factories
+from .conftest import create_user, force_login, get_request_params
 
 
 def setup_common():
@@ -944,7 +945,10 @@ def test_delete_conclusion(
     # ETC successfully updating decision
     [
         (
-            ["/species/conc/update/5/Canis lupus/ALP/someuser/", {"ms": "EU28"}],
+            [
+                "/species/conc/update/5/Canis lupus/ALP/someuser/",
+                {"ms": "EU28"},
+            ],
             {"decision": "CO"},
             "testuser",
             ["etc"],
@@ -955,7 +959,10 @@ def test_delete_conclusion(
         ),
         # ADM successfully updating decision
         (
-            ["/species/conc/update/5/Canis lupus/ALP/someuser/", {"ms": "EU28"}],
+            [
+                "/species/conc/update/5/Canis lupus/ALP/someuser/",
+                {"ms": "EU28"},
+            ],
             {"decision": "CO"},
             "testuser",
             ["admin"],
@@ -966,7 +973,10 @@ def test_delete_conclusion(
         ),
         # ETC changing a final decision (OK) into another final decision (OK)
         (
-            ["/species/conc/update/5/Canis lupus/BOR/someuser/", {"ms": "EU28"}],
+            [
+                "/species/conc/update/5/Canis lupus/BOR/someuser/",
+                {"ms": "EU28"},
+            ],
             {"decision": "OK"},
             "testuser",
             ["etc"],
@@ -977,7 +987,10 @@ def test_delete_conclusion(
         ),
         # ETC selecting invalid decision
         (
-            ["/species/conc/update/5/Canis lupus/BOR/someuser/", {"ms": "EU28"}],
+            [
+                "/species/conc/update/5/Canis lupus/BOR/someuser/",
+                {"ms": "EU28"},
+            ],
             {"decision": "WTF"},
             "testuser",
             ["etc"],
@@ -988,7 +1001,10 @@ def test_delete_conclusion(
         ),
         # ETC selecting 'OK?' decision
         (
-            ["/species/conc/update/5/Canis lupus/BOR/someuser/", {"ms": "EU28"}],
+            [
+                "/species/conc/update/5/Canis lupus/BOR/someuser/",
+                {"ms": "EU28"},
+            ],
             {"decision": "OK?"},
             "testuser",
             ["etc"],
@@ -999,7 +1015,10 @@ def test_delete_conclusion(
         ),
         # ETC updating decision - inexistent assessment
         (
-            ["/species/conc/update/5/Canis lupus/BOR/someuser/", {"ms": "RAND"}],
+            [
+                "/species/conc/update/5/Canis lupus/BOR/someuser/",
+                {"ms": "RAND"},
+            ],
             {"decision": "CO"},
             "testuser",
             ["etc"],
@@ -1010,7 +1029,10 @@ def test_delete_conclusion(
         ),
         # No decision sent in request
         (
-            ["/species/conc/update/5/Canis lupus/BOR/someuser/", {"ms": "EU28"}],
+            [
+                "/species/conc/update/5/Canis lupus/BOR/someuser/",
+                {"ms": "EU28"},
+            ],
             {},
             "testuser",
             ["etc"],
@@ -1021,7 +1043,10 @@ def test_delete_conclusion(
         ),
         # NAT trying to update decision
         (
-            ["/species/conc/update/5/Canis lupus/BOR/someuser/", {"ms": "EU28"}],
+            [
+                "/species/conc/update/5/Canis lupus/BOR/someuser/",
+                {"ms": "EU28"},
+            ],
             {},
             "testuser",
             ["nat"],
@@ -1032,7 +1057,10 @@ def test_delete_conclusion(
         ),
         # STK trying to update decision
         (
-            ["/species/conc/update/5/Canis lupus/BOR/someuser/", {"ms": "EU28"}],
+            [
+                "/species/conc/update/5/Canis lupus/BOR/someuser/",
+                {"ms": "EU28"},
+            ],
             {},
             "testuser",
             ["stakeholder"],

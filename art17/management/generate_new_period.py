@@ -1,6 +1,7 @@
-from flask.cli import AppGroup
-from art17 import models
 import click
+from flask.cli import AppGroup
+
+from art17 import models
 
 generate_new_period = AppGroup("generate_new_period")
 
@@ -137,7 +138,9 @@ def run(**kwargs):
 
     print("Importing EtcDicHdHabitat...")
     for habitatcode in habitatcodes:
-        hdhabitat = models.EtcDicHdHabitat.query.filter_by(habcode=habitatcode).first()
+        hdhabitat = models.EtcDicHdHabitat.query.filter_by(
+            habcode=habitatcode
+        ).first()
         if not models.EtcDicHdHabitat.query.filter_by(
             habcode=hdhabitat.habcode, dataset_id=dataset.id
         ).all():

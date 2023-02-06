@@ -1,64 +1,34 @@
+import os
 from collections import defaultdict
 from datetime import datetime
-import ldap
-import os
 
 import flask
-from flask import (
-    _app_ctx_stack,
-    current_app,
-    flash,
-    g,
-    redirect,
-    render_template,
-    request,
-    Response,
-    url_for,
-)
-
-from flask_principal import PermissionDenied
-from flask_login import login_user, login_required, logout_user
+import ldap
+from flask import (Response, _app_ctx_stack, current_app, flash, g, redirect,
+                   render_template, request, url_for)
 from flask_login import current_user as c_user
-
+from flask_login import login_required, login_user, logout_user
+from flask_mail import Message
+from flask_principal import PermissionDenied
 from flask_security import user_registered
 from flask_security.forms import ChangePasswordForm, ResetPasswordForm
+from flask_security.recoverable import (reset_password_token_status,
+                                        send_reset_password_instructions)
 from flask_security.registerable import register_user
-from flask_security.recoverable import (
-    reset_password_token_status,
-    send_reset_password_instructions,
-)
-from flask_security.utils import (
-    encrypt_password,
-    get_message,
-    get_url,
-    config_value,
-)
-from flask_mail import Message
-
+from flask_security.utils import (config_value, encrypt_password, get_message,
+                                  get_url)
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.local import LocalProxy
 
 from art17 import models
 from art17.auth import auth, login_manager
-from art17.auth.security import current_user
-from art17.auth.common import (
-    require_admin,
-    set_user_active,
-    get_ldap_user_info,
-    activate_and_notify_admin,
-    add_default_role,
-    check_dates,
-    safe_send_mail,
-)
+from art17.auth.common import (activate_and_notify_admin, add_default_role,
+                               check_dates, get_ldap_user_info, require_admin,
+                               safe_send_mail, set_user_active)
 from art17.auth.forms import DatasetForm, LoginForm
-from art17.auth.security import (
-    Art17LocalRegisterForm,
-    Art17LDAPRegisterForm,
-    Art17AdminEditUserForm,
-    AnonymousUser,
-    encrypt_password,
-    verify,
-)
+from art17.auth.security import (AnonymousUser, Art17AdminEditUserForm,
+                                 Art17LDAPRegisterForm, Art17LocalRegisterForm,
+                                 current_user, encrypt_password, verify)
 from art17.common import HOMEPAGE_VIEW_NAME, get_config
 
 
@@ -367,13 +337,15 @@ def admin_user(user_id):
     user = models.RegisteredUser.query.get_or_404(user_id)
     current_user_roles = [r.name for r in user.roles]
     all_roles = (
-        models.Role.query.with_entities(models.Role.name, models.Role.description)
+        models.Role.query.with_entities(
+            models.Role.name, models.Role.description
+        )
         .order_by(models.Role.id)
         .all()
     )
 
     if request.method == "POST":
-        if request.form.get("btn") == u"delete":
+        if request.form.get("btn") == "delete":
             # delete from local database
             user = models.RegisteredUser.query.get(user_id)
             models.db.session.delete(user)
@@ -472,7 +444,9 @@ def dataset_edit(dataset_id):
             return redirect(url_for(".dataset_list"))
     else:
         form = DatasetForm(obj=dataset)
-    return render_template("admin/dataset_edit.html", dataset=dataset, form=form)
+    return render_template(
+        "admin/dataset_edit.html", dataset=dataset, form=form
+    )
 
 
 @login_manager.user_loader
@@ -513,7 +487,9 @@ def login():
 
             try_local_login(username, password, form)
             if not current_user.is_authenticated:
-                flash("Invalid username or password. Please try again.", "danger")
+                flash(
+                    "Invalid username or password. Please try again.", "danger"
+                )
                 return render_template("login.html", form=form)
 
         user = models.RegisteredUser.query.filter_by(id=username).first()

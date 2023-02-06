@@ -1,23 +1,14 @@
-from sqlalchemy import and_
-from sqlalchemy import func
+from sqlalchemy import and_, func
 
-from art17.models import (
-    EtcDataSpeciesRegion,
-    EtcDicBiogeoreg,
-    EtcDataHabitattypeRegion,
-    EtcDicHdHabitat,
-    db,
-    EtcDataSpeciesAutomaticAssessment,
-    HabitattypesManualAssessment,
-    EtcDataHabitattypeAutomaticAssessment,
-    SpeciesManualAssessment,
-    DicCountryCode,
-    Comment,
-    HabitatComment,
-    LuSpeciesManual2007,
-    LuHabitatManual2007,
-    RegisteredUser,
-)
+from art17.models import (Comment, DicCountryCode,
+                          EtcDataHabitattypeAutomaticAssessment,
+                          EtcDataHabitattypeRegion,
+                          EtcDataSpeciesAutomaticAssessment,
+                          EtcDataSpeciesRegion, EtcDicBiogeoreg,
+                          EtcDicHdHabitat, HabitatComment,
+                          HabitattypesManualAssessment, LuHabitatManual2007,
+                          LuSpeciesManual2007, RegisteredUser,
+                          SpeciesManualAssessment, db)
 
 
 class MixinsCommon(object):
@@ -64,7 +55,9 @@ class MixinsCommon(object):
             )
         else:
             regions = (
-                EtcDicBiogeoreg.query.join(cls.model_cls, reg_code_field == reg_field)
+                EtcDicBiogeoreg.query.join(
+                    cls.model_cls, reg_code_field == reg_field
+                )
                 .filter_by(dataset_id=period)
                 .with_entities(reg_field, reg_name_field)
                 .distinct()
@@ -90,7 +83,9 @@ class MixinsCommon(object):
         blank_option = [("", "All bioregions")]
         country_field = cls.model_cls.eu_country_code
         regions = (
-            cls._get_regions_query(period, short).filter(country_field == country).all()
+            cls._get_regions_query(period, short)
+            .filter(country_field == country)
+            .all()
         )
         return blank_option + regions
 
@@ -101,7 +96,9 @@ class MixinsCommon(object):
 
     @classmethod
     def get_MS(cls, subject, region, period):
-        ms_qs = cls.model_cls.query.filter_by(subject=subject, dataset_id=period)
+        ms_qs = cls.model_cls.query.filter_by(
+            subject=subject, dataset_id=period
+        )
         if region:
             ms_qs = ms_qs.filter_by(region=region)
         ms_qs = ms_qs.with_entities(
@@ -127,7 +124,8 @@ class MixinsCommon(object):
                 ),
             )
             .outerjoin(
-                RegisteredUser, cls.model_manual_cls.user_id == RegisteredUser.id
+                RegisteredUser,
+                cls.model_manual_cls.user_id == RegisteredUser.id,
             )
             .with_entities(cls.model_manual_cls.user_id, RegisteredUser.name)
             .filter(
@@ -140,7 +138,7 @@ class MixinsCommon(object):
         assessors_data = []
         for user_id, name in assessors:
             name = name or user_id
-            assessors_data.append((user_id, u"{0} ({1})".format(name, user_id)))
+            assessors_data.append((user_id, "{0} ({1})".format(name, user_id)))
         return blank_option + assessors_data
 
 
@@ -175,7 +173,9 @@ class SpeciesMixin(MixinsCommon):
         group_field = cls.model_cls.group
         dataset_id_field = cls.model_cls.dataset_id
         groups = (
-            cls.model_cls.query.filter(group_field != None, dataset_id_field == period)
+            cls.model_cls.query.filter(
+                group_field != None, dataset_id_field == period
+            )
             .with_entities(group_field, group_field)
             .distinct(func.lower(group_field))
             .order_by(func.lower(group_field))
@@ -203,7 +203,9 @@ class SpeciesMixin(MixinsCommon):
         if period == "4":
             regions = [
                 region.reg_code
-                for region in EtcDicBiogeoreg.query.filter_by(dataset_id=period).all()
+                for region in EtcDicBiogeoreg.query.filter_by(
+                    dataset_id=period
+                ).all()
             ]
 
             subjects = (
@@ -301,7 +303,9 @@ class HabitatMixin(MixinsCommon):
 
             regions = [
                 region.reg_code
-                for region in EtcDicBiogeoreg.query.filter_by(dataset_id=period).all()
+                for region in EtcDicBiogeoreg.query.filter_by(
+                    dataset_id=period
+                ).all()
             ]
             subjs = (
                 EtcDicHdHabitat.query.filter(

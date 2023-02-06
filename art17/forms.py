@@ -1,41 +1,32 @@
 # coding=utf-8
 from flask_wtf import FlaskForm as Form_base
-from wtforms import (
-    BooleanField,
-    DateField,
-    TextAreaField,
-    StringField,
-    SelectField,
-)
+from wtforms import (BooleanField, DateField, SelectField, StringField,
+                     TextAreaField)
 from wtforms.validators import Optional, ValidationError
 
 from art17.common import DEFAULT_MS
-from art17.models import (
-    Dataset,
-    EtcDicMethod,
-    EtcDicConclusion,
-    EtcDicPopulationUnit,
-    EtcDataSpeciesRegion,
-    EtcDataHabitattypeRegion,
-)
-from art17.utils import (
-    validate_field,
-    validate_ref,
-    validate_nonempty,
-    validate_float,
-    validate_operator,
-)
+from art17.models import (Dataset, EtcDataHabitattypeRegion,
+                          EtcDataSpeciesRegion, EtcDicConclusion, EtcDicMethod,
+                          EtcDicPopulationUnit)
+from art17.utils import (validate_field, validate_float, validate_nonempty,
+                         validate_operator, validate_ref)
 
 EMPTY_FORM = "Please fill at least one field"
-NOT_NUMERIC_VALUES = "Only numeric values with not more than two decimals are accepted!"
-NOT_KNOWN_OPERATORS = "Only the following values are accepted: " + u"≈, <, >>, >, x"
+NOT_NUMERIC_VALUES = (
+    "Only numeric values with not more than two decimals are accepted!"
+)
+NOT_KNOWN_OPERATORS = (
+    "Only the following values are accepted: " + "≈, <, >>, >, x"
+)
 
 METH_CONCL_MANDATORY = "At least one method and conclusion must be filled!"
 METH_CONCL_PAIR_MANDATORY = (
-    "You cannot add a conclusion without a method, " "nor a method without a conclusion"
+    "You cannot add a conclusion without a method, "
+    "nor a method without a conclusion"
 )
 INVALID_MS_REGION_PAIR = (
-    "Please select an MS country code that is available " "for the selected region"
+    "Please select an MS country code that is available "
+    "for the selected region"
 )
 
 NATURE_CHOICES = [("", ""), ("gen", "gen"), ("nong", "nong"), ("nc", "nc")]
@@ -63,7 +54,13 @@ PROSPECTS_CHOICES = [
 
 ZERO_METHODS = [("0MS", "0MS"), ("0EQ", "0EQ")]
 
-OPERATOR_CHOICES = [(u"≈", u"≈"), ("<", "<"), (">>", ">>"), (">", ">"), ("x", "x")]
+OPERATOR_CHOICES = [
+    ("≈", "≈"),
+    ("<", "<"),
+    (">>", ">>"),
+    (">", ">"),
+    ("x", "x"),
+]
 
 
 def all_fields(form):
@@ -98,7 +95,9 @@ def ref_validation(form, field):
 
 def species_ms_validator(form, field):
     member_states = (
-        EtcDataSpeciesRegion.query.with_entities(EtcDataSpeciesRegion.eu_country_code)
+        EtcDataSpeciesRegion.query.with_entities(
+            EtcDataSpeciesRegion.eu_country_code
+        )
         .filter_by(
             region=form.region.data,
             subject=form.kwargs["subject"],
@@ -188,7 +187,9 @@ class _OptionsBase(object):
         return [
             (a, b)
             for (a, b) in methods
-            if not a or a.startswith("1") or (a.startswith("2") and a != self.EXCLUDE2)
+            if not a
+            or a.startswith("1")
+            or (a.startswith("2") and a != self.EXCLUDE2)
         ]
 
     def get_sf_options(self, methods):
@@ -250,13 +251,17 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
     region = SelectField(default="")
 
-    range_surface_area = StringField(default=None, validators=[numeric_validation])
+    range_surface_area = StringField(
+        default=None, validators=[numeric_validation]
+    )
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
     complementary_favourable_range = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_population = StringField(validators=[float_validation])
+    complementary_favourable_population = StringField(
+        validators=[float_validation]
+    )
     complementary_favourable_population_q = OptionalSelectField()
     population_minimum_size = StringField(validators=[float_validation])
     population_maximum_size = StringField(validators=[float_validation])
@@ -293,7 +298,9 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
         methods = empty + list(zip(methods, methods))
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
-        conclusions = [("Not selected", "")] + list(zip(conclusions, conclusions))
+        conclusions = [("Not selected", "")] + list(
+            zip(conclusions, conclusions)
+        )
         conclusions = self.filter_conclusions(conclusions)
         # trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
         # trends = empty + zip(trends, trends)
@@ -303,15 +310,21 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
         self.region.choices = empty
 
-        self.method_range.choices = ZERO_METHODS + self.get_method_options(methods)
+        self.method_range.choices = ZERO_METHODS + self.get_method_options(
+            methods
+        )
 
         # modify
         self.population_unit.choices = units
         self.complementary_favourable_population_unit.choices = units
 
-        self.method_population.choices = ZERO_METHODS + self.get_method_options(methods)
+        self.method_population.choices = ZERO_METHODS + self.get_method_options(
+            methods
+        )
 
-        self.method_habitat.choices = ZERO_METHODS + self.get_sf_options(methods)
+        self.method_habitat.choices = ZERO_METHODS + self.get_sf_options(
+            methods
+        )
 
         self.future_range.choices = PROSPECTS_CHOICES
         self.future_population.choices = PROSPECTS_CHOICES
@@ -320,7 +333,9 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
         self.complementary_favourable_range_q.choices = empty + OPERATOR_CHOICES
-        self.complementary_favourable_population_q.choices = empty + OPERATOR_CHOICES
+        self.complementary_favourable_population_q.choices = (
+            empty + OPERATOR_CHOICES
+        )
         for f in (self.range_trend, self.population_trend, self.habitat_trend):
             f.choices = trends
         for f in (
@@ -434,10 +449,16 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
         self.region.choices = empty
 
-        self.method_range.choices = ZERO_METHODS + self.get_method_options(methods)
-        self.method_area.choices = ZERO_METHODS + self.get_method_options(methods)
+        self.method_range.choices = ZERO_METHODS + self.get_method_options(
+            methods
+        )
+        self.method_area.choices = ZERO_METHODS + self.get_method_options(
+            methods
+        )
 
-        self.method_structure.choices = ZERO_METHODS + self.get_method_options(methods)
+        self.method_structure.choices = ZERO_METHODS + self.get_method_options(
+            methods
+        )
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
@@ -504,7 +525,9 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
     complementary_favourable_range = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_population = StringField(validators=[float_validation])
+    complementary_favourable_population = StringField(
+        validators=[float_validation]
+    )
     complementary_favourable_population_q = OptionalSelectField()
     backcasted_2007 = OptionalSelectField()
 
@@ -519,12 +542,16 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin, OptionsBaseSpecies):
         super(SummaryManualFormSpeciesRef, self).__init__(*args, **kwargs)
         empty = [("", "")]
         self.complementary_favourable_range_q.choices = empty + OPERATOR_CHOICES
-        self.complementary_favourable_population_q.choices = empty + OPERATOR_CHOICES
+        self.complementary_favourable_population_q.choices = (
+            empty + OPERATOR_CHOICES
+        )
 
 
 class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
 
-    MS = SelectField(default=DEFAULT_MS, validators=[Optional(), species_ms_validator])
+    MS = SelectField(
+        default=DEFAULT_MS, validators=[Optional(), species_ms_validator]
+    )
 
 
 class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
@@ -553,7 +580,9 @@ class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
 class SummaryManualFormHabitatRefSTA(SummaryManualFormHabitatRef):
 
-    MS = SelectField(default=DEFAULT_MS, validators=[Optional(), habitat_ms_validator])
+    MS = SelectField(
+        default=DEFAULT_MS, validators=[Optional(), habitat_ms_validator]
+    )
 
 
 class ProgressFilterForm(Form):
@@ -590,10 +619,13 @@ class RevisedForm(Form):
 
 
 class ConfigForm(Form):
-    start_date = DateField(label="Start date (YYYY-MM-DD)", validators=[Optional()])
+    start_date = DateField(
+        label="Start date (YYYY-MM-DD)", validators=[Optional()]
+    )
     end_date = DateField(label="End date (YYYY-MM-DD)", validators=[Optional()])
     admin_email = StringField(
-        label="Administrator email (space separated list)", validators=[Optional()]
+        label="Administrator email (space separated list)",
+        validators=[Optional()],
     )
     default_dataset_id = SelectField(label="Default period")
 

@@ -1,10 +1,9 @@
 import csv
-import click
 
+import click
 from flask.cli import AppGroup
 
-from art17.models import db, Wiki, WikiChange
-
+from art17.models import Wiki, WikiChange, db
 
 pre_fill_wiki_changes_species = AppGroup("pre_fill_wiki_changes_species")
 

@@ -1,33 +1,18 @@
 # coding: utf-8
 import json
-import ldap
 import os
-
-from sqlalchemy import (
-    Column,
-    DateTime,
-    Float,
-    ForeignKey,
-    Integer,
-    LargeBinary,
-    SmallInteger,
-    String,
-    Table,
-    Text,
-    Boolean,
-)
-
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import or_, inspect
-
-from flask import current_app as app
-from flask_sqlalchemy import SQLAlchemy
-from flask_security import UserMixin, RoleMixin
-
 import sys
 from datetime import datetime
 
+import ldap
+from flask import current_app as app
+from flask_security import RoleMixin, UserMixin
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import (Boolean, Column, DateTime, Float, ForeignKey, Integer,
+                        LargeBinary, SmallInteger, String, Table, Text,
+                        inspect, or_)
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 
 DEFAULT_MS = "EU28"
 
@@ -78,10 +63,14 @@ class Dataset(Base):
                 ).count()
             ),
             "species_manual": (
-                SpeciesManualAssessment.query.filter_by(dataset_id=self.id).count()
+                SpeciesManualAssessment.query.filter_by(
+                    dataset_id=self.id
+                ).count()
             ),
             "habitat_content": (
-                EtcDataHabitattypeRegion.query.filter_by(dataset_id=self.id).count()
+                EtcDataHabitattypeRegion.query.filter_by(
+                    dataset_id=self.id
+                ).count()
             ),
             "habitat_auto": (
                 EtcDataHabitattypeAutomaticAssessment.query.filter_by(
@@ -89,7 +78,9 @@ class Dataset(Base):
                 ).count()
             ),
             "habitat_manual": (
-                HabitattypesManualAssessment.query.filter_by(dataset_id=self.id).count()
+                HabitattypesManualAssessment.query.filter_by(
+                    dataset_id=self.id
+                ).count()
             ),
         }
 
@@ -370,7 +361,9 @@ class EtcDataHcoveragePressure(Base):
 
     eu_country_code = Column(String(2), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
-    habitatcode = Column(String(4), primary_key=True, nullable=False, default="0")
+    habitatcode = Column(
+        String(4), primary_key=True, nullable=False, default="0"
+    )
     pressure = Column(String(3), primary_key=True, nullable=False, default="")
 
     dataset_id = Column(
@@ -385,7 +378,9 @@ class EtcDataHcoverageThreat(Base):
 
     eu_country_code = Column(String(2), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
-    habitatcode = Column(String(4), primary_key=True, nullable=False, default="0")
+    habitatcode = Column(
+        String(4), primary_key=True, nullable=False, default="0"
+    )
     threat = Column(String(3), primary_key=True, nullable=False, default="")
 
     dataset_id = Column(
@@ -500,7 +495,9 @@ class EtcDataSpeciesRegion(Base):
     eunis_species_code = Column(Integer)
     valid_speciesname = Column(String(50))
     n2000_species_code = Column(Integer)
-    speciescode_IRM = Column("speciescode_irm", String(10))  # 2018 n2000_species_code
+    speciescode_IRM = Column(
+        "speciescode_irm", String(10)
+    )  # 2018 n2000_species_code
     assessment_speciescode = Column(Integer)
     assesment_speciesname = Column(String(60))
     assessment_speciesname_changed = Column(Integer)
@@ -586,7 +583,9 @@ class EtcDataSpeciesRegion(Base):
     )
     dataset = relationship(Dataset)
     use_for_statistics = Column(Boolean)
-    population_unit = Column(String(20))  # this is actually population_size_unit
+    population_unit = Column(
+        String(20)
+    )  # this is actually population_size_unit
 
     remote_url_2006 = Column(String(350), nullable=True)
     remote_url_2012 = Column(String(350), nullable=True)
@@ -625,7 +624,9 @@ class EtcDataSpopulationPressure(Base):
 
     eu_country_code = Column(String(2), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
-    n2000_species_code = Column(Integer, primary_key=True, nullable=False, default=0)
+    n2000_species_code = Column(
+        Integer, primary_key=True, nullable=False, default=0
+    )
     assesment_speciesname = Column(String(60), nullable=False)
     pressure = Column(String(3), primary_key=True, nullable=False, default="")
 
@@ -641,7 +642,9 @@ class EtcDataSpopulationThreat(Base):
 
     eu_country_code = Column(String(2), primary_key=True, nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
-    n2000_species_code = Column(Integer, primary_key=True, nullable=False, default=0)
+    n2000_species_code = Column(
+        Integer, primary_key=True, nullable=False, default=0
+    )
     assesment_speciesname = Column(String(60), nullable=False)
     threat = Column(String(3), primary_key=True, nullable=False, default="")
 
@@ -806,7 +809,11 @@ class EtcDicTrend(Base):
 
     @classmethod
     def all(cls, dataset_id):
-        return cls.query.with_entities(cls.trend).filter_by(dataset_id=dataset_id).all()
+        return (
+            cls.query.with_entities(cls.trend)
+            .filter_by(dataset_id=dataset_id)
+            .all()
+        )
 
 
 class EtcQaErrorsHabitattypeManualChecked(Base):
@@ -938,7 +945,9 @@ t_habitat_group = Table(
 class HabitattypesManualAssessment(Base):
     __tablename__ = "habitattypes_manual_assessment"
 
-    MS = Column("ms", String(4), primary_key=True, nullable=False, default=DEFAULT_MS)
+    MS = Column(
+        "ms", String(4), primary_key=True, nullable=False, default=DEFAULT_MS
+    )
     region = Column(String(4), primary_key=True, nullable=False)
     habitatcode = Column(String(50), primary_key=True, nullable=False)
     range_surface_area = Column(String(23))
@@ -984,7 +993,9 @@ class HabitattypesManualAssessment(Base):
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     backcasted_2007 = Column(String(4))
-    user_id = Column("user", String(25), primary_key=True, nullable=False, default="")
+    user_id = Column(
+        "user", String(25), primary_key=True, nullable=False, default=""
+    )
     last_update = Column(String(16))
     deleted = Column("deleted_record", Integer)
     decision = Column(String(3))
@@ -1023,7 +1034,10 @@ class HabitattypesManualAssessment(Base):
             .filter(HabitatComment.dataset_id == self.dataset_id)
             .filter(text("habitat_comments_read.reader_user_id='%s'" % user))
             .filter(
-                or_(HabitatComment.deleted == False, HabitatComment.deleted == None)
+                or_(
+                    HabitatComment.deleted == False,
+                    HabitatComment.deleted == None,
+                )
             )
             .count()
         )
@@ -1089,7 +1103,9 @@ class PhotoHabitat(Base):
     photographer = Column(String(64))
     location = Column(String(64))
     content_type = Column(String(32))
-    picture_date = Column(DateTime, nullable=False, server_default=u"CURRENT_TIMESTAMP")
+    picture_date = Column(
+        DateTime, nullable=False, server_default="CURRENT_TIMESTAMP"
+    )
     picture_data = Column(db.BLOB())
     thumbnail = Column(db.BLOB())
     user = Column(String(50), nullable=False, default="")
@@ -1126,7 +1142,9 @@ class PhotoSpecy(Base):
 roles_users = db.Table(
     "roles_users",
     db.Column(
-        "registered_users_user", db.String(50), db.ForeignKey("registered_users.user")
+        "registered_users_user",
+        db.String(50),
+        db.ForeignKey("registered_users.user"),
     ),
     db.Column("role_id", db.Integer(), db.ForeignKey("roles.id")),
 )
@@ -1161,7 +1179,9 @@ class RegisteredUser(Base, UserMixin):
     @staticmethod
     def try_login(username, password):
         conn = get_ldap_connection()
-        conn.simple_bind_s("uid=%s,ou=Users,o=EIONET,l=Europe" % username, password)
+        conn.simple_bind_s(
+            "uid=%s,ou=Users,o=EIONET,l=Europe" % username, password
+        )
 
     @property
     def is_authenticated(self):
@@ -1218,7 +1238,9 @@ t_species_group = Table(
 class SpeciesManualAssessment(Base):
     __tablename__ = "species_manual_assessment"
 
-    MS = Column("ms", String(4), primary_key=True, nullable=False, default=DEFAULT_MS)
+    MS = Column(
+        "ms", String(4), primary_key=True, nullable=False, default=DEFAULT_MS
+    )
     region = Column(String(4), primary_key=True, nullable=False)
     assesment_speciesname = Column(String(60), primary_key=True, nullable=False)
     range_surface_area = Column(String(23))
@@ -1262,7 +1284,9 @@ class SpeciesManualAssessment(Base):
     conclusion_target1 = Column(String(3))
     backcasted_2007 = Column(String(4))
 
-    user_id = Column("user", String(25), primary_key=True, nullable=False, default="")
+    user_id = Column(
+        "user", String(25), primary_key=True, nullable=False, default=""
+    )
     last_update = Column(String(16))
     deleted = Column("deleted_record", Integer)
     decision = Column(String(3))
@@ -1361,7 +1385,9 @@ class WikiChange(Base):
     body = Column(String(6000), nullable=False)
     editor = Column(String(60), nullable=False)
     revised = Column(Boolean)
-    changed = Column(DateTime, nullable=False, server_default=u"CURRENT_TIMESTAMP")
+    changed = Column(
+        DateTime, nullable=False, server_default="CURRENT_TIMESTAMP"
+    )
     active = Column(Integer, default=0)
     dataset_id = Column(
         "ext_dataset_id",
@@ -1369,7 +1395,7 @@ class WikiChange(Base):
     )
     dataset = relationship(Dataset)
     wiki = relationship(
-        u"Wiki",
+        "Wiki",
         primaryjoin="and_(WikiChange.wiki_id==Wiki.id,"
         "WikiChange.dataset_id==Wiki.dataset_id)",
         foreign_keys=[wiki_id, dataset_id],
@@ -1397,7 +1423,7 @@ class WikiComment(Base):
     posted = Column(
         DateTime,
         nullable=False,
-        server_default=u"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+        server_default="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
     )
     dataset_id = Column(
         "ext_dataset_id",
@@ -1405,7 +1431,7 @@ class WikiComment(Base):
     )
 
     wiki = relationship(
-        u"Wiki",
+        "Wiki",
         primaryjoin="and_(WikiComment.wiki_id==Wiki.id,"
         "WikiComment.dataset_id==Wiki.dataset_id)",
         foreign_keys=[wiki_id, dataset_id],
@@ -1419,7 +1445,9 @@ class WikiComment(Base):
     )
 
     readers = relationship(
-        "RegisteredUser", secondary=t_wiki_comments_read, backref="read_comments"
+        "RegisteredUser",
+        secondary=t_wiki_comments_read,
+        backref="read_comments",
     )
 
     def read_for(self, user):
@@ -1457,7 +1485,9 @@ class WikiTrailChange(Base):
     wiki_id = Column(ForeignKey("wiki_trail.id"), nullable=False)
     body = Column(String(6000), nullable=False)
     editor = Column(String(60), nullable=False)
-    changed = Column(DateTime, nullable=False, server_default=u"CURRENT_TIMESTAMP")
+    changed = Column(
+        DateTime, nullable=False, server_default="CURRENT_TIMESTAMP"
+    )
     active = Column(Integer, default=0)
     dataset_id = Column(
         "ext_dataset_id",
@@ -1465,7 +1495,7 @@ class WikiTrailChange(Base):
     )
     dataset = relationship(Dataset)
     wiki = relationship(
-        u"WikiTrail",
+        "WikiTrail",
         primaryjoin="and_(WikiTrailChange.wiki_id==WikiTrail.id,"
         "WikiTrailChange.dataset_id==WikiTrail.dataset_id)",
         foreign_keys=[wiki_id, dataset_id],
@@ -1485,7 +1515,7 @@ class WikiTrailComment(Base):
     posted = Column(
         DateTime,
         nullable=False,
-        server_default=u"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+        server_default="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
     )
 
     dataset_id = Column(
@@ -1494,7 +1524,7 @@ class WikiTrailComment(Base):
     )
 
     wiki = relationship(
-        u"WikiTrail",
+        "WikiTrail",
         primaryjoin="and_(WikiTrailComment.wiki_id==WikiTrail.id,"
         "WikiTrailComment.dataset_id==WikiTrail.dataset_id)",
         foreign_keys=[wiki_id, dataset_id],
@@ -1545,7 +1575,9 @@ class LuHabitatManual2007(Base):
 
     subject = Column("habitatcode", String(50), primary_key=True)
     region = Column(String(4), primary_key=True)
-    conclusion_assessment = Column(String(2), nullable=True)  # used for period 2007
+    conclusion_assessment = Column(
+        String(2), nullable=True
+    )  # used for period 2007
     conclusion_assessment_prev = Column(
         String(3), nullable=True
     )  # used for period 2013
@@ -1614,7 +1646,11 @@ def dumpdata(model):
             primary_keys.append(field)
     entries = base_class.query.all()
     for entry in entries:
-        kwargs = {"model": model, "filter_fields": ",".join(primary_keys), "fields": {}}
+        kwargs = {
+            "model": model,
+            "filter_fields": ",".join(primary_keys),
+            "fields": {},
+        }
 
         for field in model_fields:
             value = getattr(entry, field)
@@ -1627,7 +1663,9 @@ def dumpdata(model):
         for rfield in relationship_fields:
             class_field = getattr(entry, rfield)
 
-            if isinstance(class_field, sqlalchemy.orm.collections.InstrumentedList):
+            if isinstance(
+                class_field, sqlalchemy.orm.collections.InstrumentedList
+            ):
                 kwargs["fields"][rfield] = []
                 for subfield in class_field:
                     kwargs["fields"][rfield].append(subfield.id)

@@ -1,8 +1,8 @@
 revision = "0034"
 down_revision = "0033"
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 
 def upgrade():
@@ -34,17 +34,25 @@ def upgrade():
     op.add_column(
         "species_manual_assessment",
         sa.Column(
-            "conclusion_assessment_trend_prev", sa.String(length=20), nullable=True
+            "conclusion_assessment_trend_prev",
+            sa.String(length=20),
+            nullable=True,
         ),
     )
-    op.drop_column("species_manual_assessment", "conclusion_assessment_prev_trend")
+    op.drop_column(
+        "species_manual_assessment", "conclusion_assessment_prev_trend"
+    )
     op.add_column(
         "species_manual_assessment",
         sa.Column(
-            "conclusion_assessment_trend_change", sa.String(length=20), nullable=True
+            "conclusion_assessment_trend_change",
+            sa.String(length=20),
+            nullable=True,
         ),
     )
-    op.drop_column("species_manual_assessment", "conclusion_assessment_change_trend")
+    op.drop_column(
+        "species_manual_assessment", "conclusion_assessment_change_trend"
+    )
     op.add_column(
         "species_manual_assessment",
         sa.Column("backcasted_2007", sa.String(length=4), nullable=True),
@@ -85,20 +93,28 @@ def upgrade():
     )
     op.drop_column("habitattypes_manual_assessment", "range_future_prospects")
     op.drop_column("habitattypes_manual_assessment", "area_future_prospects")
-    op.drop_column("habitattypes_manual_assessment", "structure_future_prospects")
+    op.drop_column(
+        "habitattypes_manual_assessment", "structure_future_prospects"
+    )
     op.add_column(
         "habitattypes_manual_assessment",
         sa.Column(
-            "conclusion_assessment_trend_change", sa.String(length=20), nullable=True
+            "conclusion_assessment_trend_change",
+            sa.String(length=20),
+            nullable=True,
         ),
     )
     op.add_column(
         "habitattypes_manual_assessment",
         sa.Column(
-            "conclusion_assessment_trend_prev", sa.String(length=20), nullable=True
+            "conclusion_assessment_trend_prev",
+            sa.String(length=20),
+            nullable=True,
         ),
     )
-    op.drop_column("habitattypes_manual_assessment", "conclusion_assessment_prev_trend")
+    op.drop_column(
+        "habitattypes_manual_assessment", "conclusion_assessment_prev_trend"
+    )
     op.drop_column(
         "habitattypes_manual_assessment", "conclusion_assessment_change_trend"
     )
@@ -123,22 +139,30 @@ def downgrade():
     op.add_column(
         "habitattypes_manual_assessment",
         sa.Column(
-            "conclusion_assessment_change_trend", sa.String(length=20), nullable=True
+            "conclusion_assessment_change_trend",
+            sa.String(length=20),
+            nullable=True,
         ),
     )
     op.add_column(
         "habitattypes_manual_assessment",
         sa.Column(
-            "conclusion_assessment_prev_trend", sa.String(length=20), nullable=True
+            "conclusion_assessment_prev_trend",
+            sa.String(length=20),
+            nullable=True,
         ),
     )
-    op.drop_column("habitattypes_manual_assessment", "conclusion_assessment_trend_prev")
+    op.drop_column(
+        "habitattypes_manual_assessment", "conclusion_assessment_trend_prev"
+    )
     op.drop_column(
         "habitattypes_manual_assessment", "conclusion_assessment_trend_change"
     )
     op.add_column(
         "habitattypes_manual_assessment",
-        sa.Column("structure_future_prospects", sa.String(length=20), nullable=True),
+        sa.Column(
+            "structure_future_prospects", sa.String(length=20), nullable=True
+        ),
     )
     op.add_column(
         "habitattypes_manual_assessment",
@@ -146,7 +170,9 @@ def downgrade():
     )
     op.add_column(
         "habitattypes_manual_assessment",
-        sa.Column("range_future_prospects", sa.String(length=20), nullable=True),
+        sa.Column(
+            "range_future_prospects", sa.String(length=20), nullable=True
+        ),
     )
     op.drop_column("habitattypes_manual_assessment", "future_structure")
     op.drop_column("habitattypes_manual_assessment", "future_range")
@@ -161,11 +187,15 @@ def downgrade():
     )
     op.add_column(
         "habitattypes_manual_assessment",
-        sa.Column("not_known_structure", sa.Float(asdecimal=True), nullable=True),
+        sa.Column(
+            "not_known_structure", sa.Float(asdecimal=True), nullable=True
+        ),
     )
     op.add_column(
         "habitattypes_manual_assessment",
-        sa.Column("not_good_structure", sa.Float(asdecimal=True), nullable=True),
+        sa.Column(
+            "not_good_structure", sa.Float(asdecimal=True), nullable=True
+        ),
     )
     op.drop_column("habitattypes_manual_assessment", "hab_condition_unknown")
     op.drop_column("habitattypes_manual_assessment", "hab_condition_notgood")
@@ -180,28 +210,42 @@ def downgrade():
     op.add_column(
         "species_manual_assessment",
         sa.Column(
-            "conclusion_assessment_change_trend", sa.String(length=20), nullable=True
+            "conclusion_assessment_change_trend",
+            sa.String(length=20),
+            nullable=True,
         ),
     )
-    op.drop_column("species_manual_assessment", "conclusion_assessment_trend_change")
+    op.drop_column(
+        "species_manual_assessment", "conclusion_assessment_trend_change"
+    )
     op.add_column(
         "species_manual_assessment",
         sa.Column(
-            "conclusion_assessment_prev_trend", sa.String(length=20), nullable=True
+            "conclusion_assessment_prev_trend",
+            sa.String(length=20),
+            nullable=True,
         ),
     )
-    op.drop_column("species_manual_assessment", "conclusion_assessment_trend_prev")
-    op.add_column(
-        "species_manual_assessment",
-        sa.Column("habitat_future_prospects", sa.String(length=20), nullable=True),
+    op.drop_column(
+        "species_manual_assessment", "conclusion_assessment_trend_prev"
     )
     op.add_column(
         "species_manual_assessment",
-        sa.Column("range_future_prospects", sa.String(length=20), nullable=True),
+        sa.Column(
+            "habitat_future_prospects", sa.String(length=20), nullable=True
+        ),
     )
     op.add_column(
         "species_manual_assessment",
-        sa.Column("population_future_prospects", sa.String(length=20), nullable=True),
+        sa.Column(
+            "range_future_prospects", sa.String(length=20), nullable=True
+        ),
+    )
+    op.add_column(
+        "species_manual_assessment",
+        sa.Column(
+            "population_future_prospects", sa.String(length=20), nullable=True
+        ),
     )
     op.drop_column("species_manual_assessment", "future_range")
     op.drop_column("species_manual_assessment", "future_population")

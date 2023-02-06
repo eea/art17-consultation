@@ -1,8 +1,8 @@
 revision = "0024"
 down_revision = "0023"
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 table_pks = [("wiki", ["id"]), ("wiki_trail", ["id"])]
 
@@ -21,10 +21,12 @@ def upgrade():
         alter_pk(table, new_pk)
 
     op.add_column(
-        "wiki_comments", sa.Column("ext_dataset_id", sa.Integer(), nullable=False)
+        "wiki_comments",
+        sa.Column("ext_dataset_id", sa.Integer(), nullable=False),
     )
     op.add_column(
-        "wiki_trail_comments", sa.Column("ext_dataset_id", sa.Integer(), nullable=False)
+        "wiki_trail_comments",
+        sa.Column("ext_dataset_id", sa.Integer(), nullable=False),
     )
 
 

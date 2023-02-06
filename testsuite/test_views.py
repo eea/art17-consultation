@@ -1,9 +1,8 @@
 import pytest
 
 from art17.models import db
-from .factories import (
-    DatasetFactory,
-)
+
+from .factories import DatasetFactory
 
 
 @pytest.fixture(autouse=True)
@@ -22,13 +21,23 @@ def test_homepage(client, app, set_auth):
     [
         (
             "/species/summary/",
-            {"group": "Mammals", "period": "5", "subject": "Canis lupus", "region": ""},
+            {
+                "group": "Mammals",
+                "period": "5",
+                "subject": "Canis lupus",
+                "region": "",
+            },
             "Canis lupus",
             True,
         ),
         (
             "/species/summary/",
-            {"group": "Mammals", "period": "5", "subject": "Capra ibex", "region": ""},
+            {
+                "group": "Mammals",
+                "period": "5",
+                "subject": "Capra ibex",
+                "region": "",
+            },
             "Canis lupus",
             False,
         ),
@@ -58,13 +67,23 @@ def test_homepage(client, app, set_auth):
         ),
         (
             "/habitat/summary/",
-            {"period": "5", "group": "forests", "subject": "9010", "region": ""},
+            {
+                "period": "5",
+                "group": "forests",
+                "subject": "9010",
+                "region": "",
+            },
             "forests, 9010",
             True,
         ),
         (
             "/habitat/summary/",
-            {"period": "5", "group": "grasslands", "subject": "6110", "region": ""},
+            {
+                "period": "5",
+                "group": "grasslands",
+                "subject": "6110",
+                "region": "",
+            },
             "forests, 9010",
             False,
         ),
@@ -88,7 +107,12 @@ def test_homepage(client, app, set_auth):
         ),
         (
             "/habitat/report/",
-            {"period": "5", "group": "Grasslands", "country": "EL", "region": ""},
+            {
+                "period": "5",
+                "group": "Grasslands",
+                "country": "EL",
+                "region": "",
+            },
             "Forests, IT",
             False,
         ),

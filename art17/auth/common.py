@@ -1,14 +1,13 @@
+import logging
 from datetime import date
 from functools import wraps
-import ldap
-import logging
+from smtplib import SMTPException
 
 import flask
+import ldap
+from eea.usersdb import UserNotFound, UsersDB
 from flask_mail import Message
 from flask_security import signals as security_signals
-
-from smtplib import SMTPException
-from eea.usersdb import UsersDB, UserNotFound
 
 from art17 import models
 from art17.common import admin_perm, get_config

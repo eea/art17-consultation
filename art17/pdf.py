@@ -1,11 +1,12 @@
-import os
 import logging
+import os
 import subprocess
 import uuid
-from path import Path
 
+from flask import Response
 from flask import current_app as app
-from flask import Response, g
+from flask import g
+from path import Path
 
 _PAGE_DEFAULT_MARGIN = {
     "top": "30mm",
@@ -101,7 +102,9 @@ class PdfRenderer(object):
         command += [str(self.template_path), str(self.pdf_path)]
 
         with open(os.devnull, "w") as FNULL:
-            subprocess.check_call(command, stdout=FNULL, stderr=subprocess.STDOUT)
+            subprocess.check_call(
+                command, stdout=FNULL, stderr=subprocess.STDOUT
+            )
 
     def _generate(self):
         self._render_template()

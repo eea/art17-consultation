@@ -1,5 +1,6 @@
 from flask.cli import AppGroup
 
+from art17 import models
 # from flask_security.script import (
 #     CreateUserCommand as BaseCreateUserCommand,
 #     CreateRoleCommand,
@@ -9,8 +10,6 @@ from flask.cli import AppGroup
 #     ActivateUserCommand,
 # )
 from art17.auth.common import get_ldap_user_info
-from art17 import models
-
 
 # class CreateUserCommand(BaseCreateUserCommand):
 

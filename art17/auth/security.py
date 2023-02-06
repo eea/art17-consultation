@@ -1,29 +1,19 @@
 from datetime import datetime
 
 import flask
-
-from flask_login import current_user as c_user
-from flask_wtf import FlaskForm
-
 import flask_security as flask_security
-from flask_security import SQLAlchemyUserDatastore
-from flask_security import AnonymousUser as BaseAnonymousUser
-from flask_security.forms import (
-    ConfirmRegisterForm,
-    RegisterFormMixin,
-    ForgotPasswordForm,
-    # password_length,
-    Required,
-    email_validator,
-    unique_user_email,
-)
 import flask_security.utils
-
+from flask_login import current_user as c_user
+from flask_security import AnonymousUser as BaseAnonymousUser
+from flask_security import SQLAlchemyUserDatastore
+from flask_security.forms import ConfirmRegisterForm  # password_length,
+from flask_security.forms import (ForgotPasswordForm, RegisterFormMixin,
+                                  Required, email_validator, unique_user_email)
+from flask_wtf import FlaskForm
 from werkzeug.local import LocalProxy
-from wtforms import StringField, BooleanField, ValidationError
+from wtforms import BooleanField, StringField, ValidationError
 
-from art17.auth.common import get_ldap_user_info
-from art17.auth.common import check_dates
+from art17.auth.common import check_dates, get_ldap_user_info
 from art17.auth.forms import Art17RegisterFormBase, CustomEmailStringField
 from art17.models import RegisteredUser
 
@@ -101,7 +91,9 @@ def custom_unique_user_email(form, field):
 
     # check for editing existing objects
     if check and getattr(obj, "id", None) != check.id:
-        raise ValidationError("%s is already associated with an account" % field.data)
+        raise ValidationError(
+            "%s is already associated with an account" % field.data
+        )
 
 
 class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
@@ -117,14 +109,21 @@ class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
 
     email = CustomEmailStringField(
         "Email address",
-        validators=[Required("Email is required"), email_validator, unique_user_email],
+        validators=[
+            Required("Email is required"),
+            email_validator,
+            unique_user_email,
+        ],
     )
 
 
-class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, FlaskForm):
+class Art17LDAPRegisterForm(
+    Art17RegisterFormBase, RegisterFormMixin, FlaskForm
+):
 
     email = StringField(
-        "Email address", validators=[Required("Email is required"), email_validator]
+        "Email address",
+        validators=[Required("Email is required"), email_validator],
     )
 
 
@@ -155,5 +154,6 @@ class Art17ForgotPasswordForm(ForgotPasswordForm):
 
     email = StringField(
         label=ForgotPasswordForm.email.args[0],
-        validators=ForgotPasswordForm.email.kwargs["validators"] + [no_ldap_user],
+        validators=ForgotPasswordForm.email.kwargs["validators"]
+        + [no_ldap_user],
     )

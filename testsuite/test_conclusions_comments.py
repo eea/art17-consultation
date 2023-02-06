@@ -1,14 +1,11 @@
 import pytest
 
-from .factories import (
-    SpeciesManualAssessmentFactory,
-    CommentFactory,
-    HabitattypesManualAssessmentsFactory,
-    HabitatCommentFactory,
-    DatasetFactory,
-)
 from art17 import models
-from .conftest import get_request_params, create_user, force_login
+
+from .conftest import create_user, force_login, get_request_params
+from .factories import (CommentFactory, DatasetFactory, HabitatCommentFactory,
+                        HabitattypesManualAssessmentsFactory,
+                        SpeciesManualAssessmentFactory)
 
 
 @pytest.fixture
@@ -194,7 +191,10 @@ def setup(app):
         ),
         (
             "post",
-            ["/habitat/comments/5/1110/MATL/someuser/", {"MS": "EU28", "edit": 1}],
+            [
+                "/habitat/comments/5/1110/MATL/someuser/",
+                {"MS": "EU28", "edit": 1},
+            ],
             {"comment": "I cannot edit this comment"},
             [],
             True,
@@ -242,7 +242,10 @@ def setup(app):
         ),
         (
             "post",
-            ["/habitat/comments/5/1110/MATL/someuser/", {"MS": "EU28", "edit": 1}],
+            [
+                "/habitat/comments/5/1110/MATL/someuser/",
+                {"MS": "EU28", "edit": 1},
+            ],
             {"comment": "I can edit this comment!"},
             ["testuser"],
             False,
@@ -290,7 +293,10 @@ def setup(app):
         ),
         (
             "post",
-            ["/habitat/comments/5/1110/MATL/someuser/", {"MS": "EU28", "edit": 1}],
+            [
+                "/habitat/comments/5/1110/MATL/someuser/",
+                {"MS": "EU28", "edit": 1},
+            ],
             {"comment": "I can't edit testuser's comment"},
             ["newuser"],
             True,
@@ -459,4 +465,7 @@ def test_count_read_comments_view(
     resp = client.get(*get_request_params("get", request_args))
 
     assert resp.status_code == 200
-    assert resp.html.find("a", {"title": "Comments: Read/Total"}).text.strip() == "1/1"
+    assert (
+        resp.html.find("a", {"title": "Comments: Read/Total"}).text.strip()
+        == "1/1"
+    )

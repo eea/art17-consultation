@@ -1,6 +1,7 @@
+import os
+
 import flask
 import pytest
-import os
 from mock import patch
 
 from art17 import models
@@ -32,7 +33,10 @@ def test_identity_is_set_from_plone_whoami(app, set_auth, client):
 
     identity = client.get("/identity").json
     assert identity["id"] == user_obj.fs_uniquifier
-    assert identity["provides"] == [["id", user_obj.fs_uniquifier], ["role", "admin"]]
+    assert identity["provides"] == [
+        ["id", user_obj.fs_uniquifier],
+        ["role", "admin"],
+    ]
 
 
 def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
@@ -161,8 +165,11 @@ def test_admin_creates_ldap(app, set_auth, client, outbox, ldap_user_info):
 @pytest.mark.skipif(True, reason="always skip")
 # the workflow should probably be removed as the user is now
 # registered and activated on the first ldap login
-def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_info):
+def test_ldap_account_activation_flow(
+    app, set_auth, client, outbox, ldap_user_info
+):
     from art17.auth.providers import set_user
+
     from .factories import DatasetFactory
 
     _set_config(admin_email="admin@example.com")

@@ -2,25 +2,26 @@ import logging
 import logging.handlers
 
 import flask
-
 from flask_mail import Mail
 from flask_migrate import Migrate
 
 from art17.assets import assets_env
 from art17.auth import auth, login_manager
-from art17.auth.script import user_manager, role_manager
-from art17.common import common
+from art17.auth.script import role_manager, user_manager
 from art17.comments import comments
+from art17.common import common
 from art17.dataset import dataset_manager
 from art17.factsheet import factsheet, factsheet_manager
 from art17.layout import layout
-from art17.management.import_greece import import_greece
-from art17.management.generate_new_period import generate_new_period
-from art17.management.fix_manual import fix_manual
-from art17.management.pre_fill_wiki_changes_habitat import pre_fill_wiki_changes_habitat
-from art17.management.pre_fill_wiki_changes_species import pre_fill_wiki_changes_species
-from art17.management.import_new_data import import_new_data
 from art17.management.fix_bg_cdr_link import fix_bg_link
+from art17.management.fix_manual import fix_manual
+from art17.management.generate_new_period import generate_new_period
+from art17.management.import_greece import import_greece
+from art17.management.import_new_data import import_new_data
+from art17.management.pre_fill_wiki_changes_habitat import \
+    pre_fill_wiki_changes_habitat
+from art17.management.pre_fill_wiki_changes_species import \
+    pre_fill_wiki_changes_species
 from art17.maps import maps
 from art17.models import db
 from art17.progress import progress
@@ -28,7 +29,6 @@ from art17.report import report
 from art17.summary import summary
 from art17.utils import inject_static_file
 from art17.wiki import wiki
-
 
 DEFAULT_CONFIG = {
     "WTF_CSRF_ENABLED": False,

@@ -2,6 +2,7 @@ revision = "0001"
 down_revision = None
 
 import os
+
 from alembic import op
 
 SQL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "sql")

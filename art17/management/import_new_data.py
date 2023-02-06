@@ -1,8 +1,7 @@
 import csv
+
 import click
-
 from flask.cli import AppGroup
-
 from flask_sqlalchemy import SQLAlchemy
 
 from art17.models import db

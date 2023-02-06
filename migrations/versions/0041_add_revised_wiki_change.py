@@ -1,12 +1,14 @@
 revision = "0041"
 down_revision = "0040"
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 
 def upgrade():
-    op.add_column("wiki_changes", sa.Column("revised", sa.Boolean(), nullable=True))
+    op.add_column(
+        "wiki_changes", sa.Column("revised", sa.Boolean(), nullable=True)
+    )
 
 
 def downgrade():
