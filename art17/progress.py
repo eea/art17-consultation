@@ -1,34 +1,16 @@
-from flask import (
-    views,
-    request,
-    render_template,
-    Blueprint,
-    url_for,
-    g,
-    abort,
-    jsonify,
-)
+from flask import (Blueprint, abort, g, jsonify, render_template, request,
+                   url_for, views)
 from sqlalchemy import and_
 from werkzeug.datastructures import MultiDict
+
 from art17.auth.security import current_user
-from art17.common import (
-    get_default_period,
-    COUNTRY_ASSESSMENTS,
-    MixinView,
-    admin_perm,
-    consultation_ended,
-)
+from art17.comments import HabitatCommentCounter, SpeciesCommentCounter
+from art17.common import (COUNTRY_ASSESSMENTS, MixinView, admin_perm,
+                          consultation_ended, get_default_period)
 from art17.forms import ProgressFilterForm
-from art17.models import (
-    Dataset,
-    EtcDicBiogeoreg,
-    EtcDicHdHabitat,
-    db,
-    EtcDicDecision,
-    EtcDicMethod,
-)
-from art17.mixins import SpeciesMixin, HabitatMixin
-from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
+from art17.mixins import HabitatMixin, SpeciesMixin
+from art17.models import (Dataset, EtcDicBiogeoreg, EtcDicDecision,
+                          EtcDicHdHabitat, EtcDicMethod, db)
 
 progress = Blueprint("progress", __name__)
 
@@ -104,7 +86,9 @@ def save_conclusion(output, decision, option, conclusion_type):
 
 def get_counts(comment_counts, subject, region):
     key = (subject, region)
-    return {ct: comment_counts[ct].get(key, 0) for ct in ("user", "all", "wiki")}
+    return {
+        ct: comment_counts[ct].get(key, 0) for ct in ("user", "all", "wiki")
+    }
 
 
 class Progress(views.View):
@@ -128,7 +112,12 @@ class Progress(views.View):
         ).filter_by(dataset_id=period)
         presence = {}
         for report in presence_qs:
-            fields = ("subject", "region", "eu_country_code", "species_type_asses")
+            fields = (
+                "subject",
+                "region",
+                "eu_country_code",
+                "species_type_asses",
+            )
             row = dict(zip(fields, report))
             if row["subject"] not in presence:
                 presence[row["subject"]] = {}
@@ -186,7 +175,9 @@ class Progress(views.View):
             title.append(
                 "Decision: {main} ({details})".format(
                     main=cell["main_decision"],
-                    details=self.DECISION_DETAILS.get(cell["main_decision"], "Auto"),
+                    details=self.DECISION_DETAILS.get(
+                        cell["main_decision"], "Auto"
+                    ),
                 )
             )
         title.append(
@@ -239,7 +230,9 @@ class Progress(views.View):
                 else:
                     if output["main_decision"] != "":
                         output = save_decision(output)
-                    output = save_conclusion(output, decision, option, conclusion_type)
+                    output = save_conclusion(
+                        output, decision, option, conclusion_type
+                    )
             # else current conclusion is not acceptated
             else:
                 if output["main_decision"] in ["OK", "END"]:
@@ -247,7 +240,10 @@ class Progress(views.View):
                 else:
                     if user_is_expert(user):
                         if output["main_decision"] != "":
-                            if output["user_id"] != user and output["overall"] == "MTX":
+                            if (
+                                output["user_id"] != user
+                                and output["overall"] == "MTX"
+                            ):
                                 output["other_decisions"].append(decision)
                             else:
                                 output = save_decision(output)
@@ -284,7 +280,9 @@ class Progress(views.View):
         return output
 
     def dispatch_request(self, period_param=None, group_param=None):
-        period = period_param or request.args.get("period") or get_default_period()
+        period = (
+            period_param or request.args.get("period") or get_default_period()
+        )
         group = group_param or request.args.get("group")
         conclusion = request.args.get("conclusion") or DEFAULT_CONCLUSION
         assessor = request.args.get("assessor")
@@ -303,7 +301,9 @@ class Progress(views.View):
         )
         progress_filter_form.group.choices = self.get_groups(period)
         progress_filter_form.conclusion.choices = self.get_conclusions()
-        progress_filter_form.assessor.choices = self.get_assessors(period, group)
+        progress_filter_form.assessor.choices = self.get_assessors(
+            period, group
+        )
 
         period_query = Dataset.query.get(period)
         period_name = period_query.name if period_query else ""
@@ -313,13 +313,17 @@ class Progress(views.View):
             .order_by(EtcDicBiogeoreg.order)
         )
 
-        current_selection = self.get_current_selection(period_name, group, conclusion)
+        current_selection = self.get_current_selection(
+            period_name, group, conclusion
+        )
 
         self.DECISION_DETAILS = self.get_decision_details()
         self.METHOD_DETAILS = self.get_method_details()
 
         presence = self.get_presence(period)
-        data_dict = self.setup_objects_and_data(period, group, conclusion, assessor)
+        data_dict = self.setup_objects_and_data(
+            period, group, conclusion, assessor
+        )
         comment_counts = self.get_comment_counts(period)
         ret_dict = {}
         for subject, region in data_dict.items():
@@ -457,8 +461,10 @@ class HabitatProgress(Progress, HabitatMixin):
             .join(
                 EtcDicHdHabitat,
                 and_(
-                    self.model_manual_cls.habitatcode == EtcDicHdHabitat.habcode,
-                    self.model_manual_cls.dataset_id == EtcDicHdHabitat.dataset_id,
+                    self.model_manual_cls.habitatcode
+                    == EtcDicHdHabitat.habcode,
+                    self.model_manual_cls.dataset_id
+                    == EtcDicHdHabitat.dataset_id,
                 ),
             )
             .with_entities(
@@ -473,10 +479,14 @@ class HabitatProgress(Progress, HabitatMixin):
             .filter(self.model_manual_cls.dataset_id == period)
         )
         if user_id:
-            self.objects = self.objects.filter(self.model_manual_cls.user_id == user_id)
+            self.objects = self.objects.filter(
+                self.model_manual_cls.user_id == user_id
+            )
 
         if not admin_perm.can():
-            self.objects = self.objects.filter(self.model_manual_cls.decision == "OK")
+            self.objects = self.objects.filter(
+                self.model_manual_cls.decision == "OK"
+            )
 
         data_dict = {}
         for entry in self.objects.all():
@@ -556,7 +566,8 @@ class ComparisonView(MixinView, views.View):
                 dataset=d,
             )
             region_data = [
-                dict(zip(("region", "method", "conclusion"), r)) for r in regions
+                dict(zip(("region", "method", "conclusion"), r))
+                for r in regions
             ]
             data[d.name] = {r["region"]: r for r in region_data}
         regions = (

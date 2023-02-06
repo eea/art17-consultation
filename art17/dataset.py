@@ -1,8 +1,9 @@
 import sys
-from sqlalchemy import create_engine
-from art17 import models
-from flask.cli import AppGroup
 
+from flask.cli import AppGroup
+from sqlalchemy import create_engine
+
+from art17 import models
 
 dataset_manager = AppGroup("dataset")
 
@@ -23,7 +24,8 @@ def rm(dataset_id):
         return
     for table_name in CLEANUP_TABLES:
         models.db.session.execute(
-            "DELETE FROM `%s` WHERE ext_dataset_id = %d" % (table_name, dataset.id)
+            "DELETE FROM `%s` WHERE ext_dataset_id = %d"
+            % (table_name, dataset.id)
         )
     models.db.session.delete(dataset)
     models.db.session.commit()
@@ -423,7 +425,10 @@ IMPORT_SCHEMA = {
             ],
         ),
         ("etc_dic_method", ["order", "method", "details"]),
-        ("etc_dic_population_units", ["order", "population_units", "details", "code"]),
+        (
+            "etc_dic_population_units",
+            ["order", "population_units", "details", "code"],
+        ),
         (
             "etc_dic_species_type",
             ["SpeciesTypeID", "SpeciesType", "Assesment", "Note", "abbrev"],
@@ -498,7 +503,14 @@ IMPORT_SCHEMA = {
         ),
         (
             "lu_hd_habitats",
-            ["habcode", "group", "priority", "name", "annex_I_comments", "marine"],
+            [
+                "habcode",
+                "group",
+                "priority",
+                "name",
+                "annex_I_comments",
+                "marine",
+            ],
         ),
         # ('photo_habitats', [
         #    'id', 'habitatcode', 'description', 'photographer', 'location',
@@ -520,7 +532,10 @@ IMPORT_SCHEMA = {
                 "user",
             ],
         ),
-        ("restricted_habitats", ["habitatcode", "eu_country_code", "show_data"]),
+        (
+            "restricted_habitats",
+            ["habitatcode", "eu_country_code", "show_data"],
+        ),
         (
             "restricted_species",
             ["assesment_speciesname", "eu_country_code", "show_data"],
@@ -562,8 +577,14 @@ IMPORT_SCHEMA = {
             ],
         ),
         ("wiki", ["id", "region", "assesment_speciesname", "habitatcode"]),
-        ("wiki_trail", ["id", "region", "assesment_speciesname", "habitatcode"]),
-        ("wiki_changes", ["id", "wiki_id", "body", "editor", "changed", "active"]),
+        (
+            "wiki_trail",
+            ["id", "region", "assesment_speciesname", "habitatcode"],
+        ),
+        (
+            "wiki_changes",
+            ["id", "wiki_id", "body", "editor", "changed", "active"],
+        ),
         (
             "wiki_trail_changes",
             ["id", "wiki_id", "body", "editor", "changed", "active"],
@@ -834,7 +855,10 @@ IMPORT_SCHEMA = {
             ],
         ),
         ("etc_dic_method", ["order", "method", "details"]),
-        ("etc_dic_population_units", ["order", "population_units", "details", "code"]),
+        (
+            "etc_dic_population_units",
+            ["order", "population_units", "details", "code"],
+        ),
         (
             "etc_dic_species_type",
             ["SpeciesTypeID", "SpeciesType", "Assesment", "Note", "abbrev"],
@@ -909,7 +933,14 @@ IMPORT_SCHEMA = {
         ),
         (
             "lu_hd_habitats",
-            ["habcode", "group", "priority", "name", "annex_I_comments", "marine"],
+            [
+                "habcode",
+                "group",
+                "priority",
+                "name",
+                "annex_I_comments",
+                "marine",
+            ],
         ),
         (
             "photo_species",
@@ -927,7 +958,10 @@ IMPORT_SCHEMA = {
                 "user",
             ],
         ),
-        ("restricted_habitats", ["habitatcode", "eu_country_code", "show_data"]),
+        (
+            "restricted_habitats",
+            ["habitatcode", "eu_country_code", "show_data"],
+        ),
         (
             "restricted_species",
             ["assesment_speciesname", "eu_country_code", "show_data"],
@@ -1255,7 +1289,10 @@ IMPORT_SCHEMA = {
             ],
         ),
         ("etc_dic_method", ["order", "method", "details"]),
-        ("etc_dic_population_units", ["order", "population_units", "details", "code"]),
+        (
+            "etc_dic_population_units",
+            ["order", "population_units", "details", "code"],
+        ),
         (
             "etc_dic_species_type",
             ["SpeciesTypeID", "SpeciesType", "Assesment", "Note", "abbrev"],
@@ -1330,7 +1367,14 @@ IMPORT_SCHEMA = {
         ),
         (
             "lu_hd_habitats",
-            ["habcode", "group", "priority", "name", "annex_I_comments", "marine"],
+            [
+                "habcode",
+                "group",
+                "priority",
+                "name",
+                "annex_I_comments",
+                "marine",
+            ],
         ),
         (
             "photo_species",
@@ -1348,7 +1392,10 @@ IMPORT_SCHEMA = {
                 "user",
             ],
         ),
-        ("restricted_habitats", ["habitatcode", "eu_country_code", "show_data"]),
+        (
+            "restricted_habitats",
+            ["habitatcode", "eu_country_code", "show_data"],
+        ),
         (
             "restricted_species",
             ["assesment_speciesname", "eu_country_code", "show_data"],

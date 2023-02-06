@@ -1,32 +1,16 @@
-from flask import (
-    Blueprint,
-    views,
-    render_template,
-    request,
-    flash,
-    url_for,
-    abort,
-    redirect,
-)
-from flask_principal import PermissionDenied
 from datetime import datetime
+
+from flask import (Blueprint, abort, flash, redirect, render_template, request,
+                   url_for, views)
+from flask_principal import PermissionDenied
 from sqlalchemy import or_
 
-from art17.common import admin_perm, etc_perm, sta_cannot_change
-from art17.models import (
-    Wiki,
-    WikiChange,
-    WikiComment,
-    WikiTrail,
-    WikiTrailChange,
-    RegisteredUser,
-    Dataset,
-    db,
-)
-from art17.forms import WikiEditForm, CommentForm, RevisedForm
 from art17.auth.security import current_user
+from art17.common import admin_perm, etc_perm, sta_cannot_change
+from art17.forms import CommentForm, RevisedForm, WikiEditForm
+from art17.models import (Dataset, RegisteredUser, Wiki, WikiChange,
+                          WikiComment, WikiTrail, WikiTrailChange, db)
 from instance.settings import EU_ASSESSMENT_MODE
-
 
 wiki = Blueprint("wiki", __name__)
 
@@ -114,7 +98,11 @@ def get_css_class(comment):
 
 @wiki.app_template_global("can_edit_page")
 def can_edit_page(dataset, datasheet=False):
-    if not dataset or dataset.is_readonly and (dataset.id != 5 or not datasheet):
+    if (
+        not dataset
+        or dataset.is_readonly
+        and (dataset.id != 5 or not datasheet)
+    ):
         return False
     return admin_perm.can() or etc_perm.can() or EU_ASSESSMENT_MODE
 
@@ -136,7 +124,9 @@ def can_add_comment(comments, revisions, dataset, datasheet=False):
     if not dataset:
         return False
     if (dataset.is_readonly or sta_cannot_change()) and (
-        dataset.id != 5 or not datasheet or not (etc_perm.can() or admin_perm.can())
+        dataset.id != 5
+        or not datasheet
+        or not (etc_perm.can() or admin_perm.can())
     ):
         return False
     is_author = current_user in [cmnt.author for cmnt in comments]
@@ -160,7 +150,9 @@ def can_manage_comment(dataset, datasheet=False):
         not dataset
         or dataset.is_readonly
         and (
-            dataset.id != 5 or not datasheet or not (etc_perm.can() or admin_perm.can())
+            dataset.id != 5
+            or not datasheet
+            or not (etc_perm.can() or admin_perm.can())
         )
     ):
         return False
@@ -177,7 +169,8 @@ class CommonSection(object):
 
     def get_req_args(self):
         return {
-            arg: request.args.get(arg, "") for arg in ["subject", "region", "period"]
+            arg: request.args.get(arg, "")
+            for arg in ["subject", "region", "period"]
         }
 
     def get_wiki(self):
@@ -199,7 +192,9 @@ class CommonSection(object):
         active_change = self.get_active_change()
 
         revisions = (
-            self.get_wiki_changes().order_by(self.wiki_change_cls.changed.desc()).all()
+            self.get_wiki_changes()
+            .order_by(self.wiki_change_cls.changed.desc())
+            .all()
         )
 
         request_args = self.get_req_args()
@@ -207,13 +202,17 @@ class CommonSection(object):
         dataset = Dataset.query.get(period) if period else None
 
         return {
-            "wiki_body": [("", "", active_change.body)] if active_change else [],
+            "wiki_body": [("", "", active_change.body)]
+            if active_change
+            else [],
             "wiki_revised": getattr(active_change, "revised", None),
             "wiki_revised_form": RevisedForm(),
             "revisions": revisions,
             "page": self.page,
             "dataset": dataset,
-            "home_url": url_for(self.home_endpoint, page=self.page, **request_args),
+            "home_url": url_for(
+                self.home_endpoint, page=self.page, **request_args
+            ),
             "page_history_url": url_for(
                 self.pagehist_endpoint, page=self.page, **request_args
             ),
@@ -258,7 +257,11 @@ class DataSheetSection(CommonSection):
 
         wiki = self.get_wiki()
         comments = (
-            [c for c in wiki.comments if not (c.deleted and c.author != current_user)]
+            [
+                c
+                for c in wiki.comments
+                if not (c.deleted and c.author != current_user)
+            ]
             if wiki
             else []
         )
@@ -314,7 +317,9 @@ class WikiView(views.View):
         if not form.validate():
             flash("Something went wrong.")
             return False
-        wiki_change = self.section.get_wiki_changes().filter_by(active=True).first()
+        wiki_change = (
+            self.section.get_wiki_changes().filter_by(active=True).first()
+        )
         wiki_change.revised = form.revised.data
         wiki_change.editor = current_user.id
         db.session.commit()
@@ -351,7 +356,8 @@ class MergedRegionsView(views.View):
         rq = self.section.get_req_args()
 
         wikis = self.section.wiki_cls.query.filter(
-            getattr(self.section.wiki_cls, self.section.subject_field) == rq["subject"],
+            getattr(self.section.wiki_cls, self.section.subject_field)
+            == rq["subject"],
             self.section.wiki_cls.dataset_id == rq["period"],
         ).all()
         wiki_body = []
@@ -369,7 +375,9 @@ class MergedRegionsView(views.View):
                     subject=rq["subject"],
                     period=rq["period"],
                 )
-                wiki_body.append((wiki.region.reg_name, region_change_url, change.body))
+                wiki_body.append(
+                    (wiki.region.reg_name, region_change_url, change.body)
+                )
 
         return render_template(
             self.template_name,
@@ -385,7 +393,9 @@ class PageHistory(WikiView):
         active_change = self.section.get_active_change()
 
         new_change_id = request.form.get("revision_id")
-        new_active_change = wiki_changes.filter_by(id=new_change_id).first_or_404()
+        new_active_change = wiki_changes.filter_by(
+            id=new_change_id
+        ).first_or_404()
 
         if not can_change_revision(new_active_change):
             raise PermissionDenied
@@ -599,7 +609,9 @@ wiki.add_url_rule(
 
 wiki.add_url_rule(
     "/<page>/summary/datasheet/manage_comment/",
-    view_func=ManageComment.as_view("ds-manage-comment", section=DataSheetSection),
+    view_func=ManageComment.as_view(
+        "ds-manage-comment", section=DataSheetSection
+    ),
 )
 
 wiki.add_url_rule(
@@ -614,7 +626,9 @@ wiki.add_url_rule(
 
 wiki.add_url_rule(
     "/<page>/summary/audittrail-merged/",
-    view_func=MergedRegionsView.as_view("audittrail-merged", section=AuditTrailSection),
+    view_func=MergedRegionsView.as_view(
+        "audittrail-merged", section=AuditTrailSection
+    ),
 )
 
 wiki.add_url_rule(

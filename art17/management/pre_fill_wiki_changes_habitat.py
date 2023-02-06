@@ -1,8 +1,7 @@
 import click
-
-from art17.models import db, Wiki, WikiChange
-
 from flask.cli import AppGroup
+
+from art17.models import Wiki, WikiChange, db
 
 pre_fill_wiki_changes_habitat = AppGroup("pre_fill_wiki_changes_habitat")
 

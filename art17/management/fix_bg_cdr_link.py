@@ -1,7 +1,7 @@
 from flask.cli import AppGroup
 from flask_sqlalchemy import SQLAlchemy
 
-from art17.models import db, EtcDataSpeciesRegion, EtcDataHabitattypeRegion
+from art17.models import EtcDataHabitattypeRegion, EtcDataSpeciesRegion, db
 
 
 def get_model(self, name):
@@ -18,7 +18,9 @@ fix_bg_link = AppGroup("fix_bg_link")
 def run(**kwargs):
     link = ""
     species = EtcDataSpeciesRegion.query.filter_by(country="BG", dataset_id=5)
-    habitats = EtcDataHabitattypeRegion.query.filter_by(country="BG", dataset_id=5)
+    habitats = EtcDataHabitattypeRegion.query.filter_by(
+        country="BG", dataset_id=5
+    )
     # for specie in species:
     #     specie.filename = link
     #     db.session.add(specie)

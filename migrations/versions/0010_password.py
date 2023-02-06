@@ -1,13 +1,14 @@
 revision = "0010"
 down_revision = "0009"
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 
 def upgrade():
     op.add_column(
-        "registered_users", sa.Column("password", sa.String(length=60), nullable=True)
+        "registered_users",
+        sa.Column("password", sa.String(length=60), nullable=True),
     )
 
 

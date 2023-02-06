@@ -1,7 +1,8 @@
 import pytest
 
-from . import factories
 from art17 import models
+
+from . import factories
 from .conftest import create_user
 
 
@@ -13,7 +14,9 @@ def setup_common(app):
         group="Mammals",
     )
     factories.SpeciesManualAssessmentFactory(region="ALP")
-    factories.SpeciesManualAssessmentFactory(region="ALP", user_id="conclusion_user")
+    factories.SpeciesManualAssessmentFactory(
+        region="ALP", user_id="conclusion_user"
+    )
     factories.EtcDicBiogeoregFactory()
 
     factories.EtcDicHdHabitat()
@@ -59,12 +62,22 @@ def setup(app):
 def setup_deleted(app):
     factories.CommentFactory(id=4, author_id="user4", region="ALP", deleted=1)
     factories.CommentFactory(
-        id=5, author_id="user4", region="ALP", deleted=1, user_id="conclusion_user"
+        id=5,
+        author_id="user4",
+        region="ALP",
+        deleted=1,
+        user_id="conclusion_user",
     )
     factories.WikiCommentFactory(id=3, author_id="user3", deleted=1)
-    factories.HabitatCommentFactory(id=4, author_id="user4", region="ALP", deleted=1)
     factories.HabitatCommentFactory(
-        id=5, author_id="user4", region="ALP", deleted=1, user_id="conclusion_user"
+        id=4, author_id="user4", region="ALP", deleted=1
+    )
+    factories.HabitatCommentFactory(
+        id=5,
+        author_id="user4",
+        region="ALP",
+        deleted=1,
+        user_id="conclusion_user",
     )
     factories.WikiCommentFactory(id=4, wiki_id=2, author_id="user4", deleted=1)
 

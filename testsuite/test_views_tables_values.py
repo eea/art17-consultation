@@ -1,13 +1,18 @@
 import pytest
 
 from art17.models import db
+
 from . import factories
 
 
 @pytest.fixture(autouse=True)
 def setup(app):
     factories.DatasetFactory(
-        id=5, schema="2018", name="2013-2018", habitat_map_url="", species_map_url=""
+        id=5,
+        schema="2018",
+        name="2013-2018",
+        habitat_map_url="",
+        species_map_url="",
     )
     factories.EtcDataSpeciesRegionFactory(
         group="Mammals",
@@ -107,7 +112,11 @@ def test_summary_range_value(client, set_auth, app, request_args, search_dict):
         (
             [
                 "/habitat/progress/",
-                {"group": "coastal habitats", "period": "5", "conclusion": "range"},
+                {
+                    "group": "coastal habitats",
+                    "period": "5",
+                    "conclusion": "range",
+                },
             ],
             "FV",
         ),

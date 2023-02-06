@@ -1,9 +1,8 @@
 import base64
 import urllib
 
-from jinja2 import Markup, escape
-
 import flask
+from jinja2 import Markup, escape
 
 from art17 import models
 from art17.common import get_default_period
@@ -73,7 +72,9 @@ def species_config_xml():
             )
         )
         .filter(models.EtcDataSpeciesRegion.dataset_id == dataset_id)
-        .filter(models.EtcDataSpeciesRegion.assesment_speciesname == species_name)
+        .filter(
+            models.EtcDataSpeciesRegion.assesment_speciesname == species_name
+        )
     )
 
     assesment_speciesname = urllib.quote(species_name)
@@ -142,7 +143,11 @@ def species_config_xml():
         countries.append(country)
         countries_style.append(
             "l=%s%s|%s"
-            % (country, res.region, background_colour(res.conclusion_assessment))
+            % (
+                country,
+                res.region,
+                background_colour(res.conclusion_assessment),
+            )
         )
 
     qstring = "/%s/" % "|".join(countries)
@@ -153,7 +158,9 @@ def species_config_xml():
         models.db.session.query(
             models.t_restricted_species.c.eu_country_code,
         )
-        .filter(models.t_restricted_species.c.assesment_speciesname == species_name)
+        .filter(
+            models.t_restricted_species.c.assesment_speciesname == species_name
+        )
         .filter(models.t_restricted_species.c.ext_dataset_id == dataset_id)
     )
     restricted_species_list = [r[0] for r in rows]
@@ -197,7 +204,8 @@ def habitats_config_xml():
 
     def getRegions(habitat):
         regions = [
-            "^%s" % rec.region for rec in select_habitat_regions(habitatcode=habitat)
+            "^%s" % rec.region
+            for rec in select_habitat_regions(habitatcode=habitat)
         ]
         return "|".join(regions)
 
@@ -253,7 +261,8 @@ def habitats_config_xml():
     else:
         region = "/^%s/" % region
     results = select_habitat_countries(
-        region_list=region[1:-1].replace("^", "").split("|"), habitatcode=habitat
+        region_list=region[1:-1].replace("^", "").split("|"),
+        habitatcode=habitat,
     )
 
     countries_style = []
@@ -272,7 +281,11 @@ def habitats_config_xml():
         countries.append(country)
         countries_style.append(
             "l=%s%s|%s"
-            % (country, res.region, background_colour(res.conclusion_assessment))
+            % (
+                country,
+                res.region,
+                background_colour(res.conclusion_assessment),
+            )
         )
 
     qstring = "/%s/" % "|".join(countries)

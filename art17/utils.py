@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 import re
 from decimal import Decimal
+
 from bs4 import BeautifulSoup
+from flask import current_app as app
 from markupsafe import Markup
 from path import Path
-from flask import current_app as app
-
 
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
 valid_float = re.compile("^\s*((?=.*[1-9])\d*(?:\.\d{1,2})?|x)\s*$")
 valid_numeric = re.compile(
     "^\s*(((\d*\.)?\d+\s*-\s*(\d*\.)?\d+"
-    + u"|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$"
+    + "|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$"
 )
 valid_ref = re.compile(
-    "^\s*((\d*\.)?\d+\s*-\s*(\d\.)?\d+" + u"|(>|>>|≈|<)?\s*((\d*\.)?\d+)?|x)\s*$"
+    "^\s*((\d*\.)?\d+\s*-\s*(\d\.)?\d+" + "|(>|>>|≈|<)?\s*((\d*\.)?\d+)?|x)\s*$"
 )
 empty_str = re.compile("^\s*$")
-operator = re.compile("^\s*" + u"(>|>>|≈|<|x)?\s*$")
+operator = re.compile("^\s*" + "(>|>>|≈|<|x)?\s*$")
 
 
 def str2num(s, default="N/A", number_format="%.2f"):
@@ -81,7 +81,7 @@ def validate_nonempty(s):
     """Checks if a ckeditor text is empty (whitespaces only)"""
     if s:
         soup = BeautifulSoup(s, "html.parser")
-        return not bool(empty_str.match(soup.text.replace(u"\xa0", " ")))
+        return not bool(empty_str.match(soup.text.replace("\xa0", " ")))
     return False
 
 
@@ -116,7 +116,9 @@ def slugify(value):
         return ""
     if not isinstance(value, str):
         value = str(value)
-    value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
+    value = (
+        unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
+    )
     value = _slugify_strip_re.sub("", value).strip().lower()
     value = _slugify_hyphenate_re.sub("-", value)
     return value

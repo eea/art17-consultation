@@ -1,19 +1,16 @@
+import urllib
 import uuid
+from datetime import date, datetime
 
 import flask
-from flask_webtest import TestApp
-from pytest import fixture
 from alembic import config
-from path import Path
-
+from flask_webtest import TestApp
 from mock import patch
-from datetime import datetime, date
+from path import Path
+from pytest import fixture
 
-import urllib
-
-from art17.app import create_app
 from art17 import models
-
+from art17.app import create_app
 
 TEST_CONFIG = {
     "SERVER_NAME": "localhost",
@@ -34,17 +31,20 @@ def create_generic_fixtures():
     models.db.drop_all()
     models.db.create_all()
     models.db.session.execute(
-        "insert into roles (name, description) " "values ('admin', 'Administrator')"
+        "insert into roles (name, description) "
+        "values ('admin', 'Administrator')"
     )
     models.db.session.execute(
         "insert into roles (name, description) "
         "values ('etc', 'European topic center')"
     )
     models.db.session.execute(
-        "insert into roles (name, description) " "values ('stakeholder', 'Stakeholder')"
+        "insert into roles (name, description) "
+        "values ('stakeholder', 'Stakeholder')"
     )
     models.db.session.execute(
-        "insert into roles (name, description) " "values ('nat', 'National expert')"
+        "insert into roles (name, description) "
+        "values ('nat', 'National expert')"
     )
     models.db.session.execute(
         "insert into config(default_dataset_id, start_date) values (5, '%s')"

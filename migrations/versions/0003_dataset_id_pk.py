@@ -56,7 +56,10 @@ tables = [
     ("lu_hd_habitats", ["habcode"]),
     ("photo_habitats", ["id"]),
     ("photo_species", ["id"]),
-    ("species_manual_assessment", ["MS", "region", "assesment_speciesname", "user"]),
+    (
+        "species_manual_assessment",
+        ["MS", "region", "assesment_speciesname", "user"],
+    ),
     ("wiki", ["id"]),
     ("wiki_trail", ["id"]),
 ]

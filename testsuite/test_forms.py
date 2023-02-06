@@ -1,13 +1,9 @@
 import pytest
-
 from werkzeug.datastructures import MultiDict
-from art17.forms import (
-    SummaryManualFormSpecies,
-    METH_CONCL_MANDATORY,
-    METH_CONCL_PAIR_MANDATORY,
-    NOT_NUMERIC_VALUES,
-    EMPTY_FORM,
-)
+
+from art17.forms import (EMPTY_FORM, METH_CONCL_MANDATORY,
+                         METH_CONCL_PAIR_MANDATORY, NOT_NUMERIC_VALUES,
+                         SummaryManualFormSpecies)
 from art17.models import db
 
 from .factories import DatasetFactory, EtcDicMethodFactory

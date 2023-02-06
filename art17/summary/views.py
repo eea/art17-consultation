@@ -1,90 +1,50 @@
-from datetime import datetime
 import re
+from datetime import datetime
 
-from flask import (
-    views,
-    request,
-    render_template,
-    jsonify,
-    url_for,
-    flash,
-    g,
-)
+from flask import flash, g, jsonify, render_template, request, url_for, views
 from flask_principal import PermissionDenied
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.sql import text
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
-from art17.auth.security import current_user
-from art17.models import (
-    EtcDicBiogeoreg,
-    EtcDataSpeciesRegion,
-    EtcQaErrorsSpeciesManualChecked,
-    Dataset,
-    db,
-    t_restricted_species,
-    EtcDataHabitattypeRegion,
-    EtcQaErrorsHabitattypeManualChecked,
-    EtcDicMethod,
-    EtcDicDecision,
-    RegisteredUser,
-)
-from art17.mixins import SpeciesMixin, HabitatMixin
-from art17.common import (
-    get_default_period,
-    population_size_unit,
-    population_ref,
-    get_original_record_url,
-    get_title_for_species_country,
-    get_title_for_habitat_country,
-    population_size_unit_title,
-    favourable_ref_title_species,
-    favourable_ref_title_habitat,
-    CONCLUSION_CLASSES,
-    COUNTRY_ASSESSMENTS,
-    QUALITIES,
-    CONTRIB_METHOD,
-    CONTRIB_CONCLUSION,
-    TREND_OPTIONS,
-    TREND_OPTIONS_OVERALL,
-    NATURE_OF_CHANGE_OPTIONS,
-    HABITAT_OPTIONS,
-    etc_perm,
-    nat_perm,
-    sta_perm,
-    admin_perm,
-    get_tooltip_for_habitat,
-    get_tooltip_for_species,
-    generate_map_url,
-    DATE_FORMAT,
-    DEFAULT_MS,
-    get_sensitive_records,
-)
-from art17.forms import (
-    SummaryFilterForm,
-    SummaryManualFormSpecies,
-    SummaryManualFormHabitat,
-    SummaryManualFormHabitatRef,
-    SummaryManualFormSpeciesRef,
-    SummaryManualFormSpeciesSTA,
-    SummaryManualFormSpeciesRefSTA,
-    SummaryManualFormHabitatRefSTA,
-    SummaryManualFormHabitatSTA,
-    NATURE_CHOICES,
-)
-from art17.utils import str2num, parse_semicolon, str1num, na_if_none
-from art17.summary.permissions import can_touch, must_edit_ref
-from art17.summary import summary
-from art17.summary.conclusion import (
-    UpdateDecision,
-    ConclusionDelete,
-    ConclusionView,
-)
-from art17.comments import SpeciesCommentCounter, HabitatCommentCounter
-from art17.factsheet import generate_factsheet_url
-from instance.settings import EU_ASSESSMENT_MODE
 
-from sqlalchemy.sql import text
+from art17.auth.security import current_user
+from art17.comments import HabitatCommentCounter, SpeciesCommentCounter
+from art17.common import (CONCLUSION_CLASSES, CONTRIB_CONCLUSION,
+                          CONTRIB_METHOD, COUNTRY_ASSESSMENTS, DATE_FORMAT,
+                          DEFAULT_MS, HABITAT_OPTIONS,
+                          NATURE_OF_CHANGE_OPTIONS, QUALITIES, TREND_OPTIONS,
+                          TREND_OPTIONS_OVERALL, admin_perm, etc_perm,
+                          favourable_ref_title_habitat,
+                          favourable_ref_title_species, generate_map_url,
+                          get_default_period, get_original_record_url,
+                          get_sensitive_records, get_title_for_habitat_country,
+                          get_title_for_species_country,
+                          get_tooltip_for_habitat, get_tooltip_for_species,
+                          nat_perm, population_ref, population_size_unit,
+                          population_size_unit_title, sta_perm)
+from art17.factsheet import generate_factsheet_url
+from art17.forms import (NATURE_CHOICES, SummaryFilterForm,
+                         SummaryManualFormHabitat, SummaryManualFormHabitatRef,
+                         SummaryManualFormHabitatRefSTA,
+                         SummaryManualFormHabitatSTA, SummaryManualFormSpecies,
+                         SummaryManualFormSpeciesRef,
+                         SummaryManualFormSpeciesRefSTA,
+                         SummaryManualFormSpeciesSTA)
+from art17.mixins import HabitatMixin, SpeciesMixin
+from art17.models import (Dataset, EtcDataHabitattypeRegion,
+                          EtcDataSpeciesRegion, EtcDicBiogeoreg,
+                          EtcDicDecision, EtcDicMethod,
+                          EtcQaErrorsHabitattypeManualChecked,
+                          EtcQaErrorsSpeciesManualChecked, RegisteredUser, db,
+                          t_restricted_species)
+from art17.summary import summary
+from art17.summary.conclusion import (ConclusionDelete, ConclusionView,
+                                      UpdateDecision)
+from art17.summary.permissions import can_touch, must_edit_ref
+from art17.utils import na_if_none, parse_semicolon, str1num, str2num
+from instance.settings import EU_ASSESSMENT_MODE
 
 
 @summary.app_context_processor
@@ -236,7 +196,9 @@ def record_errors(record):
         eu_country_code=record.eu_country_code,
         dataset_id=record.dataset_id,
     )
-    return {e.field: {"text": e.text, "suspect_value": e.suspect_value} for e in qs}
+    return {
+        e.field: {"text": e.text, "suspect_value": e.suspect_value} for e in qs
+    }
 
 
 def parse_qa_errors(fields, record, qa_errors):
@@ -285,7 +247,9 @@ class Summary(ConclusionView, views.View):
 
         regions = self.get_regions(period, subject)
         summary_filter_form = SummaryFilterForm(
-            MultiDict(dict(period=period, group=group, subject=subject, region=region))
+            MultiDict(
+                dict(period=period, group=group, subject=subject, region=region)
+            )
         )
         summary_filter_form.group.choices = self.get_groups(period)
         summary_filter_form.subject.choices = self.get_subjects(period, group)
@@ -307,7 +271,10 @@ class Summary(ConclusionView, views.View):
 
         if request.method == "POST":
             home_url = url_for(
-                self.summary_endpoint, period=period, subject=subject, region=region
+                self.summary_endpoint,
+                period=period,
+                subject=subject,
+                region=region,
             )
             if manual_form.validate(subject=subject, period=period):
                 if not can_touch(manual_assessment):
@@ -316,7 +283,9 @@ class Summary(ConclusionView, views.View):
                 if not manual_assessment:
                     manual_assessment = self.model_manual_cls(subject=subject)
                     manual_form.populate_obj(manual_assessment)
-                    manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
+                    manual_assessment.last_update = datetime.now().strftime(
+                        DATE_FORMAT
+                    )
                     if EU_ASSESSMENT_MODE:
                         user = RegisteredUser.query.filter_by(
                             id="test_for_eu_assessment"
@@ -341,14 +310,19 @@ class Summary(ConclusionView, views.View):
                         db.session.commit()
                     except IntegrityError:
                         db.session.rollback()
-                        flash("A record with the same keys exist. Cannot add", "error")
+                        flash(
+                            "A record with the same keys exist. Cannot add",
+                            "error",
+                        )
                     else:
                         flash("Conclusion added successfully")
                         fresh_new_record = manual_assessment
                     manual_assessment = None
                 else:
                     manual_form.populate_obj(manual_assessment)
-                    manual_assessment.last_update = datetime.now().strftime(DATE_FORMAT)
+                    manual_assessment.last_update = datetime.now().strftime(
+                        DATE_FORMAT
+                    )
                     db.session.add(manual_assessment)
                     db.session.commit()
                     flash("Conclusion edited successfully")
@@ -393,7 +367,9 @@ class Summary(ConclusionView, views.View):
 
         return render_template(self.template_name, **context)
 
-    def get_current_selection(self, period_name, group, subject, region, period):
+    def get_current_selection(
+        self, period_name, group, subject, region, period
+    ):
         if not subject:
             return []
         current_selection = [period_name, group, subject]
@@ -408,7 +384,10 @@ class Summary(ConclusionView, views.View):
     def get_annexes(self, species, period):
         annexes_results = (
             EtcDataSpeciesRegion.query.with_entities(
-                text("annex_II"), text("annex_IV"), text("annex_V"), text("priority")
+                text("annex_II"),
+                text("annex_IV"),
+                text("annex_V"),
+                text("priority"),
             )
             .filter(
                 EtcDataSpeciesRegion.subject == species,
@@ -464,7 +443,9 @@ class SpeciesSummary(SpeciesMixin, Summary):
         self.restricted_countries = [
             r[0]
             for r in db.session.query(t_restricted_species.c.eu_country_code)
-            .filter(t_restricted_species.c.assesment_speciesname == subject.lower())
+            .filter(
+                t_restricted_species.c.assesment_speciesname == subject.lower()
+            )
             .filter(t_restricted_species.c.ext_dataset_id == period)
             .filter(t_restricted_species.c.show_data == 0)
             .all()
@@ -473,7 +454,9 @@ class SpeciesSummary(SpeciesMixin, Summary):
             filter_args["region"] = region
         if filter_args:
             filter_args["dataset_id"] = period
-            self.objects = self.model_cls.query.filter_by(**filter_args).order_by(
+            self.objects = self.model_cls.query.filter_by(
+                **filter_args
+            ).order_by(
                 self.model_cls.presence.desc(),
                 self.model_cls.region,
                 self.model_cls.country,
@@ -482,7 +465,8 @@ class SpeciesSummary(SpeciesMixin, Summary):
                 self.model_auto_cls.query.filter_by(**filter_args).join(
                     EtcDicMethod,
                     and_(
-                        self.model_auto_cls.assessment_method == EtcDicMethod.method,
+                        self.model_auto_cls.assessment_method
+                        == EtcDicMethod.method,
                         EtcDicMethod.dataset_id == period,
                     ),
                 )
@@ -555,8 +539,12 @@ class SpeciesSummary(SpeciesMixin, Summary):
             "edit_endpoint": ".species-summary",
             "delete_endpoint": ".species-delete",
             "update_endpoint": ".species-update",
-            "datasheet_url": url_for("wiki.datasheet", page="species", **url_kwargs),
-            "audittrail_url": url_for("wiki.audittrail", page="species", **url_kwargs),
+            "datasheet_url": url_for(
+                "wiki.datasheet", page="species", **url_kwargs
+            ),
+            "audittrail_url": url_for(
+                "wiki.audittrail", page="species", **url_kwargs
+            ),
             "audittrail_merged_url": url_for(
                 "wiki.audittrail-merged", page="species", **url_kwargs
             ),
@@ -594,15 +582,16 @@ class HabitatSummary(HabitatMixin, Summary):
 
         if filter_args:
             filter_args["dataset_id"] = period
-            self.objects = self.model_cls.query.filter_by(**filter_args).order_by(
-                self.model_cls.region, self.model_cls.country
-            )
+            self.objects = self.model_cls.query.filter_by(
+                **filter_args
+            ).order_by(self.model_cls.region, self.model_cls.country)
 
             self.auto_objects = (
                 self.model_auto_cls.query.filter_by(**filter_args).join(
                     EtcDicMethod,
                     and_(
-                        self.model_auto_cls.assessment_method == EtcDicMethod.method,
+                        self.model_auto_cls.assessment_method
+                        == EtcDicMethod.method,
                         EtcDicMethod.dataset_id == period,
                     ),
                 )
@@ -654,8 +643,12 @@ class HabitatSummary(HabitatMixin, Summary):
             "edit_endpoint": ".habitat-summary",
             "delete_endpoint": ".habitat-delete",
             "update_endpoint": ".habitat-update",
-            "datasheet_url": url_for("wiki.datasheet", page="habitat", **url_kwargs),
-            "audittrail_url": url_for("wiki.audittrail", page="habitat", **url_kwargs),
+            "datasheet_url": url_for(
+                "wiki.datasheet", page="habitat", **url_kwargs
+            ),
+            "audittrail_url": url_for(
+                "wiki.audittrail", page="habitat", **url_kwargs
+            ),
             "audittrail_merged_url": url_for(
                 "wiki.audittrail-merged", page="habitat", **url_kwargs
             ),
@@ -668,7 +661,9 @@ class HabitatSummary(HabitatMixin, Summary):
             "favourable_ref_title": favourable_ref_title_habitat,
         }
 
-    def get_current_selection(self, period_name, group, subject, region, period):
+    def get_current_selection(
+        self, period_name, group, subject, region, period
+    ):
         selection = super(HabitatSummary, self).get_current_selection(
             period_name, group, subject, region, period
         )
@@ -702,7 +697,9 @@ def _regions():
     return jsonify([list(row) for row in data])
 
 
-@summary.route("/species/summary/countries", endpoint="species-summary-countries")
+@summary.route(
+    "/species/summary/countries", endpoint="species-summary-countries"
+)
 def _countries():
     period, group = request.args["period"], request.args["group"]
     data = SpeciesMixin.get_countries(period, group)

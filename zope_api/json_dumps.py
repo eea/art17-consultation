@@ -1,12 +1,13 @@
-## Script (Python) "json_dumps"
-##bind container=container
-##bind context=context
-##bind namespace=
-##bind script=script
-##bind subpath=traverse_subpath
-##parameters=value
-##title=
-##
+# Script (Python) "json_dumps"
+# bind container=container
+# bind context=context
+# bind namespace=
+# bind script=script
+# bind subpath=traverse_subpath
+# parameters=value
+# title=
+#
+
 def quote(ch):
     ord_ch = ord(ch)
     if 0x20 <= ord(ch) <= 0x7e and ch not in ['\\', '"']:

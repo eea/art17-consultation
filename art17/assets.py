@@ -1,5 +1,4 @@
-from flask_assets import Environment, Bundle
-
+from flask_assets import Bundle, Environment
 
 BUNDLE_JS = (
     "js/lib/jquery.chained.remote.min.js",

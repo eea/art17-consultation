@@ -2,11 +2,11 @@ import flask
 from flask_login import LoginManager
 from flask_security import Security
 
-from art17.common import HOMEPAGE_VIEW_NAME
-from art17.models import db, RegisteredUser, Role
 from art17.auth.providers import DebugAuthProvider
-from art17.auth.security import UserDatastore, Art17ForgotPasswordForm, current_user
-
+from art17.auth.security import (Art17ForgotPasswordForm, UserDatastore,
+                                 current_user)
+from art17.common import HOMEPAGE_VIEW_NAME
+from art17.models import RegisteredUser, Role, db
 
 auth = flask.Blueprint("auth", __name__)
 

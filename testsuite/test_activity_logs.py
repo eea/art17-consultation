@@ -1,13 +1,11 @@
 import pytest
 
-from .conftest import create_user, force_login
-from .factories import (
-    SpeciesManualAssessmentFactory,
-    CommentFactory,
-    HabitattypesManualAssessmentsFactory,
-    HabitatCommentFactory,
-)
 from art17 import models
+
+from .conftest import create_user, force_login
+from .factories import (CommentFactory, HabitatCommentFactory,
+                        HabitattypesManualAssessmentsFactory,
+                        SpeciesManualAssessmentFactory)
 
 
 @pytest.fixture
@@ -43,7 +41,9 @@ def setup_read(app):
         ("testuser", "/history/habitat/", False, 200),
     ],
 )
-def test_view(app, client, set_auth, user, request_args, expect_errors, status_code):
+def test_view(
+    app, client, set_auth, user, request_args, expect_errors, status_code
+):
     if user:
         user_obj = create_user(user, app)
         force_login(client, user_obj.fs_uniquifier)
@@ -135,7 +135,9 @@ def test_read_comments(
     user = create_user(username, app)
     force_login(client, user.fs_uniquifier)
 
-    comment = comment_cls(region="ALP", post_date="2014-03-20", author_id="author")
+    comment = comment_cls(
+        region="ALP", post_date="2014-03-20", author_id="author"
+    )
     models.db.session.commit()
 
     comment.readers.append(user)

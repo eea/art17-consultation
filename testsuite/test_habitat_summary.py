@@ -2,12 +2,9 @@ from flask import url_for
 from pytest import fixture
 
 from art17.models import db
-from .factories import (
-    DatasetFactory,
-    EtcDicHdHabitat,
-    EtcDicBiogeoregFactory,
-    EtcDataHabitattypeRegionFactory,
-)
+
+from .factories import (DatasetFactory, EtcDataHabitattypeRegionFactory,
+                        EtcDicBiogeoregFactory, EtcDicHdHabitat)
 
 
 @fixture(autouse=True)

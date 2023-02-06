@@ -1,35 +1,23 @@
-from collections import OrderedDict
-from path import Path
-import requests
 import urllib
+from collections import OrderedDict
 
-
+import requests
+from flask import Blueprint
+from flask import current_app as app
+from flask import render_template, request, url_for
+from flask.cli import AppGroup
+from flask.views import MethodView
+from path import Path
 from sqlalchemy import and_
 from sqlalchemy.sql import func, or_
 
-from flask import (
-    Blueprint,
-    render_template,
-    request,
-    current_app as app,
-    url_for,
-)
-from flask.cli import AppGroup
-from flask.views import MethodView
-
 from art17.common import admin_perm
-from art17.mixins import SpeciesMixin, HabitatMixin
-from art17.models import db, Wiki, WikiChange, Dataset
+from art17.mixins import HabitatMixin, SpeciesMixin
+from art17.models import Dataset, Wiki, WikiChange, db
 from art17.pdf import PdfRenderer
-from art17.queries import (
-    THREATS_QUERY,
-    COVERAGE_QUERY_SPECIES,
-    COVERAGE_QUERY_HABITAT,
-    MEASURES_QUERY,
-    N2K_QUERY,
-    ANNEX_QUERY,
-    MAP_QUERY,
-)
+from art17.queries import (ANNEX_QUERY, COVERAGE_QUERY_HABITAT,
+                           COVERAGE_QUERY_SPECIES, MAP_QUERY, MEASURES_QUERY,
+                           N2K_QUERY, THREATS_QUERY)
 from art17.utils import slugify
 
 factsheet = Blueprint("factsheet", __name__)
@@ -136,13 +124,15 @@ class FactSheet(MethodView):
     def get_manual_objects(self, period, subject):
         return (
             db.session.query(
-                self.model_manual_cls, func.sum(self.model_cls.distribution_grid_area)
+                self.model_manual_cls,
+                func.sum(self.model_cls.distribution_grid_area),
             )
             .join(
                 self.model_cls,
                 and_(
                     self.model_manual_cls.subject == self.model_cls.subject,
-                    self.model_manual_cls.dataset_id == self.model_cls.dataset_id,
+                    self.model_manual_cls.dataset_id
+                    == self.model_cls.dataset_id,
                     self.model_manual_cls.region == self.model_cls.region,
                 ),
             )
@@ -222,7 +212,9 @@ class FactSheet(MethodView):
         return [
             country
             for country, in (
-                self.model_cls.query.with_entities(self.model_cls.eu_country_code)
+                self.model_cls.query.with_entities(
+                    self.model_cls.eu_country_code
+                )
                 .filter(
                     self.model_cls.subject == subject,
                     self.model_cls.dataset_id == period,
@@ -235,7 +227,8 @@ class FactSheet(MethodView):
 
     def get_context_data(self, **kwargs):
         period = (
-            get_arg(kwargs, "period", None) or app.config["FACTSHEET_DEFAULT_PERIOD"]
+            get_arg(kwargs, "period", None)
+            or app.config["FACTSHEET_DEFAULT_PERIOD"]
         )
         subject = get_arg(kwargs, "subject")
         manual_objects = self.get_manual_objects(period, subject)
@@ -304,7 +297,9 @@ class FactSheet(MethodView):
         footer_url = app.config["PDF_URL_PREFIX"] + url_for(
             "factsheet.factsheet-footer"
         )
-        base_header_url = app.config["PDF_URL_PREFIX"] + url_for(self.header_endpoint)
+        base_header_url = app.config["PDF_URL_PREFIX"] + url_for(
+            self.header_endpoint
+        )
         params = {
             "subject": self.assessment.subject,
             "period": self.assessment.dataset_id,
@@ -350,14 +345,18 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
     def get_has_n2k(self):
         if not all((self.engine, self.assessment)):
             return True
-        result = self.engine.execute(N2K_QUERY.format(subject=self.assessment.subject))
+        result = self.engine.execute(
+            N2K_QUERY.format(subject=self.assessment.subject)
+        )
         row = result and result.first()
         return row and row["cond"] > 0
 
     def get_map_speciescode(self):
         if not all((self.engine, self.assessment)):
             return True
-        result = self.engine.execute(MAP_QUERY.format(subject=self.assessment.subject))
+        result = self.engine.execute(
+            MAP_QUERY.format(subject=self.assessment.subject)
+        )
         row = result and result.first()
         return row and row["code"]
 
@@ -424,8 +423,8 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
             or (assessment.habitat and assessment.habitat.group)
             or assessment.group
         )
-        file_name = u"{0}-{1}".format(assessment.code, name)
-        return u"{0}/{1}".format(slugify(group), slugify(file_name))
+        file_name = "{0}-{1}".format(assessment.code, name)
+        return "{0}/{1}".format(slugify(group), slugify(file_name))
 
     def _get_pdf_file_name(self):
         return self.get_pdf_file_name(self.assessment)
@@ -472,14 +471,14 @@ class FactSheetHeader(MethodView):
 class SpeciesHeader(SpeciesMixin, FactSheetHeader):
     def get_context_data(self, **kwargs):
         context = super(SpeciesHeader, self).get_context_data(**kwargs)
-        context["subject"] = u"<em>{}</em>".format(context["subject"])
+        context["subject"] = "<em>{}</em>".format(context["subject"])
         return context
 
 
 class HabitatHeader(HabitatMixin, FactSheetHeader):
     def get_context_data(self, **kwargs):
         context = super(HabitatHeader, self).get_context_data(**kwargs)
-        context["subject"] = u"{} <em>{}</em>".format(
+        context["subject"] = "{} <em>{}</em>".format(
             context["subject"], self.assessment.lu_factsheets.nameheader
         )
         return context
@@ -491,19 +490,23 @@ class FactSheetFooter(MethodView):
 
 
 factsheet.add_url_rule(
-    "/species/factsheet/", view_func=SpeciesFactSheet.as_view("factsheet-species")
+    "/species/factsheet/",
+    view_func=SpeciesFactSheet.as_view("factsheet-species"),
 )
 factsheet.add_url_rule(
-    "/habitat/factsheet/", view_func=HabitatFactSheet.as_view("factsheet-habitat")
+    "/habitat/factsheet/",
+    view_func=HabitatFactSheet.as_view("factsheet-habitat"),
 )
 factsheet.add_url_rule(
     "/factsheet/footer/", view_func=FactSheetFooter.as_view("factsheet-footer")
 )
 factsheet.add_url_rule(
-    "/species/factsheet/header/", view_func=SpeciesHeader.as_view("species-header")
+    "/species/factsheet/header/",
+    view_func=SpeciesHeader.as_view("species-header"),
 )
 factsheet.add_url_rule(
-    "/habitat/factsheet/header/", view_func=HabitatHeader.as_view("habitat-header")
+    "/habitat/factsheet/header/",
+    view_func=HabitatHeader.as_view("habitat-header"),
 )
 
 
@@ -518,7 +521,9 @@ def generate_factsheet_url(category, subject, period):
         raise NotImplementedError("Unknown category:", category)
 
     period = period or app.config["FACTSHEET_DEFAULT_PERIOD"]
-    assessment = model_cls.query.filter_by(subject=subject, dataset_id=period).first()
+    assessment = model_cls.query.filter_by(
+        subject=subject, dataset_id=period
+    ).first()
     if not assessment:
         return None
 
@@ -537,7 +542,10 @@ def generate_factsheet_url(category, subject, period):
                 return remote_url
 
     pdf_path = (
-        str(Path(app.config["PDF_DESTINATION"]) / fs_cls.get_pdf_file_name(assessment))
+        str(
+            Path(app.config["PDF_DESTINATION"])
+            / fs_cls.get_pdf_file_name(assessment)
+        )
         + ".pdf"
     )
     real_path = Path(app.static_folder) / pdf_path
