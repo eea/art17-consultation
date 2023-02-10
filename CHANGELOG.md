@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.5 - (2023-02-10)
+--------------------
+* Sclerophilus scrub
+  [dianaboiangiu]
+
 3.4.4 - (2023-02-06)
 --------------------
 * Fix display of 2006 habitat report records
