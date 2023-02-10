@@ -68,9 +68,23 @@ class Report(views.View):
         return [period_name, group, country_name, region_name]
 
     def setup_objects_and_data(self, period, group, country, region):
+        GROUPS_2006 = {
+            "Bogs, mires & fens": "bogs, mires & fens",
+            "Coastal habitats": "coastal habitats",
+            "Dunes habitats": "dunes habitats",
+            "Forests": "forests",
+            "Freshwater habitats": "freshwater habitats",
+            "Grasslands": "grasslands",
+            "Heath & scrub": "heath & scrub",
+            "Rocky habitats": "rocky habitats",
+            "Sclerophilus scrub": "sclerophyllous scrub",
+        }
         filter_args = {}
         if not group:
             return
+        if period == '1':
+            group = GROUPS_2006[group]
+
         filter_args["dataset_id"] = period
         if country:
             filter_args["eu_country_code"] = country
