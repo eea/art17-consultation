@@ -78,12 +78,21 @@ class Report(views.View):
             "Heath & scrub": "heath & scrub",
             "Rocky habitats": "rocky habitats",
             "Sclerophilus scrub": "sclerophyllous scrub",
+            "bogs, mires & fens": "bogs, mires & fens",
+            "coastal habitats": "coastal habitats",
+            "dunes habitats": "dunes habitats",
+            "forests": "forests",
+            "freshwater habitats": "freshwater habitats",
+            "grasslands": "grasslands",
+            "heath & scrub": "heath & scrub",
+            "rocky habitats": "rocky habitats",
+            "sclerophyllous scrub": "sclerophyllous scrub",
         }
         filter_args = {}
         if not group:
             return
         if period == '1':
-            group = GROUPS_2006[group]
+            group = GROUPS_2006.get(group, group)
 
         filter_args["dataset_id"] = period
         if country:
