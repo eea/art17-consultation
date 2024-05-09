@@ -165,9 +165,7 @@ def test_admin_creates_ldap(app, set_auth, client, outbox, ldap_user_info):
 @pytest.mark.skipif(True, reason="always skip")
 # the workflow should probably be removed as the user is now
 # registered and activated on the first ldap login
-def test_ldap_account_activation_flow(
-    app, set_auth, client, outbox, ldap_user_info
-):
+def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_info):
     from art17.auth.providers import set_user
 
     from .factories import DatasetFactory

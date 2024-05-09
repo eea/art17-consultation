@@ -12,9 +12,7 @@ def upgrade():
     )
     op.add_column(
         "lu_species_manual_assessments_2007",
-        sa.Column(
-            "conclusion_assessment_prev", sa.String(length=3), nullable=True
-        ),
+        sa.Column("conclusion_assessment_prev", sa.String(length=3), nullable=True),
     )
     op.add_column(
         "lu_species_manual_assessments_2007",
@@ -30,7 +28,5 @@ def downgrade():
     op.drop_column(
         "lu_species_manual_assessments_2007", "conclusion_assessment_trend_prev"
     )
-    op.drop_column(
-        "lu_species_manual_assessments_2007", "conclusion_assessment_prev"
-    )
+    op.drop_column("lu_species_manual_assessments_2007", "conclusion_assessment_prev")
     op.drop_column("lu_species_manual_assessments_2007", "backcasted_2007")

@@ -3,13 +3,17 @@ import pytest
 from art17 import models
 
 from .conftest import get_request_params
-from .factories import (CommentFactory, DatasetFactory,
-                        EtcDataHabitattypeAutomaticAssessmentFactory,
-                        EtcDataSpeciesAutomaticAssessmentFactory,
-                        EtcDicHdHabitat, EtcDicMethodFactory,
-                        HabitatCommentFactory,
-                        HabitattypesManualAssessmentsFactory,
-                        SpeciesManualAssessmentFactory)
+from .factories import (
+    CommentFactory,
+    DatasetFactory,
+    EtcDataHabitattypeAutomaticAssessmentFactory,
+    EtcDataSpeciesAutomaticAssessmentFactory,
+    EtcDicHdHabitat,
+    EtcDicMethodFactory,
+    HabitatCommentFactory,
+    HabitattypesManualAssessmentsFactory,
+    SpeciesManualAssessmentFactory,
+)
 
 CANIS_LUPUS = "Canis lupus"
 HABCODE = 110
@@ -258,9 +262,7 @@ def test_get_subject_details(client, set_auth, dataset_app):
 
 
 def test_unread_comments_species(client, set_auth, dataset_app):
-    CommentFactory(
-        id=1, dataset_id=1, region="ALP", assesment_speciesname=CANIS_LUPUS
-    )
+    CommentFactory(id=1, dataset_id=1, region="ALP", assesment_speciesname=CANIS_LUPUS)
     models.db.session.commit()
 
     url = "/species/summary/"
@@ -275,9 +277,7 @@ def test_unread_comments_species(client, set_auth, dataset_app):
     assert result.status_code == 200
     assert "0/0" in result
 
-    CommentFactory(
-        id=2, dataset_id=2, region="ALP", assesment_speciesname=CANIS_LUPUS
-    )
+    CommentFactory(id=2, dataset_id=2, region="ALP", assesment_speciesname=CANIS_LUPUS)
     models.db.session.commit()
 
     params["period"] = 1

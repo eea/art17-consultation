@@ -24,8 +24,7 @@ def rm(dataset_id):
         return
     for table_name in CLEANUP_TABLES:
         models.db.session.execute(
-            "DELETE FROM `%s` WHERE ext_dataset_id = %d"
-            % (table_name, dataset.id)
+            "DELETE FROM `%s` WHERE ext_dataset_id = %d" % (table_name, dataset.id)
         )
     models.db.session.delete(dataset)
     models.db.session.commit()

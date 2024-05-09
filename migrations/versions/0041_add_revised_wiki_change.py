@@ -6,9 +6,7 @@ from alembic import op
 
 
 def upgrade():
-    op.add_column(
-        "wiki_changes", sa.Column("revised", sa.Boolean(), nullable=True)
-    )
+    op.add_column("wiki_changes", sa.Column("revised", sa.Boolean(), nullable=True))
 
 
 def downgrade():

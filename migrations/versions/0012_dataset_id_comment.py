@@ -6,9 +6,7 @@ from alembic import op
 
 
 def upgrade():
-    op.add_column(
-        "comments", sa.Column("ext_dataset_id", sa.Integer(), nullable=False)
-    )
+    op.add_column("comments", sa.Column("ext_dataset_id", sa.Integer(), nullable=False))
 
 
 def downgrade():

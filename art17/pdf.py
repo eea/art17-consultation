@@ -102,9 +102,7 @@ class PdfRenderer(object):
         command += [str(self.template_path), str(self.pdf_path)]
 
         with open(os.devnull, "w") as FNULL:
-            subprocess.check_call(
-                command, stdout=FNULL, stderr=subprocess.STDOUT
-            )
+            subprocess.check_call(command, stdout=FNULL, stderr=subprocess.STDOUT)
 
     def _generate(self):
         self._render_template()

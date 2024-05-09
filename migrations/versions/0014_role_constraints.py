@@ -22,9 +22,7 @@ def upgrade():
 def downgrade():
     op.drop_constraint("name", "roles", type_="unique")
     op.drop_constraint("description", "roles", type_="unique")
-    op.alter_column(
-        "roles", "name", existing_type=sa.String(length=100), nullable=True
-    )
+    op.alter_column("roles", "name", existing_type=sa.String(length=100), nullable=True)
     op.alter_column(
         "roles",
         "description",

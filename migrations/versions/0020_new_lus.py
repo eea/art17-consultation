@@ -20,9 +20,7 @@ def upgrade():
     )
     op.create_table(
         "lu_species_manual_assessments_2007",
-        sa.Column(
-            "assesment_speciesname", sa.String(length=60), nullable=False
-        ),
+        sa.Column("assesment_speciesname", sa.String(length=60), nullable=False),
         sa.Column("region", sa.String(length=4), nullable=False),
         sa.Column("conclusion_assessment", sa.String(length=2), nullable=True),
         sa.Column("ext_dataset_id", sa.Integer(), nullable=False),
@@ -30,9 +28,7 @@ def upgrade():
             ["ext_dataset_id"],
             ["datasets.id"],
         ),
-        sa.PrimaryKeyConstraint(
-            "assesment_speciesname", "region", "ext_dataset_id"
-        ),
+        sa.PrimaryKeyConstraint("assesment_speciesname", "region", "ext_dataset_id"),
     )
 
 

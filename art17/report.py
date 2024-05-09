@@ -2,9 +2,12 @@ from flask import Blueprint, jsonify, render_template, request, url_for, views, 
 from sqlalchemy import func
 from werkzeug.datastructures import MultiDict
 
-from art17.common import (favourable_ref_title_habitat,
-                          favourable_ref_title_species, generate_map_url,
-                          get_default_period)
+from art17.common import (
+    favourable_ref_title_habitat,
+    favourable_ref_title_species,
+    generate_map_url,
+    get_default_period,
+)
 from art17.forms import ReportFilterForm
 from art17.mixins import HabitatMixin, MixinsCommon, SpeciesMixin
 from art17.models import Dataset
@@ -28,9 +31,7 @@ class Report(views.View):
         countries = self.get_countries(period)
         regions = self.get_regions_by_country(period, country)
         report_filter_form = ReportFilterForm(
-            MultiDict(
-                dict(period=period, group=group, country=country, region=region)
-            )
+            MultiDict(dict(period=period, group=group, country=country, region=region))
         )
         report_filter_form.group.choices = self.get_groups(period)
         report_filter_form.country.choices = countries
@@ -64,9 +65,7 @@ class Report(views.View):
 
         return render_template(self.template_name, **context)
 
-    def get_current_selection(
-        self, period_name, group, country_name, region_name
-    ):
+    def get_current_selection(self, period_name, group, country_name, region_name):
         if not group or country_name == "-":
             return []
         return [period_name, group, country_name, region_name]
@@ -95,7 +94,7 @@ class Report(views.View):
         filter_args = {}
         if not group:
             return
-        if period == '1':
+        if period == "1":
             group = GROUPS_2006.get(group, group)
 
         filter_args["dataset_id"] = period

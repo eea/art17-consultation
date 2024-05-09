@@ -3,8 +3,12 @@ from pytest import fixture
 
 from art17.models import db
 
-from .factories import (DatasetFactory, EtcDataHabitattypeRegionFactory,
-                        EtcDicBiogeoregFactory, EtcDicHdHabitat)
+from .factories import (
+    DatasetFactory,
+    EtcDataHabitattypeRegionFactory,
+    EtcDicBiogeoregFactory,
+    EtcDicHdHabitat,
+)
 
 
 @fixture(autouse=True)

@@ -14,9 +14,7 @@ def setup_common(app):
         group="Mammals",
     )
     factories.SpeciesManualAssessmentFactory(region="ALP")
-    factories.SpeciesManualAssessmentFactory(
-        region="ALP", user_id="conclusion_user"
-    )
+    factories.SpeciesManualAssessmentFactory(region="ALP", user_id="conclusion_user")
     factories.EtcDicBiogeoregFactory()
 
     factories.EtcDicHdHabitat()
@@ -69,9 +67,7 @@ def setup_deleted(app):
         user_id="conclusion_user",
     )
     factories.WikiCommentFactory(id=3, author_id="user3", deleted=1)
-    factories.HabitatCommentFactory(
-        id=4, author_id="user4", region="ALP", deleted=1
-    )
+    factories.HabitatCommentFactory(id=4, author_id="user4", region="ALP", deleted=1)
     factories.HabitatCommentFactory(
         id=5,
         author_id="user4",

@@ -12,9 +12,7 @@ def upgrade():
     )
     op.add_column(
         "lu_habitattypes_manual_assessments_2007",
-        sa.Column(
-            "conclusion_assessment_prev", sa.String(length=3), nullable=True
-        ),
+        sa.Column("conclusion_assessment_prev", sa.String(length=3), nullable=True),
     )
     op.add_column(
         "lu_habitattypes_manual_assessments_2007",

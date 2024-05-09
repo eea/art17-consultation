@@ -13,15 +13,11 @@ SCHEMAS = IMPORT_SCHEMA.keys()
 class DatasetForm(Form_base):
     name = StringField()
     schema = SelectField(choices=zip(SCHEMAS, SCHEMAS))
-    species_map_url = StringField(
-        label="URL for species map", validators=[Optional()]
-    )
+    species_map_url = StringField(label="URL for species map", validators=[Optional()])
     sensitive_species_map_url = StringField(
         label="URL for sensitive species map", validators=[Optional()]
     )
-    habitat_map_url = StringField(
-        label="URL for habitat map", validators=[Optional()]
-    )
+    habitat_map_url = StringField(label="URL for habitat map", validators=[Optional()])
 
 
 class CustomEmailStringField(StringField):
@@ -34,9 +30,7 @@ class CustomEmailStringField(StringField):
 
 class Art17RegisterFormBase(object):
 
-    name = StringField(
-        "Full name", validators=[Required("Full name is required")]
-    )
+    name = StringField("Full name", validators=[Required("Full name is required")])
     institution = StringField("Institution", validators=[Optional()])
     abbrev = StringField("Abbrev.")
     MS = StringField(widget=HiddenInput())

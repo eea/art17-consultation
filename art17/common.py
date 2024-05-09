@@ -7,11 +7,16 @@ from flask_principal import Permission, RoleNeed
 
 from art17.dataset import CONVERTER_URLS
 from art17.mixins import HabitatMixin, SpeciesMixin
-from art17.models import (Config, Dataset,
-                          EtcDataHabitattypeAutomaticAssessment,
-                          EtcDataHabitattypeRegion,
-                          EtcDataSpeciesAutomaticAssessment,
-                          EtcDataSpeciesRegion, db, restricted_species_2013)
+from art17.models import (
+    Config,
+    Dataset,
+    EtcDataHabitattypeAutomaticAssessment,
+    EtcDataHabitattypeRegion,
+    EtcDataSpeciesAutomaticAssessment,
+    EtcDataSpeciesRegion,
+    db,
+    restricted_species_2013,
+)
 
 from .utils import str2num
 
@@ -179,9 +184,7 @@ nat_perm = Permission(RoleNeed("nat"))
 
 def is_public_user():
     """Call for authenticated users."""
-    return not (
-        admin_perm.can() or sta_perm.can() or etc_perm.can() or nat_perm.can()
-    )
+    return not (admin_perm.can() or sta_perm.can() or etc_perm.can() or nat_perm.can())
 
 
 @common.record
@@ -194,9 +197,7 @@ def register_permissions_in_template_globals(state):
     app.jinja_env.globals["nat_perm"] = nat_perm
     app.jinja_env.globals["HOMEPAGE_VIEW_NAME"] = HOMEPAGE_VIEW_NAME
     app.jinja_env.globals["DEMO_SERVER"] = app.config.get("DEMO_SERVER", True)
-    app.jinja_env.globals["SCRIPT_NAME"] = app.config.get(
-        "SCRIPT_NAME", "/article17"
-    )
+    app.jinja_env.globals["SCRIPT_NAME"] = app.config.get("SCRIPT_NAME", "/article17")
     app.jinja_env.globals["EEA_PASSWORD_RESET"] = app.config.get(
         "EEA_PASSWORD_RESET", ""
     )
@@ -331,9 +332,7 @@ def get_tooltip(row, method_field, model_auto_cls):
     if not tooltip_field:
         return ""
     query = (
-        model_auto_cls.query.with_entities(
-            getattr(model_auto_cls, tooltip_field)
-        )
+        model_auto_cls.query.with_entities(getattr(model_auto_cls, tooltip_field))
         .filter_by(
             subject=row.subject,
             region=row.region,
@@ -451,9 +450,7 @@ def generate_map_url(dataset_id, category, subject, region, sensitive=False):
             return map_href + "&CodeReg=" + subject + region
     else:
         if dataset.schema == "2018":
-            return "&".join(
-                [map_href, field_2018 + "=" + subject, "region=%25"]
-            )
+            return "&".join([map_href, field_2018 + "=" + subject, "region=%25"])
         else:
             return map_href + "&CCode=" + subject
 
@@ -504,6 +501,7 @@ def species_groups():
 @common.route("/common/habitat/groups", endpoint="habitat-groups")
 def habitat_groups():
     from art17.progress import HabitatProgressTable
+
     try:
         period = int(flask.request.args.get("period", ""))
     except ValueError:
@@ -551,9 +549,7 @@ def change_details():
                 datastore = flask.current_app.extensions["security"].datastore
                 datastore.add_role_to_user(current_user, role)
                 current_user_roles = [r.name for r in current_user.roles]
-                expandable_roles = filter(
-                    lambda k: k not in [role], current_user_roles
-                )
+                expandable_roles = filter(lambda k: k not in [role], current_user_roles)
                 for role in expandable_roles:
                     datastore.remove_role_from_user(current_user, role)
                 datastore.commit()

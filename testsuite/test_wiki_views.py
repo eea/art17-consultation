@@ -4,9 +4,15 @@ from art17.auth.providers import set_user
 from art17.models import RegisteredUser, Wiki, WikiChange, WikiComment, db
 
 from .conftest import create_user, force_login, get_request_params
-from .factories import (DatasetFactory, EtcDicBiogeoregFactory,
-                        WikiChangeFactory, WikiCommentFactory, WikiFactory,
-                        WikiTrailChangeFactory, WikiTrailFactory)
+from .factories import (
+    DatasetFactory,
+    EtcDicBiogeoregFactory,
+    WikiChangeFactory,
+    WikiCommentFactory,
+    WikiFactory,
+    WikiTrailChangeFactory,
+    WikiTrailFactory,
+)
 
 
 @pytest.fixture
@@ -171,12 +177,9 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
         ),
     ],
 )
-def test_perms(
-    app, setup, set_auth, client, request_type, request_args, post_params
-):
+def test_perms(app, setup, set_auth, client, request_type, request_args, post_params):
     resp = getattr(client, request_type)(
-        *get_request_params(request_type, request_args, post_params),
-        expect_errors=True
+        *get_request_params(request_type, request_args, post_params), expect_errors=True
     )
     assert resp.status_code == 403
 
@@ -239,8 +242,7 @@ def test_perms_auth_user(
     create_user("otheruser", app)
     set_user("otheruser", app)
     resp = getattr(client, request_type)(
-        *get_request_params(request_type, request_args, post_params),
-        expect_errors=True
+        *get_request_params(request_type, request_args, post_params), expect_errors=True
     )
     assert resp.status_code == 403
 
@@ -280,8 +282,7 @@ def test_404_error(
     set_user("otheruser", app)
     force_login(client, otheruser.fs_uniquifier)
     resp = getattr(client, request_type)(
-        *get_request_params(request_type, request_args, post_params),
-        expect_errors=True
+        *get_request_params(request_type, request_args, post_params), expect_errors=True
     )
     assert resp.status_code == 404
 
@@ -417,12 +418,9 @@ def test_get_revision(app, setup, set_auth, client):
     set_user("testuser")
     force_login(client, testuser.fs_uniquifier)
 
-    resp = client.get(
-        "/species/summary/datasheet/get_revision/", {"revision_id": 1}
-    )
+    resp = client.get("/species/summary/datasheet/get_revision/", {"revision_id": 1})
     assert (
-        resp.html.text == "The wolf was the world's most widely "
-        "distributed mammal."
+        resp.html.text == "The wolf was the world's most widely " "distributed mammal."
     )
 
 

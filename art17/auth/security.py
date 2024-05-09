@@ -7,8 +7,13 @@ from flask_login import current_user as c_user
 from flask_security import AnonymousUser as BaseAnonymousUser
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.forms import ConfirmRegisterForm  # password_length,
-from flask_security.forms import (ForgotPasswordForm, RegisterFormMixin,
-                                  Required, email_validator, unique_user_email)
+from flask_security.forms import (
+    ForgotPasswordForm,
+    RegisterFormMixin,
+    Required,
+    email_validator,
+    unique_user_email,
+)
 from flask_wtf import FlaskForm
 from werkzeug.local import LocalProxy
 from wtforms import BooleanField, StringField, ValidationError
@@ -91,9 +96,7 @@ def custom_unique_user_email(form, field):
 
     # check for editing existing objects
     if check and getattr(obj, "id", None) != check.id:
-        raise ValidationError(
-            "%s is already associated with an account" % field.data
-        )
+        raise ValidationError("%s is already associated with an account" % field.data)
 
 
 class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
@@ -117,9 +120,7 @@ class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
     )
 
 
-class Art17LDAPRegisterForm(
-    Art17RegisterFormBase, RegisterFormMixin, FlaskForm
-):
+class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, FlaskForm):
 
     email = StringField(
         "Email address",
@@ -154,6 +155,5 @@ class Art17ForgotPasswordForm(ForgotPasswordForm):
 
     email = StringField(
         label=ForgotPasswordForm.email.args[0],
-        validators=ForgotPasswordForm.email.kwargs["validators"]
-        + [no_ldap_user],
+        validators=ForgotPasswordForm.email.kwargs["validators"] + [no_ldap_user],
     )

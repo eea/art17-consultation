@@ -3,9 +3,13 @@ import pytest
 from art17 import models
 
 from .conftest import create_user, force_login, get_request_params
-from .factories import (CommentFactory, DatasetFactory, HabitatCommentFactory,
-                        HabitattypesManualAssessmentsFactory,
-                        SpeciesManualAssessmentFactory)
+from .factories import (
+    CommentFactory,
+    DatasetFactory,
+    HabitatCommentFactory,
+    HabitattypesManualAssessmentsFactory,
+    SpeciesManualAssessmentFactory,
+)
 
 
 @pytest.fixture
@@ -465,7 +469,4 @@ def test_count_read_comments_view(
     resp = client.get(*get_request_params("get", request_args))
 
     assert resp.status_code == 200
-    assert (
-        resp.html.find("a", {"title": "Comments: Read/Total"}).text.strip()
-        == "1/1"
-    )
+    assert resp.html.find("a", {"title": "Comments: Read/Total"}).text.strip() == "1/1"

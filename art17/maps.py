@@ -73,9 +73,7 @@ def species_config_xml():
             )
         )
         .filter(models.EtcDataSpeciesRegion.dataset_id == dataset_id)
-        .filter(
-            models.EtcDataSpeciesRegion.assesment_speciesname == species_name
-        )
+        .filter(models.EtcDataSpeciesRegion.assesment_speciesname == species_name)
     )
 
     assesment_speciesname = urllib.parse.quote(species_name)
@@ -159,9 +157,7 @@ def species_config_xml():
         models.db.session.query(
             models.t_restricted_species.c.eu_country_code,
         )
-        .filter(
-            models.t_restricted_species.c.assesment_speciesname == species_name
-        )
+        .filter(models.t_restricted_species.c.assesment_speciesname == species_name)
         .filter(models.t_restricted_species.c.ext_dataset_id == dataset_id)
     )
     restricted_species_list = [r[0] for r in rows]
@@ -205,8 +201,7 @@ def habitats_config_xml():
 
     def getRegions(habitat):
         regions = [
-            "^%s" % rec.region
-            for rec in select_habitat_regions(habitatcode=habitat)
+            "^%s" % rec.region for rec in select_habitat_regions(habitatcode=habitat)
         ]
         return "|".join(regions)
 

@@ -19,8 +19,7 @@ def set_user(user_id, is_ldap_user=False):
         logger.warning("Autheticated user %r not found in database", user_id)
     elif user.is_ldap != is_ldap_user:
         logger.warning(
-            "Mix-up between LDAP and non-LDAP users: "
-            "Ldap says %r, database says %r",
+            "Mix-up between LDAP and non-LDAP users: " "Ldap says %r, database says %r",
             is_ldap_user,
             user.is_ldap,
         )

@@ -3,17 +3,18 @@ from pytest import fixture
 
 from art17.models import db
 
-from .factories import (DatasetFactory, EtcDataSpeciesRegionFactory,
-                        EtcDicBiogeoregFactory)
+from .factories import (
+    DatasetFactory,
+    EtcDataSpeciesRegionFactory,
+    EtcDicBiogeoregFactory,
+)
 
 
 @fixture(autouse=True)
 def setup(app):
     DatasetFactory()
     EtcDicBiogeoregFactory()
-    EtcDataSpeciesRegionFactory(
-        group="reptiles", assesment_speciesname="kitaibelii"
-    )
+    EtcDataSpeciesRegionFactory(group="reptiles", assesment_speciesname="kitaibelii")
     db.session.commit()
 
 
@@ -28,9 +29,7 @@ def test_filter_groups_view(app, client):
 
 
 def test_filter_species_view(app, client):
-    url = url_for(
-        "summary.species-summary-species", period="5", group="reptiles"
-    )
+    url = url_for("summary.species-summary-species", period="5", group="reptiles")
     resp = client.get(url)
 
     assert resp.status_code == 200
@@ -40,9 +39,7 @@ def test_filter_species_view(app, client):
 
 
 def test_filter_regions_view(app, client):
-    url = url_for(
-        "summary.species-summary-regions", period="5", subject="kitaibelii"
-    )
+    url = url_for("summary.species-summary-regions", period="5", subject="kitaibelii")
     resp = client.get(url)
 
     assert resp.status_code == 200

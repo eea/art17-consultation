@@ -31,9 +31,7 @@ ASSETS_DEBUG = getenv("ASSETS_DEBUG", type=bool, default=False)
 AUTH_DEBUG = getenv("AUTH_DEBUG", type=bool, default=False)
 
 EU_ASSESSMENT_MODE = getenv("EU_ASSESSMENT_MODE", type=bool, default=False)
-AUTH_LOG_FILE = getenv(
-    "AUTH_LOG_FILE", default="/var/local/art17/logs/flask-auth.log"
-)
+AUTH_LOG_FILE = getenv("AUTH_LOG_FILE", default="/var/local/art17/logs/flask-auth.log")
 
 EEA_LDAP_PROTOCOL = getenv("EEA_LDAP_PROTOCOL", default="")
 EEA_LDAP_SERVER = getenv("EEA_LDAP_SERVER", default="")

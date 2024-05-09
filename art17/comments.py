@@ -1,22 +1,38 @@
 from datetime import datetime
 
-from flask import (Blueprint, abort, flash, render_template, request, url_for,
-                   views)
+from flask import Blueprint, abort, flash, render_template, request, url_for, views
 from flask_principal import PermissionDenied
 from sqlalchemy import func, or_
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
 
 from art17.auth.security import current_user
-from art17.common import (DATE_FORMAT, admin_perm, get_default_period,
-                          is_public_user, nat_perm, sta_cannot_change,
-                          sta_perm)
+from art17.common import (
+    DATE_FORMAT,
+    admin_perm,
+    get_default_period,
+    is_public_user,
+    nat_perm,
+    sta_cannot_change,
+    sta_perm,
+)
 from art17.forms import CommentForm
 from art17.mixins import HabitatMixin, SpeciesMixin
-from art17.models import (Comment, Dataset, HabitatComment, RegisteredUser,
-                          Wiki, WikiChange, WikiComment, WikiTrail,
-                          WikiTrailChange, db, t_comments_read,
-                          t_habitat_comments_read, t_wiki_comments_read)
+from art17.models import (
+    Comment,
+    Dataset,
+    HabitatComment,
+    RegisteredUser,
+    Wiki,
+    WikiChange,
+    WikiComment,
+    WikiTrail,
+    WikiTrailChange,
+    db,
+    t_comments_read,
+    t_habitat_comments_read,
+    t_wiki_comments_read,
+)
 from instance.settings import EU_ASSESSMENT_MODE
 
 comments = Blueprint("comments", __name__)
@@ -79,9 +95,7 @@ def can_view_comments(record):
 
 @comments.app_template_global("can_edit_comment")
 def can_edit_comment(comment):
-    if not comment or (
-        not current_user.is_authenticated and not EU_ASSESSMENT_MODE
-    ):
+    if not comment or (not current_user.is_authenticated and not EU_ASSESSMENT_MODE):
         return False
     if (
         comment
@@ -218,14 +232,10 @@ class CommentsList(views.View):
                 return redirect(request.base_url + hash)
         else:
             if request.args.get("toggle"):
-                comment = self.model_comment_cls.query.get(
-                    request.args["toggle"]
-                )
+                comment = self.model_comment_cls.query.get(request.args["toggle"])
                 self.toggle_read(comment)
             if request.args.get("delete"):
-                comment = self.model_comment_cls.query.get(
-                    request.args["delete"]
-                )
+                comment = self.model_comment_cls.query.get(request.args["delete"])
                 permanently = request.args.get("perm", 0)
                 if permanently:
                     db.session.delete(comment)

@@ -6,13 +6,9 @@ from alembic import op
 
 
 def upgrade():
-    op.alter_column(
-        "dic_country_codes", "code", existing_type=sa.String(length=3)
-    )
+    op.alter_column("dic_country_codes", "code", existing_type=sa.String(length=3))
 
-    op.alter_column(
-        "dic_country_codes", "codeEU", existing_type=sa.String(length=3)
-    )
+    op.alter_column("dic_country_codes", "codeEU", existing_type=sa.String(length=3))
 
     op.alter_column("datasets", "schema", existing_type=sa.String(length=7))
 
@@ -43,12 +39,8 @@ def downgrade():
         existing_type=sa.String(length=2),
     )
 
-    op.alter_column(
-        "dic_country_codes", "code", existing_type=sa.String(length=2)
-    )
+    op.alter_column("dic_country_codes", "code", existing_type=sa.String(length=2))
 
-    op.alter_column(
-        "dic_country_codes", "codeEU", existing_type=sa.String(length=2)
-    )
+    op.alter_column("dic_country_codes", "codeEU", existing_type=sa.String(length=2))
 
     op.alter_column("datasets", "schema", existing_type=sa.String(length=4))

@@ -6,12 +6,21 @@ from werkzeug.datastructures import MultiDict
 from werkzeug.utils import redirect
 
 from art17.auth.security import current_user
-from art17.common import (DATE_FORMAT, MixinView, admin_perm,
-                          consultation_ended, etc_perm, get_default_period)
-from art17.models import (Config, EtcDicDecision, EtcDicMethod, RegisteredUser,
-                          db)
-from art17.summary.permissions import (can_delete, can_select_MS,
-                                       can_update_decision, must_edit_ref)
+from art17.common import (
+    DATE_FORMAT,
+    MixinView,
+    admin_perm,
+    consultation_ended,
+    etc_perm,
+    get_default_period,
+)
+from art17.models import Config, EtcDicDecision, EtcDicMethod, RegisteredUser, db
+from art17.summary.permissions import (
+    can_delete,
+    can_select_MS,
+    can_update_decision,
+    must_edit_ref,
+)
 from art17.utils import validate_float
 from instance.settings import EU_ASSESSMENT_MODE
 
@@ -86,11 +95,7 @@ class ConclusionView(object):
                 self.model_auto_cls.assessment_method == EtcDicMethod.method,
             )
         ).all()
-        cmpf = (
-            lambda x, y: -1
-            if x.assessment_method == "00"
-            else cmp(x.order, y.order)
-        )
+        cmpf = lambda x, y: -1 if x.assessment_method == "00" else cmp(x.order, y.order)
         best.sort(key=cmp_to_key(cmpf))
         values = {}
         # for f in all_fields(self.manual_form_cls()):
@@ -109,9 +114,7 @@ class ConclusionView(object):
 
         if prev_lu:
             if period == "3":
-                values[
-                    "conclusion_assessment_prev"
-                ] = prev_lu.conclusion_assessment
+                values["conclusion_assessment_prev"] = prev_lu.conclusion_assessment
             if period == "5":
                 values[
                     "conclusion_assessment_prev"
@@ -170,10 +173,7 @@ class ConclusionView(object):
     def check_conclusion(self, conclusion):
         start_date = Config.query.first().start_date
         dataset_id = Config.query.first().default_dataset_id
-        if (
-            conclusion.dataset.id == dataset_id
-            and not conclusion.dataset.is_readonly
-        ):
+        if conclusion.dataset.id == dataset_id and not conclusion.dataset.is_readonly:
             if not start_date or start_date > date.today():
                 return False
         return conclusion.decision in ["OK", "END"]
@@ -248,14 +248,12 @@ class UpdateDecision(MixinView, views.View):
     methods = ["GET", "POST"]
 
     def dispatch_request(self, period, subject, region, user):
-        try: 
+        try:
             int(period)
         except ValueError:
             abort(404)
         ms = request.args.get("ms")
-        self.record = self.mixin.get_manual_record(
-            period, subject, region, user, ms
-        )
+        self.record = self.mixin.get_manual_record(period, subject, region, user, ms)
         if not self.record:
             abort(404)
 
@@ -285,8 +283,7 @@ class UpdateDecision(MixinView, views.View):
     def validate(self, decision, period):
         validation_values = ["OK", "END"]
         valid_decisions = [
-            d.decision
-            for d in EtcDicDecision.query.filter_by(dataset_id=period).all()
+            d.decision for d in EtcDicDecision.query.filter_by(dataset_id=period).all()
         ]
         if decision not in valid_decisions:
             return {

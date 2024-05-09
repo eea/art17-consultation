@@ -16,6 +16,5 @@ def upgrade():
 
 def downgrade():
     op.execute(
-        "DELETE FROM roles WHERE name IN "
-        "('admin', 'etc', 'nat', 'stakeholder')"
+        "DELETE FROM roles WHERE name IN " "('admin', 'etc', 'nat', 'stakeholder')"
     )

@@ -10,8 +10,7 @@ from path import Path
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
 valid_float = re.compile("^\s*((?=.*[1-9])\d*(?:\.\d{1,2})?|x)\s*$")
 valid_numeric = re.compile(
-    "^\s*(((\d*\.)?\d+\s*-\s*(\d*\.)?\d+"
-    + "|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$"
+    "^\s*(((\d*\.)?\d+\s*-\s*(\d*\.)?\d+" + "|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$"
 )
 valid_ref = re.compile(
     "^\s*((\d*\.)?\d+\s*-\s*(\d\.)?\d+" + "|(>|>>|≈|<)?\s*((\d*\.)?\d+)?|x)\s*$"
@@ -116,9 +115,7 @@ def slugify(value):
         return ""
     if not isinstance(value, str):
         value = str(value)
-    value = (
-        unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
-    )
+    value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
     value = _slugify_strip_re.sub("", value).strip().lower()
     value = _slugify_hyphenate_re.sub("-", value)
     return value

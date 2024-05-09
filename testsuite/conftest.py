@@ -31,20 +31,17 @@ def create_generic_fixtures():
     models.db.drop_all()
     models.db.create_all()
     models.db.session.execute(
-        "insert into roles (name, description) "
-        "values ('admin', 'Administrator')"
+        "insert into roles (name, description) " "values ('admin', 'Administrator')"
     )
     models.db.session.execute(
         "insert into roles (name, description) "
         "values ('etc', 'European topic center')"
     )
     models.db.session.execute(
-        "insert into roles (name, description) "
-        "values ('stakeholder', 'Stakeholder')"
+        "insert into roles (name, description) " "values ('stakeholder', 'Stakeholder')"
     )
     models.db.session.execute(
-        "insert into roles (name, description) "
-        "values ('nat', 'National expert')"
+        "insert into roles (name, description) " "values ('nat', 'National expert')"
     )
     models.db.session.execute(
         "insert into config(default_dataset_id, start_date) values (5, '%s')"

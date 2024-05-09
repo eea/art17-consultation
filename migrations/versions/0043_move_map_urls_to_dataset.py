@@ -15,9 +15,7 @@ def upgrade():
     )
     op.add_column(
         "datasets",
-        sa.Column(
-            "sensitive_species_map_url", sa.String(length=255), nullable=True
-        ),
+        sa.Column("sensitive_species_map_url", sa.String(length=255), nullable=True),
     )
     op.add_column(
         "datasets",
@@ -35,9 +33,7 @@ def downgrade():
     )
     op.add_column(
         "config",
-        sa.Column(
-            "sensitive_species_map_url", sa.String(length=255), nullable=True
-        ),
+        sa.Column("sensitive_species_map_url", sa.String(length=255), nullable=True),
     )
     op.add_column(
         "config",

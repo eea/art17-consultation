@@ -17,14 +17,10 @@ def upgrade():
         "roles_users",
         sa.Column("registered_users_user", sa.String(length=50), nullable=True),
         sa.Column("role_id", sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(
-            ["registered_users_user"], ["registered_users.user"]
-        ),
+        sa.ForeignKeyConstraint(["registered_users_user"], ["registered_users.user"]),
         sa.ForeignKeyConstraint(["role_id"], ["roles.id"]),
     )
-    op.add_column(
-        "registered_users", sa.Column("active", sa.Boolean(), nullable=True)
-    )
+    op.add_column("registered_users", sa.Column("active", sa.Boolean(), nullable=True))
     op.add_column(
         "registered_users",
         sa.Column("confirmed_at", sa.DateTime(), nullable=True),

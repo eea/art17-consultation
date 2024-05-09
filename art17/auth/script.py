@@ -1,6 +1,7 @@
 from flask.cli import AppGroup
 
 from art17 import models
+
 # from flask_security.script import (
 #     CreateUserCommand as BaseCreateUserCommand,
 #     CreateRoleCommand,

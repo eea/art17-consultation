@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0048'
-down_revision = '0047'
+revision = "0048"
+down_revision = "0047"
 branch_labels = None
 depends_on = None
 
@@ -32,8 +32,3 @@ def downgrade():
         existing_type=sa.String(length=100),
         type_=sa.String(length=16),
     )
-
-
-
-
-

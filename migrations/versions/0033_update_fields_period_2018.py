@@ -8,15 +8,11 @@ from alembic import op
 def upgrade():
     op.add_column(
         "etc_data_habitattype_automatic_assessment",
-        sa.Column(
-            "coverage_surface_area_max", sa.String(length=100), nullable=True
-        ),
+        sa.Column("coverage_surface_area_max", sa.String(length=100), nullable=True),
     )
     op.add_column(
         "etc_data_habitattype_automatic_assessment",
-        sa.Column(
-            "coverage_surface_area_min", sa.String(length=100), nullable=True
-        ),
+        sa.Column("coverage_surface_area_min", sa.String(length=100), nullable=True),
     )
     op.add_column(
         "etc_data_habitattype_automatic_assessment",
@@ -28,9 +24,7 @@ def upgrade():
     )
     op.add_column(
         "etc_data_habitattype_automatic_assessment",
-        sa.Column(
-            "percentage_coverage_trend", sa.String(length=100), nullable=True
-        ),
+        sa.Column("percentage_coverage_trend", sa.String(length=100), nullable=True),
     )
     op.add_column(
         "etc_data_habitattype_automatic_assessment",
@@ -42,9 +36,7 @@ def upgrade():
     )
     op.add_column(
         "etc_data_habitattype_automatic_assessment",
-        sa.Column(
-            "percentage_range_trend", sa.String(length=100), nullable=True
-        ),
+        sa.Column("percentage_range_trend", sa.String(length=100), nullable=True),
     )
     op.drop_column(
         "etc_data_habitattype_automatic_assessment",
@@ -60,54 +52,36 @@ def upgrade():
     )
     op.add_column(
         "etc_data_species_automatic_assessment",
-        sa.Column(
-            "percentage_population_trend", sa.String(length=100), nullable=True
-        ),
+        sa.Column("percentage_population_trend", sa.String(length=100), nullable=True),
     )
     op.add_column(
         "etc_data_species_automatic_assessment",
-        sa.Column(
-            "percentage_range_trend", sa.String(length=100), nullable=True
-        ),
+        sa.Column("percentage_range_trend", sa.String(length=100), nullable=True),
     )
     op.add_column(
         "etc_data_species_automatic_assessment",
-        sa.Column(
-            "population_maximum_size", sa.String(length=100), nullable=True
-        ),
+        sa.Column("population_maximum_size", sa.String(length=100), nullable=True),
     )
     op.add_column(
         "etc_data_species_automatic_assessment",
-        sa.Column(
-            "population_minimum_size", sa.String(length=100), nullable=True
-        ),
+        sa.Column("population_minimum_size", sa.String(length=100), nullable=True),
     )
-    op.drop_column(
-        "etc_data_species_automatic_assessment", "population_size_min_max"
+    op.drop_column("etc_data_species_automatic_assessment", "population_size_min_max")
+    op.add_column(
+        "habitattypes_manual_assessment",
+        sa.Column("coverage_surface_area_max", sa.String(length=23), nullable=True),
     )
     op.add_column(
         "habitattypes_manual_assessment",
-        sa.Column(
-            "coverage_surface_area_max", sa.String(length=23), nullable=True
-        ),
-    )
-    op.add_column(
-        "habitattypes_manual_assessment",
-        sa.Column(
-            "coverage_surface_area_min", sa.String(length=23), nullable=True
-        ),
+        sa.Column("coverage_surface_area_min", sa.String(length=23), nullable=True),
     )
     op.add_column(
         "species_manual_assessment",
-        sa.Column(
-            "population_maximum_size", sa.String(length=23), nullable=True
-        ),
+        sa.Column("population_maximum_size", sa.String(length=23), nullable=True),
     )
     op.add_column(
         "species_manual_assessment",
-        sa.Column(
-            "population_minimum_size", sa.String(length=23), nullable=True
-        ),
+        sa.Column("population_minimum_size", sa.String(length=23), nullable=True),
     )
     op.add_column(
         "etc_data_habitattype_regions",
@@ -125,32 +99,18 @@ def upgrade():
 
 def downgrade():
     op.drop_column("etc_data_habitattype_regions", "coverage_etc")
-    op.drop_column(
-        "etc_data_habitattype_regions", "percentage_hab_condition_good"
-    )
+    op.drop_column("etc_data_habitattype_regions", "percentage_hab_condition_good")
     op.drop_column("species_manual_assessment", "population_minimum_size")
     op.drop_column("species_manual_assessment", "population_maximum_size")
-    op.drop_column(
-        "habitattypes_manual_assessment", "coverage_surface_area_min"
-    )
-    op.drop_column(
-        "habitattypes_manual_assessment", "coverage_surface_area_max"
-    )
+    op.drop_column("habitattypes_manual_assessment", "coverage_surface_area_min")
+    op.drop_column("habitattypes_manual_assessment", "coverage_surface_area_max")
     op.add_column(
         "etc_data_species_automatic_assessment",
-        sa.Column(
-            "population_size_min_max", sa.String(length=100), nullable=True
-        ),
+        sa.Column("population_size_min_max", sa.String(length=100), nullable=True),
     )
-    op.drop_column(
-        "etc_data_species_automatic_assessment", "population_minimum_size"
-    )
-    op.drop_column(
-        "etc_data_species_automatic_assessment", "population_maximum_size"
-    )
-    op.drop_column(
-        "etc_data_species_automatic_assessment", "percentage_range_trend"
-    )
+    op.drop_column("etc_data_species_automatic_assessment", "population_minimum_size")
+    op.drop_column("etc_data_species_automatic_assessment", "population_maximum_size")
+    op.drop_column("etc_data_species_automatic_assessment", "percentage_range_trend")
     op.drop_column(
         "etc_data_species_automatic_assessment", "percentage_population_trend"
     )
