@@ -433,6 +433,10 @@ def dataset_list():
 @auth.route("/admin/dataset/<dataset_id>", methods=["GET", "POST"])
 @require_admin
 def dataset_edit(dataset_id):
+    try:
+        dataset_id = int(dataset_id)
+    except ValueError:
+        return "Bad request", 400
     dataset = models.Dataset.query.get_or_404(dataset_id)
 
     if request.method == "POST":

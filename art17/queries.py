@@ -9,7 +9,7 @@ FROM ((SELECT   RS4.level2_code,
        FROM     (SELECT DISTINCT RS2.country AS pl2_ms,
                         RS2.region,
                         RS2.{join_column},
-                        SUBSTRING_INDEX(pressurecode, '.', 1) AS level2_code
+                        split_part(pressurecode, '.', 1) AS level2_code
                  FROM ({checklist_table} AS RS3
                         INNER JOIN {regions_MS_table} AS RS2
                                 ON (RS3.country = RS2.country)
@@ -28,7 +28,7 @@ FROM ((SELECT   RS4.level2_code,
                      FROM   (SELECT DISTINCT RS2.country AS pl2_ms,
                                     RS2.region,
                                     RS2.{join_column},
-                                    SUBSTRING_INDEX(pressurecode, '.', 1) AS level2_code
+                                    split_part(pressurecode, '.', 1) AS level2_code
                              FROM ({checklist_table} AS RS3
                              INNER JOIN {regions_MS_table} AS RS2
                                      ON (RS3.country = RS2.country)
@@ -51,35 +51,39 @@ LIMIT 10
 
 COVERAGE_QUERY_HABITAT = """
 SELECT  A.country, A.region,
- IF(
-    NOT IFNULL(A.coverage_surface_area, 0)=0,
-    IF(
-      NOT IFNULL(A.natura2000_area_max, 0)=0,
-      IF(
-        A.natura2000_area_min IS NOT NULL,
-        IF(
-          A.natura2000_area_min=0,
-          'x',
-          IF(
-            SQRT(A.natura2000_area_min * A.natura2000_area_max)
-                 / A.coverage_surface_area > 1,
-            '100*',
-            Round(100 * SQRT(A.natura2000_area_min * A.natura2000_area_max)
-                / A.coverage_surface_area))),
-        'x'),
-      IF(
-        A.natura2000_area_min IS NOT NULL,
-        IF(
-          A.natura2000_area_min / A.coverage_surface_area > 1,
-          '100*',
-          IF(
-            A.natura2000_area_min=0,
-            0,
-            Round(100 * A.natura2000_area_min / A.coverage_surface_area))),
-        'x')),
-    'x'
-  ) pc
-FROM data_habitats_regions_MS_level AS A
+CASE 
+   WHEN (NOT COALESCE(A.coverage_surface_area, 0)=0) THEN
+      CASE
+         WHEN (NOT COALESCE(A.natura2000_area_max, 0)=0) THEN
+            CASE
+               WHEN (A.natura2000_area_min IS NOT NULL) THEN
+                  CASE
+                     WHEN (A.natura2000_area_min=0) THEN 'x'
+                     ELSE
+                        CASE
+                           WHEN (SQRT(A.natura2000_area_min * A.natura2000_area_max) / A.coverage_surface_area > 1) THEN '100*'
+                           ELSE Round(100 * SQRT(A.natura2000_area_min * A.natura2000_area_max) / A.coverage_surface_area)::varchar(255)
+                        END
+                  END
+               ELSE 'x'
+            END
+         ELSE
+            CASE
+               WHEN (A.natura2000_area_min IS NOT NULL) THEN
+                  CASE
+                     WHEN (A.natura2000_area_min / A.coverage_surface_area > 1) THEN '100*'
+                     ELSE
+                        CASE
+                           WHEN (A.natura2000_area_min=0) THEN '0'
+                           ELSE Round(100 * A.natura2000_area_min / A.coverage_surface_area)::varchar(255)
+                        END
+                  END
+               ELSE 'x'
+            END
+      END
+   ELSE 'x'
+END AS pc
+FROM data_habitats_regions_ms_level AS A
 INNER JOIN data_habitats_check_list AS B
                ON ( A.country = B.country )
                   AND ( A.region = B.region )
@@ -92,109 +96,146 @@ ORDER BY country;
 
 COVERAGE_QUERY_SPECIES = """
 SELECT A.country, A.region,
-IF(A.natura2000_population_unit IS NOT null AND A.natura2000_population_unit = A.population_size_unit,
-   IF(NOT IFNULL(A.population_maximum_size, 0)=0,
-      IF(A.population_minimum_size IS NOT null,
-         IF(NOT IFNULL(A.natura2000_population_max, 0)=0,
-            IF(A.natura2000_population_min IS NOT null,
-               IF(SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                       * A.natura2000_population_max)
-                  / SQRT(IF(A.population_minimum_size=0, 1, A.population_minimum_size)
-                         * A.population_maximum_size) > 1,
-                  '100*',
-                  Round(100*SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                                 * A.natura2000_population_max)
-                        / SQRT(IF(A.population_minimum_size=0, 1, A.population_minimum_size)
-                                 * A.population_maximum_size))),
-               'x'),
-            IF(A.natura2000_population_min IS NOT null,
-               IF(A.natura2000_population_min=0 AND A.natura2000_population_max IS NOT null,
-                  0,
-                  IF(A.natura2000_population_min
-                     / SQRT(IF(A.population_minimum_size=0, 1, A.population_minimum_size)
-                            * A.population_maximum_size) > 1,
-                     '100*',
-                     Round(100 * A.natura2000_population_min
-                           / SQRT(IF(A.population_minimum_size=0, 1, A.population_minimum_size)
-                                  * A.population_maximum_size)))),
-               'x')),
-         'x'),
-       IF(A.population_minimum_size IS NOT null,
-          IF(NOT IFNULL(A.natura2000_population_max, 0)=0,
-             IF(A.natura2000_population_min IS NOT null,
-                IF(A.population_maximum_size IS NOT null,
-                   'x',
-                   IF(SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                           * A.natura2000_population_max)
-                      / IF(A.population_minimum_size=0, 1, A.population_minimum_size) > 1,
-                     '100*',
-                     Round(100*SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                                    * A.natura2000_population_max)
-                           / IF(A.population_minimum_size=0, 1, A.population_minimum_size)))),
-                'x'),
-             IF(A.natura2000_population_min IS NOT null,
-                IF(A.natura2000_population_min
-                   / IF(A.population_minimum_size=0, 1, A.population_minimum_size) >1,
-                   '100*',
-                   Round(100*A.natura2000_population_min
-                         / IF(A.population_minimum_size=0, 1, A.population_minimum_size))),
-                'x')),
-          'x')),
-   IF(A.natura2000_population_unit IS NOT null AND A.natura2000_population_unit = A.population_alt_size_unit,
-      IF(NOT IFNULL(A.population_alt_maximum_size, 0)=0,
-         IF(A.population_alt_minimum_size IS NOT null,
-            IF(NOT IFNULL(A.natura2000_population_max, 0)=0,
-               IF(A.natura2000_population_min IS NOT null,
-                  IF(SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                          * A.natura2000_population_max)
-                     / SQRT(IF(A.population_alt_minimum_size=0, 1, A.population_alt_minimum_size)
-                            * A.population_alt_maximum_size) > 1,
-                     '100*',
-                     Round(100*SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                                    * A.natura2000_population_max)
-                           / SQRT(IF(A.population_alt_minimum_size=0, 1, A.population_alt_minimum_size)
-                            * A.population_alt_maximum_size))),
-                  'x'),
-               IF(A.natura2000_population_min IS NOT null,
-                  IF(A.natura2000_population_min=0 AND A.natura2000_population_max IS NOT null,
-                     0,
-                     IF(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                        / SQRT(IF(A.population_alt_minimum_size=0, 1, A.population_alt_minimum_size)
-                               * A.population_alt_maximum_size) > 1,
-                     '100*',
-                     Round(100*IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                           / SQRT(IF(A.population_alt_minimum_size=0, 1, A.population_alt_minimum_size)
-                               * A.population_alt_maximum_size)))),
-                  'x')),
-            'x'),
-         IF(A.population_alt_minimum_size IS NOT null,
-            IF(NOT IFNULL(A.natura2000_population_max, 0)=0,
-               IF(A.natura2000_population_min IS NOT null,
-                  IF(A.population_alt_maximum_size IS NOT null,
-                     'x',
-                     IF(A.population_alt_minimum_size=0,
-                        'x',
-                        IF(SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                                * A.natura2000_population_max)
-                           / A.population_alt_minimum_size > 1,
-                           '100*',
-                           Round(100*SQRT(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                                          * A.natura2000_population_max)
-                                 / A.population_alt_minimum_size)))),
-                  'x'),
-
-               IF(A.natura2000_population_min IS NOT null,
-                  IF(A.population_alt_minimum_size=0 AND A.natura2000_population_min=0,
-                     'x',
-                     IF(IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                        / IF(A.population_alt_minimum_size=0, 1, A.population_alt_minimum_size) > 1,
-                       '100*',
-                       Round(100*IF(A.natura2000_population_min=0, 1, A.natura2000_population_min)
-                             / IF(A.population_alt_minimum_size=0, 1, A.population_alt_minimum_size)))),
-                  'x')),
-            'x')),
-      'x'
-)) AS pc
+CASE
+   WHEN (A.natura2000_population_unit IS NOT NULL AND A.natura2000_population_unit = A.population_size_unit) THEN
+      CASE
+         WHEN (NOT COALESCE(A.population_maximum_size, 0)=0) THEN
+            CASE
+               WHEN (A.population_minimum_size IS NOT NULL) THEN
+                  CASE
+                     WHEN (NOT COALESCE(A.natura2000_population_max, 0)=0) THEN
+                        CASE  
+                           WHEN (A.natura2000_population_min IS NOT NULL) THEN
+                              CASE
+                                 WHEN (SQRT(A.natura2000_population_min * A.natura2000_population_max) / SQRT(A.population_minimum_size * A.population_maximum_size) > 1) THEN '100*'
+                                 ELSE Round(100 * SQRT(A.natura2000_population_min * A.natura2000_population_max) / SQRT(A.population_minimum_size * A.population_maximum_size))::varchar(255)
+                              END
+                           ELSE 'x'
+                        END
+                     ELSE
+                        CASE
+                           WHEN (A.natura2000_population_min IS NOT NULL) THEN
+                              CASE
+                                 WHEN (A.natura2000_population_min=0 AND A.natura2000_population_max IS NOT NULL) THEN '0'
+                                 ELSE
+                                    CASE
+                                       WHEN (A.natura2000_population_min / SQRT(A.population_minimum_size * A.population_maximum_size) > 1) THEN '100*'
+                                       ELSE Round(100 * A.natura2000_population_min / SQRT(A.population_minimum_size * A.population_maximum_size))::varchar(255)
+                                    END
+                              END
+                           ELSE 'x'
+                        END
+                  END
+               ELSE 'x'
+            END
+         ELSE
+            CASE
+               WHEN (A.population_minimum_size IS NOT NULL) THEN
+                  CASE
+                     WHEN (NOT COALESCE(A.natura2000_population_max, 0)=0) THEN
+                        CASE
+                           WHEN (A.natura2000_population_min IS NOT NULL) THEN
+                              CASE
+                                 WHEN (A.population_maximum_size IS NOT NULL) THEN 'x'
+                                 ELSE
+                                    CASE
+                                       WHEN (SQRT(A.natura2000_population_min * A.natura2000_population_max) / A.population_minimum_size > 1) THEN '100*'
+                                       ELSE Round(100 * SQRT(A.natura2000_population_min * A.natura2000_population_max) / A.population_minimum_size)::varchar(255)
+                                    END
+                              END
+                           ELSE 'x'
+                        END
+                     ELSE
+                        CASE
+                           WHEN (A.natura2000_population_min IS NOT NULL) THEN
+                              CASE
+                                 WHEN (A.population_minimum_size=0 AND A.natura2000_population_min=0) THEN 'x'
+                                 ELSE
+                                    CASE
+                                       WHEN (A.natura2000_population_min / A.population_minimum_size > 1) THEN '100*'
+                                       ELSE Round(100 * A.natura2000_population_min / A.population_minimum_size)::varchar(255)
+                                    END
+                              END
+                           ELSE 'x'
+                        END
+                  END
+               ELSE 'x'
+            END
+      END
+   ELSE
+      CASE
+         WHEN (A.natura2000_population_unit IS NOT NULL AND A.natura2000_population_unit = A.population_alt_size_unit) THEN
+            CASE
+               WHEN (NOT COALESCE(A.population_alt_maximum_size, 0)=0) THEN
+                  CASE
+                     WHEN (A.population_alt_minimum_size IS NOT NULL) THEN
+                        CASE
+                           WHEN (NOT COALESCE(A.natura2000_population_max, 0)=0) THEN
+                              CASE
+                                 WHEN (A.natura2000_population_min IS NOT NULL) THEN
+                                    CASE
+                                       WHEN (SQRT(A.natura2000_population_min * A.natura2000_population_max) / SQRT(A.population_alt_minimum_size * A.population_alt_maximum_size) > 1) THEN '100*'
+                                       ELSE Round(100 * SQRT(A.natura2000_population_min * A.natura2000_population_max) / SQRT(A.population_alt_minimum_size * A.population_alt_maximum_size))::varchar(255)
+                                    END
+                                 ELSE 'x'
+                              END
+                           ELSE
+                              CASE
+                                 WHEN (A.natura2000_population_min IS NOT NULL) THEN
+                                    CASE
+                                       WHEN (A.natura2000_population_min=0 AND A.natura2000_population_max IS NOT NULL) THEN '0'
+                                       ELSE
+                                          CASE
+                                             WHEN (A.natura2000_population_min / SQRT(A.population_alt_minimum_size * A.population_alt_maximum_size) > 1) THEN '100*'
+                                             ELSE Round(100 * A.natura2000_population_min / SQRT(A.population_alt_minimum_size * A.population_alt_maximum_size))::varchar(255)
+                                          END
+                                    END
+                                 ELSE 'x'
+                              END
+                        END
+                     ELSE 'x'
+                  END
+               ELSE
+                  CASE
+                     WHEN (A.population_alt_minimum_size IS NOT NULL) THEN
+                        CASE
+                           WHEN (NOT COALESCE(A.natura2000_population_max, 0)=0) THEN
+                              CASE
+                                 WHEN (A.natura2000_population_min IS NOT NULL) THEN
+                                    CASE
+                                       WHEN (A.population_alt_maximum_size IS NOT NULL) THEN 'x'
+                                       ELSE  
+                                          CASE
+                                             WHEN (A.population_alt_minimum_size=0) THEN 'x'
+                                             ELSE
+                                                CASE
+                                                   WHEN (SQRT(A.natura2000_population_min * A.natura2000_population_max) / A.population_alt_minimum_size > 1) THEN '100*'
+                                                   ELSE Round(100 * SQRT(A.natura2000_population_min * A.natura2000_population_max) / A.population_alt_minimum_size)::varchar(255)
+                                                END
+                                          END
+                                    END
+                                 ELSE 'x'
+                              END
+                           ELSE
+                              CASE
+                                 WHEN (A.natura2000_population_min IS NOT NULL) THEN
+                                    CASE
+                                       WHEN (A.population_alt_minimum_size=0 AND A.natura2000_population_min=0) THEN 'x'
+                                       ELSE
+                                          CASE
+                                             WHEN (A.natura2000_population_min / A.population_alt_minimum_size > 1) THEN '100*'
+                                             ELSE Round(100 * A.natura2000_population_min / A.population_alt_minimum_size)::varchar(255)
+                                          END
+                                    END
+                                 ELSE 'x'
+                              END
+                        END
+                     ELSE 'x'
+                  END
+            END
+         ELSE 'x'
+      END
+END AS pc
 FROM   data_species_regions_MS_level AS A
        INNER JOIN data_species_check_list AS B
                ON ( A.{join_column} = B.{join_column} )
@@ -245,17 +286,27 @@ LIMIT 10;
 """
 
 N2K_QUERY = """
-  SELECT DISTINCT Max(A.annex_II) Like "Y%%" AS cond
-  FROM data_species_check_list A
-  WHERE A.assessment_speciesname = '{subject}'
-  GROUP BY A.assessment_speciesname;
+   SELECT DISTINCT Max(A.annex_II) LIKE 'Y%%' AS cond
+   FROM data_species_check_list A
+   WHERE A.assessment_speciesname = '{subject}'
+   GROUP BY A.assessment_speciesname;
 """
 
 
 ANNEX_QUERY = """
-  SELECT IF(Max(A.annex_II) LIKE 'Y%%', 'II', '') as annex_II,
-         IF(Max(A.annex_IV) LIKE 'Y%%', 'IV', '') AS annex_IV,
-         IF(Max(A.annex_V) LIKE 'Y%%', 'V', '') AS annex_V
+  SELECT
+      CASE
+         WHEN Max(A.annex_II) LIKE 'Y%%' THEN 'II'
+         ELSE ''
+         END AS annex_II,
+      CASE
+         WHEN Max(A.annex_IV) LIKE 'Y%%' THEN 'IV'
+         ELSE ''
+         END AS annex_IV,
+      CASE
+         WHEN Max(A.annex_V) LIKE 'Y%%' THEN 'V'
+         ELSE ''
+         END AS annex_V
   FROM data_species_check_list A
   WHERE A.assessment_speciesname = '{subject}'
   GROUP BY A.assessment_speciesname;

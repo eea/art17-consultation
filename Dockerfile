@@ -4,7 +4,7 @@ LABEL maintainer="EEA: IDM2 C-TEAM <eea-edw-c-team-alerts@googlegroups.com>"
 ENV WORK_DIR=/var/local/art17
 ENV DATA_DIR=/var/local/art17-data
 
-RUN runDeps="curl gcc vim build-essential netcat python-dev libldap2-dev libsasl2-dev libssl-dev libldap-common libxrender1 libfontconfig1 libxext6 wkhtmltopdf" \
+RUN runDeps="curl gcc vim build-essential netcat python-dev-is-python3 libldap2-dev libsasl2-dev libssl-dev libldap-common libxrender1 libfontconfig1 libxext6 wkhtmltopdf" \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends $runDeps \
 	&& rm -vrf /var/lib/apt/lists/*

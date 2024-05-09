@@ -8,7 +8,7 @@
     </th>
   {% endfor %}
   </tr>
-  {% for dataset,values in data.iteritems() %}
+  {% for dataset,values in data.items() %}
   <tr>
     <th class="border_right">{{ dataset }}</th>
     {% for r in regions %}

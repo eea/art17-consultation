@@ -14,7 +14,7 @@
   </tr>
   </thead>
   <tbody>
-  {% for country, region_pc in coverage.iteritems() %}
+  {% for country, region_pc in coverage.items() %}
   <tr>
     <th>{{ country }}</th>
     {% for region in region_codes %}

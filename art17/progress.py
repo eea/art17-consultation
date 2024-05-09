@@ -283,6 +283,10 @@ class Progress(views.View):
         period = (
             period_param or request.args.get("period") or get_default_period()
         )
+        try:
+            period = int(period)
+        except ValueError:
+            abort(404)
         group = group_param or request.args.get("group")
         conclusion = request.args.get("conclusion") or DEFAULT_CONCLUSION
         assessor = request.args.get("assessor")
@@ -525,6 +529,10 @@ class HabitatProgressTable(HabitatProgress):
 
     def dispatch_request(self):
         period = request.args.get("period", 3)
+        try:
+            int(period)
+        except ValueError:
+            abort(404)
         group = request.args.get("group", "Bogs, mires & fens")
         return super(HabitatProgressTable, self).dispatch_request(period, group)
 
@@ -553,6 +561,10 @@ class ComparisonView(MixinView, views.View):
         subject = request.args.get("subject")
         conclusion = request.args.get("conclusion")
         current_dataset = request.args.get("period")
+        try:
+            current_dataset = int(current_dataset)
+        except ValueError:
+            abort(404)
         fields = self.mixin.get_progress_fields(conclusion)
         if not fields:
             abort(404)
@@ -602,6 +614,10 @@ progress.add_url_rule(
 
 @progress.route("/species/progress/assessors", endpoint="species-assessors")
 def species_assessors():
+    try:
+        int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
     data = SpeciesMixin.get_assessors(
         request.args.get("period"), request.args.get("group")
     )
@@ -610,6 +626,10 @@ def species_assessors():
 
 @progress.route("/habitat/progress/assessors", endpoint="habitat-assessors")
 def species_assessors():
+    try:
+        int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
     data = HabitatMixin.get_assessors(
         request.args.get("period"), request.args.get("group")
     )

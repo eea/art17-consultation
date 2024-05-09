@@ -166,6 +166,8 @@ class CommonSection(object):
             self.subject_field = "assesment_speciesname"
         elif self.page == "habitat":
             self.subject_field = "habitatcode"
+        else:
+            abort(404)
 
     def get_req_args(self):
         return {
@@ -175,7 +177,10 @@ class CommonSection(object):
 
     def get_wiki(self):
         r = self.get_req_args()
-
+        try:
+            r["period"] = int(r["period"])
+        except ValueError:
+            abort(404)
         return self.wiki_cls.query.filter(
             getattr(self.wiki_cls, self.subject_field) == r["subject"],
             self.wiki_cls.region_code == r["region"],
@@ -355,6 +360,12 @@ class MergedRegionsView(views.View):
         self.section.set_attrs(page)
         rq = self.section.get_req_args()
 
+        try:
+            rq["period"] = int(rq["period"])
+        except ValueError:
+            abort(404)
+
+
         wikis = self.section.wiki_cls.query.filter(
             getattr(self.section.wiki_cls, self.section.subject_field)
             == rq["subject"],
@@ -532,7 +543,11 @@ class ManageComment(WikiView):
     methods = ["GET"]
 
     def dispatch_request(self, page):
-        dataset = Dataset.query.get(request.args.get("period"))
+        try:
+            period = int(request.args.get("period", ""))
+        except ValueError:
+            abort(404)
+        dataset = Dataset.query.get(period)
         if self.section.wiki_change_cls == WikiChange:
             datasheet = True
         else:
@@ -573,7 +588,10 @@ class GetRevision(WikiView):
     def dispatch_request(self, page):
         if not can_manage_revisions():
             raise PermissionDenied
-
+        try:
+            revision_id = int(request.args.get("revision_id"))
+        except:
+            abort(404)
         revision_id = request.args.get("revision_id")
         revision = self.section.wiki_change_cls.query.filter_by(
             id=revision_id

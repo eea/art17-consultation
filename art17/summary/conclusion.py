@@ -203,6 +203,11 @@ class ConclusionView(object):
 
 class ConclusionDelete(MixinView, views.View):
     def dispatch_request(self):
+        try:
+            period = int(request.args.get("period", ""))
+        except ValueError:
+            abort(404)
+
         period = request.args.get("period")
         subject = request.args.get("subject")
         region = request.args.get("region")
@@ -243,6 +248,10 @@ class UpdateDecision(MixinView, views.View):
     methods = ["GET", "POST"]
 
     def dispatch_request(self, period, subject, region, user):
+        try: 
+            int(period)
+        except ValueError:
+            abort(404)
         ms = request.args.get("ms")
         self.record = self.mixin.get_manual_record(
             period, subject, region, user, ms

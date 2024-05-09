@@ -18,10 +18,8 @@ from art17.management.fix_manual import fix_manual
 from art17.management.generate_new_period import generate_new_period
 from art17.management.import_greece import import_greece
 from art17.management.import_new_data import import_new_data
-from art17.management.pre_fill_wiki_changes_habitat import \
-    pre_fill_wiki_changes_habitat
-from art17.management.pre_fill_wiki_changes_species import \
-    pre_fill_wiki_changes_species
+from art17.management.pre_fill_wiki_changes_habitat import pre_fill_wiki_changes_habitat
+from art17.management.pre_fill_wiki_changes_species import pre_fill_wiki_changes_species
 from art17.maps import maps
 from art17.models import db
 from art17.progress import progress

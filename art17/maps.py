@@ -1,5 +1,6 @@
 import base64
 import urllib
+import urllib.parse
 
 import flask
 from jinja2 import Markup, escape
@@ -42,7 +43,7 @@ def species_config_xml():
     dataset_id = get_default_period()
     region = flask.request.args.get("region", "")
     species = flask.request.args.get("species", "")
-    species_name = base64.urlsafe_b64decode(species.encode("ascii"))
+    species_name = species
 
     user = flask.g.get("user")
     roles = [r.name for r in user.roles] if user and user.id else []
@@ -77,7 +78,7 @@ def species_config_xml():
         )
     )
 
-    assesment_speciesname = urllib.quote(species_name)
+    assesment_speciesname = urllib.parse.quote(species_name)
 
     countries_style = []
     countries = []

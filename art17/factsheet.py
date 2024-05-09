@@ -141,7 +141,7 @@ class FactSheet(MethodView):
                 self.model_manual_cls.dataset_id == period,
                 self.model_manual_cls.decision == "OK",
             )
-            .group_by(self.model_manual_cls.region)
+            .group_by(self.model_manual_cls.region, self.model_manual_cls)
         )
 
     def get_objects(self, period, subject):
@@ -206,7 +206,7 @@ class FactSheet(MethodView):
             "period": period,
             "group": self.assessment and self.assessment.group,
         }
-        return "?".join((base_url, urllib.urlencode(params)))
+        return "?".join((base_url, urllib.parse.urlencode(params)))
 
     def get_countries(self, subject, period):
         return [
@@ -268,9 +268,7 @@ class FactSheet(MethodView):
         period = period or request.args.get(
             "period", app.config["FACTSHEET_DEFAULT_PERIOD"]
         )
-        return self.model_cls.query.filter_by(dataset_id=period).group_by(
-            getattr(self.model_cls, "subject")
-        )
+        return self.model_cls.query.filter_by(dataset_id=period)
 
     def list_all(self):
         objects = self.get_all()
@@ -304,7 +302,7 @@ class FactSheet(MethodView):
             "subject": self.assessment.subject,
             "period": self.assessment.dataset_id,
         }
-        header_url = "?".join((base_header_url, urllib.urlencode(params)))
+        header_url = "?".join((base_header_url, urllib.parse.urlencode(params)))
 
         return PdfRenderer(
             self.template_name,
@@ -404,7 +402,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
     template_name = "factsheet/habitat.html"
     range_field = "coverage_surface_area"
     checklist_table = "data_habitats_check_list"
-    regions_MS_table = "data_habitats_regions_MS_level"
+    regions_MS_table = "data_habitats_regions_ms_level"
     subject_column = join_column = "habitatcode"
     regionhash_column = "habitat_regionhash"
     coverage_query = COVERAGE_QUERY_HABITAT
@@ -442,7 +440,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
 
     def get_manual_objects(self, period, subject):
         q = super(HabitatFactSheet, self).get_manual_objects(period, subject)
-        return q.filter(self.model_cls.habitattype_type_asses == 1)
+        return q.filter(self.model_cls.habitattype_type_asses == True)
 
 
 class FactSheetHeader(MethodView):

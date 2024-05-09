@@ -3,7 +3,8 @@ import json
 import os
 import sys
 from datetime import datetime
-
+from sqlalchemy import func, distinct
+from sqlalchemy.orm import lazyload
 import ldap
 from flask import current_app as app
 from flask_security import RoleMixin, UserMixin
@@ -53,34 +54,39 @@ class Dataset(Base):
 
     @property
     def stats(self):
+        def get_count(q):
+            count_q = q.statement.with_only_columns([func.count()]).order_by(None)
+            count = q.session.execute(count_q).scalar()
+            return count
+
         return {
-            "species_content": (
-                EtcDataSpeciesRegion.query.filter_by(dataset_id=self.id).count()
+            "species_content": get_count(
+                EtcDataSpeciesRegion.query.filter_by(dataset_id=self.id)
             ),
-            "species_auto": (
+            "species_auto": get_count(
                 EtcDataSpeciesAutomaticAssessment.query.filter_by(
                     dataset_id=self.id
-                ).count()
+                )
             ),
-            "species_manual": (
+            "species_manual": get_count(
                 SpeciesManualAssessment.query.filter_by(
                     dataset_id=self.id
-                ).count()
+                )
             ),
-            "habitat_content": (
+            "habitat_content": get_count(
                 EtcDataHabitattypeRegion.query.filter_by(
                     dataset_id=self.id
-                ).count()
+                )
             ),
-            "habitat_auto": (
+            "habitat_auto": get_count(
                 EtcDataHabitattypeAutomaticAssessment.query.filter_by(
                     dataset_id=self.id
-                ).count()
+                )
             ),
-            "habitat_manual": (
+            "habitat_manual": get_count(
                 HabitattypesManualAssessment.query.filter_by(
                     dataset_id=self.id
-                ).count()
+                )
             ),
         }
 
@@ -1161,7 +1167,7 @@ class RegisteredUser(Base, UserMixin):
     MS = Column("ms", String(255))
     email = Column(String(255))
     qualification = Column(String(255))
-    account_date = Column(String(16), nullable=False)
+    account_date = Column(String(100), nullable=False)
     show_assessment = Column(Integer, nullable=False, default=True)
     active = Column(Boolean)
     confirmed_at = db.Column(db.DateTime())

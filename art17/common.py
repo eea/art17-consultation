@@ -493,18 +493,25 @@ def ping():
 
 @common.route("/common/species/groups", endpoint="species-groups")
 def species_groups():
-    data = SpeciesMixin.get_groups(flask.request.args["period"])
+    try:
+        period = int(flask.request.args.get("period", ""))
+    except ValueError:
+        flask.abort(400)
+    data = SpeciesMixin.get_groups(period)
     return flask.jsonify([list(row) for row in data])
 
 
 @common.route("/common/habitat/groups", endpoint="habitat-groups")
 def habitat_groups():
     from art17.progress import HabitatProgressTable
-
+    try:
+        period = int(flask.request.args.get("period", ""))
+    except ValueError:
+        flask.abort(400)
     if flask.request.args.get("table_view"):
-        data = HabitatProgressTable.get_groups(flask.request.args["period"])
+        data = HabitatProgressTable.get_groups(period)
     else:
-        data = HabitatMixin.get_groups(flask.request.args["period"])
+        data = HabitatMixin.get_groups(period)
     return flask.jsonify([list(row) for row in data])
 
 

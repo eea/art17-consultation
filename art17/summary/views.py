@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from flask import flash, g, jsonify, render_template, request, url_for, views
+from flask import flash, g, jsonify, render_template, request, url_for, views, abort
 from flask_principal import PermissionDenied
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
@@ -230,7 +230,10 @@ class Summary(ConclusionView, views.View):
         return member_states + [(DEFAULT_MS, DEFAULT_MS)]
 
     def dispatch_request(self):
-        period = request.args.get("period") or get_default_period()
+        try:
+            period = int(request.args.get("period", get_default_period()))
+        except ValueError:
+            abort(404)
         subject = request.args.get("subject")
         group = request.args.get("group")
         region = request.args.get("region")
@@ -685,14 +688,28 @@ summary.add_url_rule(
 
 @summary.route("/species/summary/species", endpoint="species-summary-species")
 def _species():
-    period, group = request.args["period"], request.args["group"]
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
+    try:
+        group = request.args["group"]
+    except KeyError:
+        abort(400)
     data = SpeciesMixin.get_subjects(period, group)
     return jsonify([list(row) for row in data])
 
 
 @summary.route("/species/summary/regions", endpoint="species-summary-regions")
 def _regions():
-    period, subject = request.args["period"], request.args["subject"]
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
+    try:
+        subject = request.args["subject"]
+    except KeyError:
+        abort(400)
     data = SpeciesMixin.get_regions(period, subject)
     return jsonify([list(row) for row in data])
 
@@ -701,21 +718,38 @@ def _regions():
     "/species/summary/countries", endpoint="species-summary-countries"
 )
 def _countries():
-    period, group = request.args["period"], request.args["group"]
-    data = SpeciesMixin.get_countries(period, group)
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
+    data = SpeciesMixin.get_countries(period)
     return jsonify([list(row) for row in data])
 
 
 @summary.route("/habitat/summary/habitat", endpoint="habitat-summary-species")
 def _species_habitat():
-    period, group = request.args["period"], request.args["group"]
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
+    try:
+        group = request.args["group"]
+    except KeyError:
+        abort(400)
     data = HabitatMixin.get_subjects(period, group)
     return jsonify([list(row) for row in data])
 
 
 @summary.route("/habitat/summary/regions", endpoint="habitat-summary-regions")
 def _regions_habitat():
-    period, subject = request.args["period"], request.args["subject"]
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
+    try:
+        subject = request.args["subject"]
+    except KeyError:
+        abort(400)
     data = HabitatMixin.get_regions(period, subject)
     return jsonify([list(row) for row in data])
 

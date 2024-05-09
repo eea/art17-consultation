@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, render_template, request, url_for, views
+from flask import Blueprint, jsonify, render_template, request, url_for, views, abort
 from sqlalchemy import func
 from werkzeug.datastructures import MultiDict
 
@@ -15,6 +15,10 @@ report = Blueprint("report", __name__)
 class Report(views.View):
     def dispatch_request(self):
         period = request.args.get("period") or get_default_period()
+        try:
+            period = int(period)
+        except ValueError:
+            abort(404)
         group = request.args.get("group")
         country = request.args.get("country")
         region = request.args.get("region")
@@ -136,28 +140,49 @@ class HabitatReport(HabitatMixin, Report):
 
 @report.route("/species/report/regions", endpoint="species-report-regions")
 def species_regions():
-    period, country = request.args["period"], request.args["country"]
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
+    try:
+        country = request.args["country"]
+    except KeyError:
+        abort(400)
     data = SpeciesMixin.get_regions_by_country(period, country)
     return jsonify([list(row) for row in data])
 
 
 @report.route("/species/report/countries", endpoint="species-report-countries")
 def species_countries():
-    period = request.args["period"]
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
     data = MixinsCommon.get_countries(period)
     return jsonify([list(row) for row in data])
 
 
 @report.route("/habitat/report/regions", endpoint="habitat-report-regions")
 def habitat_regions():
-    period, country = request.args["period"], request.args["country"]
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
+    try:
+        country = request.args["country"]
+    except KeyError:
+        abort(400)
     data = HabitatMixin.get_regions_by_country(period, country)
     return jsonify([list(row) for row in data])
 
 
 @report.route("/habitat/report/countries", endpoint="habitat-report-countries")
 def habitat_countries():
-    period = request.args["period"]
+    try:
+        period = int(request.args.get("period", ""))
+    except ValueError:
+        abort(404)
+
     data = MixinsCommon.get_countries(period)
     return jsonify([list(row) for row in data])
 

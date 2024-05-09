@@ -193,6 +193,10 @@ class CommentsList(views.View):
             flash("Please enter a valid comment.")
 
     def dispatch_request(self, period, subject, region, user):
+        try:
+            int(period)
+        except ValueError:
+            abort(400)
         MS = request.args.get("MS")
         self.record = self.get_manual_record(period, subject, region, user, MS)
         if not self.record:
