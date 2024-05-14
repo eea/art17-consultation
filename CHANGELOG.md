@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.4.7 - (2024-05-14)
+--------------------
+* Fix Dockerfile
+* Fix 500 errors caused by query params
+  [dianaboiangiu]
+
 3.4.6 - (2023-03-08)
 --------------------
 * Fix 2001-2006 error
