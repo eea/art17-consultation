@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.8 - (2024-09-02)
+--------------------
+* Set X-Frame-Options for Comments endpoints
+  [dianaboiangiu]
+
 3.4.7 - (2024-05-14)
 --------------------
 * Fix Dockerfile

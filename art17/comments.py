@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Blueprint, abort, flash, render_template, request, url_for, views
+from flask import Blueprint, abort, flash, make_response, render_template, request, url_for, views
 from flask_principal import PermissionDenied
 from sqlalchemy import func, or_
 from werkzeug.datastructures import MultiDict
@@ -249,7 +249,7 @@ class CommentsList(views.View):
                 form_data = MultiDict({})
             form = CommentForm(form_data)
 
-        return render_template(
+        html_content = render_template(
             "comments/list.html",
             record=self.record,
             form=form,
@@ -258,6 +258,9 @@ class CommentsList(views.View):
                 subject=subject, region=region, user=user, MS=MS, period=period
             ),
         )
+        response = make_response(html_content)
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
+        return response
 
 
 class SpeciesCommentsList(SpeciesMixin, CommentsList):
