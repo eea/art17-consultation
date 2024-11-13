@@ -23,7 +23,7 @@ def check_urls(entity_name, model_cls, field):
             print(f"{count} No remote_url for {entity_name}")
             continue
         sleep(0.1)
-        base_remote_url = app.config.get("FACTSHEETS_REMOTE_URLS", "")
+        base_remote_url = app.config.get("FACTSHEETS_REMOTE_URL", "")
         pdf_url = f"{base_remote_url}{remote_url}"
         try:
             code = urllib.request.urlopen(pdf_url).getcode()

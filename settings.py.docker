@@ -37,6 +37,6 @@ SECRET_KEY = 'secret'
 # PDF_DESTINATION = './instance/pdf'
 # PDF_URL_PREFIX = 'http://localhost:5000'
 
-# FACTSHEETS_REMOTE_URLS = ""
+# FACTSHEETS_REMOTE_URL = ""
 
 # EU_ASSESSMENT_MODE = getenv('EU_ASSESSMENT_MODE', type=bool, default=False)

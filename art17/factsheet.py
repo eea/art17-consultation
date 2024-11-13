@@ -519,7 +519,7 @@ def generate_factsheet_url(category, subject, period):
     if not assessment:
         return None
 
-    base_remote_url = app.config.get("FACTSHEETS_REMOTE_URLS", "")
+    base_remote_url = app.config.get("FACTSHEETS_REMOTE_URL", "")
     dataset = Dataset.query.get(period)
 
     if dataset:
