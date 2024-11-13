@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.4.10 - (2024-11-13)
+---------------------
+* Corrent env name
+  [dianaboiangiu]
+
 3.4.9 - (2024-11-13)
 --------------------
 * Implement modifications for factsheets storage change
