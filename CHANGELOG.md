@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.9 - (2024-11-13)
+--------------------
+* Implement modifications for factsheets storage change
+  [dianaboiangiu]
+
 3.4.8 - (2024-09-02)
 --------------------
 * Set X-Frame-Options for Comments endpoints
