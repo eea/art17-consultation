@@ -13,13 +13,16 @@ from art17.common import common
 from art17.dataset import dataset_manager
 from art17.factsheet import factsheet, factsheet_manager
 from art17.layout import layout
+from art17.management.check_new_factsheets_urls import check_new_factsheets_urls
 from art17.management.fix_bg_cdr_link import fix_bg_link
 from art17.management.fix_manual import fix_manual
 from art17.management.generate_new_period import generate_new_period
+from art17.management.generate_new_factsheets_urls import generate_new_factsheets_urls
 from art17.management.import_greece import import_greece
 from art17.management.import_new_data import import_new_data
 from art17.management.pre_fill_wiki_changes_habitat import pre_fill_wiki_changes_habitat
 from art17.management.pre_fill_wiki_changes_species import pre_fill_wiki_changes_species
+from art17.management.set_new_factsheets_urls import set_new_factsheets_urls
 from art17.maps import maps
 from art17.models import db
 from art17.progress import progress
@@ -122,15 +125,17 @@ def create_url_prefix_middleware(wsgi_app, url_prefix):
 
 
 def create_cli_commands(app):
+    app.cli.add_command(check_new_factsheets_urls)
     app.cli.add_command(dataset_manager)
-    app.cli.add_command(user_manager)
-    app.cli.add_command(role_manager)
     app.cli.add_command(factsheet_manager)
-
-    app.cli.add_command(import_greece)
-    app.cli.add_command(generate_new_period)
+    app.cli.add_command(fix_bg_link)
     app.cli.add_command(fix_manual)
+    app.cli.add_command(generate_new_period)
+    app.cli.add_command(generate_new_factsheets_urls)
+    app.cli.add_command(import_greece)
+    app.cli.add_command(import_new_data)
     app.cli.add_command(pre_fill_wiki_changes_habitat)
     app.cli.add_command(pre_fill_wiki_changes_species)
-    app.cli.add_command(import_new_data)
-    app.cli.add_command(fix_bg_link)
+    app.cli.add_command(role_manager)
+    app.cli.add_command(set_new_factsheets_urls)
+    app.cli.add_command(user_manager)

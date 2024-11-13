@@ -35,6 +35,6 @@ MAPS_STATIC = 'maps'
 # Maps file format
 MAPS_FORMAT = 'map0{which}{type}/{code}_0{which}_{type}.png'
 
-# FACTSHEETS_REMOTE_URLS = "https://forum.eionet.europa.eu"
+# FACTSHEETS_REMOTE_URLS = ""
 
 EU_ASSESSMENT_MODE = getenv('EU_ASSESSMENT_MODE', type=bool, default=False)

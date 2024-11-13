@@ -331,6 +331,8 @@ class EtcDataHabitattypeRegion(Base):
 
     remote_url_2006 = Column(String(350), nullable=True)
     remote_url_2012 = Column(String(350), nullable=True)
+    remote_url_2006_new = Column(String(350), nullable=True)
+    remote_url_2012_new = Column(String(350), nullable=True)
 
     use_for_statistics = Column(Boolean)
 
@@ -591,6 +593,8 @@ class EtcDataSpeciesRegion(Base):
 
     remote_url_2006 = Column(String(350), nullable=True)
     remote_url_2012 = Column(String(350), nullable=True)
+    remote_url_2006_new = Column(String(350), nullable=True)
+    remote_url_2012_new = Column(String(350), nullable=True)
     species_type_details = relationship(
         "EtcDicSpeciesType",
         primaryjoin=(

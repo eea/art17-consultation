@@ -1,6 +1,15 @@
 from datetime import datetime
 
-from flask import Blueprint, abort, flash, make_response, render_template, request, url_for, views
+from flask import (
+    Blueprint,
+    abort,
+    flash,
+    make_response,
+    render_template,
+    request,
+    url_for,
+    views,
+)
 from flask_principal import PermissionDenied
 from sqlalchemy import func, or_
 from werkzeug.datastructures import MultiDict

@@ -528,7 +528,7 @@ def generate_factsheet_url(category, subject, period):
         else:
             assessment_url = assessment.remote_url_2006 or ""
         remote_url = base_remote_url + assessment_url
-        if remote_url:
+        if remote_url and assessment_url:
             resp = requests.get(remote_url)
             if resp.status_code == 200:
                 return remote_url
