@@ -331,8 +331,6 @@ class EtcDataHabitattypeRegion(Base):
 
     remote_url_2006 = Column(String(350), nullable=True)
     remote_url_2012 = Column(String(350), nullable=True)
-    remote_url_2006_new = Column(String(350), nullable=True)
-    remote_url_2012_new = Column(String(350), nullable=True)
 
     use_for_statistics = Column(Boolean)
 
