@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.12 - (2024-11-15)
+---------------------
+* Remove temporary species url fields
+  [dianaboiangiu]
+
 3.4.11 - (2024-11-15)
 ---------------------
 * Remove temporary url fields
