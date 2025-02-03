@@ -251,6 +251,7 @@ class Summary(ConclusionView, views.View):
         member_states = []
         if admin_perm.can() or sta_perm.can() or etc_perm.can():
             member_states = self.get_MS(subject, region, period)
+            member_states = [(m[0], m[1]) for m in member_states]
         elif nat_perm.can() and current_user.MS:
             member_states = [(current_user.MS, current_user.MS)]
         return member_states + [(DEFAULT_MS, DEFAULT_MS)]
@@ -295,7 +296,6 @@ class Summary(ConclusionView, views.View):
         if hasattr(manual_form, "MS"):
             manual_form.kwargs = dict(subject=subject, period=period)
             manual_form.MS.choices = self.get_user_MS(subject, region, period)
-
         if request.method == "POST":
             home_url = url_for(
                 self.summary_endpoint,

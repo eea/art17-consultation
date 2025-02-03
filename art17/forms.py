@@ -130,7 +130,7 @@ def habitat_ms_validator(form, field):
         raise ValidationError(INVALID_MS_REGION_PAIR)
 
 
-def form_validation(form, field):
+def form_validation(form):
     """Validate form as a whole: no empty data, no data without conclusion etc"""
     excluded = [form.region]
     if hasattr(form, "MS"):
@@ -229,14 +229,14 @@ class OptionsBaseHabitat(_OptionsBase):
 
 class SummaryFormMixin(object):
 
-    form_errors = StringField(validators=[form_validation])
-
     def setup_choices(self, dataset_id):
         pass
 
     def all_errors(self):
         errors = []
-        for field_name, field_errors in self.errors.items():
+        error_entries = self.errors
+        error_entries.pop("", None)
+        for field_name, field_errors in error_entries.items():
             errors.extend(field_errors)
         errors = set(errors)
         text = "<ul>"
@@ -248,7 +248,7 @@ class SummaryFormMixin(object):
 
 class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
-    region = SelectField(default="")
+    region = SelectField(default="", validate_choice=False)
 
     range_surface_area = StringField(default=None, validators=[numeric_validation])
     method_range = OptionalSelectField()
@@ -356,19 +356,27 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
             elif mc and cc:
                 one = True
         if not one:
-            self.form_errors.errors.append(METH_CONCL_MANDATORY)
-
+            self.form_errors.append(METH_CONCL_MANDATORY)
+        try:
+            form_validation(self)
+        except ValidationError as e:
+            self.form_errors.append(str(e))
         return not self.errors
 
 
 class SummaryManualFormSpeciesSTA(SummaryManualFormSpecies):
 
-    MS = SelectField(default=DEFAULT_MS, validators=[species_ms_validator])
+    MS = SelectField(
+        default=DEFAULT_MS,
+        validators=[species_ms_validator],
+        validate_choice=False,
+        coerce=str,
+    )
 
 
 class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
 
-    region = SelectField()
+    region = SelectField(validate_choice=False)
 
     range_surface_area = StringField(validators=[float_validation])
     method_range = OptionalSelectField()
@@ -488,19 +496,24 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
             elif mc and cc:
                 one = True
         if not one:
-            self.form_errors.errors.append(METH_CONCL_MANDATORY)
-
+            self.form_errors.append(METH_CONCL_MANDATORY)
+        try:
+            form_validation(self)
+        except ValidationError as e:
+            self.form_errors.append(str(e))
         return not self.errors
 
 
 class SummaryManualFormHabitatSTA(SummaryManualFormHabitat):
 
-    MS = SelectField(default=DEFAULT_MS, validators=[habitat_ms_validator])
+    MS = SelectField(
+        default=DEFAULT_MS, validators=[habitat_ms_validator], validate_choice=False
+    )
 
 
 class SummaryManualFormSpeciesRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
-    region = SelectField()
+    region = SelectField(validate_choice=False)
 
     complementary_favourable_range = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
@@ -524,12 +537,16 @@ class SummaryManualFormSpeciesRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
 class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
 
-    MS = SelectField(default=DEFAULT_MS, validators=[Optional(), species_ms_validator])
+    MS = SelectField(
+        default=DEFAULT_MS,
+        validators=[Optional(), species_ms_validator],
+        validate_choice=False,
+    )
 
 
 class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
-    region = SelectField()
+    region = SelectField(validate_choice=False)
 
     complementary_favourable_range = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
@@ -553,7 +570,11 @@ class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
 class SummaryManualFormHabitatRefSTA(SummaryManualFormHabitatRef):
 
-    MS = SelectField(default=DEFAULT_MS, validators=[Optional(), habitat_ms_validator])
+    MS = SelectField(
+        default=DEFAULT_MS,
+        validators=[Optional(), habitat_ms_validator],
+        validate_choice=False,
+    )
 
 
 class ProgressFilterForm(Form):

@@ -40,7 +40,7 @@ def activate_and_notify_admin(app, user, **extra):
     else:
         msg = Message(
             subject="User has registered",
-            sender=app.extensions["security"].email_sender,
+            sender=app.config["SECURITY_EMAIL_SENDER"],
             recipients=admin_email.split(),
         )
         msg.body = flask.render_template(

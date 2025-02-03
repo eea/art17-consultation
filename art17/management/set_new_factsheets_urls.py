@@ -9,6 +9,8 @@ set_new_factsheets_urls = AppGroup("set_new_factsheets_urls")
 
 
 def set_new_factsheets_urls_for_given_entity(model_cls, code_field):
+    from art17 import models
+
     entities_2006 = model_cls.query.filter_by(dataset_id=1).all()
     print(f"Number of 2006 {model_cls.__name__}: {len(entities_2006)}")
     count = 0

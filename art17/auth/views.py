@@ -6,7 +6,6 @@ import flask
 import ldap
 from flask import (
     Response,
-    _app_ctx_stack,
     current_app,
     flash,
     g,
@@ -95,7 +94,7 @@ def send_welcome_email(user, plaintext_password=None):
     app = current_app
     msg = Message(
         subject="Role update on the Biological Diversity website",
-        sender=app.extensions["security"].email_sender,
+        sender=app.config["SECURITY_EMAIL_SENDER"],
         recipients=[user.email],
     )
     msg.body = render_template(
@@ -197,7 +196,7 @@ def register_ldap():
                 "success",
             )
             add_default_role(user)
-            activate_and_notify_admin(_app_ctx_stack.top.app, user)
+            activate_and_notify_admin(current_app, user)
             return render_template("auth/register_ldap_done.html")
 
     return render_template(
@@ -316,7 +315,7 @@ def send_role_change_notification(user, new_roles):
     role_description = {row.name: row.description for row in models.Role.query}
     msg = Message(
         subject="Role update on the Biological Diversity website",
-        sender=app.extensions["security"].email_sender,
+        sender=app.config["SECURITY_EMAIL_SENDER"],
         recipients=[user.email],
     )
     msg.body = render_template(
@@ -473,7 +472,7 @@ def dataset_edit(dataset_id):
 
 @login_manager.user_loader
 def load_user(id=None):
-    return models.RegisteredUser.query.get(id)
+    return models.db.session.get(models.RegisteredUser, id)
 
 
 @auth.before_request

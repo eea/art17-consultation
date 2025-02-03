@@ -67,7 +67,7 @@ class Dataset(Base):
     @property
     def stats(self):
         def get_count(q):
-            count_q = q.statement.with_only_columns([func.count()]).order_by(None)
+            count_q = q.statement.with_only_columns(func.count()).order_by(None)
             count = q.session.execute(count_q).scalar()
             return count
 
@@ -1593,7 +1593,7 @@ def loaddata(fixture):
                 session.commit()
             else:
                 for database_object in database_objects:
-                    for (field, value) in object["fields"].items():
+                    for field, value in object["fields"].items():
                         setattr(database_object, field, value)
                     session.add(database_object)
         session.commit()

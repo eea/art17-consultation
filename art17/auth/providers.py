@@ -1,6 +1,5 @@
-import logging
-
 import flask
+import logging
 import requests
 
 from art17 import models
