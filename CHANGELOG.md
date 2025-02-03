@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.5.0 - (2024-02-03)
+--------------------
+* Upgrade packages to the latest versions
+* Upgrade python to 3.13
+  [dianaboiangiu]
+
 3.4.12 - (2024-11-15)
 ---------------------
 * Remove temporary species url fields
