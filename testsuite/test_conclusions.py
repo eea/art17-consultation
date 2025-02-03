@@ -287,8 +287,8 @@ def setup_autofill(app):
             {
                 "region": "ALP",
                 "MS": "AT",
-                "method_population": "2GD",
-                "conclusion_population": "FV",
+                "method_area": "2GD",
+                "conclusion_area": "FV",
                 "submit": "update",
             },
             "someuser",
@@ -314,8 +314,8 @@ def setup_autofill(app):
             {
                 "region": "ALP",
                 "MS": "AT",
-                "method_population": "2GD",
-                "conclusion_population": "FV",
+                "method_area": "2GD",
+                "conclusion_area": "FV",
                 "submit": "update",
             },
             "otheruser",
@@ -341,8 +341,8 @@ def setup_autofill(app):
             {
                 "region": "ALP",
                 "MS": "AT",
-                "method_population": "2GD",
-                "conclusion_population": "FV",
+                "method_area": "2GD",
+                "conclusion_area": "FV",
                 "submit": "update",
             },
             "otheruser",
@@ -366,8 +366,8 @@ def setup_autofill(app):
                 },
             ],
             {
-                "method_population": "2GD",
-                "conclusion_population": "FV",
+                "method_area": "2GD",
+                "conclusion_area": "FV",
                 "submit": "update",
             },
             "someuser",
@@ -437,9 +437,9 @@ def test_edit_conclusion(
     status_code,
     search_text,
 ):
-    user_obj = create_user(user, app, roles)
+    user_obj = create_user(user, roles)
     force_login(client, user_obj.fs_uniquifier)
-
+    print(request_args, post_params)
     resp = client.post(
         *get_request_params("post", request_args, post_params),
         expect_errors=expect_errors
@@ -520,7 +520,7 @@ def test_edit_conclusion(
 def test_autofill_conclusion_form(
     app, client, set_auth, setup_autofill, request_args, user
 ):
-    user_obj = create_user(user, app, ["stakeholder"])
+    user_obj = create_user(user, ["stakeholder"])
     force_login(client, user_obj.fs_uniquifier)
 
     resp = client.get(*get_request_params("get", request_args))
@@ -591,7 +591,7 @@ def test_add_conclusion_nat(
     roles,
     model_cls,
 ):
-    user = create_user(user, app, roles, ms=MS)
+    user = create_user(user, roles, ms=MS)
     force_login(client, user.fs_uniquifier)
 
     resp = client.post(*get_request_params("post", request_args, post_params))
@@ -666,7 +666,7 @@ def test_add_conclusion_stk(
     roles,
     model_cls,
 ):
-    user = create_user(user, app, roles, ms=MS)
+    user = create_user(user, roles, ms=MS)
     force_login(client, user.fs_uniquifier)
 
     resp = client.post(*get_request_params("post", request_args, post_params))
@@ -741,7 +741,7 @@ def test_add_conclusion_etc(
     roles,
     model_cls,
 ):
-    user_obj = create_user(user, app, roles, ms=MS)
+    user_obj = create_user(user, roles, ms=MS)
     force_login(client, user_obj.fs_uniquifier)
 
     resp = client.post(*get_request_params("post", request_args, post_params))
@@ -915,7 +915,7 @@ def test_delete_conclusion(
     model_cls,
 ):
     if user:
-        user_obj = create_user(user, app)
+        user_obj = create_user(user)
         force_login(client, user_obj.fs_uniquifier)
 
     resp = client.get(
@@ -1185,7 +1185,7 @@ def test_update_decision(
     success,
     message,
 ):
-    user_obj = create_user(user, app, roles)
+    user_obj = create_user(user, roles)
     force_login(client, user_obj.fs_uniquifier)
     resp = client.post(
         *get_request_params("post", request_args, post_params),

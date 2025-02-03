@@ -1,6 +1,8 @@
 import urllib
 import uuid
+import os
 from datetime import date, datetime
+from sqlalchemy.sql import text
 
 import flask
 from alembic import config
@@ -19,33 +21,39 @@ TEST_CONFIG = {
     "EEA_LDAP_SERVER": "test_ldap_server",
     "EEA_PASSWORD_RESET": "",
     "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+    # "SQLALCHEMY_BINDS":
+    "SQLALCHEMY_BINDS": {
+        "factsheet": "sqlite:///:memory:",
+    },
     "SQLALCHEMY_TRACK_MODIFICATIONS": False,
 }
 
 
 alembic_cfg_path = Path((__file__)).dirname() / ".." / "alembic.ini"
-alembic_cfg = config.Config(alembic_cfg_path.abspath())
+alembic_cfg = config.Config(os.path.abspath(alembic_cfg_path))
 
 
 def create_generic_fixtures():
     models.db.drop_all()
     models.db.create_all()
     models.db.session.execute(
-        "insert into roles (name, description) " "values ('admin', 'Administrator')"
+        text("insert into roles (name, description) " "values ('admin', 'Administrator')")
     )
     models.db.session.execute(
-        "insert into roles (name, description) "
-        "values ('etc', 'European topic center')"
+        text(
+            "insert into roles (name, description) "
+            "values ('etc', 'European topic center')"
+        )
     )
     models.db.session.execute(
-        "insert into roles (name, description) " "values ('stakeholder', 'Stakeholder')"
+        text("insert into roles (name, description) " "values ('stakeholder', 'Stakeholder')")
     )
     models.db.session.execute(
-        "insert into roles (name, description) " "values ('nat', 'National expert')"
+        text("insert into roles (name, description) " "values ('nat', 'National expert')")
     )
     models.db.session.execute(
-        "insert into config(default_dataset_id, start_date) values (5, '%s')"
-        % date.today()
+        text("insert into config(default_dataset_id, start_date) values (5, '%s')"
+        % date.today())
     )
 
 
@@ -79,7 +87,7 @@ def app(request):
 
 @fixture
 def client(app):
-    client = TestApp(app, db=models.db, use_session_scopes=True)
+    client = TestApp(app, db=models.db)
     return client
 
 
@@ -120,7 +128,7 @@ def set_auth(app, request):
     return whoami_data
 
 
-def create_user(user_id, app, role_names=[], name="", institution="", ms=""):
+def create_user(user_id, role_names=[], name="", institution="", ms=""):
     user = models.RegisteredUser(
         id=user_id,
         account_date=datetime.utcnow().strftime("%Y-%m-%d %H:%M"),
@@ -129,13 +137,8 @@ def create_user(user_id, app, role_names=[], name="", institution="", ms=""):
         email="%s@example.com" % user_id,
         institution=institution,
         MS=ms,
+        fs_uniquifier=f"{user_id}_fs",
     )
-    try:
-        datastore = app.extensions["security"].datastore
-        datastore.set_uniquifier(user)
-    except KeyError:
-        user.fs_uniquifier = uuid.uuid4().hex
-
     models.db.session.add(user)
     for name in role_names:
         role = models.Role.query.filter_by(name=name).first()

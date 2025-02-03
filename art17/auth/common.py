@@ -6,6 +6,7 @@ from smtplib import SMTPException
 import flask
 import ldap
 from eea.usersdb import UserNotFound, UsersDB
+from flask import current_app
 from flask_mail import Message
 from flask_security import signals as security_signals
 
@@ -40,7 +41,7 @@ def activate_and_notify_admin(app, user, **extra):
     else:
         msg = Message(
             subject="User has registered",
-            sender=app.extensions["security"].email_sender,
+            sender=app.config["SECURITY_EMAIL_SENDER"],
             recipients=admin_email.split(),
         )
         msg.body = flask.render_template(

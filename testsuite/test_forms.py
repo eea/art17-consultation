@@ -21,7 +21,7 @@ def setup(app):
 
 
 @pytest.mark.parametrize(
-    "data,error,field",
+    "data,error,field_name",
     [
         ({}, EMPTY_FORM, "form_errors"),
         ({"range_surface_area": "10"}, METH_CONCL_MANDATORY, "form_errors"),
@@ -37,10 +37,14 @@ def setup(app):
         ),
     ],
 )
-def test_basic_errors(app, data, error, field):
+def test_basic_errors(app, data, error, field_name):
     form = SummaryManualFormSpecies(MultiDict(data))
     form.setup_choices(dataset_id=5)
     form.validate()
 
-    field = getattr(form, field)
-    assert error in field.errors
+
+    field = getattr(form, field_name)
+    if field_name == "form_errors":
+        assert error in field
+    else:
+        assert error in field.errors

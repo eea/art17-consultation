@@ -374,7 +374,7 @@ class SpeciesProgress(Progress, SpeciesMixin):
             "future prospects",
             "overall assessment",
         ]
-        return zip(conclusions, conclusions)
+        return list(zip(conclusions, conclusions))
 
     def get_comment_counts(self, period):
         return SpeciesCommentCounter(period, current_user.id).get_counts()
@@ -443,7 +443,7 @@ class HabitatProgress(Progress, HabitatMixin):
             "structure",
             "overall assessment",
         ]
-        return zip(conclusions, conclusions)
+        return list(zip(conclusions, conclusions))
 
     def get_comment_counts(self, period):
         return HabitatCommentCounter(period, current_user.id).get_counts()

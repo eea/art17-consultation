@@ -4,20 +4,19 @@ import flask
 import flask_security as flask_security
 import flask_security.utils
 from flask_login import current_user as c_user
-from flask_security import AnonymousUser as BaseAnonymousUser
+from flask_security.core import AnonymousUser as BaseAnonymousUser
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.forms import ConfirmRegisterForm  # password_length,
 from flask_security.forms import (
     ForgotPasswordForm,
     RegisterFormMixin,
     Required,
-    email_validator,
     unique_user_email,
 )
 from flask_wtf import FlaskForm
 from werkzeug.local import LocalProxy
 from wtforms import BooleanField, StringField, ValidationError
-
+from wtforms.validators import Email
 from art17.auth.common import check_dates, get_ldap_user_info
 from art17.auth.forms import Art17RegisterFormBase, CustomEmailStringField
 from art17.models import RegisteredUser
@@ -114,7 +113,7 @@ class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
         "Email address",
         validators=[
             Required("Email is required"),
-            email_validator,
+            Email("Invalid email address"),
             unique_user_email,
         ],
     )
@@ -124,7 +123,7 @@ class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, FlaskForm)
 
     email = StringField(
         "Email address",
-        validators=[Required("Email is required"), email_validator],
+        validators=[Required("Email is required"), Email("Invalid email address")],
     )
 
 
@@ -137,7 +136,7 @@ class Art17AdminEditUserForm(Art17RegisterFormBase, FlaskForm):
         "Email address",
         validators=[
             Required("Email is required"),
-            email_validator,
+            Email("Invalid email address"),
             custom_unique_user_email,
         ],
     )

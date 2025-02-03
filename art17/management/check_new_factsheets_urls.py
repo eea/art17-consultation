@@ -12,9 +12,7 @@ check_new_factsheets_urls = AppGroup("check_new_factsheets_urls")
 
 
 def check_urls(entity_name, model_cls, field):
-    remote_urls = (
-        model_cls.query.with_entities(getattr(model_cls, field)).distinct().all()
-    )
+    remote_urls = (model_cls.query.with_entities(getattr(model_cls, field)).distinct().all())
     print(f"Number of remote_urls for {entity_name}: {len(remote_urls)}")
     count = 0
     for (remote_url,) in remote_urls:

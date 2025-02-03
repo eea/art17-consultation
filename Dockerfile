@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.13-slim
 LABEL maintainer="EEA: IDM2 C-TEAM <eea-edw-c-team-alerts@googlegroups.com>"
 
 ENV WORK_DIR=/var/local/art17
@@ -22,7 +22,7 @@ RUN mkdir $WORK_DIR/logs \
 RUN mkdir $WORK_DIR/temp_static \
     && cp -a $WORK_DIR/art17/static/. $WORK_DIR/temp_static/
 
-RUN pip install -U setuptools==57.5.0\
+RUN pip install -U setuptools \
 	&& pip install -r requirements-dep.txt --trusted-host eggrepo.eea.europa.eu
 
 RUN mv docker-entrypoint.sh /bin/

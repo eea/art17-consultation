@@ -3,7 +3,8 @@ import urllib
 import urllib.parse
 
 import flask
-from jinja2 import Markup, escape
+
+from markupsafe import Markup, escape
 
 from art17 import models
 from art17.common import get_default_period
