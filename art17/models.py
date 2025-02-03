@@ -1593,7 +1593,7 @@ def loaddata(fixture):
                 session.commit()
             else:
                 for database_object in database_objects:
-                    for (field, value) in object["fields"].items():
+                    for field, value in object["fields"].items():
                         setattr(database_object, field, value)
                     session.add(database_object)
         session.commit()

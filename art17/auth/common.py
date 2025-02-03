@@ -6,7 +6,6 @@ from smtplib import SMTPException
 import flask
 import ldap
 from eea.usersdb import UserNotFound, UsersDB
-from flask import current_app
 from flask_mail import Message
 from flask_security import signals as security_signals
 

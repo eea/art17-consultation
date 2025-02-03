@@ -116,12 +116,12 @@ class ConclusionView(object):
             if period == "3":
                 values["conclusion_assessment_prev"] = prev_lu.conclusion_assessment
             if period == "5":
-                values[
-                    "conclusion_assessment_prev"
-                ] = prev_lu.conclusion_assessment_prev
-                values[
-                    "conclusion_assessment_trend_prev"
-                ] = prev_lu.conclusion_assessment_trend_prev
+                values["conclusion_assessment_prev"] = (
+                    prev_lu.conclusion_assessment_prev
+                )
+                values["conclusion_assessment_trend_prev"] = (
+                    prev_lu.conclusion_assessment_trend_prev
+                )
                 values["backcasted_2007"] = prev_lu.backcasted_2007
         return values
 
@@ -187,8 +187,8 @@ class ConclusionView(object):
             for conclusion in conclusions
             if self.check_conclusion(conclusion)
         ]
-        user_or_expert = (
-            lambda c: not c.user.has_role("admin")
+        user_or_expert = lambda c: (
+            not c.user.has_role("admin")
             and not c.user.has_role("etc")
             and c not in ok_conclusions
             if c.user
@@ -267,9 +267,9 @@ class UpdateDecision(MixinView, views.View):
         result = self.validate(decision, period)
         if result["success"]:
             self.record.decision = decision
-            self.record.last_update = (
-                self.record.last_update_decision
-            ) = datetime.now().strftime(DATE_FORMAT)
+            self.record.last_update = self.record.last_update_decision = (
+                datetime.now().strftime(DATE_FORMAT)
+            )
             if EU_ASSESSMENT_MODE:
                 user = RegisteredUser.query.filter_by(
                     id="test_for_eu_assessment"
