@@ -6,6 +6,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 
 from art17.assets import assets_env
+from art17.admin import admin_register
 from art17.auth import auth, login_manager
 from art17.auth.script import role_manager, user_manager
 from art17.comments import comments
@@ -14,11 +15,13 @@ from art17.dataset import dataset_manager
 from art17.factsheet import factsheet, factsheet_manager
 from art17.layout import layout
 from art17.management.check_new_factsheets_urls import check_new_factsheets_urls
+from art17.management.dumpdata import dumpdata
 from art17.management.fix_bg_cdr_link import fix_bg_link
 from art17.management.fix_manual import fix_manual
 from art17.management.generate_new_period import generate_new_period
 from art17.management.generate_new_factsheets_urls import generate_new_factsheets_urls
 from art17.management.import_greece import import_greece
+from art17.management.loaddata import loaddata
 from art17.management.import_new_data import import_new_data
 from art17.management.pre_fill_wiki_changes_habitat import pre_fill_wiki_changes_habitat
 from art17.management.pre_fill_wiki_changes_species import pre_fill_wiki_changes_species
@@ -77,6 +80,8 @@ def create_app(config={}, testing=False):
     migrate = Migrate()
     db.init_app(app)
     migrate.init_app(app, db)
+    if app.config.get("ADMIN_INTERFACE", None):
+        admin_register(app)
     app.register_blueprint(layout)
     app.register_blueprint(summary)
     app.register_blueprint(report)
@@ -132,8 +137,10 @@ def create_cli_commands(app):
     app.cli.add_command(fix_manual)
     app.cli.add_command(generate_new_period)
     app.cli.add_command(generate_new_factsheets_urls)
+    app.cli.add_command(dumpdata)
     app.cli.add_command(import_greece)
     app.cli.add_command(import_new_data)
+    app.cli.add_command(loaddata)
     app.cli.add_command(pre_fill_wiki_changes_habitat)
     app.cli.add_command(pre_fill_wiki_changes_species)
     app.cli.add_command(role_manager)

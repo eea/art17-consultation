@@ -41,6 +41,7 @@ class MixinsCommon(object):
                 DicCountryCode.codeEU, DicCountryCode.name
             )
             .filter(DicCountryCode.dataset_id == period)
+            .order_by(DicCountryCode.name)
             .all()
         )
         return blank_option + countries

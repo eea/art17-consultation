@@ -1,148 +1,8 @@
 [
     {
-        "model":"EtcDicMethod",
+        "model": "EtcDicMethod",
         "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 11,
-            "method": "OTH",
-            "details": "Other method was used, explanations provided in Audit trail",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 8,
-            "method": "2GR",
-            "details": "Each subconclusion wighted by surface of grided range from GML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 2,
-            "method": "2XA",
-            "details": "Each subconclusion wighted by area of the coverage from XML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 2,
-            "method": "2XP",
-            "details": "Each subconclusion wighted by population from XML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 6,
-            "method": "2XR",
-            "details": "Each subconclusion wighted by range from XML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 5,
-            "method": "3GD",
-            "details": "Overall conclusion wighted by area of grided distribution from GML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 9,
-            "method": "3GR",
-            "details": "Overall conclusion wighted by surface of grided range from GML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 3,
-            "method": "3XA",
-            "details": "Overall conclusion wighted by area from XML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 3,
-            "method": "3XP",
-            "details": "Overall conclusion wighted by population from XML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 7,
-            "method": "3XR",
-            "details": "Overall conclusion wighted by range from XML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 10,
-            "method": "MTX",
-            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 4,
-            "method": "2GD",
-            "details": "Each subconclusion wighted by area of grided distribution from GML data",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 1,
-            "method": "1",
-            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 100,
-            "method": "00",
-            "details": "Only one MS reported as present",
-            "dataset_id": 1
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
+        "fields": {
             "order": -1,
             "method": "",
             "details": "No assessment",
@@ -150,9 +10,39 @@
         }
     },
     {
-        "model":"EtcDicMethod",
+        "model": "EtcDicMethod",
         "filter_fields": "method,dataset_id",
-        "fields":{
+        "fields": {
+            "order": -1,
+            "method": "",
+            "details": "No assessment",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": -1,
+            "method": "",
+            "details": "No assessment",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": -1,
+            "method": "",
+            "details": "No assessment",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
             "order": 0,
             "method": "0",
             "details": "Conclusions are the same for MS that reported as present",
@@ -160,99 +50,9 @@
         }
     },
     {
-        "model":"EtcDicMethod",
+        "model": "EtcDicMethod",
         "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 1,
-            "method": "1",
-            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 2,
-            "method": "2XP",
-            "details": "Each subconclusion wighted by population from XML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 3,
-            "method": "3XP",
-            "details": "Overall conclusion wighted by population from XML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 6,
-            "method": "2XR",
-            "details": "Each subconclusion wighted by range from XML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 3,
-            "method": "3XA",
-            "details": "Overall conclusion wighted by area from XML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 9,
-            "method": "3GR",
-            "details": "Overall conclusion wighted by surface of grided range from GML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 5,
-            "method": "3GD",
-            "details": "Overall conclusion wighted by area of grided distribution from GML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 10,
-            "method": "MTX",
-            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 100,
-            "method": "00",
-            "details": "Only one MS reported as present",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
+        "fields": {
             "order": 0,
             "method": "0",
             "details": "Conclusions are the same for MS that reported as present",
@@ -260,209 +60,9 @@
         }
     },
     {
-        "model":"EtcDicMethod",
+        "model": "EtcDicMethod",
         "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 11,
-            "method": "OTH",
-            "details": "Other method was used, explanations provided in Audit trail",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 4,
-            "method": "2GD",
-            "details": "Each subconclusion wighted by area of grided distribution from GML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 2,
-            "method": "2XA",
-            "details": "Each subconclusion wighted by area of the coverage from XML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": -1,
-            "method": "",
-            "details": "No assessment",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 8,
-            "method": "2GR",
-            "details": "Each subconclusion wighted by surface of grided range from GML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 7,
-            "method": "3XR",
-            "details": "Overall conclusion wighted by range from XML data",
-            "dataset_id": 3
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 3,
-            "method": "3XA",
-            "details": "Overall conclusion wighted by area from XML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 7,
-            "method": "3XR",
-            "details": "Overall conclusion wighted by range from XML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 10,
-            "method": "MTX",
-            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 3,
-            "method": "3XP",
-            "details": "Overall conclusion wighted by population from XML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 9,
-            "method": "3GR",
-            "details": "Overall conclusion wighted by surface of grided range from GML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 11,
-            "method": "OTH",
-            "details": "Other method was used, explanations provided in Audit trail",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": -1,
-            "method": "",
-            "details": "No assessment",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 2,
-            "method": "2XA",
-            "details": "Each subconclusion wighted by area of the coverage from XML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 100,
-            "method": "00",
-            "details": "Only one MS reported as present",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 2,
-            "method": "2XP",
-            "details": "Each subconclusion wighted by population from XML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 4,
-            "method": "2GD",
-            "details": "Each subconclusion wighted by area of grided distribution from GML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 8,
-            "method": "2GR",
-            "details": "Each subconclusion wighted by surface of grided range from GML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 6,
-            "method": "2XR",
-            "details": "Each subconclusion wighted by range from XML data",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 1,
-            "method": "1",
-            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
-            "dataset_id": 4
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
+        "fields": {
             "order": 0,
             "method": "0",
             "details": "Conclusions are the same for MS that reported as present",
@@ -470,139 +70,39 @@
         }
     },
     {
-        "model":"EtcDicMethod",
+        "model": "EtcDicMethod",
         "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 5,
-            "method": "3GD",
-            "details": "Overall conclusion wighted by area of grided distribution from GML data",
+        "fields": {
+            "order": 100,
+            "method": "00",
+            "details": "Only one MS reported as present",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 100,
+            "method": "00",
+            "details": "Only one MS reported as present",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 100,
+            "method": "00",
+            "details": "Only one MS reported as present",
             "dataset_id": 4
         }
     },
     {
-        "model":"EtcDicMethod",
+        "model": "EtcDicMethod",
         "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 0,
-            "method": "0MS",
-            "details": "Only one MS reported as present",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 1,
-            "method": "method1",
-            "details": "",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 1,
-            "method": "1",
-            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 2,
-            "method": "2XA",
-            "details": "Each subconclusion wighted by area of the coverage from XML data",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 3,
-            "method": "3XA",
-            "details": "Overall conclusion wighted by area from XML data",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 4,
-            "method": "2GD",
-            "details": "Each subconclusion wighted by area of grided distribution from GML data",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 5,
-            "method": "3GD",
-            "details": "Overall conclusion wighted by area of grided distribution from GML data",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 6,
-            "method": "2XR",
-            "details": "Each subconclusion wighted by range from XML data",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 7,
-            "method": "3XR",
-            "details": "Overall conclusion wighted by range from XML data",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 8,
-            "method": "2XP",
-            "details": "Each subconclusion wighted by population from XML data",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 9,
-            "method": "3XP",
-            "details": "Overall conclusion wighted by population from XML data",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": 10,
-            "method": "MTX",
-            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
-            "dataset_id": 5
-        }
-    },
-    {
-        "model":"EtcDicMethod",
-        "filter_fields": "method,dataset_id",
-        "fields":{
+        "fields": {
             "order": 0,
             "method": "0EQ",
             "details": "Conclusions are the same for MS that reported as present",
@@ -610,23 +110,713 @@
         }
     },
     {
-        "model":"EtcDicMethod",
+        "model": "EtcDicMethod",
         "filter_fields": "method,dataset_id",
-        "fields":{
-            "order": -1,
-            "method": "",
-            "details": "No assessment",
+        "fields": {
+            "order": 100,
+            "method": "0MS",
+            "details": "Only one MS reported as present",
             "dataset_id": 5
         }
     },
     {
-        "model":"EtcDicMethod",
+        "model": "EtcDicMethod",
         "filter_fields": "method,dataset_id",
-        "fields":{
+        "fields": {
+            "order": 1,
+            "method": "1",
+            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 1,
+            "method": "1",
+            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 1,
+            "method": "1",
+            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 1,
+            "method": "1",
+            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 4,
+            "method": "2GD",
+            "details": "Each subconclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 4,
+            "method": "2GD",
+            "details": "Each subconclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 4,
+            "method": "2GD",
+            "details": "Each subconclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 4,
+            "method": "2GD",
+            "details": "Each subconclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 8,
+            "method": "2GR",
+            "details": "Each subconclusion wighted by surface of grided range from GML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 8,
+            "method": "2GR",
+            "details": "Each subconclusion wighted by surface of grided range from GML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 8,
+            "method": "2GR",
+            "details": "Each subconclusion wighted by surface of grided range from GML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XA",
+            "details": "Each subconclusion wighted by area of the coverage from XML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XA",
+            "details": "Each subconclusion wighted by area of the coverage from XML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XA",
+            "details": "Each subconclusion wighted by area of the coverage from XML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XA",
+            "details": "Each subconclusion wighted by area of the coverage from XML data",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XP",
+            "details": "Each subconclusion wighted by population from XML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XP",
+            "details": "Each subconclusion wighted by population from XML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XP",
+            "details": "Each subconclusion wighted by population from XML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XP",
+            "details": "Each subconclusion wighted by population from XML data",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 6,
+            "method": "2XR",
+            "details": "Each subconclusion wighted by range from XML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 6,
+            "method": "2XR",
+            "details": "Each subconclusion wighted by range from XML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 6,
+            "method": "2XR",
+            "details": "Each subconclusion wighted by range from XML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 6,
+            "method": "2XR",
+            "details": "Each subconclusion wighted by range from XML data",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 5,
+            "method": "3GD",
+            "details": "Overall conclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 5,
+            "method": "3GD",
+            "details": "Overall conclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 5,
+            "method": "3GD",
+            "details": "Overall conclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 5,
+            "method": "3GD",
+            "details": "Overall conclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 9,
+            "method": "3GR",
+            "details": "Overall conclusion wighted by surface of grided range from GML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 9,
+            "method": "3GR",
+            "details": "Overall conclusion wighted by surface of grided range from GML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 9,
+            "method": "3GR",
+            "details": "Overall conclusion wighted by surface of grided range from GML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XA",
+            "details": "Overall conclusion wighted by area from XML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XA",
+            "details": "Overall conclusion wighted by area from XML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XA",
+            "details": "Overall conclusion wighted by area from XML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XA",
+            "details": "Overall conclusion wighted by area from XML data",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XP",
+            "details": "Overall conclusion wighted by population from XML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XP",
+            "details": "Overall conclusion wighted by population from XML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XP",
+            "details": "Overall conclusion wighted by population from XML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XP",
+            "details": "Overall conclusion wighted by population from XML data",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 7,
+            "method": "3XR",
+            "details": "Overall conclusion wighted by range from XML data",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 7,
+            "method": "3XR",
+            "details": "Overall conclusion wighted by range from XML data",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 7,
+            "method": "3XR",
+            "details": "Overall conclusion wighted by range from XML data",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 7,
+            "method": "3XR",
+            "details": "Overall conclusion wighted by range from XML data",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "method1",
+            "details": "",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 10,
+            "method": "MTX",
+            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 10,
+            "method": "MTX",
+            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 10,
+            "method": "MTX",
+            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 10,
+            "method": "MTX",
+            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 11,
+            "method": "OTH",
+            "details": "Other method was used, explanations provided in Audit trail",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 11,
+            "method": "OTH",
+            "details": "Other method was used, explanations provided in Audit trail",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 11,
+            "method": "OTH",
+            "details": "Other method was used, explanations provided in Audit trail",
+            "dataset_id": 4
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
             "order": 11,
             "method": "OTH",
             "details": "Other method was used, explanations provided in Audit trail",
             "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": -1,
+            "method": "",
+            "details": "No assessment",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 0,
+            "method": "0",
+            "details": "Conclusions are the same for MS that reported as present",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 100,
+            "method": "00",
+            "details": "Only one MS reported as present",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 0,
+            "method": "0EQ",
+            "details": "Conclusions are the same for MS that reported as present",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 100,
+            "method": "0MS",
+            "details": "Only one MS reported as present",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 1,
+            "method": "1",
+            "details": "Matrix rules used for assesing one or both of the first two sub-conclusions (range, population/area)",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 4,
+            "method": "2GD",
+            "details": "Each subconclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 8,
+            "method": "2GR",
+            "details": "Each subconclusion wighted by surface of grided range from GML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XA",
+            "details": "Each subconclusion wighted by area of the coverage from XML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "2XP",
+            "details": "Each subconclusion wighted by population from XML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 6,
+            "method": "2XR",
+            "details": "Each subconclusion wighted by range from XML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 5,
+            "method": "3GD",
+            "details": "Overall conclusion wighted by area of grided distribution from GML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 9,
+            "method": "3GR",
+            "details": "Overall conclusion wighted by surface of grided range from GML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XA",
+            "details": "Overall conclusion wighted by area from XML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 3,
+            "method": "3XP",
+            "details": "Overall conclusion wighted by population from XML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 7,
+            "method": "3XR",
+            "details": "Overall conclusion wighted by range from XML data",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 2,
+            "method": "method1",
+            "details": "",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 10,
+            "method": "MTX",
+            "details": "Overall conclusion computed from sub-conclusions, based on Matrix rules",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicMethod",
+        "filter_fields": "method,dataset_id",
+        "fields": {
+            "order": 11,
+            "method": "OTH",
+            "details": "Other method was used, explanations provided in Audit trail",
+            "dataset_id": 6
         }
     }
 ]

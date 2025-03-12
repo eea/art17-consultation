@@ -12,6 +12,7 @@ SECRET_KEY = 'secret'
 
 # ASSETS_DEBUG = False
 # AUTH_DEBUG = False
+# ADMIN_INTERFACE = False
 
 # AUTH_LOG_FILE = '/var/local/art17/logs/flask-auth.log'
 

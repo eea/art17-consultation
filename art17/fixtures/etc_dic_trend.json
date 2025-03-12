@@ -1,0 +1,202 @@
+[
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 0,
+            "trend": "",
+            "details": "default value",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 0,
+            "trend": "",
+            "details": "default value",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 0,
+            "trend": "",
+            "details": "default value",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 1,
+            "trend": "+",
+            "details": "",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 1,
+            "trend": "+",
+            "details": "",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 1,
+            "trend": "+",
+            "details": "",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 2,
+            "trend": "-",
+            "details": "",
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 2,
+            "trend": "-",
+            "details": "",
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 2,
+            "trend": "-",
+            "details": "",
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 3,
+            "trend": "=",
+            "details": null,
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 3,
+            "trend": "=",
+            "details": null,
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 3,
+            "trend": "=",
+            "details": null,
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 4,
+            "trend": "x",
+            "details": null,
+            "dataset_id": 1
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 4,
+            "trend": "x",
+            "details": null,
+            "dataset_id": 3
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 4,
+            "trend": "x",
+            "details": null,
+            "dataset_id": 5
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 0,
+            "trend": "",
+            "details": "default value",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 1,
+            "trend": "+",
+            "details": "",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 2,
+            "trend": "-",
+            "details": "",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 3,
+            "trend": "=",
+            "details": null,
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicTrend",
+        "filter_fields": "id,dataset_id",
+        "fields": {
+            "id": 4,
+            "trend": "x",
+            "details": null,
+            "dataset_id": 6
+        }
+    }
+]
