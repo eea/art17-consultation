@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.5.1 - (2025-03-13)
+--------------------
+* Prepare scripts for generating new reporting period
+  [dianaboiangiu]
+
 3.5.0 - (2024-02-03)
 --------------------
 * Upgrade packages to the latest versions
