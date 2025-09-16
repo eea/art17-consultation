@@ -1,0 +1,226 @@
+<tbody class="thead">
+  <tr class="section-header">
+    <th class="table-title" colspan="{{ colspan_all }}">
+      Member States reports
+    </th>
+  </tr>
+
+  <tr>
+    {% if show_report_headers %}
+      <th rowspan="2">Species</th>
+    {% endif %}
+
+    {% if not country %}
+      <th rowspan="2" colspan="2" title="Member states">MS</th>
+    {% endif %}
+    {% if not region %}<th rowspan="2" title="Biogeographical or marine region">Region</th>{% endif %}
+
+    <th colspan="5">Range (km<sup>2</sup>)</th>
+    <th colspan="13">Population</th>
+    <th colspan="5">Habitat for the species</th>
+    <th colspan="4" title="Future prospects">Future prospects</th>
+    <th colspan="6">Overall assessment</th>
+    <th colspan="3">Distribution<br/>area (km<sup>2</sup>)</th>
+    <td colspan="5" rowspan="2"></td>
+  </tr>
+
+  <tr>
+    <th title="Main reason for change if current value is different from the previous period
+               genuine
+               knowledge
+               method
+               unknown
+               other
+               no change
+               N/A (applicable e.g. when first time reported)">Surface</th>
+    <th title="Status of Range (colour)
+               Percentage of surface of the range per MS region (figure)">Status<br/>(% MS)</th>
+    <th title="Short-term trend
+               -   - Decreasing
+               +  - Increasing
+               =   - Stable
+               u  - Uncertain
+               x  - Unknown">Trend</th>
+    <th title="Favourable reference range (if only operator was used in MS data current value is inserted automatically)
+               ≈  - Approximately equal to current value
+               <  - Less than current value
+               >  -  More than current value
+               >>  - Much more than current value
+               x  - Unknown">FRR</th>
+    <th title="Pre-defined range increments to indicate if the range is: 
+               appr. equal - approximately equal to the favourable reference range (less than 2% smaller) 
+               2-10 % smaller - between 2% and 10% smaller than the FRR
+               11-50 % smaller - between 11% and 50% smaller than the FRR
+               51-100 % smaller - between 51% and 100% smaller than the FRR">Range vs <br/>FRR<br/> predefined<br/>(%)
+    </th>
+
+    <th>
+      <div class="popout-wrapper hover">
+        Min
+      </div>
+    </th>
+    <th>
+      <div class="popout-wrapper hover">
+        <div class="popout size_unit_th right caret">
+          <table class="popout-table">
+            <tr>
+              <th rowspan="2" class="text-center">Member State<br> code</th>
+              <th colspan="5" class="text-center">Reporting units</th>
+              <th colspan="5" class="text-center">Alternative units</th>
+            </tr>
+            <tr>
+
+              <th class="center">Min</th>
+              <th>Max</th>
+              <th>Best value</th>
+              <th>Unit</th>
+              <th>Type of estimate</th>
+              <th>Min</th>
+              <th>Max</th>
+              <th>Best value</th>
+              <th>Unit</th>
+              <th>Type of estimate</th>
+            </tr>
+            {% for row in objects %}
+              <tr>
+                <td>{{ row.eu_country_code }}</td>
+                <td>{{ row.population_minimum_size|str2num  }}</td>
+                <td>{{ row.population_maximum_size|str2num }}</td>
+                <td>{{ row.population_size|str2num  }}</td>
+                <td>{{ row.population_size_unit }}</td>
+                <td>{{ row.population_estimate_type }}</td>
+                <td>{{ row.population_alt_size_min|str2num }}</td>
+                <td>{{ row.population_alt_size_max|str2num }}</td>
+                <td>{{ row.population_alt_size|str2num  }}</td>
+                <td>{{ row.population_alt_size_unit }}</td>
+                <td>{{ row.population_alt_estimate_type|str2num  }}</td>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
+        Max
+      </div>
+    </th>
+    <th title="Main reason for change if current value is different from the previous period
+               genuine
+               knowledge
+               method
+               unknown
+               other
+               no change
+               NA (applicable e.g when first time reported)">Best value</th>
+    <th title="Quality of extrapolation to reporting unit 
+               High
+               Moderate
+               Low
+               N/A">Unit</th>
+    <th title="Predefined size classess in individuals
+               1    0-50
+               2    50-100
+               3	100-500
+               4	500-1000
+               5	1000-5000
+               6	5000-10 000
+               7	10 000-50 000
+               8	50 000-100 000
+               9	100 000-500 000
+              10	500 000-1 000 000
+              11	1 000 000-5 000 000
+              12	5 000 000-10 000 000
+              13	10 000 000-50 000 000
+              14	50 000 000-100 000 000">Size class<br/>in<br/>individuals</th> 
+    <th title="Type of estimate
+               estimate  - Best estimate
+               interval  - 95% confidence interval
+               mean  - Multi-year mean
+               minimum  - Minimum">Type est.</th>
+    <th title="Method used
+               a  - Complete survey or a statistically robust estimate
+               b  - Based mainly on extrapolation from a limited amount of data
+               c  - Based mainly on expert opinion with very limited data
+               d  - Insufficient or no data available">Method</th>
+    <th title="Status of Population (colour)
+               Percentage of total biogeographical population per MS region (figure)">Status<br/>(% MS)</th>
+    <th title="Short-term trend
+               -    - Decreasing
+               +    - Increasing
+               =    - Stable
+               u    - Uncertain
+               x    - Unknown">Trend</th>
+    <th title="Type of estimate:
+               estimate - Best estimate 
+               interval - 95% confidence interval 
+               mean - Multi-year mean  
+               minimum - Minimum
+               predefined - Pre-defined range
+
+               Trend magnitude pre-defined ranges:
+               - 0 – 12% 
+               - 13-25% 
+               - 26 – 50% 
+               - 51 – 100% 
+               - >100%">Trend<br/>magnitude<br/>min - max</th>
+    <th title="{{ favourable_ref_title('complementary_favourable_population', dataset.schema) }}">FRP</th>
+    <th title="Pre-defined range increments to indicate if the population is:
+               appr. equal - approximately equal to the favourable reference population (less than 5% smaller) 
+               5-25 % smaller - between 5% and 25% smaller than the FRP
+               26-50 % smaller - between 26% and 50% smaller than the FRR
+               51-100 % smaller - between 51% and 100% smaller than the FRP">Population<br/>vs FRP<br/>predefined</th>
+    <th>Unit</th>
+
+    <th title="Is area of occupied habitat sufficient (for long-term survival)? YES/NO/Unknown">Area<br/>occupied<br/>sufficient</th>
+    <th title="Is quality of occupied habitat sufficient (for long-term survival)? YES/NO/Unknown">Quality<br/>occupied<br/>sufficient</th>
+    <th title="Is there a sufficiently large area of unoccupied habitat of suitable quality (for long-term survival)? YES/NO/Unknown">Unoccupied<br/>suff.</th>
+    <th title="Status of Habitat for species">Status</th>
+    <th title="Short-term trend
+               -  - Decreasing
+               +  - Increasing
+               =  - Stable
+               u  - Uncertain
+               x  - Unknown">Trend</th>
+
+    <th title="Prospects of parameter Range">Range<br/>prosp.</th>
+    <th title="Prospects of parameter Population">Population<br/>prosp.</th>
+    <th title="Prospects of parameter Habitat for species">Hab. for sp.<br/>prosp.</th>
+    <th title="Status of Future prospects">Status</th>
+
+    <th title="Conservation status - current period">Curr. CS</th>
+    <th title="Overall trend in conservation status - current period
+               -  - Deteriorating
+               +  - Improving
+               =  - Stable
+               x  - Unknown
+               N/A  - Not reported">Curr. CS<br/>trend</th>
+    <th title="Conservation status - previous period">Prev. CS</th>
+    <th title="Overall trend in conservation status - previous period
+               -  - Deteriorating
+               +  - Improving
+               =  - Stable
+               x  - Unknown
+               N/A  - Not reported">Prev. CS<br/>trend</th>
+    <th title="Main reason for change 
+               genuine - Genuine change
+               kknowledge - Improved knowledge or more accurate data
+               method - The use of a different method
+               unknown - Unknown reason
+               other - Other reasons
+               no change - No change
+               N/A - No information on the nature of change (also when first time reported)">Status<br/>Nat. of ch.</th>
+    <th title="Main reason for change
+               genuine - Genuine change
+               knowledge - Improved knowledge or more accurate data 
+               method - The use of a different method
+               unknown - Unknown reason
+               other - Other reasons
+               no change - No change
+               N/A - No information on the nature of change (also when first time reported)">CS trend<br/>Nat. of ch.</th>
+
+    <th title="Distribution Area was calculated in km2 based on distribution mapped in 10x10km grid">Distrib.</th>
+    <th title="Method used
+               a  - Complete survey or a statistically robust estimate
+               b  - Based mainly on extrapolation from a limited amount of data
+               c  - Based mainly on expert opinion with very limited data
+               d  - Insufficient or no data available">Method</th>
+    <th title="Percentage of surface of the distribution per MS region">% MS</th>
+  </tr>
+</tbody>

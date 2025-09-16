@@ -20,6 +20,12 @@
   {% endif %}
 {% endmacro %}
 
+{% macro set_extrapolation(quality) %}
+  {% if quality %}
+    title="Quality of extrapolation: {{ quality }}"
+  {% endif %}
+{% endmacro %}
+
 {% macro conclusion_td(color, content, colspan=1) %}
   <td class="{{ CONCLUSION_CLASSES.get(color, '') }}" colspan="{{ colspan }}">
       <span class="conclusion">{{ content }}</span>

@@ -26,9 +26,10 @@
     </p>
   {% else %}
     <p>The Article 17 web tool provides an access to EU biogeographical and Member States’ assessments of
-        conservation status of the habitat types and species of Community interest compiled as part of
-        the Habitats Directive - Article 17 reporting process. These assessments have been carried out
-        in EU25 for the period 2001-2006, in EU 27 for the period 2007-2012 and in EU28 for the period 2013-2018.
+       conservation status of the habitat types and species of Community interest compiled as part of
+       the Habitats Directive - Article 17 reporting process. These assessments have been carried out
+       in EU 25 for the period 2001-2006, in EU 27 for the period 2007-2012, in EU 28 for the period 2013-2018
+       and in EU 27 for the period 2019-2024.
     </p>
     <p>
       Choose a period, a group, then a species belonging to that group.<br>Optionally, further
@@ -55,6 +56,12 @@
       {% set colspan_all=40 if region else 41 %}
     {% else %}
       {% set colspan_all=34 if region else 35 %}
+    {% endif %}
+  {% elif dataset.schema == '2024' %}
+    {% if request.args.get('action') == 'edit' %}
+      {% set colspan_all=41 if region else 41 %}
+    {% else %}
+      {% set colspan_all=41 if region else 41 %}
     {% endif %}
   {% else %}
     {% set colspan_all=28 if region else 29 %}
@@ -94,6 +101,8 @@
 
         {% if dataset.schema == '2018' %}
           {% include "common/species_table_header_2018.html" with context %}
+        {% elif dataset.schema == '2024' %}
+          {% include "common/species_table_header_2024.html" with context %}
         {% else %}
           {% include "common/species_table_header.html" with context %}
         {% endif %}
@@ -112,6 +121,8 @@
               {% else %}
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/species/content/content_2018.html' with context %}
+                {% elif dataset.schema == '2024' %}
+                  {% include 'summary/species/content/content_2024.html' with context %}
                 {% else %}
                   {% include 'summary/species/content/range.html' with context %}
                   {% include 'summary/species/content/population.html' with context %}

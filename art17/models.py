@@ -474,12 +474,12 @@ class EtcDataSpeciesRegion(Base):
 
     country = Column(String(3), primary_key=True, nullable=False)
     eu_country_code = Column(String(2), nullable=False)
-    delivery = Column(Integer, nullable=False)
+    delivery = Column(Boolean)
     envelope = Column(String(50), nullable=False)
     filename = Column(String(300), nullable=False)
     region = Column(String(4), primary_key=True, nullable=False)
     region_ms = Column(String(4))  # region_orig for period 2018
-    region_was_changed = Column(Integer)
+    region_was_changed = Column(Boolean)
     group_old = Column("group", String(21))
     group = Column("tax_group", String(20))
     tax_order = Column(Integer)
@@ -497,18 +497,18 @@ class EtcDataSpeciesRegion(Base):
     code = Column(String(50))
     speciescode = Column(String(32), primary_key=True)
     speciesname = Column(String(50))
-    species_name_different = Column(Integer)
+    species_name_different = Column(Boolean)
     eunis_species_code = Column(Integer)
     valid_speciesname = Column(String(50))
     n2000_species_code = Column(Integer)
     speciescode_IRM = Column("speciescode_irm", String(10))  # 2018 n2000_species_code
     assessment_speciescode = Column(Integer)
-    assesment_speciesname = Column(String(60))
+    assesment_speciesname = Column(String(60)) # assessment_speciesname
     assessment_speciesname_changed = Column(Integer)
     presence_new = Column(String(60))  # presence
-    grouped_assesment = Column(Integer)
+    grouped_assesment = Column(Boolean)
     species_type = Column(String(10))
-    species_type_asses = Column(Integer)
+    species_type_asses = Column(Boolean)
     range_surface_area = Column(Float(asdecimal=True))
     range_change_reason = Column(String(150))
     range_trend = Column(String(1))
@@ -516,9 +516,13 @@ class EtcDataSpeciesRegion(Base):
     range_yearly_magnitude = Column(Float(asdecimal=True))
     complementary_favourable_range_q = Column(String(2))
     complementary_favourable_range = Column(Float(asdecimal=True))
+    derived_favourable_reference_range_combined = Column(String(23))
+    S_5_12_b_favourable_reference_range_predefined = Column(String(23))
     population_minimum_size = Column(Float(asdecimal=True))
     population_maximum_size = Column(Float(asdecimal=True))
     population_size_unit = Column(String(10))
+    S_6_2_e_population_size_class = Column(String(23))
+    S_6_4_population_size_quality_of_extrapolation = Column(String(23))
     population_size = Column(Float(asdecimal=True))  # best value
     percentage_range_surface_area = Column(Float(asdecimal=True))
     population_estimate_type = Column(String(50))
@@ -536,20 +540,30 @@ class EtcDataSpeciesRegion(Base):
     population_units_other = Column(String(50))
     population_change_reason = Column(String(150))
     number_of_different_population_units = Column(Integer)
-    different_population_percentage = Column(Integer)
+    different_population_percentage = Column(Boolean)
     percentage_population_mean_size = Column(Float(asdecimal=True))
     popsize_etc = Column(Float(asdecimal=True))
     population_trend = Column(String(1))
     population_trend_method = Column(String(50))
+    S_6_11_a_short_term_trend_magnitude_min = Column(Float(asdecimal=True))
+    S_6_11_b_short_term_trend_magnitude_max = Column(Float(asdecimal=True))
+    S_6_11_c_short_term_trend_magnitude_predefined = Column(String(50))
+    S_6_11_d_short_term_trend_magnitude_unknown = Column(Boolean)
+    derived_population_size_trend_magnitude = Column(String(23))
     population_yearly_magnitude = Column(Float(asdecimal=True))
     complementary_favourable_population_q = Column(String(4))
     complementary_favourable_population = Column(Float(asdecimal=True))
     complementary_favourable_population_unit = Column(String(50))
+    S_6_18_c_favourable_reference_population_unknown = Column(Boolean)
+    derived_favourable_reference_population_combined = Column(String(23))
+    S_6_18_b_favourable_reference_population_predefined = Column(String(23))
     filled_complementary_favourable_population = Column(String(3))
     habitat_surface_area = Column(Float(asdecimal=True))
     habitat_change_reason = Column(String(150))
     habitat_sufficiency_occupied = Column(String(20))
     habitat_sufficiency_method = Column(String(20))
+    S_7_1_b_habitat_sufficiency_occupied_quality = Column(String(25))
+    S_7_2_habitat_sufficiency_method_quality = Column(String(25))
     habitat_sufficiency_unoccupied = Column(String(20))
     percentage_habitat_surface_area = Column(Float(asdecimal=True))
     habitat_trend = Column(String(1))
@@ -602,7 +616,7 @@ class EtcDataSpeciesRegion(Base):
 
     @property
     def is_assesm(self):
-        return self.species_type_asses == 0
+        return self.species_type_asses == False
 
     @property
     def mapcode(self):

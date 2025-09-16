@@ -392,7 +392,7 @@ def get_title_for_species_country(row):
     ):
         s_name = row.speciesname or row.assesment_speciesname or ""
         s_info = row.complementary_other_information or ""
-    if row.species_type_asses == 0:
+    if row.species_type_asses == False:
         s_type = (
             row.species_type_details.SpeciesType
             if row.species_type_details
