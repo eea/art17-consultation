@@ -1,0 +1,160 @@
+{% from '_macros.html' import parse_errors, reason_title, set_method_title, set_reason_title with context %}
+
+<!-- Range -->
+
+<td {{ parse_errors('range_surface_area', row, qa_errors, classes='number border_left text-center') }}
+    {{ set_reason_title(row.range_change_reason) }}>
+  {{ row.range_surface_area|str2num or 'N/A' }}
+</td>
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') %}
+<td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'], row, qa_errors, classes=classes) }}>
+  <span class="conclusion text-center">{{ row.percentage_range_surface_area|str2num(0) }}</span>
+</td>
+{% set qtitle, qclasses = parse_qa_errors('range_yearly_magnitude', row,
+                                         qa_errors) %}
+{% if not qtitle %}
+  {% if row.range_yearly_magnitude -%}
+    {% set qtitle = 'Yearly magnitude = ' + row.range_yearly_magnitude|string %}
+  {%- endif -%}
+{% endif %}
+
+<td class="center text-center {{ qclasses }}"
+    {{ set_method_title(row.range_trend_method|get_method_name) }}>
+  {{ row.range_trend or 'N/A' }}
+</td>
+
+<td class="center text-center">
+    {{ row.derived_favourable_reference_range_combined  }}
+</td>
+
+<td class="center text-center">
+    {{ row.H_4_12_b_favourable_reference_range_predefined }}
+</td>
+
+<!-- Area -->
+
+<td class='number border_left text-center'>
+  {{ row.coverage_surface_area_min|str2num or 'N/A' }}
+</td>
+
+<td class='number center text-center'>
+  {{ row.coverage_surface_area_max|str2num or 'N/A' }}
+</td>
+
+<td class="center text-center"
+    {{ set_reason_title(row.coverage_change_reason) }}>
+  {% set coverage_surface_area = row.coverage_surface_area or '' %}
+  {{ coverage_surface_area|str2num }}
+</td>
+
+<td class="center text-center">
+  {{ row.coverage_estimate_type }}
+</td>
+
+<td class="center text-center">
+  {{ row.coverage_method }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_area, '') %}
+<td {{ parse_errors(['conclusion_area',
+                     'percentage_coverage_surface_area'],
+                     row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.percentage_coverage_surface_area|str2num(0) }}</span>
+</td>
+
+<td class="center text-center"
+    {{ set_method_title(row.coverage_trend_method|get_method_name) }}>
+  {{ row.coverage_trend or 'N/A' }}
+</td>
+
+<td class="center text-center">
+    {{ row.derived_area_trend_magnitude }}
+</td>
+
+<td class="center text-center">
+{{ row.derived_favourable_reference_area_combined  }}
+</td>
+
+<td class="center text-center">
+{{ row.H_5_15_b_favourable_reference_area_predefined }}
+</td>
+ 
+<!-- Structure and functions -->
+
+<td {{ set_method_title(row.hab_condition_method|get_method_name) }}
+    class="border_left center text-center">
+  {{ row.hab_condition_good_min|str2num }} - {{ row.hab_condition_good_max|str2num }}
+</td>
+
+<td class="center text-center">
+  {{ row.hab_condition_notgood_min|str2num }} - {{ row.hab_condition_notgood_max|str2num }}
+</td>
+
+<td class="center text-center">{{ row.hab_condition_unknown_min|str2num }} - {{ row.hab_condition_unknown_max|str2num }}</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_structure, '') %}
+<td {{ parse_errors(['conclusion_structure'], row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.conclusion_structure|str2num }}</span>
+</td>
+
+<td {{ set_method_title(row.hab_condition_trend_method|get_method_name) }}
+    class="center text-center">
+  {{ row.hab_condition_trend|str2num }}
+</td>
+
+<!-- Future prospects -->
+
+<td class="center border_left text-center">
+  {{ row.future_range|str2num }}
+</td>
+
+<td class="center text-center">
+  {{ row.future_area|str2num }}
+</td>
+
+<td class="center text-center">
+  {{ row.future_structure|str2num }}
+</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_future, '') + ' border_right' %}
+<td {{ parse_errors('conclusion_future', row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.conclusion_future|str1num }}</span>
+</td>
+
+<!-- Overall assessment -->
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment, '') %}
+<td {{ parse_errors('conclusion_assessment', row, qa_errors, classes=classes) }}>
+  <span class="conclusion">{{ row.conclusion_assessment|str1num }}</span>
+</td>
+
+<td class="center text-center">{{ row.conclusion_assessment_trend|na_if_none }}</td>
+
+{% set classes=CONCLUSION_CLASSES.get(row.conclusion_assessment_prev, '') %}
+<td class="{{ classes }}">
+  <span class="conclusion">{{ row.conclusion_assessment_prev|str1num }}</span>
+</td>
+
+<td class="center text-center">
+  {{ row.conclusion_assessment_trend_prev|str1num }}
+</td>
+
+<td class="center text-center">{{ row.conclusion_assessment_change|na_if_none }}</td>
+
+<td class="center border_right text-center">
+  {{ row.conclusion_assessment_trend_change|str1num }}
+</td>
+
+<!-- Distribution area -->
+
+<td class="center text-center">
+  {{ row.distribution_grid_area|str1num }}
+</td>
+
+<td class="center text-center">
+  {{ row.distribution_method|str1num }}
+</td>
+
+<td class="center border_right text-center">
+  {{ row.percentage_distribution_grid_area|str2num(0) }}
+</td>

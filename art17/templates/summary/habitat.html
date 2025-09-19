@@ -55,6 +55,8 @@
 
   {% if dataset.schema == '2018' %}
     {% set colspan_all=40 if region else 41 %}
+  {% elif dataset.schema == '2024' %}
+    {% set colspan_all=40 if region else 41 %}
   {% else %}
     {% set colspan_all=34 if region else 35 %}
   {% endif %}
@@ -80,7 +82,9 @@
           </caption>
 
           {% if dataset.schema == '2018' %}
-            {%  include 'common/habitat_table_header_2018.html' with context %}
+            {% include 'common/habitat_table_header_2018.html' with context %}
+          {% elif dataset.schema == '2024' %}
+            {% include 'common/habitat_table_header_2024.html' with context %}
           {% else %}
             {% include 'common/habitat_table_header.html' with context %}
           {% endif %}
@@ -99,6 +103,8 @@
                 {% else %}
                   {% if dataset.schema == '2018' %}
                     {% include 'summary/habitat/content/content_2018.html' with context %}
+                  {% elif dataset.schema == '2024' %}
+                    {% include 'summary/habitat/content/content_2024.html' with context %}
                   {% else %}
                     {% include 'summary/habitat/content/range.html' with context %}
                     {% include 'summary/habitat/content/area.html' with context %}
@@ -200,6 +206,8 @@
             <tbody class="form">
               {% if can_add %}
                 {% if dataset.schema == '2018' %}
+                  {% include 'summary/habitat/manual_form_2018.html' %}
+                {% elif dataset.schema == '2024' %}
                   {% include 'summary/habitat/manual_form_2018.html' %}
                 {% else %}
                   {% include 'summary/habitat/manual_form.html' %}
