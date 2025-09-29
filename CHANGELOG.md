@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.5.2 - (2025-09-29)
+--------------------
+* Catch timeout on factsheets check
+  [dianaboiangiu]
+
 3.5.1 - (2025-03-13)
 --------------------
 * Prepare scripts for generating new reporting period
