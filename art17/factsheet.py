@@ -2,6 +2,8 @@ import urllib
 from collections import OrderedDict
 
 import requests
+import httpx
+
 from flask import Blueprint
 from flask import current_app as app
 from flask import render_template, request, url_for
@@ -521,7 +523,6 @@ def generate_factsheet_url(category, subject, period):
 
     base_remote_url = app.config.get("FACTSHEETS_REMOTE_URL", "")
     dataset = Dataset.query.get(period)
-
     if dataset:
         if dataset.schema == "2012":
             assessment_url = assessment.remote_url_2012 or ""
@@ -529,10 +530,14 @@ def generate_factsheet_url(category, subject, period):
             assessment_url = assessment.remote_url_2006 or ""
         remote_url = base_remote_url + assessment_url
         if remote_url and assessment_url:
-            resp = requests.get(remote_url)
-            if resp.status_code == 200:
-                return remote_url
-
+            try:
+                response = httpx.get(remote_url, timeout=5.0)
+                if response.status_code == 200:
+                    return remote_url
+            except httpx.TimeoutException:
+                print("Request timed out!")
+            except httpx.RequestError as exc:
+                print(f"Request failed: {exc}")
     pdf_path = (
         str(Path(app.config["PDF_DESTINATION"]) / fs_cls.get_pdf_file_name(assessment))
         + ".pdf"
