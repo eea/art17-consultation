@@ -136,6 +136,8 @@
               <tr>
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/habitat/auto/content_2018.html' with context %}
+                {% elif dataset.schema == '2024' %}
+                  {% include 'summary/habitat/auto/content_2024.html' with context %}
                 {% else %}
                   {% include 'summary/common/auto/ms.html' with context %}
                   {% include 'summary/common/auto/range.html' with context %}
