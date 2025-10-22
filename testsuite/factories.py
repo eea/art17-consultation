@@ -29,7 +29,7 @@ class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
     dataset_id = 5
     country = "AT"
     eu_country_code = "AT"
-    delivery = 2
+    delivery = False
     envelope = "http://"
     filename = "filename"
     region = "ALP"
@@ -67,7 +67,7 @@ class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
     dataset_id = 5
     country = "AT2"
     eu_country_code = "AT"
-    delivery = 2
+    delivery = False
     envelope = "http://"
     filename = "filename"
     region = "ALP"

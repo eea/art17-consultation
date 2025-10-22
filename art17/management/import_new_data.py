@@ -17,17 +17,19 @@ SQLAlchemy.get_model = get_model
 
 import_new_data = AppGroup("import_new_data")
 
+
 def set_correct_values_for_boolean_fields(data, field):
     if field in data:
-        if data[field] in [True, 'true', 'TRUE', 'True', 1, '1']:
+        if data[field] in [True, "true", "TRUE", "True", 1, "1"]:
             data[field] = True
         else:
             data[field] = False
     return data
 
+
 def set_correct_values_for_float_fields(data, field):
     if field in data:
-        if data[field] in [math.nan, 'nan', 'NaN', 'NAN', None, '']:
+        if data[field] in [math.nan, "nan", "NaN", "NAN", None, ""]:
             data[field] = None
         else:
             try:
@@ -36,9 +38,10 @@ def set_correct_values_for_float_fields(data, field):
                 data[field] = None
     return data
 
+
 def set_correct_values_for_integer_fields(data, field):
     if field in data:
-        if data[field] in [math.nan, 'nan', 'NaN', 'NAN', None, '']:
+        if data[field] in [math.nan, "nan", "NaN", "NAN", None, ""]:
             data[field] = None
         else:
             try:
@@ -47,7 +50,8 @@ def set_correct_values_for_integer_fields(data, field):
                 data[field] = None
     return data
 
-def clean_data(model,data):
+
+def clean_data(model, data):
     # Get the SQLAlchemy field type for each field in the model
     def get_field_type(model, field):
         lower_field = field.lower()
@@ -65,7 +69,7 @@ def clean_data(model,data):
             set_correct_values_for_integer_fields(data, field)
         try:
 
-            if  math.isnan(data[field]):
+            if math.isnan(data[field]):
                 if type(data[field]) == float or type(data[field]) == int:
                     data[field] = None
                 else:
@@ -77,13 +81,21 @@ def clean_data(model,data):
 @import_new_data.command("run")
 @click.option("-f", "--file", "file")
 @click.option("-m", "--model", "model")
-@click.option("-s", "--sheet", "sheet", default=0, required=False, help="Excel sheet name or index")
+@click.option(
+    "-s",
+    "--sheet",
+    "sheet",
+    default=0,
+    required=False,
+    help="Excel sheet name or index",
+)
 def run(**kwargs):
     """
     Model options:
         EtcDataSpeciesRegion
         EtcDataHabitattypeRegion
         EtcDataSpeciesAutomaticAssessment
+        EtcDataHabitattypeAutomaticAssessment
     """
     df = pd.read_excel(kwargs["file"], sheet_name=kwargs["sheet"])
     df = df.where(pd.notnull(df), "")  # Replace all NaN with None

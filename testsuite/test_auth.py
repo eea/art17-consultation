@@ -40,8 +40,9 @@ def test_identity_is_set_from_plone_whoami(app, set_auth, client):
 
 
 def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
-    
+
     from .factories import DatasetFactory
+
     _set_config(admin_email="admin@example.com")
     user_obj = create_user("ze_admin", ["admin"])
     fs_uniquifier = user_obj.fs_uniquifier
@@ -55,7 +56,10 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
     register_page.form["name"] = "foo me"
     register_page.form["institution"] = "foo institution"
     result_page = register_page.form.submit()
-    assert "Thank you. To confirm your email address foo@example.com, please click on the link in the email we have just sent to you" in result_page.text
+    assert (
+        "Thank you. To confirm your email address foo@example.com, please click on the link in the email we have just sent to you"
+        in result_page.text
+    )
 
     foo_user = models.RegisteredUser.query.get("foo")
     assert foo_user.email == "foo@example.com"
@@ -210,14 +214,17 @@ def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_i
 
 def test_view_requires_admin_error(app, set_auth, client):
     from .factories import DatasetFactory
+
     create_user("foo")
     user_obj = create_user("ze_admin", ["admin"])
     DatasetFactory()
     models.db.session.commit()
     admin_user_url = flask.url_for("auth.admin_user", user_id="foo")
 
+
 def test_view_requires_admin(app, set_auth, client):
     from .factories import DatasetFactory
+
     create_user("foo")
     user_obj = create_user("ze_admin", ["admin"])
     DatasetFactory()
