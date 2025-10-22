@@ -39,7 +39,11 @@
     {% include 'common/note_report_species.html' %}
     {% include 'common/table_legend.html' %}
 
+  {% if dataset.schema == '2024' %}
+    {% set colspan_all=41 if region else 41 %}
+  {% else %}
     {% set colspan_all=35 if region else 36 %}
+  {% endif %}
 
     <table class="complex_datatable">
       <caption>
@@ -49,6 +53,8 @@
 
       {% if dataset.schema == '2018' %}
         {% include "common/species_table_header_2018.html" with context %}
+      {% elif dataset.schema == '2024' %}
+        {% include "common/species_table_header_2024.html" with context %}
       {% else %}
         {% include "common/species_table_header.html" with context %}
       {% endif %}
@@ -98,6 +104,8 @@
             {% else %}
               {% if dataset.schema == '2018' %}
                 {% include 'summary/species/content/content_2018.html' with context %}
+              {% elif dataset.schema == '2024' %}
+                {% include 'summary/species/content/content_2024.html' with context %}
               {% else %}
                 {% include 'summary/species/content/range.html' with context %}
                 {% include 'summary/species/content/population.html' with context %}
