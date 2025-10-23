@@ -9,7 +9,9 @@ from sqlalchemy import inspect
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from art17 import models
+
 dumpdata = AppGroup("dumpdata")
+
 
 @dumpdata.command("run")
 @click.option("-m", "--model", "model")
@@ -72,7 +74,3 @@ def run(**kwargs):
 
     with open(os.path.join(json_dir, json_name), "w") as f:
         f.write("[" + ",".join(objects) + "]")
-
-
-
-

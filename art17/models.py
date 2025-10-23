@@ -191,6 +191,10 @@ class EtcDataHabitattypeAutomaticAssessment(Base):
     percentage_range_trend = Column(String(100))
     range_yearly_magnitude = Column(String(100))
     complementary_favourable_range = Column(String(100))
+    derived_perc_range_FRR = Column(String(100))
+    derived_favourable_reference_range_min = Column(String(100))
+    derived_favourable_reference_range_max = Column(String(100))
+    derived_favourable_reference_range_mean = Column(String(100))
     coverage_surface_area_min = Column(String(100))
     coverage_surface_area_max = Column(String(100))
     coverage_surface_area = Column(String(100))
@@ -201,6 +205,11 @@ class EtcDataHabitattypeAutomaticAssessment(Base):
     percentage_coverage_trend = Column(String(100))
     coverage_yearly_magnitude = Column(String(100))
     complementary_favourable_area = Column(String(100))
+    derived_perc_area_FRA = Column(String(100))
+    derived_favourable_reference_area_min = Column(String(100))
+    derived_favourable_reference_area_max = Column(String(100))
+    derived_favourable_reference_area_mean = Column(String(100))
+    coverage_trend_magnitude_etc = Column(String(100))
     hab_condition_good = Column(String(50))
     hab_condition_notgood = Column(String(50))
     hab_condition_unknown = Column(String(50))
@@ -522,7 +531,7 @@ class EtcDataSpeciesRegion(Base):
     n2000_species_code = Column(Integer)
     speciescode_IRM = Column("speciescode_irm", String(10))  # 2018 n2000_species_code
     assessment_speciescode = Column(Integer)
-    assesment_speciesname = Column(String(60)) # assessment_speciesname
+    assesment_speciesname = Column(String(60))  # assessment_speciesname
     assessment_speciesname_changed = Column(Integer)
     presence_new = Column(String(60))  # presence
     grouped_assesment = Column(Boolean)
