@@ -22,7 +22,7 @@
 </td>
 
 <td {{ parse_errors('S_5_12_b_favourable_reference_range_predefined ', row, qa_errors, classes="center text-center") }}>
-  {{ row.S_5_12_b_favourable_reference_range_predefined|str2num or 'N/A' }}
+  {{ row.S_5_12_b_favourable_reference_range_predefined|str2num('') }}
 </td>
 
 
@@ -81,7 +81,7 @@
 </td>
 
 <td class="number center text-center">
-  {{ row.S_6_18_b_favourable_reference_population_predefined|str2num }}
+  {{ row.S_6_18_b_favourable_reference_population_predefined|str2num('') }}
 </td>
 
 <td class="number center border_right text-center">
