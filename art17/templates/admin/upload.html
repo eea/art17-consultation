@@ -1,0 +1,8 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+  <h3>Upload file</h3>
+  <form action="{{ url_for('.index') }}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+{% endblock %}
