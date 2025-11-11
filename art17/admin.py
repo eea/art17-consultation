@@ -1,5 +1,7 @@
-from flask import abort
-from flask_admin import Admin, AdminIndexView, expose
+import os
+
+from flask import abort, flash, current_app, request, redirect, url_for
+from flask_admin import Admin, AdminIndexView, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from art17.common import admin_perm
 from art17.models import (
@@ -22,6 +24,7 @@ from art17.models import (
     EtcQaErrorsSpeciesManualChecked,
     db,
 )
+from werkzeug.utils import secure_filename
 
 
 class CustomAdminIndexView(AdminIndexView):
@@ -42,6 +45,7 @@ class ProtectedModelView(ModelView):
 
 
 class DatasetModelView(ProtectedModelView):
+    can_export = True
     form_columns = (
         "id",
         "name",
@@ -62,6 +66,7 @@ class DatasetModelView(ProtectedModelView):
 
 
 class DicCountryCodeModelView(ProtectedModelView):
+    can_export = True
     form_columns = ("dataset_id", "code", "codeEU", "name")
     column_list = ("dataset_id", "code", "codeEU", "name")
     column_filters = ["dataset_id", "code", "codeEU", "name"]
@@ -294,6 +299,29 @@ class ConfigModelView(ProtectedModelView):
     column_list = ("id", "start_date", "end_date", "admin_email", "default_dataset_id")
     column_filters = ("id", "default_dataset_id")
 
+class FileUploadView(BaseView):
+
+    @expose("/", methods=("GET", "POST"))
+    def index(self):
+        if not admin_perm.can():
+            return abort(404)
+
+        if request.method == "POST" and "file" in request.files:
+            f = request.files["file"]
+            if f.filename == "":
+                flash("No file selected", "error")
+                return redirect(url_for(".index"))
+
+            filename = secure_filename(f.filename)
+            upload_dir = current_app.config.get("UPLOAD_FOLDER", "uploads")
+            os.makedirs(upload_dir, exist_ok=True)
+            filepath = os.path.join(upload_dir, filename)
+            f.save(filepath)
+            flash(f"File uploaded to {filepath}", "success")
+            return redirect(url_for(".index"))
+
+        return self.render("admin/upload.html")
+
 
 def admin_register(app):
     admin = Admin(
@@ -357,3 +385,5 @@ def admin_register(app):
         )
     )
     admin.add_view(ConfigModelView(Config, db.session))
+    # register non-model upload view
+    admin.add_view(FileUploadView(name="Upload File", endpoint="file_upload", category="Utilities"))
