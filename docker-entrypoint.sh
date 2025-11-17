@@ -25,7 +25,10 @@ if [ -z "$1" ]; then
                 --name article17 \
                 --bind 0.0.0.0:5000 \
                 --access-logfile - \
-                --error-logfile -
+                --error-logfile - \
+                --limit-request-line 0 \
+                --limit-request-fields 1000 \
+                --limit-request-field_size 0
 fi
 
 if [[ $COMMANDS == *"$1"* ]]; then
