@@ -299,6 +299,7 @@ class ConfigModelView(ProtectedModelView):
     column_list = ("id", "start_date", "end_date", "admin_email", "default_dataset_id")
     column_filters = ("id", "default_dataset_id")
 
+
 class FileUploadView(BaseView):
 
     @expose("/", methods=("GET", "POST"))
@@ -386,4 +387,6 @@ def admin_register(app):
     )
     admin.add_view(ConfigModelView(Config, db.session))
     # register non-model upload view
-    admin.add_view(FileUploadView(name="Upload File", endpoint="file_upload", category="Utilities"))
+    admin.add_view(
+        FileUploadView(name="Upload File", endpoint="file_upload", category="Utilities")
+    )

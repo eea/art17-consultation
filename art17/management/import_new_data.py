@@ -57,6 +57,8 @@ def clean_data(model, data):
         lower_field = field.lower()
         if hasattr(model, "__table__") and lower_field in model.__table__.columns:
             return type(model.__table__.columns[lower_field].type)
+        if hasattr(model, "__mapper__") and field in model.__mapper__.c:
+            return type(model.__mapper__.c[field].type)
         return None
 
     for field in data:
