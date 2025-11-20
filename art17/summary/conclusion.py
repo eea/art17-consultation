@@ -130,21 +130,6 @@ class ConclusionView(object):
             return self.manual_form_cls, self.manual_form_ref_cls
         return self.manual_form_sta_cls, self.manual_form_ref_sta_cls
 
-    def clean_complementary_fields(self, data):
-        area = data.get("complementary_favourable_area")
-        population = data.get("complementary_favourable_population")
-        range = data.get("complementary_favourable_range")
-        if area and not validate_float(area):
-            data["complementary_favourable_area"] = ""
-
-        if population and not validate_float(population):
-            data["complementary_favourable_population"] = ""
-
-        if range and not validate_float(range):
-            data["complementary_favourable_range"] = ""
-
-        return data
-
     def get_manual_form(self, data=None, period=None, action=None):
         manual_form_cls, manual_form_ref_cls = self.get_form_cls()
         if action == "edit":
@@ -160,9 +145,6 @@ class ConclusionView(object):
         else:
             manual_assessment = None
             data = data or MultiDict(self.get_default_values())
-        if data:
-            data = self.clean_complementary_fields(data)
-
         if not must_edit_ref(manual_assessment):
             form = manual_form_cls(formdata=data, obj=manual_assessment)
         else:
@@ -226,10 +208,7 @@ class ConclusionDelete(MixinView, views.View):
         if permanently:
             db.session.delete(record)
         else:
-            if record.deleted:
-                record.deleted = 0
-            else:
-                record.deleted = 1
+            record.deleted = not record.deleted
             db.session.add(record)
         db.session.commit()
 

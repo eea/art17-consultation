@@ -98,6 +98,7 @@ def run(**kwargs):
         EtcDataHabitattypeRegion
         EtcDataSpeciesAutomaticAssessment
         EtcDataHabitattypeAutomaticAssessment
+        SpeciesManualAssessment
     """
     df = pd.read_excel(kwargs["file"], sheet_name=kwargs["sheet"])
     df = df.where(pd.notnull(df), "")  # Replace all NaN with None

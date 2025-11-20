@@ -203,6 +203,8 @@
 
           {% if dataset.schema == '2018' %}
             {% include 'common/species_manual_table_header_2018.html' %}
+          {% elif dataset.schema == '2024' %}
+            {% include 'common/species_manual_table_header_2024.html' %}
           {% else %}
             {% include 'common/species_manual_table_header.html' %}
           {% endif %}
@@ -213,6 +215,8 @@
             {% if row == manual_assessment %}
               {% if dataset.schema == '2018' %}
                 {% include 'summary/species/manual_form_2018.html' %}
+              {% elif dataset.schema == '2024' %}
+                {% include 'summary/species/manual_form_2024.html' %}
               {% else %}
                 {% include 'summary/species/manual_form.html' %}
               {% endif %}
@@ -220,6 +224,8 @@
               <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset_id == 3 and dataset.id == 4 %}manual_assessment{% endif%}">
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/species/manual/manual_2018.html' %}
+                {% elif dataset.schema == '2024' %}
+                  {% include 'summary/species/manual/manual_2024.html' %}
                 {% else %}
                   {% include 'summary/common/manual/ms.html' %}
                   {% include 'summary/common/manual/range.html' %}
@@ -241,7 +247,7 @@
         {% if not manual_assessment %}
           <tbody class="form">
             {% if can_add %}
-              {% include 'summary/species/manual_form_2018.html' %}
+              {% include 'summary/species/manual_form_2024.html' %}
             {% else %}
               <tr class="form_row">
                 <td colspan="{{ colspan_all }}">{{ warning_message }}</td>

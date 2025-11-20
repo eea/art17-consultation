@@ -152,10 +152,7 @@ class CommentsList(views.View):
     def toggle_delete(self, comment):
         if not can_delete_comment(comment):
             raise PermissionDenied
-
-        if comment.deleted is None:
-            comment.deleted = 0
-        comment.deleted = 1 - comment.deleted
+        comment.deleted = not comment.deleted
         db.session.commit()
 
     def toggle_read(self, comment):

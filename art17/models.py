@@ -27,7 +27,7 @@ from sqlalchemy import (
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
-DEFAULT_MS = "EU28"
+DEFAULT_MS = "EU27"
 
 db = SQLAlchemy()
 Base = db.Model
@@ -1274,6 +1274,9 @@ class SpeciesManualAssessment(Base):
     range_yearly_magnitude = Column(String(23))
     complementary_favourable_range = Column(String(23))
     complementary_favourable_range_q = Column(String(2))
+    derived_perc_range_FRR = Column(String(100))
+    derived_population_size_trend_magnitude = Column(String(23))
+    derived_perc_population_FRP = Column(String(100))
     population_size = Column(String(23))
     population_size_unit = Column(String(6))
     population_minimum_size = Column(String(23))
