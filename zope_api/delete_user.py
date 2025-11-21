@@ -8,19 +8,19 @@
 ##title=
 ##
 request = container.REQUEST
-response =  request.response
+response = request.response
 
 
-request_key = request.form['api_key']
+request_key = request.form["api_key"]
 if request_key != container.ACL_MANAGER_API_KEY:
     response.setStatus(403)
     return "Api key is not valid"
 
-username = request.form['username']
+username = request.form["username"]
 
 if context.acl_users.getUser(username):
     context.acl_users.userFolderDelUsers(names=[username])
-    return 'ok'
+    return "ok"
 else:
     response.setStatus(404)
-    return 'Username does not exist'
+    return "Username does not exist"

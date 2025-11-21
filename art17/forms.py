@@ -624,9 +624,7 @@ class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
     )
 
 
-class SummaryManualFormHabitatRef(
-    Form, SummaryFormMixin, OptionsBaseSpecies
-):
+class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
 
     region = SelectField(validate_choice=False)
 

@@ -9,7 +9,9 @@
 ##
 user = context.REQUEST.AUTHENTICATED_USER
 
-return container.json_dumps({
-    'user_id': user.getId(),
-    'is_ldap_user': repr(user).startswith("<LDAPUser '"),
-})
+return container.json_dumps(
+    {
+        "user_id": user.getId(),
+        "is_ldap_user": repr(user).startswith("<LDAPUser '"),
+    }
+)
