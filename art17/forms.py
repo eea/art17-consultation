@@ -22,6 +22,10 @@ from art17.utils import (
 
 EMPTY_FORM = "Please fill at least one field"
 NOT_NUMERIC_VALUES = "Only numeric values with not more than two decimals are accepted!"
+NOT_QUALIFIER_NUMERIC_VALUES = (
+    "Only the following formats are accepted: <qualifier><number> "
+    "where qualifier is one of: >, >>, ≈, <, x"
+)
 NOT_KNOWN_OPERATORS = "Only the following values are accepted: " + "≈, <, >>, >, x"
 
 METH_CONCL_MANDATORY = "At least one method and conclusion must be filled!"
@@ -32,7 +36,7 @@ INVALID_MS_REGION_PAIR = (
     "Please select an MS country code that is available " "for the selected region"
 )
 
-NATURE_CHOICES = [("", ""), ("gen", "gen"), ("nong", "nong"), ("nc", "nc")]
+NATURE_CHOICES = [("", ""), ("a", "a"), ("no", "no"), ("nc", "nc")]
 CONTRIB_METHODS = [
     ("A=", "A="),
     ("A+", "A+"),
@@ -42,11 +46,24 @@ CONTRIB_METHODS = [
     ("D", "D"),
     ("E", "E"),
 ]
-CONTRIB_TYPE = [("+", "+"), ("-", "-"), ("=", "="), ("x", "x")]
+
+CONTRIB_TYPE = [
+    ("S", "S"),
+    ("U", "U"),
+    ("I", "I"),
+    ("D", "D"),
+    ("Unk", "Unk"),
+]
+
 CONCL_TYPE = [("+", "+"), ("-", "-"), ("0", "0"), ("x", "x")]
 
-TREND_CHOICES = [("+", "+"), ("-", "-"), ("=", "="), ("x", "x")]
-
+TREND_CHOICES = [
+    ("S", "S"),
+    ("U", "U"),
+    ("I", "I"),
+    ("D", "D"),
+    ("Unk", "Unk"),
+]
 PROSPECTS_CHOICES = [
     ("", ""),
     ("good", "good"),
@@ -235,7 +252,6 @@ class SummaryFormMixin(object):
     def all_errors(self):
         errors = []
         error_entries = self.errors
-        error_entries.pop("", None)
         for field_name, field_errors in error_entries.items():
             errors.extend(field_errors)
         errors = set(errors)
@@ -246,7 +262,54 @@ class SummaryFormMixin(object):
         return text
 
 
-class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
+class SpeciesFormMixin(object):
+    def populate_obj(self, obj, **kwargs):
+        super().populate_obj(obj, **kwargs)
+        # combine complementary_favourable_population_size and complementary_favourable_population_q
+        size = self.complementary_favourable_population_size.data or ""
+        qualifier = self.complementary_favourable_population_q.data or ""
+        obj.complementary_favourable_population_q = ""  # remove qualifier from db field
+        obj.complementary_favourable_population = f"{qualifier}{size}"
+
+        # combine complementary_favourable_range_size and complementary_favourable_range_q
+        size = self.complementary_favourable_range_size.data or ""
+        qualifier = self.complementary_favourable_range_q.data or ""
+        obj.complementary_favourable_range_q = ""  # remove qualifier from db field
+        obj.complementary_favourable_range = f"{qualifier}{size}"
+        return obj
+
+    def process(self, formdata=None, obj=None, **kwargs):
+        super().process(formdata=formdata, obj=obj, **kwargs)
+        if formdata == {} and obj:
+            # split complementary_favourable_population into size and qualifier
+            if obj.complementary_favourable_population:
+                data = obj.complementary_favourable_population
+                qualifier = ""
+                size = data
+                for op in [">>", ">", "<", "≈", "x"]:
+                    if data.startswith(op):
+                        qualifier = op
+                        size = data[len(op) :]
+                        break
+                self.complementary_favourable_population_size.data = size
+                self.complementary_favourable_population_q.data = qualifier
+            # split complementary_favourable_range into size and qualifier
+            if obj.complementary_favourable_range:
+                data = obj.complementary_favourable_range
+                qualifier = ""
+                size = data
+                for op in [">>", ">", "<", "≈", "x"]:
+                    if data.startswith(op):
+                        qualifier = op
+                        size = data[len(op) :]
+                        break
+                self.complementary_favourable_range_size.data = size
+                self.complementary_favourable_range_q.data = qualifier
+
+
+class SummaryManualFormSpecies(
+    SpeciesFormMixin, Form, OptionsBaseSpecies, SummaryFormMixin
+):
 
     region = SelectField(default="", validate_choice=False)
 
@@ -254,10 +317,23 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
-    complementary_favourable_range = StringField(validators=[float_validation])
-    complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_population = StringField(validators=[float_validation])
+
+    derived_perc_range_FRR = StringField()
+    derived_population_size_trend_magnitude = StringField()
+    derived_perc_population_FRP = StringField()
+
+    # The complementary_favourable_population field is split into complementary_favourable_population_size
+    # and complementary_favourable_population_q to capture the two pieces of information separately.
+    # they will both be saved in the complementary_favourable_population field in the database
+    # Similar for complementary_favourable_range
+    complementary_favourable_population_size = StringField(
+        validators=[float_validation]
+    )
     complementary_favourable_population_q = OptionalSelectField()
+
+    complementary_favourable_range_size = StringField(validators=[float_validation])
+    complementary_favourable_range_q = OptionalSelectField()
+
     population_minimum_size = StringField(validators=[float_validation])
     population_maximum_size = StringField(validators=[float_validation])
     population_best_value = StringField(validators=[float_validation])
@@ -374,7 +450,7 @@ class SummaryManualFormSpeciesSTA(SummaryManualFormSpecies):
     )
 
 
-class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
+class SummaryManualFormHabitat(SummaryFormMixin, Form, OptionsBaseHabitat):
 
     region = SelectField(validate_choice=False)
 
@@ -511,13 +587,17 @@ class SummaryManualFormHabitatSTA(SummaryManualFormHabitat):
     )
 
 
-class SummaryManualFormSpeciesRef(Form, SummaryFormMixin, OptionsBaseSpecies):
+class SummaryManualFormSpeciesRef(
+    SpeciesFormMixin, Form, SummaryFormMixin, OptionsBaseSpecies
+):
 
     region = SelectField(validate_choice=False)
 
-    complementary_favourable_range = StringField(validators=[float_validation])
+    complementary_favourable_range_size = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_population = StringField(validators=[float_validation])
+    complementary_favourable_population_size = StringField(
+        validators=[float_validation]
+    )
     complementary_favourable_population_q = OptionalSelectField()
     backcasted_2007 = OptionalSelectField()
 

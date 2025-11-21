@@ -1,0 +1,291 @@
+{% from '_macros.html' import conclusion_td with context %}
+{% from '_macros.html' import method_conclusion_td with context %}
+{% from '_macros.html' import select_conclusion_td with context %}
+{% from '_macros.html' import operator_size, size_unit, numval_species_title %}
+
+
+{% set form=manual_form %}
+{% set is_form=true %}
+<tr class="form form_row" id="theform">
+  <td></td>
+  {% if can_select_MS() %}
+    <td {% if form.MS.errors %}class="form-error-td"{% endif %}>
+      {{ form.MS }}
+    </td>
+  {% else %}
+    <td>
+      {{ manual_assessment.MS or default_ms }}
+    </td>
+  {% endif %}
+
+  {% if not region %}
+    <td>{{ manual_assessment.region }}</td>
+  {% endif %}
+
+  {% if not edit_ref %}
+    {# Range #}
+
+    <td {% if form.range_surface_area.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+        {{ numval_species_title(lt=False, x=False) }}>
+      {{ form.range_surface_area(size=5) }}
+    </td>
+
+    {{ method_conclusion_td('Status Range', form.method_range, form.conclusion_range) }}
+
+    <td {% if form.range_trend.errors %}class="form-error-td"{% endif %}>
+      {{ form.range_trend() }}
+    </td>
+
+    <td {% if form.complementary_favourable_range_q.errors or form.complementary_favourable_range_size.errors %}class="form-error-td"{% endif %}>
+      {{ operator_size(form.complementary_favourable_range_q, form.complementary_favourable_range_size, 5) }}
+    </td>
+
+    <td {% if form.derived_perc_range_FRR.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
+      {{ form.derived_perc_range_FRR() }}
+    </td>
+
+    {# Population #}
+
+    <td {% if form.population_minimum_size.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
+      {{ form.population_minimum_size(size=5) }}
+    </td>
+
+    <td {% if form.population_maximum_size.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
+      {{ form.population_maximum_size(size=5) }}
+    </td>
+
+    <td {% if form.population_best_value.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
+      {{ form.population_best_value(size=5) }}
+    </td>
+
+    <td {% if form.population_unit.errors %}class="form-error-td"{% endif %}>
+      {{ form.population_unit }}
+    </td>
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    {{ method_conclusion_td('Status Population', form.method_population, form.conclusion_population) }}
+
+    <td {% if form.population_trend.errors %}class="form-error-td"{% endif %}>
+      {{ form.population_trend() }}
+    </td>
+
+    <td {% if form.derived_population_size_trend_magnitude.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
+      {{ form.derived_population_size_trend_magnitude() }}
+
+    <td {% if form.complementary_favourable_population_q.errors or form.complementary_favourable_population_size.errors %}class="form-error-td"{% endif %}>
+      {{ operator_size(form.complementary_favourable_population_q, form.complementary_favourable_population_size, 5) }}
+    </td>
+
+    <td {% if form.derived_perc_population_FRP.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
+      {{ form.derived_perc_population_FRP() }}
+    </td>
+
+    <td {% if form.complementary_favourable_population_unit.errors %}class="form-error-td"{% endif %}>
+      {{ form.complementary_favourable_population_unit }}
+    </td>
+
+    {# Habitat #}
+
+    <td></td>
+
+    <td></td>
+
+    <td></td>
+
+    {{ method_conclusion_td('Habitat Conclusions', form.method_habitat, form.conclusion_habitat) }}
+
+    <td {% if form.habitat_trend.errors %}class="form-error-td"{% endif %}>
+      {{ form.habitat_trend() }}
+    </td>
+
+    {# FP #}
+    <td {% if form.future_range.errors %}class="form-error-td"{% endif %}>
+      {{ form.future_range() }}
+    </td>
+
+    <td {% if form.future_population.errors %}class="form-error-td"{% endif %}>
+      {{ form.future_population() }}
+    </td>
+
+    <td {% if form.future_population.errors %}class="form-error-td"{% endif %}>
+      {{ form.future_habitat() }}
+    </td>
+
+    {{ method_conclusion_td('Future Prospects', form.method_future, form.conclusion_future) }}
+
+    {# Overall #}
+
+    {{ method_conclusion_td('Current CS Conclusions', form.method_assessment, form.conclusion_assessment) }}
+
+    <td {% if form.conclusion_assessment_trend.errors %}class="form-error-td"{% endif %}>
+      {{ form.conclusion_assessment_trend() }}
+    </td>
+
+    {{ select_conclusion_td('Previous conservation status', form.conclusion_assessment_prev, 'At least one conclusion shall be added') }}
+
+    <td {% if form.conclusion_assessment_trend_prev.errors %}class="form-error-td"{% endif %}>
+      {{ form.conclusion_assessment_trend_prev() }}
+    </td>
+
+    <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
+      {{ form.conclusion_assessment_change() }}
+    </td>
+
+    <td {% if form.conclusion_assessment_trend_change.errors %}class="form-error-td"{% endif %}>
+      {{ form.conclusion_assessment_trend_change() }}
+    </td>
+
+  {% else %}
+    {# Edit reference values form #}
+
+    {% set ass = manual_assessment %}
+
+    {# Range #}
+      <td class="text-center">{{ ass.range_surface_area }}</td>
+
+      {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
+
+      <td class="text-center">{{ ass.range_trend }}</td>
+
+      <td {% if form.complementary_favourable_range_q.errors or form.complementary_favourable_range_size.errors %}class="form-error-td"{% endif %}>
+          {{ operator_size(form.complementary_favourable_range_q, form.complementary_favourable_range_size, 5) }}
+      </td>
+
+      <td class="text-center">{{ ass.derived_perc_range_FRR  or '' }}</td>
+
+    {# Population #}
+      <td class="text-center">
+        {{ ass.population_minimum_size }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.population_maximum_size }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.population_best_value }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.population_unit }}
+      </td>
+
+      <td></td>
+
+      <td></td>
+
+      <td></td>
+
+      {{ conclusion_td(ass.conclusion_population, ass.method_population) }}
+
+      <td class="text-center">
+        {{ ass.population_trend }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.derived_population_size_trend_magnitude }}
+      </td>
+
+      <td {% if form.complementary_favourable_population_q.errors or form.complementary_favourable_population_size.errors %}class="form-error-td"{% endif %}>
+        {{ operator_size(form.complementary_favourable_population_q, form.complementary_favourable_population_size, 5) }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.derived_perc_population_FRP }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.complementary_favourable_population_unit }}
+      </td>
+
+    {# Habitat #}
+      <td></td>
+
+      <td></td>
+
+      <td></td>
+
+      {{ conclusion_td(ass.conclusion_habitat, ass.method_habitat) }}
+
+      <td class="text-center">
+        {{ ass.habitat_trend }}
+      </td>
+
+    {# FP #}
+      <td class="text-center">
+        {{ ass.future_range }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.future_population }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.future_habitat }}
+      </td>
+
+      {{ conclusion_td(ass.conclusion_future, ass.method_future) }}
+
+    {# Overall #}
+      {{ conclusion_td(ass.conclusion_assessment, ass.method_assessment) }}
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend }}
+      </td>
+
+      {{ conclusion_td(ass.conclusion_assessment_prev, ass.conclusion_assessment_prev) }}
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend_prev }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_change }}
+      </td>
+
+      <td class="text-center">
+        {{ ass.conclusion_assessment_trend_change }}
+      </td>
+
+    {% endif %}
+
+  {% if not manual_assessment %}
+    {% if sta_perm.can() %}
+      {% set title = 'Comment on biogeographical assessment at EU or MS level by proposing a correction' %}
+      {% set text = 'Propose correction' %}
+    {% else %}
+      {% set title = '' %}
+      {% set text = 'Add assessment' %}
+    {% endif %}
+    <td colspan="9">
+      <button class="btn-green" type="submit" name="submit" value="add"
+              title="{{ title }}">{{ text }}</button>
+    </td>
+  {% else %}
+    {% set row=manual_assessment %}
+    {% set cancel_url=url_for(edit_endpoint, action='cancel', period=row.dataset_id,
+                              subject=subject, region=region) %}
+    <td colspan="2">
+      <input type="hidden" name="subject" value="{{ subject }}" />
+      <input type="hidden" name="region" value="{{ row.region }}" />
+      <input type="hidden" name="user" value="{{ row.user_id }}" />
+      <button class="btn-green" type="submit" name="submit" value="update">Save</button>
+      <a href="{{ cancel_url }}#man-row-{{ loop.index }}" title="Cancel" class="button"><i class="fa fa-times"></i></a>
+    </td>
+    {% include 'summary/common/manual/conclusion_details.html' %}
+  {% endif %}
+</tr>
+
+{% if form.errors %}
+  <tr class="form_row">
+    <td colspan="{{ colspan_all - 1 }}" class="form-error-msg regular">
+      Errors:
+        {{ form.all_errors()|safe }}
+    </td>
+  </tr>
+{% endif %}

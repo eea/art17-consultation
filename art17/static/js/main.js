@@ -400,8 +400,8 @@ $(document).ready(function () {
     // Size and unit
     $('.popout.size_unit').each(function () {
         var complementary_favourable_range_q = "#complementary_favourable_range_q";
-        var complementary_favourable_range = "#complementary_favourable_range";
-        var complementary_favourable_population = "#complementary_favourable_population";
+        var complementary_favourable_range_size = "#complementary_favourable_range_size";
+        var complementary_favourable_population_size = "#complementary_favourable_population_size";
         var complementary_favourable_population_q = "#complementary_favourable_population_q";
         var complementary_favourable_area = "#complementary_favourable_area";
         var complementary_favourable_area_q = "#complementary_favourable_area_q";
@@ -416,14 +416,14 @@ $(document).ready(function () {
                 $(preview).children('.fa').removeClass('hidden');
             }
         };
-        $(this).on('change', complementary_favourable_range,
-                             function(){update(complementary_favourable_range, complementary_favourable_range_q);});
+        $(this).on('change', complementary_favourable_range_size,
+                             function(){update(complementary_favourable_range_size, complementary_favourable_range_q);});
         $(this).on('change', complementary_favourable_range_q,
-                             function(){update(complementary_favourable_range, complementary_favourable_range_q);});
-        $(this).on('change', complementary_favourable_population,
-                             function(){update(complementary_favourable_population, complementary_favourable_population_q);});
+                             function(){update(complementary_favourable_range_size, complementary_favourable_range_q);});
+        $(this).on('change', complementary_favourable_population_size,
+                             function(){update(complementary_favourable_population_size, complementary_favourable_population_q);});
         $(this).on('change', complementary_favourable_population_q,
-                             function(){update(complementary_favourable_population, complementary_favourable_population_q);});
+                             function(){update(complementary_favourable_population_size, complementary_favourable_population_q);});
         $(this).on('change', complementary_favourable_area,
                              function(){update(complementary_favourable_area, complementary_favourable_area_q);});
         $(this).on('change', complementary_favourable_area_q,

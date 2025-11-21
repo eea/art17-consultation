@@ -93,7 +93,7 @@ class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
     assesment_speciesname = "Canis lupus"
     region = "BOR"
     user_id = "someuser"
-    MS = "EU28"
+    MS = "EU27"
 
 
 class EtcDataSpeciesAutomaticAssessmentFactory(SQLAlchemyModelFactory):
@@ -121,7 +121,7 @@ class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
     habitatcode = "1110"
     region = "MATL"
     user_id = "someuser"
-    MS = "EU28"
+    MS = "EU27"
 
 
 class WikiFactory(SQLAlchemyModelFactory):
@@ -198,7 +198,7 @@ class CommentFactory(SQLAlchemyModelFactory):
     assesment_speciesname = "Canis lupus"
     region = "BOR"
     user_id = "someuser"
-    MS = "EU28"
+    MS = "EU27"
     post_date = datetime.now().strftime(DATE_FORMAT)
     dataset_id = 5
 
@@ -214,7 +214,7 @@ class HabitatCommentFactory(SQLAlchemyModelFactory):
     habitat = "1110"
     region = "MATL"
     user_id = "someuser"
-    MS = "EU28"
+    MS = "EU27"
     post_date = datetime.now().strftime(DATE_FORMAT)
     dataset_id = 5
 
