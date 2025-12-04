@@ -403,7 +403,7 @@ $(document).ready(function () {
         var complementary_favourable_range_size = "#complementary_favourable_range_size";
         var complementary_favourable_population_size = "#complementary_favourable_population_size";
         var complementary_favourable_population_q = "#complementary_favourable_population_q";
-        var complementary_favourable_area = "#complementary_favourable_area";
+        var complementary_favourable_area_size = "#complementary_favourable_area_size";
         var complementary_favourable_area_q = "#complementary_favourable_area_q";
         var preview = $(this).closest('.popout-wrapper').find(".select");
         var update = function (size, unit) {
@@ -424,10 +424,10 @@ $(document).ready(function () {
                              function(){update(complementary_favourable_population_size, complementary_favourable_population_q);});
         $(this).on('change', complementary_favourable_population_q,
                              function(){update(complementary_favourable_population_size, complementary_favourable_population_q);});
-        $(this).on('change', complementary_favourable_area,
-                             function(){update(complementary_favourable_area, complementary_favourable_area_q);});
+        $(this).on('change', complementary_favourable_area_size,
+                             function(){update(complementary_favourable_area_size, complementary_favourable_area_q);});
         $(this).on('change', complementary_favourable_area_q,
-                             function(){update(complementary_favourable_area, complementary_favourable_area_q);});
+                             function(){update(complementary_favourable_area_size, complementary_favourable_area_q);});
     });
 
     // Size and unit
