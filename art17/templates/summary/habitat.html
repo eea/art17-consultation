@@ -168,6 +168,8 @@
             </tr>
             {% if dataset.schema == '2018' %}
               {% include 'common/habitat_manual_table_header_2018.html' %}
+            {% elif dataset.schema == '2024' %}
+              {% include 'common/habitat_manual_table_header_2024.html' %}
             {% else %}
               {% include 'common/habitat_manual_table_header.html' %}
             {% endif %}
@@ -180,6 +182,8 @@
                   {# MS and region #}
                   {% if dataset.schema == '2018' %}
                     {% include 'summary/habitat/manual/manual_2018.html' %}
+                  {% elif dataset.schema == '2024' %}
+                    {% include 'summary/habitat/manual/manual_2024.html' %}
                   {% else %}
                     {% include 'summary/common/manual/ms.html' %}
                     {% include 'summary/common/manual/range.html' %}
@@ -195,6 +199,8 @@
               {% else %}
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/habitat/manual_form_2018.html' %}
+                {% elif dataset.schema == '2024' %}
+                  {% include 'summary/habitat/manual_form_2024.html' %}
                 {% else %}
                   {% include 'summary/habitat/manual_form.html' %}
                 {% endif %}
@@ -210,7 +216,7 @@
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/habitat/manual_form_2018.html' %}
                 {% elif dataset.schema == '2024' %}
-                  {% include 'summary/habitat/manual_form_2018.html' %}
+                  {% include 'summary/habitat/manual_form_2024.html' %}
                 {% else %}
                   {% include 'summary/habitat/manual_form.html' %}
                 {% endif %}
@@ -225,7 +231,7 @@
       </div>
     </form>
   {% endif %}
-  {% if period_selected == '5' and subject != None and subject != '' %}
+  {% if period_selected == '6' and subject != None and subject != '' %}
     <p class="italic">
       <b>Legal notice:</b> A minimum amount of personal data (including cases of submitted comments during the public consultation) is stored
       in the web tool. These data are necessary for the functioning of the tool and are only accessible to tool administrators.

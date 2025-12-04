@@ -1,0 +1,64 @@
+<tr {% if is_form %}class="form_row"{% endif %}>
+  {% if can_view_decision() %}
+    <th rowspan="2"><abbr title="Decision">Dec.</abbr></th>
+    <th rowspan="2" title="Member State / EU 27 (for EU assessments)"><abbr>MS/EU27</abbr></th>
+  {% else %}
+    <th rowspan="2" colspan="2" title="Member State / EU 27 (for EU assessments)"><abbr>MS/EU27</abbr></th>
+  {% endif %}
+
+  {% if not region %}
+    <th rowspan="2" title="Biogeographical or marine region">Region</th>
+  {% endif %}
+
+  {# Range #}
+  <th rowspan="2">Surface</th>
+  <th rowspan="2" title="Status of Range (colour)
+  Assessment method used (e.g. 2XA)"><abbr>Status<br/>Range</abbr></th>
+  <th rowspan="2">Trend</th>
+  <th rowspan="2" title="Favourable reference value">FRR</th>
+  <th rowspan="2">range vs<br/><abbr>FRR</abbr><br/>predefined</th>
+
+  {# Area #}
+  <th rowspan="2">Min</th>
+  <th rowspan="2">Max</th>
+  <th rowspan="2">Best value</th>
+  <th rowspan="2"></th>
+  <th rowspan="2"></th>
+  <th rowspan="2" title="Status of Area (colour)
+  Assessment method used (e.g. 2XA)"><abbr>Status<br/>Area</abbr></th>
+  <th rowspan="2">Trend</th>
+  <th rowspan="2">Trend<br/>magnitude<br/>min-max</th>
+  <th rowspan="2">FRA</th>
+  <th rowspan="2">area vs<br/>FRA<br/>predefined</th>
+
+  {# Structure and Functions #}
+  <th rowspan="2">Good</th>
+  <th rowspan="1">Not good</th>
+  <th rowspan="1">Not known</th>
+  <th rowspan="2" title="Status of Structure and functions (colour)
+Assessment method used (e.g. 2XA)">Status <br/>Str. &<br/>funct.</th>
+  <th rowspan="2">Trend of</br>good</br>condition</th>
+
+  {# Future prospects #}
+  <th rowspan="2">Range<br/>prosp.</th>
+  <th rowspan="2">Area<br/>prosp.</th>
+  <th rowspan="2">S & f<br/>prosp.</th>
+  <th rowspan="2" title="Status of Future prospects (colour)
+Assessment method used (e.g. 2XA)">Status<br/>Future<br/>prosp.</th>
+
+  {# Overall assessment #}
+  <th rowspan="2" title="Conservation status - current period (colour)
+Assessment method used (e.g. MTX)">Curr. CS</th>
+  <th rowspan="2" title="Overall trend in conservation status - current period">Curr. CS<br/>trend</th>
+  <th rowspan="2" title="Conservation status - previous period">Prev. CS</th>
+  <th rowspan="2" title="Overall trend in conservation status - previous period">Prev. CS<br/>trend</th>
+  <th rowspan="2" title="Main reason for change
+                         a - Genuine change
+                         no - Non-genuine change or no information
+                         nc  - No change">Status<br/>Nat.<br/>of ch.</th>
+  <th rowspan="2" title="Main reason for change
+                         a - Genuine change
+                         no - Non-genuine change or no information
+                         nc  - No change">CS trend<br/>Nat. of ch.</th>
+  <th rowspan="2" colspan="5">{# padding #}</th>
+</tr>

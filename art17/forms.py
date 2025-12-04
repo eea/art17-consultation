@@ -450,7 +450,54 @@ class SummaryManualFormSpeciesSTA(SummaryManualFormSpecies):
     )
 
 
-class SummaryManualFormHabitat(SummaryFormMixin, Form, OptionsBaseHabitat):
+class HabitatsFormMixin(object):
+    def populate_obj(self, obj, **kwargs):
+        super().populate_obj(obj, **kwargs)
+        # combine complementary_favourable_area_size and complementary_favourable_area_q
+        size = self.complementary_favourable_area_size.data or ""
+        qualifier = self.complementary_favourable_area_q.data or ""
+        obj.complementary_favourable_area_q = ""  # remove qualifier from db field
+        obj.complementary_favourable_area = f"{qualifier}{size}"
+
+        # combine complementary_favourable_range_size and complementary_favourable_range_q
+        size = self.complementary_favourable_range_size.data or ""
+        qualifier = self.complementary_favourable_range_q.data or ""
+        obj.complementary_favourable_range_q = ""  # remove qualifier from db field
+        obj.complementary_favourable_range = f"{qualifier}{size}"
+        return obj
+
+    def process(self, formdata=None, obj=None, **kwargs):
+        super().process(formdata=formdata, obj=obj, **kwargs)
+        if formdata == {} and obj:
+            # split complementary_favourable_area into size and qualifier
+            if obj.complementary_favourable_area:
+                data = obj.complementary_favourable_area
+                qualifier = ""
+                size = data
+                for op in [">>", ">", "<", "≈", "x"]:
+                    if data.startswith(op):
+                        qualifier = op
+                        size = data[len(op) :]
+                        break
+                self.complementary_favourable_area_size.data = size
+                self.complementary_favourable_area_q.data = qualifier
+            # split complementary_favourable_range into size and qualifier
+            if obj.complementary_favourable_range:
+                data = obj.complementary_favourable_range
+                qualifier = ""
+                size = data
+                for op in [">>", ">", "<", "≈", "x"]:
+                    if data.startswith(op):
+                        qualifier = op
+                        size = data[len(op) :]
+                        break
+                self.complementary_favourable_range_size.data = size
+                self.complementary_favourable_range_q.data = qualifier
+
+
+class SummaryManualFormHabitat(
+    HabitatsFormMixin, SummaryFormMixin, Form, OptionsBaseHabitat
+):
 
     region = SelectField(validate_choice=False)
 
@@ -459,8 +506,9 @@ class SummaryManualFormHabitat(SummaryFormMixin, Form, OptionsBaseHabitat):
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
     range_yearly_magnitude = StringField()
-    complementary_favourable_range = StringField(validators=[float_validation])
+    complementary_favourable_range_size = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
+    derived_perc_range_FRR = StringField()
     coverage_surface_area = StringField(validators=[float_validation])
     coverage_surface_area_min = StringField(validators=[float_validation])
     coverage_surface_area_max = StringField(validators=[float_validation])
@@ -468,9 +516,9 @@ class SummaryManualFormHabitat(SummaryFormMixin, Form, OptionsBaseHabitat):
     conclusion_area = OptionalSelectField()
     coverage_trend = OptionalSelectField()
     coverage_yearly_magnitude = StringField()
-    complementary_favourable_area = StringField(validators=[float_validation])
+    complementary_favourable_area_size = StringField(validators=[float_validation])
     complementary_favourable_area_q = OptionalSelectField()
-
+    derived_perc_area_FRA = StringField()
     hab_condition_good_min = StringField(validators=[numeric_validation])
     hab_condition_good_max = StringField(validators=[numeric_validation])
     hab_condition_good_best = StringField(validators=[numeric_validation])
@@ -624,13 +672,15 @@ class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
     )
 
 
-class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
+class SummaryManualFormHabitatRef(
+    HabitatsFormMixin, Form, SummaryFormMixin, OptionsBaseSpecies
+):
 
     region = SelectField(validate_choice=False)
 
-    complementary_favourable_range = StringField(validators=[float_validation])
+    complementary_favourable_range_size = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_area = StringField(validators=[float_validation])
+    complementary_favourable_area_size = StringField(validators=[float_validation])
     complementary_favourable_area_q = OptionalSelectField()
     backcasted_2007 = OptionalSelectField()
 
