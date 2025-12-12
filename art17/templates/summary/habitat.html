@@ -94,8 +94,11 @@
               {% set visible = can_view(row, restricted_countries) %}
               {% set qa_errors = record_errors(row) %}
               <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-                {% include 'summary/common/content/ms_region.html' %}
-
+                {% if dataset.schema == '2024' %}
+                  {% include 'summary/common/content/ms_region_2024.html' %}
+                {% else %}
+                  {% include 'summary/common/content/ms_region.html' %}
+                {% endif %}
                 {% if not visible %}
                   <td colspan="4">
                     {{ row.eu_country_code }} has provided a report to the European Commission under Article 17

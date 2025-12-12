@@ -826,8 +826,8 @@ class EtcDicSpeciesType(Base):
     __tablename__ = "etc_dic_species_type"
 
     SpeciesTypeID = Column("speciestypeid", Integer, primary_key=True)
-    SpeciesType = Column("speciestype", String(50))
-    Assesment = Column("assesment", String(50))
+    SpeciesType = Column("speciestype", String(127))
+    Assesment = Column("assesment", String(127))
     Note = Column("note", String(255))
     abbrev = Column(String(5))
 

@@ -1,0 +1,24 @@
+
+  {% set s_name, s_info, s_type = get_title_for_country(row) %}
+  {% set original_url = get_original_record_url(row) %}
+  <td colspan="2" class="border" data-tooltip="html">
+    <div class="tooltip-html hidden">
+      <div class="extra-padding">
+        <p class="br width-600 margin-small">
+          {% if s_type %}
+            </br><span class="bold">Occurrence:</span> {{ s_type|safe }}
+          {% endif %}
+          {% if s_name %}
+            <br><span class="bold">Scientific name used in original MS report:</span> "{{ s_name|safe }}"
+          {% endif %}
+          {% if s_info %}
+            <br><span class="bold">Information provided in the field S_4_3:</span> {{ s_info|format_info|safe }}
+          {% endif %}
+        </p>
+      </div>
+    </div>
+    <span>{{ row.eu_country_code }}</span>
+  </td>
+  {% if not region %}
+  <td class="border">{{ row.region }}</td>
+  {% endif %}
