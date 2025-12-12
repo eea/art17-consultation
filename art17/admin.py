@@ -197,7 +197,6 @@ class EtcDicPopulationUnitModelView(ProtectedModelView):
 class EtcDicSpeciesTypeModelView(ProtectedModelView):
     form_columns = (
         "dataset_id",
-        "SpeciesTypeID",
         "SpeciesType",
         "Assesment",
         "Note",
@@ -212,6 +211,29 @@ class EtcDicSpeciesTypeModelView(ProtectedModelView):
         "abbrev",
     )
     column_filters = ("dataset_id", "SpeciesTypeID", "SpeciesType", "Assesment")
+
+    def create_model(self, form):
+        try:
+            model = self.model()
+            form.populate_obj(model)
+
+            # Auto-generate SpeciesTypeID as the next available ID for this dataset
+            max_id = (
+                db.session.query(db.func.max(EtcDicSpeciesType.SpeciesTypeID))
+                .filter(EtcDicSpeciesType.dataset_id == model.dataset_id)
+                .scalar()
+            )
+            model.SpeciesTypeID = (max_id or 0) + 1
+
+            self.session.add(model)
+            self._on_model_change(form, model, True)
+            self.session.commit()
+            return model
+        except Exception as ex:
+            if not self.handle_view_exception(ex):
+                flash(f"Failed to create record. {str(ex)}", "error")
+            self.session.rollback()
+            return False
 
 
 class EtcDicTrendModelView(ProtectedModelView):
