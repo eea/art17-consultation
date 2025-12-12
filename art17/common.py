@@ -429,7 +429,29 @@ def get_title_for_species_country(row):
     return s_name, s_info, s_type
 
 
+def get_title_for_habitat_country_2024(row):
+    s_name, s_info, s_type = "", "", ""
+    s_info = row.complementary_other_information or ""
+    if s_info:
+        s_info = s_info.strip().replace("\n", "<br/>")
+    if row.habitattype_type_asses == 0:
+        # now the habitat type is stored in presence_new field
+        # so we need to use it to get the habitat type details
+        # from EtcDicSpeciesType
+        habitat_type = EtcDicSpeciesType.query.filter_by(
+            dataset_id=row.dataset_id,
+            abbrev=row.presence_new,
+        ).first()
+        if habitat_type:
+            s_type = habitat_type.SpeciesType
+        else:
+            s_type = row.presence_new
+    return s_name, s_info, s_type
+
+
 def get_title_for_habitat_country(row):
+    if row.dataset.schema == "2024":
+        return get_title_for_habitat_country_2024(row)
     s_name, s_info, s_type = "", "", ""
     if row.complementary_other_information:
         s_info = row.complementary_other_information or ""
