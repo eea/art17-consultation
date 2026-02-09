@@ -13,7 +13,7 @@ Flask-Principal==0.4.0
 Flask-Security-Too==5.5.2
 Flask-SQLAlchemy==3.1.1
 Flask-WTF==1.2.2
-Flask==3.1.0
+Flask==3.1.1
 inflect==7.5.0
 itsdangerous==2.2.0
 Jinja2==3.1.5
