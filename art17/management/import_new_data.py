@@ -20,7 +20,7 @@ import_new_data = AppGroup("import_new_data")
 
 def set_correct_values_for_boolean_fields(data, field):
     if field in data:
-        if data[field] in [True, "true", "TRUE", "True", 1, "1"]:
+        if data[field] in [True, "true", "TRUE", "True", 1, "1", "Y", "y"]:
             data[field] = True
         else:
             data[field] = False
