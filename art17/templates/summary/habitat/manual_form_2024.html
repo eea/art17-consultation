@@ -40,9 +40,7 @@
             {{ operator_size(form.complementary_favourable_range_q, form.complementary_favourable_range_size, 5) }}
         </td>
 
-        <td {% if form.derived_perc_range_FRR.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
-          {{ form.derived_perc_range_FRR() }}
-        </td>
+        <td></td>
 
       {# Area #}
         <td {% if form.coverage_surface_area_min.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
@@ -70,18 +68,13 @@
           {{ form.coverage_trend() }}
         </td>
 
-        <td {% if form.coverage_yearly_magnitude.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
-            {{ numval_habitat_title(x=False) }}>
-          {{ form.coverage_yearly_magnitude(size=5) }}
-        </td>
+        <td></td>
 
         <td {% if form.complementary_favourable_area_q.errors or form.complementary_favourable_area_size.errors %}class="form-error-td"{% endif %}>
             {{ operator_size(form.complementary_favourable_area_q, form.complementary_favourable_area_size, 5) }}
         </td>
 
-        <td {% if form.derived_perc_area_FRA.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
-          {{ form.derived_perc_area_FRA() }}
-        </td>
+        <td></td>
 
       {# Structure and functions #}
 
@@ -107,17 +100,11 @@
         </td>
 
       {# Future prospects #}
-        <td {% if form.future_range.errors %}class="form-error-td"{% endif %}>
-          {{ form.future_range() }}
-        </td>
+        <td></td>
 
-        <td {% if form.future_area.errors %}class="form-error-td"{% endif %}>
-          {{ form.future_area() }}
-        </td>
+        <td></td>
 
-        <td {% if form.future_structure.errors %}class="form-error-td"{% endif %}>
-          {{ form.future_structure() }}
-        </td>
+        <td></td>
 
         {{ method_conclusion_td('Status Future Prospects', form.method_future, form.conclusion_future) }}
 

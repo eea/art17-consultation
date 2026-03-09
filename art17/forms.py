@@ -318,10 +318,6 @@ class SummaryManualFormSpecies(
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
 
-    derived_perc_range_FRR = StringField()
-    derived_population_size_trend_magnitude = StringField()
-    derived_perc_population_FRP = StringField()
-
     # The complementary_favourable_population field is split into complementary_favourable_population_size
     # and complementary_favourable_population_q to capture the two pieces of information separately.
     # they will both be saved in the complementary_favourable_population field in the database
@@ -347,9 +343,6 @@ class SummaryManualFormSpecies(
     conclusion_habitat = OptionalSelectField()
     habitat_trend = OptionalSelectField()
 
-    future_range = OptionalSelectField()
-    future_population = OptionalSelectField()
-    future_habitat = OptionalSelectField()
     method_future = OptionalSelectField()
     conclusion_future = OptionalSelectField()
 
@@ -389,9 +382,6 @@ class SummaryManualFormSpecies(
 
         self.method_habitat.choices = ZERO_METHODS + self.get_sf_options(methods)
 
-        self.future_range.choices = PROSPECTS_CHOICES
-        self.future_population.choices = PROSPECTS_CHOICES
-        self.future_habitat.choices = PROSPECTS_CHOICES
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
@@ -508,17 +498,14 @@ class SummaryManualFormHabitat(
     range_yearly_magnitude = StringField()
     complementary_favourable_range_size = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    derived_perc_range_FRR = StringField()
     coverage_surface_area = StringField(validators=[float_validation])
     coverage_surface_area_min = StringField(validators=[float_validation])
     coverage_surface_area_max = StringField(validators=[float_validation])
     method_area = OptionalSelectField()
     conclusion_area = OptionalSelectField()
     coverage_trend = OptionalSelectField()
-    coverage_yearly_magnitude = StringField()
     complementary_favourable_area_size = StringField(validators=[float_validation])
     complementary_favourable_area_q = OptionalSelectField()
-    derived_perc_area_FRA = StringField()
     hab_condition_good_min = StringField(validators=[numeric_validation])
     hab_condition_good_max = StringField(validators=[numeric_validation])
     hab_condition_good_best = StringField(validators=[numeric_validation])
@@ -535,9 +522,6 @@ class SummaryManualFormHabitat(
     conclusion_structure = OptionalSelectField()
     hab_condition_trend = OptionalSelectField()
 
-    future_area = OptionalSelectField()
-    future_range = OptionalSelectField()
-    future_structure = OptionalSelectField()
     method_future = OptionalSelectField()
     conclusion_future = OptionalSelectField()
 
@@ -593,9 +577,6 @@ class SummaryManualFormHabitat(
             self.backcasted_2007,
         ):
             f.choices = conclusions
-        self.future_area.choices = PROSPECTS_CHOICES
-        self.future_range.choices = PROSPECTS_CHOICES
-        self.future_structure.choices = PROSPECTS_CHOICES
         self.conclusion_assessment_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE

@@ -40,9 +40,7 @@
       {{ operator_size(form.complementary_favourable_range_q, form.complementary_favourable_range_size, 5) }}
     </td>
 
-    <td {% if form.derived_perc_range_FRR.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
-      {{ form.derived_perc_range_FRR() }}
-    </td>
+    <td></td>
 
     {# Population #}
 
@@ -74,16 +72,13 @@
       {{ form.population_trend() }}
     </td>
 
-    <td {% if form.derived_population_size_trend_magnitude.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
-      {{ form.derived_population_size_trend_magnitude() }}
+    <td></td>
 
     <td {% if form.complementary_favourable_population_q.errors or form.complementary_favourable_population_size.errors %}class="form-error-td"{% endif %}>
       {{ operator_size(form.complementary_favourable_population_q, form.complementary_favourable_population_size, 5) }}
     </td>
 
-    <td {% if form.derived_perc_population_FRP.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}>
-      {{ form.derived_perc_population_FRP() }}
-    </td>
+    <td></td>
 
     <td {% if form.complementary_favourable_population_unit.errors %}class="form-error-td"{% endif %}>
       {{ form.complementary_favourable_population_unit }}
@@ -104,17 +99,11 @@
     </td>
 
     {# FP #}
-    <td {% if form.future_range.errors %}class="form-error-td"{% endif %}>
-      {{ form.future_range() }}
-    </td>
+    <td></td>
 
-    <td {% if form.future_population.errors %}class="form-error-td"{% endif %}>
-      {{ form.future_population() }}
-    </td>
+    <td></td>
 
-    <td {% if form.future_population.errors %}class="form-error-td"{% endif %}>
-      {{ form.future_habitat() }}
-    </td>
+    <td></td>
 
     {{ method_conclusion_td('Future Prospects', form.method_future, form.conclusion_future) }}
 
