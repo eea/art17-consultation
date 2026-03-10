@@ -14,6 +14,9 @@
           {% if s_info %}
             <br><span class="bold">Information provided in the field S_4_3:</span> {{ s_info|format_info|safe }}
           {% endif %}
+          {% if row.envelope_text %}
+            <br> {{ row.envelope_text|format_envelope_text|safe }}
+          {% endif %}
         </p>
       </div>
     </div>

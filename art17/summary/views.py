@@ -185,6 +185,10 @@ def colorate(value):
 def format_info(value):
     return value.replace("||", "||<br>")
 
+@summary.app_template_filter("format_envelope_text")
+def format_envelope_text(value):
+    return value.replace("\n", "<br>")
+
 
 @summary.app_template_filter("get_quality")
 def get_quality(value, default="N/A"):

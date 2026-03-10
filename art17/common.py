@@ -434,7 +434,7 @@ def get_title_for_habitat_country_2024(row):
     s_info = row.complementary_other_information or ""
     if s_info:
         s_info = s_info.strip().replace("\n", "<br/>")
-    if row.habitattype_type_asses == 0:
+    if row.habitattype_type_asses == False:
         # now the habitat type is stored in presence_new field
         # so we need to use it to get the habitat type details
         # from EtcDicSpeciesType
