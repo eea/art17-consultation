@@ -26,8 +26,9 @@ if [ -z "$1" ]; then
                 --bind 0.0.0.0:5000 \
                 --access-logfile - \
                 --error-logfile - \
-                --preload \
-                --timeout 0
+                --timeout 240 \
+                --max-requests 1000 \
+                --max-requests-jitter 100
 fi
 
 if [[ $COMMANDS == *"$1"* ]]; then
