@@ -24,7 +24,43 @@
 </td>
 
 <td class="center text-center">
-    {{ row.derived_favourable_reference_range_combined  }}
+  {{ row.derived_favourable_reference_range_combined  }}
+  <div class="popout-wrapper hover">
+    <div class="popout size_unit_th right caret">
+      <table class="popout-table">
+        <tr>
+          <th colspan="4">FRR values as used for the automatic EU assessments</th>
+        </tr>
+        <tr>
+          <th>Country</th>
+          <th>FRR min</th>
+          <th>FRR max</th>
+          <th>FRR mean</th>
+        </tr>
+        {% for row in objects %}
+          <tr>
+            <td>{{ row.eu_country_code }}</td>
+            <td>{{ row.derived_favourable_reference_range_min|str2num }}</td>
+            <td>{{ row.derived_favourable_reference_range_max|str2num }}</td>
+            <td>{{ row.derived_favourable_reference_range_mean|str2num }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <th colspan="4">
+            <p>
+              If a specific FRR value was reported, this value is used as min, max, and mean.
+            </p>
+            <p>
+              If FRR is reported as a predefined range, the min, max, and mean are calculated based on the reported current range.
+            </p>
+            <p>
+              If the FRR is unknown, the reported current range is used as FRR min, max, and mean.
+            </p>
+          </th>
+        </tr>
+      </table>
+    </div>
+  </div>
 </td>
 
 <td class="center text-center">
@@ -72,7 +108,43 @@
 </td>
 
 <td class="center text-center">
-{{ row.derived_favourable_reference_area_combined  }}
+  {{ row.derived_favourable_reference_area_combined  }}
+  <div class="popout-wrapper hover">
+    <div class="popout size_unit_th right caret">
+      <table class="popout-table">
+        <tr>
+          <th colspan="4">FRA values as used for the automatic EU assessments</th>
+        </tr>
+        <tr>
+          <th>Country</th>
+          <th>FRA min</th>
+          <th>FRA max</th>
+          <th>FRA mean</th>
+        </tr>
+        {% for row in objects %}
+          <tr>
+            <td>{{ row.eu_country_code }}</td>
+            <td>{{ row.derived_favourable_reference_area_min|str2num }}</td>
+            <td>{{ row.derived_favourable_reference_area_max|str2num }}</td>
+            <td>{{ row.derived_favourable_reference_area_mean|str2num }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <th colspan="4">
+            <p>
+              If a specific FRA value was reported, this value is used as FRA min, max, and mean.
+            </p>
+            <p>
+              If FRA is reported as a predefined range, the FRA min, max, and mean are calculated based on the mean current area (best single value or average of min and max).
+            </p>
+            <p>
+              If the FRA is unknown, the mean current area is used as FRA min, max, and mean.
+            </p>
+          </th>
+        </tr>
+      </table>
+    </div>
+  </div>
 </td>
 
 <td class="center text-center">
