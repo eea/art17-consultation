@@ -25,14 +25,15 @@
   </tr>
 
   <tr>
-    <th title="Main reason for change if current value is different from the previous period
-               genuine
-               knowledge
-               method
-               unknown
-               other
-               no change
-               N/A (applicable e.g. when first time reported)">Surface</th>
+    <th title="Main reason for change
+                genuine - Genuine change
+                knowledge - Improved knowledge or more accurate data
+                method - The use of a different method
+                unknown - Unknown reason
+                other - Other reasons
+                no change - No change
+                First time reported - First time reported
+                N/A - No information on the nature of change">Surface</th>
     <th title="Status of Range (colour)
                Percentage of surface of the range per MS region (figure)">Status<br/>(% MS)</th>
     <th title="Short-term trend
@@ -42,7 +43,45 @@
                U - Uncertain
                Unk - Unknown">Trend</th>
 
-    <th>FRR</th>
+    <th>
+      <div class="popout-wrapper hover">
+        <div class="popout size_unit_th right caret">
+          <table class="popout-table">
+            <tr>
+              <th colspan="4">FRR values as used for the automatic EU assessments</th>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <th>FRR min</th>
+              <th>FRR max</th>
+              <th>FRR mean</th>
+            </tr>
+            {% for row in objects %}
+              <tr>
+                <td>{{ row.eu_country_code }}</td>
+                <td>{{ row.derived_favourable_reference_range_min|str2num }}</td>
+                <td>{{ row.derived_favourable_reference_range_max|str2num }}</td>
+                <td>{{ row.derived_favourable_reference_range_mean|str2num }}</td>
+              </tr>
+            {% endfor %}
+            <tr>
+              <th colspan="4">
+                <p>
+                  If a specific FRR value was reported, this value is used as min, max, and mean.
+                </p>
+                <p>
+                  If FRR is reported as a predefined range, the min, max, and mean are calculated based on the reported current range.
+                </p>
+                <p>
+                  If the FRR is unknown, the reported current range is used as FRR min, max, and mean.
+                </p>
+              </th>
+            </tr>
+          </table>
+        </div>
+        FRR
+      </div>
+    </th>
     <th title="Pre-defined range increments to indicate if the range is: 
                appr. equal - approximately equal to the favourable reference range (less than 2% smaller)
                2-10 - between 2% and 10% smaller than the FRR
@@ -97,14 +136,15 @@
         Max
       </div>
     </th>
-    <th title="Main reason for change if current value is different from the previous period
-               genuine
-               knowledge
-               method
-               unknown
-               other
-               no change
-               N/A (applicable e.g. when first time reported)">Best value</th>
+    <th title="Main reason for change
+                genuine - Genuine change
+                knowledge - Improved knowledge or more accurate data
+                method - The use of a different method
+                unknown - Unknown reason
+                other - Other reasons
+                no change - No change
+                First time reported - First time reported
+                N/A - No information on the nature of change">Best value</th>
     <th title="Quality of extrapolation to reporting unit 
                High
                Moderate
@@ -149,7 +189,49 @@
                - 26 – 50% 
                - 51 – 100% 
                - >100%">Trend<br/>magnitude<br/>min - max</th>
-    <th>FRP</th>
+    <th>
+      <div class="popout-wrapper hover">
+        <div class="popout size_unit_th right caret">
+          <table class="popout-table">
+            <tr>
+              <th colspan="4">FRP values as used for the automatic EU assessments</th>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <th>FRP min</th>
+              <th>FRP max</th>
+              <th>FRP mean</th>
+            </tr>
+            {% for row in objects %}
+              <tr>
+                <td>{{ row.eu_country_code }}</td>
+                <td>{{ row.derived_favourable_reference_population_min|str2num }}</td>
+                <td>{{ row.derived_favourable_reference_population_max|str2num }}</td>
+                <td>{{ row.derived_favourable_reference_population_mean|str2num }}</td>
+              </tr>
+            {% endfor %}
+            <tr>
+              <th colspan="4">
+                <p>
+                  If a specific FRP value was reported, this value is used as FRP min, max, and mean.
+                </p>
+                <p>
+                  If FRP is reported as a predefined range, the FRP min, max, and mean are calculated </br>
+                  based on the mean current population (best single value or average of min and max of pop. size class).
+                </p>
+                <p>
+                  If the FRP is unknown, the mean current population is used as FRP min, max, and mean.
+                </p>
+                <p>
+                  If the specific FRP or predefined range is in a unit not matching the current population it is ignored and the value is empty.
+                </p>
+              </th>
+            </tr>
+          </table>
+        </div>
+        FRP
+      </div>
+    </th>
     <th title="Pre-defined range increments to indicate if the population is:
                appr. equal - approximately equal to the favourable reference population (less than 5% smaller) 
                5-25 - between 5% and 25% smaller than the FRP

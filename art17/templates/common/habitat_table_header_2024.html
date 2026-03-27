@@ -21,14 +21,15 @@
       >Distribution area(km<sup>2</sup>)</th>
   </tr>
   <tr>
-    <th title="Main reason for change if current value is different from the previous period
-                genuine
-                knowledge 
-                method  
-                unknown
-                other
-                noChange
-                N/A (applicable e.g. when first time reported)">Surface</th>
+    <th title="Main reason for change
+                genuine - Genuine change
+                knowledge - Improved knowledge or more accurate data
+                method - The use of a different method
+                unknown - Unknown reason
+                other - Other reasons
+                no change - No change
+                First time reported - First time reported
+                N/A - No information on the nature of change">Surface</th>
     <th title="Status of Range (colour)
                Percentage of surface of the range per MS region (figure)">Status<br/>(% MS)</th>
     <th title="Short-term trend
@@ -37,7 +38,46 @@
                 S - Stable
                 U - Uncertain
                 Unk - Unknown">Trend</th>
-    <th>FRR</th>
+    <th>
+      <div class="popout-wrapper hover">
+        <div class="popout size_unit_th right caret">
+          <table class="popout-table">
+            <tr>
+              <th colspan="4">FRR values as used for the automatic EU assessments</th>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <th>FRR min</th>
+              <th>FRR max</th>
+              <th>FRR mean</th>
+            </tr>
+            {% for row in objects %}
+              <tr>
+                <td>{{ row.eu_country_code }}</td>
+                <td>{{ row.derived_favourable_reference_range_min|str2num }}</td>
+                <td>{{ row.derived_favourable_reference_range_max|str2num }}</td>
+                <td>{{ row.derived_favourable_reference_range_mean|str2num }}</td>
+              </tr>
+            {% endfor %}
+            <tr>
+              <th colspan="4">
+                <p>
+                  If a specific FRR value was reported, this value is used as min, max, and mean.
+                </p>
+                <p>
+                  If FRR is reported as a predefined range, the min, max, and mean are calculated </br>
+                  based on the reported current range.
+                </p>
+                <p>
+                  If the FRR is unknown, the reported current range is used as FRR min, max, and mean.
+                </p>
+              </th>
+            </tr>
+          </table>
+        </div>
+        FRR
+      </div> 
+    </th>
     <th title="Pre-defined range increments to indicate if the range is: 
                 appr. equal - approximately equal to the favourable reference range (less than 2% smaller) 
                 2-10 - between 2% and 10% smaller than the FRR
@@ -45,14 +85,15 @@
                 51-100 - between 51% and 100% smaller than the FRR">range vs<br/>FRR<br/>predefined</th>
     <th>Min</th>
     <th>Max</th>
-    <th title="Main reason for change if current value is different from the previous period
-                genuine
-                knowledge 
-                method  
-                unknown
-                other
-                noChange
-                N/A (applicable e.g. when first time reported)">Best value</th>
+    <th title="Main reason for change
+                genuine - Genuine change
+                knowledge - Improved knowledge or more accurate data
+                method - The use of a different method
+                unknown - Unknown reason
+                other - Other reasons
+                no change - No change
+                First time reported - First time reported
+                N/A - No information on the nature of change">Best value</th>
     <th title="Type of estimate
                 estimate  - Best estimate
                 interval  - 95% confidence interval
@@ -78,7 +119,46 @@
                 - 26 – 50% 
                 - 51 – 100% 
                 - >100%">Trend<br/>magnitude<br/>min-max</th>
-    <th>FRA</th>
+    <th>
+      <div class="popout-wrapper hover">
+        <div class="popout size_unit_th right caret">
+          <table class="popout-table">
+            <tr>
+              <th colspan="4">FRA values as used for the automatic EU assessments</th>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <th>FRA min</th>
+              <th>FRA max</th>
+              <th>FRA mean</th>
+            </tr>
+            {% for row in objects %}
+              <tr>
+                <td>{{ row.eu_country_code }}</td>
+                <td>{{ row.derived_favourable_reference_area_min|str2num }}</td>
+                <td>{{ row.derived_favourable_reference_area_max|str2num }}</td>
+                <td>{{ row.derived_favourable_reference_area_mean|str2num }}</td>
+              </tr>
+            {% endfor %}
+            <tr>
+              <th colspan="4">
+                <p>
+                  If a specific FRA value was reported, this value is used as FRA min, max, and mean.
+                </p>
+                <p>
+                  If FRA is reported as a predefined range, the FRA min, max, and mean are calculated </br>
+                  based on the mean current area (best single value or average of min and max).
+                </p>
+                <p>
+                  If the FRA is unknown, the mean current area is used as FRA min, max, and mean.
+                </p>
+              </th>
+            </tr>
+          </table>
+        </div>
+        FRA
+      </div>
+    </th>
     <th title="Pre-defined range increments to indicate if the area is:
                appr. equal - approximately equal to the favourable reference area (less than 2% smaller) 
                2-10 - between 2% and 10% smaller than the FRA
@@ -137,7 +217,7 @@
                S - Stable
                Unk - Unknown
                NA - Not reported">Prev. CS<br/>trend</th>
-    <th title="Main reason for change 
+    <th title="Main reason for change
                 genuine - Genuine change
                 knowledge - Improved knowledge or more accurate data
                 method - The use of a different method

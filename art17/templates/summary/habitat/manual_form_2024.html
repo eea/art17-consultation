@@ -133,14 +133,15 @@
       {# Edit reference values form #}
       {% set ass = manual_assessment %}
       {# Range #}
-      <td class="text-center">
-        {{ ass.range_surface_area }}
+      <td {% if form.range_surface_area.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+          {{ numval_habitat_title(x=False) }}>
+        {{ form.range_surface_area(size=5, class="selected-value no-break") }}
       </td>
 
-      {{ conclusion_td(ass.conclusion_range, ass.method_range) }}
+      {{ method_conclusion_td('Status Range', form.method_range, form.conclusion_range) }}
 
-      <td class="text-center">
-        {{ ass.range_trend }}
+      <td {% if form.range_trend.errors %}class="form-error-td"{% endif %}>
+        {{ form.range_trend() }}
       </td>
 
       <td {% if form.complementary_favourable_range_q.errors or form.complementary_favourable_range_size.errors %}class="form-error-td"{% endif %}>
@@ -152,26 +153,30 @@
       </td>
 
       {# Area #}
-      <td class="text-center">
-        {{ ass.coverage_surface_area_min }}
+      <td {% if form.coverage_surface_area_min.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+          {{ numval_habitat_title(x=False) }}>
+        {{ form.coverage_surface_area_min(size=5) }}
       </td>
 
-      <td class="text-center">
-        {{ ass.coverage_surface_area_max }}
+      <td {% if form.coverage_surface_area_max.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+          {{ numval_habitat_title(x=False) }}>
+        {{ form.coverage_surface_area_max(size=5) }}
       </td>
 
-      <td class="text-center">
-        {{ ass.coverage_surface_area }}
+      <td {% if form.coverage_surface_area.errors %}class="form-error-td extend-input"{% else %} class="extend-input"{% endif %}
+          {{ numval_habitat_title(x=False) }}>
+        {{ form.coverage_surface_area(size=5) }}
       </td>
 
       <td></td>
 
       <td></td>
 
-      {{ conclusion_td(ass.conclusion_area, ass.method_area) }}
+      {{ method_conclusion_td('Status Area', form.method_area, form.conclusion_area) }}
 
-      <td class="text-center">
-        {{ ass.coverage_trend }}
+
+      <td {% if form.coverage_trend.errors %}class="form-error-td"{% endif %}>
+        {{ form.coverage_trend() }}
       </td>
 
       
@@ -190,22 +195,25 @@
 
       {# Structure #}
 
-      <td class="text-center" title="Min | Max | Best">
-          {{ ass.hab_condition_good_min or '-' }} | {{ ass.hab_condition_good_max or '-' }} | {{ ass.hab_condition_good_best or '-' }}
+      <td {% if form.hab_condition_good_min.errors or form.hab_condition_good_max.errors
+                or form.hab_condition_good_best.errors %}class="form-error-td"{% endif %} title="Min | Max | Best">
+          {{ min_max_best(form.hab_condition_good_min, form.hab_condition_good_max, form.hab_condition_good_best, 5) }}
       </td>
 
-      <td class="text-center" title="Min | Max | Best">
-        {{ ass.hab_condition_notgood_min or '-' }} | {{ ass.hab_condition_notgood_max or '-' }} | {{ ass.hab_condition_notgood_best or '-' }}
+      <td {% if form.hab_condition_unknown_min.errors or form.hab_condition_unknown_max.errors
+        or form.hab_condition_unknown_best.errors %}class="form-error-td"{% endif %} title="Min | Max | Best">
+        {{ min_max_best(form.hab_condition_notgood_min, form.hab_condition_notgood_max, form.hab_condition_notgood_best, 5) }}
       </td>
 
-      <td class="text-center" title="Min | Max | Best">
-        {{ ass.hab_condition_unknown_min or '-' }} | {{ ass.hab_condition_unknown_max or '-' }} | {{ ass.hab_condition_unknown_best or '-' }}
+      <td {% if form.hab_condition_unknown_min.errors or form.hab_condition_unknown_max.errors
+        or form.hab_condition_unknown_best.errors %}class="form-error-td"{% endif %} title="Min | Max | Best">
+        {{ min_max_best(form.hab_condition_unknown_min, form.hab_condition_unknown_max, form.hab_condition_unknown_best, 5) }}
       </td>
 
-      {{ conclusion_td(ass.conclusion_structure, ass.method_structure) }}
+      {{ method_conclusion_td('Status Structure and Functions', form.method_structure, form.conclusion_structure) }}
 
-      <td class="text-center">
-        {{ ass.hab_condition_trend }}
+      <td {% if form.hab_condition_trend.errors %}class="form-error-td"{% endif %}>
+        {{ form.hab_condition_trend() }}
       </td>
 
       {# Future prospects #}
@@ -221,13 +229,13 @@
         {{ ass.future_structure }}
       </td>
 
-      {{ conclusion_td(ass.conclusion_future, ass.method_future) }}
+      {{ method_conclusion_td('Status Future Prospects', form.method_future, form.conclusion_future) }}
 
       {# Overall #}
-      {{ conclusion_td(ass.conclusion_assessment, ass.method_assessment) }}
+      {{ method_conclusion_td('Current CS Conclusions', form.method_assessment, form.conclusion_assessment) }}
 
-      <td class="text-center">
-        {{ ass.conclusion_assessment_trend }}
+      <td {% if form.conclusion_assessment_trend.errors %}class="form-error-td"{% endif %}>
+        {{ form.conclusion_assessment_trend() }}
       </td>
 
       {{ conclusion_td(ass.conclusion_assessment_prev , ass.conclusion_assessment_prev) }}
@@ -236,12 +244,12 @@
         {{ ass.conclusion_assessment_trend_prev }}
       </td>
 
-      <td class="text-center">
-        {{ ass.conclusion_assessment_change }}
+      <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
+        {{ form.conclusion_assessment_change() }}
       </td>
 
-      <td class="text-center">
-        {{ ass.conclusion_assessment_trend_change }}
+      <td {% if form.conclusion_assessment_change.errors %}class="form-error-td"{% endif %}>
+        {{ form.conclusion_assessment_trend_change() }}
       </td>
 
     {% endif %}

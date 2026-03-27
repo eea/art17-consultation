@@ -19,42 +19,6 @@
 
 <td {{ parse_errors('derived_favourable_reference_range_combined', row, qa_errors, classes="center text-center") }}>
   {{ row.derived_favourable_reference_range_combined|str2num or 'N/A' }}
-  <div class="popout-wrapper hover">
-    <div class="popout size_unit_th right caret">
-      <table class="popout-table">
-        <tr>
-          <th colspan="4">FRR values as used for the automatic EU assessments</th>
-        </tr>
-        <tr>
-          <th>Country</th>
-          <th>FRR min</th>
-          <th>FRR max</th>
-          <th>FRR mean</th>
-        </tr>
-        {% for row in objects %}
-          <tr>
-            <td>{{ row.eu_country_code }}</td>
-            <td>{{ row.derived_favourable_reference_range_min|str2num }}</td>
-            <td>{{ row.derived_favourable_reference_range_max|str2num }}</td>
-            <td>{{ row.derived_favourable_reference_range_mean|str2num }}</td>
-          </tr>
-        {% endfor %}
-        <tr>
-          <th colspan="4">
-            <p>
-              If a specific FRR value was reported, this value is used as min, max, and mean.
-            </p>
-            <p>
-              If FRR is reported as a predefined range, the min, max, and mean are calculated based on the reported current range.
-            </p>
-            <p>
-              If the FRR is unknown, the reported current range is used as FRR min, max, and mean.
-            </p>
-          </th>
-        </tr>
-      </table>
-    </div>
-  </div>
 </td>
 
 <td {{ parse_errors('S_5_12_b_favourable_reference_range_predefined ', row, qa_errors, classes="center text-center") }}>
@@ -114,46 +78,6 @@
 
 <td class="number center text-center">
   {{ row.derived_favourable_reference_population_combined|str2num }}
-  <div class="popout-wrapper hover">
-    <div class="popout size_unit_th right caret">
-      <table class="popout-table">
-        <tr>
-          <th colspan="4">FRP values as used for the automatic EU assessments</th>
-        </tr>
-        <tr>
-          <th>Country</th>
-          <th>FRP min</th>
-          <th>FRP max</th>
-          <th>FRP mean</th>
-        </tr>
-        {% for row in objects %}
-          <tr>
-            <td>{{ row.eu_country_code }}</td>
-            <td>{{ row.derived_favourable_reference_population_min|str2num }}</td>
-            <td>{{ row.derived_favourable_reference_population_max|str2num }}</td>
-            <td>{{ row.derived_favourable_reference_population_mean|str2num }}</td>
-          </tr>
-        {% endfor %}
-        <tr>
-          <th colspan="4">
-            <p>
-              If a specific FRP value was reported, this value is used as FRP min, max, and mean.
-            </p>
-            <p>
-              If FRP is reported as a predefined range, the FRP min, max, and mean are calculated </br>
-              based on the mean current population (best single value or average of min and max of pop. size class).
-            </p>
-            <p>
-              If the FRP is unknown, the mean current population is used as FRP min, max, and mean.
-            </p>
-            <p>
-              If the specific FRP or predefined range is in a unit not matching the current population it is ignored and the value is empty.
-            </p>
-          </th>
-        </tr>
-      </table>
-    </div>
-  </div>
 </td>
 
 <td class="number center text-center">
