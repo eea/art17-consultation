@@ -515,6 +515,7 @@ class EtcDataSpeciesRegion(Base):
     eu_country_code = Column(String(2), nullable=False)
     delivery = Column(Boolean)
     envelope = Column(String(50))
+    envelope_text = Column(Text)
     filename = Column(String(300))
     region = Column(String(4), primary_key=True, nullable=False)
     region_ms = Column(String(4))  # region_orig for period 2018
