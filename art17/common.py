@@ -388,7 +388,7 @@ def get_original_record_url(row):
 def get_title_for_species_country_2024(row):
     s_name, s_info, s_type = "", "", ""
     s_name = row.speciesname or ""
-    s_info = row.complementary_other_information or ""
+    s_info = ""
     if s_info:
         s_info = s_info.strip().replace("\n", "<br/>")
     # now the species type is stored in presence_new field
