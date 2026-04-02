@@ -17,12 +17,12 @@ def setup(app):
     factories.EtcDataSpeciesRegionFactory(
         group="Mammals",
         dataset_id=5,
-        assesment_speciesname="Capra ibex",
+        assessment_speciesname="Capra ibex",
         speciesname="Capra ibex",
         range_surface_area=12530,
     )
     factories.SpeciesManualAssessmentFactory(
-        assesment_speciesname="Capra ibex",
+        assessment_speciesname="Capra ibex",
         range_surface_area=19850,
         dataset_id=5,
         region="ALP",
@@ -31,7 +31,7 @@ def setup(app):
         decision="OK",
     )
     factories.EtcDataSpeciesAutomaticAssessmentFactory(
-        assesment_speciesname="Capra ibex",
+        assessment_speciesname="Capra ibex",
         dataset_id=5,
         assessment_method="1",
         range_surface_area=19850,

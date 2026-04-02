@@ -410,10 +410,10 @@ def get_title_for_species_country(row):
         return get_title_for_species_country_2024(row)
     s_name, s_info, s_type = "", "", ""
     if (
-        row.speciesname != row.assesment_speciesname
+        row.speciesname != row.assessment_speciesname
         or row.complementary_other_information
     ):
-        s_name = row.speciesname or row.assesment_speciesname or ""
+        s_name = row.speciesname or row.assessment_speciesname or ""
         s_info = row.complementary_other_information or ""
     if row.species_type_asses == False:
         s_type = (

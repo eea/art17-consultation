@@ -9,7 +9,7 @@ from .conftest import create_user
 @pytest.fixture
 def setup_common(app):
     factories.EtcDataSpeciesRegionFactory(
-        assesment_speciesname="Canis lupus",
+        assessment_speciesname="Canis lupus",
         speciesname="Canis lupus",
         group="Mammals",
     )
@@ -45,7 +45,7 @@ def setup(app):
         id=2,
         region_code="ALP",
         habitatcode=1110,
-        assesment_speciesname=None,
+        assessment_speciesname=None,
     )
     factories.WikiChangeFactory(
         id=2,

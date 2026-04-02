@@ -102,7 +102,7 @@ class EtcDataSpopulationPressureModelView(ProtectedModelView):
         "eu_country_code",
         "region",
         "n2000_species_code",
-        "assesment_speciesname",
+        "assessment_speciesname",
         "pressure",
     )
     column_list = (
@@ -110,7 +110,7 @@ class EtcDataSpopulationPressureModelView(ProtectedModelView):
         "eu_country_code",
         "region",
         "n2000_species_code",
-        "assesment_speciesname",
+        "assessment_speciesname",
         "pressure",
     )
     column_filters = ["dataset_id", "eu_country_code", "region", "n2000_species_code"]
@@ -122,7 +122,7 @@ class EtcDataSpopulationThreatModelView(ProtectedModelView):
         "eu_country_code",
         "region",
         "n2000_species_code",
-        "assesment_speciesname",
+        "assessment_speciesname",
         "threat",
     )
     column_list = (
@@ -130,7 +130,7 @@ class EtcDataSpopulationThreatModelView(ProtectedModelView):
         "eu_country_code",
         "region",
         "n2000_species_code",
-        "assesment_speciesname",
+        "assessment_speciesname",
         "threat",
     )
     column_filters = ["dataset_id", "eu_country_code", "region", "n2000_species_code"]
@@ -198,7 +198,7 @@ class EtcDicSpeciesTypeModelView(ProtectedModelView):
     form_columns = (
         "dataset_id",
         "SpeciesType",
-        "Assesment",
+        "Assessment",
         "Note",
         "abbrev",
     )
@@ -206,11 +206,11 @@ class EtcDicSpeciesTypeModelView(ProtectedModelView):
         "dataset_id",
         "SpeciesTypeID",
         "SpeciesType",
-        "Assesment",
+        "Assessment",
         "Note",
         "abbrev",
     )
-    column_filters = ("dataset_id", "SpeciesTypeID", "SpeciesType", "Assesment")
+    column_filters = ("dataset_id", "SpeciesTypeID", "SpeciesType", "Assessment")
 
     def create_model(self, form):
         try:
@@ -285,7 +285,7 @@ class EtcQaErrorsSpeciesManualCheckedModelView(ProtectedModelView):
         "country",
         "eu_country_code",
         "region",
-        "assesment_speciesname",
+        "assessment_speciesname",
         "filename",
         "suspect_value",
         "error_code",
@@ -298,7 +298,7 @@ class EtcQaErrorsSpeciesManualCheckedModelView(ProtectedModelView):
         "country",
         "eu_country_code",
         "region",
-        "assesment_speciesname",
+        "assessment_speciesname",
         "filename",
         "suspect_value",
         "error_code",
@@ -311,7 +311,7 @@ class EtcQaErrorsSpeciesManualCheckedModelView(ProtectedModelView):
         "country",
         "eu_country_code",
         "region",
-        "assesment_speciesname",
+        "assessment_speciesname",
         "field",
     )
 

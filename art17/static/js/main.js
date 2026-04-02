@@ -339,8 +339,8 @@ $(document).ready(function () {
         $(popouts).removeClass('open');
     });    
 
-    // Assesment
-    $('.popout.assesment').each(function () {
+    // Assessment
+    $('.popout.assessment').each(function () {
         var method = $(this).find("select");
         var radios = $(this).find("input[type='radio']");
         var preview = $(this).closest('.popout-wrapper').find(".conclusion.select");

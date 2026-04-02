@@ -185,7 +185,7 @@
       </div>
       {% if row.deleted and not can_delete(row) %}
         <hr>
-        <p class="muted italic no-margins">This assesment was deleted.</p>
+        <p class="muted italic no-margins">This assessment was deleted.</p>
       {% endif %}
   
       {% if (can_edit(row) or can_delete(row)) and not manual_assessment %}
@@ -218,7 +218,7 @@
     </div>
   
     {% if row.deleted %}
-      <a data-popout="details" class="badge-red" title="This assesment was deleted. View details.">
+      <a data-popout="details" class="badge-red" title="This assessment was deleted. View details.">
         Deleted
       </a>
     {% else %}

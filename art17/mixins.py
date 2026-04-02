@@ -154,7 +154,7 @@ class SpeciesMixin(MixinsCommon):
     prev_lu_cls = LuSpeciesManual2007
     subject_name = "species"
     summary_endpoint = "summary.species-summary"
-    wiki_subject_column = "assesment_speciesname"
+    wiki_subject_column = "assessment_speciesname"
 
     def objects_by_group(self, period, group):
         return self.model_cls.query.filter_by(group=group, dataset_id=period)
@@ -191,14 +191,14 @@ class SpeciesMixin(MixinsCommon):
             return blank_option
         group_field = cls.model_cls.group
         dataset_id_field = cls.model_cls.dataset_id
-        assesment_field = cls.model_cls.subject
+        assessment_field = cls.model_cls.subject
         subjects = (
-            cls.model_cls.query.filter(assesment_field != None)
+            cls.model_cls.query.filter(assessment_field != None)
             .filter(func.lower(group_field) == func.lower(group))
             .filter(dataset_id_field == period)
-            .with_entities(assesment_field, assesment_field)
+            .with_entities(assessment_field, assessment_field)
             .distinct()
-            .order_by(assesment_field)
+            .order_by(assessment_field)
             .all()
         )
         if period == "4":
@@ -208,13 +208,13 @@ class SpeciesMixin(MixinsCommon):
             ]
 
             subjects = (
-                cls.model_cls.query.filter(assesment_field != None)
+                cls.model_cls.query.filter(assessment_field != None)
                 .filter(func.lower(group_field) == func.lower(group))
                 .filter(cls.model_cls.region.in_(regions))
                 .filter(dataset_id_field == period)
-                .with_entities(assesment_field, assesment_field)
+                .with_entities(assessment_field, assessment_field)
                 .distinct()
-                .order_by(assesment_field)
+                .order_by(assessment_field)
                 .all()
             )
         return blank_option + subjects

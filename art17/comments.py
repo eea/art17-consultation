@@ -491,9 +491,9 @@ class _CommentCounterBase(object):
 class SpeciesCommentCounter(_CommentCounterBase):
 
     comment_cls = Comment
-    subject_column = property(lambda self: Comment.assesment_speciesname)
+    subject_column = property(lambda self: Comment.assessment_speciesname)
     read_table = t_comments_read
-    wiki_subject_column = property(lambda self: Wiki.assesment_speciesname)
+    wiki_subject_column = property(lambda self: Wiki.assessment_speciesname)
 
 
 class HabitatCommentCounter(_CommentCounterBase):

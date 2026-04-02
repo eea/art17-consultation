@@ -53,7 +53,7 @@ def species_config_xml():
         rows = (
             models.db.session.query(models.EtcDataSpeciesRegion.region)
             .distinct()
-            .filter_by(assesment_speciesname=species_name)
+            .filter_by(assessment_speciesname=species_name)
             .filter(models.EtcDataSpeciesRegion.dataset_id == dataset_id)
             .order_by(models.EtcDataSpeciesRegion.region)
         )
@@ -74,10 +74,10 @@ def species_config_xml():
             )
         )
         .filter(models.EtcDataSpeciesRegion.dataset_id == dataset_id)
-        .filter(models.EtcDataSpeciesRegion.assesment_speciesname == species_name)
+        .filter(models.EtcDataSpeciesRegion.assessment_speciesname == species_name)
     )
 
-    assesment_speciesname = urllib.parse.quote(species_name)
+    assessment_speciesname = urllib.parse.quote(species_name)
 
     countries_style = []
     countries = []
@@ -158,7 +158,7 @@ def species_config_xml():
         models.db.session.query(
             models.t_restricted_species.c.eu_country_code,
         )
-        .filter(models.t_restricted_species.c.assesment_speciesname == species_name)
+        .filter(models.t_restricted_species.c.assessment_speciesname == species_name)
         .filter(models.t_restricted_species.c.ext_dataset_id == dataset_id)
     )
     restricted_species_list = [r[0] for r in rows]
@@ -172,7 +172,7 @@ def species_config_xml():
         "maps/config-species.xml",
         restricted=restricted,
         extent=",".join(str(v) for v in extent),
-        assessment_speciesname=assesment_speciesname,
+        assessment_speciesname=assessment_speciesname,
         countries_style=Markup("&".join(escape(s) for s in countries_style)),
         region=region,
     )

@@ -64,9 +64,9 @@
         {% for row in objects %}
           {% set visible = can_view(row, restricted_countries) %}
 
-          {% if row.speciesname != row.assesment_speciesname %}
+          {% if row.speciesname != row.assessment_speciesname %}
             {% set title="Scientific name used in original MS report if different than recommended: "
-            + row.speciesname or row.assesment_speciesname or '' %}
+            + row.speciesname or row.assessment_speciesname or '' %}
           {% else %}
             {% set title = row.subject | safe %}
           {% endif %}

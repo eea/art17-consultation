@@ -90,7 +90,7 @@ class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
         sqlalchemy_session = models.db.session
 
     dataset_id = 5
-    assesment_speciesname = "Canis lupus"
+    assessment_speciesname = "Canis lupus"
     region = "BOR"
     user_id = "someuser"
     MS = "EU27"
@@ -131,7 +131,7 @@ class WikiFactory(SQLAlchemyModelFactory):
 
     id = 1
     region_code = ""
-    assesment_speciesname = "Canis lupus"
+    assessment_speciesname = "Canis lupus"
     dataset_id = 5
 
 
@@ -156,7 +156,7 @@ class WikiTrailFactory(SQLAlchemyModelFactory):
 
     id = 1
     region_code = "CON"
-    assesment_speciesname = "Canis lupus"
+    assessment_speciesname = "Canis lupus"
     dataset_id = 5
 
 
@@ -195,7 +195,7 @@ class CommentFactory(SQLAlchemyModelFactory):
     id = 1
     comment = "This is a comment"
     author_id = "testuser"
-    assesment_speciesname = "Canis lupus"
+    assessment_speciesname = "Canis lupus"
     region = "BOR"
     user_id = "someuser"
     MS = "EU27"

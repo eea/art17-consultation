@@ -328,7 +328,7 @@ def test_add_comment(
     wiki = get_instance(
         Wiki,
         dataset_id=request_args["period"],
-        assesment_speciesname=request_args["subject"],
+        assessment_speciesname=request_args["subject"],
         region_code=request_args["region"],
     )
     assert request_data[2]["comment"] in [c.comment for c in wiki.comments]

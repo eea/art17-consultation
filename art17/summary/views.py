@@ -463,13 +463,13 @@ class SpeciesSummary(SpeciesMixin, Summary):
             period, current_user.id
         ).get_wiki_unread_count(subject, region)
         if subject:
-            filter_args["assesment_speciesname"] = subject
+            filter_args["assessment_speciesname"] = subject
         else:
             return False
         self.restricted_countries = [
             r[0]
             for r in db.session.query(t_restricted_species.c.eu_country_code)
-            .filter(t_restricted_species.c.assesment_speciesname == subject.lower())
+            .filter(t_restricted_species.c.assessment_speciesname == subject.lower())
             .filter(t_restricted_species.c.ext_dataset_id == period)
             .filter(t_restricted_species.c.show_data == 0)
             .all()

@@ -9,7 +9,7 @@ from .conftest import create_user, force_login, get_request_params
 def setup_common():
     factories.EtcDicBiogeoregFactory(dataset_id=6)
     factories.EtcDataSpeciesRegionFactory(
-        speciescode="1111", assesment_speciesname="Canis lupus", dataset_id=6
+        speciescode="1111", assessment_speciesname="Canis lupus", dataset_id=6
     )
     factories.EtcDicMethodFactory(order=4, method="2GD", dataset_id=6)
     factories.EtcDicConclusionFactory(dataset_id=6)
@@ -43,7 +43,7 @@ def setup_add(app):
     setup_common()
     factories.EtcDataSpeciesRegionFactory(
         speciescode="1111",
-        assesment_speciesname="Canis lupus",
+        assessment_speciesname="Canis lupus",
         eu_country_code="FR",
         country="FR",
         dataset_id=6,
@@ -82,7 +82,7 @@ def setup_decision(app):
 def setup_autofill(app):
     setup_common()
     factories.EtcDataSpeciesAutomaticAssessmentFactory(
-        assesment_speciesname="Canis lupus",
+        assessment_speciesname="Canis lupus",
         region="ALP",
         assessment_method="2GD",
         range_surface_area=100,

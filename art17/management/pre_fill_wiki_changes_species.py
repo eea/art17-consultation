@@ -20,14 +20,14 @@ def run(**kwargs):
         for row in rows:
             wiki = Wiki.query.filter_by(
                 region_code=row["region"],
-                assesment_speciesname=row["2019assessment_speciesname"],
+                assessment_speciesname=row["2019assessment_speciesname"],
                 dataset_id=kwargs["dataset_id"],
             ).all()
             if not wiki:
                 wiki_new = Wiki(
                     dataset_id=kwargs["dataset_id"],
                     region_code=row["region"],
-                    assesment_speciesname=row["2019assessment_speciesname"],
+                    assessment_speciesname=row["2019assessment_speciesname"],
                 )
                 db.session.add(wiki_new)
                 db.session.commit()
