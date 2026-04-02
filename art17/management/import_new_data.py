@@ -3,6 +3,7 @@ import math
 import click
 from flask.cli import AppGroup
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import BigInteger, SmallInteger
 from sqlalchemy.sql.sqltypes import Boolean, Float, Integer
 
 from art17.models import db
@@ -67,7 +68,7 @@ def clean_data(model, data):
             set_correct_values_for_boolean_fields(data, field)
         elif field_type == Float:
             set_correct_values_for_float_fields(data, field)
-        elif field_type == Integer:
+        elif field_type in [Integer, SmallInteger, BigInteger]:
             set_correct_values_for_integer_fields(data, field)
         try:
 
