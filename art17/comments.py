@@ -235,7 +235,11 @@ class CommentsList(views.View):
                     hash = "#comment-%s" % edited_comment.id
                 else:
                     hash = "#theform"
-                return redirect(request.base_url + hash)
+                return redirect(
+                    self.get_home_url(
+                        subject=subject, region=region, user=user, MS=MS, period=period
+                    ) + hash
+                )
         else:
             if request.args.get("toggle"):
                 comment = self.model_comment_cls.query.get(request.args["toggle"])
