@@ -69,6 +69,8 @@
 
 {% if current_selection %}
 
+  {% if not dataset.latest or latest_dataset_public_view_enabled or current_user.is_authenticated %}
+
   {% include 'summary/wiki_buttons.html' %}
 
   {% if map_warning %}
@@ -259,19 +261,27 @@
           </tbody>
           {% endif %}
         </table>
+
       </div>
   </form>
-
+  {% endif %}
+  <p class="italic">
+    <b>Legal notice:</b> A minimum amount of personal data (including cases of submitted comments during the public consultation) is stored
+    in the web tool. These data are necessary for the functioning of the tool and are only accessible to tool administrators.
+  </p>
   {% if period_selected == '5' and subject != None and subject != '' %}
-    <p class="italic">
-      <b>Legal notice:</b> A minimum amount of personal data (including cases of submitted comments during the public consultation) is stored
-      in the web tool. These data are necessary for the functioning of the tool and are only accessible to tool administrators.
-    </p>
     <p class="italic">
       The distribution data for France (2013 – 2018 reporting) were corrected after the official submission of the Article 17 reports by France.
       The maps displayed via this web tool take into account these corrections, while the values under Distribution area (km2) used for the EU
       biogeographical assessment are based on the original Article 17 report submitted by France. More details are provided in the feedback part
       of the reporting envelope on <a href="https://cdr.eionet.europa.eu/fr/eu/art17/envxrm6jq/">CDR</a>.
+    </p>
+  {% endif %}
+  {% if period_selected == '6' %}
+    <p class="italic">
+      The delayed delivery by Spain did not allow the Spanish report to be used for the EU conservation status
+      assessment. Where possible, Spanish data from the period 2013-2019 were used for the EU assessments of
+      2019-2024. You can see a relevant technical note here.
     </p>
   {% endif %}
 {% endif %}

@@ -238,7 +238,8 @@ class CommentsList(views.View):
                 return redirect(
                     self.get_home_url(
                         subject=subject, region=region, user=user, MS=MS, period=period
-                    ) + hash
+                    )
+                    + hash
                 )
         else:
             if request.args.get("toggle"):

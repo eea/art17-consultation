@@ -3,7 +3,8 @@ from flask_wtf import FlaskForm as Form_base
 from wtforms import BooleanField, DateField, SelectField, StringField, TextAreaField
 from wtforms.validators import Optional, ValidationError
 
-from art17.common import DEFAULT_MS
+from art17.common import DEFAULT_MS, get_config
+from sqlalchemy import or_
 from art17.models import (
     Dataset,
     EtcDataHabitattypeRegion,
@@ -12,6 +13,7 @@ from art17.models import (
     EtcDicMethod,
     EtcDicPopulationUnit,
 )
+from art17.auth.security import current_user
 from art17.utils import (
     validate_field,
     validate_float,
@@ -186,7 +188,17 @@ class CommonFilterForm(Form):
 
     def __init__(self, *args, **kwargs):
         super(CommonFilterForm, self).__init__(*args, **kwargs)
-        self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
+        cfg = get_config()
+        if (
+            not current_user.is_authenticated
+            and not cfg.latest_dataset_public_view_enabled
+        ):
+            datasets = Dataset.query.filter(
+                or_(Dataset.latest == False, Dataset.latest == None)
+            ).all()
+            self.period.choices = [(d.id, d.name) for d in datasets]
+        else:
+            self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
 
 
 class SummaryFilterForm(CommonFilterForm):
@@ -910,6 +922,11 @@ class ConfigForm(Form):
         validators=[Optional()],
     )
     default_dataset_id = SelectField(label="Default period")
+    default_public_dataset_id = SelectField(label="Default public period")
+    add_assessment_enabled = BooleanField(label="Enable add assessment")
+    latest_dataset_public_view_enabled = BooleanField(
+        label="Enable public view of latest dataset"
+    )
 
     class Meta:
         csrf = True
@@ -918,6 +935,9 @@ class ConfigForm(Form):
         super(ConfigForm, self).__init__(*args, **kwargs)
         dataset_qs = Dataset.query.with_entities(Dataset.id, Dataset.name).all()
         self.default_dataset_id.choices = [
+            (str(ds_id), name) for ds_id, name in dataset_qs
+        ]
+        self.default_public_dataset_id.choices = [
             (str(ds_id), name) for ds_id, name in dataset_qs
         ]
 

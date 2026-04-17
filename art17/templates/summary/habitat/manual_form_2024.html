@@ -5,7 +5,9 @@
 
 
 {% set form=manual_form %}
-  {% set is_form=true %}
+{% set is_form=true %}
+
+{% if edit_ref or add_assessment_enabled %}
   <tr class="form_row" id="theform">
     <td></td>
 
@@ -256,6 +258,8 @@
 
     {% include 'summary/common/manual/edit_buttons.html' %}
   </tr>
+  {% endif %}
+
   {% if form.errors %}
   <tr class="form_row">
     <td colspan="{{ colspan_all - 1 }}" class="form-error-msg regular">

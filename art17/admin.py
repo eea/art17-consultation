@@ -47,12 +47,13 @@ class ProtectedModelView(ModelView):
 class DatasetModelView(ProtectedModelView):
     can_export = True
     form_columns = (
-        "id",
+        # "id",
         "name",
         "schema",
         "species_map_url",
         "sensitive_species_map_url",
         "habitat_map_url",
+        "latest",
     )
     column_list = (
         "id",
@@ -61,6 +62,7 @@ class DatasetModelView(ProtectedModelView):
         "species_map_url",
         "sensitive_species_map_url",
         "habitat_map_url",
+        "latest",
     )
     column_filters = ["id", "schema"]
 
@@ -317,7 +319,6 @@ class EtcQaErrorsSpeciesManualCheckedModelView(ProtectedModelView):
 
 
 class ConfigModelView(ProtectedModelView):
-    form_columns = ("id", "start_date", "end_date", "admin_email", "default_dataset_id")
     column_list = ("id", "start_date", "end_date", "admin_email", "default_dataset_id")
     column_filters = ("id", "default_dataset_id")
 

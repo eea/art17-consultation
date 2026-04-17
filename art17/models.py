@@ -52,6 +52,7 @@ class Dataset(Base):
     __tablename__ = "datasets"
 
     id = Column(BigInteger(), primary_key=True, unique=True)
+    latest = Column(Boolean, default=False)
     name = Column(String(255))
     schema = Column(String(7))
     species_map_url = Column(db.String(400), nullable=True)
@@ -1599,6 +1600,9 @@ class Config(Base):
     end_date = Column(db.Date)
     admin_email = Column(db.String(255))
     default_dataset_id = Column(BigInteger(), default=1)
+    default_public_dataset_id = Column(BigInteger(), default=1)
+    add_assessment_enabled = Column(Boolean, default=False)
+    latest_dataset_public_view_enabled = Column(Boolean, default=False)
 
 
 class LuSpeciesManual2007(Base):

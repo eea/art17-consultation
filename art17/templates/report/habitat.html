@@ -43,6 +43,8 @@
 
     {% if current_selection %}
 
+    {% if not dataset.latest or latest_dataset_public_view_enabled or current_user.is_authenticated %}
+
     {% include 'common/note_report.html' %}
     {% include 'common/table_legend.html' %}
 
@@ -112,5 +114,6 @@
       </tbody>
 
     </table>
+  {% endif %}
   {% endif %}
 {% endblock %}

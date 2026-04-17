@@ -160,7 +160,11 @@ def get_config():
 
 
 def get_default_period():
+    from art17.auth import current_user
+
     conf = get_config()
+    if not current_user.is_authenticated:
+        return conf.default_public_dataset_id
     return conf.default_dataset_id
 
 
@@ -228,6 +232,8 @@ def inject_globals():
         "end_date": cfg.end_date,
         "is_public": is_public,
         "current_user": current_user,
+        "add_assessment_enabled": cfg.add_assessment_enabled,
+        "latest_dataset_public_view_enabled": cfg.latest_dataset_public_view_enabled,
     }
 
 
