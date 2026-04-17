@@ -23,7 +23,7 @@
   </td>
 {% elif range %}
   <td class="{{ row.percentage_range_surface_area|colorate }}">
-    <span class="conclusion">{{ row.percentage_range_surface_area|parse_semicolon|str2num('')|safe }}</span>
+    <span class="conclusion">{{ row.range|parse_semicolon|str2num('')|safe }}</span>
   </td>
 {% else %}
  <td></td>
@@ -147,7 +147,7 @@
   </td>
 {% elif future %}
   <td class="{{ row.percentage_future|colorate }} border_right">
-    <span class="conclusion">{{ row.percentage_future|parse_semicolon|safe }}</span>
+    <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
   </td>
 {% else %}
  <td class="border_right text-center"></td>
