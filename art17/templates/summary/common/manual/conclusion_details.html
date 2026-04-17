@@ -13,8 +13,12 @@
       <div>
         <p class="muted">{{ row.last_update|format_date }}</p>
         <p class="bold">{{ (row.user.name or row.user_id) | hide_adm_etc_username }}</p>
+        {% if row.user.institution %}
         <p>Institution: {{ row.user.institution }}</p>
+        {% endif %}
+        {% if row.user.MS %}
         <p>Member State: {{ row.user.MS or '' }}</p>
+        {% endif %}
       </div>
       {% if row.deleted and not can_delete(row) %}
         <hr>
