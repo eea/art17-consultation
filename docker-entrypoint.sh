@@ -20,12 +20,16 @@ fi
 
 if [ -z "$1" ]; then
   echo "Serving on port 5000"
-  exec uwsgi \
-    --http 0.0.0.0:5000 \
-    --module manage:app \
-    --manage-script-name \
-    --mount "${SCRIPT_NAME}=manage:app" \
-    --env SCRIPT_NAME="${SCRIPT_NAME}"
+
+  exec gunicorn -e SCRIPT_NAME=$SCRIPT_NAME \
+                manage:app \
+                --name article17 \
+                --bind 0.0.0.0:5000 \
+                --access-logfile - \
+                --error-logfile - \
+                --timeout 240 \
+                --max-requests 1000 \
+                --max-requests-jitter 100
 fi
 
 if [[ $COMMANDS == *"$1"* ]]; then
