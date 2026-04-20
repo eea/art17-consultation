@@ -15,7 +15,7 @@ Structure
 The tables can be classified *by content* in:
 
 #. Initial content tables (ETC/BD member states data - ``*_regions``,
-   Automatic Assesments - ``*_automatic_assessments``)
+   Automatic Assessments - ``*_automatic_assessments``)
 #. Dictionary tables (Country codes, Method details, Trend details, ...
    ``*_dic_*``)
 #. User contributed content (Conclusions - ``*_manual_assessments``,

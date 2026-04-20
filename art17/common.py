@@ -14,6 +14,7 @@ from art17.models import (
     EtcDataHabitattypeRegion,
     EtcDataSpeciesAutomaticAssessment,
     EtcDataSpeciesRegion,
+    EtcDicSpeciesType,
     db,
     restricted_species_2013,
 )
@@ -21,7 +22,7 @@ from art17.models import (
 from .utils import str2num
 
 DATE_FORMAT = "%Y-%m-%d %H:%M"
-DEFAULT_MS = "EU28"
+DEFAULT_MS = "EU27"
 
 QUALITIES = {
     "B": "Bad",
@@ -159,7 +160,11 @@ def get_config():
 
 
 def get_default_period():
+    from art17.auth import current_user
+
     conf = get_config()
+    if not current_user.is_authenticated:
+        return conf.default_public_dataset_id
     return conf.default_dataset_id
 
 
@@ -227,6 +232,8 @@ def inject_globals():
         "end_date": cfg.end_date,
         "is_public": is_public,
         "current_user": current_user,
+        "add_assessment_enabled": cfg.add_assessment_enabled,
+        "latest_dataset_public_view_enabled": cfg.latest_dataset_public_view_enabled,
     }
 
 
@@ -384,15 +391,37 @@ def get_original_record_url(row):
     return url_form
 
 
+def get_title_for_species_country_2024(row):
+    s_name, s_info, s_type = "", "", ""
+    s_name = row.speciesname or ""
+    s_info = ""
+    if s_info:
+        s_info = s_info.strip().replace("\n", "<br/>")
+    # now the species type is stored in presence_new field
+    # so we need to use it to get the species type details
+    # from EtcDicSpeciesType
+    species_type = EtcDicSpeciesType.query.filter_by(
+        dataset_id=row.dataset_id,
+        abbrev=row.presence_new,
+    ).first()
+    if species_type:
+        s_type = species_type.SpeciesType
+    else:
+        s_type = row.presence_new
+    return s_name, s_info, s_type
+
+
 def get_title_for_species_country(row):
+    if row.dataset.schema == "2024":
+        return get_title_for_species_country_2024(row)
     s_name, s_info, s_type = "", "", ""
     if (
-        row.speciesname != row.assesment_speciesname
+        row.speciesname != row.assessment_speciesname
         or row.complementary_other_information
     ):
-        s_name = row.speciesname or row.assesment_speciesname or ""
+        s_name = row.speciesname or row.assessment_speciesname or ""
         s_info = row.complementary_other_information or ""
-    if row.species_type_asses == 0:
+    if row.species_type_asses == False:
         s_type = (
             row.species_type_details.SpeciesType
             if row.species_type_details
@@ -405,7 +434,25 @@ def get_title_for_species_country(row):
     return s_name, s_info, s_type
 
 
+def get_title_for_habitat_country_2024(row):
+    s_name, s_info, s_type = "", "", ""
+    # now the habitat type is stored in presence_new field
+    # so we need to use it to get the habitat type details
+    # from EtcDicSpeciesType
+    habitat_type = EtcDicSpeciesType.query.filter_by(
+        dataset_id=row.dataset_id,
+        abbrev=row.presence_new,
+    ).first()
+    if habitat_type:
+        s_type = habitat_type.SpeciesType
+    else:
+        s_type = row.presence_new
+    return s_name, s_info, s_type
+
+
 def get_title_for_habitat_country(row):
+    if row.dataset.schema == "2024":
+        return get_title_for_habitat_country_2024(row)
     s_name, s_info, s_type = "", "", ""
     if row.complementary_other_information:
         s_info = row.complementary_other_information or ""

@@ -4,7 +4,7 @@
             The related products are not available for the period 2007-2012bis.
         </p>
     {% endif %}
-    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.id == 4 %} disabled {% endif %}>
+    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.id in [4, 6] %} disabled {% endif %}>
         View data sheet info
         {% if current_user.is_authenticated %}
           {% if wiki_unread %}({{ wiki_unread }} unread comments){% endif %}
@@ -38,14 +38,14 @@
       <span class="disabled button">
         Download factsheet
       </span>
-    {% elif dataset.id != 5 %}
+    {% elif dataset.id not in [5, 6] %}
       <a href="{{ factsheet_url }}" id="download-fs" class="button"
         target="_blank">
         Download factsheet
       </a>
     {% endif %}
     {% endif %}
-    {% if fs_error and dataset.id != 4 and dataset.id != 5 %}
+    {% if fs_error and dataset.id not in [4,5,6] %}
     <span class="disabled button" title="{{ fs_error }}" >
       Download factsheet
     </span>

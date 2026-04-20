@@ -42,7 +42,6 @@ def test_basic_errors(app, data, error, field_name):
     form.setup_choices(dataset_id=5)
     form.validate()
 
-
     field = getattr(form, field_name)
     if field_name == "form_errors":
         assert error in field

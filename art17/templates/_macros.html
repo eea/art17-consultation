@@ -20,6 +20,12 @@
   {% endif %}
 {% endmacro %}
 
+{% macro set_extrapolation(quality) %}
+  {% if quality %}
+    title="Quality of extrapolation: {{ quality }}"
+  {% endif %}
+{% endmacro %}
+
 {% macro conclusion_td(color, content, colspan=1) %}
   <td class="{{ CONCLUSION_CLASSES.get(color, '') }}" colspan="{{ colspan }}">
       <span class="conclusion">{{ content }}</span>
@@ -77,7 +83,7 @@
 
 {% macro method_conclusion_popout(title, method_field, conclusion_field) %}
   <div class="popout-wrapper">
-      <div class="popout assesment caret">
+      <div class="popout assessment caret">
       <div class="popout-title">
           <span class="close pull-right"><i class="fa fa-times"></i></span>
           {{ title }}
@@ -101,7 +107,7 @@
       </div>
       <a class="conclusion select block {{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
          tab-index
-         data-popout="assesment"
+         data-popout="assessment"
          data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
          data-value="method">
         {% if method_field.data %}
@@ -117,7 +123,7 @@
 
 {% macro select_conclusion_popout(title, conclusion_field) %}
   <div class="popout-wrapper">
-      <div class="popout assesment caret">
+      <div class="popout assessment caret">
       <div class="popout-title">
           <span class="close pull-right"><i class="fa fa-times"></i></span>
           {{ title }}
@@ -134,7 +140,7 @@
       </div>
       <a class="conclusion select block {{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
          tab-index
-         data-popout="assesment"
+         data-popout="assessment"
          data-initial="{{ CONCLUSION_CLASSES.get(conclusion_field.data, '') }}"
          data-value="radio">
         {% if conclusion_field.data %}

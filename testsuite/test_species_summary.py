@@ -14,7 +14,7 @@ from .factories import (
 def setup(app):
     DatasetFactory()
     EtcDicBiogeoregFactory()
-    EtcDataSpeciesRegionFactory(group="reptiles", assesment_speciesname="kitaibelii")
+    EtcDataSpeciesRegionFactory(group="reptiles", assessment_speciesname="kitaibelii")
     db.session.commit()
 
 

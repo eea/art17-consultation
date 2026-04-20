@@ -8,9 +8,15 @@
 ##title=
 ##
 request = container.REQUEST
-response =  request.response
+response = request.response
 
-return container.json_dumps({
-    'standard_html_header': context.standard_html_header(context, request, response),
-    'standard_html_footer': context.standard_html_footer(context, request, response),
-})
+return container.json_dumps(
+    {
+        "standard_html_header": context.standard_html_header(
+            context, request, response
+        ),
+        "standard_html_footer": context.standard_html_footer(
+            context, request, response
+        ),
+    }
+)

@@ -29,7 +29,7 @@ class EtcDataSpeciesRegionFactory(SQLAlchemyModelFactory):
     dataset_id = 5
     country = "AT"
     eu_country_code = "AT"
-    delivery = 2
+    delivery = False
     envelope = "http://"
     filename = "filename"
     region = "ALP"
@@ -67,7 +67,7 @@ class EtcDataHabitattypeRegionFactory(SQLAlchemyModelFactory):
     dataset_id = 5
     country = "AT2"
     eu_country_code = "AT"
-    delivery = 2
+    delivery = False
     envelope = "http://"
     filename = "filename"
     region = "ALP"
@@ -90,10 +90,10 @@ class SpeciesManualAssessmentFactory(SQLAlchemyModelFactory):
         sqlalchemy_session = models.db.session
 
     dataset_id = 5
-    assesment_speciesname = "Canis lupus"
+    assessment_speciesname = "Canis lupus"
     region = "BOR"
     user_id = "someuser"
-    MS = "EU28"
+    MS = "EU27"
 
 
 class EtcDataSpeciesAutomaticAssessmentFactory(SQLAlchemyModelFactory):
@@ -121,7 +121,7 @@ class HabitattypesManualAssessmentsFactory(SQLAlchemyModelFactory):
     habitatcode = "1110"
     region = "MATL"
     user_id = "someuser"
-    MS = "EU28"
+    MS = "EU27"
 
 
 class WikiFactory(SQLAlchemyModelFactory):
@@ -131,7 +131,7 @@ class WikiFactory(SQLAlchemyModelFactory):
 
     id = 1
     region_code = ""
-    assesment_speciesname = "Canis lupus"
+    assessment_speciesname = "Canis lupus"
     dataset_id = 5
 
 
@@ -156,7 +156,7 @@ class WikiTrailFactory(SQLAlchemyModelFactory):
 
     id = 1
     region_code = "CON"
-    assesment_speciesname = "Canis lupus"
+    assessment_speciesname = "Canis lupus"
     dataset_id = 5
 
 
@@ -195,10 +195,10 @@ class CommentFactory(SQLAlchemyModelFactory):
     id = 1
     comment = "This is a comment"
     author_id = "testuser"
-    assesment_speciesname = "Canis lupus"
+    assessment_speciesname = "Canis lupus"
     region = "BOR"
     user_id = "someuser"
-    MS = "EU28"
+    MS = "EU27"
     post_date = datetime.now().strftime(DATE_FORMAT)
     dataset_id = 5
 
@@ -214,7 +214,7 @@ class HabitatCommentFactory(SQLAlchemyModelFactory):
     habitat = "1110"
     region = "MATL"
     user_id = "someuser"
-    MS = "EU28"
+    MS = "EU27"
     post_date = datetime.now().strftime(DATE_FORMAT)
     dataset_id = 5
 

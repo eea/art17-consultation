@@ -35,11 +35,25 @@
   {% include 'report/filters.html' %}
 
   {% if current_selection %}
+  {% if not dataset.latest or latest_dataset_public_view_enabled or current_user.is_authenticated %}
 
     {% include 'common/note_report_species.html' %}
+
+    {% if dataset.schema == '2024' %}
+      <p class="note">
+        The delayed delivery by Spain did not allow the Spanish report to be used for the EU conservation status
+        assessment. Where possible, Spanish data from the period 2013-2019 were used for the EU assessments of
+        2019-2024. You can see a relevant technical note here.
+      </p>
+    {% endif %}
+
     {% include 'common/table_legend.html' %}
 
+  {% if dataset.schema == '2024' %}
+    {% set colspan_all=41 if region else 41 %}
+  {% else %}
     {% set colspan_all=35 if region else 36 %}
+  {% endif %}
 
     <table class="complex_datatable">
       <caption>
@@ -49,6 +63,8 @@
 
       {% if dataset.schema == '2018' %}
         {% include "common/species_table_header_2018.html" with context %}
+      {% elif dataset.schema == '2024' %}
+        {% include "common/species_table_header_2024.html" with context %}
       {% else %}
         {% include "common/species_table_header.html" with context %}
       {% endif %}
@@ -58,9 +74,9 @@
         {% for row in objects %}
           {% set visible = can_view(row, restricted_countries) %}
 
-          {% if row.speciesname != row.assesment_speciesname %}
+          {% if row.speciesname != row.assessment_speciesname %}
             {% set title="Scientific name used in original MS report if different than recommended: "
-            + row.speciesname or row.assesment_speciesname or '' %}
+            + row.speciesname or row.assessment_speciesname or '' %}
           {% else %}
             {% set title = row.subject | safe %}
           {% endif %}
@@ -98,6 +114,8 @@
             {% else %}
               {% if dataset.schema == '2018' %}
                 {% include 'summary/species/content/content_2018.html' with context %}
+              {% elif dataset.schema == '2024' %}
+                {% include 'summary/species/content/content_2024.html' with context %}
               {% else %}
                 {% include 'summary/species/content/range.html' with context %}
                 {% include 'summary/species/content/population.html' with context %}
@@ -114,6 +132,7 @@
       </tbody>
 
     </table>
+  {% endif %}
   {% endif %}
 
 {% endblock %}

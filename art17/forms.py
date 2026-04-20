@@ -3,7 +3,8 @@ from flask_wtf import FlaskForm as Form_base
 from wtforms import BooleanField, DateField, SelectField, StringField, TextAreaField
 from wtforms.validators import Optional, ValidationError
 
-from art17.common import DEFAULT_MS
+from art17.common import DEFAULT_MS, get_config
+from sqlalchemy import or_
 from art17.models import (
     Dataset,
     EtcDataHabitattypeRegion,
@@ -12,6 +13,7 @@ from art17.models import (
     EtcDicMethod,
     EtcDicPopulationUnit,
 )
+from art17.auth.security import current_user
 from art17.utils import (
     validate_field,
     validate_float,
@@ -22,6 +24,10 @@ from art17.utils import (
 
 EMPTY_FORM = "Please fill at least one field"
 NOT_NUMERIC_VALUES = "Only numeric values with not more than two decimals are accepted!"
+NOT_QUALIFIER_NUMERIC_VALUES = (
+    "Only the following formats are accepted: <qualifier><number> "
+    "where qualifier is one of: >, >>, ≈, <, x"
+)
 NOT_KNOWN_OPERATORS = "Only the following values are accepted: " + "≈, <, >>, >, x"
 
 METH_CONCL_MANDATORY = "At least one method and conclusion must be filled!"
@@ -32,7 +38,7 @@ INVALID_MS_REGION_PAIR = (
     "Please select an MS country code that is available " "for the selected region"
 )
 
-NATURE_CHOICES = [("", ""), ("gen", "gen"), ("nong", "nong"), ("nc", "nc")]
+NATURE_CHOICES = [("", ""), ("gen", "gen"), ("no", "no"), ("nc", "nc")]
 CONTRIB_METHODS = [
     ("A=", "A="),
     ("A+", "A+"),
@@ -42,10 +48,22 @@ CONTRIB_METHODS = [
     ("D", "D"),
     ("E", "E"),
 ]
-CONTRIB_TYPE = [("+", "+"), ("-", "-"), ("=", "="), ("x", "x")]
+
+CONTRIB_TYPE = [
+    ("+", "+"),
+    ("-", "-"),
+    ("=", "="),
+    ("x", "x"),
+]
+
 CONCL_TYPE = [("+", "+"), ("-", "-"), ("0", "0"), ("x", "x")]
 
-TREND_CHOICES = [("+", "+"), ("-", "-"), ("=", "="), ("x", "x")]
+TREND_CHOICES = [
+    ("+", "+"),
+    ("-", "-"),
+    ("=", "="),
+    ("x", "x"),
+]
 
 PROSPECTS_CHOICES = [
     ("", ""),
@@ -170,7 +188,17 @@ class CommonFilterForm(Form):
 
     def __init__(self, *args, **kwargs):
         super(CommonFilterForm, self).__init__(*args, **kwargs)
-        self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
+        cfg = get_config()
+        if (
+            not current_user.is_authenticated
+            and not cfg.latest_dataset_public_view_enabled
+        ):
+            datasets = Dataset.query.filter(
+                or_(Dataset.latest == False, Dataset.latest == None)
+            ).all()
+            self.period.choices = [(d.id, d.name) for d in datasets]
+        else:
+            self.period.choices = [(d.id, d.name) for d in Dataset.query.all()]
 
 
 class SummaryFilterForm(CommonFilterForm):
@@ -235,7 +263,6 @@ class SummaryFormMixin(object):
     def all_errors(self):
         errors = []
         error_entries = self.errors
-        error_entries.pop("", None)
         for field_name, field_errors in error_entries.items():
             errors.extend(field_errors)
         errors = set(errors)
@@ -246,7 +273,54 @@ class SummaryFormMixin(object):
         return text
 
 
-class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
+class SpeciesFormMixin(object):
+    def populate_obj(self, obj, **kwargs):
+        super().populate_obj(obj, **kwargs)
+        # combine complementary_favourable_population_size and complementary_favourable_population_q
+        size = self.complementary_favourable_population_size.data or ""
+        qualifier = self.complementary_favourable_population_q.data or ""
+        obj.complementary_favourable_population_q = ""  # remove qualifier from db field
+        obj.complementary_favourable_population = f"{qualifier}{size}"
+
+        # combine complementary_favourable_range_size and complementary_favourable_range_q
+        size = self.complementary_favourable_range_size.data or ""
+        qualifier = self.complementary_favourable_range_q.data or ""
+        obj.complementary_favourable_range_q = ""  # remove qualifier from db field
+        obj.complementary_favourable_range = f"{qualifier}{size}"
+        return obj
+
+    def process(self, formdata=None, obj=None, **kwargs):
+        super().process(formdata=formdata, obj=obj, **kwargs)
+        if formdata == {} and obj:
+            # split complementary_favourable_population into size and qualifier
+            if obj.complementary_favourable_population:
+                data = obj.complementary_favourable_population
+                qualifier = ""
+                size = data
+                for op in [">>", ">", "<", "≈", "x"]:
+                    if data.startswith(op):
+                        qualifier = op
+                        size = data[len(op) :]
+                        break
+                self.complementary_favourable_population_size.data = size
+                self.complementary_favourable_population_q.data = qualifier
+            # split complementary_favourable_range into size and qualifier
+            if obj.complementary_favourable_range:
+                data = obj.complementary_favourable_range
+                qualifier = ""
+                size = data
+                for op in [">>", ">", "<", "≈", "x"]:
+                    if data.startswith(op):
+                        qualifier = op
+                        size = data[len(op) :]
+                        break
+                self.complementary_favourable_range_size.data = size
+                self.complementary_favourable_range_q.data = qualifier
+
+
+class SummaryManualFormSpecies(
+    SpeciesFormMixin, Form, OptionsBaseSpecies, SummaryFormMixin
+):
 
     region = SelectField(default="", validate_choice=False)
 
@@ -254,10 +328,19 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     method_range = OptionalSelectField()
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
-    complementary_favourable_range = StringField(validators=[float_validation])
-    complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_population = StringField(validators=[float_validation])
+
+    # The complementary_favourable_population field is split into complementary_favourable_population_size
+    # and complementary_favourable_population_q to capture the two pieces of information separately.
+    # they will both be saved in the complementary_favourable_population field in the database
+    # Similar for complementary_favourable_range
+    complementary_favourable_population_size = StringField(
+        validators=[float_validation]
+    )
     complementary_favourable_population_q = OptionalSelectField()
+
+    complementary_favourable_range_size = StringField(validators=[float_validation])
+    complementary_favourable_range_q = OptionalSelectField()
+
     population_minimum_size = StringField(validators=[float_validation])
     population_maximum_size = StringField(validators=[float_validation])
     population_best_value = StringField(validators=[float_validation])
@@ -271,9 +354,6 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
     conclusion_habitat = OptionalSelectField()
     habitat_trend = OptionalSelectField()
 
-    future_range = OptionalSelectField()
-    future_population = OptionalSelectField()
-    future_habitat = OptionalSelectField()
     method_future = OptionalSelectField()
     conclusion_future = OptionalSelectField()
 
@@ -313,9 +393,6 @@ class SummaryManualFormSpecies(Form, OptionsBaseSpecies, SummaryFormMixin):
 
         self.method_habitat.choices = ZERO_METHODS + self.get_sf_options(methods)
 
-        self.future_range.choices = PROSPECTS_CHOICES
-        self.future_population.choices = PROSPECTS_CHOICES
-        self.future_habitat.choices = PROSPECTS_CHOICES
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
         self.method_target1.choices = empty + CONTRIB_METHODS
@@ -374,7 +451,54 @@ class SummaryManualFormSpeciesSTA(SummaryManualFormSpecies):
     )
 
 
-class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
+class HabitatsFormMixin(object):
+    def populate_obj(self, obj, **kwargs):
+        super().populate_obj(obj, **kwargs)
+        # combine complementary_favourable_area_size and complementary_favourable_area_q
+        size = self.complementary_favourable_area_size.data or ""
+        qualifier = self.complementary_favourable_area_q.data or ""
+        obj.complementary_favourable_area_q = ""  # remove qualifier from db field
+        obj.complementary_favourable_area = f"{qualifier}{size}"
+
+        # combine complementary_favourable_range_size and complementary_favourable_range_q
+        size = self.complementary_favourable_range_size.data or ""
+        qualifier = self.complementary_favourable_range_q.data or ""
+        obj.complementary_favourable_range_q = ""  # remove qualifier from db field
+        obj.complementary_favourable_range = f"{qualifier}{size}"
+        return obj
+
+    def process(self, formdata=None, obj=None, **kwargs):
+        super().process(formdata=formdata, obj=obj, **kwargs)
+        if formdata == {} and obj:
+            # split complementary_favourable_area into size and qualifier
+            if obj.complementary_favourable_area:
+                data = obj.complementary_favourable_area
+                qualifier = ""
+                size = data
+                for op in [">>", ">", "<", "≈", "x"]:
+                    if data.startswith(op):
+                        qualifier = op
+                        size = data[len(op) :]
+                        break
+                self.complementary_favourable_area_size.data = size
+                self.complementary_favourable_area_q.data = qualifier
+            # split complementary_favourable_range into size and qualifier
+            if obj.complementary_favourable_range:
+                data = obj.complementary_favourable_range
+                qualifier = ""
+                size = data
+                for op in [">>", ">", "<", "≈", "x"]:
+                    if data.startswith(op):
+                        qualifier = op
+                        size = data[len(op) :]
+                        break
+                self.complementary_favourable_range_size.data = size
+                self.complementary_favourable_range_q.data = qualifier
+
+
+class SummaryManualFormHabitat(
+    HabitatsFormMixin, SummaryFormMixin, Form, OptionsBaseHabitat
+):
 
     region = SelectField(validate_choice=False)
 
@@ -383,7 +507,7 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
     conclusion_range = OptionalSelectField()
     range_trend = OptionalSelectField()
     range_yearly_magnitude = StringField()
-    complementary_favourable_range = StringField(validators=[float_validation])
+    complementary_favourable_range_size = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
     coverage_surface_area = StringField(validators=[float_validation])
     coverage_surface_area_min = StringField(validators=[float_validation])
@@ -391,10 +515,8 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
     method_area = OptionalSelectField()
     conclusion_area = OptionalSelectField()
     coverage_trend = OptionalSelectField()
-    coverage_yearly_magnitude = StringField()
-    complementary_favourable_area = StringField(validators=[float_validation])
+    complementary_favourable_area_size = StringField(validators=[float_validation])
     complementary_favourable_area_q = OptionalSelectField()
-
     hab_condition_good_min = StringField(validators=[numeric_validation])
     hab_condition_good_max = StringField(validators=[numeric_validation])
     hab_condition_good_best = StringField(validators=[numeric_validation])
@@ -411,9 +533,6 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
     conclusion_structure = OptionalSelectField()
     hab_condition_trend = OptionalSelectField()
 
-    future_area = OptionalSelectField()
-    future_range = OptionalSelectField()
-    future_structure = OptionalSelectField()
     method_future = OptionalSelectField()
     conclusion_future = OptionalSelectField()
 
@@ -469,9 +588,6 @@ class SummaryManualFormHabitat(Form, OptionsBaseHabitat, SummaryFormMixin):
             self.backcasted_2007,
         ):
             f.choices = conclusions
-        self.future_area.choices = PROSPECTS_CHOICES
-        self.future_range.choices = PROSPECTS_CHOICES
-        self.future_structure.choices = PROSPECTS_CHOICES
         self.conclusion_assessment_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
@@ -511,22 +627,112 @@ class SummaryManualFormHabitatSTA(SummaryManualFormHabitat):
     )
 
 
-class SummaryManualFormSpeciesRef(Form, SummaryFormMixin, OptionsBaseSpecies):
+class SummaryManualFormSpeciesRef(
+    SpeciesFormMixin, Form, SummaryFormMixin, OptionsBaseSpecies
+):
 
     region = SelectField(validate_choice=False)
 
-    complementary_favourable_range = StringField(validators=[float_validation])
+    range_surface_area = StringField(default=None, validators=[numeric_validation])
+    method_range = OptionalSelectField()
+    conclusion_range = OptionalSelectField()
+    range_trend = OptionalSelectField()
+    complementary_favourable_range_size = StringField(validators=[float_validation])
     complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_population = StringField(validators=[float_validation])
+
+    population_minimum_size = StringField(validators=[float_validation])
+    population_maximum_size = StringField(validators=[float_validation])
+    population_best_value = StringField(validators=[float_validation])
+    population_unit = OptionalSelectField()
+    method_population = OptionalSelectField()
+    conclusion_population = OptionalSelectField()
+    population_trend = OptionalSelectField()
+
+    complementary_favourable_population_unit = OptionalSelectField()
+
+    method_habitat = OptionalSelectField()
+    conclusion_habitat = OptionalSelectField()
+    habitat_trend = OptionalSelectField()
+
+    method_future = OptionalSelectField()
+    conclusion_future = OptionalSelectField()
+
+    method_assessment = OptionalSelectField()
+    conclusion_assessment = OptionalSelectField()
+    conclusion_assessment_trend = OptionalSelectField()
+    conclusion_assessment_change = OptionalSelectField()
+    conclusion_assessment_trend_change = OptionalSelectField()
+
+    complementary_favourable_population_size = StringField(
+        validators=[float_validation]
+    )
     complementary_favourable_population_q = OptionalSelectField()
     backcasted_2007 = OptionalSelectField()
 
     def setup_choices(self, dataset_id):
         empty = [("", "")]
+
+        units = [a for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
+        units = empty + units
+
+        self.population_unit.choices = units
+        self.complementary_favourable_population_unit.choices = units
+
+        methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
+        methods = empty + list(zip(methods, methods))
+
+        self.method_population.choices = ZERO_METHODS + self.get_method_options(methods)
+        self.method_range.choices = ZERO_METHODS + self.get_method_options(methods)
+        self.method_habitat.choices = ZERO_METHODS + self.get_sf_options(methods)
+
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
-        self.backcasted_2007.choices = conclusions
+        self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
+        self.method_assessment.choices = self.get_assesm_options(methods)
+
+        self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
+        self.conclusion_assessment_change.choices = NATURE_CHOICES
+        self.conclusion_assessment_trend_change.choices = NATURE_CHOICES
+
+        trends = empty + TREND_CHOICES
+        for f in (self.range_trend, self.population_trend, self.habitat_trend):
+            f.choices = trends
+
+        for f in (
+            self.conclusion_range,
+            self.conclusion_future,
+            self.conclusion_population,
+            self.conclusion_habitat,
+            self.conclusion_assessment,
+            self.backcasted_2007,
+        ):
+            f.choices = conclusions
+
+    def custom_validate(self, **kwargs):
+        method_conclusions = [
+            (self.method_range, self.conclusion_range),
+            (self.method_population, self.conclusion_population),
+            (self.method_habitat, self.conclusion_habitat),
+            (self.method_future, self.conclusion_future),
+            (self.method_assessment, self.conclusion_assessment),
+        ]
+        one = False
+        for m, c in method_conclusions:
+            mc, cc = m.data, c.data
+            if mc and not cc:
+                c.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif cc and not mc:
+                m.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif mc and cc:
+                one = True
+        if not one:
+            self.form_errors.append(METH_CONCL_MANDATORY)
+        try:
+            form_validation(self)
+        except ValidationError as e:
+            self.form_errors.append(str(e))
+        return not self.errors
 
     def __init__(self, *args, **kwargs):
         super(SummaryManualFormSpeciesRef, self).__init__(*args, **kwargs)
@@ -544,28 +750,126 @@ class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
     )
 
 
-class SummaryManualFormHabitatRef(Form, SummaryFormMixin, OptionsBaseSpecies):
+class SummaryManualFormHabitatRef(
+    HabitatsFormMixin, Form, SummaryFormMixin, OptionsBaseSpecies
+):
 
     region = SelectField(validate_choice=False)
 
-    complementary_favourable_range = StringField(validators=[float_validation])
-    complementary_favourable_range_q = OptionalSelectField()
-    complementary_favourable_area = StringField(validators=[float_validation])
-    complementary_favourable_area_q = OptionalSelectField()
-    backcasted_2007 = OptionalSelectField()
+    range_surface_area = StringField(validators=[float_validation])
+    method_range = OptionalSelectField()
+    conclusion_range = OptionalSelectField()
+    range_trend = OptionalSelectField()
 
-    def setup_choices(self, dataset_id):
-        empty = [("", "")]
-        conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
-        conclusions = empty + list(zip(conclusions, conclusions))
-        conclusions = self.filter_conclusions(conclusions)
-        self.backcasted_2007.choices = conclusions
+    complementary_favourable_range_size = StringField(validators=[float_validation])
+    complementary_favourable_range_q = OptionalSelectField()
+
+    coverage_surface_area_min = StringField(validators=[float_validation])
+    coverage_surface_area_max = StringField(validators=[float_validation])
+    coverage_surface_area = StringField(validators=[float_validation])
+    method_area = OptionalSelectField()
+    conclusion_area = OptionalSelectField()
+    coverage_trend = OptionalSelectField()
+
+    complementary_favourable_area_size = StringField(validators=[float_validation])
+    complementary_favourable_area_q = OptionalSelectField()
+
+    hab_condition_good_min = StringField(validators=[numeric_validation])
+    hab_condition_good_max = StringField(validators=[numeric_validation])
+    hab_condition_good_best = StringField(validators=[numeric_validation])
+
+    hab_condition_notgood_min = StringField(validators=[numeric_validation])
+    hab_condition_notgood_max = StringField(validators=[numeric_validation])
+    hab_condition_notgood_best = StringField(validators=[numeric_validation])
+
+    hab_condition_unknown_min = StringField(validators=[numeric_validation])
+    hab_condition_unknown_max = StringField(validators=[numeric_validation])
+    hab_condition_unknown_best = StringField(validators=[numeric_validation])
+
+    method_structure = OptionalSelectField()
+    conclusion_structure = OptionalSelectField()
+    hab_condition_trend = OptionalSelectField()
+
+    method_future = OptionalSelectField()
+    conclusion_future = OptionalSelectField()
+
+    method_assessment = OptionalSelectField()
+    conclusion_assessment = OptionalSelectField()
+
+    conclusion_assessment_trend = OptionalSelectField()
+    conclusion_assessment_change = OptionalSelectField()
+    conclusion_assessment_trend_change = OptionalSelectField()
 
     def __init__(self, *args, **kwargs):
         super(SummaryManualFormHabitatRef, self).__init__(*args, **kwargs)
         empty = [("", "")]
         self.complementary_favourable_range_q.choices = empty + OPERATOR_CHOICES
         self.complementary_favourable_area_q.choices = empty + OPERATOR_CHOICES
+
+    def setup_choices(self, dataset_id):
+        empty = [("", "")]
+
+        methods = [a[0] for a in EtcDicMethod.all(dataset_id)]
+        methods = empty + list(zip(methods, methods))
+        conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
+        conclusions = empty + list(zip(conclusions, conclusions))
+        conclusions = self.filter_conclusions(conclusions)
+
+        self.region.choices = empty
+
+        self.method_range.choices = ZERO_METHODS + self.get_method_options(methods)
+        self.method_area.choices = ZERO_METHODS + self.get_method_options(methods)
+
+        self.method_structure.choices = ZERO_METHODS + self.get_method_options(methods)
+        self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
+        self.method_assessment.choices = self.get_assesm_options(methods)
+
+        self.complementary_favourable_range_q.choices = empty + OPERATOR_CHOICES
+        self.complementary_favourable_area_q.choices = empty + OPERATOR_CHOICES
+        for f in (
+            self.range_trend,
+            self.coverage_trend,
+            self.conclusion_assessment_trend,
+            self.hab_condition_trend,
+        ):
+            f.choices = empty + TREND_CHOICES
+        for f in (
+            self.conclusion_range,
+            self.conclusion_area,
+            self.conclusion_structure,
+            self.conclusion_future,
+            self.conclusion_assessment,
+        ):
+            f.choices = conclusions
+        self.conclusion_assessment_change.choices = NATURE_CHOICES
+        self.conclusion_assessment_trend_change.choices = NATURE_CHOICES
+        self.conclusion_assessment_trend.choices = empty + CONTRIB_TYPE
+
+    def custom_validate(self, **kwargs):
+        method_conclusions = [
+            (self.method_range, self.conclusion_range),
+            (self.method_area, self.conclusion_area),
+            (self.method_structure, self.conclusion_structure),
+            (self.method_future, self.conclusion_future),
+            (self.method_assessment, self.conclusion_assessment),
+        ]
+
+        one = False
+        for m, c in method_conclusions:
+            mc, cc = m.data, c.data
+            if mc and not cc:
+                c.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif cc and not mc:
+                m.errors.append(METH_CONCL_PAIR_MANDATORY)
+            elif mc and cc:
+                one = True
+        if not one:
+            self.form_errors.append(METH_CONCL_MANDATORY)
+        try:
+            form_validation(self)
+        except ValidationError as e:
+            self.form_errors.append(str(e))
+        return not self.errors
 
 
 class SummaryManualFormHabitatRefSTA(SummaryManualFormHabitatRef):
@@ -618,6 +922,11 @@ class ConfigForm(Form):
         validators=[Optional()],
     )
     default_dataset_id = SelectField(label="Default period")
+    default_public_dataset_id = SelectField(label="Default public period")
+    add_assessment_enabled = BooleanField(label="Enable add assessment")
+    latest_dataset_public_view_enabled = BooleanField(
+        label="Enable public view of latest dataset"
+    )
 
     class Meta:
         csrf = True
@@ -626,6 +935,9 @@ class ConfigForm(Form):
         super(ConfigForm, self).__init__(*args, **kwargs)
         dataset_qs = Dataset.query.with_entities(Dataset.id, Dataset.name).all()
         self.default_dataset_id.choices = [
+            (str(ds_id), name) for ds_id, name in dataset_qs
+        ]
+        self.default_public_dataset_id.choices = [
             (str(ds_id), name) for ds_id, name in dataset_qs
         ]
 

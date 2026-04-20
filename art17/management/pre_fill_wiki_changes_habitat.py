@@ -17,14 +17,14 @@ def run(**kwargs):
         exists = Wiki.query.filter_by(
             dataset_id=kwargs["dataset_id"],
             region_code=wiki.region_code,
-            assesment_speciesname=wiki.assesment_speciesname,
+            assessment_speciesname=wiki.assessment_speciesname,
             habitatcode=wiki.habitatcode,
         ).all()
         if not exists:
             wiki_new = Wiki(
                 dataset_id=kwargs["dataset_id"],
                 region_code=wiki.region_code,
-                assesment_speciesname=wiki.assesment_speciesname,
+                assessment_speciesname=wiki.assessment_speciesname,
                 habitatcode=wiki.habitatcode,
             )
             db.session.add(wiki_new)

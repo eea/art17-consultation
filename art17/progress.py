@@ -140,14 +140,14 @@ class Progress(views.View):
             [
                 row["eu_country_code"]
                 for row in presence
-                if row["species_type_asses"] == 0
+                if row["species_type_asses"] == False
             ]
         )
         present = ",".join(
             [
                 row["eu_country_code"]
                 for row in presence
-                if row["species_type_asses"] != 0
+                if row["species_type_asses"] != False
             ]
         )
         return dict(occasional=occasional, present=present)

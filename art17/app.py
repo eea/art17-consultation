@@ -80,7 +80,7 @@ def create_app(config={}, testing=False):
     migrate = Migrate()
     db.init_app(app)
     migrate.init_app(app, db)
-    if app.config.get("ADMIN_INTERFACE", None):
+    if app.config.get("ADMIN_INTERFACE", True):
         admin_register(app)
     app.register_blueprint(layout)
     app.register_blueprint(summary)

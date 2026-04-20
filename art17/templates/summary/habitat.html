@@ -28,7 +28,8 @@
     <p>The Article 17 web tool provides an access to EU biogeographical and Member States’ assessments of
        conservation status of the habitat types and species of Community interest compiled as part of
        the Habitats Directive - Article 17 reporting process. These assessments have been carried out
-       in EU25 for the period 2001-2006, in EU 27 for the period 2007-2012 and in EU28 for the period 2013-2018.
+       in EU 25 for the period 2001-2006, in EU 27 for the period 2007-2012, in EU 28 for the period 2013-2018
+       and in EU 27 for the period 2019-2024.
     </p>
     <p>
       Choose a period, a group, then a habitat type belonging to that group.<br>Optionally, further
@@ -54,14 +55,27 @@
 
   {% if dataset.schema == '2018' %}
     {% set colspan_all=40 if region else 41 %}
+  {% elif dataset.schema == '2024' %}
+    {% set colspan_all=40 if region else 41 %}
   {% else %}
     {% set colspan_all=34 if region else 35 %}
   {% endif %}
 
   {% if current_selection %}
 
+    {% if not dataset.latest or latest_dataset_public_view_enabled or current_user.is_authenticated %}
+
     {% include 'summary/wiki_buttons.html' %}
     {% include 'common/note.html' %}
+
+    {% if dataset.schema == '2024' %}
+      <p class="note">
+        The delayed delivery by Spain did not allow the Spanish report to be used for the EU conservation status
+        assessment. Where possible, Spanish data from the period 2013-2019 were used for the EU assessments of
+        2019-2024. You can see a relevant technical note here.
+      </p>
+    {% endif %}
+
     {% include 'common/table_legend.html' %}
 
     <form class="form" method="post" action="#theform">
@@ -79,7 +93,9 @@
           </caption>
 
           {% if dataset.schema == '2018' %}
-            {%  include 'common/habitat_table_header_2018.html' with context %}
+            {% include 'common/habitat_table_header_2018.html' with context %}
+          {% elif dataset.schema == '2024' %}
+            {% include 'common/habitat_table_header_2024.html' with context %}
           {% else %}
             {% include 'common/habitat_table_header.html' with context %}
           {% endif %}
@@ -89,8 +105,11 @@
               {% set visible = can_view(row, restricted_countries) %}
               {% set qa_errors = record_errors(row) %}
               <tr {% if row.is_assesm %}class="assesm"{% endif %}>
-                {% include 'summary/common/content/ms_region.html' %}
-
+                {% if dataset.schema == '2024' %}
+                  {% include 'summary/common/content/ms_region_2024.html' %}
+                {% else %}
+                  {% include 'summary/common/content/ms_region.html' %}
+                {% endif %}
                 {% if not visible %}
                   <td colspan="4">
                     {{ row.eu_country_code }} has provided a report to the European Commission under Article 17
@@ -98,6 +117,8 @@
                 {% else %}
                   {% if dataset.schema == '2018' %}
                     {% include 'summary/habitat/content/content_2018.html' with context %}
+                  {% elif dataset.schema == '2024' %}
+                    {% include 'summary/habitat/content/content_2024.html' with context %}
                   {% else %}
                     {% include 'summary/habitat/content/range.html' with context %}
                     {% include 'summary/habitat/content/area.html' with context %}
@@ -129,6 +150,8 @@
               <tr>
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/habitat/auto/content_2018.html' with context %}
+                {% elif dataset.schema == '2024' %}
+                  {% include 'summary/habitat/auto/content_2024.html' with context %}
                 {% else %}
                   {% include 'summary/common/auto/ms.html' with context %}
                   {% include 'summary/common/auto/range.html' with context %}
@@ -159,6 +182,8 @@
             </tr>
             {% if dataset.schema == '2018' %}
               {% include 'common/habitat_manual_table_header_2018.html' %}
+            {% elif dataset.schema == '2024' %}
+              {% include 'common/habitat_manual_table_header_2024.html' %}
             {% else %}
               {% include 'common/habitat_manual_table_header.html' %}
             {% endif %}
@@ -171,6 +196,8 @@
                   {# MS and region #}
                   {% if dataset.schema == '2018' %}
                     {% include 'summary/habitat/manual/manual_2018.html' %}
+                  {% elif dataset.schema == '2024' %}
+                    {% include 'summary/habitat/manual/manual_2024.html' %}
                   {% else %}
                     {% include 'summary/common/manual/ms.html' %}
                     {% include 'summary/common/manual/range.html' %}
@@ -186,6 +213,8 @@
               {% else %}
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/habitat/manual_form_2018.html' %}
+                {% elif dataset.schema == '2024' %}
+                  {% include 'summary/habitat/manual_form_2024.html' %}
                 {% else %}
                   {% include 'summary/habitat/manual_form.html' %}
                 {% endif %}
@@ -200,6 +229,8 @@
               {% if can_add %}
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/habitat/manual_form_2018.html' %}
+                {% elif dataset.schema == '2024' %}
+                  {% include 'summary/habitat/manual_form_2024.html' %}
                 {% else %}
                   {% include 'summary/habitat/manual_form.html' %}
                 {% endif %}
@@ -214,11 +245,12 @@
       </div>
     </form>
   {% endif %}
+  {% endif %}
+  <p class="italic">
+    <b>Legal notice:</b> A minimum amount of personal data (including cases of submitted comments during the public consultation) is stored
+    in the web tool. These data are necessary for the functioning of the tool and are only accessible to tool administrators.
+  </p>
   {% if period_selected == '5' and subject != None and subject != '' %}
-    <p class="italic">
-      <b>Legal notice:</b> A minimum amount of personal data (including cases of submitted comments during the public consultation) is stored
-      in the web tool. These data are necessary for the functioning of the tool and are only accessible to tool administrators.
-    </p>
     <p class="italic">
       The distribution data for France (2013 – 2018 reporting) were corrected after the official submission of the Article 17 reports by France.
       The maps displayed via this web tool take into account these corrections, while the values under Distribution area (km2) used for the EU

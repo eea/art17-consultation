@@ -107,7 +107,7 @@ def run(**kwargs):
             new_type = models.EtcDicSpeciesType(
                 SpeciesTypeID=type.SpeciesTypeID,
                 SpeciesType=type.SpeciesType,
-                Assesment=type.Assesment,
+                Assessment=type.Assessment,
                 Note=type.Note,
                 abbrev=type.abbrev,
                 dataset_id=dataset.id,
@@ -169,9 +169,3 @@ def run(**kwargs):
             )
             models.db.session.add(new_country)
             models.db.session.commit()
-
-    habitatcodes = [
-        data.habitatcode
-        for data in models.EtcDataHabitattypeRegion.query.all()
-        if data.dataset_id == dataset.id
-    ]

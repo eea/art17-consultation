@@ -34,7 +34,7 @@ def dataset_app(app):
         percentage_future=50,
         percentage_habitat_surface_area=70,
         percentage_assessment=90,
-        assesment_speciesname=CANIS_LUPUS,
+        assessment_speciesname=CANIS_LUPUS,
         region="ALP",
     )
     EtcDataSpeciesAutomaticAssessmentFactory(
@@ -45,12 +45,12 @@ def dataset_app(app):
         percentage_future=60,
         percentage_habitat_surface_area=80,
         percentage_assessment=100,
-        assesment_speciesname=CANIS_LUPUS,
+        assessment_speciesname=CANIS_LUPUS,
         region="ALP",
     )
     SpeciesManualAssessmentFactory(
         dataset_id=1,
-        assesment_speciesname=CANIS_LUPUS,
+        assessment_speciesname=CANIS_LUPUS,
         region="ALP",
         decision="OK",
         method_range="1",
@@ -61,7 +61,7 @@ def dataset_app(app):
     )
     SpeciesManualAssessmentFactory(
         dataset_id=2,
-        assesment_speciesname=CANIS_LUPUS,
+        assessment_speciesname=CANIS_LUPUS,
         region="ALP",
         decision="OK",
         method_range="1",
@@ -262,7 +262,7 @@ def test_get_subject_details(client, set_auth, dataset_app):
 
 
 def test_unread_comments_species(client, set_auth, dataset_app):
-    CommentFactory(id=1, dataset_id=1, region="ALP", assesment_speciesname=CANIS_LUPUS)
+    CommentFactory(id=1, dataset_id=1, region="ALP", assessment_speciesname=CANIS_LUPUS)
     models.db.session.commit()
 
     url = "/species/summary/"
@@ -277,7 +277,7 @@ def test_unread_comments_species(client, set_auth, dataset_app):
     assert result.status_code == 200
     assert "0/0" in result
 
-    CommentFactory(id=2, dataset_id=2, region="ALP", assesment_speciesname=CANIS_LUPUS)
+    CommentFactory(id=2, dataset_id=2, region="ALP", assessment_speciesname=CANIS_LUPUS)
     models.db.session.commit()
 
     params["period"] = 1

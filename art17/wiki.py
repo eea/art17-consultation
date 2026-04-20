@@ -171,7 +171,7 @@ class CommonSection(object):
     def set_attrs(self, page):
         self.page = page
         if self.page == "species":
-            self.subject_field = "assesment_speciesname"
+            self.subject_field = "assessment_speciesname"
         elif self.page == "habitat":
             self.subject_field = "habitatcode"
         else:

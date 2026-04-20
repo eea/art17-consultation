@@ -186,6 +186,11 @@ def format_info(value):
     return value.replace("||", "||<br>")
 
 
+@summary.app_template_filter("format_envelope_text")
+def format_envelope_text(value):
+    return value.replace("\n", "<br>")
+
+
 @summary.app_template_filter("get_quality")
 def get_quality(value, default="N/A"):
     if value and value[0].upper() in QUALITIES:
@@ -458,13 +463,13 @@ class SpeciesSummary(SpeciesMixin, Summary):
             period, current_user.id
         ).get_wiki_unread_count(subject, region)
         if subject:
-            filter_args["assesment_speciesname"] = subject
+            filter_args["assessment_speciesname"] = subject
         else:
             return False
         self.restricted_countries = [
             r[0]
             for r in db.session.query(t_restricted_species.c.eu_country_code)
-            .filter(t_restricted_species.c.assesment_speciesname == subject.lower())
+            .filter(t_restricted_species.c.assessment_speciesname == subject.lower())
             .filter(t_restricted_species.c.ext_dataset_id == period)
             .filter(t_restricted_species.c.show_data == 0)
             .all()

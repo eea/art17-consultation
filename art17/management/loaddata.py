@@ -3,10 +3,13 @@ import os
 
 from flask.cli import AppGroup
 
+
 def get_model(self, name):
     return self.Model._decl_class_registry.get(name, None)
 
+
 loaddata = AppGroup("loaddata")
+
 
 @loaddata.command("run")
 @click.option("-f", "--fixture", "fixture")
@@ -32,6 +35,3 @@ def run(**kwargs):
                         setattr(database_object, field, value)
                     session.add(database_object)
         session.commit()
-
-
-

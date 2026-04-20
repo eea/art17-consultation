@@ -772,8 +772,8 @@ a.conclusion:hover {
   box-shadow: 0 -1px 2px 0px rgba(0,0,0,0.2);
   width: auto;
 }
-/* POPOUT ASSESMENT */
-.popout.assesment {
+/* POPOUT ASSESSMENT */
+.popout.assessment {
   left: 50%;
   margin-left: -102px;
   margin-bottom: 1px;

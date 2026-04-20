@@ -152,10 +152,7 @@ class CommentsList(views.View):
     def toggle_delete(self, comment):
         if not can_delete_comment(comment):
             raise PermissionDenied
-
-        if comment.deleted is None:
-            comment.deleted = 0
-        comment.deleted = 1 - comment.deleted
+        comment.deleted = not comment.deleted
         db.session.commit()
 
     def toggle_read(self, comment):
@@ -238,7 +235,12 @@ class CommentsList(views.View):
                     hash = "#comment-%s" % edited_comment.id
                 else:
                     hash = "#theform"
-                return redirect(request.base_url + hash)
+                return redirect(
+                    self.get_home_url(
+                        subject=subject, region=region, user=user, MS=MS, period=period
+                    )
+                    + hash
+                )
         else:
             if request.args.get("toggle"):
                 comment = self.model_comment_cls.query.get(request.args["toggle"])
@@ -494,9 +496,9 @@ class _CommentCounterBase(object):
 class SpeciesCommentCounter(_CommentCounterBase):
 
     comment_cls = Comment
-    subject_column = property(lambda self: Comment.assesment_speciesname)
+    subject_column = property(lambda self: Comment.assessment_speciesname)
     read_table = t_comments_read
-    wiki_subject_column = property(lambda self: Wiki.assesment_speciesname)
+    wiki_subject_column = property(lambda self: Wiki.assessment_speciesname)
 
 
 class HabitatCommentCounter(_CommentCounterBase):
