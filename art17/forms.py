@@ -751,7 +751,7 @@ class SummaryManualFormSpeciesRefSTA(SummaryManualFormSpeciesRef):
 
 
 class SummaryManualFormHabitatRef(
-    HabitatsFormMixin, Form, SummaryFormMixin, OptionsBaseSpecies
+    HabitatsFormMixin, Form, SummaryFormMixin, OptionsBaseHabitat
 ):
 
     region = SelectField(validate_choice=False)
@@ -819,7 +819,6 @@ class SummaryManualFormHabitatRef(
 
         self.method_range.choices = ZERO_METHODS + self.get_method_options(methods)
         self.method_area.choices = ZERO_METHODS + self.get_method_options(methods)
-
         self.method_structure.choices = ZERO_METHODS + self.get_method_options(methods)
         self.method_future.choices = ZERO_METHODS + self.get_sf_options(methods)
         self.method_assessment.choices = self.get_assesm_options(methods)
