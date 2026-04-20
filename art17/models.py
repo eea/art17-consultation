@@ -98,6 +98,9 @@ class Dataset(Base):
             ),
         }
 
+    def __str__(self):
+        return self.name or self.id
+
 
 t_comments_read = Table(
     "comments_read",
@@ -1268,6 +1271,9 @@ class RegisteredUser(Base, UserMixin):
 
     def get_id(self):
         return str(self.id)
+
+    def __str__(self):
+        return self.name or self.id
 
 
 class Role(Base, RoleMixin):

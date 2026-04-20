@@ -46,6 +46,15 @@
     {% if not dataset.latest or latest_dataset_public_view_enabled or current_user.is_authenticated %}
 
     {% include 'common/note_report.html' %}
+
+    {% if dataset.schema == '2024' %}
+      <p class="note">
+        The delayed delivery by Spain did not allow the Spanish report to be used for the EU conservation status
+        assessment. Where possible, Spanish data from the period 2013-2019 were used for the EU assessments of
+        2019-2024. You can see a relevant technical note here.
+      </p>
+    {% endif %}
+
     {% include 'common/table_legend.html' %}
 
     <table class="complex_datatable">

@@ -8,6 +8,12 @@ from art17.models import (
     Config,
     Dataset,
     DicCountryCode,
+    EtcDataSpeciesRegion,
+    EtcDataHabitattypeRegion,
+    EtcDataSpeciesAutomaticAssessment,
+    EtcDataHabitattypeAutomaticAssessment,
+    SpeciesManualAssessment,
+    HabitattypesManualAssessment,
     EtcDataHcoveragePressure,
     EtcDataHcoverageThreat,
     EtcDataSpopulationPressure,
@@ -42,6 +48,216 @@ class ProtectedModelView(ModelView):
 
     def inaccessible_callback(self, name, **kwargs):
         return abort(404)
+
+
+class EtcDataSpeciesRegionModelView(ProtectedModelView):
+    can_export = True
+    column_list = (
+        "dataset_id",
+        "country",
+        "region",
+        "speciescode",
+        "assessment_speciesname",
+    )
+    column_filters = ["dataset_id", "country", "region", "speciescode"]
+
+
+class EtcDataHabitattypeRegionModelView(ProtectedModelView):
+    can_export = True
+    column_list = ("dataset_id", "country", "region", "habitatcode")
+    column_filters = ["dataset_id", "country", "region", "habitatcode"]
+
+
+class EtcDataSpeciesAutomaticAssessmentModelView(ProtectedModelView):
+    can_export = True
+    column_list = (
+        "dataset_id",
+        "assessment_method",
+        "assessment_speciescode",
+        "assessment_speciesname",
+        "region",
+        "country",
+    )
+    column_filters = [
+        "dataset_id",
+        "assessment_method",
+        "assessment_speciescode",
+        "assessment_speciesname",
+        "region",
+        "country",
+    ]
+
+
+class EtcDataHabitattypeAutomaticAssessmentModelView(ProtectedModelView):
+    can_export = True
+    column_list = (
+        "dataset_id",
+        "assessment_method",
+        "habitatcode",
+        "region",
+        "country",
+    )
+    column_filters = [
+        "dataset_id",
+        "assessment_method",
+        "habitatcode",
+        "region",
+        "country",
+    ]
+
+
+class SpeciesManualAssessmentModelView(ProtectedModelView):
+    can_export = True
+
+    column_filters = [
+        "MS",
+        "region",
+        "assessment_speciesname",
+        "user_id",
+        "last_update",
+        "deleted",
+        "user_decision_id",
+        "dataset_id",
+        "decision",
+    ]
+
+    column_list = (
+        "MS",
+        "region",
+        "assessment_speciesname",
+        "range_surface_area",
+        "range_trend",
+        "range_yearly_magnitude",
+        "complementary_favourable_range",
+        "complementary_favourable_range_q",
+        "derived_perc_range_FRR",
+        "derived_population_size_trend_magnitude",
+        "derived_perc_population_FRP",
+        "population_size",
+        "population_size_unit",
+        "population_minimum_size",
+        "population_maximum_size",
+        "population_best_value",
+        "population_unit",
+        "population_trend",
+        "population_yearly_magnitude",
+        "complementary_favourable_population",
+        "complementary_favourable_population_q",
+        "complementary_favourable_population_unit",
+        "habitat_surface_area",
+        "habitat_trend",
+        "complementary_suitable_habitat",
+        "method_range",
+        "conclusion_range",
+        "method_population",
+        "conclusion_population",
+        "method_habitat",
+        "conclusion_habitat",
+        "method_future",
+        "future_range",
+        "future_population",
+        "future_habitat",
+        "conclusion_future",
+        "method_assessment",
+        "conclusion_assessment",
+        "conclusion_assessment_trend",
+        "conclusion_assessment_prev",
+        "conclusion_assessment_trend_prev",
+        "conclusion_assessment_change",
+        "conclusion_assessment_trend_change",
+        "method_target1",
+        "conclusion_target1",
+        "backcasted_2007",
+        "user_id",
+        "last_update",
+        "deleted",
+        "decision",
+        "user_decision_id",
+        "last_update_decision",
+        "dataset_id",
+        "user",
+        "user_decision",
+        "dataset",
+    )
+
+
+class HabitattypesManualAssessmentModelView(ProtectedModelView):
+    can_export = True
+    column_filters = [
+        "MS",
+        "region",
+        "habitatcode",
+        "user_id",
+        "last_update",
+        "deleted",
+        "decision",
+        "user_decision_id",
+        "last_update_decision",
+        "dataset_id",
+    ]
+    column_list = (
+        "MS",
+        "region",
+        "habitatcode",
+        "range_surface_area",
+        "range_trend",
+        "range_yearly_magnitude",
+        "complementary_favourable_range",
+        "complementary_favourable_range_q",
+        "derived_perc_range_FRR",
+        "coverage_surface_area",
+        "coverage_surface_area_min",
+        "coverage_surface_area_max",
+        "coverage_trend",
+        "coverage_yearly_magnitude",
+        "complementary_favourable_area",
+        "complementary_favourable_area_q",
+        "derived_perc_area_FRA",
+        "method_range",
+        "conclusion_range",
+        "method_area",
+        "conclusion_area",
+        "hab_condition_good",
+        "hab_condition_good_min",
+        "hab_condition_good_max",
+        "hab_condition_good_best",
+        "hab_condition_notgood",
+        "hab_condition_notgood_min",
+        "hab_condition_notgood_max",
+        "hab_condition_notgood_best",
+        "hab_condition_unknown",
+        "hab_condition_unknown_min",
+        "hab_condition_unknown_max",
+        "hab_condition_unknown_best",
+        "hab_condition_trend",
+        "method_structure",
+        "conclusion_structure",
+        "method_future",
+        "future_range",
+        "future_area",
+        "future_structure",
+        "conclusion_future",
+        "method_assessment",
+        "conclusion_assessment",
+        "conclusion_assessment_trend",
+        "conclusion_assessment_prev",
+        "conclusion_assessment_trend_prev",
+        "conclusion_assessment_change",
+        "conclusion_assessment_trend_change",
+        "method_target1",
+        "conclusion_target1",
+        "backcasted_2007",
+        "user_id",
+        "last_update",
+        "deleted",
+        "decision",
+        "user_decision_id",
+        "last_update_decision",
+        "dataset_id",
+        "user",
+        "user_decision",
+        "dataset",
+    )
 
 
 class DatasetModelView(ProtectedModelView):
@@ -356,6 +572,37 @@ def admin_register(app):
     )
     admin.add_view(DatasetModelView(Dataset, db.session))
     admin.add_view(DicCountryCodeModelView(DicCountryCode, db.session))
+    admin.add_view(
+        EtcDataSpeciesRegionModelView(
+            EtcDataSpeciesRegion, db.session, category="RegionsData"
+        )
+    )
+    admin.add_view(
+        EtcDataHabitattypeRegionModelView(
+            EtcDataHabitattypeRegion, db.session, category="RegionsData"
+        )
+    )
+    admin.add_view(
+        EtcDataSpeciesAutomaticAssessmentModelView(
+            EtcDataSpeciesAutomaticAssessment, db.session, category="AutomaticData"
+        )
+    )
+    admin.add_view(
+        EtcDataHabitattypeAutomaticAssessmentModelView(
+            EtcDataHabitattypeAutomaticAssessment, db.session, category="AutomaticData"
+        )
+    )
+    admin.add_view(
+        SpeciesManualAssessmentModelView(
+            SpeciesManualAssessment, db.session, category="ManualData"
+        )
+    )
+    admin.add_view(
+        HabitattypesManualAssessmentModelView(
+            HabitattypesManualAssessment, db.session, category="ManualData"
+        )
+    )
+
     admin.add_view(
         EtcDataHcoveragePressureModelView(
             EtcDataHcoveragePressure, db.session, category="EtcData"
