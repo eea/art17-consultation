@@ -21,7 +21,7 @@ fi
 if [ -z "$1" ]; then
   echo "Serving on port 5000"
 
-  exec uwsgi --ini uwsgi.ini
+  exec uwsgi --ini uwsgi.ini --mount "${SCRIPT_NAME}=manage:app"
 fi
 
 if [[ $COMMANDS == *"$1"* ]]; then
