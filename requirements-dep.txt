@@ -1,2 +1,2 @@
 -r requirements.txt
-gunicorn==20.1.0
+uwsgi==2.0.31
