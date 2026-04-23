@@ -54,18 +54,20 @@ class EtcDataSpeciesRegionModelView(ProtectedModelView):
     can_export = True
     column_list = (
         "dataset_id",
+        "group",
         "country",
         "region",
         "speciescode",
         "assessment_speciesname",
+        "use_for_statistics",
     )
-    column_filters = ["dataset_id", "country", "region", "speciescode"]
+    column_filters = ["dataset_id", "group","country", "region", "speciescode", "assessment_speciesname", "use_for_statistics"]
 
 
 class EtcDataHabitattypeRegionModelView(ProtectedModelView):
     can_export = True
-    column_list = ("dataset_id", "country", "region", "habitatcode")
-    column_filters = ["dataset_id", "country", "region", "habitatcode"]
+    column_list = ("dataset_id", "country", "group", "region", "habitatcode", "use_for_statistics",         "habitattype_type_asses",)
+    column_filters = ["dataset_id", "country", "group", "region", "habitatcode", "use_for_statistics", "habitattype_type_asses"]
 
 
 class EtcDataSpeciesAutomaticAssessmentModelView(ProtectedModelView):

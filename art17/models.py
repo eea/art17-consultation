@@ -396,7 +396,7 @@ class EtcDataHabitattypeRegion(Base):
 
     @property
     def is_assesm(self):
-        return self.habitattype_type_asses == 0
+        return self.habitattype_type_asses == False
 
     @hybrid_property
     def subject(self):

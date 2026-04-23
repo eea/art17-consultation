@@ -14,7 +14,7 @@
   {{ row.range_surface_area|str2num('') }}
 </td>
 
-{% set conclusion_range = row.conclusion_range or row.percentage_range_surface_area %}
+{% set conclusion_range = row.percentage_range_surface_area or row.conclusion_range %}
 {% if row.assessment_method == '0' or row.assessment_method ==  'method1' %}
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_range] }}">
 

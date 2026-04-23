@@ -128,6 +128,10 @@ def get_method_name(method):
         "b": "Based mainly on extrapolation from a limited amount of data",
         "c": "Based mainly on expert opinion with very limited data",
         "d": "Insufficient or no data available",
+        "completeSurvey": "Complete survey or a statistically robust estimate",
+        "estimatePartial": "Based mainly on extrapolation from a limited amount of data",
+        "estimateExpert": "Based mainly on expert opinion with very limited data",
+        "absentData": "Insufficient or no data available",
     }
     return "{} - {}".format(method, method_text.get(method, ""))
 
@@ -600,6 +604,7 @@ class HabitatSummary(HabitatMixin, Summary):
         if filter_args:
             filter_args["dataset_id"] = period
             self.objects = self.model_cls.query.filter_by(**filter_args).order_by(
+                self.model_cls.presence.desc(),
                 self.model_cls.region, self.model_cls.country
             )
 
