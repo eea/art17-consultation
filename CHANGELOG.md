@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.0 - (2026-04-23)
+--------------------
+* Wrap up changes for new reporting period 2019-2024
+  [dianaboiangiu]
+
 3.5.2 - (2025-09-29)
 --------------------
 * Catch timeout on factsheets check
