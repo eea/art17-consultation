@@ -641,6 +641,7 @@ class FileUploadView(BaseView):
 
 class WikiTrailModelView(ProtectedModelView):
     can_export = True
+    export_types = ["csv", "xlsx"]
     column_list = (
         "id",
         "region_code",
@@ -658,6 +659,7 @@ class WikiTrailModelView(ProtectedModelView):
 
 class WikiTrailChangeModelView(AnonymizationMixin, ProtectedModelView):
     can_export = True
+    export_types = ["csv", "xlsx"]
     column_list = ("id", "wiki_id", "body", "editor", "changed", "active", "dataset_id")
     column_filters = ("wiki_id", "editor", "changed", "active", "dataset_id")
     anonymized_fields = ["editor"]
@@ -665,6 +667,7 @@ class WikiTrailChangeModelView(AnonymizationMixin, ProtectedModelView):
 
 class WikiTrailChangeCombinedWithWikiModelView(AnonymizationMixin, ProtectedModelView):
     can_export = True
+    export_types = ["csv", "xlsx"]
     column_list = (
         "id",
         "wiki.id",
@@ -684,6 +687,7 @@ class WikiTrailChangeCombinedWithWikiModelView(AnonymizationMixin, ProtectedMode
 
 class WikiTrailCommentModelView(AnonymizationMixin, ProtectedModelView):
     can_export = True
+    export_types = ["csv", "xlsx"]
     column_list = (
         "id",
         "wiki_id",
