@@ -140,7 +140,7 @@
   {{ row.future_structure|parse_semicolon|safe }}
 </td>
 
-{% set future = row.conclusion_future or row.percentage_future %}
+{% set future = row.percentage_future or row.conclusion_future%}
 {% if row.assessment_method == '0' or row.assessment_method ==  'method1' %}
   <td class="{{ CONCLUSION_CLASSES[row.conclusion_future] }} border_right">
     <span class="conclusion">{{ future|parse_semicolon|safe }}</span>
