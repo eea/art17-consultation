@@ -1,6 +1,6 @@
 import os
 
-from flask import abort, flash, current_app, request, redirect, url_for
+from flask import abort, flash, current_app, request, redirect, url_for, session
 from flask_admin import Admin, AdminIndexView, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from art17.common import admin_perm
@@ -28,6 +28,9 @@ from art17.models import (
     EtcDicTrend,
     EtcQaErrorsHabitattypeManualChecked,
     EtcQaErrorsSpeciesManualChecked,
+    WikiTrail,
+    WikiTrailChange,
+    WikiTrailComment,
     db,
 )
 from werkzeug.utils import secure_filename
@@ -61,13 +64,37 @@ class EtcDataSpeciesRegionModelView(ProtectedModelView):
         "assessment_speciesname",
         "use_for_statistics",
     )
-    column_filters = ["dataset_id", "group","country", "region", "speciescode", "assessment_speciesname", "use_for_statistics"]
+    column_filters = [
+        "dataset_id",
+        "group",
+        "country",
+        "region",
+        "speciescode",
+        "assessment_speciesname",
+        "use_for_statistics",
+    ]
 
 
 class EtcDataHabitattypeRegionModelView(ProtectedModelView):
     can_export = True
-    column_list = ("dataset_id", "country", "group", "region", "habitatcode", "use_for_statistics",         "habitattype_type_asses",)
-    column_filters = ["dataset_id", "country", "group", "region", "habitatcode", "use_for_statistics", "habitattype_type_asses"]
+    column_list = (
+        "dataset_id",
+        "country",
+        "group",
+        "region",
+        "habitatcode",
+        "use_for_statistics",
+        "habitattype_type_asses",
+    )
+    column_filters = [
+        "dataset_id",
+        "country",
+        "group",
+        "region",
+        "habitatcode",
+        "use_for_statistics",
+        "habitattype_type_asses",
+    ]
 
 
 class EtcDataSpeciesAutomaticAssessmentModelView(ProtectedModelView):
@@ -536,6 +563,53 @@ class EtcQaErrorsSpeciesManualCheckedModelView(ProtectedModelView):
     )
 
 
+class AnonymizationMixin(ProtectedModelView):
+    anonymized_fields = []
+    anonymization_session_key = "admin_export_anonymize"
+    list_template = "admin/model/list_with_anonymize_toggle.html"
+    anonymization_default = True
+
+    def is_anonymization_enabled(self):
+        val = request.args.get("anonymize")
+        if val is not None:
+            session[self.anonymization_session_key] = val in ("1", "true", "on", "yes")
+        return session.get(self.anonymization_session_key, self.anonymization_default)
+
+    @expose("/toggle-anonymization/<state>")
+    def toggle_anonymization(self, state):
+        session[self.anonymization_session_key] = state == "on"
+        return redirect(request.referrer or self.get_url(".index_view"))
+
+    def _reset_export_anonymization(self):
+        self._anonymized_aliases = {field: {} for field in self.anonymized_fields}
+        self._anonymized_fields_counter = {field: 0 for field in self.anonymized_fields}
+
+    def _anonymized_field_alias(self, field, value):
+        if not value:
+            return ""
+
+        # stable key per real value
+        key = str(value)
+
+        if key not in self._anonymized_aliases[field]:
+            self._anonymized_fields_counter[field] += 1
+            self._anonymized_aliases[field][
+                key
+            ] = f"{field}{self._anonymized_fields_counter[field]}"
+
+        return self._anonymized_aliases[field][key]
+
+    def _export_data(self):
+        # reset map for each export file
+        self._reset_export_anonymization()
+        return super()._export_data()
+
+    def get_export_value(self, model, name):
+        if name in self.anonymized_fields and self.is_anonymization_enabled():
+            return self._anonymized_field_alias(name, getattr(model, name, None))
+        return super().get_export_value(model, name)
+
+
 class ConfigModelView(ProtectedModelView):
     column_list = ("id", "start_date", "end_date", "admin_email", "default_dataset_id")
     column_filters = ("id", "default_dataset_id")
@@ -565,12 +639,92 @@ class FileUploadView(BaseView):
         return self.render("admin/upload.html")
 
 
+class WikiTrailModelView(ProtectedModelView):
+    can_export = True
+    column_list = (
+        "id",
+        "region_code",
+        "assessment_speciesname",
+        "habitatcode",
+        "dataset_id",
+    )
+    column_filters = (
+        "dataset_id",
+        "region_code",
+        "assessment_speciesname",
+        "habitatcode",
+    )
+
+
+class WikiTrailChangeModelView(AnonymizationMixin, ProtectedModelView):
+    can_export = True
+    column_list = ("id", "wiki_id", "body", "editor", "changed", "active", "dataset_id")
+    column_filters = ("wiki_id", "editor", "changed", "active", "dataset_id")
+    anonymized_fields = ["editor"]
+
+
+class WikiTrailChangeCombinedWithWikiModelView(AnonymizationMixin, ProtectedModelView):
+    can_export = True
+    column_list = (
+        "id",
+        "wiki.id",
+        "wiki.region_code",
+        "wiki.assessment_speciesname",
+        "wiki.habitatcode",
+        "wiki_id",
+        "body",
+        "editor",
+        "changed",
+        "active",
+        "dataset_id",
+    )
+    column_filters = ("wiki_id", "editor", "changed", "active", "dataset_id")
+    anonymized_fields = ["editor"]
+
+
+class WikiTrailCommentModelView(AnonymizationMixin, ProtectedModelView):
+    can_export = True
+    column_list = (
+        "id",
+        "wiki_id",
+        "comment",
+        "author",
+        "deleted",
+        "posted",
+        "dataset_id",
+    )
+    column_filters = ("wiki_id", "comment", "author", "deleted", "posted", "dataset_id")
+    anonymized_fields = ["author"]
+
+
 def admin_register(app):
     admin = Admin(
         app,
         name="Article 17",
         template_mode="bootstrap3",
         index_view=CustomAdminIndexView(),
+    )
+    admin.add_view(WikiTrailModelView(WikiTrail, db.session, category="AuditTrail"))
+    admin.add_view(
+        WikiTrailChangeModelView(
+            WikiTrailChange,
+            db.session,
+            category="AuditTrail",
+            name="WikiTrailChange (standalone)",
+            endpoint="wikitrailchange",
+        )
+    )
+    admin.add_view(
+        WikiTrailChangeCombinedWithWikiModelView(
+            WikiTrailChange,
+            db.session,
+            category="AuditTrail",
+            name="WikiTrailChange (with Wiki)",
+            endpoint="wikitrailchange_combined",
+        )
+    )
+    admin.add_view(
+        WikiTrailCommentModelView(WikiTrailComment, db.session, category="AuditTrail")
     )
     admin.add_view(DatasetModelView(Dataset, db.session))
     admin.add_view(DicCountryCodeModelView(DicCountryCode, db.session))

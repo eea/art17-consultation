@@ -1,0 +1,44 @@
+{% extends 'admin/model/list.html' %}
+
+{% block model_menu_bar %}
+  {{ super() }}
+
+  <br>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover model-list">
+      <thead>
+        <tr>
+          <th>Current anonymization status on export</th>
+          <th>Action</th>
+          <th>List of anonymized field on export</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            {% if admin_view.is_anonymization_enabled() %}
+              <span class="badge badge-success">Anonymization is currently enabled</span>
+            {% else %}
+              <span class="badge badge-secondary">Anonymization is currently disabled</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if admin_view.is_anonymization_enabled() %}
+              <a href="{{ get_url('.toggle_anonymization', state='off') }}">Disable anonymization</a>
+            {% else %}
+              <a href="{{ get_url('.toggle_anonymization', state='on') }}">Enable anonymization</a>
+            {% endif %}
+          </td>
+          <td>
+            {% if admin_view.anonymized_fields %}
+              {{ admin_view.anonymized_fields | join(', ') }}
+            {% else %}
+              <em>None</em>
+            {% endif %}
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+{% endblock %}

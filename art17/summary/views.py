@@ -605,7 +605,8 @@ class HabitatSummary(HabitatMixin, Summary):
             filter_args["dataset_id"] = period
             self.objects = self.model_cls.query.filter_by(**filter_args).order_by(
                 self.model_cls.presence.desc(),
-                self.model_cls.region, self.model_cls.country
+                self.model_cls.region,
+                self.model_cls.country,
             )
 
             self.auto_objects = (
