@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.3 - (2026-05-07)
+--------------------
+* Allow xlsx exports for Audit trails
+  [dianaboiangiu]
+
 4.0.2 - (2026-05-07)
 --------------------
 * Add audit trail export in Admin interface
