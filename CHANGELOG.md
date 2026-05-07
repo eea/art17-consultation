@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.1 - (2026-05-07)
+--------------------
+* Fix conclusion for Future prospects
+  [dianaboiangiu]
+
 4.0.0 - (2026-04-23)
 --------------------
 * Wrap up changes for new reporting period 2019-2024
