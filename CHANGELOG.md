@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.2 - (2026-05-07)
+--------------------
+* Add audit trail export in Admin interface
+  [dianaboiangiu]
+
 4.0.1 - (2026-05-07)
 --------------------
 * Fix conclusion for Future prospects
