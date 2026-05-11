@@ -679,7 +679,7 @@ class EtcDataSpeciesRegion(Base):
 
     @property
     def mapcode(self):
-        if self.dataset.schema == "2018":
+        if self.dataset.schema in ["2018", "2024"]:
             return self.speciescode
         if self.speciescode in ("1033", "1763", "2016", "2527"):
             return self.speciescode
