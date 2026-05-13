@@ -4,6 +4,7 @@ from flask import abort, flash, current_app, request, redirect, url_for, session
 from flask_admin import Admin, AdminIndexView, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from art17.common import admin_perm
+from wtforms import IntegerField
 from art17.models import (
     Config,
     Dataset,
@@ -72,7 +73,21 @@ class EtcDataSpeciesRegionModelView(ProtectedModelView):
         "speciescode",
         "assessment_speciesname",
         "use_for_statistics",
+        "presence_new",
     ]
+    form_excluded_columns = (
+        "dataset",
+        "habitat",
+        "species_type_details",
+        "lu_factsheets",
+    )
+
+    def scaffold_form(self):
+        form_class = super().scaffold_form()
+        form_class.dataset_id = IntegerField("Dataset ID")
+        return form_class
+
+
 
 
 class EtcDataHabitattypeRegionModelView(ProtectedModelView):
@@ -95,6 +110,18 @@ class EtcDataHabitattypeRegionModelView(ProtectedModelView):
         "use_for_statistics",
         "habitattype_type_asses",
     ]
+
+    form_excluded_columns = (
+        "dataset",
+        "habitat",
+        "habitattype_type_details",
+        "lu_factsheets",
+    )
+
+    def scaffold_form(self):
+        form_class = super().scaffold_form()
+        form_class.dataset_id = IntegerField("Dataset ID")
+        return form_class
 
 
 class EtcDataSpeciesAutomaticAssessmentModelView(ProtectedModelView):
@@ -208,6 +235,61 @@ class SpeciesManualAssessmentModelView(ProtectedModelView):
         "user_decision",
         "dataset",
     )
+    form_columns = (
+        "MS",
+        "region",
+        "assessment_speciesname",
+        "range_surface_area",
+        "range_trend",
+        "range_yearly_magnitude",
+        "complementary_favourable_range",
+        "complementary_favourable_range_q",
+        "derived_perc_range_FRR",
+        "derived_population_size_trend_magnitude",
+        "derived_perc_population_FRP",
+        "population_size",
+        "population_size_unit",
+        "population_minimum_size",
+        "population_maximum_size",
+        "population_best_value",
+        "population_unit",
+        "population_trend",
+        "population_yearly_magnitude",
+        "complementary_favourable_population",
+        "complementary_favourable_population_q",
+        "complementary_favourable_population_unit",
+        "habitat_surface_area",
+        "habitat_trend",
+        "complementary_suitable_habitat",
+        "method_range",
+        "conclusion_range",
+        "method_population",
+        "conclusion_population",
+        "method_habitat",
+        "conclusion_habitat",
+        "method_future",
+        "future_range",
+        "future_population",
+        "future_habitat",
+        "conclusion_future",
+        "method_assessment",
+        "conclusion_assessment",
+        "conclusion_assessment_trend",
+        "conclusion_assessment_prev",
+        "conclusion_assessment_trend_prev",
+        "conclusion_assessment_change",
+        "conclusion_assessment_trend_change",
+        "method_target1",
+        "conclusion_target1",
+        "backcasted_2007",
+        "user_id",
+        "last_update",
+        "deleted",
+        "decision",
+        "user_decision_id",
+        "last_update_decision",
+        "dataset_id",
+    )
 
 
 class HabitattypesManualAssessmentModelView(ProtectedModelView):
@@ -287,6 +369,71 @@ class HabitattypesManualAssessmentModelView(ProtectedModelView):
         "user_decision",
         "dataset",
     )
+    form_columns = (
+        "MS",
+        "region",
+        "habitatcode",
+        "range_surface_area",
+        "range_trend",
+        "range_yearly_magnitude",
+        "complementary_favourable_range",
+        "complementary_favourable_range_q",
+        "derived_perc_range_FRR",
+        "coverage_surface_area",
+        "coverage_surface_area_min",
+        "coverage_surface_area_max",
+        "coverage_trend",
+        "coverage_yearly_magnitude",
+        "complementary_favourable_area",
+        "complementary_favourable_area_q",
+        "derived_perc_area_FRA",
+        "method_range",
+        "conclusion_range",
+        "method_area",
+        "conclusion_area",
+        "hab_condition_good",
+        "hab_condition_good_min",
+        "hab_condition_good_max",
+        "hab_condition_good_best",
+        "hab_condition_notgood",
+        "hab_condition_notgood_min",
+        "hab_condition_notgood_max",
+        "hab_condition_notgood_best",
+        "hab_condition_unknown",
+        "hab_condition_unknown_min",
+        "hab_condition_unknown_max",
+        "hab_condition_unknown_best",
+        "hab_condition_trend",
+        "method_structure",
+        "conclusion_structure",
+        "method_future",
+        "future_range",
+        "future_area",
+        "future_structure",
+        "conclusion_future",
+        "method_assessment",
+        "conclusion_assessment",
+        "conclusion_assessment_trend",
+        "conclusion_assessment_prev",
+        "conclusion_assessment_trend_prev",
+        "conclusion_assessment_change",
+        "conclusion_assessment_trend_change",
+        "method_target1",
+        "conclusion_target1",
+        "backcasted_2007",
+        "user_id",
+        "last_update",
+        "deleted",
+        "decision",
+        "user_decision_id",
+        "last_update_decision",
+        "dataset_id",
+    )
+
+    def scaffold_form(self):
+        form_class = super().scaffold_form()
+        form_class.dataset_id = IntegerField("Dataset ID")
+        return form_class
 
 
 class DatasetModelView(ProtectedModelView):
