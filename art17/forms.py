@@ -76,11 +76,7 @@ PROSPECTS_CHOICES = [
 ZERO_METHODS = [("0MS", "0MS"), ("0EQ", "0EQ")]
 
 OPERATOR_CHOICES = [
-    ("≈", "≈"),
-    ("<", "<"),
-    (">>", ">>"),
     (">", ">"),
-    ("x", "x"),
 ]
 
 
