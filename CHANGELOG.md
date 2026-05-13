@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.4 - (2026-05-13)
+--------------------
+* Limit operator options for complementary favourable fields
+  [dianaboiangiu]
+
 4.0.3 - (2026-05-07)
 --------------------
 * Allow xlsx exports for Audit trails
