@@ -916,9 +916,9 @@
         "model": "EtcDicPopulationUnit",
         "filter_fields": "population_units,dataset_id",
         "fields": {
-            "order": 2,
+            "order": 1,
             "population_units": "adults",
-            "details": "number of adults",
+            "details": "adults",
             "code": "adults",
             "dataset_id": 6
         }
@@ -927,31 +927,9 @@
         "model": "EtcDicPopulationUnit",
         "filter_fields": "population_units,dataset_id",
         "fields": {
-            "order": 1,
-            "population_units": "area",
-            "details": "Area covered by population",
-            "code": "Area",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 16,
-            "population_units": "area m",
-            "details": "area coverd by population in m2",
-            "code": "area",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 4,
-            "population_units": "bfemal",
-            "details": "number of breeding females",
+            "order": 2,
+            "population_units": "bfemales",
+            "details": "bfemales",
             "code": "bfemales",
             "dataset_id": 6
         }
@@ -961,19 +939,8 @@
         "filter_fields": "population_units,dataset_id",
         "fields": {
             "order": 3,
-            "population_units": "bfemales",
-            "details": "number of breeding females",
-            "code": "bfemales",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 5,
             "population_units": "cmales",
-            "details": "number of calling males",
+            "details": "cmales",
             "code": "cmales",
             "dataset_id": 6
         }
@@ -982,65 +949,10 @@
         "model": "EtcDicPopulationUnit",
         "filter_fields": "population_units,dataset_id",
         "fields": {
-            "order": 12,
-            "population_units": "coloni",
-            "details": "number of colonies",
-            "code": "colonies",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 5,
-            "population_units": "colonies",
-            "details": "number of colonies",
-            "code": "colonies",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 3,
-            "population_units": "colony",
-            "details": "Number of colonies",
-            "code": "Colonies",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
             "order": 4,
-            "population_units": "flowr.",
-            "details": "Number of flowering stems",
-            "code": "Flowering",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 10,
-            "population_units": "fstems",
-            "details": "number of flowering stems",
-            "code": "fstems",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 19,
-            "population_units": "grid5",
-            "details": "number of map 5x5 km grid cells",
-            "code": "grids5x5",
+            "population_units": "colonies",
+            "details": "colonies",
+            "code": "colonies",
             "dataset_id": 6
         }
     },
@@ -1049,86 +961,9 @@
         "filter_fields": "population_units,dataset_id",
         "fields": {
             "order": 5,
-            "population_units": "grids",
-            "details": "Number of map grid cells",
-            "code": "Grids",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 20,
-            "population_units": "grids1",
-            "details": "number of map 10x10 km grid cells",
-            "code": "grids10x10",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 7,
-            "population_units": "grids10x10",
-            "details": "number of map 10x10 km grid cells",
-            "code": "grids10x10",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 8,
-            "population_units": "grids1x1",
-            "details": "number of map 1x1 km grid cells",
-            "code": "grids1x1",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 21,
-            "population_units": "grids2x2",
-            "details": "number of map 2x2 km grid cells",
-            "code": "grids2x2",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 19,
-            "population_units": "grids5",
-            "details": "number of map 5x5 km grid cells",
-            "code": "grids5x5",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 9,
-            "population_units": "grids5x5",
-            "details": "number of map 5x5 km grid cells",
-            "code": "grids5x5",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 10,
-            "population_units": "i",
-            "details": "number of individuals",
-            "code": "i",
+            "population_units": "CPUE",
+            "details": "CPUE",
+            "code": "CPUE",
             "dataset_id": 6
         }
     },
@@ -1137,31 +972,9 @@
         "filter_fields": "population_units,dataset_id",
         "fields": {
             "order": 6,
-            "population_units": "indiv.",
-            "details": "Number of individuals",
-            "code": "Individuals",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 22,
-            "population_units": "iwintering",
-            "details": "number of wintering individuals",
-            "code": "iwintering",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 17,
-            "population_units": "length",
-            "details": "length of inhabited feature in km",
-            "code": "length",
+            "population_units": "DPM",
+            "details": "DPM",
+            "code": "DPM",
             "dataset_id": 6
         }
     },
@@ -1170,31 +983,9 @@
         "filter_fields": "population_units,dataset_id",
         "fields": {
             "order": 7,
-            "population_units": "loc.",
-            "details": "Number of localities",
-            "code": "Localities",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 11,
-            "population_units": "locali",
-            "details": "number of localities",
-            "code": "localities",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 12,
-            "population_units": "localities",
-            "details": "number of localities",
-            "code": "localities",
+            "population_units": "floweringperlocation",
+            "details": "floweringperlocation",
+            "code": "floweringperlocation",
             "dataset_id": 6
         }
     },
@@ -1203,42 +994,9 @@
         "filter_fields": "population_units,dataset_id",
         "fields": {
             "order": 8,
-            "population_units": "logs",
-            "details": "number of inhabited logs",
-            "code": "logs",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 2,
-            "population_units": "males",
-            "details": "Number of breeding males",
-            "code": "Breeding",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 15,
-            "population_units": "p",
-            "details": "number of pairs",
-            "code": "p",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 8,
-            "population_units": "pairs",
-            "details": "Number of pairs",
-            "code": "Pairs",
+            "population_units": "floweringperm2",
+            "details": "floweringperm2",
+            "code": "floweringperm2",
             "dataset_id": 6
         }
     },
@@ -1247,53 +1005,9 @@
         "filter_fields": "population_units,dataset_id",
         "fields": {
             "order": 9,
-            "population_units": "shoots",
-            "details": "Number of shoots",
-            "code": "Shoots",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 15,
-            "population_units": "stones",
-            "details": "number of inhabited stones/boulders",
-            "code": "stones",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 3,
-            "population_units": "subadu",
-            "details": "number of subadults",
-            "code": "subadults",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 18,
-            "population_units": "subadults",
-            "details": "number of subadults",
-            "code": "subadults",
-            "dataset_id": 6
-        }
-    },
-    {
-        "model": "EtcDicPopulationUnit",
-        "filter_fields": "population_units,dataset_id",
-        "fields": {
-            "order": 14,
-            "population_units": "trees",
-            "details": "number of inhabited trees ",
-            "code": "trees",
+            "population_units": "fstems",
+            "details": "fstems",
+            "code": "fstems",
             "dataset_id": 6
         }
     },
@@ -1302,9 +1016,9 @@
         "filter_fields": "population_units,dataset_id",
         "fields": {
             "order": 10,
-            "population_units": "tuffs",
-            "details": "Number of tuffs",
-            "code": "Tuffs",
+            "population_units": "grids1x1",
+            "details": "grids1x1",
+            "code": "grids1x1",
             "dataset_id": 6
         }
     },
@@ -1312,9 +1026,394 @@
         "model": "EtcDicPopulationUnit",
         "filter_fields": "population_units,dataset_id",
         "fields": {
-            "order": 9,
+            "order": 11,
+            "population_units": "grids2x2",
+            "details": "grids2x2",
+            "code": "grids2x2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 12,
+            "population_units": "grids5x5",
+            "details": "grids5x5",
+            "code": "grids5x5",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 13,
+            "population_units": "grids10x10",
+            "details": "grids10x10",
+            "code": "grids10x10",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 14,
+            "population_units": "hiberroostsper100km2",
+            "details": "hiberroostsper100km2",
+            "code": "hiberroostsper100km2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 15,
+            "population_units": "hiberroostsperkm2",
+            "details": "hiberroostsperkm2",
+            "code": "hiberroostsperkm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 16,
+            "population_units": "i",
+            "details": "i",
+            "code": "i",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 17,
+            "population_units": "iper100m",
+            "details": "iper100m",
+            "code": "iper100m",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 18,
+            "population_units": "iper1000m",
+            "details": "iper1000m",
+            "code": "iper1000m",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 19,
+            "population_units": "iperkm2",
+            "details": "iperkm2",
+            "code": "iperkm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 20,
+            "population_units": "iperlocation",
+            "details": "iperlocation",
+            "code": "iperlocation",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 21,
+            "population_units": "iperm2",
+            "details": "iperm2",
+            "code": "iperm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 22,
+            "population_units": "ipertrapday",
+            "details": "ipertrapday",
+            "code": "ipertrapday",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 23,
+            "population_units": "ipertraphour",
+            "details": "ipertraphour",
+            "code": "ipertraphour",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 24,
+            "population_units": "ipertrapnight",
+            "details": "ipertrapnight",
+            "code": "ipertrapnight",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 25,
+            "population_units": "iwintering",
+            "details": "iwintering",
+            "code": "iwintering",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 26,
+            "population_units": "length",
+            "details": "length",
+            "code": "length",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 27,
+            "population_units": "localities",
+            "details": "localities",
+            "code": "localities",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 28,
+            "population_units": "locationsper100km2",
+            "details": "locationsper100km2",
+            "code": "locationsper100km2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 29,
+            "population_units": "locationsperkm2",
+            "details": "locationsperkm2",
+            "code": "locationsperkm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 30,
+            "population_units": "logs",
+            "details": "logs",
+            "code": "logs",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 31,
+            "population_units": "m2",
+            "details": "m2",
+            "code": "m2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 32,
+            "population_units": "males",
+            "details": "males",
+            "code": "males",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 33,
+            "population_units": "materroostsper100km2",
+            "details": "materroostsper100km2",
+            "code": "materroostsper100km2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 34,
+            "population_units": "materroostsperkm2",
+            "details": "materroostsperkm2",
+            "code": "materroostsperkm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 35,
+            "population_units": "nestsperkm2",
+            "details": "nestsperkm2",
+            "code": "nestsperkm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 36,
+            "population_units": "nestsperlocation",
+            "details": "nestsperlocation",
+            "code": "nestsperlocation",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 37,
+            "population_units": "nestsperm2",
+            "details": "nestsperm2",
+            "code": "nestsperm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 38,
+            "population_units": "p",
+            "details": "p",
+            "code": "p",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 39,
+            "population_units": "shoots",
+            "details": "shoots",
+            "code": "shoots",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 40,
+            "population_units": "spawnsperkm2",
+            "details": "spawnsperkm2",
+            "code": "spawnsperkm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 41,
+            "population_units": "spawnsperlocation",
+            "details": "spawnsperlocation",
+            "code": "spawnsperlocation",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 42,
+            "population_units": "spawnsperm2",
+            "details": "spawnsperm2",
+            "code": "spawnsperm2",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 43,
+            "population_units": "stones",
+            "details": "stones",
+            "code": "stones",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 44,
+            "population_units": "subadults",
+            "details": "subadults",
+            "code": "subadults",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 45,
+            "population_units": "trees",
+            "details": "trees",
+            "code": "trees",
+            "dataset_id": 6
+        }
+    },
+    {
+        "model": "EtcDicPopulationUnit",
+        "filter_fields": "population_units,dataset_id",
+        "fields": {
+            "order": 46,
             "population_units": "tufts",
-            "details": "number of tufts",
+            "details": "tufts",
             "code": "tufts",
             "dataset_id": 6
         }
