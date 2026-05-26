@@ -35,6 +35,7 @@ from art17.admin.manual_assessment import (
     SpeciesManualAssessmentModelView,
     HabitattypesManualAssessmentModelView,
 )
+from art17.admin.user import RegisteredUserModelView, RoleModelView
 from art17.admin.wiki_trail import (
     WikiTrailModelView,
     WikiTrailChangeModelView,
@@ -67,6 +68,8 @@ from art17.models import (
     EtcQaErrorsHabitattypeManualChecked,
     EtcQaErrorsSpeciesManualChecked,
     HabitatComment,
+    RegisteredUser,
+    Role,
     WikiTrail,
     WikiTrailChange,
     WikiTrailComment,
@@ -208,3 +211,5 @@ def admin_register(app):
     )
     admin.add_view(CommentModelView(Comment, db.session, category="ManualData"))
     admin.add_view(HabitatCommentModelView(HabitatComment, db.session, category="ManualData"))
+    admin.add_view(RegisteredUserModelView(RegisteredUser, db.session, category="Users"))
+    admin.add_view(RoleModelView(Role, db.session, category="Users"))

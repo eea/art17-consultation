@@ -11,6 +11,7 @@
         {% endif %}
     </button>
 
+    {% if dataset.schema != '2024' or can_view_audit_trail() %}
     <button type="button" id="wikibutton" {% if dataset.id == 4 %} disabled {% endif %}
         href=
             {% if region == '' %}
@@ -19,6 +20,7 @@
                 "{{ audittrail_url }}"
             {% endif %}>
         Audit trail</button>
+    {% endif %}
 
     {% if map_url or dataset.id == 5 %}
       {% if speciescode %}

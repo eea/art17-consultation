@@ -40,7 +40,6 @@ def can_view_details():
     if not current_user.is_authenticated:
         return False
 
-    # return current_user.has_role('etc') or current_user.has_role('admin')
     return current_user.has_role("admin")
 
 
@@ -60,7 +59,7 @@ def can_preview_progress():
     if not current_user.is_authenticated:
         return False
 
-    return current_user.has_role("etc") or current_user.has_role("admin")
+    return current_user.has_role("etc") or current_user.has_role("admin") and current_user.show_assessment
 
 
 def user_is_expert(user):
