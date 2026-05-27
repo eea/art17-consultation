@@ -64,6 +64,17 @@ def can_edit(record):
 def can_view_decision():
     return etc_perm.can() or admin_perm.can() or EU_ASSESSMENT_MODE
 
+@summary.app_template_global("can_view_assessment")
+def can_view_assessment():
+    if current_user.show_assessment and not current_user.is_anonymous:
+        return True
+    return False
+
+@summary.app_template_global("can_view_audit_trail")
+def can_view_audit_trail():
+    if current_user.show_assessment and not current_user.is_anonymous:
+        return True
+    return False
 
 @summary.app_template_global("can_add_conclusion")
 def can_add_conclusion(dataset, zone, subject, region=None):

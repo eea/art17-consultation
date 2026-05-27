@@ -1,6 +1,16 @@
 Changelog
 =========
 
+4.0.6 - (2026-05-19)
+--------------------
+* Add manual asessments comments in Admin interface
+  [dianaboiangiu]
+
+4.0.5 - (2026-05-13)
+--------------------
+* Extend etc_dic_population_units fields length
+  [dianaboiangiu]
+
 4.0.4 - (2026-05-13)
 --------------------
 * Limit operator options for complementary favourable fields

@@ -474,6 +474,11 @@ def generate_map_url_2024(dataset, category, subject, region, map_href):
             return map_href + f"&url-filter=species;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
         else:
             return map_href + f"&url-filter=species;{subject};filterZoom&zoom_to_selection=true"
+    elif category == "habitat":
+        if region:
+            return map_href + f"&url-filter=habitat;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+        else:
+            return map_href + f"&url-filter=habitat;{subject};filterZoom&zoom_to_selection=true"
     return ''
 
 def generate_map_url(dataset_id, category, subject, region, sensitive=False):

@@ -152,6 +152,7 @@
           {% endfor %}
         </tbody>
 
+        {% if dataset.schema != '2024' or can_view_assessment() %}
         <tbody class="thead">
           <tr class="section-header">
             <th class="table-title" colspan="{{ colspan_all }}">
@@ -199,9 +200,10 @@
             </tr>
           {% endfor %}
         </tbody>
+        {% endif %}
 
         {# Manual assessments - conclusions #}
-
+        {% if dataset.schema != '2024' or can_view_assessment() %}
         <tbody class="thead" id="manual-thead">
           <tr class="section-header">
             <th class="table-title" colspan="{{ colspan_all }}">
@@ -270,6 +272,7 @@
             {% endif %}
           </tbody>
           {% endif %}
+        {% endif %}
         </table>
 
       </div>

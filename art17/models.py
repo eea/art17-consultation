@@ -834,9 +834,9 @@ class EtcDicPopulationUnit(Base):
     __tablename__ = "etc_dic_population_units"
 
     order = Column(SmallInteger())
-    population_units = Column(String(16), primary_key=True)
+    population_units = Column(String(32), primary_key=True)
     details = Column(String(40))
-    code = Column(String(16))
+    code = Column(String(32))
 
     dataset_id = Column(
         "ext_dataset_id",
