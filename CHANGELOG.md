@@ -1,6 +1,12 @@
 Changelog
 =========
 
+4.0.7 - (2026-05-27)
+--------------------
+* Add habitat map configuration for period 2024
+* Use show assessment settings on user to hide current period assessemnts for selected users
+  [dianaboiangiu]
+
 4.0.6 - (2026-05-19)
 --------------------
 * Add manual asessments comments in Admin interface
