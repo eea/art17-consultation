@@ -1,6 +1,12 @@
 Changelog
 =========
 
+4.0.9 - (2026-06-11)
+--------------------
+* Upgrade packages
+* Add autocomplete select
+[dianaboiangiu]
+
 4.0.8 - (2026-06-11)
 --------------------
 * Fix 0.0 validation error on assessments
