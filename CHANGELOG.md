@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.8 - (2026-06-11)
+--------------------
+* Fix 0.0 validation error on assessments
+[dianaboiangiu]
+
 4.0.7 - (2026-05-27)
 --------------------
 * Add habitat map configuration for period 2024
