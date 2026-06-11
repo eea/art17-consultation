@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, g, jsonify, render_template, request, url_for, views
+from flask import Blueprint, abort, jsonify, render_template, request, url_for, views
 from sqlalchemy import and_
 from werkzeug.datastructures import MultiDict
 
@@ -59,7 +59,11 @@ def can_preview_progress():
     if not current_user.is_authenticated:
         return False
 
-    return current_user.has_role("etc") or current_user.has_role("admin") and current_user.show_assessment
+    return (
+        current_user.has_role("etc")
+        or current_user.has_role("admin")
+        and current_user.show_assessment
+    )
 
 
 def user_is_expert(user):
@@ -139,14 +143,14 @@ class Progress(views.View):
             [
                 row["eu_country_code"]
                 for row in presence
-                if row["species_type_asses"] == False
+                if row["species_type_asses"] is False
             ]
         )
         present = ",".join(
             [
                 row["eu_country_code"]
                 for row in presence
-                if row["species_type_asses"] != False
+                if row["species_type_asses"] is not False
             ]
         )
         return dict(occasional=occasional, present=present)
@@ -161,8 +165,8 @@ class Progress(views.View):
                     species=subject, region=region
                 )
             )
-        except:
-            subject = unicode.encode(subject, "utf-8")
+        except:  # noqa: E722
+            subject = subject.decode("utf-8")
             title.append(
                 "Species: {species}, Region: {region}".format(
                     species=subject, region=region
@@ -203,10 +207,10 @@ class Progress(views.View):
         try:
             title = "\n".join(title)
             return title
-        except:
+        except:  # noqa: E722
             for idx, text in enumerate(title):
-                if type(text) == unicode:
-                    title[idx] = unicode.encode(text, "utf-8")
+                if type(text) is str:
+                    title[idx] = text.decode("utf-8").encode("utf-8")
             return "\n".join(title)
 
     def process_cell(
@@ -305,7 +309,7 @@ class Progress(views.View):
         progress_filter_form.conclusion.choices = self.get_conclusions()
         progress_filter_form.assessor.choices = self.get_assessors(period, group)
 
-        period_query = Dataset.query.get(period)
+        period_query = db.session.get(Dataset, period)
         period_name = period_query.name if period_query else ""
         regions = (
             EtcDicBiogeoreg.query.with_entities(EtcDicBiogeoreg.reg_code)
@@ -610,7 +614,7 @@ def species_assessors():
 
 
 @progress.route("/habitat/progress/assessors", endpoint="habitat-assessors")
-def species_assessors():
+def habitat_assessors():
     try:
         int(request.args.get("period", ""))
     except ValueError:

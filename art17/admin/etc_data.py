@@ -1,5 +1,6 @@
 from .base import ProtectedModelView
 
+
 class EtcDataHcoveragePressureModelView(ProtectedModelView):
     form_columns = (
         "dataset_id",
@@ -56,4 +57,3 @@ class EtcDataSpopulationThreatModelView(ProtectedModelView):
         "threat",
     )
     column_filters = ["dataset_id", "eu_country_code", "region", "n2000_species_code"]
-

@@ -1,10 +1,11 @@
-revision = "0027"
-down_revision = "0026"
-
 import os.path
 
 import sqlalchemy as sa
 from alembic import op
+
+revision = "0027"
+down_revision = "0026"
+
 
 SQL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "sql")
 SCRIPT_NAME = "lu_hd_habitats_factsheets.sql"

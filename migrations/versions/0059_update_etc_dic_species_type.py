@@ -1,3 +1,6 @@
+import sqlalchemy as sa
+from alembic import op
+
 """Update EtcDicSpeciesType
 
 Revision ID: 0059
@@ -6,9 +9,6 @@ Create Date: 2025-12-12 09:15:32.440602
 
 """
 
-from alembic import op
-import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "0059"

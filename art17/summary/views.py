@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from flask import flash, g, jsonify, render_template, request, url_for, views, abort
+from flask import abort, flash, jsonify, render_template, request, url_for, views
 from flask_principal import PermissionDenied
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
@@ -89,7 +89,9 @@ def inject_fuctions():
 
 @summary.app_context_processor
 def inject_static():
-    make_tooltip = lambda d: "\n" + "\n".join(["%s: %s" % (k, v) for k, v in d])
+    make_tooltip = lambda d: "\n" + "\n".join(  # noqa: E731
+        ["%s: %s" % (k, v) for k, v in d]
+    )
     return {
         "etc_perm": etc_perm,
         "CONCLUSION_CLASSES": CONCLUSION_CLASSES,
@@ -157,10 +159,10 @@ def _na_if_none(value, default="N/A"):
     return na_if_none(value, default=default)
 
 
-def get_list(l, index, default=0):
-    if index < len(l):
+def get_list(initial_list, index, default=0):
+    if index < len(initial_list):
         try:
-            return float(l[index].replace("%", "").strip())
+            return float(initial_list[index].replace("%", "").strip())
         except ValueError:
             pass
     return default
@@ -173,7 +175,6 @@ def colorate(value):
         return CONCLUSION_CLASSES["XX"]
 
     FV = get_list(re.findall(r"(\d+.?\d+%)FV", value), 0)
-    U1 = get_list(re.findall(r"(\d+.?\d+%)U1", value), 0)
     U2 = get_list(re.findall(r"(\d+.?\d+%)U2", value), 0)
     XX = get_list(re.findall(r"(\d+.?\d+%)XX", value), 0)
     if U2 > 25:
@@ -364,7 +365,7 @@ class Summary(ConclusionView, views.View):
             else:
                 flash("Please correct the errors below and try again.")
 
-        self.dataset = Dataset.query.get(period)
+        self.dataset = db.session.get(Dataset, period)
         period_name = self.dataset.name if self.dataset else ""
 
         current_selection = self.get_current_selection(

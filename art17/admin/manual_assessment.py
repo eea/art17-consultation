@@ -1,5 +1,7 @@
 from wtforms import IntegerField
+
 from art17.admin.base import ProtectedModelView
+
 
 class SpeciesManualAssessmentModelView(ProtectedModelView):
     can_export = True
@@ -129,6 +131,7 @@ class SpeciesManualAssessmentModelView(ProtectedModelView):
         "last_update_decision",
         "dataset_id",
     )
+
 
 class HabitattypesManualAssessmentModelView(ProtectedModelView):
     can_export = True

@@ -3,7 +3,7 @@ import os
 import flask
 import pytest
 from mock import patch
-from flask_webtest import TestApp
+
 from art17 import models
 
 from .conftest import create_user, force_login
@@ -45,7 +45,7 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
 
     _set_config(admin_email="admin@example.com")
     user_obj = create_user("ze_admin", ["admin"])
-    fs_uniquifier = user_obj.fs_uniquifier
+    fs_uniquifier = user_obj.fs_uniquifier  # noqa: F841
     DatasetFactory()
     models.db.session.commit()
 
@@ -57,11 +57,11 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
     register_page.form["institution"] = "foo institution"
     result_page = register_page.form.submit()
     assert (
-        "Thank you. To confirm your email address foo@example.com, please click on the link in the email we have just sent to you"
+        "Thank you. To confirm your email address foo@example.com, please click on the link in the email we have just sent to you"  # noqa: E501
         in result_page.text
     )
 
-    foo_user = models.RegisteredUser.query.get("foo")
+    foo_user = models.db.session.get(models.RegisteredUser, "foo")
     assert foo_user.email == "foo@example.com"
     assert foo_user.confirmed_at is None
     assert not foo_user.active
@@ -76,7 +76,7 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
     assert url.startswith("http://localhost/confirm/")
 
     client.get(url)
-    foo_user = models.RegisteredUser.query.get("foo")
+    foo_user = models.db.session.get(models.RegisteredUser, "foo")
     assert foo_user.confirmed_at is not None
     assert foo_user.active
 
@@ -92,7 +92,7 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
     # activation_page.form["active"] = False
     # activation_page.form.submit()
 
-    # foo_user = models.RegisteredUser.query.get("foo")
+    # foo_user = models.db.session.get(models.RegisteredUser, "foo")
     # assert not foo_user.active
 
 
@@ -116,7 +116,7 @@ def test_admin_creates_local(app, set_auth, client, outbox, ldap_user_info):
 
     assert "User foo created successfully." in result_page
 
-    foo_user = models.RegisteredUser.query.get("foo")
+    foo_user = models.db.session.get(models.RegisteredUser, "foo")
     assert foo_user.email == "foo@example.com"
     assert foo_user.confirmed_at is not None
     assert foo_user.active
@@ -133,37 +133,34 @@ def test_admin_creates_local(app, set_auth, client, outbox, ldap_user_info):
 def test_admin_creates_ldap(app, set_auth, client, outbox, ldap_user_info):
     from .factories import DatasetFactory
 
-    _set_config(admin_email="admin@example.com")
-    user_obj = create_user("ze_admin", ["admin"])
-    force_login(client, user_obj.fs_uniquifier)
-    DatasetFactory()
-    models.db.session.commit()
-
-    ldap_user_info["foo"] = {
+    get_ldap_user_info = {
         "full_name": "foo me",
         "email": "foo@example.com",
     }
+    with patch("art17.auth.views.get_ldap_user_info", return_value=get_ldap_user_info):
+        _set_config(admin_email="admin@example.com")
+        user_obj = create_user("ze_admin", ["admin"])
+        force_login(client, user_obj.fs_uniquifier)
+        DatasetFactory()
+        models.db.session.commit()
 
-    enter_user_id_page = client.get(flask.url_for("auth.admin_create_ldap"))
-    enter_user_id_page.form["user_id"] = "foo"
-    register_page = enter_user_id_page.form.submit()
+        enter_user_id_page = client.get(flask.url_for("auth.admin_create_ldap"))
+        enter_user_id_page.form["user_id"] = "foo"
+        register_page = enter_user_id_page.form.submit()
 
-    register_page.form["institution"] = "foo institution"
+        result_page = register_page.form.submit().follow()
+        assert "User foo created successfully." in result_page
 
-    result_page = register_page.form.submit().follow()
+        foo_user = models.db.session.get(models.RegisteredUser, "foo")
+        assert foo_user.email == "foo@example.com"
+        assert foo_user.confirmed_at is not None
+        assert foo_user.active
+        assert foo_user.is_ldap
 
-    assert "User foo created successfully." in result_page
-
-    foo_user = models.RegisteredUser.query.get("foo")
-    assert foo_user.email == "foo@example.com"
-    assert foo_user.confirmed_at is not None
-    assert foo_user.active
-    assert foo_user.is_ldap
-
-    assert len(outbox) == 1
-    message = outbox.pop()
-    assert "Dear foo me," in message.body
-    assert '"foo"' in message.body
+        assert len(outbox) == 1
+        message = outbox.pop()
+        assert "Dear foo me," in message.body
+        assert '"foo"' in message.body
 
 
 @pytest.mark.skipif(True, reason="always skip")
@@ -190,7 +187,7 @@ def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_i
     result_page = register_page.form.submit()
     assert "has been registered" in result_page.text
 
-    foo_user = models.RegisteredUser.query.get("foo")
+    foo_user = models.db.session.get(models.RegisteredUser, "foo")
     assert foo_user.email == "foo@example.com"
     assert foo_user.confirmed_at is not None
     assert foo_user.active
@@ -208,7 +205,7 @@ def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_i
     activation_page.form["active"] = False
     activation_page.form.submit()
 
-    foo_user = models.RegisteredUser.query.get("foo")
+    foo_user = models.db.session.get(models.RegisteredUser, "foo")
     assert not foo_user.active
 
 
@@ -216,10 +213,10 @@ def test_view_requires_admin_error(app, set_auth, client):
     from .factories import DatasetFactory
 
     create_user("foo")
-    user_obj = create_user("ze_admin", ["admin"])
+    create_user("ze_admin", ["admin"])
     DatasetFactory()
     models.db.session.commit()
-    admin_user_url = flask.url_for("auth.admin_user", user_id="foo")
+    flask.url_for("auth.admin_user", user_id="foo")
 
 
 def test_view_requires_admin(app, set_auth, client):
@@ -308,10 +305,10 @@ def test_admin_edit_user_info(app, set_auth, client, outbox):
     result_page = page.form.submit()
 
     assert "User information updated" in result_page.follow().text
-    assert not result_page.status_code == 200
-    assert not "already associated with an account" in result_page.text
+    assert result_page.status_code != 200
+    assert "already associated with an account" not in result_page.text
 
-    foo_user = models.RegisteredUser.query.get("foo")
+    foo_user = models.db.session.get(models.RegisteredUser, "foo")
     assert foo_user.email == "foo@example.com"
     assert foo_user.name == "Foo Person"
     assert foo_user.institution == "Foo Institution"

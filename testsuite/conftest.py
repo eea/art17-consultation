@@ -1,8 +1,6 @@
-import urllib
-import uuid
 import os
+import urllib
 from datetime import date, datetime
-from sqlalchemy.sql import text
 
 import flask
 from alembic import config
@@ -10,6 +8,7 @@ from flask_webtest import TestApp
 from mock import patch
 from path import Path
 from pytest import fixture
+from sqlalchemy.sql import text
 
 from art17 import models
 from art17.app import create_app
@@ -38,29 +37,31 @@ def create_generic_fixtures():
     models.db.create_all()
     models.db.session.execute(
         text(
-            "insert into roles (name, description) " "values ('admin', 'Administrator')"
+            "insert into roles (id, name, description) "
+            "values (1, 'admin', 'Administrator')"
         )
     )
     models.db.session.execute(
         text(
-            "insert into roles (name, description) "
-            "values ('etc', 'European topic center')"
+            "insert into roles (id, name, description) "
+            "values (2, 'etc', 'European topic center')"
         )
     )
     models.db.session.execute(
         text(
-            "insert into roles (name, description) "
-            "values ('stakeholder', 'Stakeholder')"
+            "insert into roles (id, name, description) "
+            "values (3, 'stakeholder', 'Stakeholder')"
         )
     )
     models.db.session.execute(
         text(
-            "insert into roles (name, description) " "values ('nat', 'National expert')"
+            "insert into roles (id, name, description) "
+            "values (4, 'nat', 'National expert')"
         )
     )
     models.db.session.execute(
         text(
-            "insert into config(default_dataset_id, start_date) values (5, '%s')"
+            "insert into config(id, default_dataset_id, start_date) values (1, 5, '%s')"
             % date.today()
         )
     )
@@ -148,6 +149,7 @@ def create_user(user_id, role_names=[], name="", institution="", ms=""):
         MS=ms,
         fs_uniquifier=f"{user_id}_fs",
     )
+
     models.db.session.add(user)
     for name in role_names:
         role = models.Role.query.filter_by(name=name).first()

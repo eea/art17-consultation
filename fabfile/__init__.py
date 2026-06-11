@@ -7,7 +7,6 @@ from fabric.api import env
 
 from path import Path
 
-
 LOCAL_PATH = Path(__file__).abspath().parent
 USED_FOR_MSG = """deployment. You need to prefix the task with the location,
     i.e: fab staging deploy."""

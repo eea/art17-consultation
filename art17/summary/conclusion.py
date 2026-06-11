@@ -21,7 +21,6 @@ from art17.summary.permissions import (
     can_update_decision,
     must_edit_ref,
 )
-from art17.utils import validate_float
 from instance.settings import EU_ASSESSMENT_MODE
 
 CONC_METHODS = {
@@ -95,7 +94,9 @@ class ConclusionView(object):
                 self.model_auto_cls.assessment_method == EtcDicMethod.method,
             )
         ).all()
-        cmpf = lambda x, y: -1 if x.assessment_method == "00" else cmp(x.order, y.order)
+        cmpf = lambda x, y: (  # noqa: E731
+            -1 if x.assessment_method == "00" else cmp(x.order, y.order)
+        )
         best.sort(key=cmp_to_key(cmpf))
         values = {}
         # for f in all_fields(self.manual_form_cls()):
@@ -169,14 +170,16 @@ class ConclusionView(object):
             for conclusion in conclusions
             if self.check_conclusion(conclusion)
         ]
-        user_or_expert = lambda c: (
+        user_or_expert = lambda c: (  # noqa: E731
             not c.user.has_role("admin")
             and not c.user.has_role("etc")
             and c not in ok_conclusions
             if c.user
             else False
         )
-        user_iurmax = lambda c: not c.user.has_role("etc") if c.user else False
+        user_iurmax = lambda c: (  # noqa: E731
+            not c.user.has_role("etc") if c.user else False
+        )
         if ok_conclusions:
             return ok_conclusions + list(filter(user_or_expert, conclusions))
         else:

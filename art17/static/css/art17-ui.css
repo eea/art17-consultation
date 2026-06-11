@@ -1617,7 +1617,12 @@ td.form-error-td .select:hover {
 
 .offset_top_label {
   float: left;
-  margin-top: 24px;
+  margin-top: 25px;
+}
+
+.btn-xl {
+    padding: 4px 20px;
+    font-size: 13px;
 }
 
 /* FLASH MESSAGES */
@@ -1692,4 +1697,8 @@ td.form-error-td .select:hover {
 .jump {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.select2-selection button {
+  background-image: none !important;
 }

@@ -1,4 +1,5 @@
 from wtforms import IntegerField
+
 from .base import ProtectedModelView
 
 
@@ -36,8 +37,6 @@ class EtcDataSpeciesRegionModelView(ProtectedModelView):
         return form_class
 
 
-
-
 class EtcDataHabitattypeRegionModelView(ProtectedModelView):
     can_export = True
     column_list = (
@@ -70,4 +69,3 @@ class EtcDataHabitattypeRegionModelView(ProtectedModelView):
         form_class = super().scaffold_form()
         form_class.dataset_id = IntegerField("Dataset ID")
         return form_class
-

@@ -1,10 +1,11 @@
 import os
 
-from flask import abort, flash, current_app, request, redirect, url_for, session
+from flask import abort, current_app, flash, redirect, request, session, url_for
 from flask_admin import BaseView, expose
 from flask_admin.contrib.sqla import ModelView
-from art17.common import admin_perm
 from werkzeug.utils import secure_filename
+
+from art17.common import admin_perm
 
 
 class ProtectedModelView(ModelView):
@@ -14,6 +15,7 @@ class ProtectedModelView(ModelView):
 
     def inaccessible_callback(self, name, **kwargs):
         return abort(404)
+
 
 class AnonymizationMixin(ProtectedModelView):
     anonymized_fields = []

@@ -1,7 +1,6 @@
-from flask_security.forms import Required
 from flask_wtf import FlaskForm as Form_base
 from wtforms import PasswordField, SelectField, StringField
-from wtforms.validators import InputRequired, Optional
+from wtforms.validators import Optional, DataRequired
 from wtforms.widgets import HiddenInput
 
 from art17.dataset import IMPORT_SCHEMA
@@ -30,7 +29,7 @@ class CustomEmailStringField(StringField):
 
 class Art17RegisterFormBase(object):
 
-    name = StringField("Full name", validators=[Required("Full name is required")])
+    name = StringField("Full name", validators=[DataRequired("Full name is required")])
     institution = StringField("Institution", validators=[Optional()])
     abbrev = StringField("Abbrev.")
     MS = StringField(widget=HiddenInput())
@@ -57,8 +56,8 @@ class Art17RegisterFormBase(object):
 
 
 class LoginForm(Form_base):
-    username = StringField("Username", [InputRequired()])
-    password = PasswordField("Password", [InputRequired()])
+    username = StringField("Username", [DataRequired()])
+    password = PasswordField("Password", [DataRequired()])
 
     class Meta:
         csrf = True

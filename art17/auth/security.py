@@ -4,22 +4,22 @@ import flask
 import flask_security as flask_security
 import flask_security.utils
 from flask_login import current_user as c_user
-from flask_security.core import AnonymousUser as BaseAnonymousUser
 from flask_security import SQLAlchemyUserDatastore
+from flask_security.core import AnonymousUser as BaseAnonymousUser
 from flask_security.forms import ConfirmRegisterForm  # password_length,
 from flask_security.forms import (
     ForgotPasswordForm,
     RegisterFormMixin,
-    Required,
     unique_user_email,
 )
 from flask_wtf import FlaskForm
 from werkzeug.local import LocalProxy
 from wtforms import BooleanField, StringField, ValidationError
-from wtforms.validators import Email
+from wtforms.validators import Email, DataRequired
+
 from art17.auth.common import check_dates, get_ldap_user_info
 from art17.auth.forms import Art17RegisterFormBase, CustomEmailStringField
-from art17.models import RegisteredUser
+from art17.models import RegisteredUser, db
 
 
 class AnonymousUser(BaseAnonymousUser):
@@ -83,7 +83,7 @@ def check_duplicate_with_ldap(form, field):
 
 def check_duplicate_with_local_db(form, field):
 
-    user = RegisteredUser.query.get(field.data)
+    user = db.session.get(RegisteredUser, field.data)
     if user is not None:
         raise ValidationError("Username already exists")
 
@@ -98,12 +98,12 @@ def custom_unique_user_email(form, field):
         raise ValidationError("%s is already associated with an account" % field.data)
 
 
-class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
+class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm, FlaskForm):
 
     id = StringField(
         "Username",
         validators=[
-            Required("User ID is required"),
+            DataRequired("User ID is required"),
             check_duplicate_with_local_db,
             check_duplicate_with_ldap,
         ],
@@ -112,7 +112,7 @@ class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm):
     email = CustomEmailStringField(
         "Email address",
         validators=[
-            Required("Email is required"),
+            DataRequired("Email is required"),
             Email("Invalid email address"),
             unique_user_email,
         ],
@@ -123,7 +123,7 @@ class Art17LDAPRegisterForm(Art17RegisterFormBase, RegisterFormMixin, FlaskForm)
 
     email = StringField(
         "Email address",
-        validators=[Required("Email is required"), Email("Invalid email address")],
+        validators=[DataRequired("Email is required"), Email("Invalid email address")],
     )
 
 
@@ -135,7 +135,7 @@ class Art17AdminEditUserForm(Art17RegisterFormBase, FlaskForm):
     email = StringField(
         "Email address",
         validators=[
-            Required("Email is required"),
+            DataRequired("Email is required"),
             Email("Invalid email address"),
             custom_unique_user_email,
         ],

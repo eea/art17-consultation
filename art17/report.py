@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, render_template, request, url_for, views, abort
+from flask import Blueprint, abort, jsonify, render_template, request, url_for, views
 from sqlalchemy import func
 from werkzeug.datastructures import MultiDict
 
@@ -10,7 +10,7 @@ from art17.common import (
 )
 from art17.forms import ReportFilterForm
 from art17.mixins import HabitatMixin, MixinsCommon, SpeciesMixin
-from art17.models import Dataset
+from art17.models import Dataset, db
 
 report = Blueprint("report", __name__)
 
@@ -39,7 +39,7 @@ class Report(views.View):
 
         countries_map = dict(countries)
         regions_map = dict(regions)
-        period_query = Dataset.query.get(period)
+        period_query = db.session.get(Dataset, period)
         period_name = period_query.name if period_query else ""
 
         current_selection = self.get_current_selection(

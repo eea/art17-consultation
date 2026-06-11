@@ -1,8 +1,9 @@
+import sqlalchemy as sa
+from alembic import op
+
 revision = "0024"
 down_revision = "0023"
 
-import sqlalchemy as sa
-from alembic import op
 
 table_pks = [("wiki", ["id"]), ("wiki_trail", ["id"])]
 

@@ -1,3 +1,6 @@
+import sqlalchemy as sa
+from alembic import op
+
 """Modify habitat_manual_assessment
 
 Revision ID: 0063
@@ -6,9 +9,6 @@ Create Date: 2026-03-06 08:26:09.916130
 
 """
 
-from alembic import op
-import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "0062"

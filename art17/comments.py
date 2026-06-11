@@ -224,7 +224,7 @@ class CommentsList(views.View):
         edited_comment = None
         if request.args.get("edit"):
             edit_id = request.args.get("edit")
-            edited_comment = self.model_comment_cls.query.get(edit_id)
+            edited_comment = db.session.get(self.model_comment_cls, edit_id)
             if not can_edit_comment(edited_comment):
                 raise PermissionDenied
 
@@ -243,10 +243,10 @@ class CommentsList(views.View):
                 )
         else:
             if request.args.get("toggle"):
-                comment = self.model_comment_cls.query.get(request.args["toggle"])
+                comment = db.session.get(self.model_comment_cls, request.args["toggle"])
                 self.toggle_read(comment)
             if request.args.get("delete"):
-                comment = self.model_comment_cls.query.get(request.args["delete"])
+                comment = db.session.get(self.model_comment_cls, request.args["delete"])
                 permanently = request.args.get("perm", 0)
                 if permanently:
                     db.session.delete(comment)
@@ -302,7 +302,7 @@ class UserSummary(views.View):
         if not current_user.is_authenticated:
             raise PermissionDenied
         period = request.args.get("period") or get_default_period()
-        period_obj = Dataset.query.get(period)
+        period_obj = db.session.get(Dataset, period)
         history = self.get_history(period)
         return render_template(
             self.template,
@@ -317,8 +317,8 @@ class UserSummary(views.View):
             self.model_manual_cls.query.filter_by(dataset_id=period)
             .filter(
                 or_(
-                    self.model_manual_cls.deleted == False,
-                    self.model_manual_cls.deleted == None,
+                    self.model_manual_cls.deleted.is_(False),
+                    self.model_manual_cls.deleted.is_(None),
                 )
             )
             .order_by(self.model_manual_cls.last_update.desc())
@@ -328,8 +328,8 @@ class UserSummary(views.View):
             self.model_comment_cls.query.filter_by(dataset_id=period)
             .filter(
                 or_(
-                    self.model_comment_cls.deleted == False,
-                    self.model_comment_cls.deleted == None,
+                    self.model_comment_cls.deleted.is_(False),
+                    self.model_comment_cls.deleted.is_(None),
                 )
             )
             .order_by(self.model_comment_cls.post_date.desc())
@@ -338,14 +338,14 @@ class UserSummary(views.View):
 
         wikis = {
             wiki_cls: wiki_cls.query.with_entities(wiki_cls.id).filter(
-                getattr(wiki_cls, self.wiki_subject_column) != None
+                getattr(wiki_cls, self.wiki_subject_column).isnot(None)
             )
             for wiki_cls in [Wiki, WikiTrail]
         }
         datasheets = (
             WikiChange.query.filter(
                 WikiChange.dataset_id == period,
-                WikiChange.active == True,
+                WikiChange.active.is_(True),
                 WikiChange.wiki_id.in_(wikis[Wiki]),
             )
             .order_by(WikiChange.changed.desc())
@@ -355,7 +355,7 @@ class UserSummary(views.View):
         audittrails = (
             WikiTrailChange.query.filter(
                 WikiTrailChange.dataset_id == period,
-                WikiTrailChange.active == True,
+                WikiTrailChange.active.is_(True),
                 WikiTrailChange.wiki_id.in_(wikis[WikiTrail]),
             )
             .order_by(WikiTrailChange.changed.desc())
@@ -365,7 +365,7 @@ class UserSummary(views.View):
         ds_comments = (
             WikiComment.query.filter(
                 WikiComment.dataset_id == period,
-                or_(WikiComment.deleted == False, WikiComment.deleted == None),
+                or_(WikiComment.deleted.is_(False), WikiComment.deleted.is_(None)),
                 WikiComment.wiki_id.in_(wikis[Wiki]),
             )
             .order_by(WikiComment.posted.desc())
@@ -412,8 +412,8 @@ class _CommentCounterBase(object):
             .filter(self.comment_cls.dataset_id == self.dataset_id)
             .filter(
                 or_(
-                    self.comment_cls.deleted == False,
-                    self.comment_cls.deleted == None,
+                    self.comment_cls.deleted.is_(False),
+                    self.comment_cls.deleted.is_(None),
                 )
             )
             .filter(self.comment_cls.author_id != self.user_id)
@@ -441,12 +441,12 @@ class _CommentCounterBase(object):
             .filter(Wiki.dataset_id == self.dataset_id)
             .filter(
                 or_(
-                    WikiComment.deleted == False,
-                    WikiComment.deleted == None,
+                    WikiComment.deleted.is_(False),
+                    WikiComment.deleted.is_(None),
                 )
             )
             .filter(WikiComment.author_id != self.user_id)
-            .filter(self.wiki_subject_column != None)
+            .filter(self.wiki_subject_column.is_(None))
             .group_by(
                 self.wiki_subject_column,
                 Wiki.region_code,

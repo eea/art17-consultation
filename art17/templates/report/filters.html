@@ -2,24 +2,49 @@
 
   <div class="box-col">
     {{ report_filter_form.period.label }}
-    {{ report_filter_form.period }}
+    {{ report_filter_form.period(class="select2-period") }}
   </div>
 
   <div class="box-col">
     {{ report_filter_form.group.label }}
-    {{ report_filter_form.group(**{'data-href': groups_url }) }}
+    {{ report_filter_form.group(class="select2-group", **{'data-href': groups_url }) }}
   </div>
 
   <div class="box-col">
     {{ report_filter_form.country.label }}
-    {{ report_filter_form.country(**{'data-href': countries_url }) }}
+    {{ report_filter_form.country(class="select2-country", **{'data-href': countries_url }) }}
   </div>
 
   <div class="box-col">
     {{ report_filter_form.region.label }}
-    {{ report_filter_form.region(**{'data-href': regions_url}) }}
+    {{ report_filter_form.region(class="select2-region", **{'data-href': regions_url}) }}
   </div>
 
   <button class="btn-blue offset_top_label" type="submit">Filter</button>
 
 </form>
+
+<script>
+  $(document).ready(function() {
+    $('.select2-period').select2({
+      placeholder: 'Search period...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-group').select2({
+      placeholder: 'Search group...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-country').select2({
+      placeholder: 'Search country...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-region').select2({
+      placeholder: 'Search region...',
+      allowClear: true,
+      width: '100%'
+    });
+  });
+</script>

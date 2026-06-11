@@ -1,4 +1,4 @@
-from .base import ProtectedModelView, AnonymizationMixin
+from .base import AnonymizationMixin, ProtectedModelView
 
 
 class WikiTrailModelView(ProtectedModelView):

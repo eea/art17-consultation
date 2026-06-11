@@ -6,7 +6,6 @@ from flask.ext.script import Manager
 from art17.models import EtcDataSpeciesRegion, EtcDataHabitattypeRegion
 from art17.app import create_app
 
-
 COUNTRY = "ro"
 BIOREGIONS = [
     "MED",

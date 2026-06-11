@@ -1,3 +1,6 @@
+import sqlalchemy as sa
+from alembic import op
+
 """Correct assesment typo
 
 Revision ID: 0065
@@ -6,9 +9,6 @@ Create Date: 2026-04-02 08:36:57.083521
 
 """
 
-from alembic import op
-import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "0065"

@@ -1,5 +1,6 @@
-import click
 import re
+
+import click
 from flask.cli import AppGroup
 
 from art17 import models

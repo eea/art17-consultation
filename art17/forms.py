@@ -1,10 +1,11 @@
 # coding=utf-8
 from flask_wtf import FlaskForm as Form_base
+from sqlalchemy import or_
 from wtforms import BooleanField, DateField, SelectField, StringField, TextAreaField
 from wtforms.validators import Optional, ValidationError
 
+from art17.auth.security import current_user
 from art17.common import DEFAULT_MS, get_config
-from sqlalchemy import or_
 from art17.models import (
     Dataset,
     EtcDataHabitattypeRegion,
@@ -13,7 +14,6 @@ from art17.models import (
     EtcDicMethod,
     EtcDicPopulationUnit,
 )
-from art17.auth.security import current_user
 from art17.utils import (
     validate_field,
     validate_float,
@@ -190,7 +190,7 @@ class CommonFilterForm(Form):
             and not cfg.latest_dataset_public_view_enabled
         ):
             datasets = Dataset.query.filter(
-                or_(Dataset.latest == False, Dataset.latest == None)
+                or_(Dataset.latest.is_(False), Dataset.latest.is_(None))
             ).all()
             self.period.choices = [(d.id, d.name) for d in datasets]
         else:
@@ -296,7 +296,7 @@ class SpeciesFormMixin(object):
                 for op in [">>", ">", "<", "≈", "x"]:
                     if data.startswith(op):
                         qualifier = op
-                        size = data[len(op) :]
+                        size = data[len(op) :]  # noqa: E203
                         break
                 self.complementary_favourable_population_size.data = size
                 self.complementary_favourable_population_q.data = qualifier
@@ -308,7 +308,7 @@ class SpeciesFormMixin(object):
                 for op in [">>", ">", "<", "≈", "x"]:
                     if data.startswith(op):
                         qualifier = op
-                        size = data[len(op) :]
+                        size = data[len(op) :]  # noqa: E203
                         break
                 self.complementary_favourable_range_size.data = size
                 self.complementary_favourable_range_q.data = qualifier
@@ -474,7 +474,7 @@ class HabitatsFormMixin(object):
                 for op in [">>", ">", "<", "≈", "x"]:
                     if data.startswith(op):
                         qualifier = op
-                        size = data[len(op) :]
+                        size = data[len(op) :]  # noqa: E203
                         break
                 self.complementary_favourable_area_size.data = size
                 self.complementary_favourable_area_q.data = qualifier
@@ -486,7 +486,7 @@ class HabitatsFormMixin(object):
                 for op in [">>", ">", "<", "≈", "x"]:
                     if data.startswith(op):
                         qualifier = op
-                        size = data[len(op) :]
+                        size = data[len(op) :]  # noqa: E203
                         break
                 self.complementary_favourable_range_size.data = size
                 self.complementary_favourable_range_q.data = qualifier
@@ -551,9 +551,6 @@ class SummaryManualFormHabitat(
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
-        # trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
-        # trends = empty + zip(trends, trends)
-        trends = empty + CONCL_TYPE
 
         self.region.choices = empty
 

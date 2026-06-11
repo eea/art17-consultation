@@ -1,14 +1,14 @@
 -r requirements.txt
-black==24.10.0
+black==26.5.1
 blinker==1.9.0
-Fabric==3.2.2
-factory-boy==3.3.1
-flake8==7.1.1
+Fabric==3.2.3
+factory-boy==3.3.3
+flake8==7.3.0
 Flask-WebTest==0.1.6
-isort==5.13.2
-paramiko==3.5.0
-pip-tools==7.4.1
-pytest==8.3.4
+isort==8.0.1
+paramiko==5.0.0
+pip-tools==7.5.3
+pytest==9.0.3
 six==1.17.0
-WebOb==1.8.9
-WebTest==3.0.3
+WebOb==1.8.10
+WebTest==3.0.7

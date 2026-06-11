@@ -3,7 +3,6 @@ import urllib
 import urllib.parse
 
 import flask
-
 from markupsafe import Markup, escape
 
 from art17 import models
@@ -81,7 +80,6 @@ def species_config_xml():
 
     countries_style = []
     countries = []
-    species_code = ""
 
     def background_colour(value):
         colors = [
@@ -139,7 +137,6 @@ def species_config_xml():
                 country = "GR"
             else:
                 country = res.eu_country_code
-        species_code = res.code
         countries.append(country)
         countries_style.append(
             "l=%s%s|%s"
@@ -150,7 +147,7 @@ def species_config_xml():
             )
         )
 
-    qstring = "/%s/" % "|".join(countries)
+    qstring = "/%s/" % "|".join(countries)  # noqa: F841
     # extent = get_coordinates(region, qstring)
     extent = [2635945.400202, 1385857.104555, 6084637.867846, 5307244.006638]
 
@@ -285,7 +282,7 @@ def habitats_config_xml():
             )
         )
 
-    qstring = "/%s/" % "|".join(countries)
+    qstring = "/%s/" % "|".join(countries)  # noqa: F841
     # extent = get_coordinates(region, qstring)
     extent = [2635945.400202, 1385857.104555, 6084637.867846, 5307244.006638]
 

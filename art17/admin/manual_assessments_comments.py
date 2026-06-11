@@ -1,5 +1,3 @@
-
-from wtforms import IntegerField
 from art17.admin.base import ProtectedModelView
 
 
@@ -15,7 +13,6 @@ class CommentModelView(ProtectedModelView):
         "author_id",
         "post_date",
         "deleted",
-
     ]
     column_list = [
         "id",

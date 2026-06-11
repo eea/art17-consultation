@@ -1,8 +1,8 @@
-revision = "0042"
-down_revision = "0041"
-
 import sqlalchemy as sa
 from alembic import op
+
+revision = "0042"
+down_revision = "0041"
 
 
 def upgrade():

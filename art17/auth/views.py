@@ -25,7 +25,7 @@ from flask_security.recoverable import (
     send_reset_password_instructions,
 )
 from flask_security.registerable import register_user
-from flask_security.utils import config_value, encrypt_password, get_message, get_url
+from flask_security.utils import config_value, get_message, get_url
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.local import LocalProxy
 
@@ -70,8 +70,7 @@ def handle_permission_denied(error):
 
 @auth.route("/auth/register/local", methods=["GET", "POST"])
 def register_local():
-    form = Art17LocalRegisterForm(request.form)
-
+    form = Art17LocalRegisterForm(flask.request.form)
     if form.validate_on_submit():
         datastore = current_app.extensions["security"].datastore
 
@@ -81,7 +80,6 @@ def register_local():
         user.password = encrypted_password
         datastore.commit()
         return render_template("message.html", message="")
-
     return render_template(
         "auth/register_local.html",
         **{
@@ -216,10 +214,9 @@ def admin_create_ldap():
     if user_id is None:
         return render_template("auth/register_ldap_enter_user_id.html")
 
-    if models.RegisteredUser.query.get(user_id) is not None:
+    if models.db.session.get(models.RegisteredUser, user_id) is not None:
         flash('User "%s" already registered.' % user_id, "error")
         return redirect(url_for(".admin_create_ldap"))
-
     initial_data = _get_initial_ldap_data(user_id)
     if "_fields_from_ldap" in request.form:
         if initial_data is None:
@@ -227,9 +224,13 @@ def admin_create_ldap():
             return redirect(url_for(".admin_create_ldap"))
         form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
     else:
-        form = Art17LDAPRegisterForm(request.form)
-        form.name.data = initial_data.get("name", "")
-        form.email.data = initial_data.get("email", "") or form.email.data
+        form = Art17LDAPRegisterForm(
+            request.form,
+            data={
+                "name": initial_data.get("name", ""),
+                "email": initial_data.get("email", ""),
+            },
+        )
         if form.validate():
             kwargs = form.to_dict(only_user=True)
             kwargs["id"] = user_id
@@ -366,7 +367,7 @@ def admin_user(user_id):
     if request.method == "POST":
         if request.form.get("btn") == "delete":
             # delete from local database
-            user = models.RegisteredUser.query.get(user_id)
+            user = models.db.session.get(models.RegisteredUser, user_id)
             models.db.session.delete(user)
             models.db.session.commit()
             flash("User %s has successfully been deleted" % user_id, "success")

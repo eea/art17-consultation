@@ -1,6 +1,6 @@
-import click
 import os
 
+import click
 from flask.cli import AppGroup
 
 
@@ -15,11 +15,11 @@ loaddata = AppGroup("loaddata")
 @click.option("-f", "--fixture", "fixture")
 def run(**kwargs):
     fixture = kwargs["fixture"]
-    session = db.session
+    session = db.session  # noqa: F821
     if not os.path.isfile(fixture):
         print("Please provide a fixture file name")
     else:
-        objects = get_fixture_objects(fixture)
+        objects = get_fixture_objects(fixture)  # noqa: F821
         for object in objects:
             filter_fields = object["filter_fields"].split(",")
             kwargs = {}

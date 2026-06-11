@@ -1,9 +1,9 @@
-revision = "0002"
-down_revision = "0001"
-
 import sqlalchemy as sa
 from alembic import op
 from sqlalchemy.dialects.oracle import NVARCHAR2
+
+revision = "0002"
+down_revision = "0001"
 
 period_tables = [
     "dic_country_codes",

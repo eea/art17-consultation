@@ -1,10 +1,8 @@
 from flask import flash
-from art17.models import (
-    EtcDicSpeciesType,
-    db,
-)
-from .base import ProtectedModelView
 
+from art17.models import EtcDicSpeciesType, db
+
+from .base import ProtectedModelView
 
 
 class DicCountryCodeModelView(ProtectedModelView):
@@ -126,7 +124,6 @@ class EtcDicTrendModelView(ProtectedModelView):
     column_filters = ("id", "dataset_id", "trend")
 
 
-
 class EtcQaErrorsHabitattypeManualCheckedModelView(ProtectedModelView):
     form_columns = (
         "dataset_id",
@@ -199,4 +196,3 @@ class EtcQaErrorsSpeciesManualCheckedModelView(ProtectedModelView):
         "assessment_speciesname",
         "field",
     )
-

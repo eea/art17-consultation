@@ -1,7 +1,8 @@
+from alembic import op
+
 revision = "0026"
 down_revision = "0025"
 
-from alembic import op
 
 SRC_DATE_FORMAT = "%d/%m/%Y %H:%i"
 DST_DATE_FORMAT = "%Y-%m-%d %H:%i"

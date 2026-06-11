@@ -209,7 +209,7 @@ class CommonSection(object):
 
         request_args = self.get_req_args()
         period = request_args.get("period")
-        dataset = Dataset.query.get(period) if period else None
+        dataset = db.session.get(Dataset, period) if period else None
 
         return {
             "wiki_body": [("", "", active_change.body)] if active_change else [],
@@ -416,7 +416,7 @@ class AddComment(WikiView):
         wiki_changes = self.section.get_wiki_changes().all()
         comments = wiki.comments if wiki else []
 
-        dataset = Dataset.query.get(request.args.get("period"))
+        dataset = db.session.get(Dataset, request.args.get("period"))
         if self.section.wiki_change_cls == WikiChange:
             datasheet = True
         else:
@@ -448,7 +448,7 @@ class AddComment(WikiView):
 
 class EditPage(WikiView):
     def process_post_request(self):
-        dataset = Dataset.query.get(request.args.get("period"))
+        dataset = db.session.get(Dataset, request.args.get("period"))
         if self.section.wiki_change_cls == WikiChange:
             datasheet = True
         else:
@@ -536,7 +536,7 @@ class ManageComment(WikiView):
             period = int(request.args.get("period", ""))
         except ValueError:
             abort(404)
-        dataset = Dataset.query.get(period)
+        dataset = db.session.get(Dataset, period)
         if self.section.wiki_change_cls == WikiChange:
             datasheet = True
         else:
@@ -579,7 +579,7 @@ class GetRevision(WikiView):
             raise PermissionDenied
         try:
             revision_id = int(request.args.get("revision_id"))
-        except:
+        except:  # noqa: E722
             abort(404)
         revision_id = request.args.get("revision_id")
         revision = self.section.wiki_change_cls.query.filter_by(

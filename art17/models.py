@@ -1,21 +1,12 @@
 # coding: utf-8
-import json
-import os
-import sys
-from sqlalchemy import BigInteger, SmallInteger
-from sqlalchemy.dialects.postgresql import BYTEA, TIMESTAMP
-
-from datetime import datetime
-from sqlalchemy import func, distinct
-from sqlalchemy.orm import lazyload
 import ldap
 from flask import current_app as app
 from flask_security import RoleMixin, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     Column,
-    DateTime,
     Float,
     ForeignKey,
     Integer,
@@ -24,9 +15,10 @@ from sqlalchemy import (
     String,
     Table,
     Text,
-    inspect,
+    func,
     or_,
 )
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
@@ -118,7 +110,7 @@ t_comments_read = Table(
 class Comment(Base):
     __tablename__ = "comments"
 
-    id = Column(BigInteger(), primary_key=True, unique=True)
+    id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     region = Column(String(4), nullable=False)
     assessment_speciesname = Column(String(50), nullable=False)
     user_id = Column("user", String(25), nullable=False)
@@ -396,7 +388,7 @@ class EtcDataHabitattypeRegion(Base):
 
     @property
     def is_assesm(self):
-        return self.habitattype_type_asses == False
+        return self.habitattype_type_asses is False
 
     @hybrid_property
     def subject(self):
@@ -675,7 +667,7 @@ class EtcDataSpeciesRegion(Base):
 
     @property
     def is_assesm(self):
-        return self.species_type_asses == False
+        return self.species_type_asses is False
 
     @property
     def mapcode(self):
@@ -953,7 +945,7 @@ t_habitat_comments_read = Table(
 class HabitatComment(Base):
     __tablename__ = "habitat_comments"
 
-    id = Column(BigInteger(), primary_key=True, unique=True)
+    id = Column(Integer, primary_key=True, unique=True)
     region = Column(String(4), nullable=False)
     habitat = Column(String(50), nullable=False)
     user_id = Column("user", String(25), nullable=False)
@@ -1112,8 +1104,8 @@ class HabitattypesManualAssessment(Base):
             .filter(text("habitat_comments_read.reader_user_id='%s'" % user))
             .filter(
                 or_(
-                    HabitatComment.deleted == False,
-                    HabitatComment.deleted == None,
+                    HabitatComment.deleted.is_(False),
+                    HabitatComment.deleted.is_(None),
                 )
             )
             .count()
@@ -1183,8 +1175,8 @@ class PhotoHabitat(Base):
     picture_date = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default="CURRENT_TIMESTAMP"
     )
-    picture_data = Column(BYTEA())
-    thumbnail = Column(BYTEA())
+    picture_data = Column(LargeBinary)
+    thumbnail = Column(LargeBinary)
     user = Column(String(50), nullable=False, default="")
 
     dataset_id = Column(
@@ -1400,7 +1392,7 @@ class SpeciesManualAssessment(Base):
             .filter(Comment.user_id == self.user_id)
             .filter(Comment.dataset_id == self.dataset_id)
             .filter(text("comments_read.reader_user_id='%s'" % user))
-            .filter(or_(Comment.deleted == False, Comment.deleted == None))
+            .filter(or_(Comment.deleted.is_(False), Comment.deleted.is_(None)))
             .count()
         )
 

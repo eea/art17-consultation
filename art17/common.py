@@ -421,7 +421,7 @@ def get_title_for_species_country(row):
     ):
         s_name = row.speciesname or row.assessment_speciesname or ""
         s_info = row.complementary_other_information or ""
-    if row.species_type_asses == False:
+    if row.species_type_asses is False:
         s_type = (
             row.species_type_details.SpeciesType
             if row.species_type_details
@@ -468,21 +468,35 @@ def get_title_for_habitat_country(row):
         )
     return s_name, s_info, s_type
 
+
 def generate_map_url_2024(dataset, category, subject, region, map_href):
     if category == "species":
         if region:
-            return map_href + f"&url-filter=species;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+            return (
+                map_href
+                + f"&url-filter=species;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+            )
         else:
-            return map_href + f"&url-filter=species;{subject};filterZoom&zoom_to_selection=true"
+            return (
+                map_href
+                + f"&url-filter=species;{subject};filterZoom&zoom_to_selection=true"
+            )
     elif category == "habitat":
         if region:
-            return map_href + f"&url-filter=habitat;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+            return (
+                map_href
+                + f"&url-filter=habitat;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+            )
         else:
-            return map_href + f"&url-filter=habitat;{subject};filterZoom&zoom_to_selection=true"
-    return ''
+            return (
+                map_href
+                + f"&url-filter=habitat;{subject};filterZoom&zoom_to_selection=true"
+            )
+    return ""
+
 
 def generate_map_url(dataset_id, category, subject, region, sensitive=False):
-    dataset = Dataset.query.get(dataset_id)
+    dataset = db.session.get(Dataset, dataset_id)
     if category == "species":
         field_2018 = "speciescode"
         if sensitive:
@@ -516,7 +530,6 @@ def generate_map_url(dataset_id, category, subject, region, sensitive=False):
             return map_href + "&CCode=" + subject
 
 
-
 @common.app_template_global("is_sensitive")
 def get_sensitive_records(speciescode=""):
     return (
@@ -534,7 +547,7 @@ def homepage():
         "homepage.html",
         **{
             "current_user": current_user,
-        }
+        },
     )
 
 
