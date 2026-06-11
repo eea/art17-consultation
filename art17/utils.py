@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
 import re
 from decimal import Decimal
 
@@ -8,7 +9,7 @@ from markupsafe import Markup
 from path import Path
 
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
-valid_float = re.compile("^\s*((?=.*[1-9])\d*(?:\.\d{1,2})?|x)\s*$")
+valid_float = re.compile(r"^\s*(?:0|0\.\d{1,2}|[1-9]\d*(?:\.\d{1,2})?|x)\s*$")
 valid_numeric = re.compile(
     "^\s*(((\d*\.)?\d+\s*-\s*(\d*\.)?\d+" + "|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$"
 )
