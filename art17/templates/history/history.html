@@ -4,7 +4,7 @@
 {% block breadcrumbs %}
   {% from '_macros.html' import breadcrumbs %}
   {{ breadcrumbs(APP_BREADCRUMBS + [
-      ('history', None),
+      ('History', None),
     ]) }}
 {% endblock %}
 
@@ -28,24 +28,28 @@
     <table class="table-list">
       <thead>
         <tr>
-          <th>Date</th>
-          <th>Author</th>
-          <th>User</th>
           <th>{{ subject_name|capitalize }}</th>
           <th>Region</th>
+          <th>Author</th>
+          <th>User</th>
+          <th>Date</th>
           <th>Read</th>
         </tr>
       </thead>
       <tbody>
         {% for c in history.comments %}
         <tr>
-          <td><a href="{{ url_for(summary_endpoint, subject=c.subject,
-                  region=c.region, period=c.dataset_id) + "#manual-thead" }}"
-                  >{{ c.post_date }}</a></td>
+          <td>
+            <a href="{{ url_for(summary_endpoint, subject=c.subject,
+                      region=c.region, period=c.dataset_id) + "#manual-thead" }}"
+            >
+            {{ c.subject }}
+            </a>
+          </td>
+          <td>{{ c.region }}</td>
           <td>{{ (c.author.name or c.author_id) | hide_adm_etc_username }}</td>
           <td>{{ (c.user.name or c.user_id) | hide_adm_etc_username }}</td>
-          <td>{{ c.subject }}</td>
-          <td>{{ c.region }}</td>
+          <td>{{ c.post_date }}</td>
           <td>{{ c.read_for(current_user) }}</td>
         </tr>
 
@@ -61,20 +65,24 @@
     <table class="table-list">
       <thead>
         <tr>
-          <th>Date</th>
-          <th>User</th>
           <th>{{ subject_name|capitalize }}</th>
           <th>Region</th>
+          <th>User</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
         {% for c in history.conclusions %}
         <tr>
-          <td><a href="{{ url_for(summary_endpoint, subject=c.subject,
-                  region=c.region, period=c.dataset_id) + "#manual-thead" }}">{{ c.last_update }}</a></td>
-          <td>{{ (c.user.name or c.user_id) | hide_adm_etc_username }}</td>
-          <td>{{ c.subject }}</td>
+          <td>
+            <a href="{{ url_for(summary_endpoint, subject=c.subject,
+                  region=c.region, period=c.dataset_id) + "#manual-thead" }}">
+            {{ c.subject }}
+            </a>
+          </td>
           <td>{{ c.region }}</td>
+          <td>{{ (c.user.name or c.user_id) | hide_adm_etc_username }}</td>
+          <td>{{ c.last_update or '-' }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -85,21 +93,25 @@
     <table class="table-list">
       <thead>
         <tr>
-          <th>Date</th>
-          <th>User</th>
           <th>{{ subject_name|capitalize }}</th>
           <th>Region</th>
+          <th>User</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
         {% for d in history.datasheets %}
         <tr>
-          <td><a href="{{ url_for('wiki.datasheet', page=subject_name,
-            period=d.dataset_id, subject=d.wiki.subject, region=d.wiki.region_code) }}"
-            id="wikibutton">{{ d.changed }}</a></td>
-          <td>{{ d.editor | hide_adm_etc_username }}</td>
-          <td>{{ d.wiki.subject }}</td>
+          <td>
+            <a href="{{ url_for('wiki.datasheet', page=subject_name,
+                        period=d.dataset_id, subject=d.wiki.subject, region=d.wiki.region_code) }}"
+                        id="wikibutton">
+              {{ d.wiki.subject }}
+            </a>
+          </td>
           <td>{{ d.wiki.region_code or 'All bioregions' }}</td>
+          <td>{{ d.editor | hide_adm_etc_username }}</td>
+          <td>{{ d.changed }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -113,22 +125,26 @@
     <table class="table-list">
       <thead>
         <tr>
-          <th>Date</th>
-          <th>Author</th>
           <th>{{ subject_name|capitalize }}</th>
           <th>Region</th>
+          <th>Author</th>
+          <th>Date</th>
           <th>Read</th>
         </tr>
       </thead>
       <tbody>
         {% for c in history.datasheet_comments %}
         <tr>
-          <td><a href="{{ url_for('wiki.datasheet', page=subject_name,
+          <td>
+            <a href="{{ url_for('wiki.datasheet', page=subject_name,
             period=c.dataset_id, subject=c.wiki.subject, region=c.wiki.region_code) }}"
-            id="wikibutton">{{ c.posted }}</a></td>
-          <td>{{ (c.author.name or c.author_id) | hide_adm_etc_username }}</td>
-          <td>{{ c.wiki.subject }}</td>
+            id="wikibutton">
+              {{ c.wiki.subject }}
+            </a>
+          </td>
           <td>{{ c.wiki.region_code or 'All bioregions' }}</td>
+          <td>{{ (c.author.name or c.author_id) | hide_adm_etc_username }}</td>
+          <td>{{ c.posted }}</td>
           <td>{{ c.read_for(g.user) }}</td>
         </tr>
         {% endfor %}
@@ -143,21 +159,25 @@
     <table class="table-list">
       <thead>
         <tr>
-          <th>Date</th>
-          <th>User</th>
           <th>{{ subject_name|capitalize }}</th>
           <th>Region</th>
+          <th>User</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
         {% for a in history.audittrails %}
         <tr>
-          <td><a href="{{ url_for('wiki.audittrail', page=subject_name,
+          <td>
+            <a href="{{ url_for('wiki.audittrail', page=subject_name,
             period=a.dataset_id, subject=a.wiki.subject, region=a.wiki.region_code) }}"
-            id="wikibutton">{{ a.changed }}</a></td>
-          <td>{{ a.editor | hide_adm_etc_username }}</td>
-          <td>{{ a.wiki.subject }}</td>
+            id="wikibutton">
+            </a>
+            {{ a.wiki.subject }}
+          </td>
           <td>{{ a.wiki.region_code }}</td>
+          <td>{{ a.editor | hide_adm_etc_username }}</td>
+          <td>{{ a.changed }}</td>
         </tr>
         {% endfor %}
       </tbody>

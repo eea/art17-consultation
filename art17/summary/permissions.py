@@ -6,6 +6,7 @@ from art17.common import (
     nat_perm,
     sta_cannot_change,
     sta_perm,
+    get_config
 )
 from art17.summary import summary
 from instance.settings import EU_ASSESSMENT_MODE
@@ -67,14 +68,20 @@ def can_view_decision():
 
 @summary.app_template_global("can_view_assessment")
 def can_view_assessment():
-    if current_user.show_assessment and not current_user.is_anonymous:
+    conf = get_config()
+    if conf.latest_dataset_public_view_enabled:
+        return True
+    if not current_user.is_anonymous and current_user.show_assessment:
         return True
     return False
 
 
 @summary.app_template_global("can_view_audit_trail")
 def can_view_audit_trail():
-    if current_user.show_assessment and not current_user.is_anonymous:
+    conf = get_config()
+    if conf.latest_dataset_public_view_enabled:
+        return True
+    if not current_user.is_anonymous and current_user.show_assessment:
         return True
     return False
 

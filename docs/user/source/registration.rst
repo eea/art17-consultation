@@ -6,7 +6,7 @@ For editing and actively participating into drawing conclusions, one has to
 prior register for the consultation. There are two ways by which one can do so:
 
 * with an existing EIONET account (LDAP)
-* with a local user (Plone)
+* with a local user (registered and only available in the Article 17 application)
 
 The two types of accounts can be achieved by both self-registration and admin
 workaround.
@@ -17,34 +17,23 @@ Register into Art17 Consultation by self-registration
 These are the steps explained for self-registration with an **existing EIONET
 account**:
 
-#. From within the homepage the user clicks on the *register here* link
-   corresponding to `If you have an Eionet account please` text option in the
-   center of the page
-#. A new page  kindly asks the user to log in with the EIONET account by using
-   the *Login* procedure explained above, in the `Authentication` section
-#. After successfully logged in, the user is redirected to `Register with
-   Eionet account` page in which is ought to provide information to complete
-   the extracted profile from LDAP
+#. If the user has an EIONET account, they can simply click on the *Login* button.
 #. Should no errors occur, the account is being registered with immediate
    effect within the database
 #. The *Login* link changes to *Logout (username)*.
-#. The user can make full advantage of his account as soon as one of the
-   administrators reviews the profile and grants the corresponding roles
+#. The user will have the *Stakeholder* role by default.
 
 On the other hand, the following procedure steps depict the way
 self-registration can be done for a **local user account**:
 
 #. From within the homepage the user clicks on the *register here* link
-   corresponding to `If you don't have an Eionet account please` text option in
-   the center of the page
+   (Should be under: /auth/register/local) corresponding to `If you don't have an Eionet account please` 
+   text option in the center of the page
 #. A new `Register a new account` page loads and asks the user to fill in
    several fields to complete a profile for registration
 #. Upon successful user info completion, the user account is being created and
-   further instructions, along with confirmation link, are sent via email
-#. Should email reach correct destination, the user can confirm the account by
-   clicking the confirmation URL contained within the email
-#. The user can make full advantage of his account as soon as one of the
-   administrators reviews the profile and grants the corresponding roles
+   further instructions, along with confirmation link, are sent via email.
+#. The user can now login and they will have the *Stakeholder* role by default.
 
 Register into Art17 Consultation by admin workaround
 ====================================================

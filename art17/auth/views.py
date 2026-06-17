@@ -518,6 +518,7 @@ def login():
             data = _get_initial_ldap_data(username)
             user = models.RegisteredUser(
                 id=username,
+                fs_uniquifier=f"{username}_fs",
                 name=data["name"],
                 qualification=data["qualification"],
                 email=data["email"],

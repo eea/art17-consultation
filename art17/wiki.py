@@ -113,8 +113,8 @@ def get_css_class(comment):
 
 
 @wiki.app_template_global("can_edit_page")
-def can_edit_page(dataset, datasheet=False):
-    if not dataset or dataset.is_readonly and (dataset.id != 5 or not datasheet):
+def can_edit_page(dataset):
+    if not dataset or dataset.is_readonly:
         return False
     return admin_perm.can() or etc_perm.can() or EU_ASSESSMENT_MODE
 
@@ -132,12 +132,8 @@ def can_change_revision(revision):
 
 
 @wiki.app_template_global("can_add_comment")
-def can_add_comment(comments, revisions, dataset, datasheet=False):
-    if not dataset:
-        return False
-    if (dataset.is_readonly or sta_cannot_change()) and (
-        dataset.id != 5 or not datasheet or not (etc_perm.can() or admin_perm.can())
-    ):
+def can_add_comment(comments, revisions, dataset):
+    if not dataset or dataset.is_readonly or sta_cannot_change():
         return False
     is_author = current_user in [cmnt.author for cmnt in comments]
     return not (current_user.is_anonymous or is_author) and revisions
@@ -156,13 +152,7 @@ def can_edit_comment(comment):
 
 @wiki.app_template_global("can_manage_comment")
 def can_manage_comment(dataset, datasheet=False):
-    if (
-        not dataset
-        or dataset.is_readonly
-        and (
-            dataset.id != 5 or not datasheet or not (etc_perm.can() or admin_perm.can())
-        )
-    ):
+    if not dataset or dataset.is_readonly:
         return False
     return not current_user.is_anonymous
 
@@ -271,7 +261,6 @@ class DataSheetSection(CommonSection):
         context.update(
             {
                 "comments": comments,
-                "datasheet": True,
                 "add_comment_url": url_for(
                     self.addcmnt_endpoint, page=self.page, **request_args
                 ),
@@ -417,11 +406,7 @@ class AddComment(WikiView):
         comments = wiki.comments if wiki else []
 
         dataset = db.session.get(Dataset, request.args.get("period"))
-        if self.section.wiki_change_cls == WikiChange:
-            datasheet = True
-        else:
-            datasheet = False
-        if not can_add_comment(comments, wiki_changes, dataset, datasheet):
+        if not can_add_comment(comments, wiki_changes, dataset):
             raise PermissionDenied
 
         form = CommentForm(request.form)
@@ -449,11 +434,7 @@ class AddComment(WikiView):
 class EditPage(WikiView):
     def process_post_request(self):
         dataset = db.session.get(Dataset, request.args.get("period"))
-        if self.section.wiki_change_cls == WikiChange:
-            datasheet = True
-        else:
-            datasheet = False
-        if not can_edit_page(dataset, datasheet):
+        if not can_edit_page(dataset):
             raise PermissionDenied
 
         form = WikiEditForm(request.form)
@@ -537,11 +518,7 @@ class ManageComment(WikiView):
         except ValueError:
             abort(404)
         dataset = db.session.get(Dataset, period)
-        if self.section.wiki_change_cls == WikiChange:
-            datasheet = True
-        else:
-            datasheet = False
-        if not can_manage_comment(dataset, datasheet):
+        if not can_manage_comment(dataset):
             raise PermissionDenied
         comment_id = request.args.get("comment_id")
         comment = self.section.wiki_comment_cls.query.filter_by(

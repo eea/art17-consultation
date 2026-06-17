@@ -4,7 +4,7 @@
             The related products are not available for the period 2007-2012bis.
         </p>
     {% endif %}
-    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.id in [4, 6] %} disabled {% endif %}>
+    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.id in [4] %} disabled {% endif %}>
         View data sheet info
         {% if current_user.is_authenticated %}
           {% if wiki_unread %}({{ wiki_unread }} unread comments){% endif %}
