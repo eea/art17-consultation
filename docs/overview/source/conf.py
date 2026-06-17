@@ -51,14 +51,14 @@ master_doc = "index"
 
 # General information about the project.
 project = "Art17 Consultation Overview"
-copyright = "2014"
+copyright = "2026"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = "1.0"
+version = "4.0.6"
 # The full version, including alpha/beta/rc tags.
 release = ""
 

@@ -32,5 +32,4 @@ Source code summary
 * `art17/static/` - static files such as CSS or Javascript
 * `art17/templates/` - HTML templates used in views
 * `docs/` - documentation, user manual and overview
-* `fabfile/` - deployment configuration
 * `testsuite/` - unit testing

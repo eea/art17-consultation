@@ -84,7 +84,7 @@ def register_local():
         "auth/register_local.html",
         **{
             "register_user_form": form,
-        }
+        },
     )
 
 
@@ -101,7 +101,7 @@ def send_welcome_email(user, plaintext_password=None):
             "user": user,
             "plaintext_password": plaintext_password,
             "home_url": url_for(HOMEPAGE_VIEW_NAME, _external=True),
-        }
+        },
     )
     safe_send_mail(app, msg)
 
@@ -130,7 +130,7 @@ def admin_create_local():
         "auth/register_local.html",
         **{
             "register_user_form": form,
-        }
+        },
     )
 
 
@@ -170,7 +170,7 @@ def register_ldap():
             "auth/register_ldap_exists.html",
             **{
                 "admin_email": get_config().admin_email,
-            }
+            },
         )
     initial_data = _get_initial_ldap_data(user_id)
     form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
@@ -186,7 +186,7 @@ def register_ldap():
                 is_ldap=True,
                 password="",
                 confirmed_at=datetime.utcnow(),
-                **form.to_dict()
+                **form.to_dict(),
             )
             datastore.commit()
             flash(
@@ -203,7 +203,7 @@ def register_ldap():
             "already_registered": g.get("user") is not None,
             "user_id": user_id,
             "register_user_form": form,
-        }
+        },
     )
 
 
@@ -253,7 +253,7 @@ def admin_create_ldap():
         **{
             "user_id": user_id,
             "register_user_form": form,
-        }
+        },
     )
 
 
@@ -292,7 +292,7 @@ def change_password():
         "auth/change_password.html",
         **{
             "form": form,
-        }
+        },
     )
 
 
@@ -324,7 +324,7 @@ def send_role_change_notification(user, new_roles):
         **{
             "user": user,
             "new_roles": [role_description[r] for r in new_roles],
-        }
+        },
     )
     safe_send_mail(app, msg)
 
@@ -349,7 +349,7 @@ def users():
             "user_list": user_query.all(),
             "role_map": get_roles_for_all_users(),
             "countries": dict(countries),
-        }
+        },
     )
 
 
@@ -410,7 +410,7 @@ def admin_user(user_id):
             "user_form": user_form,
             "current_user_roles": current_user_roles,
             "all_roles": dict(all_roles),
-        }
+        },
     )
 
 
@@ -439,7 +439,7 @@ def admin_user_reset_password(user_id):
         **{
             "user": user,
             "form": form,
-        }
+        },
     )
 
 
@@ -587,5 +587,5 @@ def reset_password(token):
         config_value("RESET_PASSWORD_TEMPLATE"),
         reset_password_form=form,
         reset_password_token=token,
-        **_security._run_ctx_processor("reset_password")
+        **_security._run_ctx_processor("reset_password"),
     )

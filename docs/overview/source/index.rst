@@ -16,7 +16,6 @@ For an user perspective documentation, please check the *User Manual*.
 
    application
    authentication
-   roles
    database
    views
 

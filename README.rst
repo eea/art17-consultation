@@ -65,24 +65,6 @@ correct URLs for the LDAP server:
     EEA_LDAP_SERVER=ldaps://ldap.example.com
     EEA_LDAP_PORT=389
 
-
-Data Import
------------
-Initially the application's database is empty. We need to import data
-from a dump (the old 2006 app's database or the new reporting data).
-First we need to load this dump into a separate database::
-
-    mysql -e 'create database art17_2006 CHARACTER SET utf8 COLLATE utf8_general_ci;'
-    mysql art17_2006 < art17_2006.sql
-
-Then we can import this data into our app's database. Make sure to
-specify the right schema version, in this case '2006'::
-
-    ./manage.py dataset import -d import-from-2006 -i 'mysql://user:pass@localhost/art17_2006' -s 2006
-
-An optional argument ``-f`` (fallback) exists. When there are no records to import
-in a table, it copies the entire table from the specified dataset.
-
 Upgrading the application
 =========================
 
@@ -106,14 +88,6 @@ Requirements
 User ``requirements-dev.txt`` instead of ``requirements-dep.text``::
 
     pip install -r requirements-dev.txt
-
-
-Configure deploy
-----------------
-
-- copy ``fabfile/env.ini.example`` to ``fabfile/env.ini``
-- configure staging and production settings
-- run ``fab staging deploy`` or ``fab production deploy``
 
 
 Running unit tests
@@ -198,6 +172,21 @@ Debugging
 
 * See it in action: http://localhost:5000
 
+Documentation
+=============
+
+Documentation can be found under `docs`:
+
+* Art17 Consultation User Manual:
+
+        cd docs/user/
+        make html
+
+* Art17 Consultation Overview:
+        cd docs/overview/
+        make html
+
+
 Contacts
 ========
 
@@ -205,8 +194,7 @@ The project owner is Søren Roug (soren.roug at eaa.europa.eu)
 
 Other people involved in this project are:
 
-* Cornel Nițu (cornel.nitu at eaudeweb.ro)
-* Alex Eftimie (alex.eftimie at eaudeweb.ro)
+* Diana Boiangiu (diana.boiangiu at eaudeweb.ro)
 
 Resources
 =========

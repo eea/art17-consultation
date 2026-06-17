@@ -6,7 +6,7 @@ from art17.common import (
     nat_perm,
     sta_cannot_change,
     sta_perm,
-    get_config
+    get_config,
 )
 from art17.summary import summary
 from instance.settings import EU_ASSESSMENT_MODE
