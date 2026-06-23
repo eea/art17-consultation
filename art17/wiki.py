@@ -67,7 +67,7 @@ def hide_adm_assessor_username(name):
             elif author.has_role("admin"):
                 name = "Admin"
     if author:
-        if author.has_role("stakeholder") or author.has_role("nat"):
+        if author.has_role("stakeholder"):
             if not current_user.has_role("admin"):
                 name = author.institution
     return name
@@ -89,7 +89,7 @@ def is_name_changed(name):
             elif author.has_role("admin"):
                 is_changed = True
     if author:
-        if author.has_role("stakeholder") or author.has_role("nat"):
+        if author.has_role("stakeholder"):
             if not current_user.has_role("admin"):
                 is_changed = True
     return is_changed

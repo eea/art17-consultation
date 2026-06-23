@@ -35,7 +35,6 @@ from art17.common import (
     get_title_for_species_country,
     get_tooltip_for_habitat,
     get_tooltip_for_species,
-    nat_perm,
     population_ref,
     population_size_unit,
     population_size_unit_title,
@@ -262,8 +261,6 @@ class Summary(ConclusionView, views.View):
         if admin_perm.can() or sta_perm.can() or assessor_perm.can():
             member_states = self.get_MS(subject, region, period)
             member_states = [(m[0], m[1]) for m in member_states]
-        elif nat_perm.can() and current_user.MS:
-            member_states = [(current_user.MS, current_user.MS)]
         return member_states + [(DEFAULT_MS, DEFAULT_MS)]
 
     def dispatch_request(self):
@@ -372,7 +369,7 @@ class Summary(ConclusionView, views.View):
             period_name, group, subject, region, period
         )
         annexes = self.get_annexes(subject, period)
-        default_ms = DEFAULT_MS if not nat_perm.can() else current_user.MS
+        default_ms = DEFAULT_MS
         context = self.get_context()
         context.update(
             {

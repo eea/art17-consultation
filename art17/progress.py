@@ -67,7 +67,7 @@ def can_preview_progress():
 
 
 def user_is_expert(user):
-    return True if user in ("maximiur", "iurieetcbd") else False
+    return True if current_user.has_role("admin") else False
 
 
 def save_decision(output):

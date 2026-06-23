@@ -12,6 +12,7 @@ from art17.models import (
     EtcDataSpeciesRegion,
     EtcDicConclusion,
     EtcDicMethod,
+    EtcDicTrend,
     EtcDicPopulationUnit,
 )
 from art17.utils import (
@@ -57,13 +58,6 @@ CONTRIB_TYPE = [
 ]
 
 CONCL_TYPE = [("+", "+"), ("-", "-"), ("0", "0"), ("x", "x")]
-
-TREND_CHOICES = [
-    ("+", "+"),
-    ("-", "-"),
-    ("=", "="),
-    ("x", "x"),
-]
 
 PROSPECTS_CHOICES = [
     ("", ""),
@@ -371,9 +365,8 @@ class SummaryManualFormSpecies(
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = [("Not selected", "")] + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
-        # trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
-        # trends = empty + zip(trends, trends)
-        trends = empty + TREND_CHOICES
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + list(zip(trends, trends))
         units = [a for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
         units = empty + units
 
@@ -551,6 +544,8 @@ class SummaryManualFormHabitat(
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + list(zip(trends, trends))
 
         self.region.choices = empty
 
@@ -570,7 +565,7 @@ class SummaryManualFormHabitat(
             self.conclusion_assessment_trend,
             self.hab_condition_trend,
         ):
-            f.choices = empty + TREND_CHOICES
+            f.choices = trends
         for f in (
             self.conclusion_range,
             self.conclusion_area,
@@ -688,7 +683,8 @@ class SummaryManualFormSpeciesRef(
         self.conclusion_assessment_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend_change.choices = NATURE_CHOICES
 
-        trends = empty + TREND_CHOICES
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + list(zip(trends, trends))
         for f in (self.range_trend, self.population_trend, self.habitat_trend):
             f.choices = trends
 
@@ -824,7 +820,8 @@ class SummaryManualFormHabitatRef(
             self.conclusion_assessment_trend,
             self.hab_condition_trend,
         ):
-            f.choices = empty + TREND_CHOICES
+            trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+            trends = empty + list(zip(trends, trends))
         for f in (
             self.conclusion_range,
             self.conclusion_area,
@@ -949,5 +946,4 @@ class ChangeDetailsForm(Form):
         self.role.choices = [
             ("", ""),
             ("stakeholder", "Stakeholder"),
-            ("nat", "National expert"),
         ]

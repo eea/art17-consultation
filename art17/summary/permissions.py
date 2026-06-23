@@ -3,7 +3,6 @@ from art17.common import (
     admin_perm,
     consultation_ended,
     assessor_perm,
-    nat_perm,
     sta_cannot_change,
     sta_perm,
     get_config,
@@ -113,11 +112,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
     elif not region:
         warning_message = "Please select a Bioregion in order to add a " + "conclusion."
     elif not (
-        admin_perm.can()
-        or sta_perm.can()
-        or nat_perm.can()
-        or assessor_perm.can()
-        or EU_ASSESSMENT_MODE
+        admin_perm.can() or sta_perm.can() or assessor_perm.can() or EU_ASSESSMENT_MODE
     ):
         warning_message = "You do not have permission to add conclusions."
     elif sta_cannot_change():
@@ -144,7 +139,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
 
 @summary.app_template_global("can_select_MS")
 def can_select_MS():
-    return admin_perm.can() or sta_perm.can() or nat_perm.can() or assessor_perm.can()
+    return admin_perm.can() or sta_perm.can() or assessor_perm.can()
 
 
 def can_touch(assessment):
@@ -154,7 +149,6 @@ def can_touch(assessment):
         return (
             EU_ASSESSMENT_MODE
             or admin_perm.can()
-            or nat_perm.can()
             or assessor_perm.can()
             or (sta_perm.can() and not consultation_ended())
         )

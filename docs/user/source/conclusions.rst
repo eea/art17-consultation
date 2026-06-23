@@ -17,7 +17,6 @@ permissions that are nicely bundled into four different roles:
 
 * Administrator
 * Assessor
-* National expert (NAT)
 * Stakeholder (STK)
 
 Further details about each role and its capabilities in terms of assessment
@@ -81,8 +80,6 @@ permissions bundled into four different roles. Regardless of the role granted,
 the form to propose assessments is roughly the same, with very few exceptions:
 
 * The Administrator can add a conclusion only for a country member that has a report or under EU27.
-* The National expert (NAT) can add a conclusion only for the represented country or EU27
-  for that country
 * The Assessor can add a conclusion only for a country member that has a report or under EU27.
 * Stakeholder (STK) can add a conclusion only for a country member that has a report or under EU27.
 
@@ -164,7 +161,7 @@ are easily distinguished by their light red background.
 
 For an assessment to be removed entirely, the user must click the ``Permanently delete`` button.
 
-Please note that NAT and STK users can only see each other's deleted assessments
+Please note that STK users can only see each other's deleted assessments
 while Assessors can overview them all.
 
 

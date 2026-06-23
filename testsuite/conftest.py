@@ -55,12 +55,6 @@ def create_generic_fixtures():
     )
     models.db.session.execute(
         text(
-            "insert into roles (id, name, description) "
-            "values (4, 'nat', 'National expert')"
-        )
-    )
-    models.db.session.execute(
-        text(
             "insert into config(id, default_dataset_id, start_date) values (1, 5, '%s')"
             % date.today()
         )

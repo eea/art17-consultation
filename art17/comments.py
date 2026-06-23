@@ -21,7 +21,6 @@ from art17.common import (
     admin_perm,
     get_default_period,
     is_public_user,
-    nat_perm,
     sta_cannot_change,
     sta_perm,
 )
@@ -67,12 +66,8 @@ def can_post_comment(record):
     can_add = False
     if sta_cannot_change():
         can_add = False
-    elif sta_perm.can() or nat_perm.can():
-        if (
-            (record.user.has_role("nat") and record.user_id == current_user.id)
-            or not record.user
-            or record.user.has_role("stakeholder")
-        ):
+    elif sta_perm.can():
+        if not record.user or record.user.has_role("stakeholder"):
             can_add = True
     else:
         can_add = True
@@ -96,7 +91,7 @@ def can_view_comments(record):
         return False
     if is_public_user():
         return False
-    if sta_perm.can() or nat_perm.can():
+    if sta_perm.can():
         if record.user.has_role("assessor") or record.user.has_role("admin"):
             return False
     return True

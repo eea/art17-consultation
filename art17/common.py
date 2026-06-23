@@ -184,14 +184,11 @@ def sta_cannot_change():
 admin_perm = Permission(RoleNeed("admin"))
 sta_perm = Permission(RoleNeed("stakeholder"))
 assessor_perm = Permission(RoleNeed("assessor"))
-nat_perm = Permission(RoleNeed("nat"))
 
 
 def is_public_user():
     """Call for authenticated users."""
-    return not (
-        admin_perm.can() or sta_perm.can() or assessor_perm.can() or nat_perm.can()
-    )
+    return not (admin_perm.can() or sta_perm.can() or assessor_perm.can())
 
 
 @common.record
@@ -201,7 +198,6 @@ def register_permissions_in_template_globals(state):
     app.jinja_env.globals["admin_perm"] = admin_perm
     app.jinja_env.globals["assessor_perm"] = assessor_perm
     app.jinja_env.globals["sta_perm"] = sta_perm
-    app.jinja_env.globals["nat_perm"] = nat_perm
     app.jinja_env.globals["HOMEPAGE_VIEW_NAME"] = HOMEPAGE_VIEW_NAME
     app.jinja_env.globals["DEMO_SERVER"] = app.config.get("DEMO_SERVER", True)
     app.jinja_env.globals["SCRIPT_NAME"] = app.config.get("SCRIPT_NAME", "/article17")

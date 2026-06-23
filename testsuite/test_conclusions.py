@@ -557,81 +557,6 @@ def test_autofill_conclusion_form(
             ],
             {
                 "region": "ALP",
-                "method_population": "2GD",
-                "conclusion_population": "FV",
-                "submit": "add",
-                "MS": "FR",
-            },
-            "natuser",
-            "FR",
-            ["nat"],
-            models.SpeciesManualAssessment,
-        ),
-        # # Habitat
-        # (
-        #     [
-        #         "/habitat/summary/",
-        #         {
-        #             "period": 5,
-        #             "group": "coastal habitats",
-        #             "subject": "1110",
-        #             "region": "ALP",
-        #         },
-        #     ],
-        #     {
-        #         "region": "ALP",
-        #         "method_range": "2GD",
-        #         "conclusion_range": "FV",
-        #         "submit": "add",
-        #         "MS": "FR",
-        #     },
-        #     "natuser",
-        #     "FR",
-        #     ["nat"],
-        #     models.HabitattypesManualAssessment,
-        # ),
-    ],
-)
-def test_add_conclusion_nat(
-    app,
-    client,
-    set_auth,
-    setup_add,
-    request_args,
-    post_params,
-    user,
-    MS,
-    roles,
-    model_cls,
-):
-    user = create_user(user, roles, ms=MS)
-    force_login(client, user.fs_uniquifier)
-
-    resp = client.post(*get_request_params("post", request_args, post_params))
-
-    assert resp.status_code == 200
-
-    post_params.pop("submit", None)
-    manual_ass = model_cls.query.filter_by(**post_params).one()
-    assert manual_ass.MS == MS
-
-
-@pytest.mark.parametrize(
-    "request_args, post_params, user, MS, roles, model_cls",
-    # Species
-    [
-        (
-            [
-                "/species/summary/",
-                {
-                    "period": 6,
-                    "group": "Mammals",
-                    "subject": "Canis lupus",
-                    "region": "ALP",
-                },
-            ],
-            {
-                "region": "ALP",
                 "MS": "AT",
                 "method_population": "2GD",
                 "conclusion_population": "FV",
@@ -1054,20 +979,6 @@ def test_delete_conclusion(
             "",
             "",
         ),
-        # NAT trying to update decision
-        (
-            [
-                "/species/conc/update/6/Canis lupus/BOR/someuser/",
-                {"ms": "EU27"},
-            ],
-            {},
-            "testuser",
-            ["nat"],
-            True,
-            403,
-            "",
-            "",
-        ),
         # STK trying to update decision
         (
             [
@@ -1157,17 +1068,6 @@ def test_delete_conclusion(
         #     ["assessor"],
         #     True,
         #     401,
-        #     "",
-        #     "",
-        # ),
-        # # NAT trying to update decision
-        # (
-        #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
-        #     {},
-        #     "testuser",
-        #     ["nat"],
-        #     True,
-        #     403,
         #     "",
         #     "",
         # ),

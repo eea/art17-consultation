@@ -9,7 +9,6 @@ zero, one or more roles.
 The main roles used in the application are:
 
 * Assessor
-* National Expert
 * Stakeholder
 * Public User
 
@@ -33,7 +32,7 @@ the wiki pages.
 Manual assessments
 ------------------
 
-Public Users, Stakeholders and National Expert can only view assessments with "OK" decision.
+Public Users and Stakeholders can only view assessments with "OK" decision.
 Users that can add assessments, can also edit or mark as deleted (only for their own).
 Only one assessment can be added per (country, biogeoregion, species/habitat) pair.
 
@@ -42,7 +41,6 @@ Only one assessment can be added per (country, biogeoregion, species/habitat) pa
    :widths: 5, 5, 15
 
    "**Assessor**",✓,"Add for EU or member states which have reports"
-   "**National Expert**",✓,"Add for EU or their own MS"
    "**Stakeholder**",✓,"Add for EU or member states which have reports"
    "**Public User**",,
 
@@ -51,7 +49,6 @@ Only one assessment can be added per (country, biogeoregion, species/habitat) pa
    :widths: 5, 10, 15, 15
 
    "**Assessor**",✓,✓,"Can edit all fields."
-   "**National Expert**",✓,,
    "**Stakeholder**",✓,,
    "**Public User**",,,
 
@@ -60,7 +57,6 @@ Only one assessment can be added per (country, biogeoregion, species/habitat) pa
    :widths: 5, 10, 15, 15
 
    "**Assessor**",✓,,
-   "**National Expert**",✓,,
    "**Stakeholder**",✓,,
    "**Public User**",,,
 
@@ -69,7 +65,6 @@ Only one assessment can be added per (country, biogeoregion, species/habitat) pa
    :widths: 10, 15
 
    "**Assessor**",✓
-   "**National Expert**",
    "**Stakeholder**",
    "**Public User**",
 
@@ -86,7 +81,6 @@ the activity log (new unread comments, new conclusions).
    :widths: 5, 10, 15
 
    "**Assessor**",✓,✓
-   "**National Expert**",✓,
    "**Stakeholder**",✓,
    "**Public User**",,
 

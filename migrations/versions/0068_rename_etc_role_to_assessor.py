@@ -10,6 +10,7 @@ def upgrade():
         "SET name = 'assessor', description = 'Assessor' "
         "WHERE name = 'etc'"
     )
+    op.execute("DELETE from roles where name='nat'")
 
 
 def downgrade():
@@ -17,4 +18,8 @@ def downgrade():
         "UPDATE roles "
         "SET name = 'etc', description = 'European topic center' "
         "WHERE name = 'assessor'"
+    )
+    op.execute(
+        "INSERT INTO roles (name, description) VALUES "
+        "('nat',         'National expert'      ), "
     )

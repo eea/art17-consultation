@@ -338,7 +338,7 @@ def test_email_notification_for_role_changes(app, set_auth, client, outbox):
     models.db.session.commit()
     force_login(client, user_obj.fs_uniquifier)
     page = client.get(flask.url_for("auth.admin_user", user_id="foo"))
-    page.form["roles"] = ["stakeholder", "nat"]
+    page.form["roles"] = ["stakeholder"]
     page.form["name"] = "Foo Person"
     page.form["email"] = "foo@example.com"
     page.form["institution"] = "Foo Institution"
