@@ -16,7 +16,7 @@ The level of access to the application core is spread through different
 permissions that are nicely bundled into four different roles:
 
 * Administrator
-* European topic center (ETC)
+* Assessor
 * National expert (NAT)
 * Stakeholder (STK)
 
@@ -83,12 +83,12 @@ the form to propose assessments is roughly the same, with very few exceptions:
 * The Administrator can add a conclusion only for a country member that has a report or under EU27.
 * The National expert (NAT) can add a conclusion only for the represented country or EU27
   for that country
-* The European topic center (ETC) can add a conclusion only for a country member that has a report or under EU27.
+* The Assessor can add a conclusion only for a country member that has a report or under EU27.
 * Stakeholder (STK) can add a conclusion only for a country member that has a report or under EU27.
 
 .. WARNING::
    For period 2019-2024, to set the decisions for the manual assessments that were imported automatically, the `add assessment` functionality
-   was revoked entirely to restrict the ETC users (the assessors) to only edit existing assessments (the ones that were imported).
+   was revoked entirely to restrict the Assessor users to only edit existing assessments (the ones that were imported).
    The adding of assessments can be enabled/disabled by an `Add assessments` toggle in config.
 
 
@@ -115,7 +115,7 @@ correction for that occurence) button, visible after clicking the assessor's nam
 
 For simplicity, the protocol states that all registered users can edit their
 own assessments; if so, all assessment fields can be modified. Additionaly,
-European topic center (ETC) users can also edit other users assessments. For
+Assessor users can also edit other users assessments. For
 the latter, please be advised that **only** favourable reference values were
 subject to change before period 2019-2024. The figures below feature the two edit forms.
 
@@ -132,7 +132,7 @@ subject to change before period 2019-2024. The figures below feature the two edi
    *Edit an assessment added by another user*
 
 .. WARNING::
-   For period 2019-2024, as ETC users edited the imported manual assessments 
+   For period 2019-2024, as Assessor users edited the imported manual assessments
    (which were created under generic users ``EEA – ETC BE``/ ``EEA – Framework Contract``),
    they were allowed to edit all the fields.
 
@@ -165,7 +165,7 @@ are easily distinguished by their light red background.
 For an assessment to be removed entirely, the user must click the ``Permanently delete`` button.
 
 Please note that NAT and STK users can only see each other's deleted assessments
-while ETC can overview them all.
+while Assessors can overview them all.
 
 
 Comment on assessments
@@ -212,7 +212,7 @@ Other users' comments can be marked as read/unread.
 Change decision
 ---------------
 
-In order to change the decision for an assessment, a user must have **ETC** or **Administrator**
+In order to change the decision for an assessment, a user must have **Assessor** or **Administrator**
 role. To change a decision, simply choose an option from the **Decision**
 selectbox, as depicted in the figure below.
 

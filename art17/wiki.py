@@ -14,7 +14,7 @@ from flask_principal import PermissionDenied
 from sqlalchemy import or_
 
 from art17.auth.security import current_user
-from art17.common import admin_perm, etc_perm, sta_cannot_change
+from art17.common import admin_perm, assessor_perm, sta_cannot_change
 from art17.forms import CommentForm, RevisedForm, WikiEditForm
 from art17.models import (
     Dataset,
@@ -51,8 +51,8 @@ def format_time_cmnt(value):
     return format_datetime(value, TIME_FORMAT_CMNT)
 
 
-@wiki.app_template_filter("hide_adm_etc_username")
-def hide_adm_etc_username(name):
+@wiki.app_template_filter("hide_adm_assessor_username")
+def hide_adm_assessor_username(name):
     name = name or ""
     author = RegisteredUser.query.filter(
         or_(
@@ -60,9 +60,9 @@ def hide_adm_etc_username(name):
             RegisteredUser.id == name,
         )
     ).first()
-    if not (current_user.has_role("etc") or current_user.has_role("admin")):
+    if not (current_user.has_role("assessor") or current_user.has_role("admin")):
         if author:
-            if author.has_role("etc"):
+            if author.has_role("assessor"):
                 name = "EEA-ETC/BD"
             elif author.has_role("admin"):
                 name = "Admin"
@@ -82,9 +82,9 @@ def is_name_changed(name):
             RegisteredUser.id == name,
         )
     ).first()
-    if not (current_user.has_role("etc") or current_user.has_role("admin")):
+    if not (current_user.has_role("assessor") or current_user.has_role("admin")):
         if author:
-            if author.has_role("etc"):
+            if author.has_role("assessor"):
                 is_changed = True
             elif author.has_role("admin"):
                 is_changed = True
@@ -116,19 +116,19 @@ def get_css_class(comment):
 def can_edit_page(dataset):
     if not dataset or dataset.is_readonly:
         return False
-    return admin_perm.can() or etc_perm.can() or EU_ASSESSMENT_MODE
+    return admin_perm.can() or assessor_perm.can() or EU_ASSESSMENT_MODE
 
 
 @wiki.app_template_global("can_manage_revisions")
 def can_manage_revisions():
-    return admin_perm.can() or etc_perm.can() or EU_ASSESSMENT_MODE
+    return admin_perm.can() or assessor_perm.can() or EU_ASSESSMENT_MODE
 
 
 @wiki.app_template_global("can_change_revision")
 def can_change_revision(revision):
     if not revision.dataset or revision.dataset.is_readonly or revision.active:
         return False
-    return admin_perm.can() or etc_perm.can()
+    return admin_perm.can() or assessor_perm.can()
 
 
 @wiki.app_template_global("can_add_comment")

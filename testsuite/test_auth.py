@@ -292,7 +292,7 @@ def test_admin_edit_user_info(app, set_auth, client, outbox):
 
     _set_config(admin_email="admin@example.com")
     user_obj = create_user("ze_admin", ["admin"])
-    create_user("foo", ["etc", "stakeholder"], name="Foo Person")
+    create_user("foo", ["assessor", "stakeholder"], name="Foo Person")
     DatasetFactory()
     models.db.session.commit()
     force_login(client, user_obj.fs_uniquifier)
@@ -315,7 +315,7 @@ def test_admin_edit_user_info(app, set_auth, client, outbox):
     assert foo_user.qualification == "Foo is web developer"
     assert not foo_user.is_ldap
 
-    create_user("bar", ["etc"], name="Bar Person")
+    create_user("bar", ["assessor"], name="Bar Person")
     models.db.session.commit()
 
     page = client.get(flask.url_for("auth.admin_user", user_id="bar"))
@@ -333,7 +333,7 @@ def test_email_notification_for_role_changes(app, set_auth, client, outbox):
     from .factories import DatasetFactory
 
     user_obj = create_user("ze_admin", ["admin"])
-    create_user("foo", ["etc", "stakeholder"], name="Foo Person")
+    create_user("foo", ["assessor", "stakeholder"], name="Foo Person")
     DatasetFactory()
     models.db.session.commit()
     force_login(client, user_obj.fs_uniquifier)
@@ -345,7 +345,7 @@ def test_email_notification_for_role_changes(app, set_auth, client, outbox):
     page.form.submit()
     assert len(outbox) == 0
 
-    page.form["roles"] = ["etc", "stakeholder"]
+    page.form["roles"] = ["assessor", "stakeholder"]
     page.form["name"] = "Foo Person"
     page.form["email"] = "foo@example.com"
     page.form["institution"] = "Foo Institution"
@@ -355,5 +355,5 @@ def test_email_notification_for_role_changes(app, set_auth, client, outbox):
     assert len(outbox) == 1
     [msg] = outbox
     assert msg.recipients == ["foo@example.com"]
-    assert "* European topic center" in msg.body
+    assert "* Assessor" in msg.body
     assert "* Stakeholder" in msg.body

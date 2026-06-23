@@ -11,7 +11,7 @@ from art17.common import (
     MixinView,
     admin_perm,
     consultation_ended,
-    etc_perm,
+    assessor_perm,
     get_default_period,
 )
 from art17.models import Config, EtcDicDecision, EtcDicMethod, RegisteredUser, db
@@ -76,7 +76,7 @@ class ConclusionView(object):
         period = request.args.get("period") or get_default_period()
         subject = request.args.get("subject")
         region = request.args.get("region")
-        if consultation_ended() and (etc_perm.can() or admin_perm.can()):
+        if consultation_ended() and (assessor_perm.can() or admin_perm.can()):
             best = self.model_manual_cls.query.filter_by(
                 dataset_id=period,
                 subject=subject,
@@ -162,7 +162,7 @@ class ConclusionView(object):
         return conclusion.decision in ["OK", "END"]
 
     def filter_conclusions(self, conclusions):
-        if admin_perm.can() or etc_perm.can():
+        if admin_perm.can() or assessor_perm.can():
             return conclusions
         conclusions = list(conclusions)
         ok_conclusions = [
@@ -172,13 +172,13 @@ class ConclusionView(object):
         ]
         user_or_expert = lambda c: (  # noqa: E731
             not c.user.has_role("admin")
-            and not c.user.has_role("etc")
+            and not c.user.has_role("assessor")
             and c not in ok_conclusions
             if c.user
             else False
         )
         user_iurmax = lambda c: (  # noqa: E731
-            not c.user.has_role("etc") if c.user else False
+            not c.user.has_role("assessor") if c.user else False
         )
         if ok_conclusions:
             return ok_conclusions + list(filter(user_or_expert, conclusions))

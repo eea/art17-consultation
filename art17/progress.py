@@ -60,7 +60,7 @@ def can_preview_progress():
         return False
 
     return (
-        current_user.has_role("etc")
+        current_user.has_role("assessor")
         or current_user.has_role("admin")
         and current_user.show_assessment
     )
@@ -182,7 +182,7 @@ class Progress(views.View):
                 details=COUNTRY_ASSESSMENTS.get(cell["conclusion"], ""),
             )
         )
-        if current_user.has_role("etc") or current_user.has_role("admin"):
+        if current_user.has_role("assessor") or current_user.has_role("admin"):
             title.append(
                 "Decision: {main} ({details})".format(
                     main=cell["main_decision"],
@@ -195,7 +195,7 @@ class Progress(views.View):
                 details=self.METHOD_DETAILS.get(cell["method"], ""),
             )
         )
-        if current_user.has_role("etc") or current_user.has_role("admin"):
+        if current_user.has_role("assessor") or current_user.has_role("admin"):
             comms = get_counts(comment_counts, subject, region)
             title.append(
                 (

@@ -63,6 +63,6 @@ needs to be cleared manually by removing the dates.
 
 The stakeholder users are no longer able to add any assessments or edit comments.
 
-Please note that for ETC users , adding assessments, audit trails and data sheet info is still possible until
+Please note that for Assessor users , adding assessments, audit trails and data sheet info is still possible until
 the reporting period is marked as read only (which as mentioned above can only be done through the code.)
 Please note that NAT users can still add assessments until the reporting period is marked as read only.

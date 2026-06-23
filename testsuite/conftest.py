@@ -44,7 +44,7 @@ def create_generic_fixtures():
     models.db.session.execute(
         text(
             "insert into roles (id, name, description) "
-            "values (2, 'etc', 'European topic center')"
+            "values (2, 'assessor', 'Assessor')"
         )
     )
     models.db.session.execute(

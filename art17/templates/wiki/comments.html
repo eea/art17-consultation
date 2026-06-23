@@ -67,7 +67,7 @@
       <div class="small clearfix">
         {% if current_user.id != comment.author_id %}
         <div class="pull-left">
-          <strong>{{ comment.author.name | hide_adm_etc_username }}</strong>
+          <strong>{{ comment.author.name | hide_adm_assessor_username }}</strong>
           {% if comment.author.institution %}
             {% if not is_name_changed(comment.author.name) %}
               from {{ comment.author.institution }}

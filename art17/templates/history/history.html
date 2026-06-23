@@ -41,8 +41,8 @@
         <tr>
           <td><a href="{{ url_for(summary_endpoint, subject=c.subject,region=c.region, period=c.dataset_id) + "#manual-thead" }}">{{ c.subject }}</a></td>
           <td>{{ c.region }}</td>
-          <td>{{ (c.author.name or c.author_id) | hide_adm_etc_username }}</td>
-          <td>{{ (c.user.name or c.user_id) | hide_adm_etc_username }}</td>
+          <td>{{ (c.author.name or c.author_id) | hide_adm_assessor_username }}</td>
+          <td>{{ (c.user.name or c.user_id) | hide_adm_assessor_username }}</td>
           <td>{{ c.post_date }}</td>
           <td>{{ c.read_for(current_user) }}</td>
         </tr>
@@ -71,7 +71,7 @@
           <td><a href="{{ url_for(summary_endpoint, subject=c.subject,
                   region=c.region, period=c.dataset_id) + "#manual-thead" }}">{{ c.subject }}</a></td>
           <td>{{ c.region }}</td>
-          <td>{{ (c.user.name or c.user_id) | hide_adm_etc_username }}</td>
+          <td>{{ (c.user.name or c.user_id) | hide_adm_assessor_username }}</td>
           <td>{{ c.last_update or '-' }}</td>
         </tr>
         {% endfor %}
@@ -96,7 +96,7 @@
                         period=d.dataset_id, subject=d.wiki.subject, region=d.wiki.region_code) }}"
                         id="wikibutton">{{ d.wiki.subject }}</a></td>
           <td>{{ d.wiki.region_code or 'All bioregions' }}</td>
-          <td>{{ d.editor | hide_adm_etc_username }}</td>
+          <td>{{ d.editor | hide_adm_assessor_username }}</td>
           <td>{{ d.changed }}</td>
         </tr>
         {% endfor %}
@@ -125,7 +125,7 @@
             period=c.dataset_id, subject=c.wiki.subject, region=c.wiki.region_code) }}"
             id="wikibutton">{{ c.wiki.subject }}</a></td>
           <td>{{ c.wiki.region_code or 'All bioregions' }}</td>
-          <td>{{ (c.author.name or c.author_id) | hide_adm_etc_username }}</td>
+          <td>{{ (c.author.name or c.author_id) | hide_adm_assessor_username }}</td>
           <td>{{ c.posted }}</td>
           <td>{{ c.read_for(g.user) }}</td>
         </tr>
@@ -158,7 +158,7 @@
             {{ a.wiki.subject }}
           </td>
           <td>{{ a.wiki.region_code }}</td>
-          <td>{{ a.editor | hide_adm_etc_username }}</td>
+          <td>{{ a.editor | hide_adm_assessor_username }}</td>
           <td>{{ a.changed }}</td>
         </tr>
         {% endfor %}

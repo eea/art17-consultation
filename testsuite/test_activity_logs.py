@@ -58,13 +58,13 @@ def test_view(app, client, set_auth, user, request_args, expect_errors, status_c
         (
             "testuser",
             "/history/species/",
-            ["Canis lupus", "BOR","someuser", "2014-03-20 18:11"],
+            ["Canis lupus", "BOR", "someuser", "2014-03-20 18:11"],
             ["Canis lupus", "BOR", "author", "someuser", "2014-03-20", "False"],
         ),
         (
             "testuser",
             "/history/habitat/",
-            ["1110", "MATL","someuser","2014-03-20 18:11"],
+            ["1110", "MATL", "someuser", "2014-03-20 18:11"],
             ["1110", "MATL", "author", "someuser", "2014-03-20", "False"],
         ),
     ],
@@ -119,7 +119,7 @@ def test_deleted(app, client, set_auth, setup_deleted, user, request_args):
             "testuser",
             "/history/habitat/",
             HabitatCommentFactory,
-            [ "1110", "ALP", "author", "someuser","2014-03-20", "True"],
+            ["1110", "ALP", "author", "someuser", "2014-03-20", "True"],
         ),
     ],
 )

@@ -24,7 +24,7 @@ from art17.common import (
     TREND_OPTIONS,
     TREND_OPTIONS_OVERALL,
     admin_perm,
-    etc_perm,
+    assessor_perm,
     favourable_ref_title_habitat,
     favourable_ref_title_species,
     generate_map_url,
@@ -93,7 +93,7 @@ def inject_static():
         ["%s: %s" % (k, v) for k, v in d]
     )
     return {
-        "etc_perm": etc_perm,
+        "assessor_perm": assessor_perm,
         "CONCLUSION_CLASSES": CONCLUSION_CLASSES,
         "COUNTRY_ASSESSMENTS": COUNTRY_ASSESSMENTS,
         "CONTRIB_METHOD": CONTRIB_METHOD,
@@ -259,7 +259,7 @@ class Summary(ConclusionView, views.View):
 
     def get_user_MS(self, subject, region, period):
         member_states = []
-        if admin_perm.can() or sta_perm.can() or etc_perm.can():
+        if admin_perm.can() or sta_perm.can() or assessor_perm.can():
             member_states = self.get_MS(subject, region, period)
             member_states = [(m[0], m[1]) for m in member_states]
         elif nat_perm.can() and current_user.MS:

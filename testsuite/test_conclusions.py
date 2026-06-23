@@ -203,7 +203,7 @@ def setup_autofill(app):
             403,
             "",
         ),
-        # ETC editing his own conclusion
+        # Assessor editing his own conclusion
         (
             [
                 "/species/summary/",
@@ -224,12 +224,12 @@ def setup_autofill(app):
                 "submit": "update",
             },
             "someuser",
-            ["etc"],
+            ["assessor"],
             False,
             302,
             "Conclusion edited successfully",
         ),
-        # ETC editing another user's conclusion - Ref fields
+        # Assessor editing another user's conclusion - Ref fields
         (
             [
                 "/species/summary/",
@@ -249,12 +249,12 @@ def setup_autofill(app):
                 "conclusion_population": "FV",
             },
             "otheruser",
-            ["etc"],
+            ["assessor"],
             False,
             302,
             "Conclusion edited successfully",
         ),
-        # ETC editing another user's conclusion - non-ref fields
+        # Assessor editing another user's conclusion - non-ref fields
         (
             [
                 "/species/summary/",
@@ -274,7 +274,7 @@ def setup_autofill(app):
                 "submit": "update",
             },
             "otheruser",
-            ["etc"],
+            ["assessor"],
             False,
             302,
             "Conclusion edited successfully",
@@ -361,7 +361,7 @@ def setup_autofill(app):
         #         403,
         #         "",
         #     ),
-        #     # # ETC editing his own conclusion
+        #     # # Assessor editing his own conclusion
         #     (
         #         [
         #             "/habitat/summary/",
@@ -381,12 +381,12 @@ def setup_autofill(app):
         #             "submit": "update",
         #         },
         #         "someuser",
-        #         ["etc"],
+        #         ["assessor"],
         #         False,
         #         302,
         #         "Conclusion edited successfully",
         #     ),
-        #     # # ETC editing another user's conclusion - Ref fields
+        #     # # Assessor editing another user's conclusion - Ref fields
         #     (
         #         [
         #             "/habitat/summary/",
@@ -402,12 +402,12 @@ def setup_autofill(app):
         #         ],
         #         {"complementary_favourable_range": "100", "submit": "update"},
         #         "otheruser",
-        #         ["etc"],
+        #         ["assessor"],
         #         False,
         #         302,
         #         "Conclusion edited successfully",
         #     ),
-        #     # # ETC editing another user's conclusion - non-ref fields
+        #     # # Assessor editing another user's conclusion - non-ref fields
         #     (
         #         [
         #             "/habitat/summary/",
@@ -427,7 +427,7 @@ def setup_autofill(app):
         #             "submit": "update",
         #         },
         #         "otheruser",
-        #         ["etc"],
+        #         ["assessor"],
         #         False,
         #         302,
         #         "Conclusion edited successfully",
@@ -712,9 +712,9 @@ def test_add_conclusion_stk(
                 "submit": "add",
                 "MS": "EU27",
             },
-            "etcuser",
+            "assessoruser",
             "FR",
-            ["etc"],
+            ["assessor"],
             models.SpeciesManualAssessment,
         ),
         # # Habitat
@@ -735,14 +735,14 @@ def test_add_conclusion_stk(
         #         "submit": "add",
         #         "MS": "EU27",
         #     },
-        #     "etcuser",
+        #     "assessoruser",
         #     "FR",
-        #     ["etc"],
+        #     ["assessor"],
         #     models.HabitattypesManualAssessment,
         # ),
     ],
 )
-def test_add_conclusion_etc(
+def test_add_conclusion_assessor(
     app,
     client,
     set_auth,
@@ -955,7 +955,7 @@ def test_delete_conclusion(
     "request_args, post_params, user, roles, expect_errors, status_code, "
     "success, message",
     # Species
-    # ETC successfully updating decision
+    # Assessor successfully updating decision
     [
         (
             [
@@ -964,7 +964,7 @@ def test_delete_conclusion(
             ],
             {"decision": "CO"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             False,
             200,
             True,
@@ -984,7 +984,7 @@ def test_delete_conclusion(
             True,
             "",
         ),
-        # ETC changing a final decision (OK) into another final decision (OK)
+        # Assessor changing a final decision (OK) into another final decision (OK)
         (
             [
                 "/species/conc/update/6/Canis lupus/BOR/someuser/",
@@ -992,13 +992,13 @@ def test_delete_conclusion(
             ],
             {"decision": "OK"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             False,
             200,
             False,
             "Another final decision already exists",
         ),
-        # ETC selecting invalid decision
+        # Assessor selecting invalid decision
         (
             [
                 "/species/conc/update/6/Canis lupus/BOR/someuser/",
@@ -1006,13 +1006,13 @@ def test_delete_conclusion(
             ],
             {"decision": "WTF"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             False,
             200,
             False,
             "'WTF' is not a valid decision.",
         ),
-        # ETC selecting 'OK?' decision
+        # Assessor selecting 'OK?' decision
         (
             [
                 "/species/conc/update/6/Canis lupus/BOR/someuser/",
@@ -1020,13 +1020,13 @@ def test_delete_conclusion(
             ],
             {"decision": "OK?"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             False,
             200,
             False,
             "You are not allowed to select 'OK?'Please select another value.",
         ),
-        # ETC updating decision - inexistent assessment
+        # Assessor updating decision - inexistent assessment
         (
             [
                 "/species/conc/update/6/Canis lupus/BOR/someuser/",
@@ -1034,7 +1034,7 @@ def test_delete_conclusion(
             ],
             {"decision": "CO"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             True,
             404,
             "",
@@ -1048,7 +1048,7 @@ def test_delete_conclusion(
             ],
             {},
             "testuser",
-            ["etc"],
+            ["assessor"],
             True,
             401,
             "",
@@ -1083,12 +1083,12 @@ def test_delete_conclusion(
             "",
         ),
         # # Habitat
-        # # ETC successfully updating decision
+        # # Assessor successfully updating decision
         # (
         #     ["/habitat/conc/update/5/1110/ALP/someuser/", {"ms": "EU27"}],
         #     {"decision": "CO"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     False,
         #     200,
         #     True,
@@ -1105,45 +1105,45 @@ def test_delete_conclusion(
         #     True,
         #     "",
         # ),
-        # # ETC changing a final decision (OK) into another final decision (OK)
+        # # Assessor changing a final decision (OK) into another final decision (OK)
         # (
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
         #     {"decision": "OK"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     False,
         #     200,
         #     False,
         #     "Another final decision already exists",
         # ),
-        # # ETC selecting invalid decision
+        # # Assessor selecting invalid decision
         # (
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
         #     {"decision": "WTF"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     False,
         #     200,
         #     False,
         #     "'WTF' is not a valid decision.",
         # ),
-        # # ETC selecting 'OK?' decision
+        # # Assessor selecting 'OK?' decision
         # (
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
         #     {"decision": "OK?"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     False,
         #     200,
         #     False,
         #     "You are not allowed to select 'OK?'Please select another value.",
         # ),
-        # # ETC updating decision - inexistent assessment
+        # # Assessor updating decision - inexistent assessment
         # (
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "RAND"}],
         #     {"decision": "CO"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     True,
         #     404,
         #     "",
@@ -1154,7 +1154,7 @@ def test_delete_conclusion(
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
         #     {},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     True,
         #     401,
         #     "",

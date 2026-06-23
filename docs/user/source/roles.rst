@@ -8,12 +8,12 @@ zero, one or more roles.
 
 The main roles used in the application are:
 
-* ETC Expert
+* Assessor
 * National Expert
 * Stakeholder
 * Public User
 
-An additional Administrator role exists, inheriting most of the ETC Expert
+An additional Administrator role exists, inheriting most of the Assessor
 permissions, and giving access to additional features such as Site Configuration.
 
 
@@ -41,7 +41,7 @@ Only one assessment can be added per (country, biogeoregion, species/habitat) pa
    :header: "User", "Add assessment", "Comment"
    :widths: 5, 5, 15
 
-   "**ETC Expert**",✓,"Add for EU or member states which have reports"
+   "**Assessor**",✓,"Add for EU or member states which have reports"
    "**National Expert**",✓,"Add for EU or their own MS"
    "**Stakeholder**",✓,"Add for EU or member states which have reports"
    "**Public User**",,
@@ -50,7 +50,7 @@ Only one assessment can be added per (country, biogeoregion, species/habitat) pa
    :header: "User", "Edit own assessment", "Edit other user's assessment", "Comment"
    :widths: 5, 10, 15, 15
 
-   "**ETC Expert**",✓,✓,"Can edit all fields."
+   "**Assessor**",✓,✓,"Can edit all fields."
    "**National Expert**",✓,,
    "**Stakeholder**",✓,,
    "**Public User**",,,
@@ -59,7 +59,7 @@ Only one assessment can be added per (country, biogeoregion, species/habitat) pa
    :header: "User", "Delete own assessment", "Delete other user's assessment", "Comment"
    :widths: 5, 10, 15, 15
 
-   "**ETC Expert**",✓,,
+   "**Assessor**",✓,,
    "**National Expert**",✓,,
    "**Stakeholder**",✓,,
    "**Public User**",,,
@@ -68,7 +68,7 @@ Only one assessment can be added per (country, biogeoregion, species/habitat) pa
    :header: "User", "Set decisions on assessments"
    :widths: 10, 15
 
-   "**ETC Expert**",✓
+   "**Assessor**",✓
    "**National Expert**",
    "**Stakeholder**",
    "**Public User**",
@@ -85,7 +85,7 @@ the activity log (new unread comments, new conclusions).
    :header: "User", "Add comment on own assessment", "Add comment on other user's assessment"
    :widths: 5, 10, 15
 
-   "**ETC Expert**",✓,✓
+   "**Assessor**",✓,✓
    "**National Expert**",✓,
    "**Stakeholder**",✓,
    "**Public User**",,
@@ -93,10 +93,10 @@ the activity log (new unread comments, new conclusions).
 Data sheet info and Data sheet info comments
 ============================================
 
-Only ETC users and Administrator users can add a new data sheet, edit the
+Only Assessor users and Administrator users can add a new data sheet, edit the
 existing one and restore a previous version.
 
 Audit trails
 ===============================
-Only ETC users and Administrator users can add a new audit trail,
+Only Assessor users and Administrator users can add a new audit trail,
 edit the existing one and restore a previous version.

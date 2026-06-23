@@ -2,7 +2,7 @@ from art17.auth.security import current_user
 from art17.common import (
     admin_perm,
     consultation_ended,
-    etc_perm,
+    assessor_perm,
     nat_perm,
     sta_cannot_change,
     sta_perm,
@@ -30,14 +30,18 @@ def can_delete(record):
 def can_update_decision(conclusion):
     if conclusion.deleted:
         return False
-    return etc_perm.can() or admin_perm.can() or EU_ASSESSMENT_MODE
+    return assessor_perm.can() or admin_perm.can() or EU_ASSESSMENT_MODE
 
 
 @summary.app_template_global("can_view")
 def can_view(record, countries):
     if not countries:
         countries = []
-    return admin_perm.can() or etc_perm.can() or record.eu_country_code not in countries
+    return (
+        admin_perm.can()
+        or assessor_perm.can()
+        or record.eu_country_code not in countries
+    )
 
 
 @summary.app_template_global("can_edit")
@@ -58,12 +62,12 @@ def can_edit(record):
             return False
         return True
 
-    return etc_perm.can() or admin_perm.can()
+    return assessor_perm.can() or admin_perm.can()
 
 
 @summary.app_template_global("can_view_decision")
 def can_view_decision():
-    return etc_perm.can() or admin_perm.can() or EU_ASSESSMENT_MODE
+    return assessor_perm.can() or admin_perm.can() or EU_ASSESSMENT_MODE
 
 
 @summary.app_template_global("can_view_assessment")
@@ -112,7 +116,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
         admin_perm.can()
         or sta_perm.can()
         or nat_perm.can()
-        or etc_perm.can()
+        or assessor_perm.can()
         or EU_ASSESSMENT_MODE
     ):
         warning_message = "You do not have permission to add conclusions."
@@ -140,7 +144,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
 
 @summary.app_template_global("can_select_MS")
 def can_select_MS():
-    return admin_perm.can() or sta_perm.can() or nat_perm.can() or etc_perm.can()
+    return admin_perm.can() or sta_perm.can() or nat_perm.can() or assessor_perm.can()
 
 
 def can_touch(assessment):
@@ -151,13 +155,13 @@ def can_touch(assessment):
             EU_ASSESSMENT_MODE
             or admin_perm.can()
             or nat_perm.can()
-            or etc_perm.can()
+            or assessor_perm.can()
             or (sta_perm.can() and not consultation_ended())
         )
     return (
         EU_ASSESSMENT_MODE
         or admin_perm.can()
-        or etc_perm.can()
+        or assessor_perm.can()
         or (assessment.user == current_user and not sta_cannot_change())
     )
 
@@ -168,4 +172,4 @@ def must_edit_ref(assessment):
     if assessment.user_id == current_user.id:
         return False
 
-    return etc_perm.can() or admin_perm.can()
+    return assessor_perm.can() or admin_perm.can()

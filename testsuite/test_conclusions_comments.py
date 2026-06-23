@@ -459,7 +459,7 @@ def test_count_read_comments_view(
     user = create_user(
         "someuser",
         [
-            "etc",
+            "assessor",
         ],
     )
     comment.readers.append(user)

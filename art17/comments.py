@@ -97,7 +97,7 @@ def can_view_comments(record):
     if is_public_user():
         return False
     if sta_perm.can() or nat_perm.can():
-        if record.user.has_role("etc") or record.user.has_role("admin"):
+        if record.user.has_role("assessor") or record.user.has_role("admin"):
             return False
     return True
 

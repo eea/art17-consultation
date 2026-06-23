@@ -291,7 +291,7 @@ def test_404_error(
 def test_change_active_revision(
     app, setup, set_auth, client
 ):  # can't modify when dataset is readonly
-    otheruser = create_user("otheruser", role_names=["etc"])
+    otheruser = create_user("otheruser", role_names=["assessor"])
     set_user("otheruser")
     force_login(client, otheruser.fs_uniquifier)
     client.post(
@@ -338,7 +338,7 @@ def test_add_comment(
 def test_edit_page(
     app, setup, set_auth, client
 ):  # can't modify when dataset is readonly
-    testuser = create_user("testuser", role_names=["etc"])
+    testuser = create_user("testuser", role_names=["assessor"])
     set_user("testuser")
     force_login(client, testuser.fs_uniquifier)
     client.post(
@@ -414,7 +414,7 @@ def test_toggle_read(app, setup, set_auth, client):
 
 
 def test_get_revision(app, setup, set_auth, client):
-    testuser = create_user("testuser", role_names=["etc"])
+    testuser = create_user("testuser", role_names=["assessor"])
     set_user("testuser")
     force_login(client, testuser.fs_uniquifier)
 
@@ -424,8 +424,8 @@ def test_get_revision(app, setup, set_auth, client):
     )
 
 
-@pytest.mark.parametrize("roles", [(["etc"]), (["admin"])])
-def test_hide_adm_etc_username(app, setup, set_auth, client, roles):
+@pytest.mark.parametrize("roles", [(["assessor"]), (["admin"])])
+def test_hide_adm_assessor_username(app, setup, set_auth, client, roles):
     create_user("testuser", roles, "Secret Name", "Test Insitution")
     otheruser = create_user("otheruser")
     set_user("otheruser")
