@@ -40,13 +40,9 @@ def test_identity_is_set_from_plone_whoami(app, set_auth, client):
 
 
 def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
-
-    from .factories import DatasetFactory
-
     _set_config(admin_email="admin@example.com")
     user_obj = create_user("ze_admin", ["admin"])
     fs_uniquifier = user_obj.fs_uniquifier  # noqa: F841
-    DatasetFactory()
     models.db.session.commit()
 
     register_page = client.get(flask.url_for("auth.register_local"))
@@ -97,12 +93,9 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
 
 
 def test_admin_creates_local(app, set_auth, client, outbox, ldap_user_info):
-    from .factories import DatasetFactory
-
     _set_config(admin_email="admin@example.com")
     user_obj = create_user("ze_admin", ["admin"])
     force_login(client, user_obj.fs_uniquifier)
-    DatasetFactory()
     models.db.session.commit()
 
     register_page = client.get(flask.url_for("auth.admin_create_local"))
@@ -131,7 +124,6 @@ def test_admin_creates_local(app, set_auth, client, outbox, ldap_user_info):
 
 
 def test_admin_creates_ldap(app, set_auth, client, outbox, ldap_user_info):
-    from .factories import DatasetFactory
 
     get_ldap_user_info = {
         "full_name": "foo me",
@@ -141,7 +133,6 @@ def test_admin_creates_ldap(app, set_auth, client, outbox, ldap_user_info):
         _set_config(admin_email="admin@example.com")
         user_obj = create_user("ze_admin", ["admin"])
         force_login(client, user_obj.fs_uniquifier)
-        DatasetFactory()
         models.db.session.commit()
 
         enter_user_id_page = client.get(flask.url_for("auth.admin_create_ldap"))
@@ -169,12 +160,9 @@ def test_admin_creates_ldap(app, set_auth, client, outbox, ldap_user_info):
 def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_info):
     from art17.auth.providers import set_user
 
-    from .factories import DatasetFactory
-
     _set_config(admin_email="admin@example.com")
     ldap_user_info["foo"] = {"email": "foo@example.com", "full_name": "foo"}
     user_obj = create_user("ze_admin", ["admin"])
-    DatasetFactory()
     models.db.session.commit()
 
     @app.before_request
@@ -210,21 +198,15 @@ def test_ldap_account_activation_flow(app, set_auth, client, outbox, ldap_user_i
 
 
 def test_view_requires_admin_error(app, set_auth, client):
-    from .factories import DatasetFactory
-
     create_user("foo")
     create_user("ze_admin", ["admin"])
-    DatasetFactory()
     models.db.session.commit()
     flask.url_for("auth.admin_user", user_id="foo")
 
 
 def test_view_requires_admin(app, set_auth, client):
-    from .factories import DatasetFactory
-
     create_user("foo")
     user_obj = create_user("ze_admin", ["admin"])
-    DatasetFactory()
     models.db.session.commit()
     admin_user_url = flask.url_for("auth.admin_user", user_id="foo")
     force_login(client, user_obj.fs_uniquifier)
@@ -288,12 +270,9 @@ def test_dates(app, set_auth, client):
 
 
 def test_admin_edit_user_info(app, set_auth, client, outbox):
-    from .factories import DatasetFactory
-
     _set_config(admin_email="admin@example.com")
     user_obj = create_user("ze_admin", ["admin"])
     create_user("foo", ["assessor", "stakeholder"], name="Foo Person")
-    DatasetFactory()
     models.db.session.commit()
     force_login(client, user_obj.fs_uniquifier)
 
@@ -330,11 +309,8 @@ def test_admin_edit_user_info(app, set_auth, client, outbox):
 
 
 def test_email_notification_for_role_changes(app, set_auth, client, outbox):
-    from .factories import DatasetFactory
-
     user_obj = create_user("ze_admin", ["admin"])
     create_user("foo", ["assessor", "stakeholder"], name="Foo Person")
-    DatasetFactory()
     models.db.session.commit()
     force_login(client, user_obj.fs_uniquifier)
     page = client.get(flask.url_for("auth.admin_user", user_id="foo"))

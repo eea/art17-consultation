@@ -5,7 +5,6 @@ from art17 import models
 from .conftest import create_user, force_login, get_request_params
 from .factories import (
     CommentFactory,
-    DatasetFactory,
     HabitatCommentFactory,
     HabitattypesManualAssessmentsFactory,
     SpeciesManualAssessmentFactory,
@@ -29,7 +28,7 @@ def setup(app):
     [
         (
             "post",
-            ["/species/comments/5/Canis lupus/BOR/someuser/", {"MS": "EU27"}],
+            ["/species/comments/6/Canis lupus/BOR/someuser/", {"MS": "EU27"}],
             {"comment": "I cannot post comments"},
             [],
             True,
@@ -39,7 +38,7 @@ def setup(app):
         (
             "post",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "edit": 1},
             ],
             {"comment": "I cannot edit this comment"},
@@ -51,7 +50,7 @@ def setup(app):
         (
             "get",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "toggle": 1, "read": False},
             ],
             {},
@@ -63,7 +62,7 @@ def setup(app):
         (
             "get",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "delete": 1, "deleted": 0},
             ],
             {},
@@ -75,7 +74,7 @@ def setup(app):
         # User that posted a comment already
         (
             "post",
-            ["/species/comments/5/Canis lupus/BOR/someuser/", {"MS": "EU27"}],
+            ["/species/comments/6/Canis lupus/BOR/someuser/", {"MS": "EU27"}],
             {"comment": "I cannot post comments"},
             ["testuser"],
             True,
@@ -85,7 +84,7 @@ def setup(app):
         (
             "post",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "edit": 1},
             ],
             {"comment": "I can edit this comment!"},
@@ -97,7 +96,7 @@ def setup(app):
         (
             "get",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "toggle": 1, "read": False},
             ],
             {},
@@ -110,7 +109,7 @@ def setup(app):
         (
             "get",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "delete": 1, "deleted": 0},
             ],
             {},
@@ -122,7 +121,7 @@ def setup(app):
         # User that didn't post any comments
         (
             "post",
-            ["/species/comments/5/Canis lupus/BOR/someuser/", {"MS": "EU27"}],
+            ["/species/comments/6/Canis lupus/BOR/someuser/", {"MS": "EU27"}],
             {"comment": "I can post comments!"},
             ["newuser"],
             False,
@@ -132,7 +131,7 @@ def setup(app):
         (
             "post",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "edit": 1},
             ],
             {"comment": "I can't edit testuser's comment"},
@@ -144,7 +143,7 @@ def setup(app):
         (
             "get",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "toggle": 1, "read": False},
             ],
             {},
@@ -156,7 +155,7 @@ def setup(app):
         (
             "get",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "delete": 1, "deleted": 0},
             ],
             {},
@@ -169,7 +168,7 @@ def setup(app):
         (
             "get",
             [
-                "/species/comments/5/Canis lupus/BOR/someuser/",
+                "/species/comments/6/Canis lupus/BOR/someuser/",
                 {"MS": "EU27", "delete": 1, "deleted": 0},
             ],
             {},
@@ -183,7 +182,7 @@ def setup(app):
         (
             "post",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {
                     "MS": "EU27",
                 },
@@ -197,7 +196,7 @@ def setup(app):
         (
             "post",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "edit": 1},
             ],
             {"comment": "I cannot edit this comment"},
@@ -209,7 +208,7 @@ def setup(app):
         (
             "get",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "toggle": 1, "read": False},
             ],
             {},
@@ -221,7 +220,7 @@ def setup(app):
         (
             "get",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "delete": 1, "deleted": 0},
             ],
             {},
@@ -234,7 +233,7 @@ def setup(app):
         (
             "post",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {
                     "MS": "EU27",
                 },
@@ -248,7 +247,7 @@ def setup(app):
         (
             "post",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "edit": 1},
             ],
             {"comment": "I can edit this comment!"},
@@ -260,7 +259,7 @@ def setup(app):
         (
             "get",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "toggle": 1, "read": False},
             ],
             {},
@@ -272,7 +271,7 @@ def setup(app):
         (
             "get",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "delete": 1, "deleted": 0},
             ],
             {},
@@ -285,7 +284,7 @@ def setup(app):
         (
             "post",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {
                     "MS": "EU27",
                 },
@@ -299,7 +298,7 @@ def setup(app):
         (
             "post",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "edit": 1},
             ],
             {"comment": "I can't edit testuser's comment"},
@@ -311,7 +310,7 @@ def setup(app):
         (
             "get",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "toggle": 1, "read": False},
             ],
             {},
@@ -323,7 +322,7 @@ def setup(app):
         (
             "get",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "delete": 1, "deleted": 0},
             ],
             {},
@@ -336,7 +335,7 @@ def setup(app):
         (
             "get",
             [
-                "/habitat/comments/5/1110/MATL/someuser/",
+                "/habitat/comments/6/1110/MATL/someuser/",
                 {"MS": "EU27", "delete": 1, "deleted": 0},
             ],
             {},
@@ -426,7 +425,7 @@ def test_count_read_comments_deleted(
             [
                 "/species/summary/",
                 {
-                    "period": 5,
+                    "period": 6,
                     "group": "Mammals",
                     "subject": "Canis lupus",
                     "region": "ALP",
@@ -439,7 +438,7 @@ def test_count_read_comments_deleted(
             [
                 "/habitat/summary/",
                 {
-                    "period": 5,
+                    "period": 6,
                     "group": "coastal habitats",
                     "subject": 1110,
                     "region": "ALP",
@@ -451,7 +450,6 @@ def test_count_read_comments_deleted(
 def test_count_read_comments_view(
     app, client, set_auth, manual_assessment_cls, comment_cls, request_args
 ):
-    DatasetFactory()
     manual_assessment_cls(region="ALP")
     comment = comment_cls(region="ALP")
     models.db.session.commit()

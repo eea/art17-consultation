@@ -55,8 +55,20 @@ def create_generic_fixtures():
     )
     models.db.session.execute(
         text(
-            "insert into config(id, default_dataset_id, start_date) values (1, 5, '%s')"
-            % date.today()
+            "insert into config(id, default_dataset_id, "
+            "default_public_dataset_id, add_assessment_enabled, latest_dataset_public_view_enabled, start_date) "
+            "values (1, 6, 6, True, True, '%s')" % date.today()
+        )
+    )
+    models.db.session.execute(
+        text(
+            "insert into datasets (id, name, schema, is_readonly) "
+            "values "
+            "(1, '2001-2006', '2006', TRUE),"
+            "(3, '2007-2012', '2012', TRUE),"
+            "(4, '2007-2012bis', '2012bis', TRUE),"
+            "(5, '2013-2018', '2018', TRUE),"
+            "(6, '2019-2024', '2024', FALSE)"
         )
     )
 

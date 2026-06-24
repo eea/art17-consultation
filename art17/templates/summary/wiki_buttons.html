@@ -1,10 +1,10 @@
 <div>
-    {% if dataset.id == 4 %}
+    {% if dataset.schema == '2012bis' %}
         <p class="note"><strong>Note</strong>:
             The related products are not available for the period 2007-2012bis.
         </p>
     {% endif %}
-    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.id in [4] %} disabled {% endif %}>
+    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.schema in ['2012bis'] %} disabled {% endif %}>
         View data sheet info
         {% if current_user.is_authenticated %}
           {% if wiki_unread %}({{ wiki_unread }} unread comments){% endif %}
@@ -12,7 +12,7 @@
     </button>
 
     {% if dataset.schema != '2024' or can_view_audit_trail() %}
-    <button type="button" id="wikibutton" {% if dataset.id == 4 %} disabled {% endif %}
+    <button type="button" id="wikibutton" {% if dataset.schema == '2012bis' %} disabled {% endif %}
         href=
             {% if region == '' %}
                 "{{ audittrail_merged_url }}"
@@ -22,13 +22,13 @@
         Audit trail</button>
     {% endif %}
 
-    {% if map_url or dataset.id == 5 %}
+    {% if map_url or dataset.schema == '2018' %}
       {% if speciescode %}
         {% set sensitive_species = is_sensitive(speciescode) %}
       {% else %}
         {% set sensitive_species = False %}
       {% endif %}
-      <button type="button" id="show-map" data-url="{{ map_url }}" {% if dataset.id == 4 %} disabled {% endif %}>Map</button>
+      <button type="button" id="show-map" data-url="{{ map_url }}" {% if dataset.schema == '2012bis' %} disabled {% endif %}>Map</button>
     {% endif %}
 
     {% if region %}
@@ -36,18 +36,18 @@
     {% elif not factsheet_url %}
       {% set fs_error = "Factsheet not available" %}
     {% else %}
-    {% if dataset.id == 4 %}
+    {% if dataset.schema == '2012bis' %}
       <span class="disabled button">
         Download factsheet
       </span>
-    {% elif dataset.id not in [5, 6] %}
+    {% elif dataset.schema not in ['2018', '2024'] %}
       <a href="{{ factsheet_url }}" id="download-fs" class="button"
         target="_blank">
         Download factsheet
       </a>
     {% endif %}
     {% endif %}
-    {% if fs_error and dataset.id not in [4,5,6] %}
+    {% if fs_error and dataset.id not in ['2012bis', '2018', '2024'] %}
     <span class="disabled button" title="{{ fs_error }}" >
       Download factsheet
     </span>

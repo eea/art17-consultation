@@ -1,10 +1,9 @@
 from flask import url_for
 from pytest import fixture
 
-from art17.models import db
+from art17.models import db, Dataset
 
 from .factories import (
-    DatasetFactory,
     EtcDataSpeciesRegionFactory,
     EtcDicBiogeoregFactory,
 )
@@ -12,14 +11,14 @@ from .factories import (
 
 @fixture(autouse=True)
 def setup(app):
-    DatasetFactory()
     EtcDicBiogeoregFactory()
     EtcDataSpeciesRegionFactory(group="reptiles", assessment_speciesname="kitaibelii")
     db.session.commit()
 
 
 def test_filter_groups_view(app, client):
-    url = url_for("common.species-groups", period="5")
+    dataset_2024 = Dataset.query.filter_by(schema="2024").first()
+    url = url_for("common.species-groups", period=dataset_2024.id)
     resp = client.get(url)
 
     assert resp.status_code == 200
@@ -29,7 +28,10 @@ def test_filter_groups_view(app, client):
 
 
 def test_filter_species_view(app, client):
-    url = url_for("summary.species-summary-species", period="5", group="reptiles")
+    dataset_2024 = Dataset.query.filter_by(schema="2024").first()
+    url = url_for(
+        "summary.species-summary-species", period=dataset_2024.id, group="reptiles"
+    )
     resp = client.get(url)
 
     assert resp.status_code == 200
@@ -39,7 +41,10 @@ def test_filter_species_view(app, client):
 
 
 def test_filter_regions_view(app, client):
-    url = url_for("summary.species-summary-regions", period="5", subject="kitaibelii")
+    dataset_2024 = Dataset.query.filter_by(schema="2024").first()
+    url = url_for(
+        "summary.species-summary-regions", period=dataset_2024.id, subject="kitaibelii"
+    )
     resp = client.get(url)
 
     assert resp.status_code == 200

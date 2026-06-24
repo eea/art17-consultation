@@ -50,15 +50,9 @@ class Dataset(Base):
     species_map_url = Column(db.String(400), nullable=True)
     sensitive_species_map_url = Column(db.String(400), nullable=True)
     habitat_map_url = Column(db.String(400), nullable=True)
-
-    @property
-    def is_readonly(self):
-        return (
-            self.schema == "2006"
-            or self.schema == "2012"
-            or self.schema == "2012bis"
-            or self.schema == "2018"
-        )
+    is_readonly = Column(
+        Boolean, default=True, nullable=False
+    )  # mark as read-only after consultation has ended
 
     @property
     def stats(self):

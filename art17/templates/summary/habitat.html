@@ -195,7 +195,7 @@
           <tbody>
             {% for row in manual_objects %}
               {% if row != manual_assessment %}
-                <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset_id == 3 and dataset.id == 4 %}manual_assessment{% endif%}">
+                <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset__schema == '2012' and dataset.schema == '2012bis'  %}manual_assessment{% endif%}">
                   {# MS and region #}
                   {% if dataset.schema == '2018' %}
                     {% include 'summary/habitat/manual/manual_2018.html' %}

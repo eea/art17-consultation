@@ -2,12 +2,9 @@ import pytest
 
 from art17.models import db
 
-from .factories import DatasetFactory
-
 
 @pytest.fixture(autouse=True)
 def setup(app):
-    DatasetFactory()
     db.session.commit()
 
 

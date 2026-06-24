@@ -7,18 +7,21 @@ from .conftest import create_user, force_login, get_request_params
 
 
 def setup_common():
-    factories.EtcDicBiogeoregFactory(dataset_id=6)
+    dataset_2018 = models.Dataset.query.filter_by(schema="2018").first()
+    dataset_2024 = models.Dataset.query.filter_by(schema="2024").first()
+    factories.EtcDicBiogeoregFactory(dataset_id=dataset_2024.id)
     factories.EtcDataSpeciesRegionFactory(
-        speciescode="1111", assessment_speciesname="Canis lupus", dataset_id=6
+        speciescode="1111",
+        assessment_speciesname="Canis lupus",
+        dataset_id=dataset_2024.id,
     )
-    factories.EtcDicMethodFactory(order=4, method="2GD", dataset_id=6)
-    factories.EtcDicConclusionFactory(dataset_id=6)
-    factories.DatasetFactory(id=6, schema="2024")
-    factories.DatasetFactory()
+    factories.EtcDicMethodFactory(order=4, method="2GD", dataset_id=dataset_2024.id)
+    factories.EtcDicConclusionFactory(dataset_id=dataset_2024.id)
+
     factories.EtcDataHabitattypeRegionFactory(habitatcode=1110)
     factories.EtcDicHdHabitat()
     lu_habitat = models.LuHabitatManual2007(
-        dataset_id=5,
+        dataset_id=dataset_2024.id,
         subject="1110",
         region="ALP",
         conclusion_assessment_prev="FV",
@@ -26,7 +29,7 @@ def setup_common():
         backcasted_2007="FV",
     )
     lu_species = models.LuSpeciesManual2007(
-        dataset_id=6,
+        dataset_id=dataset_2024.id,
         subject="Canis lupus",
         region="ALP",
         conclusion_assessment_prev="FV",
@@ -36,17 +39,18 @@ def setup_common():
     models.db.session.add(lu_habitat)
     models.db.session.add(lu_species)
     models.db.session.commit()
+    return dataset_2018, dataset_2024
 
 
 @pytest.fixture
 def setup_add(app):
-    setup_common()
+    dataset_2018, dataset_2024 = setup_common()
     factories.EtcDataSpeciesRegionFactory(
         speciescode="1111",
         assessment_speciesname="Canis lupus",
         eu_country_code="FR",
         country="FR",
-        dataset_id=6,
+        dataset_id=dataset_2024.id,
     )
     factories.EtcDataHabitattypeRegionFactory(
         habitatcode=1110,
@@ -58,29 +62,37 @@ def setup_add(app):
 
 @pytest.fixture
 def setup_edit(app):
-    setup_common()
-    factories.SpeciesManualAssessmentFactory(region="ALP", dataset_id=6, MS="EU27")
-    factories.SpeciesManualAssessmentFactory(region="ALP", dataset_id=5, MS="EU28")
+    dataset_2018, dataset_2024 = setup_common()
+    factories.SpeciesManualAssessmentFactory(
+        region="ALP", dataset_id=dataset_2024.id, MS="EU27"
+    )
+    factories.SpeciesManualAssessmentFactory(
+        region="ALP", dataset_id=dataset_2018.id, MS="EU28"
+    )
     factories.HabitattypesManualAssessmentsFactory(region="ALP")
     models.db.session.commit()
 
 
 @pytest.fixture
 def setup_decision(app):
-    setup_common()
-    factories.SpeciesManualAssessmentFactory(region="ALP", dataset_id=6, MS="EU27")
+    dataset_2018, dataset_2024 = setup_common()
+    factories.SpeciesManualAssessmentFactory(
+        region="ALP", dataset_id=dataset_2024.id, MS="EU27"
+    )
     factories.HabitattypesManualAssessmentsFactory(region="ALP")
-    factories.SpeciesManualAssessmentFactory(decision="OK", dataset_id=6, MS="EU27")
+    factories.SpeciesManualAssessmentFactory(
+        decision="OK", dataset_id=dataset_2024.id, MS="EU27"
+    )
     factories.HabitattypesManualAssessmentsFactory(decision="OK")
-    factories.EtcDicDecisionFactory(dataset_id=6)
-    factories.EtcDicDecisionFactory(decision="OK", dataset_id=6)
-    factories.EtcDicDecisionFactory(decision="OK?", dataset_id=6)
+    factories.EtcDicDecisionFactory(dataset_id=dataset_2024.id)
+    factories.EtcDicDecisionFactory(decision="OK", dataset_id=dataset_2024.id)
+    factories.EtcDicDecisionFactory(decision="OK?", dataset_id=dataset_2024.id)
     models.db.session.commit()
 
 
 @pytest.fixture
 def setup_autofill(app):
-    setup_common()
+    dataset_2018, dataset_2024 = setup_common()
     factories.EtcDataSpeciesAutomaticAssessmentFactory(
         assessment_speciesname="Canis lupus",
         region="ALP",
@@ -88,7 +100,7 @@ def setup_autofill(app):
         range_surface_area=100,
         conclusion_assessment_prev="FV",
         conclusion_range="FV",
-        dataset_id=6,
+        dataset_id=dataset_2024.id,
     )
     factories.EtcDataHabitattypeAutomaticAssessmentFactory(
         habitatcode="1110",
@@ -105,7 +117,7 @@ def setup_autofill(app):
         method_range="2GD",
         conclusion_range="FV",
         MS="EU27",
-        dataset_id=6,
+        dataset_id=dataset_2024.id,
     )
     factories.HabitattypesManualAssessmentsFactory(
         region="ALP",

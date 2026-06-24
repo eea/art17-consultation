@@ -1,22 +1,16 @@
 import pytest
 
-from art17.models import db
+from art17.models import db, Dataset
 
 from . import factories
 
 
 @pytest.fixture(autouse=True)
 def setup(app):
-    factories.DatasetFactory(
-        id=5,
-        schema="2018",
-        name="2013-2018",
-        habitat_map_url="",
-        species_map_url="",
-    )
+    dataset_2024 = Dataset.query.filter_by(schema="2024").first()
     factories.EtcDataSpeciesRegionFactory(
         group="Mammals",
-        dataset_id=5,
+        dataset_id=dataset_2024.id,
         assessment_speciesname="Capra ibex",
         speciesname="Capra ibex",
         range_surface_area=12530,
@@ -24,7 +18,7 @@ def setup(app):
     factories.SpeciesManualAssessmentFactory(
         assessment_speciesname="Capra ibex",
         range_surface_area=19850,
-        dataset_id=5,
+        dataset_id=dataset_2024.id,
         region="ALP",
         method_range="2GD",
         conclusion_range="U1",
@@ -32,26 +26,26 @@ def setup(app):
     )
     factories.EtcDataSpeciesAutomaticAssessmentFactory(
         assessment_speciesname="Capra ibex",
-        dataset_id=5,
+        dataset_id=dataset_2024.id,
         assessment_method="1",
         range_surface_area=19850,
         region="ALP",
     )
     factories.EtcDicBiogeoregFactory()
     factories.EtcDataHabitattypeRegionFactory(
-        range_surface_area=1283, dataset_id=5, habitatcode=1110
+        range_surface_area=1283, dataset_id=dataset_2024.id, habitatcode=1110
     )
     factories.EtcDataHabitattypeAutomaticAssessmentFactory(
         range_surface_area=1283,
         assessment_method="1",
-        dataset_id=5,
+        dataset_id=dataset_2024.id,
         habitatcode=1110,
         region="ALP",
     )
     factories.HabitattypesManualAssessmentsFactory(
         range_surface_area=1283,
         habitatcode=1110,
-        dataset_id=5,
+        dataset_id=dataset_2024.id,
         method_range="2XA",
         conclusion_range="FV",
         decision="OK",
@@ -70,7 +64,7 @@ def setup(app):
                 "/species/summary/",
                 {
                     "group": "Mammals",
-                    "period": "5",
+                    "period": "6",
                     "subject": "Capra ibex",
                     "region": "",
                 },
@@ -82,7 +76,7 @@ def setup(app):
                 "/habitat/summary/",
                 {
                     "group": "coastal habitats",
-                    "period": "5",
+                    "period": "6",
                     "subject": "1110",
                     "region": "",
                 },
@@ -96,6 +90,7 @@ def test_summary_range_value(client, set_auth, app, request_args, search_dict):
     for tbody_order_nr, search_text in search_dict.items():
         content_tbody = resp.html.find_all("tbody")[tbody_order_nr]
         range_area_td = content_tbody.find_all("td", {"class": "number"})[0]
+
         assert search_text in range_area_td.text
 
 
@@ -105,7 +100,7 @@ def test_summary_range_value(client, set_auth, app, request_args, search_dict):
         (
             [
                 "/species/progress/",
-                {"group": "Mammals", "period": "5", "conclusion": "range"},
+                {"group": "Mammals", "period": "6", "conclusion": "range"},
             ],
             "U1",
         ),
@@ -114,7 +109,7 @@ def test_summary_range_value(client, set_auth, app, request_args, search_dict):
                 "/habitat/progress/",
                 {
                     "group": "coastal habitats",
-                    "period": "5",
+                    "period": "6",
                     "conclusion": "range",
                 },
             ],

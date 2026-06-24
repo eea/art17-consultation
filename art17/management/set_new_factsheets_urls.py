@@ -8,7 +8,8 @@ set_new_factsheets_urls = AppGroup("set_new_factsheets_urls")
 def set_new_factsheets_urls_for_given_entity(model_cls, code_field):
     from art17 import models
 
-    entities_2006 = model_cls.query.filter_by(dataset_id=1).all()
+    dataset_2006 = models.Dataset.query.filter_by(schema="2006").first()
+    entities_2006 = model_cls.query.filter_by(dataset_id=dataset_2006.id).all()
     print(f"Number of 2006 {model_cls.__name__}: {len(entities_2006)}")
     count = 0
     for entity in entities_2006:
@@ -22,7 +23,8 @@ def set_new_factsheets_urls_for_given_entity(model_cls, code_field):
     models.db.session.commit()
     print(f"Updated {model_cls.__name__} 2006")
 
-    entities_2012 = model_cls.query.filter_by(dataset_id=3).all()
+    dataset_2012 = models.Dataset.query.filter_by(schema="2012").first()
+    entities_2012 = model_cls.query.filter_by(dataset_id=dataset_2012.id).all()
     print(f"Number of 2012 {model_cls.__name__}: {len(entities_2012)}")
     count = 0
     for entity in entities_2012:

@@ -25,7 +25,8 @@ def run(**kwargs):
         else models.EtcDataHabitattypeRegion
     )
     code_attr = "speciescode" if kwargs["entity"] == "species" else "habitatcode"
-    entities_2006 = model_cls.query.filter_by(dataset_id=1).all()
+    dataset_2006 = models.Dataset.query.filter_by(schema="2006").first()
+    entities_2006 = model_cls.query.filter_by(dataset_id=dataset_2006.id).all()
     print(f"Number of entities 2006: {len(entities_2006)}")
     for entity in entities_2006:
         if entity.remote_url_2006:
@@ -38,7 +39,8 @@ def run(**kwargs):
     models.db.session.commit()
     print(f"Updated entities 2006 for {kwargs['entity']}")
 
-    entities_2012 = model_cls.query.filter_by(dataset_id=3).all()
+    dataset_2012 = models.Dataset.query.filter_by(schema="2012").first()
+    entities_2012 = model_cls.query.filter_by(dataset_id=dataset_2012.id).all()
     print(f"Number of entities 2012: {len(entities_2012)}")
     for entity in entities_2012:
         if entity.remote_url_2012:

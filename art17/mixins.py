@@ -2,6 +2,7 @@ from sqlalchemy import and_, func
 
 from art17.models import (
     Comment,
+    Dataset,
     DicCountryCode,
     EtcDataHabitattypeAutomaticAssessment,
     EtcDataHabitattypeRegion,
@@ -319,8 +320,9 @@ class HabitatMixin(MixinsCommon):
             )
             subjects = []
             for subj in subjs:
+                dataset = Dataset.objects.filter_by(schema="2012bis").first()
                 subject_objects = cls.model_cls.query.filter_by(
-                    habitatcode=subj[0], dataset_id=4
+                    habitatcode=subj[0], dataset_id=dataset
                 ).all()
                 for subject in subject_objects:
                     if subject.region in regions:

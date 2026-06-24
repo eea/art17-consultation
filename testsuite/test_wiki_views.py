@@ -5,7 +5,6 @@ from art17.models import RegisteredUser, Wiki, WikiChange, WikiComment, db
 
 from .conftest import create_user, force_login, get_request_params
 from .factories import (
-    DatasetFactory,
     EtcDicBiogeoregFactory,
     WikiChangeFactory,
     WikiCommentFactory,
@@ -17,7 +16,6 @@ from .factories import (
 
 @pytest.fixture
 def setup(app):
-    DatasetFactory(id=5, schema="2018", name="2013-2018")
     WikiFactory()
     WikiChangeFactory()
     WikiFactory(id=2, region_code="", habitatcode=1110)
@@ -50,25 +48,25 @@ def get_instance(models_cls, **kwargs):
         (
             [
                 "/species/summary/datasheet/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ]
         ),
         (
             [
                 "/species/summary/audittrail/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ]
         ),
         (
             [
                 "/habitat/summary/datasheet/",
-                {"period": "5", "subject": "9010", "region": ""},
+                {"period": "6", "subject": "9010", "region": ""},
             ]
         ),
         (
             [
                 "/habitat/summary/audittrail/",
-                {"period": "5", "subject": "9010", "region": ""},
+                {"period": "6", "subject": "9010", "region": ""},
             ]
         ),
     ],
@@ -86,28 +84,28 @@ def test_empty_view(app, client, request_args):
         (
             [
                 "/species/summary/datasheet/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ],
             "The wolf was the world's most widely distributed mammal.",
         ),
         (
             [
                 "/species/summary/audittrail/",
-                {"period": "5", "subject": "Canis lupus", "region": "CON"},
+                {"period": "6", "subject": "Canis lupus", "region": "CON"},
             ],
             "For Poland: present range, population and habitat",
         ),
         (
             [
                 "/habitat/summary/datasheet/",
-                {"period": "5", "subject": "1110", "region": ""},
+                {"period": "6", "subject": "1110", "region": ""},
             ],
             "The conservation status in the marine Baltic region",
         ),
         (
             [
                 "/habitat/summary/audittrail/",
-                {"period": "5", "subject": "1110", "region": "MBAL"},
+                {"period": "6", "subject": "1110", "region": "MBAL"},
             ],
             "Method 1 was used to evaluate the subconclusion",
         ),
@@ -129,7 +127,7 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
             "post",
             [
                 "/species/summary/datasheet/page_history/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ],
             {"revision_id": 1},
         ),
@@ -137,7 +135,7 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
             "post",
             [
                 "/species/summary/datasheet/add_comment/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ],
             {"text": "Test add comment."},
         ),
@@ -145,7 +143,7 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
             "post",
             [
                 "/species/summary/datasheet/edit_page/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ],
             {"text": "Test edit page."},
         ),
@@ -154,7 +152,7 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
             [
                 "/species/summary/datasheet/edit_comment/",
                 {
-                    "period": "5",
+                    "period": "6",
                     "subject": "Canis lupus",
                     "region": "",
                     "comment_id": 1,
@@ -166,7 +164,7 @@ def test_non_auth_view(app, setup, client, request_args, search_text):
             "get",
             [
                 "/species/summary/datasheet/manage_comment/",
-                {"comment_id": 1, "toggle": "read", "period": "5"},
+                {"comment_id": 1, "toggle": "read", "period": "6"},
             ],
             {},
         ),
@@ -192,7 +190,7 @@ def test_perms(app, setup, set_auth, client, request_type, request_args, post_pa
             "get",
             [
                 "/species/summary/datasheet/manage_comment/",
-                {"comment_id": 1, "toggle": "del", "period": "5"},
+                {"comment_id": 1, "toggle": "del", "period": "6"},
             ],
             {},
         ),
@@ -201,7 +199,7 @@ def test_perms(app, setup, set_auth, client, request_type, request_args, post_pa
             "get",
             [
                 "/species/summary/datasheet/manage_comment/",
-                {"comment_id": 2, "toggle": "read", "period": "5"},
+                {"comment_id": 2, "toggle": "read", "period": "6"},
             ],
             {},
         ),
@@ -211,7 +209,7 @@ def test_perms(app, setup, set_auth, client, request_type, request_args, post_pa
             [
                 "/species/summary/datasheet/edit_comment/",
                 {
-                    "period": "5",
+                    "period": "6",
                     "subject": "Canis lupus",
                     "region": "",
                     "comment_id": 1,
@@ -224,7 +222,7 @@ def test_perms(app, setup, set_auth, client, request_type, request_args, post_pa
             "post",
             [
                 "/species/summary/datasheet/add_comment/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ],
             {"text": "Test add comment."},
         ),
@@ -254,7 +252,7 @@ def test_perms_auth_user(
             "post",
             [
                 "/species/summary/datasheet/page_history/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ],
             {"revision_id": 999},
         ),
@@ -263,7 +261,7 @@ def test_perms_auth_user(
             [
                 "/species/summary/datasheet/edit_comment/",
                 {
-                    "period": "5",
+                    "period": "6",
                     "subject": "Canis lupus",
                     "region": "",
                     "comment_id": 999,
@@ -299,7 +297,7 @@ def test_change_active_revision(
             "post",
             [
                 "/species/summary/datasheet/page_history/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ],
             {"revision_id": 3},
         )
@@ -319,7 +317,7 @@ def test_add_comment(
         "post",
         [
             "/species/summary/datasheet/add_comment/",
-            {"period": "5", "subject": "Canis lupus", "region": ""},
+            {"period": "6", "subject": "Canis lupus", "region": ""},
         ],
         {"comment": "Test add comment."},
     )
@@ -346,7 +344,7 @@ def test_edit_page(
             "post",
             [
                 "/species/summary/datasheet/edit_page/",
-                {"period": "5", "subject": "Canis lupus", "region": ""},
+                {"period": "6", "subject": "Canis lupus", "region": ""},
             ],
             {"text": "Test edit page."},
         )
@@ -368,7 +366,7 @@ def test_edit_comment(
             [
                 "/species/summary/datasheet/edit_comment/",
                 {
-                    "period": "5",
+                    "period": "6",
                     "subject": "Canis lupus",
                     "region": "",
                     "comment_id": 1,
@@ -388,7 +386,7 @@ def test_toggle_del(app, setup, set_auth, client):
     initial_value = get_instance(WikiComment, id=1).deleted or 0
     client.get(
         "/species/summary/datasheet/manage_comment/",
-        {"comment_id": 1, "toggle": "del", "period": "5"},
+        {"comment_id": 1, "toggle": "del", "period": "6"},
     )
     assert get_instance(WikiComment, id=1).deleted == 1 - initial_value
 
@@ -408,7 +406,7 @@ def test_toggle_read(app, setup, set_auth, client):
     initial_value = get_value()
     client.get(
         "/species/summary/datasheet/manage_comment/",
-        {"comment_id": 1, "toggle": "read", "period": "5"},
+        {"comment_id": 1, "toggle": "read", "period": "6"},
     )
     assert get_value() is not initial_value
 
@@ -433,6 +431,6 @@ def test_hide_adm_assessor_username(app, setup, set_auth, client, roles):
 
     resp = client.get(
         "/species/summary/datasheet/",
-        {"period": "5", "subject": "Canis lupus", "region": ""},
+        {"period": "6", "subject": "Canis lupus", "region": ""},
     )
     assert "Secret Name" not in resp.html.name

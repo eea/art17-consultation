@@ -494,15 +494,21 @@ class SpeciesSummary(SpeciesMixin, Summary):
                     ),
                 )
             ).order_by(EtcDicMethod.order)
-            if filter_args["dataset_id"] == "4":
+            dataset_2012 = Dataset.query.filter_by(schema="2012").first()
+            dataset_2012bis = Dataset.query.filter_by(schema="2012bis").first()
+            if filter_args["dataset_id"] == str(dataset_2012bis.id):
                 filter_args.pop("dataset_id")
                 regions = [
                     region.reg_code
-                    for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)
+                    for region in EtcDicBiogeoreg.query.filter_by(
+                        dataset_id=dataset_2012bis.id
+                    )
                 ]
                 self.manual_objects = (
                     self.model_manual_cls.query.filter(
-                        self.model_manual_cls.dataset_id.in_([3, 4])
+                        self.model_manual_cls.dataset_id.in_(
+                            [dataset_2012.id, dataset_2012bis.id]
+                        )
                     )
                     .filter(self.model_manual_cls.region.in_(regions))
                     .filter_by(**filter_args)
@@ -616,15 +622,21 @@ class HabitatSummary(HabitatMixin, Summary):
                     ),
                 )
             ).order_by(EtcDicMethod.order)
-            if filter_args["dataset_id"] == "4":
+            dataset_2012 = Dataset.query.filter_by(schema="2012").first()
+            dataset_2012bis = Dataset.query.filter_by(schema="2012bis").first()
+            if filter_args["dataset_id"] == str(dataset_2012bis.id):
                 filter_args.pop("dataset_id")
                 regions = [
                     region.reg_code
-                    for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)
+                    for region in EtcDicBiogeoreg.query.filter_by(
+                        dataset_id=dataset_2012bis.id
+                    )
                 ]
                 self.manual_objects = (
                     self.model_manual_cls.query.filter(
-                        self.model_manual_cls.dataset_id.in_([3, 4])
+                        self.model_manual_cls.dataset_id.in_(
+                            [dataset_2012.id, dataset_2012bis.id]
+                        )
                     )
                     .filter(self.model_manual_cls.region.in_(regions))
                     .filter_by(**filter_args)

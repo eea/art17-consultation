@@ -97,7 +97,7 @@
       <table class="complex_datatable">
 
         <caption>
-          {% if (dataset.id == 3 or dataset.id == 5) and is_sensitive(speciescode) %}
+          {% if (dataset.schema == '2012' or dataset.schema == '2018') and is_sensitive(speciescode) %}
             <p>Sensitive spatial information for this species is not shown in the map.</p>
           {% endif %}
           <b>Current selection</b>:
@@ -238,7 +238,7 @@
                 {% include 'summary/species/manual_form.html' %}
               {% endif %}
             {% else %}
-              <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset_id == 3 and dataset.id == 4 %}manual_assessment{% endif%}">
+              <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset__schema == '2012' and dataset.schema == '2012bis' %}manual_assessment{% endif%}">
                 {% if dataset.schema == '2018' %}
                   {% include 'summary/species/manual/manual_2018.html' %}
                 {% elif dataset.schema == '2024' %}
