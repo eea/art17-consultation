@@ -18,6 +18,11 @@ class RegisteredUserModelView(AnonymizationMixin, ProtectedModelView):
         "confirmed_at",
         "is_ldap",
     )
+    column_filters = (
+        "id",
+        "email",
+        "name",
+    )
     form_columns = (
         "email",
         "name",

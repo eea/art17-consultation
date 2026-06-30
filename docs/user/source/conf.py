@@ -32,6 +32,7 @@ import os
 extensions = [
     "sphinx.ext.todo",
     "rst2pdf.pdfbuilder",
+    "docxsphinx",
 ]
 
 # Master document, name of the generated pdf, title of the pdf, author name in

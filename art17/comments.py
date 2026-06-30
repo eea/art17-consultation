@@ -22,6 +22,7 @@ from art17.common import (
     get_default_period,
     is_public_user,
     sta_cannot_change,
+    assessor_cannot_change,
     sta_perm,
 )
 from art17.forms import CommentForm
@@ -65,6 +66,8 @@ def can_post_comment(record):
         return False
     can_add = False
     if sta_cannot_change():
+        can_add = False
+    if assessor_cannot_change():
         can_add = False
     elif sta_perm.can():
         if not record.user or record.user.has_role("stakeholder"):
@@ -113,6 +116,7 @@ def can_edit_comment(comment):
         and not comment.deleted
         and comment.author_id == current_user.id
         and not sta_cannot_change()
+        and not assessor_cannot_change()
     )
 
 
@@ -133,7 +137,7 @@ def can_delete_comment(comment):
         return False
 
     if comment.author_id == current_user.id:
-        if sta_cannot_change():
+        if sta_cannot_change() or assessor_cannot_change():
             return False
         return True
 

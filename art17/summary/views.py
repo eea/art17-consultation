@@ -785,10 +785,10 @@ summary.add_url_rule(
 )
 
 summary.add_url_rule(
-    "/species/conc/update/<period>/<subject>/<region>/<user>/",
+    "/species/conc/update/<period>/<path:subject>/<region>/<user>/",
     view_func=UpdateDecision.as_view("species-update", mixin=SpeciesMixin),
 )
 summary.add_url_rule(
-    "/habitat/conc/update/<period>/<subject>/<region>/<user>/",
+    "/habitat/conc/update/<period>/<path:subject>/<region>/<user>/",
     view_func=UpdateDecision.as_view("habitat-update", mixin=HabitatMixin),
 )

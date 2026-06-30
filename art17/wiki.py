@@ -14,7 +14,12 @@ from flask_principal import PermissionDenied
 from sqlalchemy import or_
 
 from art17.auth.security import current_user
-from art17.common import admin_perm, assessor_perm, sta_cannot_change
+from art17.common import (
+    admin_perm,
+    assessor_perm,
+    sta_cannot_change,
+    assessor_cannot_change,
+)
 from art17.forms import CommentForm, RevisedForm, WikiEditForm
 from art17.models import (
     Dataset,
@@ -133,7 +138,12 @@ def can_change_revision(revision):
 
 @wiki.app_template_global("can_add_comment")
 def can_add_comment(comments, revisions, dataset):
-    if not dataset or dataset.is_readonly or sta_cannot_change():
+    if (
+        not dataset
+        or dataset.is_readonly
+        or sta_cannot_change()
+        or assessor_cannot_change()
+    ):
         return False
     is_author = current_user in [cmnt.author for cmnt in comments]
     return not (current_user.is_anonymous or is_author) and revisions
@@ -145,6 +155,7 @@ def can_edit_comment(comment):
         current_user == comment.author
         and not comment.deleted
         and not sta_cannot_change()
+        and not assessor_cannot_change()
     ):
         return True
     return False
@@ -527,7 +538,11 @@ class ManageComment(WikiView):
 
         toggle = request.args.get("toggle")
         if toggle == "del":
-            if comment.author != current_user or sta_cannot_change():
+            if (
+                comment.author != current_user
+                or sta_cannot_change()
+                or assessor_cannot_change
+            ):
                 raise PermissionDenied
             if comment.deleted is None:
                 comment.deleted = 0

@@ -912,7 +912,6 @@ class ConfigForm(Form):
     )
     default_dataset_id = SelectField(label="Default period")
     default_public_dataset_id = SelectField(label="Default public period")
-    add_assessment_enabled = BooleanField(label="Enable add assessment")
     latest_dataset_public_view_enabled = BooleanField(
         label="Enable public view of latest dataset"
     )

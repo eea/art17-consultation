@@ -186,6 +186,12 @@ Documentation can be found under `docs`:
         cd docs/overview/
         make html
 
+You can generate a docx file using:
+
+        pip install docxsphinx
+        cd docs/user
+        sphinx-build -b docx source build
+
 
 Contacts
 ========

@@ -176,9 +176,23 @@ def consultation_ended():
     return False
 
 
+def in_consultation_period():
+    cfg = get_config()
+    if cfg.start_date and cfg.end_date:
+        today = date.today()
+        return cfg.start_date <= today <= cfg.end_date
+    return False
+
+
 @common.app_template_global("sta_cannot_change")
 def sta_cannot_change():
-    return sta_perm.can() and consultation_ended()
+    return sta_perm.can() and not in_consultation_period()
+
+
+@common.app_template_global("assessor_cannot_change")
+def assessor_cannot_change():
+    # assessor should not be able to edit assessments during consultation
+    return assessor_perm.can() and in_consultation_period()
 
 
 admin_perm = Permission(RoleNeed("admin"))
@@ -230,7 +244,6 @@ def inject_globals():
         "end_date": cfg.end_date,
         "is_public": is_public,
         "current_user": current_user,
-        "add_assessment_enabled": cfg.add_assessment_enabled,
         "latest_dataset_public_view_enabled": cfg.latest_dataset_public_view_enabled,
     }
 

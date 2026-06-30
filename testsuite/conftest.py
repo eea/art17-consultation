@@ -1,6 +1,6 @@
 import os
 import urllib
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import flask
 from alembic import config
@@ -55,9 +55,9 @@ def create_generic_fixtures():
     )
     models.db.session.execute(
         text(
-            "insert into config(id, default_dataset_id, "
-            "default_public_dataset_id, add_assessment_enabled, latest_dataset_public_view_enabled, start_date) "
-            "values (1, 6, 6, True, True, '%s')" % date.today()
+            f"insert into config(id, default_dataset_id, "
+            f"default_public_dataset_id, latest_dataset_public_view_enabled, start_date, end_date) "
+            f"values (1, 6, 6, True, '{date.today()}', '{(date.today() + timedelta(days=1))}')"
         )
     )
     models.db.session.execute(

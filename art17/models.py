@@ -1593,7 +1593,6 @@ class Config(Base):
     admin_email = Column(db.String(255))
     default_dataset_id = Column(BigInteger(), default=1)
     default_public_dataset_id = Column(BigInteger(), default=1)
-    add_assessment_enabled = Column(Boolean, default=False)
     latest_dataset_public_view_enabled = Column(Boolean, default=False)
 
 

@@ -4,6 +4,7 @@ from art17.common import (
     consultation_ended,
     assessor_perm,
     sta_cannot_change,
+    assessor_cannot_change,
     sta_perm,
     get_config,
 )
@@ -22,7 +23,7 @@ def can_delete(record):
         return False
 
     if record.user_id == current_user.id:
-        return not sta_cannot_change()
+        return not sta_cannot_change() and not assessor_cannot_change()
 
 
 @summary.app_template_global("can_update_decision")
@@ -57,11 +58,11 @@ def can_edit(record):
         return False
 
     if record.user_id == current_user.id:
-        if sta_cannot_change():
+        if sta_cannot_change() or assessor_cannot_change():
             return False
         return True
 
-    return assessor_perm.can() or admin_perm.can()
+    return (assessor_perm.can() and not assessor_cannot_change()) or admin_perm.can()
 
 
 @summary.app_template_global("can_view_decision")
@@ -111,9 +112,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
         )
     elif not region:
         warning_message = "Please select a Bioregion in order to add a " + "conclusion."
-    elif not (
-        admin_perm.can() or sta_perm.can() or assessor_perm.can() or EU_ASSESSMENT_MODE
-    ):
+    elif not (admin_perm.can() or sta_perm.can() or EU_ASSESSMENT_MODE):
         warning_message = "You do not have permission to add conclusions."
     elif sta_cannot_change():
         warning_message = (
@@ -156,7 +155,11 @@ def can_touch(assessment):
         EU_ASSESSMENT_MODE
         or admin_perm.can()
         or assessor_perm.can()
-        or (assessment.user == current_user and not sta_cannot_change())
+        or (
+            assessment.user == current_user
+            and not sta_cannot_change()
+            and not assessor_cannot_change()
+        )
     )
 
 

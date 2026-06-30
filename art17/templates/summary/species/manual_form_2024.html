@@ -7,7 +7,6 @@
 {% set form=manual_form %}
 {% set is_form=true %}
 
-{% if edit_ref or add_assessment_enabled %}
 <tr class="form form_row" id="theform">
   <td></td>
   {% if can_select_MS() %}
@@ -276,7 +275,6 @@
     {% include 'summary/common/manual/conclusion_details.html' %}
   {% endif %}
 </tr>
-{% endif %}
 
 {% if form.errors %}
   <tr class="form_row">
