@@ -155,7 +155,7 @@ class OptionalSelectField(SelectField):
         validators = validators or [Optional()]
         default = default or ""
         super(OptionalSelectField, self).__init__(
-            validators=validators, default=default, **kwargs
+            validators=validators, default=default, choices=[], **kwargs
         )
 
 
