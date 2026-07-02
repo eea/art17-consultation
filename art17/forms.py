@@ -155,7 +155,7 @@ class OptionalSelectField(SelectField):
         validators = validators or [Optional()]
         default = default or ""
         super(OptionalSelectField, self).__init__(
-            validators=validators, default=default, choices=[], **kwargs
+            validators=validators, default=default, **kwargs
         )
 
 
@@ -687,7 +687,6 @@ class SummaryManualFormSpeciesRef(
         trends = empty + list(zip(trends, trends))
         for f in (self.range_trend, self.population_trend, self.habitat_trend):
             f.choices = trends
-
         for f in (
             self.conclusion_range,
             self.conclusion_future,
@@ -803,7 +802,8 @@ class SummaryManualFormHabitatRef(
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
-
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + list(zip(trends, trends))
         self.region.choices = empty
 
         self.method_range.choices = ZERO_METHODS + self.get_method_options(methods)
@@ -820,8 +820,7 @@ class SummaryManualFormHabitatRef(
             self.conclusion_assessment_trend,
             self.hab_condition_trend,
         ):
-            trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
-            trends = empty + list(zip(trends, trends))
+            f.choices = trends
         for f in (
             self.conclusion_range,
             self.conclusion_area,
