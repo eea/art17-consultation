@@ -1565,6 +1565,7 @@ a.active {
   border-left: 3px solid #d9534f;
   font-size: 14px;
   display: block;
+  max-width: 850px;
 }
 .window {
   padding: 0 1em;

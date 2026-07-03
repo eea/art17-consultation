@@ -40,7 +40,11 @@
       The ‘Data sheet info’ includes notes for each regional and overall assessment per habitat.
     </p>
     <p>
-      The ‘Audit trail’ includes the methods used for the EU biogeographical assessments and justifications for decisions made by the assessors.
+      The 'Audit trail' includes the methods used for the EU biogeographical assessments and 
+      justifications for decisions made by the assessors. Some inconsistencies may appear in the 
+      data reported by Member States. To ensure the robustness of the EU-level assessments, all 
+      assessments undergo expert review. Where inconsistencies or potential errors are identified, 
+      they are documented transparently and per habitats in the assessment audit trail.
     </p>
   {% endif %}
   {% if dataset.schema == '2012' %}
@@ -72,7 +76,7 @@
       <p class="note">
         The delayed delivery by Spain did not allow the Spanish report to be used for the EU conservation status
         assessment. Where possible, Spanish data from the period 2013-2019 were used for the EU assessments of
-        2019-2024. You can see a relevant technical note here.
+        2019-2024. You can see a relevant technical note <a target="_blank" href="{{ url_for('static', filename='documents/Technical note on missing Art 17 ES report_FINAL.pdf') }}">here</a>.
       </p>
     {% endif %}
 
