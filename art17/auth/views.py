@@ -88,25 +88,6 @@ def register_local():
     )
 
 
-def send_welcome_email(user, plaintext_password=None):
-    if app.config["MAIL_SERVER"]:
-        app = current_app
-        msg = Message(
-            subject="Role update on the Biological Diversity website",
-            sender=app.config["SECURITY_EMAIL_SENDER"],
-            recipients=[user.email],
-        )
-        msg.body = render_template(
-            "auth/email_user_welcome.txt",
-            **{
-                "user": user,
-                "plaintext_password": plaintext_password,
-                "home_url": url_for(HOMEPAGE_VIEW_NAME, _external=True),
-            },
-        )
-        safe_send_mail(app, msg)
-
-
 @auth.route("/auth/create_local", methods=["GET", "POST"])
 @require_admin
 def admin_create_local():
@@ -122,7 +103,6 @@ def admin_create_local():
         set_user_active(user, True)
         user.password = encrypted_password
         datastore.commit()
-        send_welcome_email(user, plaintext_password)
         add_default_role(user)
         flash("User %s created successfully." % kwargs["id"], "success")
         return redirect(url_for(".users"))
@@ -241,7 +221,6 @@ def admin_create_ldap():
             user.confirmed_at = datetime.utcnow()
             set_user_active(user, True)
             datastore.commit()
-            send_welcome_email(user)
             add_default_role(user)
             flash(
                 "User %s created successfully." % kwargs["id"],

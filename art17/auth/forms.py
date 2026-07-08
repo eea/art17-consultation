@@ -52,6 +52,7 @@ class Art17RegisterFormBase(object):
         self.country_options.choices = (
             [("", "")] + countries + [("--", "Choose another country ...")]
         )
+        self.password.flags.required = True
         self.obj = kwargs.get("obj", None)
 
 

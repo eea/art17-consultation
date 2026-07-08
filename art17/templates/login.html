@@ -12,12 +12,14 @@
 <div class="top-pad container">
         <form
             method="POST"
+            class="form-login"
             action="{{ url_for('auth.login') }}"
             role="form">
           {{ form.csrf_token }}
           <div class="form-group">{{ form.username.label }}: {{ form.username() }}</div>
           <div class="form-group">{{ form.password.label }}: {{ form.password() }}</div>
           <button type="submit" class="btn btn-default">Submit</button>
+          <!-- <div class="margin-top"><a href="/auth/recover_password">Forgot your password? (only available for local accounts)</a></div> -->
         </form>
 </div>
 {% endblock %}

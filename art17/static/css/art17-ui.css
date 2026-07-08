@@ -1703,3 +1703,11 @@ td.form-error-td .select:hover {
 .select2-selection button {
   background-image: none !important;
 }
+
+.form-login {
+  text-align: center;
+}
+
+.margin-top {
+  margin-top: 5px;
+}
