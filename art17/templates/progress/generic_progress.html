@@ -17,7 +17,7 @@
   {% endif %}
   {% include 'progress/filters.html' %}
 
-  {% if not dataset.is_readonly and (not consultation_started and not can_preview_progress()) %}
+  {% if not can_preview_progress(dataset) %}
 
     <p>This information is not available. The work on the EU biogeographical assessments is still ongoing</p>
 

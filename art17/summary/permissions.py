@@ -1,6 +1,8 @@
 from art17.auth.security import current_user
 from art17.common import (
     admin_perm,
+    before_consultation,
+    during_consultation_period,
     consultation_ended,
     assessor_perm,
     sta_cannot_change,
@@ -69,25 +71,88 @@ def can_edit(record):
 def can_view_decision():
     return assessor_perm.can() or admin_perm.can() or EU_ASSESSMENT_MODE
 
-
-@summary.app_template_global("can_view_assessment")
-def can_view_assessment():
+@summary.app_template_global("can_view_reporting_period")
+def can_view_reporting_period():
     conf = get_config()
     if conf.latest_dataset_public_view_enabled:
         return True
     if not current_user.is_anonymous and current_user.show_assessment:
+        return True
+    return False
+
+@summary.app_template_global("can_view_automatic_assessment")
+def can_view_automatic_assessment(dataset):
+    if dataset.is_readonly:
+        # the reporting is finished for this period and all information can be public at this point
+        return True
+    if before_consultation():
+        # before consultation Stakeholders and public users cannot see the manual assessments
+        if current_user.is_anonymous or sta_perm.can():
+            return False
+
+    if during_consultation_period():
+        # everybody should be able to see the assessments during consultation
+        return True
+
+    if consultation_ended():
+        # after consultation and before read-only, public user can see only if this is
+        # explicitly set on the dataset
+        if dataset.public_can_view_automatic_assessments:
+            return True
+        if current_user.is_anonymous:
+            return False
+        return True
+    return False
+
+
+@summary.app_template_global("can_view_manual_assessment")
+def can_view_manual_assessment(dataset):
+    if dataset.is_readonly:
+        # the reporting is finished for this period and all information can be public at this point
+        return True
+    if before_consultation():
+        # before consultation Stakeholders and public users cannot see the manual assessments
+        if current_user.is_anonymous or sta_perm.can():
+            return False
+
+    if during_consultation_period():
+        # everybody should be able to see the assessments during consultation
+        return True
+
+    if consultation_ended():
+        # after consultation and before read-only, public user can see only if this is
+        # explicitly set on the dataset
+        if dataset.public_can_view_manual_assessments:
+            return True
+        if current_user.is_anonymous:
+            return False
         return True
     return False
 
 
 @summary.app_template_global("can_view_audit_trail")
-def can_view_audit_trail():
-    conf = get_config()
-    if conf.latest_dataset_public_view_enabled:
+def can_view_audit_trail(dataset):
+    if dataset.is_readonly:
+        # the reporting is finished for this period and all information can be public at this point
         return True
-    if not current_user.is_anonymous and current_user.show_assessment:
+    if before_consultation():
+        # before consultation Stakeholders and public users cannot see the audit trail
+        if current_user.is_anonymous or sta_perm.can():
+            return False
+
+    if during_consultation_period():
+        # just authenticated users should see the audit trail
+        if not current_user.is_anonymous:
+            return True
+
+    if consultation_ended():
+        # after consultation and before read-only, public user can see only if this is
+        # explicitly set on the dataset
+        if dataset.public_can_view_manual_assessments:
+            return True
+        if current_user.is_anonymous:
+            return False
         return True
-    return False
 
 
 @summary.app_template_global("can_add_conclusion")

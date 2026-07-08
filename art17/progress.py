@@ -8,8 +8,11 @@ from art17.common import (
     COUNTRY_ASSESSMENTS,
     MixinView,
     admin_perm,
+    before_consultation,
+    during_consultation_period,
     consultation_ended,
     get_default_period,
+    sta_perm,
 )
 from art17.forms import ProgressFilterForm
 from art17.mixins import HabitatMixin, SpeciesMixin
@@ -52,18 +55,25 @@ def can_select_assessor():
 
 
 @progress.app_template_global("can_preview_progress")
-def can_preview_progress():
-    if consultation_ended():
+def can_preview_progress(dataset):
+    if dataset.is_readonly:
         return True
-
-    if not current_user.is_authenticated:
-        return False
-
-    return (
-        current_user.has_role("assessor")
-        or current_user.has_role("admin")
-        and current_user.show_assessment
-    )
+    if before_consultation():
+        # before consultation Stakeholders and public users cannot see the manual assessments
+        if current_user.is_anonymous or sta_perm.can():
+            return False
+    if during_consultation_period():
+        # everybody should be able to see the assessments during consultation
+        return True
+    if consultation_ended():
+        # after consultation and before read-only, public user can see only if this is
+        # explicitly set on the dataset
+        if dataset.public_can_view_manual_assessments:
+            return True
+        if current_user.is_anonymous:
+            return False
+        return True
+    return False
 
 
 def user_is_expert(user):

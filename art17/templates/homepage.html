@@ -33,7 +33,8 @@
         You cannot sign-up for a new account because the registration
         process will start on {{ start_date }}.
       </p>
-
+    {% elif end_date and end_date < today %}
+      <h2>The consultation has ended.</h2>
     {% else %}
       <h2>
         The public consultation for the Article 17 biogeographical assessments of conservation status of 

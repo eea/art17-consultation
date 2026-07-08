@@ -11,7 +11,7 @@
         {% endif %}
     </button>
 
-    {% if dataset.schema != '2024' or can_view_audit_trail() %}
+    {% if can_view_audit_trail(dataset) %}
     <button type="button" id="wikibutton" {% if dataset.schema == '2012bis' %} disabled {% endif %}
         href=
             {% if region == '' %}

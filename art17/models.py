@@ -53,6 +53,12 @@ class Dataset(Base):
     is_readonly = Column(
         Boolean, default=True, nullable=False
     )  # mark as read-only after consultation has ended
+    public_can_view_automatic_assessments = Column(
+        Boolean, default=True, nullable=False
+    ) # If true, unauthenticated users can view automatic assessments
+    public_can_view_manual_assessments = Column(
+        Boolean, default=True, nullable=False
+    ) # If true, unauthenticated users can view manual assessments
 
     @property
     def stats(self):

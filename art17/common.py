@@ -159,14 +159,12 @@ def get_config():
     return rows[0]
 
 
-def get_default_period():
-    from art17.auth import current_user
-
-    conf = get_config()
-    if not current_user.is_authenticated:
-        return conf.default_public_dataset_id
-    return conf.default_dataset_id
-
+def before_consultation():
+    cfg = get_config()
+    if cfg.start_date:
+        today = date.today()
+        return cfg.start_date > today
+    return False
 
 def consultation_ended():
     cfg = get_config()
@@ -176,7 +174,7 @@ def consultation_ended():
     return False
 
 
-def in_consultation_period():
+def during_consultation_period():
     cfg = get_config()
     if cfg.start_date and cfg.end_date:
         today = date.today()
@@ -184,15 +182,37 @@ def in_consultation_period():
     return False
 
 
+def get_default_period():
+    from art17.auth import current_user
+
+    conf = get_config()
+    if not current_user.is_authenticated:
+        if during_consultation_period():
+            return conf.default_dataset_id
+        else:
+            return conf.default_public_dataset_id
+    return conf.default_dataset_id
+
+@common.app_template_global("public_view_on_latest_dataset")
+def public_view_on_latest_dataset():
+    from art17.auth import current_user
+    conf = get_config()
+
+    if not current_user.is_authenticated:
+        if during_consultation_period():
+            return True
+        return conf.latest_dataset_public_view_enabled
+    return True
+
 @common.app_template_global("sta_cannot_change")
 def sta_cannot_change():
-    return sta_perm.can() and not in_consultation_period()
+    return sta_perm.can() and not during_consultation_period()
 
 
 @common.app_template_global("assessor_cannot_change")
 def assessor_cannot_change():
     # assessor should not be able to edit assessments during consultation
-    return assessor_perm.can() and in_consultation_period()
+    return assessor_perm.can() and during_consultation_period()
 
 
 admin_perm = Permission(RoleNeed("admin"))
@@ -244,7 +264,6 @@ def inject_globals():
         "end_date": cfg.end_date,
         "is_public": is_public,
         "current_user": current_user,
-        "latest_dataset_public_view_enabled": cfg.latest_dataset_public_view_enabled,
     }
 
 

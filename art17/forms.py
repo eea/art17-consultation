@@ -5,7 +5,7 @@ from wtforms import BooleanField, DateField, SelectField, StringField, TextAreaF
 from wtforms.validators import Optional, ValidationError
 
 from art17.auth.security import current_user
-from art17.common import DEFAULT_MS, get_config
+from art17.common import DEFAULT_MS, get_config, public_view_on_latest_dataset
 from art17.models import (
     Dataset,
     EtcDataHabitattypeRegion,
@@ -181,7 +181,7 @@ class CommonFilterForm(Form):
         cfg = get_config()
         if (
             not current_user.is_authenticated
-            and not cfg.latest_dataset_public_view_enabled
+            and not public_view_on_latest_dataset()
         ):
             datasets = Dataset.query.filter(
                 or_(Dataset.latest.is_(False), Dataset.latest.is_(None))

@@ -74,7 +74,7 @@
 
 {% if current_selection %}
 
-  {% if not dataset.latest or latest_dataset_public_view_enabled or current_user.is_authenticated %}
+  {% if not dataset.latest or public_view_on_latest_dataset() %}
 
   {% include 'summary/wiki_buttons.html' %}
 
@@ -156,7 +156,7 @@
           {% endfor %}
         </tbody>
 
-        {% if dataset.schema != '2024' or can_view_assessment() %}
+        {% if can_view_automatic_assessment(dataset) %}
         <tbody class="thead">
           <tr class="section-header">
             <th class="table-title" colspan="{{ colspan_all }}">
@@ -207,7 +207,7 @@
         {% endif %}
 
         {# Manual assessments - conclusions #}
-        {% if dataset.schema != '2024' or can_view_assessment() %}
+        {% if can_view_manual_assessment(dataset) %}
         <tbody class="thead" id="manual-thead">
           <tr class="section-header">
             <th class="table-title" colspan="{{ colspan_all }}">
