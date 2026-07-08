@@ -4,14 +4,12 @@
             The related products are not available for the period 2007-2012bis.
         </p>
     {% endif %}
-    {% if dataset.schema != '2024' %}
-    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.schema in ['2012bis'] %} disabled {% endif %}>
+    <button type="button" id="wikibutton" href="{{ datasheet_url }}" {% if dataset.schema in ['2012bis', '2024'] %} disabled {% endif %}>
         View data sheet info
         {% if current_user.is_authenticated %}
           {% if wiki_unread %}({{ wiki_unread }} unread comments){% endif %}
         {% endif %}
     </button>
-    {% endif %}
 
     {% if dataset.schema != '2024' or can_view_audit_trail() %}
     <button type="button" id="wikibutton" {% if dataset.schema == '2012bis' %} disabled {% endif %}
