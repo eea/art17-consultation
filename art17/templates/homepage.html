@@ -36,24 +36,29 @@
 
     {% else %}
       <h2>
-        The public consultation for the Article 17 biogeographical assessments of conservation status
-        of species and habitats is now open until 08 March 2020.
+        The public consultation for the Article 17 biogeographical assessments of conservation status of 
+        species and habitats is now open until 16 August 2026 .
       </h2>
-      <p>While you can view the assessments (Data reported by Member States and EU biogeographical assessments)
-          without being registered for consultation it is necessary <br> to register if you would like to add comments.
-          Below are two links allowing you to actively participate in this process; whether you have an existing Eionet account or not.</p>
-
+      <p>
+        While you can view the assessments (Data reported by Member States and EU biogeographical assessments)
+        without being registered for consultation it is necessary
+        to register if you would like to add comments. Below are two links allowing you to actively participate in
+        this process; whether you have an existing Eionet account or not.</p>
       <ul>
         {% if current_user.id %}
             <li>
                 You have logged in and already registered for this consultation.
             </li>
         {% else %}
-            <li>If you have an Eionet account please
-              <a href="{{ url_for('auth.register_ldap') }}">log in</a>.
+            <li>If you have an Eionet account please  <a href="{{ url_for('auth.login') }}">log in</a>.
+                If you have forgotten your eionet password please update it from this link <a href="https://www.eionet.europa.eu/password-reset">https://www.eionet.europa.eu/password-reset</a>.
             </li>
             <li>If you don't have an Eionet account please
               <a href="{{ url_for('auth.register_local') }}">register here</a>.
+            </li>
+            <li>
+              If you need a new Eionet account please request it by writing in <a href="mailto:servicedesk@eea.europa.eu">servicedesk@eea.europa.eu</a> mentioning that you need it
+              for participating in consultation of EU assessments using the Art 17 web tool.
             </li>
         {% endif %}
       </ul>
@@ -143,6 +148,6 @@
     {% endif %}  #}
 
   {% endif %}
-    <p>If there are issues with using the tool, please
-    contact <a href="mailto:nature.helpdesk@eionet.europa.eu">nature.helpdesk@eionet.europa.eu</a>.</p>
+    <p>If there are issues with using the tool, please contact <a href="mailto:nature.helpdesk@eionet.europa.eu">nature.helpdesk@eionet.europa.eu</a>
+    <p>You can find guidelines for participating to the consultation <a href="">here</a> .</p>
 {% endblock content %}

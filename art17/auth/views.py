@@ -89,21 +89,22 @@ def register_local():
 
 
 def send_welcome_email(user, plaintext_password=None):
-    app = current_app
-    msg = Message(
-        subject="Role update on the Biological Diversity website",
-        sender=app.config["SECURITY_EMAIL_SENDER"],
-        recipients=[user.email],
-    )
-    msg.body = render_template(
-        "auth/email_user_welcome.txt",
-        **{
-            "user": user,
-            "plaintext_password": plaintext_password,
-            "home_url": url_for(HOMEPAGE_VIEW_NAME, _external=True),
-        },
-    )
-    safe_send_mail(app, msg)
+    if app.config["MAIL_SERVER"]:
+        app = current_app
+        msg = Message(
+            subject="Role update on the Biological Diversity website",
+            sender=app.config["SECURITY_EMAIL_SENDER"],
+            recipients=[user.email],
+        )
+        msg.body = render_template(
+            "auth/email_user_welcome.txt",
+            **{
+                "user": user,
+                "plaintext_password": plaintext_password,
+                "home_url": url_for(HOMEPAGE_VIEW_NAME, _external=True),
+            },
+        )
+        safe_send_mail(app, msg)
 
 
 @auth.route("/auth/create_local", methods=["GET", "POST"])
