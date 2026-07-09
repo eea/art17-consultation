@@ -137,7 +137,7 @@
             {% endfor %}
           </tbody>
 
-          {% can_view_automatic_assessment(dataset) %}
+          {% if can_view_automatic_assessment(dataset) %}
           <tbody class="thead">
             <tr class="section-header">
               <th class="table-title" colspan="{{ colspan_all }}">
