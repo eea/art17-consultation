@@ -50,7 +50,7 @@ from art17.auth.security import (
     encrypt_password,
     verify,
 )
-from art17.common import HOMEPAGE_VIEW_NAME, get_config
+from art17.common import consultation_ended, HOMEPAGE_VIEW_NAME, get_config
 
 
 def user_registered_sighandler(
@@ -483,6 +483,13 @@ def login():
     if request.method == "POST" and form.validate():
         username = request.form.get("username")
         password = request.form.get("password")
+
+        user = models.RegisteredUser.query.filter_by(id=username).first()
+
+        if user.has_role("stakeholder") and consultation_ended():
+            flash("Authenticating is not allowed as the consultation has ended.")
+            return redirect(url_for(HOMEPAGE_VIEW_NAME))
+
         try:
             models.RegisteredUser.try_login(username, password)
         except ldap.INVALID_CREDENTIALS:
@@ -491,8 +498,6 @@ def login():
             if not current_user.is_authenticated:
                 flash("Invalid username or password. Please try again.", "danger")
                 return render_template("login.html", form=form)
-
-        user = models.RegisteredUser.query.filter_by(id=username).first()
 
         if not user:
             data = _get_initial_ldap_data(username)

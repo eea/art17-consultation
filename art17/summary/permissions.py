@@ -89,6 +89,7 @@ def can_view_automatic_assessment(dataset):
         # before consultation Stakeholders and public users cannot see the manual assessments
         if current_user.is_anonymous or sta_perm.can():
             return False
+        return True
 
     if during_consultation_period():
         # everybody should be able to see the assessments during consultation
@@ -114,6 +115,7 @@ def can_view_manual_assessment(dataset):
         # before consultation Stakeholders and public users cannot see the manual assessments
         if current_user.is_anonymous or sta_perm.can():
             return False
+        return True
 
     if during_consultation_period():
         # everybody should be able to see the assessments during consultation
