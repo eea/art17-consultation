@@ -141,6 +141,7 @@ def can_view_audit_trail(dataset):
         # before consultation Stakeholders and public users cannot see the audit trail
         if current_user.is_anonymous or sta_perm.can():
             return False
+        return True
 
     if during_consultation_period():
         # just authenticated users should see the audit trail

@@ -62,6 +62,7 @@ def can_preview_progress(dataset):
         # before consultation Stakeholders and public users cannot see the manual assessments
         if current_user.is_anonymous or sta_perm.can():
             return False
+        return True
     if during_consultation_period():
         # everybody should be able to see the assessments during consultation
         return True
