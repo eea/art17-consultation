@@ -1,6 +1,7 @@
 from wtforms import IntegerField
 
-from art17.admin.base import ProtectedModelView
+from art17.admin.base import ProtectedModelView, StakeholderFilter
+from art17.models import SpeciesManualAssessment, HabitattypesManualAssessment
 
 
 class SpeciesManualAssessmentModelView(ProtectedModelView):
@@ -16,6 +17,7 @@ class SpeciesManualAssessmentModelView(ProtectedModelView):
         "user_decision_id",
         "dataset_id",
         "decision",
+        StakeholderFilter(SpeciesManualAssessment.user_id, "Created by stakeholder"),
     ]
 
     column_list = (
@@ -146,6 +148,9 @@ class HabitattypesManualAssessmentModelView(ProtectedModelView):
         "user_decision_id",
         "last_update_decision",
         "dataset_id",
+        StakeholderFilter(
+            HabitattypesManualAssessment.user_id, "Created by stakeholder"
+        ),
     ]
     column_list = (
         "MS",

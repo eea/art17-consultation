@@ -166,6 +166,7 @@ def before_consultation():
         return cfg.start_date > today
     return False
 
+
 def consultation_ended():
     cfg = get_config()
     if cfg.end_date:
@@ -193,9 +194,11 @@ def get_default_period():
             return conf.default_public_dataset_id
     return conf.default_dataset_id
 
+
 @common.app_template_global("public_view_on_latest_dataset")
 def public_view_on_latest_dataset():
     from art17.auth import current_user
+
     conf = get_config()
 
     if not current_user.is_authenticated:
@@ -203,6 +206,7 @@ def public_view_on_latest_dataset():
             return True
         return conf.latest_dataset_public_view_enabled
     return True
+
 
 @common.app_template_global("sta_cannot_change")
 def sta_cannot_change():
