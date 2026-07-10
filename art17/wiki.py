@@ -71,10 +71,15 @@ def hide_adm_assessor_username(name):
                 name = "EEA-ETC/BD"
             elif author.has_role("admin"):
                 name = "Admin"
+            elif author.has_role("stakeholder"):
+                name = "Stakeholder"
     if author:
-        if author.has_role("stakeholder"):
-            if not current_user.has_role("admin"):
-                name = author.institution
+        if current_user and author == current_user:
+            name = author.name
+        else:
+            if author.has_role("stakeholder"):
+                if not current_user.has_role("admin"):
+                    name = author.institution or "Stakeholder"
     return name
 
 

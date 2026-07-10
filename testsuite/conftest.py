@@ -62,13 +62,13 @@ def create_generic_fixtures():
     )
     models.db.session.execute(
         text(
-            "insert into datasets (id, name, schema, is_readonly) "
+            "insert into datasets (id, name, schema, is_readonly, public_can_view_automatic_assessments, public_can_view_manual_assessments) "
             "values "
-            "(1, '2001-2006', '2006', TRUE),"
-            "(3, '2007-2012', '2012', TRUE),"
-            "(4, '2007-2012bis', '2012bis', TRUE),"
-            "(5, '2013-2018', '2018', TRUE),"
-            "(6, '2019-2024', '2024', FALSE)"
+            "(1, '2001-2006', '2006', TRUE, TRUE, TRUE),"
+            "(3, '2007-2012', '2012', TRUE, TRUE, TRUE),"
+            "(4, '2007-2012bis', '2012bis', TRUE, TRUE, TRUE),"
+            "(5, '2013-2018', '2018', TRUE, TRUE, TRUE),"
+            "(6, '2019-2024', '2024', FALSE, TRUE, TRUE)"
         )
     )
 

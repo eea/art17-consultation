@@ -147,8 +147,7 @@ def can_view_audit_trail(dataset):
 
     if during_consultation_period():
         # just authenticated users should see the audit trail
-        if not current_user.is_anonymous:
-            return True
+        return True
 
     if consultation_ended():
         # after consultation and before read-only, public user can see only if this is

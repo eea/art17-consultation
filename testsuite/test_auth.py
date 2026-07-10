@@ -53,7 +53,7 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
     register_page.form["institution"] = "foo institution"
     result_page = register_page.form.submit()
     assert (
-        "Thank you. To confirm your email address foo@example.com, please click on the link in the email we have just sent to you"  # noqa: E501
+        "Your account was created. Please login <a href=\'/auth/login\'>here</a>."  # noqa: E501
         in result_page.text
     )
 

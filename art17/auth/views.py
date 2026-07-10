@@ -79,7 +79,8 @@ def register_local():
         encrypted_password = encrypt_password(password)
         user.password = encrypted_password
         datastore.commit()
-        return render_template("message.html", message="")
+        message = f"Your account was created. Please login <a href='{url_for("auth.login")}'>here</a>."
+        return render_template("message.html", message=message)
     return render_template(
         "auth/register_local.html",
         **{
@@ -486,7 +487,7 @@ def login():
 
         user = models.RegisteredUser.query.filter_by(id=username).first()
 
-        if user.has_role("stakeholder") and consultation_ended():
+        if user and user.has_role("stakeholder") and consultation_ended():
             flash("Authenticating is not allowed as the consultation has ended.")
             return redirect(url_for(HOMEPAGE_VIEW_NAME))
 

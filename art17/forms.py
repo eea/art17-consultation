@@ -900,8 +900,8 @@ class RevisedForm(Form):
 
 
 class ConfigForm(Form):
-    start_date = DateField(label="Start date (YYYY-MM-DD)", validators=[Optional()])
-    end_date = DateField(label="End date (YYYY-MM-DD)", validators=[Optional()])
+    start_date = DateField(label="Start date (MM-DD-YYYY)", validators=[Optional()])
+    end_date = DateField(label="End date (MM-DD-YYYY)", validators=[Optional()])
     admin_email = StringField(
         label="Administrator email (space separated list)",
         validators=[Optional()],
