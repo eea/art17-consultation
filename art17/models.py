@@ -1446,7 +1446,7 @@ class WikiChange(Base):
 
     id = Column(BigInteger(), primary_key=True)
     wiki_id = Column(ForeignKey("wiki.id"), nullable=False)
-    body = Column(String(6000))
+    body = Column(Text)
     editor = Column(String(60), nullable=False)
     revised = Column(Boolean)
     changed = Column(
@@ -1537,7 +1537,7 @@ class WikiTrailChange(Base):
 
     id = Column(BigInteger(), primary_key=True)
     wiki_id = Column(ForeignKey("wiki_trail.id"), nullable=False)
-    body = Column(String(6000))
+    body = Column(Text)
     editor = Column(String(60), nullable=False)
     changed = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default="CURRENT_TIMESTAMP"
