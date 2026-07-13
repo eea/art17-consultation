@@ -72,16 +72,6 @@ def can_view_decision():
     return assessor_perm.can() or admin_perm.can() or EU_ASSESSMENT_MODE
 
 
-@summary.app_template_global("can_view_reporting_period")
-def can_view_reporting_period():
-    conf = get_config()
-    if conf.latest_dataset_public_view_enabled:
-        return True
-    if not current_user.is_anonymous and current_user.show_assessment:
-        return True
-    return False
-
-
 @summary.app_template_global("can_view_automatic_assessment")
 def can_view_automatic_assessment(dataset):
     if dataset.is_readonly:

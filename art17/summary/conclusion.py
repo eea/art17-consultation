@@ -209,6 +209,8 @@ class ConclusionDelete(MixinView, views.View):
             abort(403)
 
         if permanently:
+            for comment in record.comments:
+                db.session.delete(comment)
             db.session.delete(record)
         else:
             record.deleted = not record.deleted
