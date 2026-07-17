@@ -15,7 +15,7 @@ from flask_security.forms import (
 from flask_wtf import FlaskForm
 from werkzeug.local import LocalProxy
 from wtforms import BooleanField, StringField, ValidationError
-from wtforms.validators import Email, DataRequired
+from wtforms.validators import Email, DataRequired, Length
 
 from art17.auth.common import check_dates, get_ldap_user_info
 from art17.auth.forms import Art17RegisterFormBase, CustomEmailStringField
@@ -104,6 +104,7 @@ class Art17LocalRegisterForm(Art17RegisterFormBase, ConfirmRegisterForm, FlaskFo
         "Username",
         validators=[
             DataRequired("User ID is required"),
+            Length(max=50, message="User ID cannot exceed 50 characters"),
             check_duplicate_with_local_db,
             check_duplicate_with_ldap,
         ],

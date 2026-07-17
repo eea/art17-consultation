@@ -25,8 +25,8 @@ TEST_CONFIG = {
         "factsheet": "sqlite:///:memory:",
     },
     "SQLALCHEMY_TRACK_MODIFICATIONS": True,
-    "SECURITY_CONFIRMABLE":True,
-    "SECURITY_SEND_REGISTER_EMAIL": True
+    "SECURITY_CONFIRMABLE": True,
+    "SECURITY_SEND_REGISTER_EMAIL": True,
 }
 
 

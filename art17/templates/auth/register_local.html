@@ -29,12 +29,12 @@
 
     <!-- NAME -->
     <div class="form-group">
-      {{ render_field_with_errors(register_user_form.name) }}
+      {{ render_field_with_errors(register_user_form.name, maxlength='255') }}
     </div>
     <!-- INSTITUTION -->
     <div class="form-group clearfix">
       <div class="pull-left" style="width: 75%;">
-        {{ render_field_with_errors(register_user_form.institution) }}
+        {{ render_field_with_errors(register_user_form.institution, maxlength='45') }}
       </div>
       <div class="pull-left" style="width: 25%;">
         {{ render_field_with_errors(register_user_form.abbrev, maxlength='4') }}
@@ -46,7 +46,7 @@
     </div>
     <!-- ??? -->
     <div class="form-group" id="other_country_container">
-      {{ render_field_with_errors(register_user_form.other_country) }}
+      {{ render_field_with_errors(register_user_form.other_country, maxlength='255') }}
     </div>
     <!-- QUALIFICATION
     <div class="form-group">
@@ -57,19 +57,19 @@
   <div class="box-col separated width-300">
     <!-- USERNAME -->
     <div class="form-group">
-      {{ render_field_with_errors(register_user_form.id) }}
+      {{ render_field_with_errors(register_user_form.id, maxlength='50') }}
     </div>
 
 
 
     <!-- EMAIL -->
     <div class="form-group">
-      {{ render_field_with_errors(register_user_form.email) }}
+      {{ render_field_with_errors(register_user_form.email, maxlength='255') }}
     </div>
 
     <!-- PASSWORD -->
     <div class="form-group">
-      {{ render_field_with_errors(register_user_form.password) }}
+      {{ render_field_with_errors(register_user_form.password, maxlength='60') }}
     </div>
 
     <!-- CONFIRM -->

@@ -170,9 +170,7 @@ def can_add_conclusion(dataset, zone, subject, region=None):
             "The current dataset is readonly, so you cannot " + "add a conclusion."
         )
     elif not region:
-        warning_message = (
-            "Please select a Bioregion using the filter at the top of the page in order to add a conclusion."
-        )
+        warning_message = "Please select a Bioregion using the filter at the top of the page in order to add a conclusion."
     elif not (admin_perm.can() or sta_perm.can() or EU_ASSESSMENT_MODE):
         warning_message = "You do not have permission to add conclusions."
     elif sta_cannot_change():

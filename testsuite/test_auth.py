@@ -52,10 +52,7 @@ def test_self_registration_flow(app, set_auth, client, outbox, ldap_user_info):
     register_page.form["name"] = "foo me"
     register_page.form["institution"] = "foo institution"
     result_page = register_page.form.submit()
-    assert (
-        "Your account was created. Please login"  # noqa: E501
-        in result_page.text
-    )
+    assert "Your account was created. Please login" in result_page.text  # noqa: E501
 
     foo_user = models.db.session.get(models.RegisteredUser, "foo")
     assert foo_user.email == "foo@example.com"
