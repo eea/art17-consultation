@@ -84,11 +84,15 @@
           {% set qa_errors = record_errors(row) %}
           <tr {% if row.is_assesm %}class="assesm"{% endif %}>
             <td class="border">
-              {% set original_url=get_original_record_url(row) %}
-              <a class="clipped popup-btn block" data-title="Factsheet"
-                  href="{{ original_url }}" title="{{ title }}">
-                {{ row.subject }}
-              </a>
+              {% if dataset.schema == '2024' %}
+                <span>{{ row.subject }}</span>
+              {% else %}
+                {% set original_url=get_original_record_url(row) %}
+                <a class="clipped popup-btn block" data-title="Factsheet"
+                    href="{{ original_url }}" title="{{ title }}">
+                  {{ row.subject }}
+                </a>
+              {% endif %}
             </td>
 
             {% if not country %}<td class="border" colspan="2">{{ row.eu_country_code }}</td>{% endif %}

@@ -402,13 +402,14 @@ def get_original_record_url(row):
         code = row.habitatcode
     else:
         raise NotImplementedError
-
     if row.eu_country_code in ["EL", "GR"] and row.dataset.schema != "2018":
         schema = "2006"
     elif row.dataset:
         schema = row.dataset.schema
     else:
         schema = 0
+    if schema == "2024":
+        return ""
     if schema == "2018":
         return "{}#{}".format(row.filename, code)
     url_scheme = CONVERTER_URLS.get(schema, {})
