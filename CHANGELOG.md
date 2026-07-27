@@ -1,6 +1,15 @@
 Changelog
 =========
 
+4.0.10 - (2026-07-27)
+---------------------
+* Update documentation
+* Remove National Export role
+* Rename ETC user role to Assessor
+* Update consultation documents
+* Add created by stakeholder filter on manual assessments export
+[dianaboiangiu]
+
 4.0.9 - (2026-06-11)
 --------------------
 * Upgrade packages
