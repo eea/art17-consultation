@@ -1,4 +1,7 @@
-from .base import ProtectedModelView, AnonymizationMixin
+from .base import AnonymizationMixin, ProtectedModelView
+
+from art17.admin.base import ProtectedModelView, StakeholderFilter
+from art17.models import WikiTrailChange
 
 
 class WikiTrailModelView(ProtectedModelView):
@@ -43,7 +46,14 @@ class WikiTrailChangeCombinedWithWikiModelView(AnonymizationMixin, ProtectedMode
         "active",
         "dataset_id",
     )
-    column_filters = ("wiki_id", "editor", "changed", "active", "dataset_id")
+    column_filters = (
+        "wiki_id",
+        "editor",
+        "changed",
+        "active",
+        "dataset_id",
+        StakeholderFilter(WikiTrailChange.editor, "Created by stakeholder"),
+    )
     anonymized_fields = ["editor"]
 
 

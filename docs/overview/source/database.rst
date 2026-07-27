@@ -36,6 +36,10 @@ instances of that class.
 Management
 ----------
 
+.. WARNING::
+  The ``flask dataset`` command has not been used in a long time.
+  Please use instead `generate_new_period` and `import_new_data`.
+
 The ``flask dataset`` command can be used to manage bulk data. Usually, a
 dataset is another Postges database on the same machine. The following commands
 are available:
@@ -48,3 +52,18 @@ are available:
   and inserted with the new dataset id as *ext_dataset_id* key
 * ``dataset update`` - replace values with a given dataset from a list of
   tables with values from correspondent tables in another database
+
+
+The newer commands used in generating a new reporting period:
+
+* ``python -m flask generate_new_period --schema 2019-2024 --name 2024``
+
+Generates a new dataset entry using the given schema and name and fills in the dic/etc data required
+using information of the previous reporting period.
+
+* ``python -m flask import_new_data -m Model -f file_path``
+
+Receives a model and a file path and imports the data from the file (expects an Excel document)
+
+Although improvements can be made, those two commands are enough to generate a new reporting period and import
+the information for the Member state reports/Automatic assessments and Manual assessments.

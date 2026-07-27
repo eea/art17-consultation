@@ -1,7 +1,8 @@
 import sys
 
 from flask.cli import AppGroup
-from sqlalchemy import create_engine
+
+# from sqlalchemy import create_engine
 
 from art17 import models
 
@@ -18,7 +19,7 @@ def ls():
 @dataset_manager.command("rm")
 def rm(dataset_id):
     """Remove a dataset"""
-    dataset = models.Dataset.query.get(int(dataset_id))
+    dataset = models.db.session.get(models.Dataset, int(dataset_id))
     if dataset is None:
         print("No such dataset")
         return
@@ -128,7 +129,7 @@ def stdout_write(msg):
 #             return
 #         with app.app_context():
 #             input_conn = create_engine(input_db + '?charset=utf8', pool_pre_ping=True).connect()
-#             dataset = models.Dataset.query.get(int(update_dataset))
+#             dataset = models.db.session.get(models.Dataset, int(update_dataset))
 #             if dataset is None:
 #                 stdout_write('Unknown dataset: %s\n' % update_dataset)
 #                 return

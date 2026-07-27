@@ -1,8 +1,6 @@
-import urllib
-import uuid
 import os
-from datetime import date, datetime
-from sqlalchemy.sql import text
+import urllib
+from datetime import date, datetime, timedelta
 
 import flask
 from alembic import config
@@ -10,6 +8,7 @@ from flask_webtest import TestApp
 from mock import patch
 from path import Path
 from pytest import fixture
+from sqlalchemy.sql import text
 
 from art17 import models
 from art17.app import create_app
@@ -25,7 +24,9 @@ TEST_CONFIG = {
     "SQLALCHEMY_BINDS": {
         "factsheet": "sqlite:///:memory:",
     },
-    "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+    "SQLALCHEMY_TRACK_MODIFICATIONS": True,
+    "SECURITY_CONFIRMABLE": True,
+    "SECURITY_SEND_REGISTER_EMAIL": True,
 }
 
 
@@ -38,30 +39,38 @@ def create_generic_fixtures():
     models.db.create_all()
     models.db.session.execute(
         text(
-            "insert into roles (name, description) " "values ('admin', 'Administrator')"
+            "insert into roles (id, name, description) "
+            "values (1, 'admin', 'Administrator')"
         )
     )
     models.db.session.execute(
         text(
-            "insert into roles (name, description) "
-            "values ('etc', 'European topic center')"
+            "insert into roles (id, name, description) "
+            "values (2, 'assessor', 'Assessor')"
         )
     )
     models.db.session.execute(
         text(
-            "insert into roles (name, description) "
-            "values ('stakeholder', 'Stakeholder')"
+            "insert into roles (id, name, description) "
+            "values (3, 'stakeholder', 'Stakeholder')"
         )
     )
     models.db.session.execute(
         text(
-            "insert into roles (name, description) " "values ('nat', 'National expert')"
+            f"insert into config(id, default_dataset_id, "
+            f"default_public_dataset_id, latest_dataset_public_view_enabled, start_date, end_date) "
+            f"values (1, 6, 6, True, '{date.today()}', '{(date.today() + timedelta(days=1))}')"
         )
     )
     models.db.session.execute(
         text(
-            "insert into config(default_dataset_id, start_date) values (5, '%s')"
-            % date.today()
+            "insert into datasets (id, name, schema, is_readonly, public_can_view_automatic_assessments, public_can_view_manual_assessments) "
+            "values "
+            "(1, '2001-2006', '2006', TRUE, TRUE, TRUE),"
+            "(3, '2007-2012', '2012', TRUE, TRUE, TRUE),"
+            "(4, '2007-2012bis', '2012bis', TRUE, TRUE, TRUE),"
+            "(5, '2013-2018', '2018', TRUE, TRUE, TRUE),"
+            "(6, '2019-2024', '2024', FALSE, TRUE, TRUE)"
         )
     )
 
@@ -148,6 +157,7 @@ def create_user(user_id, role_names=[], name="", institution="", ms=""):
         MS=ms,
         fs_uniquifier=f"{user_id}_fs",
     )
+
     models.db.session.add(user)
     for name in role_names:
         role = models.Role.query.filter_by(name=name).first()

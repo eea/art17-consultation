@@ -159,13 +159,12 @@ def get_config():
     return rows[0]
 
 
-def get_default_period():
-    from art17.auth import current_user
-
-    conf = get_config()
-    if not current_user.is_authenticated:
-        return conf.default_public_dataset_id
-    return conf.default_dataset_id
+def before_consultation():
+    cfg = get_config()
+    if cfg.start_date:
+        today = date.today()
+        return cfg.start_date > today
+    return False
 
 
 def consultation_ended():
@@ -176,20 +175,58 @@ def consultation_ended():
     return False
 
 
+def during_consultation_period():
+    cfg = get_config()
+    if cfg.start_date and cfg.end_date:
+        today = date.today()
+        return cfg.start_date <= today <= cfg.end_date
+    return False
+
+
+def get_default_period():
+    from art17.auth import current_user
+
+    conf = get_config()
+    if not current_user.is_authenticated:
+        if during_consultation_period():
+            return conf.default_dataset_id
+        else:
+            return conf.default_public_dataset_id
+    return conf.default_dataset_id
+
+
+@common.app_template_global("public_view_on_latest_dataset")
+def public_view_on_latest_dataset():
+    from art17.auth import current_user
+
+    conf = get_config()
+
+    if not current_user.is_authenticated:
+        if during_consultation_period():
+            return True
+        return conf.latest_dataset_public_view_enabled
+    return True
+
+
 @common.app_template_global("sta_cannot_change")
 def sta_cannot_change():
-    return sta_perm.can() and consultation_ended()
+    return sta_perm.can() and not during_consultation_period()
+
+
+@common.app_template_global("assessor_cannot_change")
+def assessor_cannot_change():
+    # assessor should not be able to edit assessments during consultation
+    return assessor_perm.can() and during_consultation_period()
 
 
 admin_perm = Permission(RoleNeed("admin"))
 sta_perm = Permission(RoleNeed("stakeholder"))
-etc_perm = Permission(RoleNeed("etc"))
-nat_perm = Permission(RoleNeed("nat"))
+assessor_perm = Permission(RoleNeed("assessor"))
 
 
 def is_public_user():
     """Call for authenticated users."""
-    return not (admin_perm.can() or sta_perm.can() or etc_perm.can() or nat_perm.can())
+    return not (admin_perm.can() or sta_perm.can() or assessor_perm.can())
 
 
 @common.record
@@ -197,9 +234,8 @@ def register_permissions_in_template_globals(state):
     app = state.app
 
     app.jinja_env.globals["admin_perm"] = admin_perm
-    app.jinja_env.globals["etc_perm"] = etc_perm
+    app.jinja_env.globals["assessor_perm"] = assessor_perm
     app.jinja_env.globals["sta_perm"] = sta_perm
-    app.jinja_env.globals["nat_perm"] = nat_perm
     app.jinja_env.globals["HOMEPAGE_VIEW_NAME"] = HOMEPAGE_VIEW_NAME
     app.jinja_env.globals["DEMO_SERVER"] = app.config.get("DEMO_SERVER", True)
     app.jinja_env.globals["SCRIPT_NAME"] = app.config.get("SCRIPT_NAME", "/article17")
@@ -232,8 +268,6 @@ def inject_globals():
         "end_date": cfg.end_date,
         "is_public": is_public,
         "current_user": current_user,
-        "add_assessment_enabled": cfg.add_assessment_enabled,
-        "latest_dataset_public_view_enabled": cfg.latest_dataset_public_view_enabled,
     }
 
 
@@ -368,13 +402,14 @@ def get_original_record_url(row):
         code = row.habitatcode
     else:
         raise NotImplementedError
-
     if row.eu_country_code in ["EL", "GR"] and row.dataset.schema != "2018":
         schema = "2006"
     elif row.dataset:
         schema = row.dataset.schema
     else:
         schema = 0
+    if schema == "2024":
+        return ""
     if schema == "2018":
         return "{}#{}".format(row.filename, code)
     url_scheme = CONVERTER_URLS.get(schema, {})
@@ -421,7 +456,7 @@ def get_title_for_species_country(row):
     ):
         s_name = row.speciesname or row.assessment_speciesname or ""
         s_info = row.complementary_other_information or ""
-    if row.species_type_asses == False:
+    if row.species_type_asses is False:
         s_type = (
             row.species_type_details.SpeciesType
             if row.species_type_details
@@ -468,21 +503,35 @@ def get_title_for_habitat_country(row):
         )
     return s_name, s_info, s_type
 
+
 def generate_map_url_2024(dataset, category, subject, region, map_href):
     if category == "species":
         if region:
-            return map_href + f"&url-filter=species;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+            return (
+                map_href
+                + f"&url-filter=species;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+            )
         else:
-            return map_href + f"&url-filter=species;{subject};filterZoom&zoom_to_selection=true"
+            return (
+                map_href
+                + f"&url-filter=species;{subject};filterZoom&zoom_to_selection=true"
+            )
     elif category == "habitat":
         if region:
-            return map_href + f"&url-filter=habitat;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+            return (
+                map_href
+                + f"&url-filter=habitat;{subject};filter;;region;{region};filterZoom&zoom_to_selection=true"
+            )
         else:
-            return map_href + f"&url-filter=habitat;{subject};filterZoom&zoom_to_selection=true"
-    return ''
+            return (
+                map_href
+                + f"&url-filter=habitat;{subject};filterZoom&zoom_to_selection=true"
+            )
+    return ""
+
 
 def generate_map_url(dataset_id, category, subject, region, sensitive=False):
-    dataset = Dataset.query.get(dataset_id)
+    dataset = db.session.get(Dataset, dataset_id)
     if category == "species":
         field_2018 = "speciescode"
         if sensitive:
@@ -516,7 +565,6 @@ def generate_map_url(dataset_id, category, subject, region, sensitive=False):
             return map_href + "&CCode=" + subject
 
 
-
 @common.app_template_global("is_sensitive")
 def get_sensitive_records(speciescode=""):
     return (
@@ -534,7 +582,7 @@ def homepage():
         "homepage.html",
         **{
             "current_user": current_user,
-        }
+        },
     )
 
 

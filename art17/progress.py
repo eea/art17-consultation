@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, g, jsonify, render_template, request, url_for, views
+from flask import Blueprint, abort, jsonify, render_template, request, url_for, views
 from sqlalchemy import and_
 from werkzeug.datastructures import MultiDict
 
@@ -8,8 +8,11 @@ from art17.common import (
     COUNTRY_ASSESSMENTS,
     MixinView,
     admin_perm,
+    before_consultation,
+    during_consultation_period,
     consultation_ended,
     get_default_period,
+    sta_perm,
 )
 from art17.forms import ProgressFilterForm
 from art17.mixins import HabitatMixin, SpeciesMixin
@@ -52,18 +55,30 @@ def can_select_assessor():
 
 
 @progress.app_template_global("can_preview_progress")
-def can_preview_progress():
-    if consultation_ended():
+def can_preview_progress(dataset):
+    if dataset.is_readonly:
         return True
-
-    if not current_user.is_authenticated:
-        return False
-
-    return current_user.has_role("etc") or current_user.has_role("admin") and current_user.show_assessment
+    if before_consultation():
+        # before consultation Stakeholders and public users cannot see the manual assessments
+        if current_user.is_anonymous or sta_perm.can():
+            return False
+        return True
+    if during_consultation_period():
+        # everybody should be able to see the assessments during consultation
+        return True
+    if consultation_ended():
+        # after consultation and before read-only, public user can see only if this is
+        # explicitly set on the dataset
+        if dataset.public_can_view_manual_assessments:
+            return True
+        if current_user.is_anonymous:
+            return False
+        return True
+    return False
 
 
 def user_is_expert(user):
-    return True if user in ("maximiur", "iurieetcbd") else False
+    return True if current_user.has_role("admin") else False
 
 
 def save_decision(output):
@@ -139,14 +154,14 @@ class Progress(views.View):
             [
                 row["eu_country_code"]
                 for row in presence
-                if row["species_type_asses"] == False
+                if row["species_type_asses"] is False
             ]
         )
         present = ",".join(
             [
                 row["eu_country_code"]
                 for row in presence
-                if row["species_type_asses"] != False
+                if row["species_type_asses"] is not False
             ]
         )
         return dict(occasional=occasional, present=present)
@@ -161,8 +176,8 @@ class Progress(views.View):
                     species=subject, region=region
                 )
             )
-        except:
-            subject = unicode.encode(subject, "utf-8")
+        except:  # noqa: E722
+            subject = subject.decode("utf-8")
             title.append(
                 "Species: {species}, Region: {region}".format(
                     species=subject, region=region
@@ -178,7 +193,7 @@ class Progress(views.View):
                 details=COUNTRY_ASSESSMENTS.get(cell["conclusion"], ""),
             )
         )
-        if current_user.has_role("etc") or current_user.has_role("admin"):
+        if current_user.has_role("assessor") or current_user.has_role("admin"):
             title.append(
                 "Decision: {main} ({details})".format(
                     main=cell["main_decision"],
@@ -191,7 +206,7 @@ class Progress(views.View):
                 details=self.METHOD_DETAILS.get(cell["method"], ""),
             )
         )
-        if current_user.has_role("etc") or current_user.has_role("admin"):
+        if current_user.has_role("assessor") or current_user.has_role("admin"):
             comms = get_counts(comment_counts, subject, region)
             title.append(
                 (
@@ -203,10 +218,10 @@ class Progress(views.View):
         try:
             title = "\n".join(title)
             return title
-        except:
+        except:  # noqa: E722
             for idx, text in enumerate(title):
-                if type(text) == unicode:
-                    title[idx] = unicode.encode(text, "utf-8")
+                if type(text) is str:
+                    title[idx] = text.decode("utf-8").encode("utf-8")
             return "\n".join(title)
 
     def process_cell(
@@ -305,7 +320,7 @@ class Progress(views.View):
         progress_filter_form.conclusion.choices = self.get_conclusions()
         progress_filter_form.assessor.choices = self.get_assessors(period, group)
 
-        period_query = Dataset.query.get(period)
+        period_query = db.session.get(Dataset, period)
         period_name = period_query.name if period_query else ""
         regions = (
             EtcDicBiogeoreg.query.with_entities(EtcDicBiogeoreg.reg_code)
@@ -610,7 +625,7 @@ def species_assessors():
 
 
 @progress.route("/habitat/progress/assessors", endpoint="habitat-assessors")
-def species_assessors():
+def habitat_assessors():
     try:
         int(request.args.get("period", ""))
     except ValueError:

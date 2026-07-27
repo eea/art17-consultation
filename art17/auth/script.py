@@ -10,7 +10,7 @@ from art17 import models
 #     DeactivateUserCommand,
 #     ActivateUserCommand,
 # )
-from art17.auth.common import get_ldap_user_info
+# from art17.auth.common import get_ldap_user_info
 
 # class CreateUserCommand(BaseCreateUserCommand):
 
@@ -35,7 +35,7 @@ from art17.auth.common import get_ldap_user_info
 #         super(CreateUserCommand, self).run(**kwargs)
 
 #         if is_ldap_user:
-#             models.RegisteredUser.query.get(user_id).password = None
+#             models.db.session.get(models.RegisteredUser, user_id).password = None
 #             models.db.session.commit()
 
 
@@ -57,7 +57,7 @@ def ls():
 def activate(user_id):
     from art17.auth.common import set_user_active
 
-    user = models.RegisteredUser.query.get(user_id)
+    user = models.db.session.get(models.RegisteredUser, user_id)
     set_user_active(user, True)
     print(f"user {user.id} has been activated")
 
@@ -66,21 +66,21 @@ def activate(user_id):
 def deactivate(user_id):
     from art17.auth.common import set_user_active
 
-    user = models.RegisteredUser.query.get(user_id)
+    user = models.db.session.get(models.RegisteredUser, user_id)
     set_user_active(user, False)
     print("user {user.id} has been deactivated")
 
 
 @user_manager.command
 def remove(user_id):
-    user = models.RegisteredUser.query.get(user_id)
+    user = models.db.session.get(models.RegisteredUser, user_id)
     models.db.session.delete(user)
     models.db.session.commit()
 
 
 @user_manager.command
 def info(user_id):
-    user = models.RegisteredUser.query.get(user_id)
+    user = models.db.session.get(models.RegisteredUser, user_id)
     print(user.id)
     print(f"name: {user.name}")
     print(f"active: {user.active}")
@@ -92,7 +92,7 @@ def info(user_id):
 def reset_password(user_id):
     from flask_security.utils import encrypt_password
 
-    user = models.RegisteredUser.query.get(user_id)
+    user = models.db.session.get(models.RegisteredUser, user_id)
     if user.is_ldap:
         print("Can't change password for EIONET users")
         return
@@ -111,7 +111,7 @@ role_manager = AppGroup("role")
 
 
 @role_manager.command
-def ls():
+def ls():  # noqa: F811
     for role in models.Role.query:
         print(f"{role.name}: {role.description}")
 

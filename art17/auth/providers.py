@@ -1,6 +1,6 @@
 import flask
 import logging
-import requests
+import requests  # noqa: F401
 
 from art17 import models
 from art17.auth.security import current_user
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def set_user(user_id, is_ldap_user=False):
-    user = models.RegisteredUser.query.get(user_id)
+    user = models.db.session.get(models.RegisteredUser, user_id)
     flask.g.user_credentials = {
         "user_id": user_id,
         "is_ldap_user": is_ldap_user,
@@ -47,7 +47,7 @@ class DebugAuthProvider(object):
     def before_request_handler(self):
         user_id = flask.session.get("user_id")
         if user_id:
-            user = models.RegisteredUser.query.get(user_id)
+            user = models.db.session.get(models.RegisteredUser, user_id)
             if user:
                 set_user(user_id=user_id, is_ldap_user=user.is_ldap)
 

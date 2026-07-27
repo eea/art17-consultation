@@ -11,7 +11,7 @@ from art17.common import (
     MixinView,
     admin_perm,
     consultation_ended,
-    etc_perm,
+    assessor_perm,
     get_default_period,
 )
 from art17.models import Config, EtcDicDecision, EtcDicMethod, RegisteredUser, db
@@ -21,7 +21,6 @@ from art17.summary.permissions import (
     can_update_decision,
     must_edit_ref,
 )
-from art17.utils import validate_float
 from instance.settings import EU_ASSESSMENT_MODE
 
 CONC_METHODS = {
@@ -77,7 +76,7 @@ class ConclusionView(object):
         period = request.args.get("period") or get_default_period()
         subject = request.args.get("subject")
         region = request.args.get("region")
-        if consultation_ended() and (etc_perm.can() or admin_perm.can()):
+        if consultation_ended() and (assessor_perm.can() or admin_perm.can()):
             best = self.model_manual_cls.query.filter_by(
                 dataset_id=period,
                 subject=subject,
@@ -95,7 +94,9 @@ class ConclusionView(object):
                 self.model_auto_cls.assessment_method == EtcDicMethod.method,
             )
         ).all()
-        cmpf = lambda x, y: -1 if x.assessment_method == "00" else cmp(x.order, y.order)
+        cmpf = lambda x, y: (  # noqa: E731
+            -1 if x.assessment_method == "00" else cmp(x.order, y.order)
+        )
         best.sort(key=cmp_to_key(cmpf))
         values = {}
         # for f in all_fields(self.manual_form_cls()):
@@ -161,7 +162,7 @@ class ConclusionView(object):
         return conclusion.decision in ["OK", "END"]
 
     def filter_conclusions(self, conclusions):
-        if admin_perm.can() or etc_perm.can():
+        if admin_perm.can() or assessor_perm.can():
             return conclusions
         conclusions = list(conclusions)
         ok_conclusions = [
@@ -169,14 +170,16 @@ class ConclusionView(object):
             for conclusion in conclusions
             if self.check_conclusion(conclusion)
         ]
-        user_or_expert = lambda c: (
+        user_or_expert = lambda c: (  # noqa: E731
             not c.user.has_role("admin")
-            and not c.user.has_role("etc")
+            and not c.user.has_role("assessor")
             and c not in ok_conclusions
             if c.user
             else False
         )
-        user_iurmax = lambda c: not c.user.has_role("etc") if c.user else False
+        user_iurmax = lambda c: (  # noqa: E731
+            not c.user.has_role("assessor") if c.user else False
+        )
         if ok_conclusions:
             return ok_conclusions + list(filter(user_or_expert, conclusions))
         else:
@@ -206,6 +209,8 @@ class ConclusionDelete(MixinView, views.View):
             abort(403)
 
         if permanently:
+            for comment in record.comments:
+                db.session.delete(comment)
             db.session.delete(record)
         else:
             record.deleted = not record.deleted

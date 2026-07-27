@@ -7,18 +7,21 @@ from .conftest import create_user, force_login, get_request_params
 
 
 def setup_common():
-    factories.EtcDicBiogeoregFactory(dataset_id=6)
+    dataset_2018 = models.Dataset.query.filter_by(schema="2018").first()
+    dataset_2024 = models.Dataset.query.filter_by(schema="2024").first()
+    factories.EtcDicBiogeoregFactory(dataset_id=dataset_2024.id)
     factories.EtcDataSpeciesRegionFactory(
-        speciescode="1111", assessment_speciesname="Canis lupus", dataset_id=6
+        speciescode="1111",
+        assessment_speciesname="Canis lupus",
+        dataset_id=dataset_2024.id,
     )
-    factories.EtcDicMethodFactory(order=4, method="2GD", dataset_id=6)
-    factories.EtcDicConclusionFactory(dataset_id=6)
-    factories.DatasetFactory(id=6, schema="2024")
-    factories.DatasetFactory()
+    factories.EtcDicMethodFactory(order=4, method="2GD", dataset_id=dataset_2024.id)
+    factories.EtcDicConclusionFactory(dataset_id=dataset_2024.id)
+
     factories.EtcDataHabitattypeRegionFactory(habitatcode=1110)
     factories.EtcDicHdHabitat()
     lu_habitat = models.LuHabitatManual2007(
-        dataset_id=5,
+        dataset_id=dataset_2024.id,
         subject="1110",
         region="ALP",
         conclusion_assessment_prev="FV",
@@ -26,7 +29,7 @@ def setup_common():
         backcasted_2007="FV",
     )
     lu_species = models.LuSpeciesManual2007(
-        dataset_id=6,
+        dataset_id=dataset_2024.id,
         subject="Canis lupus",
         region="ALP",
         conclusion_assessment_prev="FV",
@@ -36,17 +39,18 @@ def setup_common():
     models.db.session.add(lu_habitat)
     models.db.session.add(lu_species)
     models.db.session.commit()
+    return dataset_2018, dataset_2024
 
 
 @pytest.fixture
 def setup_add(app):
-    setup_common()
+    dataset_2018, dataset_2024 = setup_common()
     factories.EtcDataSpeciesRegionFactory(
         speciescode="1111",
         assessment_speciesname="Canis lupus",
         eu_country_code="FR",
         country="FR",
-        dataset_id=6,
+        dataset_id=dataset_2024.id,
     )
     factories.EtcDataHabitattypeRegionFactory(
         habitatcode=1110,
@@ -58,29 +62,37 @@ def setup_add(app):
 
 @pytest.fixture
 def setup_edit(app):
-    setup_common()
-    factories.SpeciesManualAssessmentFactory(region="ALP", dataset_id=6, MS="EU27")
-    factories.SpeciesManualAssessmentFactory(region="ALP", dataset_id=5, MS="EU28")
+    dataset_2018, dataset_2024 = setup_common()
+    factories.SpeciesManualAssessmentFactory(
+        region="ALP", dataset_id=dataset_2024.id, MS="EU27"
+    )
+    factories.SpeciesManualAssessmentFactory(
+        region="ALP", dataset_id=dataset_2018.id, MS="EU28"
+    )
     factories.HabitattypesManualAssessmentsFactory(region="ALP")
     models.db.session.commit()
 
 
 @pytest.fixture
 def setup_decision(app):
-    setup_common()
-    factories.SpeciesManualAssessmentFactory(region="ALP", dataset_id=6, MS="EU27")
+    dataset_2018, dataset_2024 = setup_common()
+    factories.SpeciesManualAssessmentFactory(
+        region="ALP", dataset_id=dataset_2024.id, MS="EU27"
+    )
     factories.HabitattypesManualAssessmentsFactory(region="ALP")
-    factories.SpeciesManualAssessmentFactory(decision="OK", dataset_id=6, MS="EU27")
+    factories.SpeciesManualAssessmentFactory(
+        decision="OK", dataset_id=dataset_2024.id, MS="EU27"
+    )
     factories.HabitattypesManualAssessmentsFactory(decision="OK")
-    factories.EtcDicDecisionFactory(dataset_id=6)
-    factories.EtcDicDecisionFactory(decision="OK", dataset_id=6)
-    factories.EtcDicDecisionFactory(decision="OK?", dataset_id=6)
+    factories.EtcDicDecisionFactory(dataset_id=dataset_2024.id)
+    factories.EtcDicDecisionFactory(decision="OK", dataset_id=dataset_2024.id)
+    factories.EtcDicDecisionFactory(decision="OK?", dataset_id=dataset_2024.id)
     models.db.session.commit()
 
 
 @pytest.fixture
 def setup_autofill(app):
-    setup_common()
+    dataset_2018, dataset_2024 = setup_common()
     factories.EtcDataSpeciesAutomaticAssessmentFactory(
         assessment_speciesname="Canis lupus",
         region="ALP",
@@ -88,7 +100,7 @@ def setup_autofill(app):
         range_surface_area=100,
         conclusion_assessment_prev="FV",
         conclusion_range="FV",
-        dataset_id=6,
+        dataset_id=dataset_2024.id,
     )
     factories.EtcDataHabitattypeAutomaticAssessmentFactory(
         habitatcode="1110",
@@ -105,7 +117,7 @@ def setup_autofill(app):
         method_range="2GD",
         conclusion_range="FV",
         MS="EU27",
-        dataset_id=6,
+        dataset_id=dataset_2024.id,
     )
     factories.HabitattypesManualAssessmentsFactory(
         region="ALP",
@@ -203,7 +215,7 @@ def setup_autofill(app):
             403,
             "",
         ),
-        # ETC editing his own conclusion
+        # Assessor editing his own conclusion
         (
             [
                 "/species/summary/",
@@ -224,12 +236,12 @@ def setup_autofill(app):
                 "submit": "update",
             },
             "someuser",
-            ["etc"],
+            ["assessor"],
             False,
             302,
             "Conclusion edited successfully",
         ),
-        # ETC editing another user's conclusion - Ref fields
+        # Assessor editing another user's conclusion - Ref fields
         (
             [
                 "/species/summary/",
@@ -243,14 +255,18 @@ def setup_autofill(app):
                     "edit_region": "ALP",
                 },
             ],
-            {"complementary_favourable_range": "100"},
+            {
+                "method_population": "2GD",
+                "complementary_favourable_range": "100",
+                "conclusion_population": "FV",
+            },
             "otheruser",
-            ["etc"],
+            ["assessor"],
             False,
             302,
             "Conclusion edited successfully",
         ),
-        # ETC editing another user's conclusion - non-ref fields
+        # Assessor editing another user's conclusion - non-ref fields
         (
             [
                 "/species/summary/",
@@ -270,7 +286,7 @@ def setup_autofill(app):
                 "submit": "update",
             },
             "otheruser",
-            ["etc"],
+            ["assessor"],
             False,
             302,
             "Conclusion edited successfully",
@@ -281,7 +297,7 @@ def setup_autofill(app):
         #     [
         #         "/habitat/summary/",
         #         {
-        #             "period": 5,
+        #             "period": 6,
         #             "group": "coastal habitats",
         #             "subject": "1110",
         #             "region": "ALP",
@@ -303,131 +319,131 @@ def setup_autofill(app):
         #     302,
         #     "Conclusion edited successfully",
         # ),
-        # # Editing inexistent conclusion
-        # (
-        #     [
-        #         "/habitat/summary/",
+        #     # # Editing inexistent conclusion
+        #     (
+        #         [
+        #             "/habitat/summary/",
+        #             {
+        #                 "period": 6,
+        #                 "group": "coastal habitats",
+        #                 "subject": "1110",
+        #                 "region": "ALP",
+        #                 "action": "edit",
+        #                 "edit_user": "otheruser",
+        #                 "edit_region": "ALP",
+        #             },
+        #         ],
         #         {
-        #             "period": 5,
-        #             "group": "coastal habitats",
-        #             "subject": "1110",
         #             "region": "ALP",
-        #             "action": "edit",
-        #             "edit_user": "otheruser",
-        #             "edit_region": "ALP",
+        #             "MS": "AT",
+        #             "method_area": "2GD",
+        #             "conclusion_area": "FV",
+        #             "submit": "update",
         #         },
-        #     ],
-        #     {
-        #         "region": "ALP",
-        #         "MS": "AT",
-        #         "method_area": "2GD",
-        #         "conclusion_area": "FV",
-        #         "submit": "update",
-        #     },
-        #     "otheruser",
-        #     ["stakeholder"],
-        #     True,
-        #     404,
-        #     "",
-        # ),
-        # # STK editing another user's conclusion
-        # (
-        #     [
-        #         "/habitat/summary/",
+        #         "otheruser",
+        #         ["stakeholder"],
+        #         True,
+        #         404,
+        #         "",
+        #     ),
+        #     # # STK editing another user's conclusion
+        #     (
+        #         [
+        #             "/habitat/summary/",
+        #             {
+        #                 "period": 6,
+        #                 "group": "coastal habitats",
+        #                 "subject": "1110",
+        #                 "region": "ALP",
+        #                 "action": "edit",
+        #                 "edit_user": "someuser",
+        #                 "edit_region": "ALP",
+        #             },
+        #         ],
         #         {
-        #             "period": 5,
-        #             "group": "coastal habitats",
-        #             "subject": "1110",
         #             "region": "ALP",
-        #             "action": "edit",
-        #             "edit_user": "someuser",
-        #             "edit_region": "ALP",
+        #             "MS": "AT",
+        #             "method_area": "2GD",
+        #             "conclusion_area": "FV",
+        #             "submit": "update",
         #         },
-        #     ],
-        #     {
-        #         "region": "ALP",
-        #         "MS": "AT",
-        #         "method_area": "2GD",
-        #         "conclusion_area": "FV",
-        #         "submit": "update",
-        #     },
-        #     "otheruser",
-        #     ["stakeholder"],
-        #     True,
-        #     403,
-        #     "",
-        # ),
-        # # ETC editing his own conclusion
-        # (
-        #     [
-        #         "/habitat/summary/",
+        #         "otheruser",
+        #         ["stakeholder"],
+        #         True,
+        #         403,
+        #         "",
+        #     ),
+        #     # # Assessor editing his own conclusion
+        #     (
+        #         [
+        #             "/habitat/summary/",
+        #             {
+        #                 "period": 6,
+        #                 "group": "coastal habitats",
+        #                 "subject": "1110",
+        #                 "region": "ALP",
+        #                 "action": "edit",
+        #                 "edit_user": "someuser",
+        #                 "edit_region": "ALP",
+        #             },
+        #         ],
         #         {
-        #             "period": 5,
-        #             "group": "coastal habitats",
-        #             "subject": "1110",
-        #             "region": "ALP",
-        #             "action": "edit",
-        #             "edit_user": "someuser",
-        #             "edit_region": "ALP",
+        #             "method_area": "2GD",
+        #             "conclusion_area": "FV",
+        #             "submit": "update",
         #         },
-        #     ],
-        #     {
-        #         "method_area": "2GD",
-        #         "conclusion_area": "FV",
-        #         "submit": "update",
-        #     },
-        #     "someuser",
-        #     ["etc"],
-        #     False,
-        #     302,
-        #     "Conclusion edited successfully",
-        # ),
-        # # ETC editing another user's conclusion - Ref fields
-        # (
-        #     [
-        #         "/habitat/summary/",
+        #         "someuser",
+        #         ["assessor"],
+        #         False,
+        #         302,
+        #         "Conclusion edited successfully",
+        #     ),
+        #     # # Assessor editing another user's conclusion - Ref fields
+        #     (
+        #         [
+        #             "/habitat/summary/",
+        #             {
+        #                 "period": 6,
+        #                 "group": "coastal habitats",
+        #                 "subject": "1110",
+        #                 "region": "ALP",
+        #                 "action": "edit",
+        #                 "edit_user": "someuser",
+        #                 "edit_region": "ALP",
+        #             },
+        #         ],
+        #         {"complementary_favourable_range": "100", "submit": "update"},
+        #         "otheruser",
+        #         ["assessor"],
+        #         False,
+        #         302,
+        #         "Conclusion edited successfully",
+        #     ),
+        #     # # Assessor editing another user's conclusion - non-ref fields
+        #     (
+        #         [
+        #             "/habitat/summary/",
+        #             {
+        #                 "period": 6,
+        #                 "group": "coastal habitats",
+        #                 "subject": "1110",
+        #                 "region": "ALP",
+        #                 "action": "edit",
+        #                 "edit_user": "someuser",
+        #                 "edit_region": "ALP",
+        #             },
+        #         ],
         #         {
-        #             "period": 5,
-        #             "group": "coastal habitats",
-        #             "subject": "1110",
-        #             "region": "ALP",
-        #             "action": "edit",
-        #             "edit_user": "someuser",
-        #             "edit_region": "ALP",
+        #             "method_population": "2GD",
+        #             "conclusion_population": "FV",
+        #             "submit": "update",
         #         },
-        #     ],
-        #     {"complementary_favourable_range": "100", "submit": "update"},
-        #     "otheruser",
-        #     ["etc"],
-        #     False,
-        #     302,
-        #     "Conclusion edited successfully",
-        # ),
-        # # ETC editing another user's conclusion - non-ref fields
-        # (
-        #     [
-        #         "/habitat/summary/",
-        #         {
-        #             "period": 5,
-        #             "group": "coastal habitats",
-        #             "subject": "1110",
-        #             "region": "ALP",
-        #             "action": "edit",
-        #             "edit_user": "someuser",
-        #             "edit_region": "ALP",
-        #         },
-        #     ],
-        #     {
-        #         "method_population": "2GD",
-        #         "conclusion_population": "FV",
-        #         "submit": "update",
-        #     },
-        #     "otheruser",
-        #     ["etc"],
-        #     False,
-        #     302,
-        #     "Conclusion edited successfully",
-        # ),
+        #         "otheruser",
+        #         ["assessor"],
+        #         False,
+        #         302,
+        #         "Conclusion edited successfully",
+        #     ),
     ],
 )
 def test_edit_conclusion(
@@ -553,81 +569,6 @@ def test_autofill_conclusion_form(
             ],
             {
                 "region": "ALP",
-                "method_population": "2GD",
-                "conclusion_population": "FV",
-                "submit": "add",
-                "MS": "FR",
-            },
-            "natuser",
-            "FR",
-            ["nat"],
-            models.SpeciesManualAssessment,
-        ),
-        # # Habitat
-        # (
-        #     [
-        #         "/habitat/summary/",
-        #         {
-        #             "period": 5,
-        #             "group": "coastal habitats",
-        #             "subject": "1110",
-        #             "region": "ALP",
-        #         },
-        #     ],
-        #     {
-        #         "region": "ALP",
-        #         "method_range": "2GD",
-        #         "conclusion_range": "FV",
-        #         "submit": "add",
-        #         "MS": "FR",
-        #     },
-        #     "natuser",
-        #     "FR",
-        #     ["nat"],
-        #     models.HabitattypesManualAssessment,
-        # ),
-    ],
-)
-def test_add_conclusion_nat(
-    app,
-    client,
-    set_auth,
-    setup_add,
-    request_args,
-    post_params,
-    user,
-    MS,
-    roles,
-    model_cls,
-):
-    user = create_user(user, roles, ms=MS)
-    force_login(client, user.fs_uniquifier)
-
-    resp = client.post(*get_request_params("post", request_args, post_params))
-
-    assert resp.status_code == 200
-
-    post_params.pop("submit", None)
-    manual_ass = model_cls.query.filter_by(**post_params).one()
-    assert manual_ass.MS == MS
-
-
-@pytest.mark.parametrize(
-    "request_args, post_params, user, MS, roles, model_cls",
-    # Species
-    [
-        (
-            [
-                "/species/summary/",
-                {
-                    "period": 6,
-                    "group": "Mammals",
-                    "subject": "Canis lupus",
-                    "region": "ALP",
-                },
-            ],
-            {
-                "region": "ALP",
                 "MS": "AT",
                 "method_population": "2GD",
                 "conclusion_population": "FV",
@@ -708,9 +649,9 @@ def test_add_conclusion_stk(
                 "submit": "add",
                 "MS": "EU27",
             },
-            "etcuser",
+            "assessoruser",
             "FR",
-            ["etc"],
+            ["assessor"],
             models.SpeciesManualAssessment,
         ),
         # # Habitat
@@ -731,14 +672,14 @@ def test_add_conclusion_stk(
         #         "submit": "add",
         #         "MS": "EU27",
         #     },
-        #     "etcuser",
+        #     "assessoruser",
         #     "FR",
-        #     ["etc"],
+        #     ["assessor"],
         #     models.HabitattypesManualAssessment,
         # ),
     ],
 )
-def test_add_conclusion_etc(
+def test_add_conclusion_assessor(
     app,
     client,
     set_auth,
@@ -951,7 +892,7 @@ def test_delete_conclusion(
     "request_args, post_params, user, roles, expect_errors, status_code, "
     "success, message",
     # Species
-    # ETC successfully updating decision
+    # Assessor successfully updating decision
     [
         (
             [
@@ -960,7 +901,7 @@ def test_delete_conclusion(
             ],
             {"decision": "CO"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             False,
             200,
             True,
@@ -980,7 +921,7 @@ def test_delete_conclusion(
             True,
             "",
         ),
-        # ETC changing a final decision (OK) into another final decision (OK)
+        # Assessor changing a final decision (OK) into another final decision (OK)
         (
             [
                 "/species/conc/update/6/Canis lupus/BOR/someuser/",
@@ -988,13 +929,13 @@ def test_delete_conclusion(
             ],
             {"decision": "OK"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             False,
             200,
             False,
             "Another final decision already exists",
         ),
-        # ETC selecting invalid decision
+        # Assessor selecting invalid decision
         (
             [
                 "/species/conc/update/6/Canis lupus/BOR/someuser/",
@@ -1002,13 +943,13 @@ def test_delete_conclusion(
             ],
             {"decision": "WTF"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             False,
             200,
             False,
             "'WTF' is not a valid decision.",
         ),
-        # ETC selecting 'OK?' decision
+        # Assessor selecting 'OK?' decision
         (
             [
                 "/species/conc/update/6/Canis lupus/BOR/someuser/",
@@ -1016,13 +957,13 @@ def test_delete_conclusion(
             ],
             {"decision": "OK?"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             False,
             200,
             False,
             "You are not allowed to select 'OK?'Please select another value.",
         ),
-        # ETC updating decision - inexistent assessment
+        # Assessor updating decision - inexistent assessment
         (
             [
                 "/species/conc/update/6/Canis lupus/BOR/someuser/",
@@ -1030,7 +971,7 @@ def test_delete_conclusion(
             ],
             {"decision": "CO"},
             "testuser",
-            ["etc"],
+            ["assessor"],
             True,
             404,
             "",
@@ -1044,23 +985,9 @@ def test_delete_conclusion(
             ],
             {},
             "testuser",
-            ["etc"],
+            ["assessor"],
             True,
             401,
-            "",
-            "",
-        ),
-        # NAT trying to update decision
-        (
-            [
-                "/species/conc/update/6/Canis lupus/BOR/someuser/",
-                {"ms": "EU27"},
-            ],
-            {},
-            "testuser",
-            ["nat"],
-            True,
-            403,
             "",
             "",
         ),
@@ -1079,12 +1006,12 @@ def test_delete_conclusion(
             "",
         ),
         # # Habitat
-        # # ETC successfully updating decision
+        # # Assessor successfully updating decision
         # (
         #     ["/habitat/conc/update/5/1110/ALP/someuser/", {"ms": "EU27"}],
         #     {"decision": "CO"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     False,
         #     200,
         #     True,
@@ -1101,45 +1028,45 @@ def test_delete_conclusion(
         #     True,
         #     "",
         # ),
-        # # ETC changing a final decision (OK) into another final decision (OK)
+        # # Assessor changing a final decision (OK) into another final decision (OK)
         # (
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
         #     {"decision": "OK"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     False,
         #     200,
         #     False,
         #     "Another final decision already exists",
         # ),
-        # # ETC selecting invalid decision
+        # # Assessor selecting invalid decision
         # (
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
         #     {"decision": "WTF"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     False,
         #     200,
         #     False,
         #     "'WTF' is not a valid decision.",
         # ),
-        # # ETC selecting 'OK?' decision
+        # # Assessor selecting 'OK?' decision
         # (
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
         #     {"decision": "OK?"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     False,
         #     200,
         #     False,
         #     "You are not allowed to select 'OK?'Please select another value.",
         # ),
-        # # ETC updating decision - inexistent assessment
+        # # Assessor updating decision - inexistent assessment
         # (
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "RAND"}],
         #     {"decision": "CO"},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     True,
         #     404,
         #     "",
@@ -1150,20 +1077,9 @@ def test_delete_conclusion(
         #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
         #     {},
         #     "testuser",
-        #     ["etc"],
+        #     ["assessor"],
         #     True,
         #     401,
-        #     "",
-        #     "",
-        # ),
-        # # NAT trying to update decision
-        # (
-        #     ["/habitat/conc/update/5/1110/MATL/someuser/", {"ms": "EU27"}],
-        #     {},
-        #     "testuser",
-        #     ["nat"],
-        #     True,
-        #     403,
         #     "",
         #     "",
         # ),

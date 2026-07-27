@@ -1,3 +1,4 @@
+# flake8: noqa
 THREATS_QUERY = """
 
 SELECT    A.level2_code                   AS code,
@@ -51,7 +52,7 @@ LIMIT 10
 
 COVERAGE_QUERY_HABITAT = """
 SELECT  A.country, A.region,
-CASE 
+CASE
    WHEN (NOT COALESCE(A.coverage_surface_area, 0)=0) THEN
       CASE
          WHEN (NOT COALESCE(A.natura2000_area_max, 0)=0) THEN
@@ -104,7 +105,7 @@ CASE
                WHEN (A.population_minimum_size IS NOT NULL) THEN
                   CASE
                      WHEN (NOT COALESCE(A.natura2000_population_max, 0)=0) THEN
-                        CASE  
+                        CASE
                            WHEN (A.natura2000_population_min IS NOT NULL) THEN
                               CASE
                                  WHEN (SQRT(A.natura2000_population_min * A.natura2000_population_max) / SQRT(A.population_minimum_size * A.population_maximum_size) > 1) THEN '100*'

@@ -2,23 +2,23 @@
 
   <div class="box-col">
     {{ progress_filter_form.period.label }}
-    {{ progress_filter_form.period() }}
+    {{ progress_filter_form.period(class="select2-period") }}
   </div>
 
   <div class="box-col">
     {{ progress_filter_form.group.label }}
-    {{ progress_filter_form.group(**{'data-href': groups_url }) }}
+    {{ progress_filter_form.group(class="select2-group", **{'data-href': groups_url }) }}
   </div>
 
   <div class="box-col">
     {{ progress_filter_form.conclusion.label }}
-    {{ progress_filter_form.conclusion() }}
+    {{ progress_filter_form.conclusion(class="select2-conclusion") }}
   </div>
 
   {% if can_select_assessor() %}
   <div class="box-col">
     {{ progress_filter_form.assessor.label }}
-    {{ progress_filter_form.assessor(**{'data-href': assessors_url}) }}
+    {{ progress_filter_form.assessor(class="select2-assessor", **{'data-href': assessors_url}) }}
   </div>
   {% endif %}
 
@@ -32,6 +32,31 @@
   </div>
   {% endif %}
 
-  <button class="btn-blue offset_top_label" type="submit" {% if disable_group %} formtarget="_self" target="_self" {% endif %}>Filter</button>
+  <button class="btn-blue btn-primary offset_top_label" type="submit" {% if disable_group %} formtarget="_self" target="_self" {% endif %}>Filter</button>
 
 </form>
+
+<script>
+  $(document).ready(function() {
+    $('.select2-period').select2({
+      placeholder: 'Search period...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-group').select2({
+      placeholder: 'Search group...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-conclusion').select2({
+      placeholder: 'Search conclusion...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-assessor').select2({
+      placeholder: 'Search assessor...',
+      allowClear: true,
+      width: '100%'
+    });
+  });
+</script>

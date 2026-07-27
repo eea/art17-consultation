@@ -21,7 +21,7 @@ def setup_auth_handlers(state):
 
     app.config.update(
         {
-            "SECURITY_CONFIRMABLE": True,
+            "SECURITY_CONFIRMABLE": False,
             "SECURITY_POST_CONFIRM_VIEW": HOMEPAGE_VIEW_NAME,
             "SECURITY_PASSWORD_HASH": "ldap_salted_sha1",
             "SECURITY_PASSWORD_HASH": "ldap_salted_sha1",

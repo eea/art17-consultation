@@ -1,10 +1,9 @@
 from flask import url_for
 from pytest import fixture
 
-from art17.models import db
+from art17.models import db, Dataset
 
 from .factories import (
-    DatasetFactory,
     EtcDataHabitattypeRegionFactory,
     EtcDicBiogeoregFactory,
     EtcDicHdHabitat,
@@ -13,7 +12,6 @@ from .factories import (
 
 @fixture(autouse=True)
 def setup(app):
-    DatasetFactory()
     EtcDicHdHabitat()
     EtcDicBiogeoregFactory()
     EtcDataHabitattypeRegionFactory()
@@ -21,7 +19,8 @@ def setup(app):
 
 
 def test_filter_groups_view(app, client):
-    url = url_for("common.habitat-groups", period="5")
+    dataset_2024 = Dataset.query.filter_by(schema="2024").first()
+    url = url_for("common.habitat-groups", period=dataset_2024.id)
     resp = client.get(url)
 
     assert resp.status_code == 200
@@ -32,8 +31,11 @@ def test_filter_groups_view(app, client):
 
 
 def test_filter_species_view(app, client):
+    dataset_2024 = Dataset.query.filter_by(schema="2024").first()
     url = url_for(
-        "summary.habitat-summary-species", period="5", group="coastal habitats"
+        "summary.habitat-summary-species",
+        period=dataset_2024.id,
+        group="coastal habitats",
     )
     resp = client.get(url)
     assert resp.status_code == 200
@@ -43,7 +45,10 @@ def test_filter_species_view(app, client):
 
 
 def test_filter_regions_view(app, client):
-    url = url_for("summary.habitat-summary-regions", period="5", subject="1110")
+    dataset_2024 = Dataset.query.filter_by(schema="2024").first()
+    url = url_for(
+        "summary.habitat-summary-regions", period=dataset_2024.id, subject="1110"
+    )
     resp = client.get(url)
     assert resp.status_code == 200
     assert resp.content_type == "application/json"

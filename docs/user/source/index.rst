@@ -13,4 +13,5 @@ Art17 Consultation User Manual
    conclusions
    wiki
    registration
-
+   roles
+   consultation

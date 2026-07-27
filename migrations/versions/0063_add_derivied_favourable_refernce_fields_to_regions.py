@@ -1,3 +1,6 @@
+import sqlalchemy as sa
+from alembic import op
+
 """Add derivied favourable reference fields to regions
 
 Revision ID: 0063
@@ -6,9 +9,6 @@ Create Date: 2026-03-25 13:08:25.276702
 
 """
 
-from alembic import op
-import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "0063"

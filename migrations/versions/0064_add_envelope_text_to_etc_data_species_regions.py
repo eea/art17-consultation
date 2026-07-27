@@ -1,3 +1,6 @@
+import sqlalchemy as sa
+from alembic import op
+
 """Add envelope text to etc data species regions
 
 Revision ID: 0064
@@ -6,9 +9,6 @@ Create Date: 2026-03-27 12:11:10.531725
 
 """
 
-from alembic import op
-import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "0064"

@@ -14,7 +14,12 @@ from flask_principal import PermissionDenied
 from sqlalchemy import or_
 
 from art17.auth.security import current_user
-from art17.common import admin_perm, etc_perm, sta_cannot_change
+from art17.common import (
+    admin_perm,
+    assessor_perm,
+    sta_cannot_change,
+    assessor_cannot_change,
+)
 from art17.forms import CommentForm, RevisedForm, WikiEditForm
 from art17.models import (
     Dataset,
@@ -51,8 +56,8 @@ def format_time_cmnt(value):
     return format_datetime(value, TIME_FORMAT_CMNT)
 
 
-@wiki.app_template_filter("hide_adm_etc_username")
-def hide_adm_etc_username(name):
+@wiki.app_template_filter("hide_adm_assessor_username")
+def hide_adm_assessor_username(name):
     name = name or ""
     author = RegisteredUser.query.filter(
         or_(
@@ -60,16 +65,21 @@ def hide_adm_etc_username(name):
             RegisteredUser.id == name,
         )
     ).first()
-    if not (current_user.has_role("etc") or current_user.has_role("admin")):
+    if not (current_user.has_role("assessor") or current_user.has_role("admin")):
         if author:
-            if author.has_role("etc"):
+            if author.has_role("assessor"):
                 name = "EEA-ETC/BD"
             elif author.has_role("admin"):
                 name = "Admin"
+            elif author.has_role("stakeholder"):
+                name = "Stakeholder"
     if author:
-        if author.has_role("stakeholder") or author.has_role("nat"):
-            if not current_user.has_role("admin"):
-                name = author.institution
+        if current_user and author == current_user:
+            name = author.name
+        else:
+            if author.has_role("stakeholder"):
+                if not current_user.has_role("admin"):
+                    name = author.institution or "Stakeholder"
     return name
 
 
@@ -82,14 +92,14 @@ def is_name_changed(name):
             RegisteredUser.id == name,
         )
     ).first()
-    if not (current_user.has_role("etc") or current_user.has_role("admin")):
+    if not (current_user.has_role("assessor") or current_user.has_role("admin")):
         if author:
-            if author.has_role("etc"):
+            if author.has_role("assessor"):
                 is_changed = True
             elif author.has_role("admin"):
                 is_changed = True
     if author:
-        if author.has_role("stakeholder") or author.has_role("nat"):
+        if author.has_role("stakeholder"):
             if not current_user.has_role("admin"):
                 is_changed = True
     return is_changed
@@ -113,30 +123,31 @@ def get_css_class(comment):
 
 
 @wiki.app_template_global("can_edit_page")
-def can_edit_page(dataset, datasheet=False):
-    if not dataset or dataset.is_readonly and (dataset.id != 5 or not datasheet):
+def can_edit_page(dataset):
+    if not dataset or dataset.is_readonly:
         return False
-    return admin_perm.can() or etc_perm.can() or EU_ASSESSMENT_MODE
+    return admin_perm.can() or assessor_perm.can() or EU_ASSESSMENT_MODE
 
 
 @wiki.app_template_global("can_manage_revisions")
 def can_manage_revisions():
-    return admin_perm.can() or etc_perm.can() or EU_ASSESSMENT_MODE
+    return admin_perm.can() or assessor_perm.can() or EU_ASSESSMENT_MODE
 
 
 @wiki.app_template_global("can_change_revision")
 def can_change_revision(revision):
     if not revision.dataset or revision.dataset.is_readonly or revision.active:
         return False
-    return admin_perm.can() or etc_perm.can()
+    return admin_perm.can() or assessor_perm.can()
 
 
 @wiki.app_template_global("can_add_comment")
-def can_add_comment(comments, revisions, dataset, datasheet=False):
-    if not dataset:
-        return False
-    if (dataset.is_readonly or sta_cannot_change()) and (
-        dataset.id != 5 or not datasheet or not (etc_perm.can() or admin_perm.can())
+def can_add_comment(comments, revisions, dataset):
+    if (
+        not dataset
+        or dataset.is_readonly
+        or sta_cannot_change()
+        or assessor_cannot_change()
     ):
         return False
     is_author = current_user in [cmnt.author for cmnt in comments]
@@ -149,6 +160,7 @@ def can_edit_comment(comment):
         current_user == comment.author
         and not comment.deleted
         and not sta_cannot_change()
+        and not assessor_cannot_change()
     ):
         return True
     return False
@@ -156,13 +168,7 @@ def can_edit_comment(comment):
 
 @wiki.app_template_global("can_manage_comment")
 def can_manage_comment(dataset, datasheet=False):
-    if (
-        not dataset
-        or dataset.is_readonly
-        and (
-            dataset.id != 5 or not datasheet or not (etc_perm.can() or admin_perm.can())
-        )
-    ):
+    if not dataset or dataset.is_readonly:
         return False
     return not current_user.is_anonymous
 
@@ -209,7 +215,7 @@ class CommonSection(object):
 
         request_args = self.get_req_args()
         period = request_args.get("period")
-        dataset = Dataset.query.get(period) if period else None
+        dataset = db.session.get(Dataset, period) if period else None
 
         return {
             "wiki_body": [("", "", active_change.body)] if active_change else [],
@@ -271,7 +277,6 @@ class DataSheetSection(CommonSection):
         context.update(
             {
                 "comments": comments,
-                "datasheet": True,
                 "add_comment_url": url_for(
                     self.addcmnt_endpoint, page=self.page, **request_args
                 ),
@@ -416,12 +421,8 @@ class AddComment(WikiView):
         wiki_changes = self.section.get_wiki_changes().all()
         comments = wiki.comments if wiki else []
 
-        dataset = Dataset.query.get(request.args.get("period"))
-        if self.section.wiki_change_cls == WikiChange:
-            datasheet = True
-        else:
-            datasheet = False
-        if not can_add_comment(comments, wiki_changes, dataset, datasheet):
+        dataset = db.session.get(Dataset, request.args.get("period"))
+        if not can_add_comment(comments, wiki_changes, dataset):
             raise PermissionDenied
 
         form = CommentForm(request.form)
@@ -448,12 +449,8 @@ class AddComment(WikiView):
 
 class EditPage(WikiView):
     def process_post_request(self):
-        dataset = Dataset.query.get(request.args.get("period"))
-        if self.section.wiki_change_cls == WikiChange:
-            datasheet = True
-        else:
-            datasheet = False
-        if not can_edit_page(dataset, datasheet):
+        dataset = db.session.get(Dataset, request.args.get("period"))
+        if not can_edit_page(dataset):
             raise PermissionDenied
 
         form = WikiEditForm(request.form)
@@ -536,12 +533,8 @@ class ManageComment(WikiView):
             period = int(request.args.get("period", ""))
         except ValueError:
             abort(404)
-        dataset = Dataset.query.get(period)
-        if self.section.wiki_change_cls == WikiChange:
-            datasheet = True
-        else:
-            datasheet = False
-        if not can_manage_comment(dataset, datasheet):
+        dataset = db.session.get(Dataset, period)
+        if not can_manage_comment(dataset):
             raise PermissionDenied
         comment_id = request.args.get("comment_id")
         comment = self.section.wiki_comment_cls.query.filter_by(
@@ -550,7 +543,11 @@ class ManageComment(WikiView):
 
         toggle = request.args.get("toggle")
         if toggle == "del":
-            if comment.author != current_user or sta_cannot_change():
+            if (
+                comment.author != current_user
+                or sta_cannot_change()
+                or assessor_cannot_change
+            ):
                 raise PermissionDenied
             if comment.deleted is None:
                 comment.deleted = 0
@@ -579,7 +576,7 @@ class GetRevision(WikiView):
             raise PermissionDenied
         try:
             revision_id = int(request.args.get("revision_id"))
-        except:
+        except:  # noqa: E722
             abort(404)
         revision_id = request.args.get("revision_id")
         revision = self.section.wiki_change_cls.query.filter_by(

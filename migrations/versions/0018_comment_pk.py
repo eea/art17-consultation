@@ -1,7 +1,7 @@
+from alembic import op
+
 revision = "0018"
 down_revision = "0017"
-
-from alembic import op
 
 
 def update_pk(table_name, new_pk):

@@ -17,7 +17,8 @@ def translation(value):
 
 @fix_manual.command("run")
 def run(**kwargs):
-    species = models.SpeciesManualAssessment.query.filter_by(dataset_id=5)
+    dataset_2018 = models.Dataset.query.filter_by(schema="2018")
+    species = models.SpeciesManualAssessment.query.filter_by(dataset=dataset_2018)
     for specie in species:
         specie.conclusion_assessment_change = translation(
             specie.conclusion_assessment_change
@@ -27,7 +28,7 @@ def run(**kwargs):
         )
         models.db.session.add(specie)
         models.db.session.commit()
-    habitats = models.HabitattypesManualAssessment.query.filter_by(dataset_id=5)
+    habitats = models.HabitattypesManualAssessment.query.filter_by(dataset=dataset_2018)
     for habitat in habitats:
         habitat.conclusion_assessment_change = translation(
             habitat.conclusion_assessment_change

@@ -5,7 +5,6 @@ from art17 import models
 from .conftest import get_request_params
 from .factories import (
     CommentFactory,
-    DatasetFactory,
     EtcDataHabitattypeAutomaticAssessmentFactory,
     EtcDataSpeciesAutomaticAssessmentFactory,
     EtcDicHdHabitat,
@@ -21,13 +20,13 @@ HABCODE = 110
 
 @pytest.fixture
 def dataset_app(app):
-    DatasetFactory(id=1, name="2001-2006", schema="2006")
-    DatasetFactory(id=2, name="2007-2012", schema="2012")
-    EtcDicMethodFactory(dataset_id=1, method="1")
-    EtcDicMethodFactory(dataset_id=2, method="1")
+    dataset_2006 = models.Dataset.query.filter_by(schema="2006").first()
+    dataset_2012 = models.Dataset.query.filter_by(schema="2012").first()
+    EtcDicMethodFactory(dataset_id=dataset_2006.id, method="1")
+    EtcDicMethodFactory(dataset_id=dataset_2012.id, method="1")
     # Species
     EtcDataSpeciesAutomaticAssessmentFactory(
-        dataset_id=1,
+        dataset_id=dataset_2006.id,
         assessment_method="1",
         percentage_range_surface_area=10,
         percentage_population_mean_size=30,
@@ -38,7 +37,7 @@ def dataset_app(app):
         region="ALP",
     )
     EtcDataSpeciesAutomaticAssessmentFactory(
-        dataset_id=2,
+        dataset_id=dataset_2012.id,
         assessment_method="1",
         percentage_range_surface_area=20,
         percentage_population_mean_size=40,
@@ -49,7 +48,7 @@ def dataset_app(app):
         region="ALP",
     )
     SpeciesManualAssessmentFactory(
-        dataset_id=1,
+        dataset_id=dataset_2006.id,
         assessment_speciesname=CANIS_LUPUS,
         region="ALP",
         decision="OK",
@@ -60,7 +59,7 @@ def dataset_app(app):
         method_assessment="1",
     )
     SpeciesManualAssessmentFactory(
-        dataset_id=2,
+        dataset_id=dataset_2012.id,
         assessment_speciesname=CANIS_LUPUS,
         region="ALP",
         decision="OK",
@@ -72,7 +71,7 @@ def dataset_app(app):
     )
     # Habitats
     EtcDataHabitattypeAutomaticAssessmentFactory(
-        dataset_id=1,
+        dataset_id=dataset_2006.id,
         assessment_method="1",
         percentage_range_surface_area=1010,
         percentage_coverage_surface_area=1030,
@@ -83,7 +82,7 @@ def dataset_app(app):
         region="ALP",
     )
     EtcDataHabitattypeAutomaticAssessmentFactory(
-        dataset_id=2,
+        dataset_id=dataset_2012.id,
         assessment_method="1",
         percentage_range_surface_area=1020,
         percentage_coverage_surface_area=1040,
@@ -94,7 +93,7 @@ def dataset_app(app):
         region="ALP",
     )
     HabitattypesManualAssessmentsFactory(
-        dataset_id=1,
+        dataset_id=dataset_2006.id,
         subject=110,
         region="ALP",
         decision="OK",
@@ -105,7 +104,7 @@ def dataset_app(app):
         method_assessment="1",
     )
     HabitattypesManualAssessmentsFactory(
-        dataset_id=2,
+        dataset_id=dataset_2012.id,
         subject=110,
         region="ALP",
         decision="OK",
@@ -130,7 +129,7 @@ def dataset_app(app):
         ),
         (
             "/species/summary/",
-            {"period": 2, "subject": CANIS_LUPUS, "region": "ALP"},
+            {"period": 3, "subject": CANIS_LUPUS, "region": "ALP"},
             'title=": 20"',
         ),
         # get_population_conclusion_value
@@ -141,7 +140,7 @@ def dataset_app(app):
         ),
         (
             "/species/summary/",
-            {"period": 2, "subject": CANIS_LUPUS, "region": "ALP"},
+            {"period": 3, "subject": CANIS_LUPUS, "region": "ALP"},
             'title=": 40"',
         ),
         # get_future_conclusion_value
@@ -152,7 +151,7 @@ def dataset_app(app):
         ),
         (
             "/species/summary/",
-            {"period": 2, "subject": CANIS_LUPUS, "region": "ALP"},
+            {"period": 3, "subject": CANIS_LUPUS, "region": "ALP"},
             'title=": 60"',
         ),
         # get_habitat_conclusion_value
@@ -163,7 +162,7 @@ def dataset_app(app):
         ),
         (
             "/species/summary/",
-            {"period": 2, "subject": CANIS_LUPUS, "region": "ALP"},
+            {"period": 3, "subject": CANIS_LUPUS, "region": "ALP"},
             'title=": 80"',
         ),
         # get_asssesm_conclusion_value
@@ -174,7 +173,7 @@ def dataset_app(app):
         ),
         (
             "/species/summary/",
-            {"period": 2, "subject": CANIS_LUPUS, "region": "ALP"},
+            {"period": 3, "subject": CANIS_LUPUS, "region": "ALP"},
             'title=": 100"',
         ),
         # Habitats
@@ -186,7 +185,7 @@ def dataset_app(app):
         ),
         (
             "/habitat/summary/",
-            {"period": 2, "subject": 110, "region": "ALP"},
+            {"period": 3, "subject": 110, "region": "ALP"},
             'title=": 1020"',
         ),
         # get_coverage_conclusion_value
@@ -197,7 +196,7 @@ def dataset_app(app):
         ),
         (
             "/habitat/summary/",
-            {"period": 2, "subject": 110, "region": "ALP"},
+            {"period": 3, "subject": 110, "region": "ALP"},
             'title=": 1040"',
         ),
         # percentage_structure
@@ -208,7 +207,7 @@ def dataset_app(app):
         ),
         (
             "/habitat/summary/",
-            {"period": 2, "subject": 110, "region": "ALP"},
+            {"period": 3, "subject": 110, "region": "ALP"},
             'title=": 1060"',
         ),
         # percentage_future
@@ -219,7 +218,7 @@ def dataset_app(app):
         ),
         (
             "/habitat/summary/",
-            {"period": 2, "subject": 110, "region": "ALP"},
+            {"period": 3, "subject": 110, "region": "ALP"},
             'title=": 1080"',
         ),
         # assessment
@@ -230,7 +229,7 @@ def dataset_app(app):
         ),
         (
             "/habitat/summary/",
-            {"period": 2, "subject": 110, "region": "ALP"},
+            {"period": 3, "subject": 110, "region": "ALP"},
             'title=": 1100"',
         ),
     ],
@@ -244,48 +243,62 @@ def test_species_conclusion_values(
 
 
 def test_get_subject_details(client, set_auth, dataset_app):
-    EtcDicHdHabitat(dataset_id=1, habcode=HABCODE, name="foo foo")
-    EtcDicHdHabitat(dataset_id=2, habcode=HABCODE, name="boo boo")
+    dataset_2006 = models.Dataset.query.filter_by(schema="2006").first()
+    dataset_2012 = models.Dataset.query.filter_by(schema="2012").first()
+    EtcDicHdHabitat(dataset_id=dataset_2006.id, habcode=HABCODE, name="foo foo")
+    EtcDicHdHabitat(dataset_id=dataset_2012.id, habcode=HABCODE, name="boo boo")
     models.db.session.commit()
 
     url = "/habitat/summary/"
-    params = {"period": 1, "subject": HABCODE, "region": ""}
+    params = {"period": dataset_2006.id, "subject": HABCODE, "region": ""}
 
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
     assert "foo foo" in result.body.decode()
 
-    params["period"] = 2
+    params["period"] = dataset_2012.id
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
     assert "boo boo" in result.body.decode()
 
 
 def test_unread_comments_species(client, set_auth, dataset_app):
-    CommentFactory(id=1, dataset_id=1, region="ALP", assessment_speciesname=CANIS_LUPUS)
+    dataset_2006 = models.Dataset.query.filter_by(schema="2006").first()
+    dataset_2012 = models.Dataset.query.filter_by(schema="2012").first()
+    CommentFactory(
+        id=1,
+        dataset_id=dataset_2006.id,
+        region="ALP",
+        assessment_speciesname=CANIS_LUPUS,
+    )
     models.db.session.commit()
 
     url = "/species/summary/"
-    params = {"period": 1, "subject": CANIS_LUPUS, "region": "ALP"}
+    params = {"period": dataset_2006.id, "subject": CANIS_LUPUS, "region": "ALP"}
 
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
     assert "0/1" in result
 
-    params["period"] = 2
+    params["period"] = dataset_2012.id
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
     assert "0/0" in result
 
-    CommentFactory(id=2, dataset_id=2, region="ALP", assessment_speciesname=CANIS_LUPUS)
+    CommentFactory(
+        id=2,
+        dataset_id=dataset_2012.id,
+        region="ALP",
+        assessment_speciesname=CANIS_LUPUS,
+    )
     models.db.session.commit()
 
-    params["period"] = 1
+    params["period"] = dataset_2006.id
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
     assert "0/1" in result
 
-    params["period"] = 2
+    params["period"] = dataset_2012.id
 
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
@@ -293,30 +306,36 @@ def test_unread_comments_species(client, set_auth, dataset_app):
 
 
 def test_unread_comments_habitat(client, set_auth, dataset_app):
-    HabitatCommentFactory(id=1, dataset_id=1, region="ALP", habitat=HABCODE)
+    dataset_2006 = models.Dataset.query.filter_by(schema="2006").first()
+    dataset_2012 = models.Dataset.query.filter_by(schema="2012").first()
+    HabitatCommentFactory(
+        id=1, dataset_id=dataset_2006.id, region="ALP", habitat=HABCODE
+    )
     models.db.session.commit()
 
     url = "/habitat/summary/"
-    params = {"period": 1, "subject": HABCODE, "region": "ALP"}
+    params = {"period": dataset_2006.id, "subject": HABCODE, "region": "ALP"}
 
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
     assert "0/1" in result
 
-    params["period"] = 2
+    params["period"] = dataset_2012.id
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
     assert "0/0" in result
 
-    HabitatCommentFactory(id=2, dataset_id=2, region="ALP", habitat=HABCODE)
+    HabitatCommentFactory(
+        id=2, dataset_id=dataset_2012.id, region="ALP", habitat=HABCODE
+    )
     models.db.session.commit()
 
-    params["period"] = 1
+    params["period"] = dataset_2006.id
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200
     assert "0/1" in result
 
-    params["period"] = 2
+    params["period"] = dataset_2012.id
 
     result = client.get(*get_request_params("get", [url, params]))
     assert result.status_code == 200

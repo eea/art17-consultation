@@ -1,10 +1,13 @@
 import os
 
-from flask import abort, flash, current_app, request, redirect, url_for, session
+from flask import abort, current_app, flash, redirect, request, session, url_for
 from flask_admin import BaseView, expose
 from flask_admin.contrib.sqla import ModelView
-from art17.common import admin_perm
+from flask_admin.contrib.sqla.filters import BaseSQLAFilter
 from werkzeug.utils import secure_filename
+
+from art17.common import admin_perm
+from art17.models import Role
 
 
 class ProtectedModelView(ModelView):
@@ -14,6 +17,7 @@ class ProtectedModelView(ModelView):
 
     def inaccessible_callback(self, name, **kwargs):
         return abort(404)
+
 
 class AnonymizationMixin(ProtectedModelView):
     anonymized_fields = []
@@ -84,3 +88,30 @@ class FileUploadView(BaseView):
             return redirect(url_for(".index"))
 
         return self.render("admin/upload.html")
+
+
+class StakeholderFilter(BaseSQLAFilter):
+    """
+    Use to filter Stakeholder users for the given column
+    """
+
+    def __init__(self, column, name="Stakeholder filter"):
+        super().__init__(column, name)
+
+    def apply(self, query, value, alias=None):
+        prop = getattr(self.column, "property", None)
+        role = Role.query.filter_by(name="stakeholder").first()
+        user_ids = [user.id for user in role.users] if role else []
+        if value == "true":
+            result = query.filter(self.column.in_(user_ids))
+            return result
+        return query
+
+    def operation(self):
+        return "is"
+
+    def get_options(self, view):
+        return [
+            ("true", "Yes"),
+            ("false", "No"),
+        ]

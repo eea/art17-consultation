@@ -1,3 +1,6 @@
+import sqlalchemy as sa
+from alembic import op
+
 """empty message
 
 Revision ID: 0051
@@ -6,9 +9,6 @@ Create Date: 2025-09-12 08:01:23.009510
 
 """
 
-from alembic import op
-import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "0051"

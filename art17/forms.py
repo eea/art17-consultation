@@ -1,19 +1,20 @@
 # coding=utf-8
 from flask_wtf import FlaskForm as Form_base
+from sqlalchemy import or_
 from wtforms import BooleanField, DateField, SelectField, StringField, TextAreaField
 from wtforms.validators import Optional, ValidationError
 
-from art17.common import DEFAULT_MS, get_config
-from sqlalchemy import or_
+from art17.auth.security import current_user
+from art17.common import DEFAULT_MS, get_config, public_view_on_latest_dataset
 from art17.models import (
     Dataset,
     EtcDataHabitattypeRegion,
     EtcDataSpeciesRegion,
     EtcDicConclusion,
     EtcDicMethod,
+    EtcDicTrend,
     EtcDicPopulationUnit,
 )
-from art17.auth.security import current_user
 from art17.utils import (
     validate_field,
     validate_float,
@@ -57,13 +58,6 @@ CONTRIB_TYPE = [
 ]
 
 CONCL_TYPE = [("+", "+"), ("-", "-"), ("0", "0"), ("x", "x")]
-
-TREND_CHOICES = [
-    ("+", "+"),
-    ("-", "-"),
-    ("=", "="),
-    ("x", "x"),
-]
 
 PROSPECTS_CHOICES = [
     ("", ""),
@@ -185,12 +179,9 @@ class CommonFilterForm(Form):
     def __init__(self, *args, **kwargs):
         super(CommonFilterForm, self).__init__(*args, **kwargs)
         cfg = get_config()
-        if (
-            not current_user.is_authenticated
-            and not cfg.latest_dataset_public_view_enabled
-        ):
+        if not current_user.is_authenticated and not public_view_on_latest_dataset():
             datasets = Dataset.query.filter(
-                or_(Dataset.latest == False, Dataset.latest == None)
+                or_(Dataset.latest.is_(False), Dataset.latest.is_(None))
             ).all()
             self.period.choices = [(d.id, d.name) for d in datasets]
         else:
@@ -296,7 +287,7 @@ class SpeciesFormMixin(object):
                 for op in [">>", ">", "<", "≈", "x"]:
                     if data.startswith(op):
                         qualifier = op
-                        size = data[len(op) :]
+                        size = data[len(op) :]  # noqa: E203
                         break
                 self.complementary_favourable_population_size.data = size
                 self.complementary_favourable_population_q.data = qualifier
@@ -308,7 +299,7 @@ class SpeciesFormMixin(object):
                 for op in [">>", ">", "<", "≈", "x"]:
                     if data.startswith(op):
                         qualifier = op
-                        size = data[len(op) :]
+                        size = data[len(op) :]  # noqa: E203
                         break
                 self.complementary_favourable_range_size.data = size
                 self.complementary_favourable_range_q.data = qualifier
@@ -371,9 +362,8 @@ class SummaryManualFormSpecies(
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = [("Not selected", "")] + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
-        # trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
-        # trends = empty + zip(trends, trends)
-        trends = empty + TREND_CHOICES
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + list(zip(trends, trends))
         units = [a for a in EtcDicPopulationUnit.all(dataset_id) if a[0]]
         units = empty + units
 
@@ -474,7 +464,7 @@ class HabitatsFormMixin(object):
                 for op in [">>", ">", "<", "≈", "x"]:
                     if data.startswith(op):
                         qualifier = op
-                        size = data[len(op) :]
+                        size = data[len(op) :]  # noqa: E203
                         break
                 self.complementary_favourable_area_size.data = size
                 self.complementary_favourable_area_q.data = qualifier
@@ -486,7 +476,7 @@ class HabitatsFormMixin(object):
                 for op in [">>", ">", "<", "≈", "x"]:
                     if data.startswith(op):
                         qualifier = op
-                        size = data[len(op) :]
+                        size = data[len(op) :]  # noqa: E203
                         break
                 self.complementary_favourable_range_size.data = size
                 self.complementary_favourable_range_q.data = qualifier
@@ -551,9 +541,8 @@ class SummaryManualFormHabitat(
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
-        # trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
-        # trends = empty + zip(trends, trends)
-        trends = empty + CONCL_TYPE
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + list(zip(trends, trends))
 
         self.region.choices = empty
 
@@ -573,7 +562,7 @@ class SummaryManualFormHabitat(
             self.conclusion_assessment_trend,
             self.hab_condition_trend,
         ):
-            f.choices = empty + TREND_CHOICES
+            f.choices = trends
         for f in (
             self.conclusion_range,
             self.conclusion_area,
@@ -691,10 +680,10 @@ class SummaryManualFormSpeciesRef(
         self.conclusion_assessment_change.choices = NATURE_CHOICES
         self.conclusion_assessment_trend_change.choices = NATURE_CHOICES
 
-        trends = empty + TREND_CHOICES
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + list(zip(trends, trends))
         for f in (self.range_trend, self.population_trend, self.habitat_trend):
             f.choices = trends
-
         for f in (
             self.conclusion_range,
             self.conclusion_future,
@@ -810,7 +799,8 @@ class SummaryManualFormHabitatRef(
         conclusions = [a[0] for a in EtcDicConclusion.all(dataset_id) if a[0]]
         conclusions = empty + list(zip(conclusions, conclusions))
         conclusions = self.filter_conclusions(conclusions)
-
+        trends = [a[0] for a in EtcDicTrend.all(dataset_id) if a[0]]
+        trends = empty + list(zip(trends, trends))
         self.region.choices = empty
 
         self.method_range.choices = ZERO_METHODS + self.get_method_options(methods)
@@ -827,7 +817,7 @@ class SummaryManualFormHabitatRef(
             self.conclusion_assessment_trend,
             self.hab_condition_trend,
         ):
-            f.choices = empty + TREND_CHOICES
+            f.choices = trends
         for f in (
             self.conclusion_range,
             self.conclusion_area,
@@ -910,15 +900,14 @@ class RevisedForm(Form):
 
 
 class ConfigForm(Form):
-    start_date = DateField(label="Start date (YYYY-MM-DD)", validators=[Optional()])
-    end_date = DateField(label="End date (YYYY-MM-DD)", validators=[Optional()])
+    start_date = DateField(label="Start date (MM-DD-YYYY)", validators=[Optional()])
+    end_date = DateField(label="End date (MM-DD-YYYY)", validators=[Optional()])
     admin_email = StringField(
         label="Administrator email (space separated list)",
         validators=[Optional()],
     )
     default_dataset_id = SelectField(label="Default period")
     default_public_dataset_id = SelectField(label="Default public period")
-    add_assessment_enabled = BooleanField(label="Enable add assessment")
     latest_dataset_public_view_enabled = BooleanField(
         label="Enable public view of latest dataset"
     )
@@ -952,5 +941,4 @@ class ChangeDetailsForm(Form):
         self.role.choices = [
             ("", ""),
             ("stakeholder", "Stakeholder"),
-            ("nat", "National expert"),
         ]

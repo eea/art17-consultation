@@ -1,13 +1,13 @@
 import math
 
 import click
+import pandas as pd
 from flask.cli import AppGroup
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import BigInteger, SmallInteger
 from sqlalchemy.sql.sqltypes import Boolean, Float, Integer
 
 from art17.models import db
-import pandas as pd
 
 
 def get_model(self, name):
@@ -73,11 +73,11 @@ def clean_data(model, data):
         try:
 
             if math.isnan(data[field]):
-                if type(data[field]) == float or type(data[field]) == int:
+                if type(data[field]) is float or type(data[field]) is int:
                     data[field] = None
                 else:
                     data[field] = ""
-        except:
+        except:  # noqa: E722
             pass
 
 

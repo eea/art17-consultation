@@ -2,6 +2,7 @@ from sqlalchemy import and_, func
 
 from art17.models import (
     Comment,
+    Dataset,
     DicCountryCode,
     EtcDataHabitattypeAutomaticAssessment,
     EtcDataHabitattypeRegion,
@@ -163,7 +164,7 @@ class SpeciesMixin(MixinsCommon):
         assessment_field = self.model_cls.subject
         qs = (
             db.session.query(assessment_field)
-            .filter(assessment_field != None)
+            .filter(assessment_field.isnot(None))
             .filter(func.lower(self.model_cls.group) == func.lower(group))
             .filter_by(dataset_id=period)
             .distinct()
@@ -176,7 +177,9 @@ class SpeciesMixin(MixinsCommon):
         group_field = cls.model_cls.group
         dataset_id_field = cls.model_cls.dataset_id
         groups = (
-            cls.model_cls.query.filter(group_field != None, dataset_id_field == period)
+            cls.model_cls.query.filter(
+                group_field.isnot(None), dataset_id_field == period
+            )
             .with_entities(group_field, group_field)
             .distinct(func.lower(group_field))
             .order_by(func.lower(group_field))
@@ -193,7 +196,7 @@ class SpeciesMixin(MixinsCommon):
         dataset_id_field = cls.model_cls.dataset_id
         assessment_field = cls.model_cls.subject
         subjects = (
-            cls.model_cls.query.filter(assessment_field != None)
+            cls.model_cls.query.filter(assessment_field.isnot(None))
             .filter(func.lower(group_field) == func.lower(group))
             .filter(dataset_id_field == period)
             .with_entities(assessment_field, assessment_field)
@@ -208,7 +211,7 @@ class SpeciesMixin(MixinsCommon):
             ]
 
             subjects = (
-                cls.model_cls.query.filter(assessment_field != None)
+                cls.model_cls.query.filter(assessment_field.isnot(None))
                 .filter(func.lower(group_field) == func.lower(group))
                 .filter(cls.model_cls.region.in_(regions))
                 .filter(dataset_id_field == period)
@@ -279,7 +282,7 @@ class HabitatMixin(MixinsCommon):
         dataset_id_field = EtcDicHdHabitat.dataset_id
         groups = (
             EtcDicHdHabitat.query.filter(
-                group_field != None, dataset_id_field == period
+                group_field.isnot(None), dataset_id_field == period
             )
             .with_entities(group_field, group_field)
             .distinct(func.lower(group_field))
@@ -306,7 +309,7 @@ class HabitatMixin(MixinsCommon):
             ]
             subjs = (
                 EtcDicHdHabitat.query.filter(
-                    name_field != None,
+                    name_field.isnot(None),
                     func.lower(group_field) == func.lower(group),
                     dataset_id_field == period,
                 )
@@ -317,8 +320,9 @@ class HabitatMixin(MixinsCommon):
             )
             subjects = []
             for subj in subjs:
+                dataset = Dataset.objects.filter_by(schema="2012bis").first()
                 subject_objects = cls.model_cls.query.filter_by(
-                    habitatcode=subj[0], dataset_id=4
+                    habitatcode=subj[0], dataset_id=dataset
                 ).all()
                 for subject in subject_objects:
                     if subject.region in regions:
@@ -327,7 +331,7 @@ class HabitatMixin(MixinsCommon):
         else:
             subjects = (
                 EtcDicHdHabitat.query.filter(
-                    name_field != None,
+                    name_field.isnot(None),
                     func.lower(group_field) == func.lower(group),
                     dataset_id_field == period,
                 )

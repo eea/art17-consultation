@@ -1,7 +1,6 @@
-from flask_security.forms import Required
 from flask_wtf import FlaskForm as Form_base
 from wtforms import PasswordField, SelectField, StringField
-from wtforms.validators import InputRequired, Optional
+from wtforms.validators import Optional, DataRequired, Length
 from wtforms.widgets import HiddenInput
 
 from art17.dataset import IMPORT_SCHEMA
@@ -30,8 +29,20 @@ class CustomEmailStringField(StringField):
 
 class Art17RegisterFormBase(object):
 
-    name = StringField("Full name", validators=[Required("Full name is required")])
-    institution = StringField("Institution", validators=[Optional()])
+    name = StringField(
+        "Full name",
+        validators=[
+            DataRequired("Full name is required"),
+            Length(max=255, message="Full name cannot exceed 255 characters"),
+        ],
+    )
+    institution = StringField(
+        "Institution",
+        validators=[
+            Optional(),
+            Length(max=45, message="Institution cannot exceed 45 characters"),
+        ],
+    )
     abbrev = StringField("Abbrev.")
     MS = StringField(widget=HiddenInput())
     country_options = SelectField("Member State")
@@ -53,12 +64,14 @@ class Art17RegisterFormBase(object):
         self.country_options.choices = (
             [("", "")] + countries + [("--", "Choose another country ...")]
         )
+        if hasattr(self, "password"):
+            self.password.flags.required = True
         self.obj = kwargs.get("obj", None)
 
 
 class LoginForm(Form_base):
-    username = StringField("Username", [InputRequired()])
-    password = PasswordField("Password", [InputRequired()])
+    username = StringField("Username", [DataRequired()])
+    password = PasswordField("Password", [DataRequired()])
 
     class Meta:
         csrf = True

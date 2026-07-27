@@ -38,7 +38,7 @@ The main consultation tool, it displays three categories of data: assessments
 reported at Member States level, automatic assessments and biogeographical
 assessment & users proposed corrections.
 
-The users with specific roles (see :ref:`roles-label`) see an Add assessment /
+The users with specific roles see an Add assessment /
 Propose a correction form.
 
 
@@ -69,3 +69,5 @@ The following configuration settings can be changed:
 
 Dataset Admin
 ~~~~~~~~~~~~~
+
+This section now contains a management interface for most of the tables. CRUD and export functionalities are avaiable here.

@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from flask import flash, g, jsonify, render_template, request, url_for, views, abort
+from flask import abort, flash, jsonify, render_template, request, url_for, views
 from flask_principal import PermissionDenied
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
@@ -24,7 +24,7 @@ from art17.common import (
     TREND_OPTIONS,
     TREND_OPTIONS_OVERALL,
     admin_perm,
-    etc_perm,
+    assessor_perm,
     favourable_ref_title_habitat,
     favourable_ref_title_species,
     generate_map_url,
@@ -35,7 +35,6 @@ from art17.common import (
     get_title_for_species_country,
     get_tooltip_for_habitat,
     get_tooltip_for_species,
-    nat_perm,
     population_ref,
     population_size_unit,
     population_size_unit_title,
@@ -89,9 +88,11 @@ def inject_fuctions():
 
 @summary.app_context_processor
 def inject_static():
-    make_tooltip = lambda d: "\n" + "\n".join(["%s: %s" % (k, v) for k, v in d])
+    make_tooltip = lambda d: "\n" + "\n".join(  # noqa: E731
+        ["%s: %s" % (k, v) for k, v in d]
+    )
     return {
-        "etc_perm": etc_perm,
+        "assessor_perm": assessor_perm,
         "CONCLUSION_CLASSES": CONCLUSION_CLASSES,
         "COUNTRY_ASSESSMENTS": COUNTRY_ASSESSMENTS,
         "CONTRIB_METHOD": CONTRIB_METHOD,
@@ -157,10 +158,10 @@ def _na_if_none(value, default="N/A"):
     return na_if_none(value, default=default)
 
 
-def get_list(l, index, default=0):
-    if index < len(l):
+def get_list(initial_list, index, default=0):
+    if index < len(initial_list):
         try:
-            return float(l[index].replace("%", "").strip())
+            return float(initial_list[index].replace("%", "").strip())
         except ValueError:
             pass
     return default
@@ -173,7 +174,6 @@ def colorate(value):
         return CONCLUSION_CLASSES["XX"]
 
     FV = get_list(re.findall(r"(\d+.?\d+%)FV", value), 0)
-    U1 = get_list(re.findall(r"(\d+.?\d+%)U1", value), 0)
     U2 = get_list(re.findall(r"(\d+.?\d+%)U2", value), 0)
     XX = get_list(re.findall(r"(\d+.?\d+%)XX", value), 0)
     if U2 > 25:
@@ -258,11 +258,9 @@ class Summary(ConclusionView, views.View):
 
     def get_user_MS(self, subject, region, period):
         member_states = []
-        if admin_perm.can() or sta_perm.can() or etc_perm.can():
+        if admin_perm.can() or sta_perm.can() or assessor_perm.can():
             member_states = self.get_MS(subject, region, period)
             member_states = [(m[0], m[1]) for m in member_states]
-        elif nat_perm.can() and current_user.MS:
-            member_states = [(current_user.MS, current_user.MS)]
         return member_states + [(DEFAULT_MS, DEFAULT_MS)]
 
     def dispatch_request(self):
@@ -364,14 +362,14 @@ class Summary(ConclusionView, views.View):
             else:
                 flash("Please correct the errors below and try again.")
 
-        self.dataset = Dataset.query.get(period)
+        self.dataset = db.session.get(Dataset, period)
         period_name = self.dataset.name if self.dataset else ""
 
         current_selection = self.get_current_selection(
             period_name, group, subject, region, period
         )
         annexes = self.get_annexes(subject, period)
-        default_ms = DEFAULT_MS if not nat_perm.can() else current_user.MS
+        default_ms = DEFAULT_MS
         context = self.get_context()
         context.update(
             {
@@ -496,15 +494,21 @@ class SpeciesSummary(SpeciesMixin, Summary):
                     ),
                 )
             ).order_by(EtcDicMethod.order)
-            if filter_args["dataset_id"] == "4":
+            dataset_2012 = Dataset.query.filter_by(schema="2012").first()
+            dataset_2012bis = Dataset.query.filter_by(schema="2012bis").first()
+            if filter_args["dataset_id"] == str(dataset_2012bis.id):
                 filter_args.pop("dataset_id")
                 regions = [
                     region.reg_code
-                    for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)
+                    for region in EtcDicBiogeoreg.query.filter_by(
+                        dataset_id=dataset_2012bis.id
+                    )
                 ]
                 self.manual_objects = (
                     self.model_manual_cls.query.filter(
-                        self.model_manual_cls.dataset_id.in_([3, 4])
+                        self.model_manual_cls.dataset_id.in_(
+                            [dataset_2012.id, dataset_2012bis.id]
+                        )
                     )
                     .filter(self.model_manual_cls.region.in_(regions))
                     .filter_by(**filter_args)
@@ -618,15 +622,21 @@ class HabitatSummary(HabitatMixin, Summary):
                     ),
                 )
             ).order_by(EtcDicMethod.order)
-            if filter_args["dataset_id"] == "4":
+            dataset_2012 = Dataset.query.filter_by(schema="2012").first()
+            dataset_2012bis = Dataset.query.filter_by(schema="2012bis").first()
+            if filter_args["dataset_id"] == str(dataset_2012bis.id):
                 filter_args.pop("dataset_id")
                 regions = [
                     region.reg_code
-                    for region in EtcDicBiogeoreg.query.filter_by(dataset_id=4)
+                    for region in EtcDicBiogeoreg.query.filter_by(
+                        dataset_id=dataset_2012bis.id
+                    )
                 ]
                 self.manual_objects = (
                     self.model_manual_cls.query.filter(
-                        self.model_manual_cls.dataset_id.in_([3, 4])
+                        self.model_manual_cls.dataset_id.in_(
+                            [dataset_2012.id, dataset_2012bis.id]
+                        )
                     )
                     .filter(self.model_manual_cls.region.in_(regions))
                     .filter_by(**filter_args)
@@ -775,10 +785,10 @@ summary.add_url_rule(
 )
 
 summary.add_url_rule(
-    "/species/conc/update/<period>/<subject>/<region>/<user>/",
+    "/species/conc/update/<period>/<path:subject>/<region>/<user>/",
     view_func=UpdateDecision.as_view("species-update", mixin=SpeciesMixin),
 )
 summary.add_url_rule(
-    "/habitat/conc/update/<period>/<subject>/<region>/<user>/",
+    "/habitat/conc/update/<period>/<path:subject>/<region>/<user>/",
     view_func=UpdateDecision.as_view("habitat-update", mixin=HabitatMixin),
 )

@@ -1,5 +1,6 @@
 from .base import ProtectedModelView
 
+
 class EtcDataSpeciesAutomaticAssessmentModelView(ProtectedModelView):
     can_export = True
     column_list = (

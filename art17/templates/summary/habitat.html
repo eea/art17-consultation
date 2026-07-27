@@ -40,7 +40,11 @@
       The ‘Data sheet info’ includes notes for each regional and overall assessment per habitat.
     </p>
     <p>
-      The ‘Audit trail’ includes the methods used for the EU biogeographical assessments and justifications for decisions made by the assessors.
+      The 'Audit trail' includes the methods used for the EU biogeographical assessments and 
+      justifications for decisions made by the assessors. Some inconsistencies may appear in the 
+      data reported by Member States. To ensure the robustness of the EU-level assessments, all 
+      assessments undergo expert review. Where inconsistencies or potential errors are identified, 
+      they are documented transparently and per habitats in the assessment audit trail.
     </p>
   {% endif %}
   {% if dataset.schema == '2012' %}
@@ -63,7 +67,7 @@
 
   {% if current_selection %}
 
-    {% if not dataset.latest or latest_dataset_public_view_enabled or current_user.is_authenticated %}
+    {% if not dataset.latest or public_view_on_latest_dataset() %}
 
     {% include 'summary/wiki_buttons.html' %}
     {% include 'common/note.html' %}
@@ -72,7 +76,7 @@
       <p class="note">
         The delayed delivery by Spain did not allow the Spanish report to be used for the EU conservation status
         assessment. Where possible, Spanish data from the period 2013-2019 were used for the EU assessments of
-        2019-2024. You can see a relevant technical note here.
+        2019-2024. You can see a relevant technical note <a target="_blank" href="{{ url_for('static', filename='documents/Technical note on missing Art 17 ES report_FINAL.pdf') }}">here</a>.
       </p>
     {% endif %}
 
@@ -133,7 +137,7 @@
             {% endfor %}
           </tbody>
 
-          {% if dataset.schema != '2024' or can_view_assessment() %}
+          {% if can_view_automatic_assessment(dataset) %}
           <tbody class="thead">
             <tr class="section-header">
               <th class="table-title" colspan="{{ colspan_all }}">
@@ -168,7 +172,7 @@
           </tbody>
           {% endif %}
 
-          {% if dataset.schema != '2024' or can_view_assessment() %}
+          {% if dataset.schema != '2024' or can_view_manual_assessment(dataset) %}
           {# Manual assessments #}
           <tbody class="thead" id="manual-thead">
             <tr class="section-header">
@@ -195,7 +199,7 @@
           <tbody>
             {% for row in manual_objects %}
               {% if row != manual_assessment %}
-                <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset_id == 3 and dataset.id == 4 %}manual_assessment{% endif%}">
+                <tr id="man-row-{{ loop.index }}" class="{% if row.deleted %}deleted{% endif %} stripe_row {% if row.dataset__schema == '2012' and dataset.schema == '2012bis'  %}manual_assessment{% endif%}">
                   {# MS and region #}
                   {% if dataset.schema == '2018' %}
                     {% include 'summary/habitat/manual/manual_2018.html' %}

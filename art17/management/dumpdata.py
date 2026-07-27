@@ -1,12 +1,14 @@
-import click
 import json
 import os
 import sys
-
+import sqlalchemy
 from datetime import datetime
+
+import click
 from flask.cli import AppGroup
+
 from sqlalchemy import inspect
-from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.ext.hybrid import hybrid_property  # noqa: F401
 
 from art17 import models
 
@@ -17,7 +19,7 @@ dumpdata = AppGroup("dumpdata")
 @click.option("-m", "--model", "model")
 def run(**kwargs):
     model = kwargs["model"]
-    thismodule = sys.modules[__name__]
+    thismodule = sys.modules[__name__]  # noqa: F841
     base_class = getattr(models, model)
 
     relationship_fields = [
@@ -48,7 +50,7 @@ def run(**kwargs):
         for field in model_fields:
             value = getattr(entry, field)
 
-            if type(value) == datetime:
+            if type(value) is datetime:
                 value = value.isoformat()
 
             kwargs["fields"][field] = value

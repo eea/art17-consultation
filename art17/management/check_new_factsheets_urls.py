@@ -1,10 +1,9 @@
-import click
 import urllib
-
 from time import sleep
 
-from flask.cli import AppGroup
+import click
 from flask import current_app as app
+from flask.cli import AppGroup
 
 from art17 import models
 
@@ -27,7 +26,7 @@ def check_urls(entity_name, model_cls, field):
         pdf_url = f"{base_remote_url}{remote_url}"
         try:
             code = urllib.request.urlopen(pdf_url).getcode()
-        except:
+        except:  # noqa: E722
             count += 1
             print(f"{count} Error on {pdf_url}")
             continue

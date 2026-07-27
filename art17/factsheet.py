@@ -1,9 +1,9 @@
 import urllib
 from collections import OrderedDict
 
-import requests
 import httpx
 
+# import requests
 from flask import Blueprint
 from flask import current_app as app
 from flask import render_template, request, url_for
@@ -123,7 +123,7 @@ class FactSheet(MethodView):
                 Wiki.dataset_id == period,
                 getattr(Wiki, self.wiki_subject_column) == subject,
                 Wiki.region_code == "",
-                WikiChange.active == True,
+                WikiChange.active.is_(True),
             )
             .first()
         )
@@ -223,7 +223,7 @@ class FactSheet(MethodView):
                 .filter(
                     self.model_cls.subject == subject,
                     self.model_cls.dataset_id == period,
-                    self.model_cls.distribution_grid_area == None,
+                    self.model_cls.distribution_grid_area.is_(None),
                 )
                 .distinct()
                 .all()
@@ -381,7 +381,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         q = super(SpeciesFactSheet, self).get_manual_objects(period, subject)
         return q.filter(
             or_(
-                self.model_cls.species_type == None,
+                self.model_cls.species_type.is_(None),
                 ~self.model_cls.species_type.in_(["IRM", "OP", "PEX"]),
             )
         )
@@ -390,7 +390,7 @@ class SpeciesFactSheet(FactSheet, SpeciesMixin):
         q = super(SpeciesFactSheet, self).get_objects(period, subject)
         return q.filter(
             or_(
-                self.model_cls.species_type == None,
+                self.model_cls.species_type.is_(None),
                 ~self.model_cls.species_type.in_(["IRM", "OP", "PEX"]),
             )
         )
@@ -438,7 +438,7 @@ class HabitatFactSheet(FactSheet, HabitatMixin):
 
     def get_manual_objects(self, period, subject):
         q = super(HabitatFactSheet, self).get_manual_objects(period, subject)
-        return q.filter(self.model_cls.habitattype_type_asses == True)
+        return q.filter(self.model_cls.habitattype_type_asses.is_(True))
 
 
 class FactSheetHeader(MethodView):
@@ -522,7 +522,8 @@ def generate_factsheet_url(category, subject, period):
         return None
 
     base_remote_url = app.config.get("FACTSHEETS_REMOTE_URL", "")
-    dataset = Dataset.query.get(period)
+    dataset = db.session.get(Dataset, period)
+
     if dataset:
         if dataset.schema == "2012":
             assessment_url = assessment.remote_url_2012 or ""

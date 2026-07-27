@@ -2,24 +2,49 @@
 
   <div class="box-col width-180">
     <label>{{ summary_filter_form.period.label }}</label>
-    {{ summary_filter_form.period }}
+    {{ summary_filter_form.period(class="select2-period") }}
   </div>
 
   <div class="box-col width-180">
     <label>{{ summary_filter_form.group.label }}</label>
-    {{ summary_filter_form.group(**{'data-href': groups_url}) }}
+    {{ summary_filter_form.group(class="select2-group", **{'data-href': groups_url}) }}
   </div>
 
   <div class="box-col width-240">
     <label>{{ summary_filter_form.subject.label }}</label>
-    {{ summary_filter_form.subject(**{'data-href': subjects_url}) }}
+    {{ summary_filter_form.subject(class="select2-subject",**{'data-href': subjects_url}) }}
   </div>
 
   <div class="box-col width-180">
     <label>{{ summary_filter_form.region.label }}</label>
-    {{ summary_filter_form.region(**{'data-href': regions_url}) }}
+    {{ summary_filter_form.region(class="select2-region", **{'data-href': regions_url}) }}
   </div>
 
-  <button type="submit" class="btn-blue offset_top_label">Filter</button>
+  <button type="submit" class="btn-blue btn-xl offset_top_label">Filter</button>
 
 </form>
+
+<script>
+  $(document).ready(function() {
+    $('.select2-period').select2({
+      placeholder: 'Search period...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-group').select2({
+      placeholder: 'Search group...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-subject').select2({
+      placeholder: 'Search subject...',
+      allowClear: true,
+      width: '100%'
+    });
+    $('.select2-region').select2({
+      placeholder: 'Search region...',
+      allowClear: true,
+      width: '100%'
+    });
+  });
+</script>

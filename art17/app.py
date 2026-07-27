@@ -5,8 +5,8 @@ import flask
 from flask_mail import Mail
 from flask_migrate import Migrate
 
-from art17.assets import assets_env
 from art17.admin import admin_register
+from art17.assets import assets_env
 from art17.auth import auth, login_manager
 from art17.auth.script import role_manager, user_manager
 from art17.comments import comments
@@ -16,13 +16,12 @@ from art17.factsheet import factsheet, factsheet_manager
 from art17.layout import layout
 from art17.management.check_new_factsheets_urls import check_new_factsheets_urls
 from art17.management.dumpdata import dumpdata
-from art17.management.fix_bg_cdr_link import fix_bg_link
 from art17.management.fix_manual import fix_manual
-from art17.management.generate_new_period import generate_new_period
 from art17.management.generate_new_factsheets_urls import generate_new_factsheets_urls
+from art17.management.generate_new_period import generate_new_period
 from art17.management.import_greece import import_greece
-from art17.management.loaddata import loaddata
 from art17.management.import_new_data import import_new_data
+from art17.management.loaddata import loaddata
 from art17.management.pre_fill_wiki_changes_habitat import pre_fill_wiki_changes_habitat
 from art17.management.pre_fill_wiki_changes_species import pre_fill_wiki_changes_species
 from art17.management.set_new_factsheets_urls import set_new_factsheets_urls
@@ -122,7 +121,7 @@ def create_url_prefix_middleware(wsgi_app, url_prefix):
     def middleware(environ, start_response):
         path_info = environ["PATH_INFO"]
         if path_info.startswith(url_prefix):
-            environ["PATH_INFO"] = path_info[len(url_prefix) :]
+            environ["PATH_INFO"] = path_info[len(url_prefix) :]  # noqa: E203
             environ["SCRIPT_NAME"] += url_prefix
         return wsgi_app(environ, start_response)
 
@@ -133,7 +132,6 @@ def create_cli_commands(app):
     app.cli.add_command(check_new_factsheets_urls)
     app.cli.add_command(dataset_manager)
     app.cli.add_command(factsheet_manager)
-    app.cli.add_command(fix_bg_link)
     app.cli.add_command(fix_manual)
     app.cli.add_command(generate_new_period)
     app.cli.add_command(generate_new_factsheets_urls)

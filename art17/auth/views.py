@@ -25,7 +25,7 @@ from flask_security.recoverable import (
     send_reset_password_instructions,
 )
 from flask_security.registerable import register_user
-from flask_security.utils import config_value, encrypt_password, get_message, get_url
+from flask_security.utils import config_value, get_message, get_url
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.local import LocalProxy
 
@@ -50,7 +50,7 @@ from art17.auth.security import (
     encrypt_password,
     verify,
 )
-from art17.common import HOMEPAGE_VIEW_NAME, get_config
+from art17.common import consultation_ended, HOMEPAGE_VIEW_NAME, get_config
 
 
 def user_registered_sighandler(
@@ -70,8 +70,7 @@ def handle_permission_denied(error):
 
 @auth.route("/auth/register/local", methods=["GET", "POST"])
 def register_local():
-    form = Art17LocalRegisterForm(request.form)
-
+    form = Art17LocalRegisterForm(flask.request.form)
     if form.validate_on_submit():
         datastore = current_app.extensions["security"].datastore
 
@@ -80,32 +79,14 @@ def register_local():
         encrypted_password = encrypt_password(password)
         user.password = encrypted_password
         datastore.commit()
-        return render_template("message.html", message="")
-
+        message = f"Your account was created. Please login <a href='{url_for("auth.login")}'>here</a>."
+        return render_template("message.html", message=message)
     return render_template(
         "auth/register_local.html",
         **{
             "register_user_form": form,
-        }
+        },
     )
-
-
-def send_welcome_email(user, plaintext_password=None):
-    app = current_app
-    msg = Message(
-        subject="Role update on the Biological Diversity website",
-        sender=app.config["SECURITY_EMAIL_SENDER"],
-        recipients=[user.email],
-    )
-    msg.body = render_template(
-        "auth/email_user_welcome.txt",
-        **{
-            "user": user,
-            "plaintext_password": plaintext_password,
-            "home_url": url_for(HOMEPAGE_VIEW_NAME, _external=True),
-        }
-    )
-    safe_send_mail(app, msg)
 
 
 @auth.route("/auth/create_local", methods=["GET", "POST"])
@@ -123,7 +104,6 @@ def admin_create_local():
         set_user_active(user, True)
         user.password = encrypted_password
         datastore.commit()
-        send_welcome_email(user, plaintext_password)
         add_default_role(user)
         flash("User %s created successfully." % kwargs["id"], "success")
         return redirect(url_for(".users"))
@@ -132,7 +112,7 @@ def admin_create_local():
         "auth/register_local.html",
         **{
             "register_user_form": form,
-        }
+        },
     )
 
 
@@ -172,7 +152,7 @@ def register_ldap():
             "auth/register_ldap_exists.html",
             **{
                 "admin_email": get_config().admin_email,
-            }
+            },
         )
     initial_data = _get_initial_ldap_data(user_id)
     form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
@@ -188,7 +168,7 @@ def register_ldap():
                 is_ldap=True,
                 password="",
                 confirmed_at=datetime.utcnow(),
-                **form.to_dict()
+                **form.to_dict(),
             )
             datastore.commit()
             flash(
@@ -205,7 +185,7 @@ def register_ldap():
             "already_registered": g.get("user") is not None,
             "user_id": user_id,
             "register_user_form": form,
-        }
+        },
     )
 
 
@@ -216,10 +196,9 @@ def admin_create_ldap():
     if user_id is None:
         return render_template("auth/register_ldap_enter_user_id.html")
 
-    if models.RegisteredUser.query.get(user_id) is not None:
+    if models.db.session.get(models.RegisteredUser, user_id) is not None:
         flash('User "%s" already registered.' % user_id, "error")
         return redirect(url_for(".admin_create_ldap"))
-
     initial_data = _get_initial_ldap_data(user_id)
     if "_fields_from_ldap" in request.form:
         if initial_data is None:
@@ -227,9 +206,13 @@ def admin_create_ldap():
             return redirect(url_for(".admin_create_ldap"))
         form = Art17LDAPRegisterForm(ImmutableMultiDict(initial_data))
     else:
-        form = Art17LDAPRegisterForm(request.form)
-        form.name.data = initial_data.get("name", "")
-        form.email.data = initial_data.get("email", "") or form.email.data
+        form = Art17LDAPRegisterForm(
+            request.form,
+            data={
+                "name": initial_data.get("name", ""),
+                "email": initial_data.get("email", ""),
+            },
+        )
         if form.validate():
             kwargs = form.to_dict(only_user=True)
             kwargs["id"] = user_id
@@ -239,7 +222,6 @@ def admin_create_ldap():
             user.confirmed_at = datetime.utcnow()
             set_user_active(user, True)
             datastore.commit()
-            send_welcome_email(user)
             add_default_role(user)
             flash(
                 "User %s created successfully." % kwargs["id"],
@@ -252,7 +234,7 @@ def admin_create_ldap():
         **{
             "user_id": user_id,
             "register_user_form": form,
-        }
+        },
     )
 
 
@@ -291,7 +273,7 @@ def change_password():
         "auth/change_password.html",
         **{
             "form": form,
-        }
+        },
     )
 
 
@@ -323,7 +305,7 @@ def send_role_change_notification(user, new_roles):
         **{
             "user": user,
             "new_roles": [role_description[r] for r in new_roles],
-        }
+        },
     )
     safe_send_mail(app, msg)
 
@@ -348,7 +330,7 @@ def users():
             "user_list": user_query.all(),
             "role_map": get_roles_for_all_users(),
             "countries": dict(countries),
-        }
+        },
     )
 
 
@@ -366,7 +348,7 @@ def admin_user(user_id):
     if request.method == "POST":
         if request.form.get("btn") == "delete":
             # delete from local database
-            user = models.RegisteredUser.query.get(user_id)
+            user = models.db.session.get(models.RegisteredUser, user_id)
             models.db.session.delete(user)
             models.db.session.commit()
             flash("User %s has successfully been deleted" % user_id, "success")
@@ -409,7 +391,7 @@ def admin_user(user_id):
             "user_form": user_form,
             "current_user_roles": current_user_roles,
             "all_roles": dict(all_roles),
-        }
+        },
     )
 
 
@@ -438,7 +420,7 @@ def admin_user_reset_password(user_id):
         **{
             "user": user,
             "form": form,
-        }
+        },
     )
 
 
@@ -502,6 +484,13 @@ def login():
     if request.method == "POST" and form.validate():
         username = request.form.get("username")
         password = request.form.get("password")
+
+        user = models.RegisteredUser.query.filter_by(id=username).first()
+
+        if user and user.has_role("stakeholder") and consultation_ended():
+            flash("Authenticating is not allowed as the consultation has ended.")
+            return redirect(url_for(HOMEPAGE_VIEW_NAME))
+
         try:
             models.RegisteredUser.try_login(username, password)
         except ldap.INVALID_CREDENTIALS:
@@ -511,12 +500,11 @@ def login():
                 flash("Invalid username or password. Please try again.", "danger")
                 return render_template("login.html", form=form)
 
-        user = models.RegisteredUser.query.filter_by(id=username).first()
-
         if not user:
             data = _get_initial_ldap_data(username)
             user = models.RegisteredUser(
                 id=username,
+                fs_uniquifier=f"{username}_fs",
                 name=data["name"],
                 qualification=data["qualification"],
                 email=data["email"],
@@ -585,5 +573,5 @@ def reset_password(token):
         config_value("RESET_PASSWORD_TEMPLATE"),
         reset_password_form=form,
         reset_password_token=token,
-        **_security._run_ctx_processor("reset_password")
+        **_security._run_ctx_processor("reset_password"),
     )

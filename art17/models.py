@@ -1,21 +1,12 @@
 # coding: utf-8
-import json
-import os
-import sys
-from sqlalchemy import BigInteger, SmallInteger
-from sqlalchemy.dialects.postgresql import BYTEA, TIMESTAMP
-
-from datetime import datetime
-from sqlalchemy import func, distinct
-from sqlalchemy.orm import lazyload
 import ldap
 from flask import current_app as app
 from flask_security import RoleMixin, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     Column,
-    DateTime,
     Float,
     ForeignKey,
     Integer,
@@ -24,9 +15,10 @@ from sqlalchemy import (
     String,
     Table,
     Text,
-    inspect,
+    func,
     or_,
 )
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
@@ -58,15 +50,15 @@ class Dataset(Base):
     species_map_url = Column(db.String(400), nullable=True)
     sensitive_species_map_url = Column(db.String(400), nullable=True)
     habitat_map_url = Column(db.String(400), nullable=True)
-
-    @property
-    def is_readonly(self):
-        return (
-            self.schema == "2006"
-            or self.schema == "2012"
-            or self.schema == "2012bis"
-            or self.schema == "2018"
-        )
+    is_readonly = Column(
+        Boolean, default=True, nullable=False
+    )  # mark as read-only after consultation has ended
+    public_can_view_automatic_assessments = Column(
+        Boolean, default=True, nullable=False
+    )  # If true, unauthenticated users can view automatic assessments
+    public_can_view_manual_assessments = Column(
+        Boolean, default=True, nullable=False
+    )  # If true, unauthenticated users can view manual assessments
 
     @property
     def stats(self):
@@ -118,7 +110,7 @@ t_comments_read = Table(
 class Comment(Base):
     __tablename__ = "comments"
 
-    id = Column(BigInteger(), primary_key=True, unique=True)
+    id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     region = Column(String(4), nullable=False)
     assessment_speciesname = Column(String(50), nullable=False)
     user_id = Column("user", String(25), nullable=False)
@@ -396,7 +388,7 @@ class EtcDataHabitattypeRegion(Base):
 
     @property
     def is_assesm(self):
-        return self.habitattype_type_asses == False
+        return self.habitattype_type_asses is False
 
     @hybrid_property
     def subject(self):
@@ -675,7 +667,7 @@ class EtcDataSpeciesRegion(Base):
 
     @property
     def is_assesm(self):
-        return self.species_type_asses == False
+        return self.species_type_asses is False
 
     @property
     def mapcode(self):
@@ -953,7 +945,7 @@ t_habitat_comments_read = Table(
 class HabitatComment(Base):
     __tablename__ = "habitat_comments"
 
-    id = Column(BigInteger(), primary_key=True, unique=True)
+    id = Column(Integer, primary_key=True, unique=True)
     region = Column(String(4), nullable=False)
     habitat = Column(String(50), nullable=False)
     user_id = Column("user", String(25), nullable=False)
@@ -1112,8 +1104,8 @@ class HabitattypesManualAssessment(Base):
             .filter(text("habitat_comments_read.reader_user_id='%s'" % user))
             .filter(
                 or_(
-                    HabitatComment.deleted == False,
-                    HabitatComment.deleted == None,
+                    HabitatComment.deleted.is_(False),
+                    HabitatComment.deleted.is_(None),
                 )
             )
             .count()
@@ -1183,8 +1175,8 @@ class PhotoHabitat(Base):
     picture_date = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default="CURRENT_TIMESTAMP"
     )
-    picture_data = Column(BYTEA())
-    thumbnail = Column(BYTEA())
+    picture_data = Column(LargeBinary)
+    thumbnail = Column(LargeBinary)
     user = Column(String(50), nullable=False, default="")
 
     dataset_id = Column(
@@ -1400,7 +1392,7 @@ class SpeciesManualAssessment(Base):
             .filter(Comment.user_id == self.user_id)
             .filter(Comment.dataset_id == self.dataset_id)
             .filter(text("comments_read.reader_user_id='%s'" % user))
-            .filter(or_(Comment.deleted == False, Comment.deleted == None))
+            .filter(or_(Comment.deleted.is_(False), Comment.deleted.is_(None)))
             .count()
         )
 
@@ -1454,7 +1446,7 @@ class WikiChange(Base):
 
     id = Column(BigInteger(), primary_key=True)
     wiki_id = Column(ForeignKey("wiki.id"), nullable=False)
-    body = Column(String(6000))
+    body = Column(Text)
     editor = Column(String(60), nullable=False)
     revised = Column(Boolean)
     changed = Column(
@@ -1545,7 +1537,7 @@ class WikiTrailChange(Base):
 
     id = Column(BigInteger(), primary_key=True)
     wiki_id = Column(ForeignKey("wiki_trail.id"), nullable=False)
-    body = Column(String(6000))
+    body = Column(Text)
     editor = Column(String(60), nullable=False)
     changed = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default="CURRENT_TIMESTAMP"
@@ -1607,7 +1599,6 @@ class Config(Base):
     admin_email = Column(db.String(255))
     default_dataset_id = Column(BigInteger(), default=1)
     default_public_dataset_id = Column(BigInteger(), default=1)
-    add_assessment_enabled = Column(Boolean, default=False)
     latest_dataset_public_view_enabled = Column(Boolean, default=False)
 
 

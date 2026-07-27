@@ -1,7 +1,8 @@
+from alembic import op
+
 revision = "0008"
 down_revision = "0007"
 
-from alembic import op
 
 tables = [
     ("etc_data_habitattype_regions", ["country", "habitatcode", "region"]),

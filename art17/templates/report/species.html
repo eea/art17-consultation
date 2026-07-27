@@ -35,7 +35,7 @@
   {% include 'report/filters.html' %}
 
   {% if current_selection %}
-  {% if not dataset.latest or latest_dataset_public_view_enabled or current_user.is_authenticated %}
+  {% if not dataset.latest or public_view_on_latest_dataset() %}
 
     {% include 'common/note_report_species.html' %}
 
@@ -43,7 +43,7 @@
       <p class="note">
         The delayed delivery by Spain did not allow the Spanish report to be used for the EU conservation status
         assessment. Where possible, Spanish data from the period 2013-2019 were used for the EU assessments of
-        2019-2024. You can see a relevant technical note here.
+        2019-2024. You can see a relevant technical note <a target="_blank" href="{{ url_for('static', filename='documents/Technical note on missing Art 17 ES report_FINAL.pdf') }}">here</a>.
       </p>
     {% endif %}
 
@@ -84,11 +84,15 @@
           {% set qa_errors = record_errors(row) %}
           <tr {% if row.is_assesm %}class="assesm"{% endif %}>
             <td class="border">
-              {% set original_url=get_original_record_url(row) %}
-              <a class="clipped popup-btn block" data-title="Factsheet"
-                  href="{{ original_url }}" title="{{ title }}">
-                {{ row.subject }}
-              </a>
+              {% if dataset.schema == '2024' %}
+                <span>{{ row.subject }}</span>
+              {% else %}
+                {% set original_url=get_original_record_url(row) %}
+                <a class="clipped popup-btn block" data-title="Factsheet"
+                    href="{{ original_url }}" title="{{ title }}">
+                  {{ row.subject }}
+                </a>
+              {% endif %}
             </td>
 
             {% if not country %}<td class="border" colspan="2">{{ row.eu_country_code }}</td>{% endif %}
