@@ -222,11 +222,17 @@ def assessor_cannot_change():
 admin_perm = Permission(RoleNeed("admin"))
 sta_perm = Permission(RoleNeed("stakeholder"))
 assessor_perm = Permission(RoleNeed("assessor"))
+commission_perm = Permission(RoleNeed("commission"))
 
 
 def is_public_user():
     """Call for authenticated users."""
-    return not (admin_perm.can() or sta_perm.can() or assessor_perm.can())
+    return not (
+        admin_perm.can()
+        or sta_perm.can()
+        or assessor_perm.can()
+        or commission_perm.can()
+    )
 
 
 @common.record

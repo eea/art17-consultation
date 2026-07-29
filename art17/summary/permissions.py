@@ -77,6 +77,8 @@ def can_view_automatic_assessment(dataset):
     if dataset.is_readonly:
         # the reporting is finished for this period and all information can be public at this point
         return True
+    if dataset.latest and current_user.show_assessment == False:
+        return False
     if before_consultation():
         # before consultation Stakeholders and public users cannot see the manual assessments
         if current_user.is_anonymous or sta_perm.can():
@@ -103,6 +105,8 @@ def can_view_manual_assessment(dataset):
     if dataset.is_readonly:
         # the reporting is finished for this period and all information can be public at this point
         return True
+    if dataset.latest and current_user.show_assessment == False:
+        return False
     if before_consultation():
         # before consultation Stakeholders and public users cannot see the manual assessments
         if current_user.is_anonymous or sta_perm.can():
