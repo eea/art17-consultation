@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.11 - (2026-07-31)
+---------------------
+* Add disclaimer for zero values
+[dianaboiangiu]
+
 4.0.10 - (2026-07-27)
 ---------------------
 * Update documentation
