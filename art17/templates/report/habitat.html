@@ -53,6 +53,11 @@
         assessment. Where possible, Spanish data from the period 2013-2019 were used for the EU assessments of
         2019-2024. You can see a relevant technical note <a target="_blank" href="{{ url_for('static', filename='documents/Technical note on missing Art 17 ES report_FINAL.pdf') }}">here</a>.
       </p>
+      <p class="note">
+        Numerical information presented in the web tool is rounded to two decimals for easier presentation in the tool.
+        This means that very small numbers are presented as 0. The tool cannot differentiate rounded 0 from reported 0.
+        At the moment all cases are shown as NA, we are working on fixing the issue and show 0 instead of NA where relevant.
+      </p>
     {% endif %}
 
     {% include 'common/table_legend.html' %}
