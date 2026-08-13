@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.12 - (2026-08-13)
+---------------------
+* Widen username columns from 25 to 50 characters
+[olimpiurob]
+
 4.0.11 - (2026-07-31)
 ---------------------
 * Add disclaimer for zero values
