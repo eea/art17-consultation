@@ -100,7 +100,7 @@ t_comments_read = Table(
     Column("id_comment", ForeignKey("comments.id"), nullable=False),
     Column(
         "reader_user_id",
-        String(25),
+        String(50),
         ForeignKey("registered_users.user"),
         nullable=False,
     ),
@@ -113,10 +113,10 @@ class Comment(Base):
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     region = Column(String(4), nullable=False)
     assessment_speciesname = Column(String(50), nullable=False)
-    user_id = Column("user", String(25), nullable=False)
+    user_id = Column("user", String(50), nullable=False)
     MS = Column("ms", String(4), nullable=False, default=DEFAULT_MS)
     comment = Column(Text)
-    author_id = Column("author", String(25), nullable=False)
+    author_id = Column("author", String(50), nullable=False)
     post_date = Column(String(16), nullable=False)
     deleted = Column(Boolean)
     dataset_id = Column(
@@ -935,7 +935,7 @@ t_habitat_comments_read = Table(
     Column("id_comment", ForeignKey("habitat_comments.id"), nullable=False),
     Column(
         "reader_user_id",
-        String(25),
+        String(50),
         ForeignKey("registered_users.user"),
         nullable=False,
     ),
@@ -948,10 +948,10 @@ class HabitatComment(Base):
     id = Column(Integer, primary_key=True, unique=True)
     region = Column(String(4), nullable=False)
     habitat = Column(String(50), nullable=False)
-    user_id = Column("user", String(25), nullable=False)
+    user_id = Column("user", String(50), nullable=False)
     MS = Column("ms", String(4), nullable=False, default=DEFAULT_MS)
     comment = Column(Text)
-    author_id = Column("author", String(25), nullable=False)
+    author_id = Column("author", String(50), nullable=False)
     post_date = Column(String(16), nullable=False)
     deleted = Column(Boolean)
     dataset_id = Column(
@@ -1064,11 +1064,11 @@ class HabitattypesManualAssessment(Base):
     method_target1 = Column(String(3))
     conclusion_target1 = Column(String(3))
     backcasted_2007 = Column(String(4))
-    user_id = Column("user", String(25), primary_key=True, nullable=False, default="")
+    user_id = Column("user", String(50), primary_key=True, nullable=False, default="")
     last_update = Column(String(16))
     deleted = Column("deleted_record", Boolean)
     decision = Column(String(3))
-    user_decision_id = Column("user_decision", String(25))
+    user_decision_id = Column("user_decision", String(50))
     last_update_decision = Column(String(16))
     dataset_id = Column(
         "ext_dataset_id",
@@ -1354,11 +1354,11 @@ class SpeciesManualAssessment(Base):
     conclusion_target1 = Column(String(3))
     backcasted_2007 = Column(String(4))
 
-    user_id = Column("user", String(25), primary_key=True, nullable=False, default="")
+    user_id = Column("user", String(50), primary_key=True, nullable=False, default="")
     last_update = Column(String(16))
     deleted = Column("deleted_record", Boolean)
     decision = Column(String(3))
-    user_decision_id = Column("user_decision", String(25))
+    user_decision_id = Column("user_decision", String(50))
     last_update_decision = Column(String(16))
     dataset_id = Column(
         "ext_dataset_id",
