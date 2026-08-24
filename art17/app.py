@@ -1,5 +1,6 @@
 import logging
 import logging.handlers
+import sentry_sdk
 
 import flask
 from flask_mail import Mail
@@ -96,6 +97,12 @@ def create_app(config={}, testing=False):
     login_manager.login_view = "login"
     Mail().init_app(app)
     app.add_template_global(inject_static_file)
+    if app.config.get("SENTRY_DSN"):
+        sentry_sdk.init(
+            dsn=app.config.get("SENTRY_DSN"),
+            send_default_pii=True,
+            environment=app.config.get("SENTRY_ENVIRONMENT", "production"),
+        )
     return app
 
     @app.route("/temp.html")
@@ -105,11 +112,6 @@ def create_app(config={}, testing=False):
     url_prefix = app.config.get("URL_PREFIX")
     if url_prefix:
         app.wsgi_app = create_url_prefix_middleware(app.wsgi_app, url_prefix)
-
-    if app.config.get("SENTRY_DSN"):
-        from raven.contrib.flask import Sentry
-
-        Sentry(app)
 
     if app.config.get("AUTH_LOG_FILE"):
         configure_auth_log_hander(app.config.get("AUTH_LOG_FILE"))

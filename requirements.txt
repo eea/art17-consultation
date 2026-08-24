@@ -32,6 +32,7 @@ psycopg2-binary==2.9.12
 raven==6.10.0
 requests==2.34.2
 rst2pdf==0.105
+sentry-sdk==2.68.0
 sqlacodegen==4.0.3
 Sphinx==9.1.0
 SQLAlchemy==2.0.50
