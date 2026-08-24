@@ -57,6 +57,12 @@ def create_generic_fixtures():
     )
     models.db.session.execute(
         text(
+            "insert into roles (id, name, description) "
+            "values (4, 'commission', 'Commission / EEA')"
+        )
+    )
+    models.db.session.execute(
+        text(
             f"insert into config(id, default_dataset_id, "
             f"default_public_dataset_id, latest_dataset_public_view_enabled, start_date, end_date) "
             f"values (1, 6, 6, True, '{date.today()}', '{(date.today() + timedelta(days=1))}')"

@@ -141,6 +141,7 @@ class Art17AdminEditUserForm(Art17RegisterFormBase, FlaskForm):
             custom_unique_user_email,
         ],
     )
+    show_assessment = BooleanField()
 
 
 def no_ldap_user(form, field):

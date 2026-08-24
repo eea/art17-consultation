@@ -17,6 +17,7 @@ from art17.auth.security import current_user
 from art17.common import (
     admin_perm,
     assessor_perm,
+    commission_perm,
     sta_cannot_change,
     assessor_cannot_change,
 )
@@ -73,6 +74,8 @@ def hide_adm_assessor_username(name):
                 name = "Admin"
             elif author.has_role("stakeholder"):
                 name = "Stakeholder"
+            elif author.has_role("commission"):
+                name = "Commission / EEA"
     if author:
         if current_user and author == current_user:
             name = author.name
@@ -151,7 +154,10 @@ def can_add_comment(comments, revisions, dataset):
     ):
         return False
     is_author = current_user in [cmnt.author for cmnt in comments]
-    return not (current_user.is_anonymous or is_author) and revisions
+    return (
+        not (current_user.is_anonymous or commission_perm.can() or is_author)
+        and revisions
+    )
 
 
 @wiki.app_template_global("can_edit_comment")

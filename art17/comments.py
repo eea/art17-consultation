@@ -23,6 +23,7 @@ from art17.common import (
     is_public_user,
     sta_cannot_change,
     assessor_cannot_change,
+    commission_perm,
     sta_perm,
 )
 from art17.forms import CommentForm
@@ -60,6 +61,8 @@ def can_post_comment(record):
 
     if EU_ASSESSMENT_MODE:
         return True
+    if commission_perm.can():
+        return False
     if not current_user.is_authenticated:
         return False
     if record.dataset and record.dataset.is_readonly:
