@@ -1,6 +1,12 @@
 Changelog
 =========
 
+4.0.13 - (2026-08-24)
+---------------------
+* Update packages
+* Add sentry configuration
+[dianaboiangiu]
+
 4.0.12 - (2026-08-13)
 ---------------------
 * Widen username columns from 25 to 50 characters
