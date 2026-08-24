@@ -1,6 +1,4 @@
-from .base import AnonymizationMixin, ProtectedModelView
-
-from art17.admin.base import ProtectedModelView, StakeholderFilter
+from art17.admin.base import AnonymizationMixin, ProtectedModelView, StakeholderFilter
 from art17.models import WikiTrailChange
 
 

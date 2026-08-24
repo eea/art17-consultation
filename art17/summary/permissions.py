@@ -8,7 +8,6 @@ from art17.common import (
     sta_cannot_change,
     assessor_cannot_change,
     sta_perm,
-    get_config,
 )
 from art17.summary import summary
 from instance.settings import EU_ASSESSMENT_MODE
@@ -77,7 +76,9 @@ def can_view_automatic_assessment(dataset):
     if dataset.is_readonly:
         # the reporting is finished for this period and all information can be public at this point
         return True
-    if dataset.latest and (not current_user.is_anonymous and current_user.show_assessment == False):
+    if dataset.latest and (
+        not current_user.is_anonymous and current_user.show_assessment is False
+    ):
         return False
     if before_consultation():
         # before consultation Stakeholders and public users cannot see the manual assessments
@@ -105,7 +106,9 @@ def can_view_manual_assessment(dataset):
     if dataset.is_readonly:
         # the reporting is finished for this period and all information can be public at this point
         return True
-    if dataset.latest and (not current_user.is_anonymous and current_user.show_assessment == False):
+    if dataset.latest and (
+        not current_user.is_anonymous and current_user.show_assessment is False
+    ):
         return False
     if before_consultation():
         # before consultation Stakeholders and public users cannot see the manual assessments
@@ -174,7 +177,9 @@ def can_add_conclusion(dataset, zone, subject, region=None):
             "The current dataset is readonly, so you cannot " + "add a conclusion."
         )
     elif not region:
-        warning_message = "Please select a Bioregion using the filter at the top of the page in order to add a conclusion."
+        warning_message = """
+            Please select a Bioregion using the filter
+            at the top of the page in order to add a conclusion."""
     elif not (admin_perm.can() or sta_perm.can() or EU_ASSESSMENT_MODE):
         warning_message = "You do not have permission to add conclusions."
     elif sta_cannot_change():

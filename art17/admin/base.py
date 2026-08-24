@@ -99,7 +99,6 @@ class StakeholderFilter(BaseSQLAFilter):
         super().__init__(column, name)
 
     def apply(self, query, value, alias=None):
-        prop = getattr(self.column, "property", None)
         role = Role.query.filter_by(name="stakeholder").first()
         user_ids = [user.id for user in role.users] if role else []
         if value == "true":

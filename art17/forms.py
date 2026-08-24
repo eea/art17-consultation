@@ -178,7 +178,7 @@ class CommonFilterForm(Form):
 
     def __init__(self, *args, **kwargs):
         super(CommonFilterForm, self).__init__(*args, **kwargs)
-        cfg = get_config()
+        get_config()
         if not current_user.is_authenticated and not public_view_on_latest_dataset():
             datasets = Dataset.query.filter(
                 or_(Dataset.latest.is_(False), Dataset.latest.is_(None))
