@@ -639,6 +639,9 @@ def config():
 
     if form.validate_on_submit():
         form.populate_obj(row)
+        row.latest_dataset_public_view_enabled = (
+            form.latest_dataset_public_view_enabled.data
+        )
         db.session.commit()
         flask.flash("Configuration saved", "success")
         return flask.redirect(flask.url_for(".config"))

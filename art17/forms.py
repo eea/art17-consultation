@@ -909,7 +909,7 @@ class ConfigForm(Form):
     default_dataset_id = SelectField(label="Default period")
     default_public_dataset_id = SelectField(label="Default public period")
     latest_dataset_public_view_enabled = BooleanField(
-        label="Enable public view of latest dataset"
+        label="Enable public view of latest dataset",
     )
 
     class Meta:
@@ -924,6 +924,13 @@ class ConfigForm(Form):
         self.default_public_dataset_id.choices = [
             (str(ds_id), name) for ds_id, name in dataset_qs
         ]
+        if not self.is_submitted():
+            config = get_config()
+            self.latest_dataset_public_view_enabled.data = (
+                config.latest_dataset_public_view_enabled
+                if config is not None
+                else False
+            )
 
 
 class ChangeDetailsForm(Form):
