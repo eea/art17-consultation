@@ -3,13 +3,13 @@
 <!-- Range  -->
 <td {{ parse_errors('range_surface_area', row, qa_errors, classes='number border_left text-center') }}
     {{ set_reason_title(row.range_change_reason ) }}>
-  {{ row.range_surface_area|str2num }}
+  {{ row.range_surface_area|str2num(0) }}
 </td>
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') %}
 <td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'],
                     row, qa_errors, classes=classes) }}>
-  <span class="conclusion">{{ row.percentage_range_surface_area|str2num(0) }}</span>
+  <span class="conclusion">{{ row.percentage_range_surface_area|str3num }}</span>
 </td>
 
 <td {{ parse_errors('range_trend', row, qa_errors, classes="center text-center") }}
@@ -29,17 +29,16 @@
 <!-- Population -->
 
 <td class="number border_left center text-center">
-  {{ row.population_minimum_size|str2num }}
+  {{ row.population_minimum_size|str3num }}
 </td>
 
 <td class="number center text-center">
-  {{ row.population_maximum_size|str2num }}
+  {{ row.population_maximum_size|str3num }}
 </td>
 
 <td {{ parse_errors('population_change_reason', row, qa_errors, classes="center text-center") }}
 {{ set_reason_title(row.population_change_reason) }}>
-  {% set population_size = row.population_size or 'N/A' %}
-  {{ population_size|str2num }}
+  {{ row.population_size|str3num }}
 </td>
 
 <td {{ parse_errors('population_size_unit', row, qa_errors, classes="center text-center") }}
@@ -63,7 +62,7 @@
 <td {{ parse_errors(['conclusion_population',
                      'percentage_population_mean_size'],
                      row, qa_errors, classes=classes) }}>
-  <span class="conclusion">{{ row.percentage_population_mean_size|str2num(0) }}</span>
+  <span class="conclusion">{{ row.percentage_population_mean_size|str3num }}</span>
 </td>
 
 {% set qtitle, qclasses = parse_qa_errors('row.population_trend', row, qa_errors) %}
@@ -166,7 +165,7 @@
 </td>
 
 <td class="center border_right text-center">
-  {{ row.percentage_distribution_grid_area|str2num(0) }}
+  {{ row.percentage_distribution_grid_area|str3num }}
 </td>
 
 <td class="border_right" colspan="5"></td>

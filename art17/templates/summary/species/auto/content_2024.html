@@ -11,7 +11,7 @@
 
 <!-- Range -->
 <td class="number border_left text-center">
-  {{ row.range_surface_area|str2num('') }}
+  {{ row.range_surface_area|str3num }}
 </td>
 
 {% set conclusion_range = row.percentage_range_surface_area or row.conclusion_range %}
@@ -42,15 +42,15 @@
 
 <!--Population-->
 <td class="number border_left text-center">
-  {{ row.population_minimum_size }}
+  {{ row.population_minimum_size|str3num }}
 </td>
 
 <td class="number center text-center">
-  {{ row.population_maximum_size }}
+  {{ row.population_maximum_size|str3num }}
 </td>
       
 <td class="number center text-center">
-  {{ row.population_size }}
+  {{ row.population_size|str3num }}
 </td>
 
 <td class="number center text-center">

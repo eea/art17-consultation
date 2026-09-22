@@ -4,7 +4,7 @@
 
 <td {{ parse_errors('range_surface_area', row, qa_errors, classes='number border_left text-center') }}
     {{ set_reason_title(row.range_change_reason) }}>
-  {{ row.range_surface_area|str2num or 'N/A' }}
+  {{ row.range_surface_area|str3num }}
 </td>
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_range, '') %}
 <td {{ parse_errors(['conclusion_range', 'percentage_range_surface_area'], row, qa_errors, classes=classes) }}>
@@ -34,17 +34,16 @@
 <!-- Area -->
 
 <td class='number border_left text-center'>
-  {{ row.coverage_surface_area_min|str2num or 'N/A' }}
+  {{ row.coverage_surface_area_min|str3num }}
 </td>
 
 <td class='number center text-center'>
-  {{ row.coverage_surface_area_max|str2num or 'N/A' }}
+  {{ row.coverage_surface_area_max|str3num }}
 </td>
 
 <td class="center text-center"
     {{ set_reason_title(row.coverage_change_reason) }}>
-  {% set coverage_surface_area = row.coverage_surface_area or '' %}
-  {{ coverage_surface_area|str2num }}
+  {{ row.coverage_surface_area|str3num  }}
 </td>
 
 <td class="center text-center">
@@ -59,7 +58,7 @@
 <td {{ parse_errors(['conclusion_area',
                      'percentage_coverage_surface_area'],
                      row, qa_errors, classes=classes) }}>
-  <span class="conclusion">{{ row.percentage_coverage_surface_area|str2num(0) }}</span>
+  <span class="conclusion">{{ row.percentage_coverage_surface_area|str3num }}</span>
 </td>
 
 <td class="center text-center"

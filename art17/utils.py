@@ -36,6 +36,22 @@ def str2num(s, default="N/A", number_format="%.2f"):
         return default
 
 
+def str3num(s, default="N/A", number_format="%.2f"):
+    """Check if a string can be represented as integer"""
+    if s is None:
+        return default
+    if s == 0:
+        return 0
+    if isinstance(s, Decimal):
+        buffer = number_format % s
+    else:
+        buffer = str(s)
+    if buffer:
+        return re.sub(patt, r"\1", buffer)
+    else:
+        return default
+
+
 def str1num(s, default="N/A"):
     return str2num(s, default=default, number_format="%.1f")
 

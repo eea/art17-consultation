@@ -70,7 +70,7 @@ from art17.models import (
 from art17.summary import summary
 from art17.summary.conclusion import ConclusionDelete, ConclusionView, UpdateDecision
 from art17.summary.permissions import can_touch, must_edit_ref
-from art17.utils import na_if_none, parse_semicolon, str1num, str2num
+from art17.utils import na_if_none, parse_semicolon, str1num, str2num, str3num
 from instance.settings import EU_ASSESSMENT_MODE
 
 
@@ -110,6 +110,11 @@ def inject_static():
         "HABITAT_TOOLTIP": make_tooltip(HABITAT_OPTIONS),
         "NATURE_CHOICES": dict(NATURE_CHOICES),
     }
+
+
+@summary.app_template_filter("str3num")
+def _str3num(value, default="N/A"):
+    return str3num(value, default=default)
 
 
 @summary.app_template_filter("str2num")
