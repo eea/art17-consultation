@@ -47,6 +47,7 @@ class CommentModelView(ProtectedModelView):
         "id",
         "dataset_id",
         "MS",
+        "record",
         "assessment_speciesname",
         "region",
         "user_id",
@@ -82,6 +83,7 @@ class HabitatCommentModelView(ProtectedModelView):
         "id",
         "dataset_id",
         "MS",
+        "record",
         "habitat",
         "region",
         "user_id",
@@ -90,6 +92,21 @@ class HabitatCommentModelView(ProtectedModelView):
         "post_date",
         "deleted",
     ]
+    form_columns = (
+        "region",
+        "habitat",
+        "user_id",
+        "MS",
+        "comment",
+        "author_id",
+        "post_date",
+        "deleted",
+        "dataset_id",
+        "record",
+        "author",
+        "user",
+        "readers"
+    )
 
     def get_column_filters(self, view):
         filters = super().get_column_filters(view)
