@@ -1,5 +1,34 @@
 from art17.admin.base import ProtectedModelView
 
+from flask_admin.contrib.sqla.filters import BaseSQLAFilter
+from sqlalchemy import or_
+
+
+class DeletedFilter(BaseSQLAFilter):
+    def apply(self, query, value, alias=None):
+        if value == "yes":
+            return query.filter(self.column.is_(True))
+
+        if value == "no":
+            return query.filter(
+                or_(
+                    self.column.is_(False),
+                    self.column.is_(None),
+                )
+            )
+
+        return query
+
+    def operation(self):
+        return self.name
+
+    def get_options(self, view):
+        self.model = view.model
+        return [
+            ("yes", "Yes"),
+            ("no", "No"),
+        ]
+
 
 class CommentModelView(ProtectedModelView):
     can_export = True
@@ -12,7 +41,7 @@ class CommentModelView(ProtectedModelView):
         "user_id",
         "author_id",
         "post_date",
-        "deleted",
+        DeletedFilter("deleted", "Deleted"),
     ]
     column_list = [
         "id",
@@ -26,6 +55,13 @@ class CommentModelView(ProtectedModelView):
         "post_date",
         "deleted",
     ]
+
+    def get_column_filters(self, view):
+        filters = super().get_column_filters(view)
+
+        filters.append(DeletedFilter(self.model.deleted, "Deleted"))
+
+        return filters
 
 
 class HabitatCommentModelView(ProtectedModelView):
@@ -40,7 +76,7 @@ class HabitatCommentModelView(ProtectedModelView):
         "comment",
         "author_id",
         "post_date",
-        "deleted",
+        DeletedFilter("deleted", "Deleted"),
     ]
     column_list = [
         "id",
@@ -54,3 +90,10 @@ class HabitatCommentModelView(ProtectedModelView):
         "post_date",
         "deleted",
     ]
+
+    def get_column_filters(self, view):
+        filters = super().get_column_filters(view)
+
+        filters.append(DeletedFilter(self.model.deleted, "Deleted"))
+
+        return filters
