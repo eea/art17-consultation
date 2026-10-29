@@ -105,7 +105,7 @@ class HabitatCommentModelView(ProtectedModelView):
         "record",
         "author",
         "user",
-        "readers"
+        "readers",
     )
 
     def get_column_filters(self, view):
