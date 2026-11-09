@@ -10,6 +10,7 @@ mock==5.2.0
 paramiko==5.1.0
 pip-tools==7.6.2
 pytest==9.2.0
+pytest-cov==7.1.0
 six==1.17.0
 WebOb==1.8.11
 WebTest==3.0.7

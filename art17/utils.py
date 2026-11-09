@@ -12,13 +12,13 @@ from path import Path
 patt = re.compile(r"(?<!\d)(\d+)(\.0*)?(?!\d)")
 valid_float = re.compile(r"^\s*(?:0|0\.\d{1,2}|[1-9]\d*(?:\.\d{1,2})?|x)\s*$")
 valid_numeric = re.compile(
-    "^\s*(((\d*\.)?\d+\s*-\s*(\d*\.)?\d+" + "|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$"
+    r"^\s*(((\d*\.)?\d+\s*-\s*(\d*\.)?\d+" + r"|(>|>>|≈|<)?\s*((\d*\.)?\d+))|N/A|X|x)\s*$"
 )
 valid_ref = re.compile(
-    "^\s*((\d*\.)?\d+\s*-\s*(\d\.)?\d+" + "|(>|>>|≈|<)?\s*((\d*\.)?\d+)?|x)\s*$"
+    r"^\s*((\d*\.)?\d+\s*-\s*(\d\.)?\d+" + r"|(>|>>|≈|<)?\s*((\d*\.)?\d+)?|x)\s*$"
 )
-empty_str = re.compile("^\s*$")
-operator = re.compile("^\s*" + "(>|>>|≈|<|x)?\s*$")
+empty_str = re.compile(r"^\s*$")
+operator = re.compile(r"^\s*" + r"(>|>>|≈|<|x)?\s*$")
 
 
 def str2num(s, default="N/A", number_format="%.2f"):

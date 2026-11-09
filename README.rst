@@ -2,8 +2,10 @@ Art 17 Consultation Tool
 =========================
 https://nature-art17.eionet.europa.eu/article17/reports2012
 
-|docker|
+|tests| |docker|
 
+.. |tests| image:: https://github.com/eea/art17-consultation/actions/workflows/tests.yml/badge.svg?branch=master
+   :target: https://github.com/eea/art17-consultation/actions/workflows/tests.yml
 .. |docker| image:: https://img.shields.io/docker/build/eeacms/art17-consultation
    :target: https://hub.docker.com/r/eeacms/art17-consultation/
 
@@ -127,6 +129,15 @@ development requirements installed) run::
 
 For a bit of speedup you can install ``pytest-xdist`` and run tests in
 parallel, ``python -m pytest testsuite -n 4``.
+
+To also measure the test coverage::
+
+    $ docker compose exec app python -m pytest testsuite --cov=art17 --cov-report=term --cov-report=html
+
+The tests run on GitHub Actions (``.github/workflows/tests.yml``) for every push
+to ``master``/``production`` and for every pull request. The coverage summary is
+shown on the workflow run page, and the HTML report can be downloaded from its
+``coverage-report`` artifact.
 
 
 Factsheet generator
