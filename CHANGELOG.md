@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.0.14 - (2026-11-09)
+4.1.0 - (2026-11-09)
 ---------------------
 * Zero values fix and add update note
 * Upgrade packages
