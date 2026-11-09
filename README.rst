@@ -1,5 +1,7 @@
+========================
 Art 17 Consultation Tool
-=========================
+========================
+
 https://nature-art17.eionet.europa.eu/article17/reports2012
 
 |tests| |docker|
@@ -8,8 +10,6 @@ https://nature-art17.eionet.europa.eu/article17/reports2012
    :target: https://github.com/eea/art17-consultation/actions/workflows/tests.yml
 .. |docker| image:: https://img.shields.io/docker/build/eeacms/art17-consultation
    :target: https://hub.docker.com/r/eeacms/art17-consultation/
-
-.. contents ::
 
 Prerequisites
 =============
