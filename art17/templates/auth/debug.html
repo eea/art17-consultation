@@ -18,6 +18,7 @@
   </p>
 
   <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <div>
       <label for="user_id">User ID</label><br>
       <input id="user_id" name="user_id" value="{{ user_id or '' }}">

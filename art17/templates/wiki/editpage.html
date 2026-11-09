@@ -1,4 +1,5 @@
 <form name="edit_wiki_form" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   {{ edit_page_form.text(class='ckeditor') }}
   <div class="btn-toolbar no-bottom">
     <button class="btn-green" type="submit" name="submit" value="edit_wiki" >Submit</button>

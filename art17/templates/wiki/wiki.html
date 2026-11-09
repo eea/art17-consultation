@@ -29,6 +29,7 @@
   <div style="margin-bottom: 20px;">
     {% if wiki_revised == False %}
       <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <p>This page is not revised.</p>
         {% if not dataset.is_readonly %}
           <label for="checkbox_id">Revise</label>
@@ -55,7 +56,7 @@
 
       {% for region, region_url, body in wiki_body %}
         <h3><a href="{{ region_url }}&merged=merged">{{ region }}</a></h3>
-          {{ body | safe }}
+          {{ body | sanitize_html }}
       {% endfor %}
     {% endif %}
   </div>

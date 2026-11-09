@@ -69,7 +69,7 @@
                     href="?delete={{ comment.id }}&perm=1">Permanently delete</a>
               {% endif %}
             </div>
-            <div class="cmnt-body">{{ comment.comment | safe }}</div>
+            <div class="cmnt-body">{{ comment.comment | sanitize_html }}</div>
           {% endif %}
 
           <div class="small clearfix">

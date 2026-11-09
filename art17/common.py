@@ -19,7 +19,7 @@ from art17.models import (
     restricted_species_2013,
 )
 
-from .utils import str2num
+from .utils import sanitize_html, str2num
 
 DATE_FORMAT = "%Y-%m-%d %H:%M"
 DEFAULT_MS = "EU27"
@@ -680,3 +680,6 @@ def change_details():
 @common.app_template_filter("ugly_fix")
 def ugly_fix(value):
     return value.replace("art17.eionet", "bd.eionet")
+
+
+common.add_app_template_filter(sanitize_html, "sanitize_html")

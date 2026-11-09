@@ -16,7 +16,7 @@
       <dd>{{ regions | join(', ') }}</dd>
     </dl>
 
-  {{ wiki | safe }}
+  {{ wiki | sanitize_html }}
   </section>
 
   <section class="page-breaker">

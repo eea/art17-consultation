@@ -5,6 +5,7 @@ import sentry_sdk
 import flask
 from flask_mail import Mail
 from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
 
 from art17.admin import admin_register
 from art17.assets import assets_env
@@ -34,8 +35,9 @@ from art17.summary import summary
 from art17.utils import inject_static_file
 from art17.wiki import wiki
 
+csrf = CSRFProtect()
+
 DEFAULT_CONFIG = {
-    "WTF_CSRF_ENABLED": False,
     "MAP_SERVICE_SPECIES": "http://nature-art17.eionet.europa.eu/article17/"
     "speciessummary/details/art17ws",
     "MAP_SERVICE_HABITATS": "https://nature-art17.eionet.europa.eu/article17/"
@@ -76,6 +78,7 @@ def create_app(config={}, testing=False):
         app.config.from_pyfile("settings.py")
     app.config.update(config)
     create_cli_commands(app)
+    csrf.init_app(app)
     assets_env.init_app(app)
     migrate = Migrate()
     db.init_app(app)

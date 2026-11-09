@@ -13,6 +13,7 @@
   <h1>Register an existing Eionet account</h1>
 
   <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <label>
       Eionet username:
       <input name="user_id">

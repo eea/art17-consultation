@@ -1091,7 +1091,6 @@ class HabitattypesManualAssessment(Base):
     def comments_count_read(self, user):
         if not self.comments:
             return 0
-        from sqlalchemy.sql import text
 
         return (
             db.session.query(HabitatComment.id)
@@ -1101,7 +1100,7 @@ class HabitattypesManualAssessment(Base):
             .filter(HabitatComment.MS == self.MS)
             .filter(HabitatComment.user_id == self.user_id)
             .filter(HabitatComment.dataset_id == self.dataset_id)
-            .filter(text("habitat_comments_read.reader_user_id='%s'" % user))
+            .filter(t_habitat_comments_read.c.reader_user_id == user)
             .filter(
                 or_(
                     HabitatComment.deleted.is_(False),
@@ -1381,7 +1380,6 @@ class SpeciesManualAssessment(Base):
     def comments_count_read(self, user):
         if not self.comments:
             return 0
-        from sqlalchemy.sql import text
 
         return (
             db.session.query(Comment.id)
@@ -1391,7 +1389,7 @@ class SpeciesManualAssessment(Base):
             .filter(Comment.MS == self.MS)
             .filter(Comment.user_id == self.user_id)
             .filter(Comment.dataset_id == self.dataset_id)
-            .filter(text("comments_read.reader_user_id='%s'" % user))
+            .filter(t_comments_read.c.reader_user_id == user)
             .filter(or_(Comment.deleted.is_(False), Comment.deleted.is_(None)))
             .count()
         )

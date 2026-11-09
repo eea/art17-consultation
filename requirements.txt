@@ -20,6 +20,7 @@ Jinja2==3.1.6
 jsmin==3.0.1
 Mako==1.4.3
 MarkupSafe==3.0.4
+nh3==0.3.7
 openpyxl==3.1.5
 pandas==3.1.1
 path==17.1.1

@@ -1,5 +1,6 @@
 # coding=utf-8
 from flask_wtf import FlaskForm as Form_base
+from markupsafe import escape
 from sqlalchemy import or_
 from wtforms import BooleanField, DateField, SelectField, StringField, TextAreaField
 from wtforms.validators import Optional, ValidationError
@@ -255,7 +256,7 @@ class SummaryFormMixin(object):
         errors = set(errors)
         text = "<ul>"
         for error in errors:
-            text += "<li>" + error + "</li>"
+            text += "<li>" + str(escape(error)) + "</li>"
         text += "</ul>"
         return text
 

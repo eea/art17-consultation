@@ -60,7 +60,7 @@
           {% if edit_comment_form and can_edit_comment(comment) %}
             {% include 'wiki/editcomment.html' %}
           {% else %}
-            {{ comment.comment | safe }}
+            {{ comment.comment | sanitize_html }}
           {% endif %}
         </div>
 

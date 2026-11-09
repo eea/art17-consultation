@@ -22,6 +22,7 @@ from art17.common import (
     assessor_cannot_change,
 )
 from art17.forms import CommentForm, RevisedForm, WikiEditForm
+from art17.utils import sanitize_html
 from art17.models import (
     Dataset,
     RegisteredUser,
@@ -438,7 +439,7 @@ class AddComment(WikiView):
 
         comment = self.section.wiki_comment_cls(
             wiki_id=wiki.id,
-            comment=form.comment.data,
+            comment=str(sanitize_html(form.comment.data)),
             author_id=current_user.id,
             posted=datetime.now(),
             dataset_id=dataset.id,
@@ -464,9 +465,10 @@ class EditPage(WikiView):
             flash("Please enter a non-empty text.")
             return False
 
+        body = str(sanitize_html(form.text.data))
         active_change = self.section.get_active_change()
         if active_change:
-            if active_change.body == form.text.data:
+            if active_change.body == body:
                 flash("No changes were made.")
                 return False
             active_change.active = False
@@ -476,7 +478,7 @@ class EditPage(WikiView):
         wiki = self.section.get_wiki()
         new_change = self.section.wiki_change_cls(
             wiki_id=wiki.id,
-            body=form.text.data,
+            body=body,
             editor=current_user.id,
             changed=datetime.now(),
             active=True,
@@ -511,7 +513,7 @@ class EditComment(WikiView):
             flash("Please enter a valid comment.")
             return False
 
-        comment.comment = form.comment.data
+        comment.comment = str(sanitize_html(form.comment.data))
         comment.readers = []
         db.session.commit()
 
@@ -589,7 +591,7 @@ class GetRevision(WikiView):
             id=revision_id
         ).first_or_404()
 
-        return revision.body
+        return sanitize_html(revision.body)
 
 
 wiki.add_url_rule(

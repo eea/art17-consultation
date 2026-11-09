@@ -3,6 +3,7 @@
 import re
 from decimal import Decimal
 
+import nh3
 from bs4 import BeautifulSoup
 from flask import current_app as app
 from markupsafe import Markup
@@ -99,6 +100,44 @@ def validate_nonempty(s):
         soup = BeautifulSoup(s, "html.parser")
         return not bool(empty_str.match(soup.text.replace("\xa0", " ")))
     return False
+
+
+# Rich text allowed in comments and wiki pages: what CKEditor produces, plus
+# the formatting found in older content (pasted from Word).
+SANITIZE_TAGS = {
+    "a", "b", "blockquote", "br", "del", "div", "em", "font", "h1", "h2", "h3",
+    "h4", "h5", "h6", "i", "ins", "li", "ol", "p", "s", "span", "strong", "sub",
+    "sup", "u", "ul",
+}
+SANITIZE_ATTRIBUTES = {
+    "*": {"class", "style", "title"},
+    "a": {"href", "target"},
+    "del": {"cite", "datetime"},
+    "font": {"color", "face", "size"},
+    "ins": {"cite", "datetime"},
+    "ol": {"start"},
+}
+SANITIZE_STYLE_PROPERTIES = {
+    "color", "font-family", "font-size", "font-style", "font-weight",
+    "line-height", "margin", "margin-bottom", "margin-left", "margin-right",
+    "margin-top", "text-align", "text-decoration",
+}
+
+
+def sanitize_html(s):
+    """Strips scripts, event handlers and unsafe markup from user HTML"""
+    if not s:
+        return Markup("")
+    return Markup(
+        nh3.clean(
+            s,
+            tags=SANITIZE_TAGS,
+            clean_content_tags={"script", "style", "xml", "object"},
+            attributes=SANITIZE_ATTRIBUTES,
+            url_schemes={"http", "https", "mailto"},
+            filter_style_properties=SANITIZE_STYLE_PROPERTIES,
+        )
+    )
 
 
 def na_if_none(s, default="N/A"):

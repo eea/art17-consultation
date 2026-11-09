@@ -6,6 +6,7 @@
   <h1>Dataset administration: <em>{{ dataset.name }}</em></h1>
 
   <form class="form box inline-block" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <div class="form-group">
       <label for="name">Name: </label>
       {{ form.name() }}

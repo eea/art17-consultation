@@ -28,6 +28,7 @@ from art17.common import (
 )
 from art17.forms import CommentForm
 from art17.mixins import HabitatMixin, SpeciesMixin
+from art17.utils import sanitize_html
 from art17.models import (
     Comment,
     Dataset,
@@ -171,7 +172,7 @@ class CommentsList(views.View):
             if edited_comment:
                 if not can_edit_comment(edited_comment):
                     raise PermissionDenied
-                edited_comment.comment = form.comment.data
+                edited_comment.comment = str(sanitize_html(form.comment.data))
                 edited_comment.readers = []
                 edited_comment.post_date = datetime.now().strftime(DATE_FORMAT)
             else:
@@ -197,7 +198,7 @@ class CommentsList(views.View):
                     region=self.record.region,
                     user_id=self.record.user_id,
                     MS=self.record.MS,
-                    comment=form.comment.data,
+                    comment=str(sanitize_html(form.comment.data)),
                     author_id=user_id,
                     post_date=datetime.now().strftime(DATE_FORMAT),
                     dataset_id=self.record.dataset_id,

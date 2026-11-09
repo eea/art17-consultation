@@ -88,6 +88,7 @@
     {% include 'common/table_legend.html' %}
 
     <form class="form" method="post" action="#theform">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       <div style="overflow-x:auto;">
         <table class="complex_datatable">
           <caption>

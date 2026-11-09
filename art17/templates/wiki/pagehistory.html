@@ -16,6 +16,7 @@
 
         {% if can_change_revision(revision) %}
           <form method="post" action="{{ page_history_url }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="hidden" name="revision_id" value="{{ revision.id }}"/>
             <button class="btn-text" type="submit">Restore version</button>
           </form>

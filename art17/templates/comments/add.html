@@ -1,4 +1,5 @@
 <form method="post" id="theform">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   {{ form.comment(class='ckeditor') }}
   <div class="btn-toolbar">
     <button class="btn-green" type="submit" name="submit" value="add">Add comment</button>
