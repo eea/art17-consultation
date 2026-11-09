@@ -31,4 +31,18 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Let's have it basic on dialogs as well.
 	config.removeDialogTabs = 'link:advanced';
+
+	// ckeditor.js is the 4.22.1 standard build; only enable the plugins of the
+	// previous custom basic build (basic preset + Paste from Word).
+	config.plugins = 'basicstyles,enterkey,entities,floatingspace,wysiwygarea,' +
+		'indent,indentlist,dialogui,dialog,fakeobjects,link,list,button,toolbar,' +
+		'clipboard,pastefromword';
+
+	// Only lang/en.js and the moono skin are shipped.
+	config.language = 'en';
+	config.skin = 'moono';
+
+	// 4.22.1 is the last open-source release (4.23+ is commercial LTS). Its
+	// version check would warn every user and call cdn.ckeditor.com.
+	config.versionCheck = false;
 };

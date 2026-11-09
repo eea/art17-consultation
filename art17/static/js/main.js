@@ -60,7 +60,7 @@ $(function() {
       window.close();
     });
 
-    $('body').delegate('.delete-btn', 'click', function (evt) {
+    $('body').on('click', '.delete-btn', function (evt) {
         evt.preventDefault();
         var url = $(this).attr('href');
         var request = $.ajax({

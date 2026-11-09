@@ -4,14 +4,18 @@
     background: #e6f4e6;
   }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"
+        integrity="sha384-O/ymMhrYXP5tgvTj27eAjKZODlpm7nIVeAkhRL7i9mdenmlJGAjstxMy/bKdklFZ"
+        crossorigin="anonymous"></script>
 
 
 {% assets "js" %}
   <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet"
+      integrity="sha384-4Efkt0T8BZbTzoX4+i/jZFCAWVy1BuRte6F0L3awo3Ek6D1L98qwg7ZRe5bxSrF/"
+      crossorigin="anonymous" />
 <link rel="stylesheet" type="text/css"
       href="{{ url_for('static', filename='css/formalize.css') }}"
       media="screen">
