@@ -25,7 +25,7 @@ from flask_security.recoverable import (
     send_reset_password_instructions,
 )
 from flask_security.registerable import register_user
-from flask_security.utils import config_value, get_message, get_url
+from flask_security.utils import get_message, get_url
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.local import LocalProxy
 
@@ -570,7 +570,7 @@ def reset_password(token):
         )
 
     return _security.render_template(
-        config_value("RESET_PASSWORD_TEMPLATE"),
+        current_app.config["SECURITY_RESET_PASSWORD_TEMPLATE"],
         reset_password_form=form,
         reset_password_token=token,
         **_security._run_ctx_processor("reset_password"),
