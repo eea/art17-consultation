@@ -18,6 +18,7 @@ permissions that are nicely bundled into four different roles:
 * Administrator
 * Assessor
 * Stakeholder (STK)
+* Commission
 
 Further details about each role and its capabilities in terms of assessment
 operations are to be described within each of the following sections.
@@ -26,8 +27,9 @@ operations are to be described within each of the following sections.
 Add assessments
 ---------------
 
-All registered users can propose corrections to the automatic assessments by
-adding a manual assessment on each of the Species/Habitat data summaries pages.
+Stakeholders (during the consultation) and Administrators can propose corrections
+to the automatic assessments by adding a manual assessment on each of the
+Species/Habitat data summaries pages.
 The user is allowed to add **only one** record for each period, subject and
 region. As the next figure depicts, in order to add an assessment a bio-region
 **must be** selected.
@@ -76,17 +78,14 @@ are raised.
    *Method/conclusion error message*
 
 As previously stated, the level of access to the application core is spread through different
-permissions bundled into four different roles. Regardless of the role granted,
-the form to propose assessments is roughly the same, with very few exceptions:
-
-* The Administrator can add a conclusion only for a country member that has a report or under EU27.
-* The Assessor can add a conclusion only for a country member that has a report or under EU27.
-* Stakeholder (STK) can add a conclusion only for a country member that has a report or under EU27.
+permissions bundled into four different roles. Both the Administrator and the
+Stakeholder (STK) can add a conclusion only for a country member that has a report
+or under EU27.
 
 .. WARNING::
-   For period 2019-2024, to set the decisions for the manual assessments that were imported automatically, the `add assessment` functionality
-   was revoked entirely to restrict the Assessor users to only edit existing assessments (the ones that were imported).
-   The adding of assessments can be enabled/disabled by an `Add assessments` toggle in config.
+   Assessor users cannot add assessments. For period 2019-2024 the manual assessments
+   were imported automatically, and the Assessor users edit the existing (imported)
+   assessments and set their decisions.
 
 
 Regardless of the role granted, a successful assessment added would formaly look the way the next figure depicts.
@@ -112,7 +111,9 @@ correction for that occurence) button, visible after clicking the assessor's nam
 
 For simplicity, the protocol states that all registered users can edit their
 own assessments; if so, all assessment fields can be modified. Additionaly,
-Assessor users can also edit other users assessments. For
+Assessor and Administrator users can also edit other users assessments.
+Stakeholders can edit their assessments only during the consultation, while
+Assessors cannot edit assessments during the consultation (see :doc:`Roles <roles>`). For
 the latter, please be advised that **only** favourable reference values were
 subject to change before period 2019-2024. The figures below feature the two edit forms.
 
@@ -138,7 +139,8 @@ Delete assessments
 
 Due to the same human error scope, according to the protocol the Art17
 Consultation states, assessments can also be deleted. As a counterpart of
-`Edit`, the `Delete` operation is allowed to assessments **authors only**.
+`Edit`, the `Delete` operation is allowed to assessments **authors only**, with the
+same consultation period restrictions as for editing.
 This can be achieved by clicking the assessor's name and then the *Delete* button.
 
 .. figure:: images/conclusions/delete_button_ass.png

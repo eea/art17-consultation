@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 import pytest
 
 from art17 import models
@@ -468,3 +470,33 @@ def test_count_read_comments_view(
 
     assert resp.status_code == 200
     assert resp.html.find("a", {"title": "Comments: Read/Total"}).text.strip() == "1/1"
+
+
+@pytest.mark.parametrize(
+    "start_offset, end_offset, status_code",
+    [
+        (2, 4, 403),  # before consultation
+        (-1, 1, 302),  # during consultation
+    ],
+)
+def test_stakeholder_comment_outside_consultation(
+    app, client, setup, set_auth, start_offset, end_offset, status_code
+):
+    config = models.Config.query.one()
+    config.start_date = date.today() + timedelta(days=start_offset)
+    config.end_date = date.today() + timedelta(days=end_offset)
+    create_user("someuser", ["stakeholder"])
+    user = create_user("otherstk", ["stakeholder"])
+    models.db.session.commit()
+    force_login(client, user.fs_uniquifier)
+
+    resp = client.post(
+        *get_request_params(
+            "post",
+            ["/species/comments/6/Canis lupus/BOR/someuser/", {"MS": "EU27"}],
+            {"comment": "Stakeholder comment"},
+        ),
+        expect_errors=True,
+    )
+
+    assert resp.status_code == status_code

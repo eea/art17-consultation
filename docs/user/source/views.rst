@@ -9,7 +9,7 @@ Anybody is able to view the data as provided by Member States. The latest report
 is only visible to the public (unauthenticated users) if the ``Enable public view of latest dataset``
 is checked in ``Config``.
 
-The available data is organized into two periods:
+The available data is organized into five periods:
 
 * **2001-2006**, which gathers historical data from the specified period and
   presents it to the user in a readonly mode;
@@ -61,6 +61,14 @@ The table is made of three main sections:
 * Automatic Assessments (hidden by default; the user can view information in
   this section by pressing ``Show``)
 * EU Biogeographical assessment and proposed corrections
+
+.. NOTE::
+   For period 2019-2024, notes are displayed above the table on the summary and
+   Member State level pages: numerical values are rounded to two decimals (so very
+   small values are displayed as 0 and cannot be distinguished from a reported 0),
+   Spanish data from the period 2013-2018 were used where possible, and specific
+   notes for individual species (such as the revised favourable reference population
+   for *Canis lupus* in Sweden).
 
 The buttons above the table open corresponding pages in pop-up windows:
 
@@ -201,9 +209,6 @@ tab.
 
    *User activity log for habitat*
 
-The dates, both for comments and conclusions, are links to the “EU
-Biogeographical assessment and proposed corrections” section for the
+The species/habitat names, both for comments and conclusions, are links to the
+“EU Biogeographical assessment and proposed corrections” section for the
 species/habitat and region selected.
-
-.. NOTE::
-   Recently, the species/habitat was moved to serve as the link.

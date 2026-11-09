@@ -28,7 +28,7 @@ by groups and countries.
 
 Progress
 ~~~~~~~~
-An overview of the added assessments, per species/hbaitat type and biogeoregion.
+An overview of the added assessments, per species/habitat type and biogeoregion.
 It allows filtering by group and conclusion.
 
 
@@ -63,11 +63,19 @@ The following configuration settings can be changed:
 * start and end date for the consultation
 * administrator email
 * default dataset (reported period) in views' filters
-* map URLs
+* default public dataset (shown to unauthenticated users outside the consultation)
+* public view of the latest dataset
+
+The map URLs are set for each dataset, from the Dataset Admin section.
 
 
 
 Dataset Admin
 ~~~~~~~~~~~~~
 
-This section now contains a management interface for most of the tables. CRUD and export functionalities are avaiable here.
+This section now contains a management interface for most of the tables. CRUD and export functionalities are available here.
+
+For each dataset (reporting period), the administrators can set the map URLs and
+whether the dataset is the latest one, read-only, or its automatic/manual
+assessments can be viewed by the public after the consultation. The manual
+assessments can be filtered (and exported) by the *Created by stakeholder* filter.

@@ -6,8 +6,10 @@ This page describes the authentication process for a registered user.
 
 Backend
 -------
-An authenticated session uses HTTP Basic Authentication. This means the browser
-sends with every request a HTTP header with the authenticated user credentials.
+The login is done through a form (``/auth/login``) and the authenticated session
+is kept in a session cookie (Flask-Login). The credentials are checked first
+against the EIONET LDAP server; if they are not valid there, they are checked
+against the local accounts.
 
 Login Process
 -------------
@@ -16,11 +18,15 @@ These are the steps explained:
 
 #. The user accesses https://nature-art17.eionet.europa.eu/article17/ and
    clicks on the *Login* link in the top left part of the page.
-#. A popup appears asking for credentials
+#. The login page asks for the username and password
 #. The user enters the username and password for bd.eionet.europa.eu (either
    LDAP or local account)
 #. The user is redirected to the home page of the consultation tool, and the
    *Login* link changes to *Logout (username)*.
+
+An EIONET user logging in for the first time is registered automatically in the
+local database, with the *Stakeholder* role. Users with the *Stakeholder* role
+cannot log in after the consultation has ended.
 
 
 Registration

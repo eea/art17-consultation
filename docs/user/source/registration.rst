@@ -17,9 +17,10 @@ Register into Art17 Consultation by self-registration
 These are the steps explained for self-registration with an **existing EIONET
 account**:
 
-#. If the user has an EIONET account, they can simply click on the *Login* button.
+#. If the user has an EIONET account, they can simply click on the *Login* button
+   and log in with their EIONET username and password.
 #. Should no errors occur, the account is being registered with immediate
-   effect within the database
+   effect within the database (on the first login)
 #. The *Login* link changes to *Logout (username)*.
 #. The user will have the *Stakeholder* role by default.
 
@@ -31,9 +32,16 @@ self-registration can be done for a **local user account**:
    text option in the center of the page
 #. A new `Register a new account` page loads and asks the user to fill in
    several fields to complete a profile for registration
-#. Upon successful user info completion, the user account is being created and
-   further instructions, along with confirmation link, are sent via email.
+#. Upon successful user info completion, the user account is created with
+   immediate effect (no confirmation email is sent) and a link to the login page
+   is shown.
 #. The user can now login and they will have the *Stakeholder* role by default.
+
+.. NOTE::
+   Self-registration through the EIONET registration page is only possible during
+   the consultation. Outside the consultation, the page shows *Registration has not
+   started yet* or *Registration has finished*. Stakeholders cannot log in after the
+   consultation has ended (see :doc:`Consultation <consultation>`).
 
 Register into Art17 Consultation by admin workaround
 ====================================================

@@ -71,7 +71,7 @@ def can_post_comment(record):
     can_add = False
     if sta_cannot_change():
         can_add = False
-    if assessor_cannot_change():
+    elif assessor_cannot_change():
         can_add = False
     elif sta_perm.can():
         if not record.user or record.user.has_role("stakeholder"):
