@@ -1,6 +1,16 @@
 Changelog
 =========
 
+4.0.14 - (2026-11-09)
+---------------------
+* Zero values fix and add update note
+* Upgrade packages
+* Upgrade frontend packages
+* Security fixes
+* Update documentation
+* Update README.rst
+[dianaboiangiu]
+
 4.0.13 - (2026-08-24)
 ---------------------
 * Update packages
