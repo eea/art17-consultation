@@ -82,14 +82,14 @@
 
 <td {{ set_method_title(row.hab_condition_method|get_method_name) }}
     class="border_left center text-center">
-  {{ row.hab_condition_good_min|str2num }} - {{ row.hab_condition_good_max|str2num }}
+  {{ row.hab_condition_good_min|str3num }} - {{ row.hab_condition_good_max|str3num }}
 </td>
 
 <td class="center text-center">
-  {{ row.hab_condition_notgood_min|str2num }} - {{ row.hab_condition_notgood_max|str2num }}
+  {{ row.hab_condition_notgood_min|str3num }} - {{ row.hab_condition_notgood_max|str3num }}
 </td>
 
-<td class="center text-center">{{ row.hab_condition_unknown_min|str2num }} - {{ row.hab_condition_unknown_max|str2num }}</td>
+<td class="center text-center">{{ row.hab_condition_unknown_min|str3num }} - {{ row.hab_condition_unknown_max|str3num }}</td>
 
 {% set classes=CONCLUSION_CLASSES.get(row.conclusion_structure, '') %}
 <td {{ parse_errors(['conclusion_structure'], row, qa_errors, classes=classes) }}>
