@@ -2,6 +2,11 @@ Art 17 Consultation Tool
 =========================
 https://nature-art17.eionet.europa.eu/article17/reports2012
 
+|docker|
+
+.. |docker| image:: https://img.shields.io/docker/build/eeacms/art17-consultation
+   :target: https://hub.docker.com/r/eeacms/art17-consultation/
+
 .. contents ::
 
 Prerequisites
