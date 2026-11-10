@@ -1,6 +1,16 @@
 Changelog
 =========
 
+4.1.2 - (2026-11-10)
+---------------------
+* Fix admin and email password reset after the Flask-Security upgrade
+* Fix mail server TLS/SSL and port settings
+* Send password reset emails only for local accounts, with the same response for any address
+* Add the user's name and username to the password reset email
+* Add "Forgot your password?" links to the header and the login page
+* Fix comments counter for anonymous users on the summary pages
+[dianaboiangiu]
+
 4.1.1 - (2026-11-10)
 ---------------------
 * Fix csrf
