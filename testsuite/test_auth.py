@@ -232,6 +232,52 @@ def test_change_local_password(app, set_auth, client):
     assert foo.password != old_enc_password
 
 
+def test_admin_reset_local_password(app, set_auth, client):
+    foo = create_user("foo")
+    old_enc_password = foo.password
+    admin = create_user("ze_admin", ["admin"])
+    models.db.session.commit()
+    force_login(client, admin.fs_uniquifier)
+
+    page = client.get(flask.url_for("auth.admin_user_reset_password", user_id="foo"))
+    page.form["password"] = "the new pw"
+    page.form["password_confirm"] = "the new pw"
+    result_page = page.form.submit()
+
+    assert "Password successfully reseted." in result_page.text
+    foo = models.RegisteredUser.query.filter_by(id="foo").first()
+    assert foo.password != old_enc_password
+
+
+def test_reset_password_with_token(app, set_auth, client):
+    from flask_security.recoverable import generate_reset_password_token
+
+    from art17.auth.security import verify
+
+    foo = create_user("foo")
+    models.db.session.commit()
+    token = generate_reset_password_token(foo)
+
+    resp = client.post(
+        flask.url_for("auth.reset_password", token=token),
+        {"password": "the new pw", "password_confirm": "the new pw"},
+    )
+
+    assert resp.status_code == 302
+    foo = models.RegisteredUser.query.filter_by(id="foo").first()
+    assert verify("the new pw", foo)
+
+
+def test_reset_password_with_invalid_token(app, set_auth, client):
+    resp = client.post(
+        flask.url_for("auth.reset_password", token="not-a-token"),
+        {"password": "the new pw", "password_confirm": "the new pw"},
+    )
+
+    assert resp.status_code == 302
+    assert resp.location == flask.url_for("security.forgot_password", _external=False)
+
+
 def test_change_anonymous_password(app, set_auth, client):
     page = client.get(flask.url_for("auth.change_password"))
     assert "You must log in before changing your password" in page

@@ -67,9 +67,9 @@ EEA_PASSWORD_RESET = getenv("EEA_PASSWORD_RESET", default="")
 
 # MAIL SERVER
 MAIL_SERVER = getenv("MAIL_SERVER")
-MAIL_PORT = getenv("MAIL_PORT")
-MAIL_USE_TLS = getenv("MAIL_USE_TLS")
-MAIL_USE_SSL = getenv("MAIL_USE_SSL")
+MAIL_PORT = int(getenv("MAIL_PORT") or 25)
+MAIL_USE_TLS = getenv("MAIL_USE_TLS", type=bool, default=False)
+MAIL_USE_SSL = getenv("MAIL_USE_SSL", type=bool, default=False)
 MAIL_USERNAME = getenv("MAIL_USERNAME")
 MAIL_PASSWORD = getenv("MAIL_PASSWORD")
 

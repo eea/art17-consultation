@@ -409,6 +409,7 @@ def admin_user_reset_password(user_id):
         return render_template("message.html", message=message)
 
     form = ResetPasswordForm()
+    form.user = user
 
     if form.validate_on_submit():
         user.password = encrypt_password(form.password.data)
@@ -551,13 +552,14 @@ def reset_password(token):
             *get_message(
                 "PASSWORD_RESET_EXPIRED",
                 email=user.email,
-                within=_security.reset_password_within,
+                within=current_app.config["SECURITY_RESET_PASSWORD_WITHIN"],
             )
         )
     if invalid or expired:
-        return redirect(url_for("forgot_password"))
+        return redirect(url_for("security.forgot_password"))
 
-    form = _security.reset_password_form()
+    form = ResetPasswordForm()
+    form.user = user
 
     if form.validate_on_submit():
         datastore = current_app.extensions["security"].datastore
@@ -566,7 +568,8 @@ def reset_password(token):
         datastore.commit()
         flask.flash(*get_message("PASSWORD_RESET"))
         return redirect(
-            get_url(_security.post_reset_view) or get_url(_security.login_url)
+            get_url(current_app.config["SECURITY_POST_RESET_VIEW"])
+            or get_url(current_app.config["SECURITY_LOGIN_URL"])
         )
 
     return _security.render_template(
