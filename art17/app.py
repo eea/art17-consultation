@@ -38,6 +38,9 @@ from art17.wiki import wiki
 csrf = CSRFProtect()
 
 DEFAULT_CONFIG = {
+    # The proxy sends "Referrer-Policy: no-referrer", so browsers never send the
+    # Referer header that Flask-WTF checks on HTTPS; the CSRF token is still checked.
+    "WTF_CSRF_SSL_STRICT": False,
     "MAP_SERVICE_SPECIES": "http://nature-art17.eionet.europa.eu/article17/"
     "speciessummary/details/art17ws",
     "MAP_SERVICE_HABITATS": "https://nature-art17.eionet.europa.eu/article17/"

@@ -81,3 +81,22 @@ def test_csrf_token_required(app, client, setup, set_auth):
     form["comment"] = "<p>Genuine</p>"
     assert form.submit().status_code == 302
     assert models.Comment.query.filter_by(author_id="newuser").count() == 1
+
+
+def test_csrf_over_https_without_referrer(app, client, setup, set_auth):
+    # production sends "Referrer-Policy: no-referrer", so browsers omit Referer
+    app.config["WTF_CSRF_ENABLED"] = True
+    https = {"wsgi.url_scheme": "https"}
+    user = create_user("newuser")
+    force_login(client, user.fs_uniquifier)
+
+    form = client.get(COMMENTS_URL, extra_environ=https).forms["theform"]
+    # client.post (unlike form.submit) does not add a Referer header
+    resp = client.post(
+        COMMENTS_URL,
+        {"csrf_token": form["csrf_token"].value, "comment": "<p>Genuine</p>"},
+        extra_environ=https,
+    )
+
+    assert "Referer" not in resp.request.headers
+    assert resp.status_code == 302
