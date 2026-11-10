@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.1.1 - (2026-11-10)
+---------------------
+* Fix csrf
+[dianaboiangiu]
+
 4.1.0 - (2026-11-09)
 ---------------------
 * Zero values fix and add update note
