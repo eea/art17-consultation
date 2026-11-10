@@ -1089,7 +1089,7 @@ class HabitattypesManualAssessment(Base):
     dataset = relationship(Dataset)
 
     def comments_count_read(self, user):
-        if not self.comments:
+        if not self.comments or not user:
             return 0
 
         return (
@@ -1378,7 +1378,7 @@ class SpeciesManualAssessment(Base):
     dataset = relationship(Dataset)
 
     def comments_count_read(self, user):
-        if not self.comments:
+        if not self.comments or not user:
             return 0
 
         return (

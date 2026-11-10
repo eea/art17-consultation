@@ -278,6 +278,52 @@ def test_reset_password_with_invalid_token(app, set_auth, client):
     assert resp.location == flask.url_for("security.forgot_password", _external=False)
 
 
+RECOVERY_MESSAGE = "If that email address belongs to a local account"
+
+
+def _request_password_recovery(client, email):
+    page = client.get(flask.url_for("security.forgot_password"))
+    page.forms[0]["email"] = email
+    return page.forms[0].submit()
+
+
+def test_forgot_password_local_user(app, set_auth, client, outbox):
+    foo = create_user("foo", name="Foo Bar")
+    foo.email = "foo@eea.europa.eu"
+    models.db.session.commit()
+
+    resp = _request_password_recovery(client, "foo@eea.europa.eu")
+
+    assert RECOVERY_MESSAGE in resp.text
+    assert len(outbox) == 1
+    assert "Dear Foo Bar," in outbox[0].body
+    assert "username: foo" in outbox[0].body
+    assert "Dear Foo Bar," in outbox[0].html
+    assert "/auth/recover_password/" in outbox[0].body
+
+
+@pytest.mark.parametrize("is_ldap, email", [(True, "foo@eea.europa.eu"), (False, "nobody@eea.europa.eu")])
+def test_forgot_password_no_email(app, set_auth, client, outbox, is_ldap, email):
+    # Eionet accounts and unknown addresses get the same response, but no email
+    foo = create_user("foo")
+    foo.email = "foo@eea.europa.eu"
+    foo.is_ldap = is_ldap
+    models.db.session.commit()
+
+    resp = _request_password_recovery(client, email)
+
+    assert RECOVERY_MESSAGE in resp.text
+    assert "Please use the password recovery system" not in resp.text
+    assert len(outbox) == 0
+
+
+def test_login_page_links_to_password_recovery(app, set_auth, client):
+    page = client.get(flask.url_for("auth.login"))
+
+    recovery_url = flask.url_for("security.forgot_password", _external=False)
+    assert len(page.html.find_all("a", href=recovery_url)) == 2  # header and form
+
+
 def test_change_anonymous_password(app, set_auth, client):
     page = client.get(flask.url_for("auth.change_password"))
     assert "You must log in before changing your password" in page

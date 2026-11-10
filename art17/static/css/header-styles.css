@@ -287,6 +287,10 @@
     content: unset !important;
 }
 
+#forgotlink {
+    margin-right: 20px;
+}
+
 .breadcrumbs {
   padding-left: 20px;
   padding-right: 20px;

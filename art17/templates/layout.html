@@ -18,6 +18,7 @@
           <span id="profilelink">You are logged in as <b>{{ current_user.id }}</b></span>
         {% else %}
           <a id="loginlink" href="{{ url_for('auth.login') }}">Log in</a>
+          <a id="forgotlink" href="{{ url_for('security.forgot_password') }}">Forgot your password?</a>
         {% endif %}
       </div>
     </div>

@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 import pytest
+from flask_login import AnonymousUserMixin
 
 from art17 import models
 
@@ -470,6 +471,38 @@ def test_count_read_comments_view(
 
     assert resp.status_code == 200
     assert resp.html.find("a", {"title": "Comments: Read/Total"}).text.strip() == "1/1"
+
+
+@pytest.mark.parametrize(
+    "manual_assessment_cls, comment_cls, request_args",
+    [
+        (
+            SpeciesManualAssessmentFactory,
+            CommentFactory,
+            ["/species/summary/", {"period": 6, "subject": "Canis lupus", "region": "ALP"}],
+        ),
+        (
+            HabitattypesManualAssessmentsFactory,
+            HabitatCommentFactory,
+            ["/habitat/summary/", {"period": 6, "subject": 1110, "region": "ALP"}],
+        ),
+    ],
+)
+def test_count_read_comments_view_anonymous(
+    app, client, set_auth, manual_assessment_cls, comment_cls, request_args
+):
+    # like in production, the anonymous user has no id
+    app.login_manager.anonymous_user = AnonymousUserMixin
+    # comments are public on assessments added by stakeholders
+    create_user("someuser", ["stakeholder"])
+    manual_assessment_cls(region="ALP")
+    comment_cls(region="ALP")
+    models.db.session.commit()
+
+    resp = client.get(*get_request_params("get", request_args))
+
+    assert resp.status_code == 200
+    assert resp.html.find("a", {"title": "Comments: Read/Total"}).text.strip() == "0/1"
 
 
 @pytest.mark.parametrize(

@@ -42,6 +42,14 @@ def setup_auth_handlers(state):
             ),
             "SECURITY_RECOVERABLE": True,
             "SECURITY_RESET_URL": "/auth/recover_password",
+            # Same response for local, Eionet and unknown accounts; the reset email
+            # is only sent to local accounts (see Art17ForgotPasswordForm).
+            "SECURITY_RETURN_GENERIC_RESPONSES": True,
+            "SECURITY_MSG_PASSWORD_RESET_REQUEST": (
+                "If that email address belongs to a local account, you will "
+                "receive an email describing how to reset your password.",
+                "info",
+            ),
             "SECURITY_POST_LOGIN_VIEW": HOMEPAGE_VIEW_NAME,
             "SECURITY_MSG_PASSWORD_RESET": (
                 "You have successfully reset your password.",
@@ -61,11 +69,11 @@ def setup_auth_handlers(state):
             Role,
         ),
         app=app,
+        forgot_password_form=Art17ForgotPasswordForm,
     )
 
     security_state = app.extensions["security"]
     security_state.pwd_context.update(ldap_salted_sha1__salt_size=7)
-    security_state.forgot_password_form = Art17ForgotPasswordForm
 
 
 import art17.auth.views  # make sure views get registered on the blueprint

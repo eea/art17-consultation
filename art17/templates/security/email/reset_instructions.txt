@@ -1,0 +1,12 @@
+Dear {{ user.name or user.id }},
+
+You have requested a password recovery for your account (username: {{ user.id }}).
+If you did not request this, just ignore this email.
+
+Use the following link to reset your password:
+{{ reset_link }}
+
+This link will expire in {{ within }}.
+
+Best regards,
+The Eionet team

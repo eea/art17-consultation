@@ -1,12 +1,15 @@
-Dear User,
+Dear {{ user.name or user.id }},
 
 <p>
-  You have requested an account password recovery.
+  You have requested a password recovery for your account
+  (username: <b>{{ user.id }}</b>).
   If you did not request this, just ignore this email.
 </p>
 
 
 <p><a href="{{ reset_link }}">Click here to reset your password</a></p>
+
+<p>This link will expire in {{ within }}.</p>
 
 <p>
   Best regards,<br>
