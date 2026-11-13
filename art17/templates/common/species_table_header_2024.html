@@ -119,9 +119,9 @@
             {% for row in objects %}
               <tr>
                 <td>{{ row.eu_country_code }}</td>
-                <td>{{ row.population_minimum_size|str2num  }}</td>
-                <td>{{ row.population_maximum_size|str2num }}</td>
-                <td>{{ row.population_size|str2num  }}</td>
+                <td>{{ row.population_minimum_size|str3num  }}</td>
+                <td>{{ row.population_maximum_size|str3num }}</td>
+                <td>{{ row.population_size|str3num  }}</td>
                 <td>{{ row.population_size_unit }}</td>
                 <td>{{ row.population_estimate_type }}</td>
                 <td>{{ row.population_alt_size_min|str2num }}</td>

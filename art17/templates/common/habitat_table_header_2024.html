@@ -180,9 +180,9 @@
             </tr>
             {% for row in objects %}
               <tr>
-                <td>{{ row.hab_condition_good|str2num }}</td>
-                <td>{{ row.hab_condition_notgood|str2num }}</td>
-                <td>{{ row.hab_condition_unknown|str2num }}</td>
+                <td>{{ row.hab_condition_good|str3num }}</td>
+                <td>{{ row.hab_condition_notgood|str3num }}</td>
+                <td>{{ row.hab_condition_unknown|str3num }}</td>
               </tr>
             {% endfor %}
           </table>
