@@ -1,6 +1,12 @@
 Changelog
 =========
 
+4.1.3 - (2026-11-13)
+---------------------
+* Show 0 instead of N/A in the habitat condition and species population mouseovers for 2019-2024
+* Use code "gen" instead of "a" for genuine change in the reason for change mouseovers of the 2019-2024 EU assessments
+[dianaboiangiu]
+
 4.1.2 - (2026-11-10)
 ---------------------
 * Fix admin and email password reset after the Flask-Security upgrade
